@@ -1,0 +1,7 @@
+[Unit]
+Description=Auto-sync Projects workspace to GitHub
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/vreddy1/Desktop/Projects
+ExecStart=/home/vreddy1/Desktop/Projects/scripts/git-autosync.sh

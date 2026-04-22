@@ -55,3 +55,9 @@ temp/
 cache/
 .cache/
 graphify-out/cache/
+
+# Local environments and nested repositories
+Jupiter/
+Github_Projects/
+tradingview-mcp/
+*.conda_trash
