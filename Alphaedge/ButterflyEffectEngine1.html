@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaEdge - The Butterfly Effect Engine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0A1628;
+            color: #F8FAFC;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+        }
+        
+        #header {
+            margin-bottom: 20px;
+        }
+        
+        #header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+        
+        #header p {
+            font-size: 13px;
+            color: #94A3B8;
+        }
+        
+        #canvas-wrapper {
+            position: relative;
+            flex: 1;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            border-radius: 12px;
+            border: 1px solid #334155;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        #graph-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 11px;
+            min-width: 180px;
+        }
+        
+        .legend-title {
+            color: #F59E0B;
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 2px;
+        }
+        
+        .legend-text {
+            color: #CBD5E1;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        
+        .btn-fed {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+        }
+        
+        .btn-oil {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .btn-vix {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+        }
+        
+        .btn-china {
+            background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+            color: white;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+            color: white;
+        }
+        
+        .event-notification {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(245, 158, 11, 0.2);
+            border: 2px solid #F59E0B;
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #FDE68A;
+            backdrop-filter: blur(12px);
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .node-info {
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 16px;
+            min-width: 320px;
+            max-width: 400px;
+            font-size: 12px;
+            display: none;
+        }
+        
+        .node-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+        
+        .node-info-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #F59E0B;
+        }
+        
+        .node-info-tier {
+            font-size: 10px;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #64748B;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .close-btn:hover {
+            color: #CBD5E1;
+        }
+        
+        .correlations {
+            margin-top: 12px;
+        }
+        
+        .correlations-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+        }
+        
+        .correlation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .correlation-item {
+            background: #1E293B;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .correlation-label {
+            color: #94A3B8;
+            font-size: 11px;
+        }
+        
+        .correlation-value {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .correlation-positive {
+            color: #10B981;
+        }
+        
+        .correlation-negative {
+            color: #EF4444;
+        }
+        
+        .transmission-path {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #334155;
+        }
+        
+        .transmission-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #F59E0B;
+            margin-bottom: 6px;
+        }
+        
+        .transmission-text {
+            color: #94A3B8;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+        
+        .instructions {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 10px;
+            color: #64748B;
+            max-width: 280px;
+        }
+        
+        .instructions div {
+            margin-bottom: 6px;
+        }
+        
+        .instructions strong {
+            color: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>The Butterfly Effect Engine</h1>
+            <p>Real-time visualization of global macro contagion • Organized by geographic region • Click nodes to explore correlations • Trigger events to watch shockwaves propagate</p>
+        </div>
+        
+        <div id="canvas-wrapper">
+            <canvas id="graph-canvas"></canvas>
+            
+            <div class="legend">
+                <div class="legend-title">CORRELATION</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #10B981;"></div>
+                    <span class="legend-text">Positive</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: #EF4444;"></div>
+                    <span class="legend-text">Inverse</span>
+                </div>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #334155;">
+                    <div class="legend-text" style="font-size: 9px; color: #64748B;">Line thickness = strength</div>
+                    <div class="legend-text" style="font-size: 9px; color: #64748B; margin-top: 4px;">Node size = market tier</div>
+                </div>
+            </div>
+            
+            <div class="event-notification" id="notification"></div>
+            
+            <div class="controls">
+                <button class="btn btn-fed" onclick="triggerEvent('FED')">
+                    <span>🏛️</span>
+                    <span>Fed Hike +50bps</span>
+                </button>
+                <button class="btn btn-oil" onclick="triggerEvent('OIL')">
+                    <span>🛢️</span>
+                    <span>Oil Shock +10%</span>
+                </button>
+                <button class="btn btn-vix" onclick="triggerEvent('VIX')">
+                    <span>📉</span>
+                    <span>VIX Spike +15%</span>
+                </button>
+                <button class="btn btn-china" onclick="triggerEvent('CHINA')">
+                    <span>🇨🇳</span>
+                    <span>China PMI Miss</span>
+                </button>
+                <button class="btn btn-reset" onclick="resetGraph()">
+                    <span>↻</span>
+                    <span>Reset</span>
+                </button>
+            </div>
+            
+            <div class="node-info" id="node-info">
+                <div class="node-info-header">
+                    <div>
+                        <div class="node-info-title" id="info-title"></div>
+                        <div class="node-info-tier" id="info-tier"></div>
+                    </div>
+                    <button class="close-btn" onclick="closeInfo()">✕</button>
+                </div>
+                <div class="correlations" id="correlations-section"></div>
+                <div class="transmission-path" id="transmission-section"></div>
+            </div>
+            
+            <div class="instructions">
+                <div>💡 <strong>Click nodes</strong> to view correlations</div>
+                <div>⚡ <strong>Trigger events</strong> to see propagation</div>
+                <div>🔗 <strong>Line color:</strong> Green = positive, Red = inverse</div>
+                <div>⏱️ <strong>Timing:</strong> Based on Granger causality lead-lag</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('graph-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Resize canvas to fill container
+        function resizeCanvas() {
+            const wrapper = document.getElementById('canvas-wrapper');
+            canvas.width = wrapper.clientWidth;
+            canvas.height = wrapper.clientHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Node definitions with real correlations - SPREAD OUT LAYOUT
+        const nodes = [
+            // ═══════════════════════════════════════════════════════════════
+            // CENTER: EPICENTER - US Dollar & Yields
+            // ═══════════════════════════════════════════════════════════════
+            { id: 'DXY', label: 'US Dollar', x: 0.48, y: 0.48, radius: 34, tier: 'epicenter', color: '#F59E0B', fixed: true },
+            { id: 'US10Y', label: 'US 10Y', x: 0.52, y: 0.52, radius: 32, tier: 'epicenter', color: '#F59E0B', fixed: true },
+            
+            // ═══════════════════════════════════════════════════════════════
+            // INNER RING: PRIMARY TRANSMITTERS (Cardinal directions)
+            // ═══════════════════════════════════════════════════════════════
+            { id: 'SPX', label: 'S&P 500', x: 0.50, y: 0.20, radius: 28, tier: 'primary', color: '#3B82F6' },
+            { id: 'VIX', label: 'VIX', x: 0.80, y: 0.50, radius: 26, tier: 'primary', color: '#EF4444' },
+            { id: 'GOLD', label: 'Gold', x: 0.50, y: 0.80, radius: 24, tier: 'primary', color: '#FBBF24' },
+            { id: 'OIL', label: 'Brent Oil', x: 0.20, y: 0.50, radius: 24, tier: 'primary', color: '#10B981' },
+            
+            // ═══════════════════════════════════════════════════════════════
+            // TOP-LEFT QUADRANT: ASIA-PACIFIC (Developed EM + Sectors)
+            // ═══════════════════════════════════════════════════════════════
+            { id: 'NIFTY', label: 'India\nNifty 50', x: 0.15, y: 0.25, radius: 21, tier: 'developed-em', color: '#06B6D4', 
+              corr: { DXY: -0.68, SPX: 0.72, OIL: -0.42, US10Y: -0.58, GOLD: 0.32 } },
+            { id: 'NIFTYBANK', label: 'India\nBanks', x: 0.08, y: 0.18, radius: 15, tier: 'sector', color: '#EC4899', parent: 'NIFTY',
+              corr: { NIFTY: 0.95, DXY: -0.72, US10Y: -0.65 } },
+            { id: 'NIFTYIT', label: 'India\nIT', x: 0.08, y: 0.32, radius: 15, tier: 'sector', color: '#34D399', parent: 'NIFTY',
+              corr: { NIFTY: 0.88, DXY: 0.48, SPX: 0.82 } },
+            
+            { id: 'KOSPI', label: 'South Korea\nKOSPI', x: 0.25, y: 0.12, radius: 19, tier: 'developed-em', color: '#06B6D4',
+              corr: { DXY: -0.71, SPX: 0.76, OIL: -0.52, US10Y: -0.62, GOLD: 0.28 } },
+            { id: 'TAIEX', label: 'Taiwan\nTAIEX', x: 0.35, y: 0.15, radius: 19, tier: 'developed-em', color: '#06B6D4',
+              corr: { DXY: -0.69, SPX: 0.74, OIL: -0.46, US10Y: -0.60, GOLD: 0.30 } },
+            { id: 'HSI', label: 'Hong Kong\nHang Seng', x: 0.30, y: 0.25, radius: 18, tier: 'developed-em', color: '#06B6D4',
+              corr: { DXY: -0.72, SPX: 0.79, OIL: -0.22, US10Y: -0.65, GOLD: 0.25 } },
+            { id: 'JCI', label: 'Indonesia\nJCI', x: 0.12, y: 0.38, radius: 18, tier: 'emerging', color: '#8B5CF6',
+              corr: { DXY: -0.62, SPX: 0.68, OIL: 0.62, US10Y: -0.52, GOLD: 0.28 } },
+            
+            // ═══════════════════════════════════════════════════════════════
+            // TOP-RIGHT QUADRANT: AMERICAS
+            // ═══════════════════════════════════════════════════════════════
+            { id: 'IPC', label: 'Mexico\nIPC', x: 0.70, y: 0.15, radius: 18, tier: 'emerging', color: '#8B5CF6',
+              corr: { DXY: -0.78, SPX: 0.82, OIL: 0.71, US10Y: -0.65, GOLD: 0.22 } },
+            { id: 'BOVESPA', label: 'Brazil\nBovespa', x: 0.85, y: 0.20, radius: 19, tier: 'emerging', color: '#8B5CF6',
+              corr: { DXY: -0.75, SPX: 0.71, OIL: 0.68, US10Y: -0.58, GOLD: 0.35 } },
+            { id: 'IPSA', label: 'Chile\nIPSA', x: 0.92, y: 0.30, radius: 16, tier: 'china-linked', color: '#F43F5E',
+              corr: { DXY: -0.62, SPX: 0.69, OIL: 0.35, US10Y: -0.48, GOLD: 0.32 } },
+            
+            // ═══════════════════════════════════════════════════════════════
+            // BOTTOM-LEFT QUADRANT: CHINA + LINKED + FRONTIER
+            // ═══════════════════════════════════════════════════════════════
+            { id: 'CSI300', label: 'China\nCSI 300', x: 0.15, y: 0.70, radius: 21, tier: 'china-linked', color: '#F43F5E',
+              corr: { DXY: -0.52, SPX: 0.58, OIL: -0.48, US10Y: -0.45, GOLD: 0.38 } },
+            { id: 'VN', label: 'Vietnam', x: 0.08, y: 0.62, radius: 14, tier: 'frontier', color: '#64748B',
+              corr: { DXY: -0.48, SPX: 0.52, OIL: -0.38, US10Y: -0.42, GOLD: 0.25 } },
+            { id: 'KSE', label: 'Pakistan', x: 0.25, y: 0.82, radius: 14, tier: 'frontier', color: '#64748B',
+              corr: { DXY: -0.42, SPX: 0.45, OIL: -0.38, US10Y: -0.35, GOLD: 0.28 } },
+            
+            // ═══════════════════════════════════════════════════════════════
+            // BOTTOM-RIGHT QUADRANT: MIDDLE EAST + AFRICA (Commodity heavy)
+            // ═══════════════════════════════════════════════════════════════
+            { id: 'TASI', label: 'Saudi Arabia\nTASI', x: 0.85, y: 0.70, radius: 17, tier: 'commodity', color: '#10B981',
+              corr: { DXY: -0.42, SPX: 0.52, OIL: 0.89, US10Y: -0.35, GOLD: 0.15 } },
+            { id: 'NGX', label: 'Nigeria\nNGX', x: 0.75, y: 0.85, radius: 15, tier: 'commodity', color: '#10B981',
+              corr: { DXY: -0.38, SPX: 0.41, OIL: 0.82, US10Y: -0.28, GOLD: 0.20 } },
+            { id: 'JSE', label: 'South Africa\nJSE', x: 0.92, y: 0.75, radius: 18, tier: 'emerging', color: '#8B5CF6',
+              corr: { DXY: -0.68, SPX: 0.73, OIL: 0.18, US10Y: -0.55, GOLD: 0.45 } },
+        ];
+        
+        // Transmission timing (ms after event)
+        const transmissionTiming = {
+            'DXY': 0, 'US10Y': 0,
+            'SPX': 200, 'VIX': 100, 'GOLD': 300, 'OIL': 250,
+            'NIFTY': 1500, 'NIFTYBANK': 1700, 'NIFTYIT': 1650,
+            'KOSPI': 1400, 'TAIEX': 1450, 'HSI': 1300,
+            'BOVESPA': 1600, 'IPC': 1550, 'JCI': 1700, 'JSE': 1650,
+            'TASI': 1800, 'NGX': 2000,
+            'CSI300': 1200, 'IPSA': 1750,
+            'KSE': 2500, 'VN': 2200
+        };
+        
+        // Create links based on correlations
+        const links = [];
+        nodes.forEach(node => {
+            if (node.corr) {
+                Object.entries(node.corr).forEach(([targetId, corrValue]) => {
+                    if (Math.abs(corrValue) > 0.2) { // Only show significant correlations
+                        links.push({
+                            source: node.id,
+                            target: targetId,
+                            correlation: corrValue,
+                            strength: Math.abs(corrValue),
+                            color: corrValue > 0 ? '#10B981' : '#EF4444',
+                            baseOpacity: Math.abs(corrValue) * 0.7,
+                            baseWidth: Math.abs(corrValue) * 4
+                        });
+                    }
+                });
+            }
+            
+            // Parent-child links
+            if (node.parent) {
+                links.push({
+                    source: node.parent,
+                    target: node.id,
+                    correlation: 0.95,
+                    strength: 0.95,
+                    color: '#94A3B8',
+                    baseOpacity: 0.5,
+                    baseWidth: 3,
+                    type: 'parent'
+                });
+            }
+        });
+        
+        let selectedNode = null;
+        let shockwave = null;
+        let isPulsing = false;
+        let nodeVelocities = nodes.map(() => ({ vx: 0, vy: 0 }));
+        
+        // Convert relative positions to absolute
+        function updateAbsolutePositions() {
+            nodes.forEach(node => {
+                if (node.fixed) {
+                    node.px = canvas.width * node.x;
+                    node.py = canvas.height * node.y;
+                } else if (!node.px) {
+                    node.px = canvas.width * node.x;
+                    node.py = canvas.height * node.y;
+                }
+            });
+        }
+        updateAbsolutePositions();
+        
+        // Physics simulation - GENTLE FORCES for clean spread
+        function simulate() {
+            const damping = 0.92; // Higher damping = slower movement
+            const repulsion = 12000; // Higher repulsion = more spread
+            const attraction = 0.008; // Lower attraction = less clustering
+            const centerStrength = 0.0003; // Very weak center pull
+            
+            nodes.forEach((node, i) => {
+                if (node.fixed) return;
+                
+                let fx = 0, fy = 0;
+                
+                // Attractive forces from links - ONLY significant correlations
+                links.forEach(link => {
+                    if (link.source === node.id || link.target === node.id) {
+                        const otherId = link.source === node.id ? link.target : link.source;
+                        const other = nodes.find(n => n.id === otherId);
+                        if (other && other.px) {
+                            const dx = other.px - node.px;
+                            const dy = other.py - node.py;
+                            const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                            const strength = link.strength * attraction;
+                            fx += (dx / dist) * strength * dist * 0.3; // Much weaker pull
+                            fy += (dy / dist) * strength * dist * 0.3;
+                        }
+                    }
+                });
+                
+                // Repulsive forces from other nodes - STRONG
+                nodes.forEach(other => {
+                    if (other.id !== node.id && other.px) {
+                        const dx = node.px - other.px;
+                        const dy = node.py - other.py;
+                        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                        const minDist = (node.radius + other.radius) * 2.5; // Enforce spacing
+                        if (dist < minDist) {
+                            const force = repulsion / (dist * dist);
+                            fx += (dx / dist) * force * 2; // Extra strong when too close
+                            fy += (dy / dist) * force * 2;
+                        } else {
+                            // Still apply gentle repulsion at distance
+                            const force = repulsion / (dist * dist);
+                            fx += (dx / dist) * force;
+                            fy += (dy / dist) * force;
+                        }
+                    }
+                });
+                
+                // Centering force - MINIMAL
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                fx += (centerX - node.px) * centerStrength;
+                fy += (centerY - node.py) * centerStrength;
+                
+                // Update velocity and position
+                nodeVelocities[i].vx = (nodeVelocities[i].vx + fx) * damping;
+                nodeVelocities[i].vy = (nodeVelocities[i].vy + fy) * damping;
+                
+                node.px += nodeVelocities[i].vx;
+                node.py += nodeVelocities[i].vy;
+                
+                // Keep within bounds with generous margin
+                const margin = node.radius + 40; // Increased margin
+                node.px = Math.max(margin, Math.min(canvas.width - margin, node.px));
+                node.py = Math.max(margin, Math.min(canvas.height - margin, node.py));
+            });
+        }
+        
+        // Draw everything
+        function draw() {
+            // Clear with gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#0F172A');
+            gradient.addColorStop(1, '#1E293B');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw subtle grid
+            ctx.strokeStyle = 'rgba(51, 65, 85, 0.3)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < canvas.width; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            for (let i = 0; i < canvas.height; i += 50) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+            
+            // Draw region labels for orientation
+            ctx.font = 'bold 11px Arial';
+            ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
+            ctx.textAlign = 'left';
+            ctx.fillText('ASIA-PACIFIC', 20, 30);
+            ctx.textAlign = 'right';
+            ctx.fillText('AMERICAS', canvas.width - 20, 30);
+            ctx.textAlign = 'left';
+            ctx.fillText('CHINA + FRONTIER', 20, canvas.height - 15);
+            ctx.textAlign = 'right';
+            ctx.fillText('MIDDLE EAST + AFRICA', canvas.width - 20, canvas.height - 15);
+            ctx.textAlign = 'center';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillStyle = 'rgba(245, 158, 11, 0.4)';
+            ctx.fillText('◆ US EPICENTER ◆', canvas.width / 2, canvas.height / 2 - 70);
+            
+            // Draw links
+            links.forEach(link => {
+                const source = nodes.find(n => n.id === link.source);
+                const target = nodes.find(n => n.id === link.target);
+                if (!source || !target || !source.px || !target.px) return;
+                
+                let opacity = link.baseOpacity;
+                let width = link.baseWidth;
+                
+                // Shockwave animation
+                if (shockwave) {
+                    const elapsed = Date.now() - shockwave.timestamp;
+                    const sourceDelay = transmissionTiming[source.id] || 0;
+                    const targetDelay = transmissionTiming[target.id] || 0;
+                    
+                    if (elapsed > sourceDelay && elapsed < targetDelay + 300) {
+                        const progress = Math.min(1, (elapsed - sourceDelay) / (targetDelay - sourceDelay));
+                        opacity = Math.min(1, link.baseOpacity + 0.5);
+                        width = link.baseWidth * (1 + Math.sin(progress * Math.PI) * 0.8);
+                        
+                        // Animated glow
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = link.color;
+                    }
+                }
+                
+                ctx.strokeStyle = link.color;
+                ctx.globalAlpha = opacity;
+                ctx.lineWidth = width;
+                ctx.beginPath();
+                ctx.moveTo(source.px, source.py);
+                ctx.lineTo(target.px, target.py);
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+            });
+            
+            // Draw nodes
+            nodes.forEach(node => {
+                if (!node.px) return;
+                
+                let radius = node.radius;
+                let glowIntensity = 0;
+                
+                // Shockwave ripple
+                if (shockwave) {
+                    const elapsed = Date.now() - shockwave.timestamp;
+                    const nodeDelay = transmissionTiming[node.id] || 0;
+                    
+                    if (elapsed > nodeDelay - 150 && elapsed < nodeDelay + 600) {
+                        const phase = (elapsed - nodeDelay + 150) / 750;
+                        glowIntensity = Math.sin(phase * Math.PI) * 40;
+                        radius += Math.sin(phase * Math.PI) * 6;
+                    }
+                }
+                
+                // Epicenter pulse
+                if (node.tier === 'epicenter' && isPulsing) {
+                    const pulse = Math.sin(Date.now() / 150) * 0.2 + 1;
+                    radius *= pulse;
+                    glowIntensity = 30;
+                }
+                
+                // Glow effect
+                if (glowIntensity > 0 || node.tier === 'epicenter') {
+                    const gradient = ctx.createRadialGradient(node.px, node.py, 0, node.px, node.py, radius + 25);
+                    gradient.addColorStop(0, node.color + 'DD');
+                    gradient.addColorStop(0.4, node.color + '66');
+                    gradient.addColorStop(1, node.color + '00');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(node.px - radius - 25, node.py - radius - 25, (radius + 25) * 2, (radius + 25) * 2);
+                }
+                
+                // Node circle
+                ctx.beginPath();
+                ctx.arc(node.px, node.py, radius, 0, Math.PI * 2);
+                
+                // Gradient fill
+                const nodeGradient = ctx.createRadialGradient(node.px - radius/3, node.py - radius/3, 0, node.px, node.py, radius);
+                nodeGradient.addColorStop(0, node.color + 'FF');
+                nodeGradient.addColorStop(1, node.color + 'BB');
+                ctx.fillStyle = nodeGradient;
+                ctx.fill();
+                
+                // Border
+                ctx.strokeStyle = selectedNode?.id === node.id ? '#F59E0B' : '#1E293B';
+                ctx.lineWidth = selectedNode?.id === node.id ? 3 : 2;
+                ctx.stroke();
+                
+                // Label
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = `${node.tier === 'epicenter' ? 'bold ' : ''}${node.radius > 18 ? '11px' : '10px'} Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // Multi-line labels
+                const lines = node.label.split('\n');
+                const lineHeight = 12;
+                const startY = node.py - (lines.length - 1) * lineHeight / 2;
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, node.px, startY + i * lineHeight);
+                });
+            });
+        }
+        
+        // Animation loop
+        function animate() {
+            simulate();
+            draw();
+            requestAnimationFrame(animate);
+        }
+        animate();
+        
+        // Click handling
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const clicked = nodes.find(node => {
+                if (!node.px) return false;
+                const dx = node.px - x;
+                const dy = node.py - y;
+                return Math.sqrt(dx * dx + dy * dy) < node.radius;
+            });
+            
+            if (clicked) {
+                selectedNode = clicked;
+                showNodeInfo(clicked);
+            } else {
+                selectedNode = null;
+                closeInfo();
+            }
+        });
+        
+        // Show node info panel
+        function showNodeInfo(node) {
+            const panel = document.getElementById('node-info');
+            document.getElementById('info-title').textContent = node.label.replace('\n', ' ');
+            document.getElementById('info-tier').textContent = node.tier.replace('-', ' ');
+            
+            // Correlations
+            const corrSection = document.getElementById('correlations-section');
+            if (node.corr) {
+                corrSection.innerHTML = `
+                    <div class="correlations-title">Correlations:</div>
+                    <div class="correlation-grid">
+                        ${Object.entries(node.corr).map(([target, value]) => `
+                            <div class="correlation-item">
+                                <span class="correlation-label">${target}</span>
+                                <span class="correlation-value ${value > 0 ? 'correlation-positive' : 'correlation-negative'}">
+                                    ${value > 0 ? '+' : ''}${value.toFixed(2)}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                corrSection.style.display = 'block';
+            } else {
+                corrSection.style.display = 'none';
+            }
+            
+            // Transmission path
+            const transSection = document.getElementById('transmission-section');
+            if (node.id === 'NIFTY') {
+                transSection.innerHTML = `
+                    <div class="transmission-title">Fed Hike Transmission:</div>
+                    <div class="transmission-text">
+                        Fed +50bps → DXY ↑0.4% (T+0) → FII Outflow Rs 400 Cr (T+1-2) → 
+                        Nifty ↓0.06% (T+2-5) → Bank Index ↓0.18% (T+2)
+                    </div>
+                `;
+                transSection.style.display = 'block';
+            } else if (node.id === 'TASI') {
+                transSection.innerHTML = `
+                    <div class="transmission-title">Oil Transmission:</div>
+                    <div class="transmission-text">
+                        Oil +10% → Energy Sector +8% (T+0) → TASI Index +4-6% (T+0-3) → 
+                        SAR appreciates +5% (T+0-7)
+                    </div>
+                `;
+                transSection.style.display = 'block';
+            } else if (node.id === 'BOVESPA') {
+                transSection.innerHTML = `
+                    <div class="transmission-title">China PMI Transmission:</div>
+                    <div class="transmission-text">
+                        China PMI -2pts → Iron Ore -5% (T+1) → Vale/Mining -3.8% (T+1-5) → 
+                        Bovespa -2.2% (T+3-7)
+                    </div>
+                `;
+                transSection.style.display = 'block';
+            } else {
+                transSection.style.display = 'none';
+            }
+            
+            panel.style.display = 'block';
+        }
+        
+        function closeInfo() {
+            document.getElementById('node-info').style.display = 'none';
+            selectedNode = null;
+        }
+        
+        // Event triggers
+        function triggerEvent(type) {
+            const events = {
+                'FED': { source: 'DXY', text: '🏛️ Fed Hike +50bps — USD strengthening, EM outflows begin' },
+                'OIL': { source: 'OIL', text: '🛢️ Brent Oil +10% — Energy exporters rally, importers under pressure' },
+                'VIX': { source: 'VIX', text: '📉 VIX Spike +15% — Risk-off mode, correlations converging to crisis levels' },
+                'CHINA': { source: 'CSI300', text: '🇨🇳 China PMI Miss -2pts — Commodity deflation risk, metals selling off' }
+            };
+            
+            const event = events[type];
+            shockwave = { source: event.source, timestamp: Date.now() };
+            isPulsing = true;
+            
+            const notification = document.getElementById('notification');
+            notification.textContent = event.text;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                isPulsing = false;
+            }, 3000);
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+                shockwave = null;
+            }, 4000);
+        }
+        
+        function resetGraph() {
+            shockwave = null;
+            isPulsing = false;
+            selectedNode = null;
+            closeInfo();
+            document.getElementById('notification').style.display = 'none';
+            
+            // Reset positions
+            nodes.forEach(node => {
+                node.px = canvas.width * node.x;
+                node.py = canvas.height * node.y;
+            });
+            nodeVelocities = nodes.map(() => ({ vx: 0, vy: 0 }));
+        }
+        
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            updateAbsolutePositions();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+.env
+*.bak
+data/
+archive/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+run.log
+results.tsv
+memory.json
+performance_history.json
+*.egg-info/
+dist/
+build/
+.venv/
+venv/

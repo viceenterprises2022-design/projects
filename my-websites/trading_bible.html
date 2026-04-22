@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Trading Bible — MTB</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  [data-theme="dark"] {
+    --gold:#C9A84C; --gold-light:#F0D080; --gold-dim:#8A7540;
+    --bg:#080C10; --bg2:#0D1318; --bg3:#111820; --bg4:#161E28;
+    --panel:#0E161F; --border:#1E2D3D; --border-bright:#2A3F55;
+    --text:#B8CCE0; --text-bright:#E0EEF8; --text-dim:#506070;
+    --green:#00C87A; --red:#E0304A; --blue:#3A90D0;
+    --orange:#E07830; --purple:#9060D0; --cyan:#20A8C8;
+    --nav-bg:rgba(8,12,16,0.94); --shadow:0 4px 24px rgba(0,0,0,0.5);
+  }
+  [data-theme="light"] {
+    --gold:#9A6F20; --gold-light:#7A5510; --gold-dim:#B8861E;
+    --bg:#F0F4F8; --bg2:#E8EEF4; --bg3:#DDE4EC; --bg4:#D4DCE6;
+    --panel:#FFFFFF; --border:#C8D4E0; --border-bright:#A0B4C8;
+    --text:#2A3A4A; --text-bright:#0F1F2F; --text-dim:#6A8090;
+    --green:#007A4A; --red:#C01830; --blue:#1A60A0;
+    --orange:#B05010; --purple:#6030A0; --cyan:#0878A0;
+    --nav-bg:rgba(240,244,248,0.96); --shadow:0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{font-size:16px;}
+  body{font-family:'Barlow Condensed',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;transition:background .3s,color .3s;}
+  #pixi-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  #app{position:relative;z-index:1;min-height:100vh;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;height:64px;gap:6px;box-shadow:var(--shadow);}
+  .nav-brand{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-right:20px;flex-shrink:0;}
+  .nav-brand span{color:var(--text-dim);font-weight:400;font-size:16px;}
+  .nav-tabs{display:flex;gap:3px;flex:1;overflow-x:auto;scrollbar-width:none;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .nav-tab{padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);background:transparent;border:1px solid transparent;border-radius:4px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+  .nav-tab:hover{color:var(--text-bright);background:var(--bg3);}
+  .nav-tab.active{color:var(--gold);background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.35);}
+  [data-theme="light"] .nav-tab.active{background:rgba(154,111,32,.08);border-color:rgba(154,111,32,.35);}
+  .theme-btn{margin-left:12px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:24px;padding:6px 16px;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;color:var(--text);letter-spacing:1px;transition:all .2s;white-space:nowrap;}
+  .theme-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+  /* PAGES */
+  .page{display:none;padding:36px 28px;max-width:1440px;margin:0 auto;}
+  .page.active{display:block;}
+
+  /* HERO */
+  .hero{text-align:center;padding:64px 20px 44px;}
+  .hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--gold-dim);letter-spacing:4px;text-transform:uppercase;margin-bottom:18px;}
+  .hero-title{font-family:'Rajdhani',sans-serif;font-size:clamp(52px,8vw,100px);font-weight:700;color:var(--gold);letter-spacing:8px;text-transform:uppercase;line-height:1;}
+  [data-theme="dark"] .hero-title{text-shadow:0 0 60px rgba(201,168,76,.3);}
+  .hero-sub{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--text-dim);letter-spacing:6px;margin-top:14px;}
+  .hero-divider{width:200px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:34px auto;}
+  .hero-tagline{font-size:20px;color:var(--text);max-width:700px;margin:0 auto;line-height:1.7;font-style:italic;}
+
+  /* MANTRA TICKER */
+  .mantra-bar{background:rgba(201,168,76,.06);border-top:1px solid rgba(201,168,76,.25);border-bottom:1px solid rgba(201,168,76,.25);padding:12px 0;overflow:hidden;margin:36px 0;}
+  [data-theme="light"] .mantra-bar{background:rgba(154,111,32,.06);}
+  .mantra-scroll{display:flex;gap:60px;animation:scroll-left 30s linear infinite;white-space:nowrap;}
+  .mantra-scroll span{font-family:'Share Tech Mono',monospace;font-size:14px;letter-spacing:2px;color:var(--gold);opacity:.85;}
+  @keyframes scroll-left{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+  /* SECTION TITLE */
+  .section-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:22px;display:flex;align-items:center;gap:14px;}
+  .section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+
+  /* STAT ROW */
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:36px;}
+  .stat-box{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:22px;text-align:center;box-shadow:var(--shadow);transition:border-color .2s;}
+  .stat-box:hover{border-color:var(--gold-dim);}
+  .stat-val{font-family:'Rajdhani',sans-serif;font-size:38px;font-weight:700;color:var(--gold);line-height:1;}
+  .stat-label{font-size:13px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-top:6px;}
+
+  /* CARDINAL GRID */
+  .cardinal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:40px;}
+  .cardinal-card{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:5px;padding:22px;box-shadow:var(--shadow);transition:all .2s;}
+  .cardinal-card:hover{border-left-color:var(--gold-light);background:var(--bg4);}
+  .cardinal-label{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:10px;}
+  .cardinal-value{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:600;color:var(--text-bright);line-height:1.4;}
+
+  /* RULE CARDS */
+  .rules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-bottom:40px;}
+  .rule-card{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:20px 24px;display:flex;gap:18px;align-items:flex-start;box-shadow:var(--shadow);transition:border-color .2s,transform .2s;}
+  .rule-card:hover{border-color:var(--gold-dim);transform:translateY(-1px);}
+  .rule-num{font-family:'Share Tech Mono',monospace;font-size:24px;color:var(--gold);opacity:.3;flex-shrink:0;line-height:1;}
+  .rule-text{font-size:16px;line-height:1.6;color:var(--text-bright);}
+
+  /* AFFIRMATIONS */
+  .affirmation-list{display:flex;flex-direction:column;gap:10px;margin-bottom:36px;}
+  .affirmation-item{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:15px 24px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);transition:background .2s;}
+  .affirmation-item:hover{background:var(--bg4);}
+  .aff-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+  .aff-text{font-size:17px;color:var(--text-bright);line-height:1.5;}
+
+  /* STRATEGY CARDS */
+  .strategy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px;margin-bottom:36px;}
+  .strategy-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);transition:all .2s;cursor:pointer;}
+  .strategy-card:hover{border-color:var(--border-bright);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.3);}
+  [data-theme="light"] .strategy-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.12);}
+  .strategy-header{padding:18px 22px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);background:var(--bg4);}
+  .strategy-icon{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .strategy-name{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--text-bright);letter-spacing:1px;}
+  .strategy-sub{font-size:13px;color:var(--text-dim);margin-top:3px;}
+  .strategy-badge{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:12px;padding:4px 10px;border-radius:3px;letter-spacing:1px;}
+  .strategy-body{padding:18px 22px;}
+  .strategy-points{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .strategy-points li{font-size:15px;color:var(--text);padding-left:18px;position:relative;line-height:1.55;}
+  .strategy-points li::before{content:'›';position:absolute;left:0;color:var(--gold-dim);font-size:19px;line-height:1.25;}
+
+  /* TABLE */
+  .setup-table{width:100%;border-collapse:collapse;margin-bottom:36px;font-size:15px;}
+  .setup-table th{background:var(--bg4);color:var(--gold-dim);font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:13px 18px;text-align:left;border-bottom:2px solid var(--border);}
+  .setup-table td{padding:13px 18px;border-bottom:1px solid var(--border);color:var(--text);line-height:1.5;}
+  .setup-table tr:hover td{background:var(--bg4);}
+
+  /* TAGS */
+  .tag{display:inline-block;padding:3px 10px;border-radius:3px;font-size:12px;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+  .tag-green{background:rgba(0,200,122,.12);color:var(--green);border:1px solid rgba(0,200,122,.25);}
+  .tag-red{background:rgba(224,48,74,.12);color:var(--red);border:1px solid rgba(224,48,74,.25);}
+  .tag-blue{background:rgba(58,144,208,.12);color:var(--blue);border:1px solid rgba(58,144,208,.25);}
+  .tag-gold{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+  .tag-orange{background:rgba(224,120,48,.12);color:var(--orange);border:1px solid rgba(224,120,48,.25);}
+  .tag-purple{background:rgba(144,96,208,.12);color:var(--purple);border:1px solid rgba(144,96,208,.25);}
+
+  /* MISTAKE GRID */
+  .mistake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px;margin-bottom:36px;}
+  .mistake-item{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:5px;padding:13px 18px;display:flex;gap:14px;align-items:flex-start;font-size:15px;color:var(--text);box-shadow:var(--shadow);transition:background .15s;line-height:1.55;}
+  .mistake-item:hover{background:var(--bg4);}
+  .mistake-num{font-family:'Share Tech Mono',monospace;color:var(--red);opacity:.65;flex-shrink:0;font-size:13px;margin-top:1px;}
+
+  /* INDICATOR GRID */
+  .ind-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:36px;}
+  .ind-card{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:16px 18px;box-shadow:var(--shadow);}
+  .ind-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:17px;color:var(--cyan);margin-bottom:5px;}
+  .ind-desc{font-size:14px;color:var(--text-dim);line-height:1.45;}
+
+  /* PA GRID */
+  .pa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-bottom:36px;}
+  .pa-item{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:14px 18px;display:flex;gap:14px;box-shadow:var(--shadow);}
+  .pa-num{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);flex-shrink:0;margin-top:3px;}
+  .pa-text{font-size:15px;color:var(--text);line-height:1.55;}
+
+  /* SIGNAL GRID */
+  .signal-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px;}
+  .signal-box{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:24px;box-shadow:var(--shadow);}
+  .signal-box.bullish{border-top:3px solid var(--green);}
+  .signal-box.bearish{border-top:3px solid var(--red);}
+  .signal-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;}
+  .signal-title.bull{color:var(--green);}
+  .signal-title.bear{color:var(--red);}
+  .signal-item{font-size:15px;color:var(--text);padding:9px 0;border-bottom:1px solid var(--border);line-height:1.55;}
+  .signal-item:last-child{border-bottom:none;}
+
+  /* SCREEN LAYOUT */
+  .screen-layout{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+  .screen-box{background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:18px;text-align:center;box-shadow:var(--shadow);}
+  .screen-num{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--gold-dim);letter-spacing:2px;margin-bottom:8px;}
+  .screen-desc{font-size:15px;color:var(--text);line-height:1.55;}
+
+  /* COLLAPSIBLE */
+  .collapse-section{border:1px solid var(--border);border-radius:5px;margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);}
+  .collapse-header{background:var(--bg4);padding:17px 24px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:600;color:var(--text-bright);letter-spacing:1px;transition:background .15s;user-select:none;}
+  .collapse-header:hover{background:var(--bg3);}
+  .collapse-arrow{transition:transform .2s;color:var(--gold-dim);font-size:20px;}
+  .collapse-arrow.open{transform:rotate(90deg);}
+  .collapse-body{display:none;padding:24px;border-top:1px solid var(--border);background:var(--panel);}
+  .collapse-body.open{display:block;}
+  .collapse-body p{font-size:16px;color:var(--text);line-height:1.75;}
+
+  /* WARNING BOX */
+  .warning-box{padding:16px 22px;background:rgba(224,48,74,.07);border:1px solid rgba(224,48,74,.25);border-radius:5px;font-size:16px;color:var(--text);margin-bottom:20px;line-height:1.6;}
+
+  /* VIX CARDS */
+  .vix-card{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:20px;box-shadow:var(--shadow);transition:all .2s;}
+  .vix-card:hover{background:var(--bg4);}
+  .vix-label{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:10px;}
+  .vix-value{font-family:'Rajdhani',sans-serif;font-size:21px;font-weight:600;line-height:1.4;}
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar{width:7px;height:7px;}
+  ::-webkit-scrollbar-track{background:var(--bg2);}
+  ::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:4px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--gold-dim);}
+
+  @media(max-width:768px){
+    .signal-grid{grid-template-columns:1fr;}
+    .screen-layout{grid-template-columns:1fr 1fr;}
+    nav{padding:0 14px;}
+    .page{padding:22px 14px;}
+    .hero-title{letter-spacing:4px;}
+    .theme-btn span:not(.ti){display:none;}
+  }
+  @media(max-width:480px){.screen-layout{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<canvas id="pixi-bg"></canvas>
+<div id="app">
+
+<nav>
+  <div class="nav-brand">MTB <span>v2.0</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('home',this)">HOME</button>
+    <button class="nav-tab" onclick="showPage('mindset',this)">MINDSET</button>
+    <button class="nav-tab" onclick="showPage('rules',this)">RULES</button>
+    <button class="nav-tab" onclick="showPage('strategies',this)">STRATEGIES</button>
+    <button class="nav-tab" onclick="showPage('price-action',this)">PRICE ACTION</button>
+    <button class="nav-tab" onclick="showPage('setup',this)">SETUP</button>
+    <button class="nav-tab" onclick="showPage('mistakes',this)">MISTAKES</button>
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()">
+    <span class="ti" id="themeIcon">🌙</span>
+    <span id="themeLabel">LIGHT</span>
+  </button>
+</nav>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-eyebrow">TRADING SYSTEM — DISCIPLINE IS GOD</div>
+    <div class="hero-title">MY TRADING BIBLE</div>
+    <div class="hero-sub">MTB · PROPRIETARY · CONFIDENTIAL</div>
+    <div class="hero-divider"></div>
+    <div class="hero-tagline">"The game of speculation is the most uniformly fascinating game in the world. But it is not a game for the stupid, the mentally lazy, the person of inferior emotional balance, or the get-rich-quick adventurer. They will die poor."</div>
+  </div>
+
+  <div class="mantra-bar"><div class="mantra-scroll">
+    <span>DISCIPLINE BHAGWAN CHE</span><span>PROTECT CAPITAL FIRST</span><span>SLOW AND STEADY WINS THE RACE</span><span>TRADE ONLY ON SETUP</span><span>PROBABILITY × PROBABILITY × PROBABILITY</span><span>CAPITAL HAI TO TRADING HAI</span><span>STOP OVERTRADING</span><span>EXIT AT SL LIKE ALGO</span><span>TRADE WHAT YOU SEE, NOT WHAT YOU THINK</span><span>KISS — KEEP IT SIMPLE STUPID</span><span>DISCIPLINE BHAGWAN CHE</span><span>PROTECT CAPITAL FIRST</span><span>SLOW AND STEADY WINS THE RACE</span><span>TRADE ONLY ON SETUP</span><span>PROBABILITY × PROBABILITY × PROBABILITY</span><span>CAPITAL HAI TO TRADING HAI</span><span>STOP OVERTRADING</span><span>EXIT AT SL LIKE ALGO</span><span>TRADE WHAT YOU SEE, NOT WHAT YOU THINK</span><span>KISS — KEEP IT SIMPLE STUPID</span>
+  </div></div>
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val">20pts</div><div class="stat-label">Max SL Per Trade</div></div>
+    <div class="stat-box"><div class="stat-val">50k</div><div class="stat-label">Max Daily Loss</div></div>
+    <div class="stat-box"><div class="stat-val">3–5</div><div class="stat-label">Trades Per Day</div></div>
+    <div class="stat-box"><div class="stat-val">5min</div><div class="stat-label">Chart Timeframe</div></div>
+    <div class="stat-box"><div class="stat-val">80%</div><div class="stat-label">Success Rate</div></div>
+    <div class="stat-box"><div class="stat-val">1%</div><div class="stat-label">Daily Target</div></div>
+  </div>
+
+  <div class="section-title">THE 10 CARDINAL COMMANDMENTS</div>
+  <div class="cardinal-grid">
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT I</div><div class="cardinal-value">Trade ONLY on defined Setup. No Setup = No Trade.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT II</div><div class="cardinal-value">Always place SL in system. 20–25 points maximum.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT III</div><div class="cardinal-value">Stop trading when daily loss exceeds ₹50k or previous day's profit.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT IV</div><div class="cardinal-value">Never carry overnight positions. Pure intraday only.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT V</div><div class="cardinal-value">Exit at SL like an ALGO. Zero emotion. Zero hesitation.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT VI</div><div class="cardinal-value">Never average a losing position. Never.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT VII</div><div class="cardinal-value">Protect capital first. Capital hai to trading hai.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT VIII</div><div class="cardinal-value">No revenge trading. If max loss hit — close the system.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT IX</div><div class="cardinal-value">Trade What You SEE, not what you THINK.</div></div>
+    <div class="cardinal-card"><div class="cardinal-label">COMMANDMENT X</div><div class="cardinal-value">Keep it simple. KISS. More setups = more confusion.</div></div>
+  </div>
+
+  <div class="section-title">TRADING AFFIRMATIONS</div>
+  <div class="affirmation-list">
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">I am an Intelligent Trader. I deserve to make a lot of Money.</div></div>
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">I follow all Trading Rules and Risk Management for every trade I take.</div></div>
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">I am Fearless and Graceful in admitting my defect. I am Humble to my Victories.</div></div>
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">I strictly follow Stop Loss for each trade — max 20–25 points. This is the Main Thumb Rule.</div></div>
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">I follow my Daily Trading Journal and analyse mistakes done. I will not repeat them again.</div></div>
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">My Confidence in Trading grows each day. I attract a lot of Trading Opportunities.</div></div>
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">I want Freedom of Money and Freedom of Time — just 5 hrs a day, 5 days a week.</div></div>
+    <div class="affirmation-item"><div class="aff-dot"></div><div class="aff-text">I need to make 1% a day. I maintain my Trading Journal and analyse mistakes every session.</div></div>
+  </div>
+
+  <div class="section-title">THE DT SYSTEM — CORE PHILOSOPHY</div>
+  <div class="rules-grid">
+    <div class="rule-card"><div class="rule-num">01</div><div class="rule-text">Come to market daily for small money as target. Achieve it and shut down the terminal. Like a small bird taking two drops from the ocean.</div></div>
+    <div class="rule-card"><div class="rule-num">02</div><div class="rule-text">Every trade must be on a Setup. Wait for the setup. Patience is key — wait an hour for a 3–5 minute trade that gives assured profit.</div></div>
+    <div class="rule-card"><div class="rule-num">03</div><div class="rule-text">Quantify your greed and fear. You need only two drops from an ocean. Choose trades wisely. Be light — fly in and out with agility.</div></div>
+    <div class="rule-card"><div class="rule-num">04</div><div class="rule-text">Returns over a single day don't matter. Over a month, they DO. Rinse and repeat — slowly maturity as a trader sets in.</div></div>
+    <div class="rule-card"><div class="rule-num">05</div><div class="rule-text">Shut the computer on 1% loss on capital. Learn to control risk by learning to shut the system. This is true discipline.</div></div>
+    <div class="rule-card"><div class="rule-num">06</div><div class="rule-text">Second trade post loss — use half volumes and tighter SL, only if there is a great risk/reward to even consider it.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ MINDSET ══════════════ -->
+<div id="page-mindset" class="page">
+  <div class="section-title">MINDSET MANAGEMENT</div>
+  <div class="rules-grid">
+    <div class="rule-card"><div class="rule-num">01</div><div class="rule-text"><strong style="color:var(--gold)">Relax Your RAM:</strong> Clear your Pre-Frontal Cortex before trading. If full of home/office issues, do NOT trade — you will always get a loss.</div></div>
+    <div class="rule-card"><div class="rule-num">02</div><div class="rule-text"><strong style="color:var(--gold)">Be Like Algo:</strong> Algos have no emotions. No greed. No fear. They execute at their level without bias. Train your mind to be an algo.</div></div>
+    <div class="rule-card"><div class="rule-num">03</div><div class="rule-text"><strong style="color:var(--gold)">Believe in Process:</strong> Successful people set a process and follow it thoroughly. All billionaires followed their process with consistency.</div></div>
+    <div class="rule-card"><div class="rule-num">04</div><div class="rule-text"><strong style="color:var(--gold)">Sweet Spot:</strong> Best performance = equilibrium between stress and arousal. Greed and fear must be at optimum, balanced level.</div></div>
+    <div class="rule-card"><div class="rule-num">05</div><div class="rule-text"><strong style="color:var(--gold)">45-Day Rule:</strong> It takes 45 days to form a physical habit. Repeat all trading rules for 45 days and they wire into your brain permanently.</div></div>
+    <div class="rule-card"><div class="rule-num">06</div><div class="rule-text"><strong style="color:var(--gold)">Meditation Daily:</strong> 20 minutes of meditation every morning before trading clears RAM, reduces stress, and sharpens decision-making.</div></div>
+  </div>
+
+  <div class="section-title">SUCCESSFUL TRADER QUALITIES</div>
+  <div class="affirmation-list" style="margin-bottom:36px">
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Rules — Follow them without exception, every single day</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Discipline — Discipline Bhagwan Che. It is everything.</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Strategy — Trade only on defined setups, not on instinct alone</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Money Management — Never deploy more than 10% in a single trade</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Risk Management — SL is your best friend, nurture it like capital</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Trading Psychology — Who understands psychology is the winner</div></div>
+  </div>
+
+  <div class="section-title">DANGER ZONES — WHEN NOT TO TRADE</div>
+  <div class="mistake-grid">
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>When emotionally involved — family or office issues on mind</div></div>
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>First 45 minutes after market open (9:15–10:00)</div></div>
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>Event Days (RBI, Budget, Results) — volatility without logic</div></div>
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>Expiry day after 2:30 PM — positions settle, logic fails</div></div>
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>When market is slow, no volume, no momentum whatsoever</div></div>
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>After 3 consecutive SL hits — close system for the day</div></div>
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>When mentally tired — PFC RAM exhausted, poor decisions guaranteed</div></div>
+    <div class="mistake-item"><div class="mistake-num">✗</div><div>In revenge mode — never trade for recovery, ever</div></div>
+  </div>
+
+  <div class="section-title">CONSISTENCY FRAMEWORK</div>
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)"><span>📹 Record Your Philosophy — Do This Daily</span><span class="collapse-arrow">›</span></div>
+    <div class="collapse-body"><p>Record your philosophy summary in two ways: <strong style="color:var(--gold)">First</strong> — consequences of losses. <strong style="color:var(--gold)">Second</strong> — positivity in profits and your goals. Hear it daily before trading and the positive version twice a week. This constant audio reminder helps reduce impulsive trades taken without setup.<br><br><span style="color:var(--green);font-weight:600">If you stop OVERTRADING, 1/4th of the battle is already won.</span></p></div>
+  </div>
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)"><span>🧠 The PFC &amp; Basal Ganglia — How Your Brain Works in Trading</span><span class="collapse-arrow">›</span></div>
+    <div class="collapse-body"><p><strong style="color:var(--gold)">Pre-Frontal Cortex (RAM):</strong> Makes decisions, solves problems, controls impulses. Uses huge oxygen and glucose — it tires quickly. Keep it clean and focused: fewer things = better decisions.<br><br><strong style="color:var(--gold)">Basal Ganglia (Wiring):</strong> Drives routine activities. Pattern-based, low energy. Like how you drive without thinking — once trading rules are wired in, they execute automatically.<br><br><strong style="color:var(--green);font-weight:600">Goal:</strong> Wire all trading rules into Basal Ganglia through 45 days of repetition. This frees your PFC for quality trade decisions only.</p></div>
+  </div>
+</div>
+
+<!-- ══════════════ RULES ══════════════ -->
+<div id="page-rules" class="page">
+  <div class="section-title">CORE TRADING RULES</div>
+  <table class="setup-table">
+    <thead><tr><th>#</th><th>RULE</th><th>CATEGORY</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>We are directional traders. CE or PE — whichever is above VWAP. Never trade with bias from others' analysis.</td><td><span class="tag tag-blue">DIRECTION</span></td></tr>
+      <tr><td>2</td><td>Trade What You See, not what you Think. Switch between CE and PE as per chart — not your assumption.</td><td><span class="tag tag-gold">MINDSET</span></td></tr>
+      <tr><td>3</td><td>Maximum trade holding time: 3–5 minutes. If not working in this time, strictly exit. No exceptions.</td><td><span class="tag tag-orange">TIME</span></td></tr>
+      <tr><td>4</td><td>Max daily loss: ₹50,000 OR previous day's profit — whichever is lower. Stop trading immediately when hit.</td><td><span class="tag tag-red">RISK</span></td></tr>
+      <tr><td>5</td><td>Quantity: Trade with 1k to 3k quantity with pyramiding in buying and selling.</td><td><span class="tag tag-purple">SIZE</span></td></tr>
+      <tr><td>6</td><td>Take a break of 2–3 minutes after every 30–45 minutes of trading. It clears biased trading memory.</td><td><span class="tag tag-green">EXECUTION</span></td></tr>
+      <tr><td>7</td><td>Do not trade in range/sideways market. Option buyers need momentum. Only trade on breakout or breakdown.</td><td><span class="tag tag-blue">SETUP</span></td></tr>
+      <tr><td>8</td><td>Even if you get 0–2 trades on a slow day — that is fine. Next day a good setup gives a whole week's profit.</td><td><span class="tag tag-gold">PATIENCE</span></td></tr>
+      <tr><td>9</td><td>Prepare trading plan one evening prior. 45 min–1 hour minimum. Mark levels, analyse OI, global markets.</td><td><span class="tag tag-green">PREP</span></td></tr>
+      <tr><td>10</td><td>Maintain Trading Journal daily. Write complete trade data, analyse mistakes, and ensure they do not repeat.</td><td><span class="tag tag-blue">JOURNAL</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">EXPIRY DAY RULES</div>
+  <div class="rules-grid">
+    <div class="rule-card"><div class="rule-num">E1</div><div class="rule-text">Expiry is volatile. Trade with less quantity first. Good opportunity only after 12:30 PM.</div></div>
+    <div class="rule-card"><div class="rule-num">E2</div><div class="rule-text">After 12:30, only small quantity (200–300) with strict SL. Absolutely no big positions.</div></div>
+    <div class="rule-card"><div class="rule-num">E3</div><div class="rule-text">Always trade with at least 200-point ITM strike on expiry day.</div></div>
+    <div class="rule-card"><div class="rule-num">E4</div><div class="rule-text">No ad-hoc trades on expiry. Capital is precious. Be a safe trader every expiry.</div></div>
+    <div class="rule-card"><div class="rule-num">E5</div><div class="rule-text">STOP trading after 2:30 PM on expiry. Movement is illogical — settlement time begins.</div></div>
+  </div>
+
+  <div class="section-title">DISCIPLINE CHECKLIST</div>
+  <div class="affirmation-list">
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Never chase prices — let the trade come to your setup level</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Never average a position that is going against you</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Never deploy more than 10% of capital in a single trade</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Never hesitate to place SL even when 200% confident about your trade</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Never watch social media when in a trade — it clouds judgment completely</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">Risk only 10–20% from profits when carrying overnight positions</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">When you book profits fast — also book losses fast in the same number of points</div></div>
+    <div class="affirmation-item"><div class="aff-dot" style="background:var(--green)"></div><div class="aff-text">If 3 trades hit SL or daily loss hits ₹50k — STOP trading for the day</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ STRATEGIES ══════════════ -->
+<div id="page-strategies" class="page">
+  <div class="section-title">BANKNIFTY TRADING STRATEGIES</div>
+  <div class="strategy-grid">
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(32,168,200,.12)">📊</div>
+        <div><div class="strategy-name">VWAP &amp; EMA STRATEGY</div><div class="strategy-sub">Primary Breakout Strategy</div></div>
+        <span class="strategy-badge tag-blue">A</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Watch ATM/ITM CE &amp; PE charts simultaneously</li>
+        <li>Buy CE/PE when strike goes ABOVE VWAP + SuperTrend confirmation</li>
+        <li>If price returns to VWAP after profit → Quick Exit at VWAP (CTC)</li>
+        <li>If price keeps going → Trail with EMAs (20/50/100/200) &amp; SuperTrend</li>
+        <li>Never buy option trading BELOW VWAP — that is where sellers write</li>
+        <li>Option Strike &gt; SuperTrend &gt; VWAP = Momentum confirmed</li>
+        <li>50k-volume candle = Large player arrival signal</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(0,200,122,.12)">🎯</div>
+        <div><div class="strategy-name">OPEN = HIGH (O=H)</div><div class="strategy-sub">Big Player Game Plan</div></div>
+        <span class="strategy-badge tag-green">B</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Happens almost every day — trade before 9:45 AM</li>
+        <li>Use only 10% of capital. Target: easily 1% per day.</li>
+        <li>Identifies Big Players' game plan for the day</li>
+        <li>Analyse: F&amp;O Data + Price Action + Open Interest before entry</li>
+        <li>Entry only when there is SUPPORTIVE MOMENTUM</li>
+        <li>SL: 30% of premium. Target: minimum 50–100%</li>
+        <li>Avoid if CE/PE change in OI increases by 50% or premium drops 50%</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(224,120,48,.12)">🕯️</div>
+        <div><div class="strategy-name">2 CANDLE THEORY</div><div class="strategy-sub">Intraday Trend Determination</div></div>
+        <span class="strategy-badge tag-orange">C</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Timeframe: 3 Minutes only. Works 10:15 to 2:30.</li>
+        <li><strong style="color:var(--green)">Bullish:</strong> 2 consecutive GREEN candles (vol &gt;50k) + RSI 50–75 + BNF &gt; VWAP + ST Buy</li>
+        <li><strong style="color:var(--red)">Bearish:</strong> 2 consecutive RED candles (vol &gt;50k) + RSI 50–75 + BNF &lt; VWAP + ST Sell</li>
+        <li>Entry at 3rd candle. SL below/above low/high of 1st candle</li>
+        <li>Easily achieve 1% target with this strategy</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(144,96,208,.12)">〜</div>
+        <div><div class="strategy-name">W &amp; M PATTERN BREAKOUT</div><div class="strategy-sub">Pattern Breakout Strategy</div></div>
+        <span class="strategy-badge tag-purple">D</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Hunt for W &amp; M patterns on Line Chart during market hours</li>
+        <li><strong style="color:var(--green)">W Pattern breakout</strong> → Buy CE</li>
+        <li><strong style="color:var(--red)">M Pattern breakdown</strong> → Buy PE</li>
+        <li>After breakout use VWAP, ST, EMA, TL, prev High/Low for exit</li>
+        <li>Double confirmation when W/M aligns with VWAP breakout</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(201,168,76,.12)">📈</div>
+        <div><div class="strategy-name">TREND LINE BREAKOUT</div><div class="strategy-sub">Momentum Entry Strategy</div></div>
+        <span class="strategy-badge tag-gold">E</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Draw trend lines on 3/5 Min live chart — critical skill</li>
+        <li>TL running bottom-to-up: Good Fall on breakdown</li>
+        <li>TL running top-to-bottom: Good Spike on breakout</li>
+        <li>TL Breakout + VWAP Breakout = Very Strong combined signal</li>
+        <li>After breakout, trail with EMA, ST, Camrilla, prev H/L</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(224,48,74,.12)">↔️</div>
+        <div><div class="strategy-name">SUPPORT &amp; RESISTANCE BREAKOUT</div><div class="strategy-sub">Level-Based Strategy</div></div>
+        <span class="strategy-badge tag-red">F</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Draw S/R from previous chart data + K-Research levels</li>
+        <li>Wait patiently for direction/trend before trading</li>
+        <li>Do NOT trade in between Support and Resistance zones</li>
+        <li>Once direction is clear, ride till the next S/R as target</li>
+        <li>15-Min chart high/low = intraday S/R range indicator</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(32,168,200,.12)">🕙</div>
+        <div><div class="strategy-name">10 AM BANKNIFTY STRATEGY</div><div class="strategy-sub">Set &amp; Forget Strategy</div></div>
+        <span class="strategy-badge tag-blue">G</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>At 10:00 AM sharp: Note BNF Spot Price</li>
+        <li>CE Strike = Spot + 300 | PE Strike = Spot − 300</li>
+        <li>At 10:05 AM: Place BUY LIMIT orders above Day High of both (+₹1)</li>
+        <li>Wait — order may execute at 11am, 12pm or anytime</li>
+        <li>When one executes, cancel the other. Trail SL. Target: 50–100%</li>
+        <li>SL: 30% of premium. Profit on 8 of 10 days historically.</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(0,200,122,.12)">⚡</div>
+        <div><div class="strategy-name">20:20 ZIG-ZAG STRATEGY</div><div class="strategy-sub">KingResearch Strategy</div></div>
+        <span class="strategy-badge tag-green">H</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Timeframe: 3 Min. Zig-Zag indicator (Deviation 0.6%, Depth 1)</li>
+        <li>Trade only 10 AM to 2:45 PM. Close all before 3:10 PM.</li>
+        <li><strong style="color:var(--green)">CE Buy:</strong> 3-min candle CLOSES above Zig-Zag peak → Buy CE immediately</li>
+        <li><strong style="color:var(--red)">PE Buy:</strong> 3-min candle CLOSES below Zig-Zag low → Buy PE immediately</li>
+        <li>Only BODY close counts — tail close = no trade</li>
+        <li>SL: 50 points. Target: 70+ points minimum</li>
+        <li>Works in up-down markets, NOT in one-sided trending markets</li>
+      </ul></div>
+    </div>
+    <div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-icon" style="background:rgba(224,48,74,.12)">🚦</div>
+        <div><div class="strategy-name">TRAFFIC LIGHT STRATEGY</div><div class="strategy-sub">1-Min Opening Strategy</div></div>
+        <span class="strategy-badge tag-red">I</span>
+      </div>
+      <div class="strategy-body"><ul class="strategy-points">
+        <li>Chart TF: 1 Min. Ignore 9:15–9:16 candle.</li>
+        <li>Identify pair: 1 RED + 1 GREEN or 1 GREEN + 1 RED</li>
+        <li>Mark High and Low range of the pair candles</li>
+        <li>Strike price range: 200 to 300 points from spot</li>
+        <li>Take only 2 trades in 1-min TF, then switch to 5-min TF</li>
+        <li>SL: less than 60–80 points. 3 consecutive SLs → stop for day.</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PRICE ACTION ══════════════ -->
+<div id="page-price-action" class="page">
+  <div class="section-title">THAKARE SIR — PRICE ACTION KNOWLEDGE</div>
+  <div class="signal-grid">
+    <div class="signal-box bullish">
+      <div class="signal-title bull">▲ BULLISH SETUPS</div>
+      <div class="signal-item">MACD Below 0 + Stochastic below 40 + Price below VWAP → Bullish reversal watch</div>
+      <div class="signal-item">MACD Below 0 + Stochastic below 40 + Price below VWAP + 200 EMA → <strong style="color:var(--green)">VERY BULLISH</strong></div>
+      <div class="signal-item">MACD Below 0 + Stochastic TURNS UPWARD from 40 + Price below VWAP → Strong signal</div>
+      <div class="signal-item">20–50 EMA Bullish Crossover + MACD Below 0 + Stochastic below 40 → Confirmed</div>
+      <div class="signal-item">MACD Above 0 + Stochastic Above 40 + Price above VWAP + EMA Bullish Cross on 15min → POSITIONAL</div>
+    </div>
+    <div class="signal-box bearish">
+      <div class="signal-title bear">▼ BEARISH SETUPS</div>
+      <div class="signal-item">MACD Below 0 + Stochastic Below 40 + Price below VWAP → Bearish continuation</div>
+      <div class="signal-item">MACD Below 0 + Stochastic Below 40 + Price below VWAP + 200 EMA → <strong style="color:var(--red)">VERY BEARISH</strong></div>
+      <div class="signal-item">MACD Below 0 + Stochastic TURNS DOWNWARD from 40 + Price below VWAP → Strong signal</div>
+      <div class="signal-item">20–50 EMA Bearish Crossover + MACD Below 0 + Stochastic below 40 → Confirmed</div>
+      <div class="signal-item">MACD Below 0 + Stochastic Below 40 + Price below VWAP + EMA Bearish Cross on 15min → POSITIONAL</div>
+    </div>
+  </div>
+
+  <div class="section-title">VIX SIGNAL MATRIX</div>
+  <div class="cardinal-grid" style="margin-bottom:36px">
+    <div class="vix-card" style="border-left:3px solid var(--green)"><div class="vix-label">BULLISH SIGNAL</div><div class="vix-value" style="color:var(--green)">Market ↑ &nbsp;+&nbsp; VIX Cooling ↓</div></div>
+    <div class="vix-card" style="border-left:3px solid var(--green)"><div class="vix-label">BULLISH SIGNAL</div><div class="vix-value" style="color:var(--green)">Market ↓ &nbsp;+&nbsp; VIX Stable →</div></div>
+    <div class="vix-card" style="border-left:3px solid var(--red)"><div class="vix-label">BEARISH SIGNAL</div><div class="vix-value" style="color:var(--red)">Market ↑ &nbsp;+&nbsp; VIX Rising ↑</div></div>
+    <div class="vix-card" style="border-left:3px solid var(--red)"><div class="vix-label">BEARISH SIGNAL</div><div class="vix-value" style="color:var(--red)">Market ↓ &nbsp;+&nbsp; VIX Rising ↑</div></div>
+  </div>
+
+  <div class="section-title">KEY PRICE ACTION OBSERVATIONS</div>
+  <div class="pa-grid">
+    <div class="pa-item"><div class="pa-num">01</div><div class="pa-text">After rally + base formation, if it gap-down opens → chances of filling gap and going up.</div></div>
+    <div class="pa-item"><div class="pa-num">02</div><div class="pa-text">Trend day: Makes Higher High &amp; Higher Low / Lower High &amp; Lower Low every 30 minutes.</div></div>
+    <div class="pa-item"><div class="pa-num">03</div><div class="pa-text">If PDL is not breached even after gap-down and does not close below PDL → consider CE trade.</div></div>
+    <div class="pa-item"><div class="pa-num">04</div><div class="pa-text">For breakout trades: watch for WIDE BODY candles — a follow-up candle often comes. Check DOW &amp; DAX.</div></div>
+    <div class="pa-item"><div class="pa-num">05</div><div class="pa-text">If market is in range → scalp 10–20 points ONLY. Do NOT hold. A holding trade comes after range breakout.</div></div>
+    <div class="pa-item"><div class="pa-num">06</div><div class="pa-text">3-Candle Pattern: RED–GREEN–RED. When 3rd red breaks low of 2nd candle → trade entry.</div></div>
+    <div class="pa-item"><div class="pa-num">07</div><div class="pa-text">Tweezer Bottom (equal-size green after red at significant support) → smart money trap. CE opportunity.</div></div>
+    <div class="pa-item"><div class="pa-num">08</div><div class="pa-text">Doji/Wick at breakout points (200 EMA, S/R) → AVOID trade. Indecision zone.</div></div>
+    <div class="pa-item"><div class="pa-num">09</div><div class="pa-text">Gap-up open → market makes doji → wide red candle → bearish. Market doesn't want to go up.</div></div>
+    <div class="pa-item"><div class="pa-num">10</div><div class="pa-text">Price breaking significant level (EMA, Day H/L, VWAP, 200 EMA) with wide body candle after base → entry.</div></div>
+    <div class="pa-item"><div class="pa-num">11</div><div class="pa-text">After 200 EMA crossed + O=H achieved → next target can be previous day's close/high.</div></div>
+    <div class="pa-item"><div class="pa-num">12</div><div class="pa-text">VWAP acts as a MAGNET. If price closes near VWAP for 2 days → expect a trending move next.</div></div>
+    <div class="pa-item"><div class="pa-num">13</div><div class="pa-text">If 200 EMA broken with volume but failed to go down + reversal pattern → chances of going to VWAP/ST.</div></div>
+    <div class="pa-item"><div class="pa-num">14</div><div class="pa-text">Around 2:15–2:30: candle breaks 200 EMA or day low, struggling to go down → VWAP trade, short covering.</div></div>
+    <div class="pa-item"><div class="pa-num">15</div><div class="pa-text">If all EMAs are coiled together → sideways day. When one candle breaks all coiled EMAs → trade in that direction.</div></div>
+    <div class="pa-item"><div class="pa-num">16</div><div class="pa-text">If premium not moving with candle movement → possible TRAP. Be aware and stay out.</div></div>
+    <div class="pa-item"><div class="pa-num">17</div><div class="pa-text">VWAP rejection trade: price far from VWAP, returns to VWAP → retracement trade opportunity.</div></div>
+    <div class="pa-item"><div class="pa-num">18</div><div class="pa-text">On expiry when market opens gap-up/down → many opportunities. Wednesday: premium adjustment after 12 PM.</div></div>
+  </div>
+
+  <div class="section-title">EMA KEY RELATIONSHIPS</div>
+  <div class="ind-grid">
+    <div class="ind-card"><div class="ind-name">50 EMA / 5min</div><div class="ind-desc">= 20 EMA on 15 Min Chart</div></div>
+    <div class="ind-card"><div class="ind-name">200 EMA / 5min</div><div class="ind-desc">= 50 EMA on 15 Min = 20 EMA on 1 Hr</div></div>
+    <div class="ind-card"><div class="ind-name">Golden Cross</div><div class="ind-desc">50 EMA crosses above 200 EMA → Bullish</div></div>
+    <div class="ind-card"><div class="ind-name">Death Cross</div><div class="ind-desc">50 EMA crosses below 200 EMA → Bearish</div></div>
+    <div class="ind-card"><div class="ind-name">200 EMA</div><div class="ind-desc">The Mother Moving Average — dynamic S&amp;R</div></div>
+    <div class="ind-card"><div class="ind-name">20 EMA</div><div class="ind-desc">Mean reversion of Bollinger Band</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ SETUP ══════════════ -->
+<div id="page-setup" class="page">
+  <div class="section-title">TRADING SYSTEM SETUP — 6 SCREENS</div>
+  <div class="screen-layout" style="margin-bottom:32px">
+    <div class="screen-box"><div class="screen-num">SCREEN 01</div><div class="screen-desc">15 Min Nifty &amp; BankNifty (50:50)<br>S/R + Trend Lines + Swing H/L + W&amp;M</div></div>
+    <div class="screen-box"><div class="screen-num">SCREEN 02</div><div class="screen-desc">5 Min Nifty &amp; BankNifty (50:50)<br>S/R + Trend Lines + Swing H/L + W&amp;M</div></div>
+    <div class="screen-box"><div class="screen-num">SCREEN 03</div><div class="screen-desc">BankNifty + CE<br>(2 screens, 5 min setup)</div></div>
+    <div class="screen-box"><div class="screen-num">SCREEN 04</div><div class="screen-desc">BankNifty + PE<br>(2 screens, 5 min setup)</div></div>
+    <div class="screen-box"><div class="screen-num">SCREEN 05</div><div class="screen-desc">1 Day Chart<br>Nifty, BankNifty, VIX</div></div>
+    <div class="screen-box"><div class="screen-num">SCREEN 06</div><div class="screen-desc">5 Min Chart<br>7–8 Major BankNifty Components</div></div>
+  </div>
+
+  <div class="section-title">INDICATORS TO USE</div>
+  <div class="ind-grid" style="margin-bottom:36px">
+    <div class="ind-card"><div class="ind-name">VWAP</div><div class="ind-desc">Default setting — primary reference level</div></div>
+    <div class="ind-card"><div class="ind-name">SuperTrend (10,2)</div><div class="ind-desc">Trend confirmation + trailing SL</div></div>
+    <div class="ind-card"><div class="ind-name">Volume</div><div class="ind-desc">Confirmation of move validity</div></div>
+    <div class="ind-card"><div class="ind-name">Stochastic (5,3,3)</div><div class="ind-desc">Or RSI — overbought/oversold signals</div></div>
+    <div class="ind-card"><div class="ind-name">MACD (3,9,Close,15)</div><div class="ind-desc">Momentum direction indicator</div></div>
+    <div class="ind-card"><div class="ind-name">EMA 200</div><div class="ind-desc">Mother MA — dynamic S&amp;R</div></div>
+    <div class="ind-card"><div class="ind-name">EMA 50</div><div class="ind-desc">Dynamic S&amp;R / swing reference</div></div>
+    <div class="ind-card"><div class="ind-name">EMA 20</div><div class="ind-desc">Short-term S&amp;R / mean reversion</div></div>
+    <div class="ind-card"><div class="ind-name">Pivot (Camrilla)</div><div class="ind-desc">Key intraday level reference</div></div>
+    <div class="ind-card"><div class="ind-name">SAR (0.02, 0.02, 0.2)</div><div class="ind-desc">Stop and reverse signal</div></div>
+  </div>
+
+  <div class="section-title">VALID ENTRY SETUPS FOR BANKNIFTY</div>
+  <table class="setup-table">
+    <thead><tr><th>#</th><th>SETUP</th><th>QUALITY</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Breakout of VWAP Setup</td><td><span class="tag tag-green">VERY GOOD ★★★</span></td></tr>
+      <tr><td>2</td><td>Breakout of W / M Pattern</td><td><span class="tag tag-gold">GOOD ★★★</span></td></tr>
+      <tr><td>3</td><td>Breakout of Trend Lines (drawn live in 3/5 min chart)</td><td><span class="tag tag-gold">GOOD ★★★</span></td></tr>
+      <tr><td>4</td><td>Breakout of Support / Resistance</td><td><span class="tag tag-blue">STANDARD ★★</span></td></tr>
+      <tr><td>5</td><td>First 15-Min Candle Swing Low &amp; High Breakout</td><td><span class="tag tag-blue">STANDARD ★★</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">30-DAY TRADING PLAN FRAMEWORK</div>
+  <div class="rules-grid">
+    <div class="rule-card"><div class="rule-num">📅</div><div class="rule-text"><strong style="color:var(--gold)">Where to take Entry</strong> — Define your setup conditions clearly. No ambiguity allowed.</div></div>
+    <div class="rule-card"><div class="rule-num">🚪</div><div class="rule-text"><strong style="color:var(--gold)">Where to take Exit</strong> — Profit target levels and trailing rules pre-defined.</div></div>
+    <div class="rule-card"><div class="rule-num">🛑</div><div class="rule-text"><strong style="color:var(--gold)">What is Stop Loss</strong> — Max SL per trade and max daily loss pre-set.</div></div>
+    <div class="rule-card"><div class="rule-num">⏸️</div><div class="rule-text"><strong style="color:var(--gold)">When to Stop Trading</strong> — Daily loss limit, number of SLs hit, time of day.</div></div>
+    <div class="rule-card"><div class="rule-num">📆</div><div class="rule-text"><strong style="color:var(--gold)">Daily Target</strong> — Small daily targets build into weekly and monthly profits.</div></div>
+    <div class="rule-card"><div class="rule-num">🔄</div><div class="rule-text"><strong style="color:var(--gold)">Review Monthly</strong> — Plan runs in your mind repetitively. Revise every 30 days.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ MISTAKES ══════════════ -->
+<div id="page-mistakes" class="page">
+  <div class="section-title">49 TRADER MISTAKES — AVOID ALL OF THESE</div>
+  <div class="warning-box">⚠️ <strong style="color:var(--red)">Study this list carefully.</strong> These are the exact mistakes that cause 90% of traders to lose money. Each one is a real, documented pattern. Print it. Read it before every session.</div>
+  <div class="mistake-grid">
+    <div class="mistake-item"><div class="mistake-num">01</div><div>Quick jump to morning/opening trades without waiting for setup</div></div>
+    <div class="mistake-item"><div class="mistake-num">02</div><div>Not exiting with loss, thinking the market will reverse</div></div>
+    <div class="mistake-item"><div class="mistake-num">03</div><div>Deploying full capital in a single trade</div></div>
+    <div class="mistake-item"><div class="mistake-num">04</div><div>Averaging loss-making trades — increasing position into a loser</div></div>
+    <div class="mistake-item"><div class="mistake-num">05</div><div>Averaging: keeping position size higher and exiting at the bottom</div></div>
+    <div class="mistake-item"><div class="mistake-num">06</div><div>Left with no capital to trade further — account blown</div></div>
+    <div class="mistake-item"><div class="mistake-num">07</div><div>Staying in a trade that is going against you (against the trend)</div></div>
+    <div class="mistake-item"><div class="mistake-num">08</div><div>Not cutting losses — letting small SL become a massive loss</div></div>
+    <div class="mistake-item"><div class="mistake-num">09</div><div>Not booking reasonable profits — expecting more and more</div></div>
+    <div class="mistake-item"><div class="mistake-num">10</div><div>Trading OTM strikes because of cheap premium to get huge positions</div></div>
+    <div class="mistake-item"><div class="mistake-num">11</div><div>Expiry days — unable to handle the volatility, making ad-hoc trades</div></div>
+    <div class="mistake-item"><div class="mistake-num">12</div><div>Not following SL in system — keeping mental SL which never applies</div></div>
+    <div class="mistake-item"><div class="mistake-num">13</div><div>Full day taking trades — overtrading without discipline</div></div>
+    <div class="mistake-item"><div class="mistake-num">14</div><div>Hanging on till 3:20 PM while long unwinding happens on both sides</div></div>
+    <div class="mistake-item"><div class="mistake-num">15</div><div>Taking O=H positions even when strike is below/above VWAP or ST</div></div>
+    <div class="mistake-item"><div class="mistake-num">16</div><div>Unable to trail profits — giving back gains by not trailing properly</div></div>
+    <div class="mistake-item"><div class="mistake-num">17</div><div>Holding the winning trade but exiting with too-small profits</div></div>
+    <div class="mistake-item"><div class="mistake-num">18</div><div>Not able to change direction of trade as per chart quickly enough</div></div>
+    <div class="mistake-item"><div class="mistake-num">19</div><div>Revenge trading — trading to recover losses emotionally</div></div>
+    <div class="mistake-item"><div class="mistake-num">20</div><div>Chasing the market unnecessarily after missing an entry</div></div>
+    <div class="mistake-item"><div class="mistake-num">21</div><div>Not waiting for the right opportunities — entering prematurely</div></div>
+    <div class="mistake-item"><div class="mistake-num">22</div><div>Event days — getting stuck in volatility without a strategy</div></div>
+    <div class="mistake-item"><div class="mistake-num">23</div><div>Changing setups very frequently — no consistency in approach</div></div>
+    <div class="mistake-item"><div class="mistake-num">24</div><div>Bringing more and more capital to recover losses</div></div>
+    <div class="mistake-item"><div class="mistake-num">25</div><div>Allowing mind to go into recovery mode — dangerous mindset</div></div>
+    <div class="mistake-item"><div class="mistake-num">26</div><div>Once in big loss, unable to bring mind back to tune to smaller profits</div></div>
+    <div class="mistake-item"><div class="mistake-num">27</div><div>Looking at others' profit screenshots and tuning mind to those numbers</div></div>
+    <div class="mistake-item"><div class="mistake-num">28</div><div>Not realising premium decays on OTM strike but keep on averaging</div></div>
+    <div class="mistake-item"><div class="mistake-num">29</div><div>Keeping full capital on one single account — no diversification</div></div>
+    <div class="mistake-item"><div class="mistake-num">30</div><div>Judging market opening as trend of the day and staying on that side</div></div>
+    <div class="mistake-item"><div class="mistake-num">31</div><div>Building position size very quickly to full capital — no pyramiding</div></div>
+    <div class="mistake-item"><div class="mistake-num">32</div><div>Placing market orders for huge quantities on 1–2 candle movements</div></div>
+    <div class="mistake-item"><div class="mistake-num">33</div><div>Not waiting to take trade on breakout or breakdown confirmation</div></div>
+    <div class="mistake-item"><div class="mistake-num">34</div><div>Giving back morning profits in the afternoon — overtrading after target</div></div>
+    <div class="mistake-item"><div class="mistake-num">35</div><div>Itchy fingers — going for every candle as a trade</div></div>
+    <div class="mistake-item"><div class="mistake-num">36</div><div>Aggressive trades — oversized positions relative to account size</div></div>
+    <div class="mistake-item"><div class="mistake-num">37</div><div>Unable to ride a trend — exiting too soon when market is running</div></div>
+    <div class="mistake-item"><div class="mistake-num">38</div><div>Not realising change of market patterns — relying on previous day's pattern</div></div>
+    <div class="mistake-item"><div class="mistake-num">39</div><div>Not following a consistent trading style (scalping vs. positional confusion)</div></div>
+    <div class="mistake-item"><div class="mistake-num">40</div><div>Overnight huge positions — spending sleepless nights till 2 AM</div></div>
+    <div class="mistake-item"><div class="mistake-num">41</div><div>Not looking at different timeframes to judge market movement</div></div>
+    <div class="mistake-item"><div class="mistake-num">42</div><div>Emotional distraction — family members watching behind the screen</div></div>
+    <div class="mistake-item"><div class="mistake-num">43</div><div>Not learning Support and Resistance properly — core skill neglected</div></div>
+    <div class="mistake-item"><div class="mistake-num">44</div><div>Not rejecting bad trades — taking any and all setups without filter</div></div>
+    <div class="mistake-item"><div class="mistake-num">45</div><div>Spending excessive time on screens — mental fatigue destroys judgment</div></div>
+    <div class="mistake-item"><div class="mistake-num">46</div><div>Loving loss-making trades — holding losers too long (loss attachment)</div></div>
+    <div class="mistake-item"><div class="mistake-num">47</div><div>Not fixing targets — trading without defined profit objectives</div></div>
+    <div class="mistake-item"><div class="mistake-num">48</div><div>Not following Trading Journal — no record, no learning, no improvement</div></div>
+    <div class="mistake-item"><div class="mistake-num">49</div><div>Not learning from earlier mistakes — repeating the same errors</div></div>
+  </div>
+</div>
+
+</div><!-- #app -->
+<script>
+// ── Navigation ──────────────────────────────────────
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Collapsible ─────────────────────────────────────
+function toggleCollapse(header) {
+  header.querySelector('.collapse-arrow').classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+// ── Theme ───────────────────────────────────────────
+let isDark = true;
+let pixiApp = null, gridGfx = null, PW = 0, PH = 0;
+
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeIcon').textContent  = isDark ? '🌙' : '☀️';
+  document.getElementById('themeLabel').textContent = isDark ? 'LIGHT' : 'DARK';
+  if (pixiApp) {
+    pixiApp.renderer.background.color = isDark ? 0x080C10 : 0xF0F4F8;
+    drawGrid();
+  }
+}
+
+// ── PixiJS ──────────────────────────────────────────
+function drawGrid() {
+  if (!gridGfx) return;
+  gridGfx.clear();
+  gridGfx.lineStyle(0.5, isDark ? 0x1E2D3D : 0xC8D4E0, isDark ? 0.5 : 0.6);
+  const cols=24, rows=16, cw=PW/cols, rh=PH/rows;
+  for (let x=0;x<=cols;x++){gridGfx.moveTo(x*cw,0);gridGfx.lineTo(x*cw,PH);}
+  for (let y=0;y<=rows;y++){gridGfx.moveTo(0,y*rh);gridGfx.lineTo(PW,y*rh);}
+}
+
+(async () => {
+  const canvas = document.getElementById('pixi-bg');
+  const app = new PIXI.Application({
+    view: canvas,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    backgroundColor: 0x080C10,
+    antialias: true,
+    resolution: 1
+  });
+  pixiApp = app;
+  PW = app.screen.width;
+  PH = app.screen.height;
+
+  const grid = new PIXI.Graphics();
+  gridGfx = grid;
+  app.stage.addChild(grid);
+  drawGrid();
+
+  const particles = [];
+  for (let i=0;i<40;i++) {
+    const g = new PIXI.Graphics();
+    const isG = Math.random()>.5;
+    const col = isG ? 0x00C87A : 0xE0304A;
+    const al  = .05+Math.random()*.07;
+    const bH  = 5+Math.random()*18, bW=2+Math.random()*4, wH=bH+Math.random()*12;
+    g.lineStyle(1,col,al*2); g.moveTo(0,-wH/2); g.lineTo(0,wH/2);
+    g.lineStyle(0); g.beginFill(col,al); g.drawRect(-bW/2,-bH/2,bW,bH); g.endFill();
+    g.x=Math.random()*PW; g.y=Math.random()*PH;
+    particles.push({g, speed:.1+Math.random()*.28, drift:(Math.random()-.5)*.18});
+    app.stage.addChild(g);
+  }
+
+  const orbs=[];
+  [0xC9A84C,0x00C87A,0x3A90D0].forEach((c,i)=>{
+    const g=new PIXI.Graphics();
+    g.beginFill(c,.013); g.drawCircle(0,0,180+i*90); g.endFill();
+    g.x=Math.random()*PW; g.y=Math.random()*PH;
+    orbs.push({g,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28});
+    app.stage.addChild(g);
+  });
+
+  const scan=new PIXI.Graphics();
+  scan.lineStyle(1,0xC9A84C,.05); scan.moveTo(0,0); scan.lineTo(PW,0);
+  scan.y=0; app.stage.addChild(scan);
+  let scanDir=1, t=0;
+
+  app.ticker.add(()=>{
+    t+=.01;
+    particles.forEach(p=>{
+      p.g.y-=p.speed; p.g.x+=p.drift;
+      p.g.alpha=.22+.16*Math.sin(t*1.8+p.g.x*.01);
+      if(p.g.y<-30){p.g.y=PH+30;p.g.x=Math.random()*PW;}
+      if(p.g.x<-10)p.g.x=PW+10;
+      if(p.g.x>PW+10)p.g.x=-10;
+    });
+    orbs.forEach(o=>{
+      o.g.x+=o.vx; o.g.y+=o.vy;
+      if(o.g.x<-200||o.g.x>PW+200)o.vx*=-1;
+      if(o.g.y<-200||o.g.y>PH+200)o.vy*=-1;
+    });
+    scan.y+=.45*scanDir;
+    if(scan.y>PH)scanDir=-1;
+    if(scan.y<0)scanDir=1;
+  });
+
+  window.addEventListener('resize',()=>{
+    PW=window.innerWidth; PH=window.innerHeight;
+    app.renderer.resize(PW,PH); drawGrid();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# STRATEGY.YAML — AGENT EDITS THIS FILE (like train.py in autoresearch)
+# Humans: edit program.md and config.yaml instead
+# Generation: 0 | Best Sharpe: 0.0000
+
+position_sizing:
+  mode: "fixed"
+  fixed_amount_usd: 25.0
+  tiers:
+    high:   { min_score: 0.80, amount_usd: 50.0 }
+    medium: { min_score: 0.60, amount_usd: 25.0 }
+    low:    { min_score: 0.00, amount_usd: 10.0 }
+
+risk:
+  stop_loss_pct: 0.50
+  take_profit_pct: 1.00
+  max_slippage_pct: 0.10
+  max_open_positions: 10
+  daily_loss_limit_usd: 200
+
+whale_filters:
+  consensus_threshold: 1
+  min_trade_size_usd: 500
+  min_win_rate: 0.55
+  poll_interval_seconds: 5
+
+market_filters:
+  min_volume_24h_usd: 1000
+  min_days_to_resolution: 1
+  max_days_to_resolution: 90
+  near_certain_threshold: 0.95
+
+exit:
+  max_hold_days: 30
+  follow_whale_exit: true
+
+scoring:
+  confidence_weight: 0.50
+  min_confidence_to_trade: 0.40

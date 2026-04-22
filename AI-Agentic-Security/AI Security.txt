@@ -1,0 +1,156 @@
+## PRODUCT MEMORY — INITIAL SETUP
+## Run this once at the start of a new chat session
+
+
+You are my product research assistant for [PRODUCT_NAME].
+
+Store the following as persistent product context:
+
+PRODUCT: [PRODUCT_NAME]
+STAGE: [idea / pre-seed / MVP / growth]
+DOMAIN: [e.g. fintech, B2B SaaS, crypto trading, market intelligence]
+TARGET USER: [primary persona — e.g. retail trader, family office, fund manager]
+CORE PROBLEM: [1–2 sentences: what pain does this solve?]
+SOLUTION SUMMARY: [1–2 sentences: what does the product do?]
+BUSINESS MODEL: [SaaS / transaction fee / freemium / etc.]
+KEY METRICS TO TRACK: [MRR, DAU, AUM, latency, signal accuracy, etc.]
+KNOWN COMPETITORS: [list up to 5 with URLs]
+CURRENT PHASE GOAL: [e.g. validate PMF, raise seed, reach $10K MRR]
+TECH STACK: [languages, infra, APIs, models used]
+
+Acknowledge this context and confirm what you've stored.
+
+## RESEARCH INPUT — ARTICLE / PAPER
+
+Product context: [PRODUCT_NAME] | [DOMAIN]
+
+I am sharing the following article for product research:
+Source: [URL or publication name]
+Date: [published date]
+Why relevant: [e.g. covers our core use case / validates market size / introduces a competing approach]
+
+[PASTE ARTICLE TEXT OR ATTACH FILE HERE]
+
+From this article, extract and store:
+1. Key market signals relevant to [PRODUCT_NAME]
+2. Any data points (TAM, growth rates, user behaviour stats)
+3. Risks or challenges mentioned
+4. Competitive signals (companies, products, strategies named)
+5. Ideas or feature opportunities this surfaces
+
+Format output as structured memory bullets I can reference later.
+
+## COMPETITIVE INTELLIGENCE — URL ANALYSIS
+
+Product context: [PRODUCT_NAME] | [DOMAIN]
+
+Competitor to analyze:
+Name: [competitor name]
+URL: [link]
+Relationship: [direct / indirect / emerging threat / partial overlap]
+
+Analyze and store competitive intelligence across:
+1. Positioning — how do they describe themselves? who is their target user?
+2. Feature set — what core capabilities do they offer?
+3. Pricing model — tiers, free/paid, enterprise?
+4. Differentiators — what do they claim to do uniquely?
+5. Weaknesses / gaps — what are they NOT solving?
+6. Signals — funding, team size, traction markers visible
+7. Our edge — where does [PRODUCT_NAME] have an advantage over them?
+
+Output as a competitor card I can add to my competitive map.
+
+## DATA INPUT — EXCEL / CSV / STRUCTURED DATA
+
+Product context: [PRODUCT_NAME] | [DOMAIN]
+
+I am sharing the following dataset:
+File: [filename.xlsx / .csv]
+Data type: [e.g. market sizing, user survey results, trading P&L, usage metrics, competitor pricing]
+Time period: [e.g. Q1 2025, Jan–Mar 2026]
+Source: [where this data came from]
+
+[ATTACH FILE OR PASTE KEY COLUMNS/ROWS]
+
+From this data:
+1. Summarize the top 3–5 signals most relevant to [PRODUCT_NAME]
+2. Flag any anomalies or outliers worth investigating
+3. Extract any numbers usable in investor materials or pitch decks
+4. Suggest what this implies for our [pricing / roadmap / target segment / GTM]
+5. Note data quality issues or gaps
+
+Store key numbers as product facts for future reference.
+
+## WEEKLY PRODUCT RESEARCH REVIEW
+## Run every Sunday to consolidate the week's inputs
+
+Product: [PRODUCT_NAME]
+Week ending: [date]
+
+This week I fed you the following inputs (summarise what was shared):
+- Articles: [titles or topics]
+- Competitors analyzed: [names]
+- Data files: [file names or datasets]
+- Other inputs: [meetings, user calls, demos]
+
+Synthesize across all stored context and produce:
+1. Top 3 validated insights about our market or product
+2. Top 3 open questions that research hasn't answered yet
+3. Competitive landscape shift — any moves by competitors this week?
+4. Recommended next research actions — what should I read, analyze, or validate next week?
+5. One key hypothesis to test in the next sprint
+
+Keep it actionable. Max 1 page output.
+
+
+
+## ═══════════════════════════════════════
+## PRODUCT RESEARCH MEMORY — MASTER TEMPLATE
+## [PRODUCT_NAME] | Last updated: [DATE]
+## ═══════════════════════════════════════
+
+SECTION 1 — PRODUCT IDENTITY
+Product name: [PRODUCT_NAME]
+One-liner: [what it does in 1 sentence]
+Stage: [idea/MVP/scaling]
+Domain: [vertical]
+Target users: [persona 1], [persona 2], [persona 3]
+Business model: [how it makes money]
+Current phase goal: [next milestone]
+
+SECTION 2 — MARKET CONTEXT
+TAM: [$XB]
+SAM: [$XM]
+Key market trends: [list 3]
+Market risks: [list 2]
+Regulatory considerations: [if any]
+
+SECTION 3 — COMPETITIVE MAP
+Direct competitors: [name + URL + one-line positioning]
+Indirect competitors: [name + URL + one-line positioning]
+Our differentiation: [what we do that they don't]
+Competitive moat: [data / network / tech / brand]
+
+SECTION 4 — TECH & PRODUCT
+Core tech: [stack, models, infra]
+Key features (MVP): [list 3–5]
+Roadmap (next 90 days): [list milestones]
+Known technical risks: [list 2–3]
+
+SECTION 5 — TRACTION & VALIDATION
+Users / waitlist: [count]
+Revenue: [MRR / ARR if any]
+Key proof points: [testimonials, case studies, predictions validated]
+Community signals: [Discord members, social following, etc.]
+
+SECTION 6 — OPEN QUESTIONS
+Unanswered market questions: [list]
+Unanswered product questions: [list]
+Next research priorities: [list]
+
+---
+Store this as the root memory for all future research inputs on [PRODUCT_NAME].
+Every article, competitor link, or data file I share should be interpreted
+in the context of this product memory. Acknowledge storage confirmation.
+---
+    

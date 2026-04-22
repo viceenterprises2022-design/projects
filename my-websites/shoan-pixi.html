@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shoan — 松庵 — Tea, quietly curated</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+JP:wght@300;400&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.4.0/pixi.min.js"></script>
+<style>
+  :root {
+    --paper: #f5f1ea;
+    --paper-warm: #ede6d9;
+    --bone: #faf7f1;
+    --sumi: #2a2824;
+    --sumi-soft: #4a4741;
+    --cedar: #a38f73;
+    --cedar-deep: #7a6850;
+    --terracotta: #b5603e;
+    --moss: #7a8471;
+    --indigo: #3d4b5c;
+    --ochre: #c89a54;
+    --line: rgba(42, 40, 36, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Work Sans', -apple-system, sans-serif;
+    font-weight: 300;
+    background: var(--paper);
+    color: var(--sumi);
+    line-height: 1.75;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* Paper grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.15 0 0 0 0 0.14 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+  }
+
+  .serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; letter-spacing: -0.01em; }
+  .serif-jp { font-family: 'Noto Serif JP', serif; font-weight: 300; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 28px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    mix-blend-mode: multiply;
+    transition: padding 0.6s ease;
+  }
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: var(--sumi);
+  }
+  .brand-kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    margin-left: 10px;
+    color: var(--cedar-deep);
+    letter-spacing: normal;
+  }
+  .nav-links {
+    display: flex; gap: 48px; list-style: none;
+    font-size: 12px; letter-spacing: 0.25em;
+    text-transform: uppercase; font-weight: 400;
+  }
+  .nav-links a {
+    color: var(--sumi-soft); text-decoration: none;
+    transition: color 0.5s ease; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -6px; left: 0;
+    width: 0; height: 1px; background: var(--terracotta);
+    transition: width 0.6s ease;
+  }
+  .nav-links a:hover { color: var(--sumi); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-text {
+    padding-right: 60px;
+    animation: fadeRise 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+    position: relative; z-index: 3;
+  }
+  .hero-marker {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 48px;
+    font-size: 11px; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--cedar-deep);
+    font-weight: 400;
+  }
+  .hero-marker::before {
+    content: ''; width: 32px; height: 1px; background: var(--cedar-deep);
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 6.5vw, 92px);
+    font-weight: 300; line-height: 1.05;
+    letter-spacing: -0.02em; color: var(--sumi);
+    margin-bottom: 40px;
+  }
+  h1 em { font-style: italic; color: var(--terracotta); font-weight: 400; }
+
+  .hero-sub {
+    font-size: 17px; line-height: 1.9;
+    color: var(--sumi-soft); max-width: 460px;
+    margin-bottom: 56px; font-weight: 300;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 18px 36px; background: transparent;
+    border: 1px solid var(--sumi); color: var(--sumi);
+    text-decoration: none; font-size: 12px;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    font-weight: 400;
+    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative; overflow: hidden;
+  }
+  .hero-cta::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--sumi);
+    transform: translateY(100%);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: -1;
+  }
+  .hero-cta:hover { color: var(--bone); }
+  .hero-cta:hover::before { transform: translateY(0); }
+  .hero-cta .arrow { transition: transform 0.5s ease; }
+  .hero-cta:hover .arrow { transform: translateX(6px); }
+
+  /* PixiJS mount points */
+  .hero-visual {
+    position: relative;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeSlow 2.4s ease-out 0.6s both;
+  }
+  .pixi-mount {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .pixi-mount canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+
+  .vessel-caption {
+    position: absolute;
+    right: -30px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cedar-deep);
+    writing-mode: vertical-rl;
+    z-index: 3;
+  }
+
+  @keyframes fadeRise {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeSlow {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 50px; left: 80px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cedar-deep);
+    display: flex; align-items: center; gap: 14px;
+    opacity: 0.7;
+    z-index: 3;
+  }
+  .scroll-cue .line {
+    width: 40px; height: 1px; background: var(--cedar-deep);
+    animation: scrollLine 2.4s ease-in-out infinite;
+    transform-origin: left;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(0.3); }
+  }
+
+  /* ============ PHILOSOPHY ============ */
+  .philosophy {
+    padding: 180px 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .section-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; color: var(--cedar-deep);
+    letter-spacing: 0.2em; margin-bottom: 80px;
+    font-style: italic;
+  }
+  .philosophy-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300; line-height: 1.4;
+    letter-spacing: -0.01em; color: var(--sumi);
+    max-width: 900px;
+  }
+  .philosophy-quote em { font-style: italic; color: var(--moss); }
+  .philosophy-attribution {
+    margin-top: 60px; font-size: 11px;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--cedar-deep);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .philosophy-attribution::before {
+    content: ''; width: 24px; height: 1px; background: var(--cedar-deep);
+  }
+
+  /* ============ RITUAL ============ */
+  .ritual {
+    padding: 160px 80px;
+    background: var(--paper-warm);
+    position: relative; z-index: 2;
+  }
+  .ritual-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px; margin-bottom: 120px;
+    max-width: 1400px;
+    margin-left: auto; margin-right: auto;
+    align-items: end;
+  }
+  .ritual-label {
+    font-size: 11px; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--cedar-deep);
+  }
+  .ritual-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5vw, 68px);
+    font-weight: 300; line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+  .ritual-title em { font-style: italic; color: var(--indigo); }
+
+  .teas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .tea-card { position: relative; }
+  .tea-visual {
+    width: 100%;
+    aspect-ratio: 4/5;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tea-visual .pixi-mount {
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tea-card:hover .tea-visual .pixi-mount {
+    transform: scale(1.04);
+  }
+  .tea-meta {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 16px;
+    font-size: 10px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--cedar-deep);
+  }
+  .tea-kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px; color: var(--sumi-soft);
+    letter-spacing: normal;
+  }
+  .tea-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300;
+    font-style: italic; color: var(--sumi);
+    margin-bottom: 16px; line-height: 1.2;
+  }
+  .tea-desc {
+    font-size: 14px; line-height: 1.8;
+    color: var(--sumi-soft); font-weight: 300;
+  }
+
+  /* ============ CRAFT ============ */
+  .craft {
+    padding: 200px 80px;
+    position: relative; z-index: 2;
+  }
+  .craft-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    max-width: 1300px;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .craft-visual {
+    position: relative;
+    aspect-ratio: 3/4;
+  }
+  .craft-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4.5vw, 58px);
+    font-weight: 300; line-height: 1.15;
+    letter-spacing: -0.015em; margin-bottom: 40px;
+  }
+  .craft-heading em { font-style: italic; color: var(--ochre); }
+  .craft-body {
+    font-size: 16px; line-height: 1.9;
+    color: var(--sumi-soft); margin-bottom: 32px;
+    font-weight: 300; max-width: 480px;
+  }
+  .craft-details {
+    list-style: none; padding: 0;
+    margin-top: 48px;
+    border-top: 1px solid var(--line);
+  }
+  .craft-details li {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 40px; align-items: baseline;
+  }
+  .detail-label {
+    font-size: 10px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--cedar-deep);
+  }
+  .detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic; color: var(--sumi);
+  }
+
+  /* ============ INVITATION ============ */
+  .invitation {
+    padding: 200px 80px;
+    background: var(--bone);
+    text-align: center;
+    position: relative; z-index: 2;
+    overflow: hidden;
+  }
+  .invitation .pixi-enso-mount {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .invitation-inner {
+    position: relative; z-index: 3;
+    max-width: 720px; margin: 0 auto;
+  }
+  .invitation-kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 56px; font-weight: 300;
+    color: var(--terracotta); margin-bottom: 40px;
+    opacity: 0.85;
+  }
+  .invitation-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5.5vw, 72px);
+    font-weight: 300; line-height: 1.15;
+    letter-spacing: -0.015em; margin-bottom: 40px;
+  }
+  .invitation-title em { font-style: italic; color: var(--indigo); }
+  .invitation-body {
+    font-size: 17px; line-height: 1.9;
+    color: var(--sumi-soft); margin-bottom: 64px;
+    max-width: 520px;
+    margin-left: auto; margin-right: auto;
+    font-weight: 300;
+  }
+  .invitation-form {
+    display: flex; justify-content: center;
+    max-width: 520px; margin: 0 auto;
+    border-bottom: 1px solid var(--sumi);
+    transition: border-color 0.5s ease;
+  }
+  .invitation-form:focus-within { border-color: var(--terracotta); }
+  .invitation-form input {
+    flex: 1; background: transparent; border: none;
+    padding: 20px 0;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px; color: var(--sumi);
+    outline: none; font-weight: 300;
+  }
+  .invitation-form input::placeholder {
+    color: var(--cedar); font-style: italic;
+    font-family: 'Cormorant Garamond', serif; font-size: 17px;
+  }
+  .invitation-form button {
+    background: transparent; border: none;
+    padding: 20px 0 20px 24px;
+    font-size: 11px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--sumi);
+    cursor: pointer;
+    font-family: 'Work Sans', sans-serif; font-weight: 400;
+    transition: color 0.5s ease;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .invitation-form button:hover { color: var(--terracotta); }
+  .invitation-note {
+    margin-top: 48px; font-size: 11px;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--cedar-deep);
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 80px 80px 60px;
+    border-top: 1px solid var(--line);
+    position: relative; z-index: 2;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; max-width: 1400px;
+    margin: 0 auto; margin-bottom: 60px;
+  }
+  .footer-brand .brand { margin-bottom: 20px; display: block; }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 16px;
+    color: var(--sumi-soft); max-width: 300px; line-height: 1.6;
+  }
+  .footer-col h4 {
+    font-size: 10px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--cedar-deep);
+    margin-bottom: 24px; font-weight: 400;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 14px; }
+  .footer-col a {
+    color: var(--sumi-soft); text-decoration: none;
+    font-size: 14px; font-weight: 300;
+    transition: color 0.4s ease;
+  }
+  .footer-col a:hover { color: var(--terracotta); }
+  .footer-bottom {
+    max-width: 1400px; margin: 0 auto;
+    padding-top: 40px; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    align-items: center;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--cedar-deep);
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 120px 24px 60px;
+      gap: 60px;
+    }
+    .hero-text { padding-right: 0; }
+    .hero-visual { height: 60vh; }
+    .scroll-cue { left: 24px; bottom: 20px; }
+    .philosophy, .ritual, .craft, .invitation { padding: 100px 24px; }
+    .teas-grid { grid-template-columns: 1fr; gap: 60px; }
+    .ritual-header { grid-template-columns: 1fr; gap: 30px; }
+    .craft-inner { grid-template-columns: 1fr; gap: 60px; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    footer { padding: 60px 24px 40px; }
+    .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">Shoan<span class="brand-kanji">松庵</span></div>
+  <ul class="nav-links">
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#ritual">The Teas</a></li>
+    <li><a href="#craft">Craft</a></li>
+    <li><a href="#invitation">Begin</a></li>
+  </ul>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-marker">No. 01 — Arrival</div>
+    <h1>
+      A quieter<br/>
+      way to meet<br/>
+      <em>the leaf.</em>
+    </h1>
+    <p class="hero-sub">
+      Single-origin teas chosen four times a year by a master sommelier, paired with a hand-thrown vessel from a lineage kiln. Delivered slowly, in wooden paulownia, wrapped in washi.
+    </p>
+    <a href="#invitation" class="hero-cta">
+      <span>Begin the ritual</span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hero-visual">
+    <div class="pixi-mount" id="pixi-hero"></div>
+    <div class="vessel-caption">Vessel N° 047 · Hagi Kiln</div>
+  </div>
+
+  <div class="scroll-cue">
+    <span class="line"></span>
+    <span>Scroll · ゆっくり</span>
+  </div>
+</section>
+
+<!-- ============ PHILOSOPHY ============ -->
+<section class="philosophy" id="philosophy">
+  <div class="section-number reveal">No. 02 · Philosophy</div>
+  <p class="philosophy-quote reveal">
+    Tea is not a beverage. It is <em>a pause —</em> the smallest room in which a person can remember who they are. We do not sell leaves. We send <em>twenty quiet minutes,</em> four times each year, wrapped carefully in paper.
+  </p>
+  <div class="philosophy-attribution reveal">From the founder's letter · Spring 2024</div>
+</section>
+
+<!-- ============ RITUAL / TEAS ============ -->
+<section class="ritual" id="ritual">
+  <div class="ritual-header">
+    <div class="ritual-label reveal">No. 03 · The Selection</div>
+    <h2 class="ritual-title reveal">
+      Four teas.<br/>
+      Four seasons.<br/>
+      <em>One attention.</em>
+    </h2>
+  </div>
+
+  <div class="teas-grid">
+    <div class="tea-card reveal">
+      <div class="tea-visual">
+        <div class="pixi-mount" id="pixi-spring"></div>
+      </div>
+      <div class="tea-meta">
+        <span>Spring · 春</span>
+        <span class="tea-kanji">玉露</span>
+      </div>
+      <h3 class="tea-name">Gyokuro,<br/>shaded three weeks</h3>
+      <p class="tea-desc">Grown in the slow mist of Uji valley, picked by hand in the final week of April. Steeps into a pale jade liquor — sweet marine, soft grass, a long finish of chestnut skin.</p>
+    </div>
+
+    <div class="tea-card reveal">
+      <div class="tea-visual">
+        <div class="pixi-mount" id="pixi-summer"></div>
+      </div>
+      <div class="tea-meta">
+        <span>Summer · 夏</span>
+        <span class="tea-kanji">焙じ茶</span>
+      </div>
+      <h3 class="tea-name">Hōjicha,<br/>slow-roasted in cedar</h3>
+      <p class="tea-desc">Autumn-pruned stems, roasted over low cedar embers until the leaf turns mahogany. Warm, low-caffeine, with notes of toasted rice, dried fig, and woodsmoke at dusk.</p>
+    </div>
+
+    <div class="tea-card reveal">
+      <div class="tea-visual">
+        <div class="pixi-mount" id="pixi-winter"></div>
+      </div>
+      <div class="tea-meta">
+        <span>Winter · 冬</span>
+        <span class="tea-kanji">抹茶</span>
+      </div>
+      <h3 class="tea-name">Matcha,<br/>stone-milled at dawn</h3>
+      <p class="tea-desc">Tencha leaves milled between granite wheels at the cold hour before sunrise — yielding thirty grams in ninety minutes. Whisked bright, vegetal, with an umami depth that lingers quietly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CRAFT ============ -->
+<section class="craft" id="craft">
+  <div class="craft-inner">
+    <div class="craft-visual reveal">
+      <div class="pixi-mount" id="pixi-craft"></div>
+    </div>
+
+    <div class="craft-text">
+      <div class="section-number reveal">No. 04 · The Vessel</div>
+      <h2 class="craft-heading reveal">
+        Each quarter,<br/>
+        a <em>new cup</em> arrives —<br/>
+        thrown by one pair of hands.
+      </h2>
+      <p class="craft-body reveal">
+        We partner with three lineage kilns across Japan — Hagi, Bizen, and Mashiko — to commission a small run of tea bowls each season. Every vessel is signed, numbered, and sent with a letter describing its making: the clay, the firing, the potter's hand.
+      </p>
+
+      <ul class="craft-details">
+        <li class="reveal">
+          <span class="detail-label">Material</span>
+          <span class="detail-value">Unwashed local clay, wood-ash glaze</span>
+        </li>
+        <li class="reveal">
+          <span class="detail-label">Firing</span>
+          <span class="detail-value">Noborigama, four days & four nights</span>
+        </li>
+        <li class="reveal">
+          <span class="detail-label">Packaging</span>
+          <span class="detail-value">Paulownia box, washi, braided cord</span>
+        </li>
+        <li class="reveal">
+          <span class="detail-label">Edition</span>
+          <span class="detail-value">Fifty vessels per season, never repeated</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INVITATION ============ -->
+<section class="invitation" id="invitation">
+  <div class="pixi-enso-mount" id="pixi-enso"></div>
+  <div class="invitation-inner">
+    <div class="invitation-kanji reveal">一期一会</div>
+    <h2 class="invitation-title reveal">
+      One meeting,<br/>
+      <em>one chance —</em><br/>
+      begin yours.
+    </h2>
+    <p class="invitation-body reveal">
+      Four quiet deliveries a year. No marketing emails. No loyalty tiers. Simply a small wooden box at your door, four times, inviting you to sit down.
+    </p>
+
+    <div class="invitation-form reveal">
+      <input type="email" placeholder="your email, carefully kept" aria-label="Email address"/>
+      <button type="button">
+        <span>Begin</span>
+        <span>→</span>
+      </button>
+    </div>
+
+    <div class="invitation-note reveal">From ¥24,000 per season · Shipped worldwide</div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand">Shoan<span class="brand-kanji">松庵</span></div>
+      <p class="footer-tagline">A quieter way<br/>to meet the leaf.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shoan</h4>
+      <ul>
+        <li><a href="#">Philosophy</a></li>
+        <li><a href="#">Our Kilns</a></li>
+        <li><a href="#">Founder's Letter</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Care</h4>
+      <ul>
+        <li><a href="#">Brewing Guide</a></li>
+        <li><a href="#">Vessel Care</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quietly</h4>
+      <ul>
+        <li><a href="#">Seasonal Journal</a></li>
+        <li><a href="#">Gift a Season</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© Shoan 松庵 · Kyoto & Copenhagen</span>
+    <span>Made slowly · 丁寧に</span>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   PIXI.JS VISUALS — Japandi aesthetic
+   All colors use the same tokens as the CSS palette.
+   ========================================================= */
+
+const C = {
+  paper:     0xf5f1ea,
+  paperWarm: 0xede6d9,
+  bone:      0xfaf7f1,
+  sumi:      0x2a2824,
+  sumiSoft:  0x4a4741,
+  cedar:     0xa38f73,
+  cedarDeep: 0x7a6850,
+  cedarLite: 0xc4a482,
+  clayDark:  0x5a4a35,
+  terracotta:0xb5603e,
+  moss:      0x7a8471,
+  mossDeep:  0x4a5d3a,
+  mossMid:   0x5a6d47,
+  mossLite:  0xa8b896,
+  indigo:    0x3d4b5c,
+  ochre:     0xc89a54,
+  teaDark:   0x4a3820,
+  teaMid:    0x8a6d3d,
+  springHi:  0xe8ead8,
+  summerHi:  0xf0e8d4,
+  winterHi:  0xe8e4da,
+  winterLow: 0x8a9aa8,
+  craftLow:  0xd4c4a8
+};
+
+/* ---------- Utility: build a PIXI app that fits its mount ---------- */
+function makeApp(mountId, { transparent = true, background = null } = {}) {
+  const mount = document.getElementById(mountId);
+  if (!mount) return null;
+  const rect = mount.getBoundingClientRect();
+
+  const app = new PIXI.Application({
+    width: rect.width,
+    height: rect.height,
+    backgroundAlpha: transparent ? 0 : 1,
+    backgroundColor: background || C.paper,
+    antialias: true,
+    resolution: Math.min(window.devicePixelRatio || 1, 2),
+    autoDensity: true
+  });
+
+  mount.appendChild(app.view);
+
+  // Resize on viewport change
+  const resize = () => {
+    const r = mount.getBoundingClientRect();
+    if (r.width && r.height) app.renderer.resize(r.width, r.height);
+  };
+  window.addEventListener('resize', resize);
+
+  return { app, mount };
+}
+
+/* =========================================================
+   HERO: ceramic vessel, drifting steam, enso arc
+   ========================================================= */
+function buildHero() {
+  const result = makeApp('pixi-hero');
+  if (!result) return;
+  const { app } = result;
+
+  const stage = new PIXI.Container();
+  app.stage.addChild(stage);
+
+  const layout = () => {
+    stage.removeChildren();
+    const W = app.screen.width;
+    const H = app.screen.height;
+    const cx = W / 2;
+    const cy = H / 2;
+
+    // --- Enso circle (rotating slowly) ---
+    const enso = new PIXI.Graphics();
+    const ensoR = Math.min(W, H) * 0.28;
+    enso.lineStyle({ width: 1, color: C.cedar, alpha: 0.4 });
+    enso.drawCircle(0, 0, ensoR);
+    // break in the circle
+    enso.beginFill(C.paper, 1);
+    enso.drawCircle(ensoR * 0.85, -ensoR * 0.75, 14);
+    enso.endFill();
+    enso.position.set(cx - W * 0.2, cy - H * 0.25);
+    stage.addChild(enso);
+
+    // --- Horizon line ---
+    const horizon = new PIXI.Graphics();
+    horizon.lineStyle({ width: 0.5, color: C.cedar, alpha: 0.35 });
+    horizon.moveTo(W * 0.05, cy + H * 0.18);
+    horizon.lineTo(W * 0.95, cy + H * 0.18);
+    stage.addChild(horizon);
+
+    // --- Vessel shadow ---
+    const shadow = new PIXI.Graphics();
+    shadow.beginFill(C.sumi, 0.12);
+    shadow.drawEllipse(cx, cy + H * 0.18, W * 0.18, 8);
+    shadow.endFill();
+    stage.addChild(shadow);
+
+    // --- Vessel (tea bowl, gently asymmetric) ---
+    const vessel = new PIXI.Graphics();
+    const bw = Math.min(W, H) * 0.35;      // bowl half-width
+    const bh = Math.min(W, H) * 0.32;      // bowl height
+    const bcy = cy + H * 0.04;             // bowl center-y
+    const rimY = bcy - bh * 0.55;
+
+    // Fill with warm cedar gradient (approximated via layered fills)
+    vessel.beginFill(C.cedarLite, 1);
+    vessel.moveTo(cx - bw, rimY + 4);
+    vessel.bezierCurveTo(cx - bw - 4, rimY + bh * 0.4, cx - bw * 0.5, rimY + bh * 1.1, cx, rimY + bh * 1.15);
+    vessel.bezierCurveTo(cx + bw * 0.5, rimY + bh * 1.1, cx + bw + 4, rimY + bh * 0.4, cx + bw, rimY + 4);
+    vessel.lineTo(cx + bw - 6, rimY + 2);
+    vessel.lineTo(cx - bw + 6, rimY + 2);
+    vessel.closePath();
+    vessel.endFill();
+
+    // Darker depth layer (inside curve shadow)
+    vessel.beginFill(C.cedarDeep, 0.55);
+    vessel.moveTo(cx - bw * 0.82, rimY + bh * 0.25);
+    vessel.bezierCurveTo(cx - bw * 0.5, rimY + bh * 1.05, cx + bw * 0.5, rimY + bh * 1.05, cx + bw * 0.82, rimY + bh * 0.25);
+    vessel.bezierCurveTo(cx + bw * 0.5, rimY + bh * 0.6, cx - bw * 0.5, rimY + bh * 0.6, cx - bw * 0.82, rimY + bh * 0.25);
+    vessel.closePath();
+    vessel.endFill();
+
+    // Rim highlight (dark ellipse = interior)
+    vessel.beginFill(C.sumi, 0.35);
+    vessel.drawEllipse(cx, rimY, bw * 0.88, 8);
+    vessel.endFill();
+
+    // Tea surface
+    vessel.beginFill(C.teaDark, 1);
+    vessel.drawEllipse(cx, rimY, bw * 0.82, 6);
+    vessel.endFill();
+    vessel.beginFill(C.teaMid, 0.85);
+    vessel.drawEllipse(cx, rimY - 0.5, bw * 0.78, 5);
+    vessel.endFill();
+
+    // Small terracotta highlight on tea
+    vessel.beginFill(C.terracotta, 0.3);
+    vessel.drawEllipse(cx - bw * 0.15, rimY - 1, bw * 0.12, 2);
+    vessel.endFill();
+
+    // Kintsugi-like fine gold lines
+    vessel.lineStyle({ width: 0.8, color: C.ochre, alpha: 0.7 });
+    vessel.moveTo(cx - bw * 0.45, rimY + bh * 0.4);
+    vessel.bezierCurveTo(cx - bw * 0.4, rimY + bh * 0.7, cx - bw * 0.48, rimY + bh * 0.95, cx - bw * 0.4, rimY + bh * 1.1);
+
+    vessel.lineStyle({ width: 0.5, color: C.ochre, alpha: 0.5 });
+    vessel.moveTo(cx + bw * 0.55, rimY + bh * 0.25);
+    vessel.bezierCurveTo(cx + bw * 0.6, rimY + bh * 0.55, cx + bw * 0.55, rimY + bh * 0.85, cx + bw * 0.52, rimY + bh * 1.0);
+
+    stage.addChild(vessel);
+
+    // --- Seal mark (bottom right, small red square with kanji) ---
+    const sealSize = Math.min(W * 0.07, 32);
+    const seal = new PIXI.Graphics();
+    seal.beginFill(C.terracotta, 0.85);
+    seal.drawRect(0, 0, sealSize, sealSize);
+    seal.endFill();
+    seal.position.set(W - sealSize - W * 0.08, H - sealSize - H * 0.08);
+    stage.addChild(seal);
+
+    const sealText = new PIXI.Text('松', {
+      fontFamily: 'Noto Serif JP, serif',
+      fontSize: sealSize * 0.65,
+      fill: C.bone,
+      fontWeight: '400'
+    });
+    sealText.anchor.set(0.5);
+    sealText.position.set(seal.x + sealSize / 2, seal.y + sealSize / 2 + 1);
+    stage.addChild(sealText);
+
+    // --- Steam particles ---
+    const steamCount = 24;
+    const steamParticles = [];
+    const steamContainer = new PIXI.Container();
+    stage.addChild(steamContainer);
+
+    for (let i = 0; i < steamCount; i++) {
+      const p = new PIXI.Graphics();
+      p.beginFill(C.cedar, 0.35);
+      p.drawCircle(0, 0, 3 + Math.random() * 3);
+      p.endFill();
+      const startX = cx + (Math.random() - 0.5) * bw * 1.2;
+      const startY = rimY;
+      p.position.set(startX, startY);
+      p.userData = {
+        baseX: startX,
+        x: startX,
+        y: startY,
+        speed: 0.2 + Math.random() * 0.35,
+        phase: Math.random() * Math.PI * 2,
+        amp: 6 + Math.random() * 14,
+        life: Math.random(),
+        maxLife: 1,
+        size: 3 + Math.random() * 3
+      };
+      steamContainer.addChild(p);
+      steamParticles.push(p);
+    }
+
+    // Animation ticker
+    let t = 0;
+    const ticker = (delta) => {
+      t += delta * 0.01;
+
+      // Rotate enso very slowly
+      enso.rotation += 0.0008 * delta;
+
+      // Update steam
+      for (const p of steamParticles) {
+        const d = p.userData;
+        d.y -= d.speed * delta;
+        d.phase += 0.02 * delta;
+        d.x = d.baseX + Math.sin(d.phase) * d.amp;
+        d.life += 0.004 * delta;
+
+        if (d.y < rimY - H * 0.5 || d.life > d.maxLife) {
+          d.y = rimY;
+          d.baseX = cx + (Math.random() - 0.5) * bw * 1.2;
+          d.x = d.baseX;
+          d.phase = Math.random() * Math.PI * 2;
+          d.life = 0;
+        }
+
+        p.position.set(d.x, d.y);
+        // Fade in, drift, fade out
+        const lifeFrac = d.life / d.maxLife;
+        let alpha = 0;
+        if (lifeFrac < 0.2) alpha = lifeFrac / 0.2;
+        else if (lifeFrac > 0.7) alpha = (1 - lifeFrac) / 0.3;
+        else alpha = 1;
+        p.alpha = alpha * 0.5;
+        p.scale.set(1 + lifeFrac * 0.8);
+      }
+    };
+    app.ticker.add(ticker);
+    stage._ticker = ticker;
+  };
+
+  layout();
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (stage._ticker) app.ticker.remove(stage._ticker);
+      layout();
+    }, 150);
+  });
+}
+
+/* =========================================================
+   TEA CARDS: Spring (Gyokuro), Summer (Hōjicha), Winter (Matcha)
+   ========================================================= */
+function buildSpring() {
+  const result = makeApp('pixi-spring', { transparent: false, background: C.springHi });
+  if (!result) return;
+  const { app } = result;
+  const stage = new PIXI.Container();
+  app.stage.addChild(stage);
+
+  const layout = () => {
+    stage.removeChildren();
+    const W = app.screen.width;
+    const H = app.screen.height;
+
+    // Gradient-like vertical bands (approximate)
+    const bg = new PIXI.Graphics();
+    for (let i = 0; i < 20; i++) {
+      const t = i / 19;
+      const c = lerpColor(C.springHi, C.mossLite, t);
+      bg.beginFill(c, 1);
+      bg.drawRect(0, (H / 20) * i, W, H / 20 + 1);
+      bg.endFill();
+    }
+    stage.addChild(bg);
+
+    // Tea leaves (ellipses at various rotations)
+    const leaves = [
+      { x: 0.38, y: 0.40, rw: 0.12, rh: 0.032, rot: -0.44, color: C.mossMid },
+      { x: 0.58, y: 0.52, rw: 0.13, rh: 0.038, rot: 0.26,  color: C.mossDeep },
+      { x: 0.45, y: 0.66, rw: 0.10, rh: 0.028, rot: -0.78, color: C.mossMid },
+      { x: 0.65, y: 0.36, rw: 0.09, rh: 0.025, rot: 1.05,  color: C.mossMid },
+      { x: 0.30, y: 0.76, rw: 0.12, rh: 0.035, rot: 0.52,  color: C.mossDeep }
+    ];
+
+    const leavesG = new PIXI.Graphics();
+    for (const l of leaves) {
+      leavesG.beginFill(l.color, 0.75);
+      // Draw rotated ellipse by transforming
+      const matrix = new PIXI.Matrix();
+      matrix.translate(-l.x * W, -l.y * H);
+      matrix.rotate(l.rot);
+      matrix.translate(l.x * W, l.y * H);
+      leavesG.setMatrix(matrix);
+      leavesG.drawEllipse(l.x * W, l.y * H, l.rw * W, l.rh * H);
+      leavesG.endFill();
+      leavesG.setMatrix(PIXI.Matrix.IDENTITY);
+    }
+
+    // Stem lines
+    leavesG.lineStyle({ width: 0.8, color: C.mossDeep, alpha: 0.5 });
+    leavesG.moveTo(0.38 * W, 0.40 * H);
+    leavesG.bezierCurveTo(0.48 * W, 0.48 * H, 0.55 * W, 0.50 * H, 0.58 * W, 0.52 * H);
+    leavesG.moveTo(0.45 * W, 0.66 * H);
+    leavesG.bezierCurveTo(0.52 * W, 0.60 * H, 0.56 * W, 0.55 * H, 0.58 * W, 0.52 * H);
+    stage.addChild(leavesG);
+
+    // Gentle drifting mist
+    const mist = new PIXI.Container();
+    stage.addChild(mist);
+    const mistPuffs = [];
+    for (let i = 0; i < 8; i++) {
+      const m = new PIXI.Graphics();
+      m.beginFill(C.springHi, 0.35);
+      m.drawCircle(0, 0, 20 + Math.random() * 30);
+      m.endFill();
+      m.position.set(Math.random() * W, Math.random() * H);
+      m.userData = {
+        vx: 0.05 + Math.random() * 0.08,
+        y: Math.random() * H
+      };
+      mist.addChild(m);
+      mistPuffs.push(m);
+    }
+
+    const ticker = (delta) => {
+      for (const m of mistPuffs) {
+        m.x += m.userData.vx * delta;
+        if (m.x > W + 50) m.x = -50;
+      }
+    };
+    app.ticker.add(ticker);
+    stage._ticker = ticker;
+  };
+
+  layout();
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      if (stage._ticker) app.ticker.remove(stage._ticker);
+      layout();
+    }, 150);
+  });
+}
+
+function buildSummer() {
+  const result = makeApp('pixi-summer', { transparent: false, background: C.summerHi });
+  if (!result) return;
+  const { app } = result;
+  const stage = new PIXI.Container();
+  app.stage.addChild(stage);
+
+  const layout = () => {
+    stage.removeChildren();
+    const W = app.screen.width;
+    const H = app.screen.height;
+
+    // Gradient background (summer → ochre)
+    const bg = new PIXI.Graphics();
+    for (let i = 0; i < 20; i++) {
+      const t = i / 19;
+      const c = lerpColor(C.summerHi, C.ochre, t);
+      bg.beginFill(c, 1);
+      bg.drawRect(0, (H / 20) * i, W, H / 20 + 1);
+      bg.endFill();
+    }
+    stage.addChild(bg);
+
+    // Teapot
+    const tp = new PIXI.Graphics();
+    const cx = W * 0.5;
+    const cy = H * 0.52;
+    const r = Math.min(W, H) * 0.22;
+
+    // Body
+    tp.beginFill(C.cedarDeep, 0.9);
+    tp.moveTo(cx - r, cy);
+    tp.bezierCurveTo(cx - r, cy - r * 0.65, cx - r * 0.4, cy - r * 0.78, cx - r * 0.4, cy - r * 0.78);
+    tp.lineTo(cx + r * 0.4, cy - r * 0.78);
+    tp.bezierCurveTo(cx + r, cy - r * 0.65, cx + r, cy, cx + r, cy);
+    tp.bezierCurveTo(cx + r, cy + r * 0.78, cx, cy + r, cx, cy + r);
+    tp.bezierCurveTo(cx - r, cy + r * 0.78, cx - r, cy, cx - r, cy);
+    tp.closePath();
+    tp.endFill();
+
+    // Handle
+    tp.lineStyle({ width: 6, color: C.cedarDeep });
+    tp.moveTo(cx - r, cy - r * 0.25);
+    tp.bezierCurveTo(cx - r * 1.35, cy - r * 0.25, cx - r * 1.35, cy + r * 0.25, cx - r, cy + r * 0.25);
+
+    // Spout
+    tp.lineStyle(0);
+    tp.beginFill(C.cedarDeep, 0.9);
+    tp.moveTo(cx + r, cy - r * 0.25);
+    tp.lineTo(cx + r * 1.45, cy - r * 0.45);
+    tp.lineTo(cx + r * 1.45, cy - r * 0.32);
+    tp.lineTo(cx + r * 1.02, cy - r * 0.06);
+    tp.closePath();
+    tp.endFill();
+
+    // Lid
+    tp.beginFill(C.clayDark, 1);
+    tp.drawEllipse(cx, cy - r * 0.78, r * 0.38, r * 0.08);
+    tp.endFill();
+    tp.beginFill(C.terracotta, 1);
+    tp.drawCircle(cx, cy - r * 0.88, r * 0.05);
+    tp.endFill();
+
+    stage.addChild(tp);
+
+    // Steam
+    const steamContainer = new PIXI.Container();
+    stage.addChild(steamContainer);
+    const puffs = [];
+    for (let i = 0; i < 10; i++) {
+      const p = new PIXI.Graphics();
+      p.beginFill(C.cedarDeep, 0.3);
+      p.drawCircle(0, 0, 2.5 + Math.random() * 2);
+      p.endFill();
+      const sx = cx + (Math.random() - 0.5) * r * 0.6;
+      p.position.set(sx, cy - r * 0.78);
+      p.userData = {
+        baseX: sx,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.25 + Math.random() * 0.3,
+        amp: 4 + Math.random() * 10,
+        life: Math.random()
+      };
+      steamContainer.addChild(p);
+      puffs.push(p);
+    }
+
+    const topY = cy - r * 0.78;
+    const ticker = (delta) => {
+      for (const p of puffs) {
+        const d = p.userData;
+        p.y -= d.speed * delta;
+        d.phase += 0.02 * delta;
+        p.x = d.baseX + Math.sin(d.phase) * d.amp;
+        d.life += 0.005 * delta;
+        if (p.y < topY - H * 0.4 || d.life > 1) {
+          p.y = topY;
+          d.baseX = cx + (Math.random() - 0.5) * r * 0.6;
+          p.x = d.baseX;
+          d.life = 0;
+        }
+        const lf = d.life;
+        let a = 0;
+        if (lf < 0.2) a = lf / 0.2;
+        else if (lf > 0.7) a = (1 - lf) / 0.3;
+        else a = 1;
+        p.alpha = a * 0.4;
+      }
+    };
+    app.ticker.add(ticker);
+    stage._ticker = ticker;
+  };
+
+  layout();
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      if (stage._ticker) app.ticker.remove(stage._ticker);
+      layout();
+    }, 150);
+  });
+}
+
+function buildWinter() {
+  const result = makeApp('pixi-winter', { transparent: false, background: C.winterHi });
+  if (!result) return;
+  const { app } = result;
+  const stage = new PIXI.Container();
+  app.stage.addChild(stage);
+
+  const layout = () => {
+    stage.removeChildren();
+    const W = app.screen.width;
+    const H = app.screen.height;
+
+    // Gradient background
+    const bg = new PIXI.Graphics();
+    for (let i = 0; i < 20; i++) {
+      const t = i / 19;
+      const c = lerpColor(C.winterHi, C.winterLow, t);
+      bg.beginFill(c, 1);
+      bg.drawRect(0, (H / 20) * i, W, H / 20 + 1);
+      bg.endFill();
+    }
+    stage.addChild(bg);
+
+    // Bare branch
+    const branch = new PIXI.Graphics();
+    branch.lineStyle({ width: 1.5, color: C.indigo, alpha: 0.8 });
+    branch.moveTo(0.12 * W, 0.90 * H);
+    branch.bezierCurveTo(0.30 * W, 0.76 * H, 0.45 * W, 0.60 * H, 0.80 * W, 0.28 * H);
+    // Small branches
+    branch.moveTo(0.45 * W, 0.60 * H);
+    branch.lineTo(0.38 * W, 0.50 * H);
+    branch.moveTo(0.60 * W, 0.44 * H);
+    branch.lineTo(0.70 * W, 0.36 * H);
+    branch.moveTo(0.32 * W, 0.72 * H);
+    branch.lineTo(0.25 * W, 0.64 * H);
+    stage.addChild(branch);
+
+    // Terracotta leaves on branch
+    const leaves = new PIXI.Graphics();
+    const leafData = [
+      { x: 0.38, y: 0.50, rw: 0.02, rh: 0.006, rot: -0.7, alpha: 0.75 },
+      { x: 0.70, y: 0.36, rw: 0.018, rh: 0.006, rot: 0.52, alpha: 0.75 },
+      { x: 0.25, y: 0.64, rw: 0.023, rh: 0.006, rot: -1.05, alpha: 0.75 },
+      { x: 0.55, y: 0.48, rw: 0.015, rh: 0.006, rot: 0.35, alpha: 0.75 }
+    ];
+    for (const l of leafData) {
+      const m = new PIXI.Matrix();
+      m.translate(-l.x * W, -l.y * H);
+      m.rotate(l.rot);
+      m.translate(l.x * W, l.y * H);
+      leaves.setMatrix(m);
+      leaves.beginFill(C.terracotta, l.alpha);
+      leaves.drawEllipse(l.x * W, l.y * H, l.rw * W, l.rh * H);
+      leaves.endFill();
+      leaves.setMatrix(PIXI.Matrix.IDENTITY);
+    }
+    stage.addChild(leaves);
+
+    // Snow particles
+    const snowContainer = new PIXI.Container();
+    stage.addChild(snowContainer);
+    const flakes = [];
+    for (let i = 0; i < 40; i++) {
+      const f = new PIXI.Graphics();
+      const size = 1 + Math.random() * 2.2;
+      f.beginFill(C.bone, 0.85);
+      f.drawCircle(0, 0, size);
+      f.endFill();
+      f.position.set(Math.random() * W, Math.random() * H);
+      f.userData = {
+        vy: 0.15 + Math.random() * 0.35,
+        vx: -0.05 + Math.random() * 0.1,
+        phase: Math.random() * Math.PI * 2,
+        size: size
+      };
+      snowContainer.addChild(f);
+      flakes.push(f);
+    }
+
+    const ticker = (delta) => {
+      for (const f of flakes) {
+        const d = f.userData;
+        f.y += d.vy * delta;
+        d.phase += 0.02 * delta;
+        f.x += d.vx * delta + Math.sin(d.phase) * 0.15;
+        if (f.y > H + 5) {
+          f.y = -5;
+          f.x = Math.random() * W;
+        }
+        if (f.x > W + 5) f.x = -5;
+        if (f.x < -5) f.x = W + 5;
+      }
+    };
+    app.ticker.add(ticker);
+    stage._ticker = ticker;
+  };
+
+  layout();
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      if (stage._ticker) app.ticker.remove(stage._ticker);
+      layout();
+    }, 150);
+  });
+}
+
+/* =========================================================
+   CRAFT: potter's wheel + bowl + falling clay dust
+   ========================================================= */
+function buildCraft() {
+  const result = makeApp('pixi-craft', { transparent: false, background: C.paperWarm });
+  if (!result) return;
+  const { app } = result;
+  const stage = new PIXI.Container();
+  app.stage.addChild(stage);
+
+  const layout = () => {
+    stage.removeChildren();
+    const W = app.screen.width;
+    const H = app.screen.height;
+
+    // Gradient (warm paper → cedar)
+    const bg = new PIXI.Graphics();
+    for (let i = 0; i < 20; i++) {
+      const t = i / 19;
+      const c = lerpColor(C.paperWarm, C.craftLow, t);
+      bg.beginFill(c, 1);
+      bg.drawRect(0, (H / 20) * i, W, H / 20 + 1);
+      bg.endFill();
+    }
+    stage.addChild(bg);
+
+    const cx = W * 0.5;
+    const cy = H * 0.62;
+
+    // Hands suggestion (very faint arc)
+    const hands = new PIXI.Graphics();
+    hands.lineStyle({ width: 2, color: C.cedarDeep, alpha: 0.15 });
+    hands.moveTo(W * 0.20, H * 0.78);
+    hands.bezierCurveTo(W * 0.30, H * 0.68, W * 0.50, H * 0.66, cx, H * 0.66);
+    hands.bezierCurveTo(W * 0.70, H * 0.66, W * 0.75, H * 0.68, W * 0.80, H * 0.78);
+    stage.addChild(hands);
+
+    // Wheel (rotating)
+    const wheelContainer = new PIXI.Container();
+    wheelContainer.position.set(cx, cy + H * 0.11);
+    stage.addChild(wheelContainer);
+
+    const wheelBack = new PIXI.Graphics();
+    wheelBack.beginFill(C.cedarDeep, 0.5);
+    wheelBack.drawEllipse(0, 5, W * 0.35, 18);
+    wheelBack.endFill();
+    wheelContainer.addChild(wheelBack);
+
+    const wheelTop = new PIXI.Graphics();
+    wheelTop.beginFill(C.cedar, 1);
+    wheelTop.drawEllipse(0, 0, W * 0.35, 12);
+    wheelTop.endFill();
+    // Subtle radial lines for motion feel
+    wheelTop.lineStyle({ width: 0.6, color: C.cedarDeep, alpha: 0.4 });
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2;
+      wheelTop.moveTo(0, 0);
+      wheelTop.lineTo(Math.cos(a) * W * 0.34, Math.sin(a) * 11);
+    }
+    wheelContainer.addChild(wheelTop);
+
+    // Bowl on wheel
+    const bowl = new PIXI.Graphics();
+    const bw = W * 0.2;
+    const bh = H * 0.15;
+    const by = cy;
+
+    bowl.beginFill(C.cedarLite, 1);
+    bowl.moveTo(cx - bw, by - bh * 0.6);
+    bowl.bezierCurveTo(cx - bw - 4, by - bh * 0.3, cx - bw * 0.7, by + bh * 0.3, cx, by + bh * 0.4);
+    bowl.bezierCurveTo(cx + bw * 0.7, by + bh * 0.3, cx + bw + 4, by - bh * 0.3, cx + bw, by - bh * 0.6);
+    bowl.lineTo(cx + bw * 0.8, by - bh * 0.65);
+    bowl.lineTo(cx - bw * 0.8, by - bh * 0.65);
+    bowl.closePath();
+    bowl.endFill();
+
+    // Depth
+    bowl.beginFill(C.clayDark, 0.6);
+    bowl.drawEllipse(cx, by - bh * 0.6, bw * 0.9, 6);
+    bowl.endFill();
+
+    // Finger mark (wabi-sabi)
+    bowl.lineStyle({ width: 0.6, color: C.sumi, alpha: 0.3 });
+    bowl.moveTo(cx - bw * 0.6, by - bh * 0.3);
+    bowl.bezierCurveTo(cx - bw * 0.65, by - bh * 0.1, cx - bw * 0.6, by + bh * 0.1, cx - bw * 0.55, by + bh * 0.25);
+
+    stage.addChild(bowl);
+
+    // Horizon line
+    const horizon = new PIXI.Graphics();
+    horizon.lineStyle({ width: 0.5, color: C.cedarDeep, alpha: 0.4 });
+    horizon.moveTo(W * 0.1, H * 0.85);
+    horizon.lineTo(W * 0.9, H * 0.85);
+    stage.addChild(horizon);
+
+    // Kanji label (top right) — 手作り = handmade
+    const label = new PIXI.Text('手作り', {
+      fontFamily: 'Noto Serif JP, serif',
+      fontSize: Math.min(W * 0.07, 26),
+      fill: C.cedarDeep,
+      fontWeight: '300'
+    });
+    label.position.set(W - label.width - W * 0.08, H * 0.12);
+    label.alpha = 0.65;
+    stage.addChild(label);
+
+    // Falling clay dust particles
+    const dustContainer = new PIXI.Container();
+    stage.addChild(dustContainer);
+    const dust = [];
+    for (let i = 0; i < 30; i++) {
+      const d = new PIXI.Graphics();
+      const size = 0.6 + Math.random() * 1.2;
+      d.beginFill(C.cedar, 0.5);
+      d.drawCircle(0, 0, size);
+      d.endFill();
+      const sx = cx + (Math.random() - 0.5) * bw * 2;
+      const sy = by - bh * 0.6 + Math.random() * 80;
+      d.position.set(sx, sy);
+      d.userData = {
+        baseX: sx,
+        phase: Math.random() * Math.PI * 2,
+        vy: 0.08 + Math.random() * 0.2,
+        life: Math.random()
+      };
+      dustContainer.addChild(d);
+      dust.push(d);
+    }
+
+    let t = 0;
+    const ticker = (delta) => {
+      t += 0.01 * delta;
+      // Gentle wheel rotation (imperceptible — it's a subtle life)
+      wheelTop.rotation += 0.003 * delta;
+
+      for (const p of dust) {
+        const ud = p.userData;
+        p.y += ud.vy * delta;
+        ud.phase += 0.015 * delta;
+        p.x = ud.baseX + Math.sin(ud.phase) * 4;
+        ud.life += 0.003 * delta;
+        if (p.y > H || ud.life > 1) {
+          p.y = by - bh * 0.3 + Math.random() * 30;
+          ud.baseX = cx + (Math.random() - 0.5) * bw * 2;
+          p.x = ud.baseX;
+          ud.life = 0;
+        }
+        let a = 0;
+        if (ud.life < 0.2) a = ud.life / 0.2;
+        else if (ud.life > 0.7) a = (1 - ud.life) / 0.3;
+        else a = 1;
+        p.alpha = a * 0.55;
+      }
+    };
+    app.ticker.add(ticker);
+    stage._ticker = ticker;
+  };
+
+  layout();
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      if (stage._ticker) app.ticker.remove(stage._ticker);
+      layout();
+    }, 150);
+  });
+}
+
+/* =========================================================
+   INVITATION: concentric enso rings, slowly breathing
+   ========================================================= */
+function buildEnso() {
+  const result = makeApp('pixi-enso');
+  if (!result) return;
+  const { app } = result;
+  const stage = new PIXI.Container();
+  app.stage.addChild(stage);
+
+  const layout = () => {
+    stage.removeChildren();
+    const W = app.screen.width;
+    const H = app.screen.height;
+    const cx = W / 2;
+    const cy = H / 2;
+
+    const ring1 = new PIXI.Graphics();
+    ring1.lineStyle({ width: 1, color: C.cedar, alpha: 0.2 });
+    ring1.drawCircle(0, 0, 260);
+    ring1.position.set(cx, cy);
+    stage.addChild(ring1);
+
+    const ring2 = new PIXI.Graphics();
+    ring2.lineStyle({ width: 1, color: C.cedar, alpha: 0.1 });
+    ring2.drawCircle(0, 0, 360);
+    ring2.position.set(cx, cy);
+    stage.addChild(ring2);
+
+    // A drifting enso (ink-brushed) — subtle
+    const enso = new PIXI.Graphics();
+    const ensoR = 200;
+    enso.lineStyle({ width: 1.2, color: C.cedarDeep, alpha: 0.25 });
+    const seg = 64;
+    enso.moveTo(ensoR, 0);
+    for (let i = 1; i <= seg - 2; i++) {
+      const a = (i / seg) * Math.PI * 2;
+      // Slight imperfection
+      const r = ensoR + (Math.sin(a * 3) * 2);
+      enso.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+    }
+    enso.position.set(cx, cy);
+    stage.addChild(enso);
+
+    // Floating quiet petals / specks
+    const specks = [];
+    const speckContainer = new PIXI.Container();
+    stage.addChild(speckContainer);
+    for (let i = 0; i < 22; i++) {
+      const s = new PIXI.Graphics();
+      const size = 1 + Math.random() * 2;
+      s.beginFill(C.cedar, 0.3 + Math.random() * 0.3);
+      s.drawCircle(0, 0, size);
+      s.endFill();
+      s.position.set(Math.random() * W, Math.random() * H);
+      s.userData = {
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.02 + Math.random() * 0.05,
+        drift: 0.1 + Math.random() * 0.15
+      };
+      speckContainer.addChild(s);
+      specks.push(s);
+    }
+
+    let t = 0;
+    const ticker = (delta) => {
+      t += 0.01 * delta;
+
+      // Gentle breathing scale on rings
+      const breath = 1 + Math.sin(t * 0.5) * 0.01;
+      ring1.scale.set(breath);
+      ring2.scale.set(breath * 0.998);
+      enso.rotation += 0.0005 * delta;
+
+      for (const s of specks) {
+        const d = s.userData;
+        d.phase += d.speed * delta;
+        s.y -= d.drift * delta;
+        s.x += Math.sin(d.phase) * 0.15;
+        if (s.y < -10) {
+          s.y = H + 10;
+          s.x = Math.random() * W;
+        }
+      }
+    };
+    app.ticker.add(ticker);
+    stage._ticker = ticker;
+  };
+
+  layout();
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      if (stage._ticker) app.ticker.remove(stage._ticker);
+      layout();
+    }, 150);
+  });
+}
+
+/* ---------- Small color-lerp helper ---------- */
+function lerpColor(a, b, t) {
+  const ar = (a >> 16) & 0xff, ag = (a >> 8) & 0xff, ab = a & 0xff;
+  const br = (b >> 16) & 0xff, bg = (b >> 8) & 0xff, bb = b & 0xff;
+  const r = Math.round(ar + (br - ar) * t);
+  const g = Math.round(ag + (bg - ag) * t);
+  const bl = Math.round(ab + (bb - ab) * t);
+  return (r << 16) | (g << 8) | bl;
+}
+
+/* =========================================================
+   Boot
+   ========================================================= */
+window.addEventListener('load', () => {
+  // Slight stagger so layout settles
+  requestAnimationFrame(() => {
+    buildHero();
+    buildSpring();
+    buildSummer();
+    buildWinter();
+    buildCraft();
+    buildEnso();
+  });
+});
+
+/* =========================================================
+   Reveal on scroll + nav softening (unchanged from prior)
+   ========================================================= */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -80px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (y > 80) {
+    nav.style.background = 'rgba(245, 241, 234, 0.85)';
+    nav.style.backdropFilter = 'blur(12px)';
+    nav.style.padding = '18px 60px';
+  } else {
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
+    nav.style.padding = '28px 60px';
+  }
+});
+</script>
+
+</body>
+</html>

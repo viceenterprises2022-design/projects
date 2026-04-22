@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Daily Market Snapshot</title>
+  <style>
+    {% include "styles.css" %}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Daily Market Snapshot</h1>
+    <p class="meta">{{ generated_at_utc }} UTC · TradeWithKiru-style brief</p>
+  </header>
+
+  <p class="disclaimer">{{ disclaimer }}</p>
+
+  {% for row in assets_enriched %}
+  <section class="asset-card" id="{{ row.asset_id }}">
+    <div class="asset-head">
+      <h2>{{ row.display_name }}</h2>
+      {% if row.data_unavailable %}
+        <span class="badge bad">Data unavailable</span>
+      {% elif row.quote_disagreement %}
+        <span class="badge warn">Quote cross-check</span>
+      {% else %}
+        <span class="badge ok">OK</span>
+      {% endif %}
+    </div>
+
+    {% if row.cross_check_note %}
+      <p class="cross">{{ row.cross_check_note }}</p>
+    {% endif %}
+
+    {% if row.quote %}
+    <div class="grid">
+      <div class="price-block">
+        <div class="price">{{ "%.4g"|format(row.quote.last) }}</div>
+        <div class="chg {% if row.quote.change_pct and row.quote.change_pct >= 0 %}up{% else %}down{% endif %}">
+          {% if row.quote.change_pct is not none %}
+            {{ "%+.2f"|format(row.quote.change_pct) }}%
+          {% endif %}
+        </div>
+        <div class="src">Source: {{ row.display_source }} ({{ row.quote.source }})</div>
+        {% if row.quote.as_of_utc %}
+          <div class="asof">As of: {{ row.quote.as_of_utc }}</div>
+        {% endif %}
+      </div>
+      <div class="ohlc">
+        {% if row.quote.open_ is not none %}<div>Open: {{ "%.4g"|format(row.quote.open_) }}</div>{% endif %}
+        {% if row.quote.high is not none %}<div>High: {{ "%.4g"|format(row.quote.high) }}</div>{% endif %}
+        {% if row.quote.low is not none %}<div>Low: {{ "%.4g"|format(row.quote.low) }}</div>{% endif %}
+      </div>
+      <div class="spark">
+        {% if row.sparkline_b64 %}
+          <img class="sparkimg" src="data:image/png;base64,{{ row.sparkline_b64 }}" alt="sparkline" />
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% set L = row.technicals.levels %}
+    {% if L.pivot is not none %}
+    <div class="levels">
+      <h3>Technical levels (prior session)</h3>
+      <table>
+        <tr><td>Pivot</td><td>{{ "%.4g"|format(L.pivot) }}</td></tr>
+        <tr><td>S1 / S2</td><td>{{ "%.4g"|format(L.s1) }} / {{ "%.4g"|format(L.s2) }}</td></tr>
+        <tr><td>R1 / R2</td><td>{{ "%.4g"|format(L.r1) }} / {{ "%.4g"|format(L.r2) }}</td></tr>
+        <tr><td>Above pivot</td><td>{{ L.above_pivot }}</td></tr>
+      </table>
+    </div>
+    {% elif row.technicals.levels.unavailable_reason %}
+      <p class="muted">Technicals: {{ row.technicals.levels.unavailable_reason }}</p>
+    {% endif %}
+
+    {% if row.session_narrative %}
+      <div class="narrative">
+        <h3>Session view</h3>
+        <p>{{ row.session_narrative }}</p>
+      </div>
+    {% elif row.narrative_error %}
+      <p class="muted">Narrative: {{ row.narrative_error }}</p>
+    {% endif %}
+
+    <div class="news">
+      <h3>Top news</h3>
+      <ol>
+        {% for n in row.top_news %}
+        <li>
+          <a href="{{ n.link }}">{{ n.title }}</a>
+          <span class="src"> — {{ n.source }}</span>
+          {% if n.why_it_matters %}<div class="why">{{ n.why_it_matters }}</div>{% endif %}
+        </li>
+        {% endfor %}
+        {% if not row.top_news %}
+          {% for n in row.news_candidates[:5] %}
+          <li><a href="{{ n.link }}">{{ n.title }}</a><span class="src"> — {{ n.source }}</span></li>
+          {% endfor %}
+        {% endif %}
+      </ol>
+    </div>
+  </section>
+  {% endfor %}
+</body>
+</html>

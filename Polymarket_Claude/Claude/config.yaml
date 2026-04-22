@@ -1,0 +1,70 @@
+risk:
+  total_capital_usd: 2000
+  max_position_pct: 0.05
+  max_position_usd: 100
+  max_open_positions: 10
+  daily_loss_limit_usd: 200
+  max_slippage_pct: 0.10
+  min_market_liquidity_usd: 5000
+  stop_loss_pct: 0.50
+  take_profit_pct: 1.00
+
+position_sizing:
+  mode: "fixed"
+  fixed_amount_usd: 25
+  copy_ratio: 0.02
+  tiers:
+    high_confidence: 50
+    medium_confidence: 25
+    low_confidence: 10
+
+whale_filters:
+  min_total_pnl_usd: 5000
+  min_win_rate: 0.55
+  min_total_trades: 30
+  max_single_market_concentration: 0.80
+  min_trade_size_usd: 500
+  max_wallets_to_track: 15
+  poll_interval_seconds: 5
+  consensus_threshold: 1
+
+market_filters:
+  allowed_categories: []
+  min_volume_24h_usd: 1000
+  min_days_to_resolution: 1
+  max_days_to_resolution: 90
+  skip_near_certain_markets: true
+  near_certain_threshold: 0.95
+
+exit:
+  mode: "hybrid"
+  follow_whale_exit: true
+  independent_targets: true
+  max_hold_days: 30
+
+execution:
+  order_type: "market_fok"
+  retry_attempts: 3
+  retry_backoff_seconds: 2
+
+telegram:
+  notify_on_trade_entry: true
+  notify_on_trade_exit: true
+  notify_on_daily_pnl: true
+  daily_report_time: "20:00"
+  notify_on_whale_signal: true
+  confirm_mode: false
+  notify_on_errors: true
+
+api:
+  clob_host: "https://clob.polymarket.com"
+  gamma_host: "https://gamma-api.polymarket.com"
+  chain_id: 137
+  positions_subgraph: "https://api.goldsky.com/api/public/project_cl6mb8i9h0003e201j6li0diw/subgraphs/positions-subgraph/0.0.7/gn"
+  activity_subgraph: "https://api.goldsky.com/api/public/project_cl6mb8i9h0003e201j6li0diw/subgraphs/activity-subgraph/0.0.4/gn"
+
+# Add vetted whale wallets here (use: python -m whale.scorer 0xADDRESS first)
+whale_wallets:
+  - address: "0xPLACEHOLDER_REPLACE_ME"
+    label: "Whale Alpha"
+    notes: "Replace with real vetted wallet from polywhaler.com"

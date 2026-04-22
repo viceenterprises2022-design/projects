@@ -1,0 +1,105 @@
+wing: projects
+rooms:
+- name: alphaedge_ticker
+  description: Files from AlphaEdge_Ticker/
+  keywords:
+  - alphaedge_ticker
+  - alphaedge_ticker
+- name: jupiter
+  description: Files from Jupiter/
+  keywords:
+  - jupiter
+  - jupiter
+- name: tradingview_mcp
+  description: Files from tradingview-mcp/
+  keywords:
+  - tradingview_mcp
+  - tradingview-mcp
+- name: pdf
+  description: Files from pdf/
+  keywords:
+  - pdf
+  - pdf
+- name: trading_reports
+  description: Files from trading-reports/
+  keywords:
+  - trading_reports
+  - trading-reports
+- name: gemini_projects
+  description: Files from gemini-projects/
+  keywords:
+  - gemini_projects
+  - gemini-projects
+- name: polymarket_claude
+  description: Files from Polymarket_Claude/
+  keywords:
+  - polymarket_claude
+  - polymarket_claude
+- name: polymarket_new_design
+  description: Files from polymarket-new-design/
+  keywords:
+  - polymarket_new_design
+  - polymarket-new-design
+- name: ai_agentic_security
+  description: Files from AI-Agentic-Security/
+  keywords:
+  - ai_agentic_security
+  - ai-agentic-security
+- name: trading_improve
+  description: Files from Trading-Improve/
+  keywords:
+  - trading_improve
+  - trading-improve
+- name: graphify_out
+  description: Files from graphify-out/
+  keywords:
+  - graphify_out
+  - graphify-out
+- name: phython_projects
+  description: Files from Phython_Projects/
+  keywords:
+  - phython_projects
+  - phython_projects
+- name: tradingview_claude_integration
+  description: Files from tradingview_claude_integration/
+  keywords:
+  - tradingview_claude_integration
+  - tradingview_claude_integration
+- name: github_projects
+  description: Files from Github_Projects/
+  keywords:
+  - github_projects
+  - github_projects
+- name: daily_crypto_news
+  description: Files from daily_crypto_news/
+  keywords:
+  - daily_crypto_news
+  - daily_crypto_news
+- name: alphaedge
+  description: Files from Alphaedge/
+  keywords:
+  - alphaedge
+  - alphaedge
+- name: claude_com_playbook
+  description: Files from Claude_Com_playbook/
+  keywords:
+  - claude_com_playbook
+  - claude_com_playbook
+- name: alphaedge_copy
+  description: Files from Alphaedge_Copy/
+  keywords:
+  - alphaedge_copy
+  - alphaedge_copy
+- name: scripts
+  description: Files from scripts/
+  keywords:
+  - scripts
+  - scripts
+- name: testing
+  description: Files from tests/
+  keywords:
+  - testing
+  - tests
+- name: general
+  description: Files that don't fit other rooms
+  keywords: []

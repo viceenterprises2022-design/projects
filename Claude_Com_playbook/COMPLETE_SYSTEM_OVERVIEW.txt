@@ -1,0 +1,365 @@
+═══════════════════════════════════════════════════════════════
+  PRECIOUS METALS TRADING SYSTEM - COMPLETE PACKAGE
+  Version 2.0 with Economic Calendar Integration
+═══════════════════════════════════════════════════════════════
+
+📦 PACKAGE CONTENTS
+───────────────────────────────────────────────────────────────
+
+🎯 CORE SKILLS (2 files)
+────────────────────────
+skills/
+├── PLAYBOOK_SKILL.md              (17 KB) - Main playbook generator
+└── ECONOMIC_CALENDAR_SKILL.md     (24 KB) - Calendar analyzer
+
+💻 IMPLEMENTATION
+────────────────────────
+scripts/
+└── economic_calendar_analyzer.py  (15 KB) - Python implementation
+
+📚 DOCUMENTATION (7 files)
+────────────────────────
+├── MASTER_README.md               (13 KB) - System overview
+├── INSTALLATION_INSTRUCTIONS.md   (11 KB) - Setup guide
+├── QUICKSTART.md                  (5 KB)  - 5-minute guide
+├── DAILY_WORKFLOW.md              (9 KB)  - Trading routine
+├── PLAYBOOK_README.md             (8 KB)  - Playbook details
+├── ECONOMIC_CALENDAR_README.md    (10 KB) - Calendar details
+└── IMPLEMENTATION_GUIDE.md        (12 KB) - Comprehensive guide
+
+📖 EXAMPLES (4 files)
+────────────────────────
+examples/
+├── INTEGRATED_EXAMPLE.md          (11 KB) - Full CPI day playbook
+├── example_gold_playbook.md       (7 KB)  - Gold sample
+├── example_silver_playbook.md     (9 KB)  - Silver sample
+└── (more examples as needed)
+
+═══════════════════════════════════════════════════════════════
+  SYSTEM CAPABILITIES
+═══════════════════════════════════════════════════════════════
+
+✅ AUTOMATIC FEATURES
+────────────────────────
+• Economic calendar fetching from TradingEconomics.com
+• Event categorization (HIGH/MEDIUM/LOW impact)
+• Money supply and inflation analysis
+• Volatility forecasting by event type
+• Pre/during/post-event strategies
+• Range adjustment for scheduled events
+• Risk management protocols
+
+✅ PLAYBOOK GENERATION
+────────────────────────
+• Daily gold and silver analysis
+• Market structure assessment
+• Dealer gamma positioning
+• Order flow characteristics
+• Sell-on-rise and buy-on-dip setups
+• Clear confirmation criteria
+• Realistic targets and stops
+• Session-specific guidance (London/NY)
+
+✅ EVENT INTEGRATION
+────────────────────────
+• CPI, FOMC, NFP, GDP analysis
+• Fed policy implications
+• Rate path expectations
+• Inflation hedge dynamics
+• Position sizing adjustments
+• Volatility expansion calculations
+
+═══════════════════════════════════════════════════════════════
+  QUICK START GUIDE
+═══════════════════════════════════════════════════════════════
+
+1. INSTALLATION (2 minutes)
+───────────────────────────
+   Upload folder to Claude OR manually copy skills:
+   
+   mkdir -p /mnt/skills/user/precious-metals-playbook
+   mkdir -p /mnt/skills/user/economic-calendar-metals
+   
+   cp skills/PLAYBOOK_SKILL.md /mnt/skills/user/precious-metals-playbook/SKILL.md
+   cp skills/ECONOMIC_CALENDAR_SKILL.md /mnt/skills/user/economic-calendar-metals/SKILL.md
+
+2. VERIFICATION (30 seconds)
+───────────────────────────
+   Test with:
+   "Generate today's gold playbook"
+   
+   ✅ Should see: formatted playbook with calendar section
+
+3. FIRST USE (5 minutes)
+───────────────────────────
+   Read QUICKSTART.md
+   Review example playbooks
+   Understand confirmation requirements
+
+4. DAILY ROUTINE (10 minutes/day)
+───────────────────────────
+   Read DAILY_WORKFLOW.md for:
+   • Morning preparation
+   • Intraday execution
+   • Evening review
+   • Weekly analysis
+
+═══════════════════════════════════════════════════════════════
+  USAGE EXAMPLES
+═══════════════════════════════════════════════════════════════
+
+BASIC REQUESTS
+────────────────────────
+"Generate today's gold playbook"
+"Create silver analysis for tomorrow"
+"Give me playbooks for both metals"
+
+WITH CONTEXT
+────────────────────────
+"Gold playbook for today:
+ - Current price: 2,645
+ - Resistance at 2,660
+ - CPI at 8:30 AM"
+
+EVENT-SPECIFIC
+────────────────────────
+"Generate gold playbook for CPI day"
+"Silver analysis with FOMC context"
+"Playbook for NFP Friday"
+
+CUSTOMIZED
+────────────────────────
+"Conservative gold playbook with tighter stops"
+"Aggressive silver setup for breakout"
+"London session only analysis"
+
+═══════════════════════════════════════════════════════════════
+  OUTPUT SAMPLE (STANDARD DAY)
+═══════════════════════════════════════════════════════════════
+
+🧭 XAUUSD – INTRADAY PLAYBOOK (LON LIVE)
+📅 10.02.2026
+🎯 Metaverse Trading Academy – Logic-Driven View
+
+🔍 MARKET CONTEXT
+[2-3 paragraphs of analysis]
+Primary stance: SELL-ON-RISE
+
+📅 ECONOMIC CALENDAR IMPACT
+**Today's Key Events:**
+[MEDIUM IMPACT] 🟡
+⏰ 10:00 AM ET - US Wholesale Inventories
+   Strategy: Normal trading, watch for surprises
+
+📊 EXPECTED RANGE
+➡️ 2,625 – 2,665
+
+🧠 DEALER & FLOW STRUCTURE
+Above 2,660: Gamma Short 🔴
+2,635-2,650: Gamma Neutral ⚖️
+Below 2,628: Gamma Long 🟢
+
+🧪 STRATEGY LOGIC
+🔴 SELL-ON-RISE: 2,655-2,665
+   [Confirmation criteria]
+   Targets: 2,645 → 2,635 → 2,625
+
+🟢 BUY-ON-DIP: 2,625-2,635
+   [Confirmation criteria]
+   Targets: 2,645 → 2,655
+
+📰 MACRO & DATA CONTEXT
+[USD, yields, policy context]
+
+🎯 SESSION RULES
+• [4-5 key rules]
+
+═══════════════════════════════════════════════════════════════
+  OUTPUT SAMPLE (CPI DAY)
+═══════════════════════════════════════════════════════════════
+
+🧭 XAUUSD – INTRADAY PLAYBOOK (CPI DAY)
+📅 10.02.2026
+
+🔍 MARKET CONTEXT
+Defensive positioning ahead of CPI...
+Primary stance: STAND ASIDE PRE-CPI, REACTIVE POST-CPI
+
+📅 ECONOMIC CALENDAR IMPACT
+[HIGH IMPACT] 🔴
+⏰ 8:30 AM ET - US Consumer Price Index
+   Expected Move: Gold 30-60 points, Silver 1.00-2.00
+   
+   Money Supply Implication:
+   • Hot CPI → Fed hawkish → Bearish gold
+   • Cool CPI → Fed dovish → Bullish gold
+   
+   Trading Strategy:
+   ⚠️ PRE-EVENT: Reduce to 25-50% size
+   ⏸️ DURING: STAND ASIDE
+   ✅ POST: Trade confirmation only
+
+📊 EXPECTED RANGE (CPI-ADJUSTED)
+Pre-CPI: 2,635-2,655 (tight)
+Post-CPI: 2,610-2,690 (2-3x expansion)
+
+🧪 STRATEGY LOGIC
+⚠️ PRE-CPI: Minimal exposure
+✅ POST-CPI HOT: Sell rallies to 2,655-2,670
+✅ POST-CPI COOL: Buy dips to 2,630-2,645
+
+[Full event-adjusted strategies]
+
+═══════════════════════════════════════════════════════════════
+  KEY FEATURES SUMMARY
+═══════════════════════════════════════════════════════════════
+
+PLAYBOOK SKILL
+────────────────────────
+✓ Market structure analysis
+✓ Dealer positioning insights
+✓ Order flow assessment
+✓ Clear entry/exit criteria
+✓ Confirmation requirements
+✓ Risk management
+✓ Session guidance
+
+CALENDAR SKILL
+────────────────────────
+✓ Auto-fetch from TradingEconomics
+✓ Event categorization
+✓ Impact on metals analysis
+✓ Money supply implications
+✓ Volatility forecasting
+✓ Pre/during/post strategies
+✓ Fed policy context
+
+INTEGRATION
+────────────────────────
+✓ Seamless calendar inclusion
+✓ Event-driven adjustments
+✓ Range modifications
+✓ Strategy adaptations
+✓ Risk protocol changes
+
+═══════════════════════════════════════════════════════════════
+  TECHNICAL DETAILS
+═══════════════════════════════════════════════════════════════
+
+FILE SIZES
+────────────────────────
+Total package: ~135 KB
+Skills: 41 KB
+Documentation: 68 KB
+Examples: 27 KB
+
+DEPENDENCIES
+────────────────────────
+• Claude (any version supporting skills)
+• Internet access (for calendar)
+• Web tools: web_fetch, web_search
+
+PLATFORMS
+────────────────────────
+• Claude.ai web interface
+• Claude mobile app
+• Claude desktop app
+• Claude API (with system prompt)
+
+═══════════════════════════════════════════════════════════════
+  SUPPORT & RESOURCES
+═══════════════════════════════════════════════════════════════
+
+DOCUMENTATION PATH
+────────────────────────
+Start here → MASTER_README.md
+Quick setup → INSTALLATION_INSTRUCTIONS.md
+Fast start → QUICKSTART.md
+Daily use → DAILY_WORKFLOW.md
+Deep dive → IMPLEMENTATION_GUIDE.md
+
+TROUBLESHOOTING
+────────────────────────
+Issue: Skills not loading
+→ Check INSTALLATION_INSTRUCTIONS.md
+
+Issue: Calendar not fetching
+→ Check ECONOMIC_CALENDAR_README.md
+
+Issue: Wrong output
+→ Check example files for expected format
+
+LEARNING PATH
+────────────────────────
+Week 1: Observe (generate, don't trade)
+Week 2: Paper trade (follow playbook)
+Week 3: Small size (10-25%)
+Week 4+: Normal size (with discipline)
+
+═══════════════════════════════════════════════════════════════
+  VERSION INFORMATION
+═══════════════════════════════════════════════════════════════
+
+Current Version: 2.0
+Release Date: February 10, 2026
+Created For: Nvidia India - Director SRE/Engineering
+
+Version History:
+• v2.0 - Economic calendar integration, event-driven strategies
+• v1.0 - Initial playbook generation skill
+
+Next Planned:
+• Real-time calendar updates
+• Historical event database
+• Multi-country calendars
+• ML impact predictions
+
+═══════════════════════════════════════════════════════════════
+  IMPORTANT DISCLAIMERS
+═══════════════════════════════════════════════════════════════
+
+⚠️ EDUCATIONAL PURPOSE ONLY
+   This system is for educational purposes. NOT financial advice.
+
+⚠️ TRADING RISKS
+   Precious metals trading involves substantial risk of loss.
+   Past performance does not guarantee future results.
+
+⚠️ NO GUARANTEES
+   Events can produce unexpected reactions.
+   Strategies may stop working.
+   Always use appropriate risk management.
+
+⚠️ CALENDAR LIMITATIONS
+   Data may be delayed, incomplete, or unavailable.
+   Always verify event times manually.
+   Use fallback methods if fetching fails.
+
+═══════════════════════════════════════════════════════════════
+  FINAL NOTES
+═══════════════════════════════════════════════════════════════
+
+This is a professional-grade trading analysis system designed with:
+• Engineering discipline
+• Systematic approach
+• Clear criteria
+• Risk-first mindset
+• Educational focus
+
+Success requires:
+✓ Daily discipline
+✓ Patient confirmation
+✓ Strict risk management
+✓ Continuous learning
+✓ Emotional control
+
+The system provides structure and logic.
+YOU provide the discipline and execution.
+
+═══════════════════════════════════════════════════════════════
+
+🚀 Trade structure, flow, and logic — not predictions.
+
+— Metaverse Trading Academy Style
+
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,81 @@
+# Yahoo (yfinance) + Google Finance quote path segments for https://www.google.com/finance/quote/{google_finance_quote}
+# price_divergence_pct: relative difference between Yahoo vs Google spot to flag quote_disagreement
+
+defaults:
+  price_divergence_pct: 0.75
+  timezone: UTC
+  cross_check_enabled: true
+  cache_ttl_seconds: 900
+
+assets:
+  - id: sensex
+    display_name: "BSE SENSEX"
+    yahoo_symbol: "^BSESN"
+    google_finance_quote: "SENSEX:INDEXBOM"
+    timezone: Asia/Kolkata
+    news_keywords: ["Sensex", "BSE", "India stock market"]
+    rss_feeds:
+      - name: "Economic Times Markets"
+        url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms"
+      - name: "Moneycontrol Top News"
+        url: "https://www.moneycontrol.com/rss/latestnews.xml"
+
+  - id: btc
+    display_name: "Bitcoin (BTC)"
+    yahoo_symbol: "BTC-USD"
+    google_finance_quote: "BTC-USD"
+    news_keywords: ["Bitcoin", "BTC"]
+    rss_feeds:
+      - name: "CoinDesk"
+        url: "https://www.coindesk.com/arc/outboundfeeds/rss/"
+      - name: "Cointelegraph"
+        url: "https://cointelegraph.com/rss"
+
+  - id: eth
+    display_name: "Ethereum (ETH)"
+    yahoo_symbol: "ETH-USD"
+    google_finance_quote: "ETH-USD"
+    news_keywords: ["Ethereum", "ETH"]
+    rss_feeds:
+      - name: "CoinDesk"
+        url: "https://www.coindesk.com/arc/outboundfeeds/rss/"
+      - name: "Decrypt"
+        url: "https://decrypt.co/feed"
+
+  - id: xrp
+    display_name: "XRP"
+    yahoo_symbol: "XRP-USD"
+    google_finance_quote: "XRP-USD"
+    news_keywords: ["XRP", "Ripple"]
+    rss_feeds:
+      - name: "CoinDesk"
+        url: "https://www.coindesk.com/arc/outboundfeeds/rss/"
+      - name: "Cointelegraph"
+        url: "https://cointelegraph.com/rss"
+
+  - id: gold
+    display_name: "Gold (COMEX)"
+    yahoo_symbol: "GC=F"
+    google_finance_quote: "GCW00:COMEX"
+    news_keywords: ["gold price", "gold futures"]
+    rss_feeds:
+      - name: "MarketWatch Top"
+        url: "http://feeds.marketwatch.com/marketwatch/topstories/"
+
+  - id: silver
+    display_name: "Silver (COMEX)"
+    yahoo_symbol: "SI=F"
+    google_finance_quote: "SIW00:COMEX"
+    news_keywords: ["silver price", "silver futures"]
+    rss_feeds:
+      - name: "MarketWatch Top"
+        url: "http://feeds.marketwatch.com/marketwatch/topstories/"
+
+  - id: crude
+    display_name: "Crude Oil (WTI)"
+    yahoo_symbol: "CL=F"
+    google_finance_quote: "CLW00:NYMEX"
+    news_keywords: ["crude oil", "WTI", "oil price"]
+    rss_feeds:
+      - name: "MarketWatch Top"
+        url: "http://feeds.marketwatch.com/marketwatch/topstories/"

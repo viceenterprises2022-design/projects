@@ -1,0 +1,51 @@
+draft_report_task:
+  description: >
+    You are given EVIDENCE_JSON — the only source of truth for market numbers and news candidates.
+
+    EVIDENCE_JSON:
+    {evidence_json}
+
+    Produce ONLY valid JSON (no markdown fences) with this shape:
+    {{
+      "assets": [
+        {{
+          "asset_id": "<id>",
+          "session_narrative": "<2-4 sentences, only numbers from evidence>",
+          "top_news": [
+            {{
+              "title": "<exact from candidate>",
+              "link": "<exact from candidate>",
+              "source": "<exact from candidate>",
+              "published_ist": "<from candidate>",
+              "summary_plain": "<from candidate>",
+              "why_it_matters": "<= 20 words, no new numbers>"
+            }}
+          ]
+        }}
+      ]
+    }}
+
+    Rules:
+    - Include every asset_id present in evidence exactly once.
+    - For top_news, choose up to 5 items from that asset's news_candidates; copy title/link/source/published_ist/summary_plain exactly.
+    - If news_candidates is empty, use an empty top_news array.
+    - Never invent statistics; if quote is null, explain unavailability briefly without fabricating values.
+  expected_output: >
+    A single JSON object with an assets array.
+  agent: lead_researcher
+
+review_report_task:
+  description: >
+    EVIDENCE_JSON:
+    {evidence_json}
+
+    DRAFT_JSON from the previous step is available in the crew context — use the latest draft JSON output.
+
+    Verify DRAFT_JSON introduces no numeric values not present in EVIDENCE_JSON (including why_it_matters).
+    If compliant, return DRAFT_JSON unchanged.
+    Otherwise rewrite offending strings while preserving valid news fields copied from candidates.
+
+    Output ONLY JSON (no markdown fences) with the same schema: {{"assets":[...]}}
+  expected_output: >
+    Final JSON object with assets array.
+  agent: risk_reviewer
