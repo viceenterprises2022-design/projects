@@ -4841,90 +4841,90 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L137",
-      "id": "usdt_validator_v0_4_rationale_137",
       "community": 6,
-      "norm_label": "fix-01: custom serialiser that stores checkstatus as its string value,     not a"
+      "norm_label": "fix-01: custom serialiser that stores checkstatus as its string value,     not a",
+      "id": "usdt_validator_v0_4_rationale_137"
     },
     {
       "label": "Return base headers, injecting the TronGrid API key for TronGrid endpoints.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L202",
-      "id": "usdt_validator_v0_4_rationale_202",
       "community": 6,
-      "norm_label": "return base headers, injecting the trongrid api key for trongrid endpoints."
+      "norm_label": "return base headers, injecting the trongrid api key for trongrid endpoints.",
+      "id": "usdt_validator_v0_4_rationale_202"
     },
     {
       "label": "POST /wallet/gettransactionbyid     FullNode \u2014 returns complete Transaction obje",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L246",
-      "id": "usdt_validator_v0_4_rationale_246",
       "community": 6,
-      "norm_label": "post /wallet/gettransactionbyid     fullnode \u2014 returns complete transaction obje"
+      "norm_label": "post /wallet/gettransactionbyid     fullnode \u2014 returns complete transaction obje",
+      "id": "usdt_validator_v0_4_rationale_246"
     },
     {
       "label": "POST /wallet/gettransactioninfobyid     FullNode \u2014 returns TransactionInfo: bloc",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L255",
-      "id": "usdt_validator_v0_4_rationale_255",
       "community": 6,
-      "norm_label": "post /wallet/gettransactioninfobyid     fullnode \u2014 returns transactioninfo: bloc"
+      "norm_label": "post /wallet/gettransactioninfobyid     fullnode \u2014 returns transactioninfo: bloc",
+      "id": "usdt_validator_v0_4_rationale_255"
     },
     {
       "label": "POST /walletsolidity/gettransactioninfobyid     Solidity node \u2014 only returns dat",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L265",
-      "id": "usdt_validator_v0_4_rationale_265",
       "community": 6,
-      "norm_label": "post /walletsolidity/gettransactioninfobyid     solidity node \u2014 only returns dat"
+      "norm_label": "post /walletsolidity/gettransactioninfobyid     solidity node \u2014 only returns dat",
+      "id": "usdt_validator_v0_4_rationale_265"
     },
     {
       "label": "GET /v1/transactions/{hash}/events     TronGrid indexed REST \u2014 returns Transfer",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L275",
-      "id": "usdt_validator_v0_4_rationale_275",
       "community": 6,
-      "norm_label": "get /v1/transactions/{hash}/events     trongrid indexed rest \u2014 returns transfer"
+      "norm_label": "get /v1/transactions/{hash}/events     trongrid indexed rest \u2014 returns transfer",
+      "id": "usdt_validator_v0_4_rationale_275"
     },
     {
       "label": "TronScan transaction-info \u2014 independent provider for cross-validation.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L287",
-      "id": "usdt_validator_v0_4_rationale_287",
       "community": 6,
-      "norm_label": "tronscan transaction-info \u2014 independent provider for cross-validation."
+      "norm_label": "tronscan transaction-info \u2014 independent provider for cross-validation.",
+      "id": "usdt_validator_v0_4_rationale_287"
     },
     {
       "label": "Returns current block heights from TronGrid FullNode + TronScan.     TronGrid: P",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L291",
-      "id": "usdt_validator_v0_4_rationale_291",
       "community": 6,
-      "norm_label": "returns current block heights from trongrid fullnode + tronscan.     trongrid: p"
+      "norm_label": "returns current block heights from trongrid fullnode + tronscan.     trongrid: p",
+      "id": "usdt_validator_v0_4_rationale_291"
     },
     {
       "label": "GET /v1/accounts/{address} \u2014 authenticated TronGrid indexed REST.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L310",
-      "id": "usdt_validator_v0_4_rationale_310",
       "community": 6,
-      "norm_label": "get /v1/accounts/{address} \u2014 authenticated trongrid indexed rest."
+      "norm_label": "get /v1/accounts/{address} \u2014 authenticated trongrid indexed rest.",
+      "id": "usdt_validator_v0_4_rationale_310"
     },
     {
       "label": "Return string status of the most recent check.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L358",
-      "id": "usdt_validator_v0_4_rationale_358",
       "community": 6,
-      "norm_label": "return string status of the most recent check."
+      "norm_label": "return string status of the most recent check.",
+      "id": "usdt_validator_v0_4_rationale_358"
     },
     {
       "label": "live_finance_crypto_news.py",
@@ -15344,8 +15344,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L221",
       "weight": 1.0,
-      "_src": "usdt_validator_v0_4_http_get",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "usdt_validator_v0_4_http_get",
       "source": "e2e_test_sleep",
       "target": "usdt_validator_v0_4_http_get"
     },
@@ -15356,8 +15356,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L238",
       "weight": 1.0,
-      "_src": "usdt_validator_v0_4_http_post",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "usdt_validator_v0_4_http_post",
       "source": "e2e_test_sleep",
       "target": "usdt_validator_v0_4_http_post"
     },
@@ -15368,8 +15368,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L775",
       "weight": 1.0,
-      "_src": "usdt_validator_v0_4_usdtvalidator_section_03",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "usdt_validator_v0_4_usdtvalidator_section_03",
       "source": "e2e_test_sleep",
       "target": "usdt_validator_v0_4_usdtvalidator_section_03"
     },
@@ -19028,8 +19028,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py",
       "source_location": "L1450",
       "weight": 1.0,
-      "_src": "usdt_validator_v0_4_main",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "usdt_validator_v0_4_main",
       "source": "config_exit",
       "target": "usdt_validator_v0_4_main"
     },
