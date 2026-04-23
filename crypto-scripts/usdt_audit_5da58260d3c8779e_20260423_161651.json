@@ -1,0 +1,258 @@
+{
+  "tx_hash": "5da58260d3c8779e0310a38a31079fbf3a358487c0ccb8450ce02afbf9a64185",
+  "operator": "SYSTEM",
+  "started_at": "2026-04-23T16:16:51.317301+00:00",
+  "completed_at": "2026-04-23T16:16:57.286453+00:00",
+  "expected_amount": null,
+  "expected_to": null,
+  "checks": [
+    {
+      "section": "\u00a701",
+      "code": "01.1",
+      "name": "Transaction located on chain",
+      "status": "pass",
+      "detail": "Transaction located on: TronGrid/wallet, TronGrid/txinfo, TronScan",
+      "critical": true,
+      "raw_data": {
+        "tg_by_id": true,
+        "tg_info": true,
+        "tronscan": true
+      }
+    },
+    {
+      "section": "\u00a701",
+      "code": "01.2",
+      "name": "TRC20 transfer records extracted",
+      "status": "pass",
+      "detail": "Found 1 TRC20 Transfer event(s). Contract(s): TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t  [src: trongrid_events]",
+      "critical": true,
+      "raw_data": {
+        "contract_addresses": [
+          "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t"
+        ],
+        "sources": [
+          "trongrid_events"
+        ]
+      }
+    },
+    {
+      "section": "\u00a701",
+      "code": "01.3",
+      "name": "Contract = TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+      "status": "pass",
+      "detail": "Contract address verified: TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a701",
+      "code": "01.4",
+      "name": "Token metadata: name / symbol / decimals",
+      "status": "warn",
+      "detail": "Metadata mismatch (may be missing from API \u2014 not necessarily fraud):\nSymbol  : got '', expected 'USDT'\nName    : got '', expected 'Tether USD'\nDecimals: got -1, expected 6",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a702",
+      "code": "02.1",
+      "name": "contractRet = SUCCESS (execution result)",
+      "status": "pass",
+      "detail": "contractRet = SUCCESS\nwallet/getTransactionById: SUCCESS  |  txinfo receipt: SUCCESS  |  TronScan: SUCCESS",
+      "critical": true,
+      "raw_data": {
+        "tg_gettransactionbyid": "SUCCESS",
+        "tg_receipt_result": "SUCCESS",
+        "tronscan_contractRet": "SUCCESS"
+      }
+    },
+    {
+      "section": "\u00a702",
+      "code": "02.2",
+      "name": "Transaction confirmed (not pending)",
+      "status": "pass",
+      "detail": "Transaction confirmed in Block #82,096,871\ntxinfo blockNum: 82096871  |  solidity blockNum: 82096871  |  TronScan block: 82096871",
+      "critical": true,
+      "raw_data": {
+        "tgi_block": 82096871,
+        "sol_block": 82096871,
+        "ts_block": 82096871,
+        "sol_confirmed": true,
+        "ts_confirmed": true
+      }
+    },
+    {
+      "section": "\u00a702",
+      "code": "02.3",
+      "name": "Cross-validated: TronGrid FullNode + TronScan",
+      "status": "pass",
+      "detail": "All available providers agree: SUCCESS (4 sources)\nwallet/getTxById: SUCCESS  |  wallet/getTxInfo (receipt): SUCCESS  |  walletsolidity/getTxInfo: SUCCESS  |  TronScan: SUCCESS",
+      "critical": false,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a703",
+      "code": "03.1",
+      "name": "Current block height fetched",
+      "status": "pass",
+      "detail": "Current block: #82,097,703\nTronGrid: #82,097,703 | TronScan: #82,097,684",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a703",
+      "code": "03.2",
+      "name": "Confirmations \u2265 50 (production threshold)",
+      "status": "pass",
+      "detail": "Confirmations: 832 blocks \u2713\nTX Block: #82,096,871 | Current: #82,097,703\nStandard(\u226519)=\u2713  High-Value(\u226530)=\u2713  Production(\u226550)=\u2713",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a704",
+      "code": "04.1",
+      "name": "Transfer event from official USDT contract",
+      "status": "pass",
+      "detail": "1 Transfer event(s) from official USDT contract",
+      "critical": true,
+      "raw_data": {
+        "official_transfer_count": 1
+      }
+    },
+    {
+      "section": "\u00a704",
+      "code": "04.2",
+      "name": "Transfer event 'to' address verified",
+      "status": "pass",
+      "detail": "Transfer destination: 0xe3c344d5a3bc0f555ad24e9a73c90998e85084da\n(No --expected-to provided. Recommend rerunning with --expected-to for full verification.)",
+      "critical": true,
+      "raw_data": {
+        "to_addresses": [
+          "0xe3c344d5a3bc0f555ad24e9a73c90998e85084da"
+        ]
+      }
+    },
+    {
+      "section": "\u00a704",
+      "code": "04.3",
+      "name": "Transfer event amount matches expected",
+      "status": "pass",
+      "detail": "Transfer amount: 99.960000 USDT\n(No --expected-amount provided. Recommend rerunning with --expected-amount.)",
+      "critical": true,
+      "raw_data": {
+        "amount_usdt": 99.96,
+        "raw_amount": 99960000
+      }
+    },
+    {
+      "section": "\u00a704",
+      "code": "04.4",
+      "name": "No duplicate or conflicting Transfer events",
+      "status": "pass",
+      "detail": "Single Transfer event from official contract \u2014 clean transaction",
+      "critical": false,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a704",
+      "code": "04.5",
+      "name": "Sender address extracted",
+      "status": "pass",
+      "detail": "Sender: 0xfe0460cf2611ce2f29a7b8cded20e3dee3c7bae4",
+      "critical": false,
+      "raw_data": {
+        "from_addresses": [
+          "0xfe0460cf2611ce2f29a7b8cded20e3dee3c7bae4"
+        ]
+      }
+    },
+    {
+      "section": "\u00a705",
+      "code": "05.1",
+      "name": "Sender verified as EOA (not a smart contract)",
+      "status": "pass",
+      "detail": "Sender 0xfe0460cf2611ce2f29a7b8cded20e3dee3c7bae4 is an EOA (Externally Owned Account) \u2014 lower risk",
+      "critical": true,
+      "raw_data": {
+        "is_contract": false
+      }
+    },
+    {
+      "section": "\u00a705",
+      "code": "05.3",
+      "name": "Sender address has established transaction history",
+      "status": "pass",
+      "detail": "Account history confirmed (creation time not exposed by API)",
+      "critical": false,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a706",
+      "code": "06.1",
+      "name": "TronGrid FullNode \u2014 wallet/getTransactionById",
+      "status": "pass",
+      "detail": "wallet/getTransactionById: contractRet=SUCCESS  confs=832",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a706",
+      "code": "06.2",
+      "name": "TronGrid FullNode \u2014 wallet/getTransactionInfoById",
+      "status": "pass",
+      "detail": "wallet/getTransactionInfoById: receipt.result=SUCCESS  blockNumber=82,096,871",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a706",
+      "code": "06.3",
+      "name": "TronGrid Solidity \u2014 walletsolidity/getTransactionInfoById",
+      "status": "pass",
+      "detail": "walletsolidity/getTransactionInfoById: confirmed  blockNumber=82,096,871  result=SUCCESS",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a706",
+      "code": "06.4",
+      "name": "TronScan \u2014 independent confirmation",
+      "status": "pass",
+      "detail": "TronScan: contractRet=SUCCESS  confirmed=True",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a706",
+      "code": "06.5",
+      "name": "Consensus: 2-of-4 providers PASS required",
+      "status": "pass",
+      "detail": "Consensus ACHIEVED \u2014 4/4 providers confirm PASS\n  TG_FullNode_getTxById: PASS\n  TG_FullNode_getTxInfo: PASS\n  TG_Solidity: PASS\n  TronScan: PASS",
+      "critical": true,
+      "raw_data": {}
+    },
+    {
+      "section": "\u00a707",
+      "code": "07.1",
+      "name": "Validation report status finalised",
+      "status": "pass",
+      "detail": "Final status: CLEARED_WITH_WARNINGS",
+      "critical": true,
+      "raw_data": {}
+    }
+  ],
+  "final_status": "CLEARED_WITH_WARNINGS",
+  "actual_amount": 99.96,
+  "actual_to": "0xe3c344d5a3bc0f555ad24e9a73c90998e85084da",
+  "block_number": 82096871,
+  "confirmations": 832,
+  "contract_address": "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+  "sender_address": "0xfe0460cf2611ce2f29a7b8cded20e3dee3c7bae4",
+  "sender_is_contract": false,
+  "provider_consensus": {
+    "TG_FullNode_getTxById": "PASS",
+    "TG_FullNode_getTxInfo": "PASS",
+    "TG_Solidity": "PASS",
+    "TronScan": "PASS"
+  }
+}
