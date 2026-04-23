@@ -2411,27 +2411,27 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/gemini-projects/src/common/telegram_client.py",
       "source_location": "L10",
-      "id": "telegram_client_rationale_10",
       "community": 6,
-      "norm_label": "fresh telegram integration client.     handles sending formatted messages and do"
+      "norm_label": "fresh telegram integration client.     handles sending formatted messages and do",
+      "id": "telegram_client_rationale_10"
     },
     {
       "label": "Send a text message to the configured chat.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/gemini-projects/src/common/telegram_client.py",
       "source_location": "L25",
-      "id": "telegram_client_rationale_25",
       "community": 6,
-      "norm_label": "send a text message to the configured chat."
+      "norm_label": "send a text message to the configured chat.",
+      "id": "telegram_client_rationale_25"
     },
     {
       "label": "Formats and sends a trading report.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/gemini-projects/src/common/telegram_client.py",
       "source_location": "L52",
-      "id": "telegram_client_rationale_52",
       "community": 6,
-      "norm_label": "formats and sends a trading report."
+      "norm_label": "formats and sends a trading report.",
+      "id": "telegram_client_rationale_52"
     },
     {
       "label": "__init__.py",
@@ -14018,8 +14018,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/gemini-projects/src/common/telegram_client.py",
       "source_location": "L67",
       "weight": 1.0,
-      "_src": "telegram_client_telegramclient_send_report",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "telegram_client_telegramclient_send_report",
       "source": "tab_list",
       "target": "telegram_client_telegramclient_send_report"
     },
