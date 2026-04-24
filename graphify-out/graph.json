@@ -5147,45 +5147,45 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L51",
-      "id": "wallet_historian_v5_rationale_51",
       "community": 12,
-      "norm_label": "convert epoch-milliseconds to human-readable utc string."
+      "norm_label": "convert epoch-milliseconds to human-readable utc string.",
+      "id": "wallet_historian_v5_rationale_51"
     },
     {
       "label": "Paginate through the full TRC20 USDT transfer history for `wallet`.     TronGrid",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L66",
-      "id": "wallet_historian_v5_rationale_66",
       "community": 12,
-      "norm_label": "paginate through the full trc20 usdt transfer history for `wallet`.     trongrid"
+      "norm_label": "paginate through the full trc20 usdt transfer history for `wallet`.     trongrid",
+      "id": "wallet_historian_v5_rationale_66"
     },
     {
       "label": "Return (TRX balance, USDT balance) for a wallet address.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L111",
-      "id": "wallet_historian_v5_rationale_111",
       "community": 12,
-      "norm_label": "return (trx balance, usdt balance) for a wallet address."
+      "norm_label": "return (trx balance, usdt balance) for a wallet address.",
+      "id": "wallet_historian_v5_rationale_111"
     },
     {
       "label": "Print every individual transaction in chronological order.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L138",
-      "id": "wallet_historian_v5_rationale_138",
       "community": 12,
-      "norm_label": "print every individual transaction in chronological order."
+      "norm_label": "print every individual transaction in chronological order.",
+      "id": "wallet_historian_v5_rationale_138"
     },
     {
       "label": "Aggregate by counterparty address and show totals + live balances.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L165",
-      "id": "wallet_historian_v5_rationale_165",
       "community": 12,
-      "norm_label": "aggregate by counterparty address and show totals + live balances."
+      "norm_label": "aggregate by counterparty address and show totals + live balances.",
+      "id": "wallet_historian_v5_rationale_165"
     },
     {
       "label": "wallet-researcher-v5.py",
@@ -5237,18 +5237,18 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v5.py",
       "source_location": "L22",
-      "id": "wallet_researcher_v5_rationale_22",
       "community": 4,
-      "norm_label": "fetches inbound senders from both trx and usdt (trc20) history."
+      "norm_label": "fetches inbound senders from both trx and usdt (trc20) history.",
+      "id": "wallet_researcher_v5_rationale_22"
     },
     {
       "label": "Fetches real-time TRX and USDT balances for a wallet.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v5.py",
       "source_location": "L53",
-      "id": "wallet_researcher_v5_rationale_53",
       "community": 4,
-      "norm_label": "fetches real-time trx and usdt balances for a wallet."
+      "norm_label": "fetches real-time trx and usdt balances for a wallet.",
+      "id": "wallet_researcher_v5_rationale_53"
     },
     {
       "label": "wallet-researcher-v2.py",
@@ -13634,8 +13634,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L80",
       "weight": 1.0,
-      "_src": "wallet_historian_v5_fetch_all_usdt_transfers",
-      "_tgt": "replay_status",
+      "_src": "replay_status",
+      "_tgt": "wallet_historian_v5_fetch_all_usdt_transfers",
       "source": "replay_status",
       "target": "wallet_historian_v5_fetch_all_usdt_transfers"
     },
@@ -15014,8 +15014,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v5.py",
       "source_location": "L50",
       "weight": 1.0,
-      "_src": "wallet_researcher_v5_fetch_inbound_senders",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "wallet_researcher_v5_fetch_inbound_senders",
       "source": "tab_list",
       "target": "wallet_researcher_v5_fetch_inbound_senders"
     },
@@ -15974,8 +15974,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L105",
       "weight": 1.0,
-      "_src": "wallet_historian_v5_fetch_all_usdt_transfers",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "wallet_historian_v5_fetch_all_usdt_transfers",
       "source": "e2e_test_sleep",
       "target": "wallet_historian_v5_fetch_all_usdt_transfers"
     },
@@ -15986,8 +15986,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L200",
       "weight": 1.0,
-      "_src": "wallet_historian_v5_print_counterparty_summary",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "wallet_historian_v5_print_counterparty_summary",
       "source": "e2e_test_sleep",
       "target": "wallet_historian_v5_print_counterparty_summary"
     },
@@ -15998,8 +15998,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v5.py",
       "source_location": "L104",
       "weight": 1.0,
-      "_src": "wallet_researcher_v5_main",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "wallet_researcher_v5_main",
       "source": "e2e_test_sleep",
       "target": "wallet_researcher_v5_main"
     },
@@ -19718,8 +19718,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-historian-v5.py",
       "source_location": "L225",
       "weight": 1.0,
-      "_src": "wallet_historian_v5_main",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "wallet_historian_v5_main",
       "source": "config_exit",
       "target": "wallet_historian_v5_main"
     },
@@ -19730,8 +19730,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v5.py",
       "source_location": "L82",
       "weight": 1.0,
-      "_src": "wallet_researcher_v5_main",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "wallet_researcher_v5_main",
       "source": "config_exit",
       "target": "wallet_researcher_v5_main"
     },
@@ -21194,8 +21194,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v5.py",
       "source_location": "L34",
       "weight": 1.0,
-      "_src": "wallet_researcher_v5_fetch_inbound_senders",
-      "_tgt": "dgm_h_loop_archive_add",
+      "_src": "dgm_h_loop_archive_add",
+      "_tgt": "wallet_researcher_v5_fetch_inbound_senders",
       "source": "dgm_h_loop_archive_add",
       "target": "wallet_researcher_v5_fetch_inbound_senders"
     },
