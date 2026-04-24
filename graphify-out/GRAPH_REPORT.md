@@ -526,9 +526,9 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 0` to `Community 3`, `Community 4`, `Community 6`, `Community 8`, `Community 9`, `Community 17`?**
-  _High betweenness centrality (0.139) - this node is a cross-community bridge._
-- **Why does `bootstrap()` connect `Community 4` to `Community 0`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+  _High betweenness centrality (0.134) - this node is a cross-community bridge._
+- **Why does `RiskManager` connect `Community 3` to `Community 0`, `Community 12`?**
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 31 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
