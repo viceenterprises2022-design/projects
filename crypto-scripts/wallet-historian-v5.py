@@ -29,7 +29,7 @@ TRONGRID_BASE  = "https://api.trongrid.io"
 
 # TronGrid API key (get free at https://www.trongrid.io/)
 # Leave as empty string "" for unauthenticated access (rate-limited but works)
-TRONGRID_API_KEY = ""
+TRONGRID_API_KEY = "e39c9fb9-66a1-43ef-8f21-4eb605aeceb2"
 
 USDT_DECIMALS  = 6
 PAGE_SIZE      = 200      # max allowed by TronGrid
