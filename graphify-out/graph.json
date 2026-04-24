@@ -4652,18 +4652,18 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v4.py",
       "source_location": "L20",
-      "id": "wallet_researcher_v4_rationale_20",
       "community": 6,
-      "norm_label": "corrected mapping for trx and trc20 (usdt) inbound transfers."
+      "norm_label": "corrected mapping for trx and trc20 (usdt) inbound transfers.",
+      "id": "wallet_researcher_v4_rationale_20"
     },
     {
       "label": "Fetches live TRX and USDT balances for the source wallets.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v4.py",
       "source_location": "L55",
-      "id": "wallet_researcher_v4_rationale_55",
       "community": 6,
-      "norm_label": "fetches live trx and usdt balances for the source wallets."
+      "norm_label": "fetches live trx and usdt balances for the source wallets.",
+      "id": "wallet_researcher_v4_rationale_55"
     },
     {
       "label": "usdt_validator_v0.4.py",
@@ -5165,18 +5165,18 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v3.py",
       "source_location": "L20",
-      "id": "wallet_researcher_v3_rationale_20",
       "community": 6,
-      "norm_label": "fetches unique inbound senders using specific tronscan api parameters."
+      "norm_label": "fetches unique inbound senders using specific tronscan api parameters.",
+      "id": "wallet_researcher_v3_rationale_20"
     },
     {
       "label": "Fetches live TRX and USDT balances for identified sender wallets.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v3.py",
       "source_location": "L60",
-      "id": "wallet_researcher_v3_rationale_60",
       "community": 6,
-      "norm_label": "fetches live trx and usdt balances for identified sender wallets."
+      "norm_label": "fetches live trx and usdt balances for identified sender wallets.",
+      "id": "wallet_researcher_v3_rationale_60"
     },
     {
       "label": "live_finance_crypto_news.py",
@@ -13424,8 +13424,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v4.py",
       "source_location": "L83",
       "weight": 1.0,
-      "_src": "wallet_researcher_v4_main",
-      "_tgt": "replay_status",
+      "_src": "replay_status",
+      "_tgt": "wallet_researcher_v4_main",
       "source": "replay_status",
       "target": "wallet_researcher_v4_main"
     },
@@ -13448,8 +13448,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v3.py",
       "source_location": "L89",
       "weight": 1.0,
-      "_src": "wallet_researcher_v3_main",
-      "_tgt": "replay_status",
+      "_src": "replay_status",
+      "_tgt": "wallet_researcher_v3_main",
       "source": "replay_status",
       "target": "wallet_researcher_v3_main"
     },
@@ -14792,8 +14792,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v4.py",
       "source_location": "L52",
       "weight": 1.0,
-      "_src": "wallet_researcher_v4_fetch_inbound_senders",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "wallet_researcher_v4_fetch_inbound_senders",
       "source": "tab_list",
       "target": "wallet_researcher_v4_fetch_inbound_senders"
     },
@@ -14816,8 +14816,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v3.py",
       "source_location": "L57",
       "weight": 1.0,
-      "_src": "wallet_researcher_v3_fetch_inbound_senders",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "wallet_researcher_v3_fetch_inbound_senders",
       "source": "tab_list",
       "target": "wallet_researcher_v3_fetch_inbound_senders"
     },
@@ -15704,8 +15704,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v4.py",
       "source_location": "L99",
       "weight": 1.0,
-      "_src": "wallet_researcher_v4_main",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "wallet_researcher_v4_main",
       "source": "e2e_test_sleep",
       "target": "wallet_researcher_v4_main"
     },
@@ -15764,8 +15764,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v3.py",
       "source_location": "L105",
       "weight": 1.0,
-      "_src": "wallet_researcher_v3_main",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "wallet_researcher_v3_main",
       "source": "e2e_test_sleep",
       "target": "wallet_researcher_v3_main"
     },
@@ -19436,8 +19436,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v4.py",
       "source_location": "L81",
       "weight": 1.0,
-      "_src": "wallet_researcher_v4_main",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "wallet_researcher_v4_main",
       "source": "config_exit",
       "target": "wallet_researcher_v4_main"
     },
@@ -19472,8 +19472,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v3.py",
       "source_location": "L87",
       "weight": 1.0,
-      "_src": "wallet_researcher_v3_main",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "wallet_researcher_v3_main",
       "source": "config_exit",
       "target": "wallet_researcher_v3_main"
     },
@@ -20900,8 +20900,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v4.py",
       "source_location": "L34",
       "weight": 1.0,
-      "_src": "wallet_researcher_v4_fetch_inbound_senders",
-      "_tgt": "dgm_h_loop_archive_add",
+      "_src": "dgm_h_loop_archive_add",
+      "_tgt": "wallet_researcher_v4_fetch_inbound_senders",
       "source": "dgm_h_loop_archive_add",
       "target": "wallet_researcher_v4_fetch_inbound_senders"
     },
@@ -20924,8 +20924,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher-v3.py",
       "source_location": "L37",
       "weight": 1.0,
-      "_src": "wallet_researcher_v3_fetch_inbound_senders",
-      "_tgt": "dgm_h_loop_archive_add",
+      "_src": "dgm_h_loop_archive_add",
+      "_tgt": "wallet_researcher_v3_fetch_inbound_senders",
       "source": "dgm_h_loop_archive_add",
       "target": "wallet_researcher_v3_fetch_inbound_senders"
     },
