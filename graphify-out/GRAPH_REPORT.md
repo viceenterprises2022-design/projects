@@ -1,7 +1,7 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-24)
 
 ## Corpus Check
-- 132 files · ~358,034 words
+- 132 files · ~358,721 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -107,8 +107,8 @@
   /home/vreddy1/Desktop/Projects/tradingview-mcp/src/core/tab.js → Polymarket_Claude/Claude/dgm_h_loop.py
 - `sleep()` --calls--> `main()`  [INFERRED]
   /home/vreddy1/Desktop/Projects/tradingview-mcp/tests/e2e.test.js → Polymarket_Claude/Claude/dgm_h_loop.py
-- `main()` --calls--> `exit()`  [INFERRED]
-  /home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher.py → Polymarket_Claude/Claude/config.py
+- `exit()` --calls--> `main()`  [INFERRED]
+  Polymarket_Claude/Claude/config.py → /home/vreddy1/Desktop/Projects/crypto-scripts/wallet-researcher.py
 - `exit()` --calls--> `main()`  [INFERRED]
   Polymarket_Claude/Claude/config.py → /home/vreddy1/Desktop/Projects/crypto-scripts/usdt_validator_v0.4.py
 
@@ -536,11 +536,11 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 0` to `Community 2`, `Community 6`, `Community 8`, `Community 10`, `Community 11`, `Community 19`?**
-  _High betweenness centrality (0.123) - this node is a cross-community bridge._
+  _High betweenness centrality (0.130) - this node is a cross-community bridge._
 - **Why does `TelegramJournal` connect `Community 3` to `Community 9`?**
   _High betweenness centrality (0.070) - this node is a cross-community bridge._
-- **Why does `main()` connect `Community 11` to `Community 0`, `Community 12`, `Community 6`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `merge_quotes_for_asset()` connect `Community 4` to `Community 0`, `Community 7`?**
+  _High betweenness centrality (0.038) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 31 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
