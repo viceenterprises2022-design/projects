@@ -1,7 +1,7 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-25)
 
 ## Corpus Check
-- 259 files · ~474,896 words
+- 259 files · ~475,658 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -1277,11 +1277,9 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 3` to `Community 8`, `Community 0`, `Community 4`, `Community 21`?**
-  _High betweenness centrality (0.054) - this node is a cross-community bridge._
-- **Why does `merge_quotes_for_asset()` connect `Community 5` to `Community 0`, `Community 4`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
 - **Why does `fetch_google_finance()` connect `Community 5` to `Community 0`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+  _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 31 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
@@ -1290,3 +1288,5 @@ _Questions this graph is uniquely positioned to answer:_
   _`BotState` has 34 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 33 inferred relationships involving `GlobalRiskConfig` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`GlobalRiskConfig` has 33 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 34 inferred relationships involving `Position` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
+  _`Position` has 34 INFERRED edges - model-reasoned connections that need verification._
