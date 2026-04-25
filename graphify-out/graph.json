@@ -7055,36 +7055,36 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L77",
-      "id": "market_engine_rationale_77",
       "community": 1,
-      "norm_label": "fetch nse/bse indices from upstox in a single api call.     returns dict keyed b"
+      "norm_label": "fetch nse/bse indices from upstox in a single api call.     returns dict keyed b",
+      "id": "market_engine_rationale_77"
     },
     {
       "label": "Fetch OHLCV + previous close from Yahoo Finance v8 API.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L125",
-      "id": "market_engine_rationale_125",
       "community": 1,
-      "norm_label": "fetch ohlcv + previous close from yahoo finance v8 api."
+      "norm_label": "fetch ohlcv + previous close from yahoo finance v8 api.",
+      "id": "market_engine_rationale_125"
     },
     {
       "label": "Fetch all crypto in a single CoinGecko call.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L172",
-      "id": "market_engine_rationale_172",
       "community": 1,
-      "norm_label": "fetch all crypto in a single coingecko call."
+      "norm_label": "fetch all crypto in a single coingecko call.",
+      "id": "market_engine_rationale_172"
     },
     {
       "label": "One Claude API call for ALL instruments. Returns dict keyed by id.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L332",
-      "id": "market_engine_rationale_332",
       "community": 1,
-      "norm_label": "one claude api call for all instruments. returns dict keyed by id."
+      "norm_label": "one claude api call for all instruments. returns dict keyed by id.",
+      "id": "market_engine_rationale_332"
     },
     {
       "label": "wallet-researcher.py",
