@@ -7055,36 +7055,36 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L76",
-      "id": "market_engine_rationale_76",
       "community": 1,
-      "norm_label": "fetch nse/bse indices from upstox in a single api call.     returns dict keyed b"
+      "norm_label": "fetch nse/bse indices from upstox in a single api call.     returns dict keyed b",
+      "id": "market_engine_rationale_76"
     },
     {
       "label": "Fetch OHLCV + previous close from Yahoo Finance v8 API.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L124",
-      "id": "market_engine_rationale_124",
       "community": 1,
-      "norm_label": "fetch ohlcv + previous close from yahoo finance v8 api."
+      "norm_label": "fetch ohlcv + previous close from yahoo finance v8 api.",
+      "id": "market_engine_rationale_124"
     },
     {
       "label": "Fetch all crypto in a single CoinGecko call.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L171",
-      "id": "market_engine_rationale_171",
       "community": 1,
-      "norm_label": "fetch all crypto in a single coingecko call."
+      "norm_label": "fetch all crypto in a single coingecko call.",
+      "id": "market_engine_rationale_171"
     },
     {
       "label": "One Claude API call for ALL instruments. Returns dict keyed by id.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L331",
-      "id": "market_engine_rationale_331",
       "community": 1,
-      "norm_label": "one claude api call for all instruments. returns dict keyed by id."
+      "norm_label": "one claude api call for all instruments. returns dict keyed by id.",
+      "id": "market_engine_rationale_331"
     },
     {
       "label": "wallet-researcher.py",
@@ -14777,8 +14777,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L343",
       "weight": 1.0,
-      "_src": "market_engine_call_claude_batch",
-      "_tgt": "route_post",
+      "_src": "route_post",
+      "_tgt": "market_engine_call_claude_batch",
       "source": "route_post",
       "target": "market_engine_call_claude_batch"
     },
@@ -14789,8 +14789,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L435",
       "weight": 1.0,
-      "_src": "market_engine_send_telegram",
-      "_tgt": "route_post",
+      "_src": "route_post",
+      "_tgt": "market_engine_send_telegram",
       "source": "route_post",
       "target": "market_engine_send_telegram"
     },
@@ -20657,8 +20657,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L491",
       "weight": 1.0,
-      "_src": "market_engine_main",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "market_engine_main",
       "source": "e2e_test_sleep",
       "target": "market_engine_main"
     },
@@ -24437,8 +24437,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L523",
       "weight": 1.0,
-      "_src": "market_engine_main",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "market_engine_main",
       "source": "config_exit",
       "target": "market_engine_main"
     },
