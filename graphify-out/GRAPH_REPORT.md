@@ -1,12 +1,12 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-26)
 
 ## Corpus Check
-- 259 files · ~475,396 words
+- 261 files · ~585,999 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1397 nodes · 2662 edges · 192 communities detected
-- Extraction: 60% EXTRACTED · 40% INFERRED · 0% AMBIGUOUS · INFERRED: 1054 edges (avg confidence: 0.7)
+- 1441 nodes · 2747 edges · 192 communities detected
+- Extraction: 61% EXTRACTED · 39% INFERRED · 0% AMBIGUOUS · INFERRED: 1076 edges (avg confidence: 0.7)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -205,81 +205,81 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `TelegramJournal` - 62 edges
-2. `main()` - 37 edges
+2. `main()` - 38 edges
 3. `BotState` - 36 edges
 4. `GlobalRiskConfig` - 35 edges
 5. `Position` - 35 edges
 6. `RiskManager` - 35 edges
 7. `Notifier` - 27 edges
 8. `TraderScorer` - 27 edges
-9. `TraderFilter` - 25 edges
-10. `TickerBanner` - 24 edges
+9. `list()` - 25 edges
+10. `TraderFilter` - 25 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `connect()` --calls--> `load_signals()`  [INFERRED]
-  /home/vreddy1/Desktop/Projects/tradingview-mcp/src/connection.js → Polymarket_Claude/Claude/evaluate.py
 - `list()` --calls--> `load()`  [INFERRED]
   /home/vreddy1/Desktop/Projects/tradingview-mcp/src/core/tab.js → Polymarket_Claude/Claude/analysis.py
-- `run()` --calls--> `exit()`  [INFERRED]
-  /home/vreddy1/Desktop/Projects/tradingview-mcp/src/cli/router.js → Polymarket_Claude/Claude/config.py
 - `execute()` --calls--> `exit()`  [INFERRED]
   /home/vreddy1/Desktop/Projects/tradingview-mcp/src/cli/router.js → Polymarket_Claude/Claude/config.py
-- `execute()` --calls--> `load_signals()`  [INFERRED]
-  /home/vreddy1/Desktop/Projects/tradingview-mcp/src/cli/router.js → Polymarket_Claude/Claude/evaluate.py
+- `sleep()` --calls--> `main()`  [INFERRED]
+  /home/vreddy1/Desktop/Projects/tradingview-mcp/tests/e2e.test.js → Polymarket_Claude/Claude/dgm_h_loop.py
+- `main()` --calls--> `init_db()`  [INFERRED]
+  /home/vreddy1/Desktop/Projects/Alphaedge_Copy/main.py → Polymarket_Claude/Claude/db.py
+- `main()` --calls--> `exit()`  [INFERRED]
+  /home/vreddy1/Desktop/Projects/Alphaedge_Copy/main.py → Polymarket_Claude/Claude/config.py
 
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.04
-Nodes (72): registerChartTools(), Enum, AlgoValidator, BacktestTrade, _compute_sl_at_pct(), DiversificationEngine, GlobalRiskEngine, KillSwitchEngine (+64 more)
+Cohesion: 0.03
+Nodes (57): analyze(), fmt_telegram(), print_report(), analysis.py — Read results.tsv and surface insights. Usage:     python analysis., send_tg(), place_market_buy(), place_market_sell(), PolymarketClient (+49 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.03
-Nodes (64): create(), analyze(), fmt_telegram(), load(), print_report(), analysis.py — Read results.tsv and surface insights. Usage:     python analysis., send_tg(), DiskCache (+56 more)
+Cohesion: 0.04
+Nodes (65): AlgoValidator, BacktestTrade, _compute_sl_at_pct(), DiversificationEngine, GlobalRiskEngine, KillSwitchEngine, KillSwitchEvent, KillSwitchLevel (+57 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.05
-Nodes (56): BinanceBot, fetch_positions_normalized(), AlphaCopy - Binance Futures Copy Bot  Data source: Binance's unofficial leaderbo, Detect new/closed positions by diffing against cached snapshot., Fetch and normalize positions to {symbol: pos_data}., Binance Futures copy trading bot.      Flow:       1. Scrape leaderboard → score, Dashboard, AlphaCopy - Performance Dashboard Console + JSON reporting for all three bots. (+48 more)
+Cohesion: 0.03
+Nodes (109): create(), deleteAlerts(), list(), batchRun(), captureScreenshot(), getState(), getVisibleRange(), manageIndicator() (+101 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.04
-Nodes (97): deleteAlerts(), list(), batchRun(), captureScreenshot(), getState(), getVisibleRange(), manageIndicator(), _resolve() (+89 more)
+Cohesion: 0.05
+Nodes (51): BinanceBot, fetch_positions_normalized(), AlphaCopy - Binance Futures Copy Bot  Data source: Binance's unofficial leaderbo, Detect new/closed positions by diffing against cached snapshot., Fetch and normalize positions to {symbol: pos_data}., Binance Futures copy trading bot.      Flow:       1. Scrape leaderboard → score, Dashboard, AlphaCopy - Performance Dashboard Console + JSON reporting for all three bots. (+43 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.04
-Nodes (68): BaseModel, BaseTool, load_asset_configs(), project_root(), disconnect(), crew(), draft_report_task(), MarketReportCrew (+60 more)
+Nodes (67): BaseModel, BaseTool, load_asset_configs(), project_root(), crew(), draft_report_task(), MarketReportCrew, MarketReportCrewLite (+59 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.05
-Nodes (14): connect(), Database, init_db(), OrderManager, PnLTracker, RiskEngine, TradeDecision, execute() (+6 more)
+Cohesion: 0.04
+Nodes (27): apiExists(), ensureEditor(), evaluate(), sleep(), CryptoIngestion, EquityIngestion, Fetch fundamental data., Fetch historical price data and compute indicators. (+19 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.06
-Nodes (52): getReplayApi(), Archive, decide(), git(), git_commit(), git_revert(), init_results(), log_result() (+44 more)
+Cohesion: 0.04
+Nodes (58): DiskCache, exit(), Archive, decide(), git(), git_commit(), git_revert(), init_results() (+50 more)
 
 ### Community 7 - "Community 7"
+Cohesion: 0.07
+Nodes (38): registerChartTools(), Enum, registerPineTools(), AlphaCopy — Global Risk Configuration All industry-standard risk parameters in o, Portfolio risk appetite tiers., RiskTier, BotState, AlphaCopy - Unified Risk Manager Enforces position limits, drawdown stops, and s (+30 more)
+
+### Community 8 - "Community 8"
 Cohesion: 0.04
 Nodes (56): aiosqlite>=0.20.0, analysis.py (results.tsv analyzer), anthropic>=0.40.0 SDK, Autoresearch (Loop) Paper, config.yaml (Bot Config), CopySignal, core/clob_client.py, core/config.py (+48 more)
 
-### Community 8 - "Community 8"
-Cohesion: 0.09
-Nodes (32): apiExists(), ensureEditor(), evaluate(), sleep(), check_to_dict(), CheckResult, CheckStatus, fetch_account() (+24 more)
-
 ### Community 9 - "Community 9"
-Cohesion: 0.09
-Nodes (18): CryptoIngestion, EquityIngestion, Fetch fundamental data., Fetch historical price data and compute indicators., Ingest crypto data from CCXT., Fetch current price and volume., Ingest equity data from Yahoo Finance., Main logic to coordinate multi-agent analysis. (+10 more)
+Cohesion: 0.08
+Nodes (32): alectodb_download(), concats(), download_http(), download_wordlist(), download_wordlist_http(), generate_wordlist_from_profile(), get_parser(), improve_dictionary() (+24 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.12
-Nodes (2): DataFetcher, TickerBanner
+Nodes (3): DataFetcher, TickerBanner, load()
 
 ### Community 11 - "Community 11"
-Cohesion: 0.13
-Nodes (6): Hyperagent, MetaAgent, PerformanceTracker, hyperagent.py — Polybot DGM-Hyperagent. Single editable program containing task_, Core DGM-H step. Returns (target_file, new_content)., Single editable program: task_agent + meta_agent unified.
-
-### Community 12 - "Community 12"
 Cohesion: 0.09
 Nodes (0): 
+
+### Community 12 - "Community 12"
+Cohesion: 0.13
+Nodes (6): Hyperagent, MetaAgent, PerformanceTracker, hyperagent.py — Polybot DGM-Hyperagent. Single editable program containing task_, Core DGM-H step. Returns (target_file, new_content)., Single editable program: task_agent + meta_agent unified.
 
 ### Community 13 - "Community 13"
 Cohesion: 0.14
@@ -290,12 +290,12 @@ Cohesion: 0.12
 Nodes (4): CorrCell(), corrColor(), fmtINR(), RetailOverview()
 
 ### Community 15 - "Community 15"
-Cohesion: 0.26
-Nodes (14): fetch_all_usdt_transfers(), fetch_wallet_balances(), get_headers(), main(), print_counterparty_summary(), print_transaction_detail(), Return (TRX balance, USDT balance) for a wallet address., Print every individual transaction in chronological order. (+6 more)
-
-### Community 16 - "Community 16"
 Cohesion: 0.17
 Nodes (14): analyze_metals_correlation(), analyze_money_supply_impact(), categorize_event_impact(), fetch_calendar_from_web(), format_calendar_for_playbook(), generate_trading_strategy(), main(), Fetch economic calendar using web_fetch tool     Returns parsed calendar data (+6 more)
+
+### Community 16 - "Community 16"
+Cohesion: 0.26
+Nodes (14): fetch_all_usdt_transfers(), fetch_wallet_balances(), get_headers(), main(), print_counterparty_summary(), print_transaction_detail(), Return (TRX balance, USDT balance) for a wallet address., Print every individual transaction in chronological order. (+6 more)
 
 ### Community 17 - "Community 17"
 Cohesion: 0.19
@@ -998,7 +998,7 @@ Cohesion: 1.0
 Nodes (1): NOAA/Wunderground Weather Resolution Data
 
 ## Knowledge Gaps
-- **126 isolated node(s):** `Fresh Telegram Integration Client.     Handles sending formatted messages and do`, `Send a text message to the configured chat.`, `Formats and sends a trading report.`, `Ingest equity data from Yahoo Finance.`, `Fetch fundamental data.` (+121 more)
+- **140 isolated node(s):** `Fresh Telegram Integration Client.     Handles sending formatted messages and do`, `Send a text message to the configured chat.`, `Formats and sends a trading report.`, `Ingest equity data from Yahoo Finance.`, `Fetch fundamental data.` (+135 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 42`** (2 nodes): `MobileNavigation.tsx`, `MobileNavigation()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -1304,17 +1304,17 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `main()` connect `Community 2` to `Community 1`, `Community 4`, `Community 5`, `Community 8`, `Community 9`, `Community 10`, `Community 21`?**
-  _High betweenness centrality (0.069) - this node is a cross-community bridge._
-- **Why does `fetch_google_finance()` connect `Community 4` to `Community 1`?**
+- **Why does `main()` connect `Community 5` to `Community 0`, `Community 3`, `Community 6`, `Community 9`, `Community 21`?**
+  _High betweenness centrality (0.072) - this node is a cross-community bridge._
+- **Why does `fetch_google_finance()` connect `Community 4` to `Community 0`?**
   _High betweenness centrality (0.038) - this node is a cross-community bridge._
+- **Why does `bootstrap()` connect `Community 4` to `Community 0`?**
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 31 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
-  _`main()` has 31 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 32 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
+  _`main()` has 32 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 34 inferred relationships involving `BotState` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`BotState` has 34 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 33 inferred relationships involving `GlobalRiskConfig` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`GlobalRiskConfig` has 33 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 34 inferred relationships involving `Position` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
-  _`Position` has 34 INFERRED edges - model-reasoned connections that need verification._
