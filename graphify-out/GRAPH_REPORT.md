@@ -1305,7 +1305,7 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 5` to `Community 0`, `Community 3`, `Community 6`, `Community 9`, `Community 21`?**
-  _High betweenness centrality (0.090) - this node is a cross-community bridge._
+  _High betweenness centrality (0.080) - this node is a cross-community bridge._
 - **Why does `fetch_google_finance()` connect `Community 4` to `Community 0`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
