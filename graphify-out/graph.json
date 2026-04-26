@@ -9224,36 +9224,36 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/test_cupp.py",
       "source_location": "L69",
-      "id": "test_cupp_rationale_69",
       "community": 9,
-      "norm_label": "downloads a file and checks if it exists"
+      "norm_label": "downloads a file and checks if it exists",
+      "id": "test_cupp_rationale_69"
     },
     {
       "label": "Download wordlists via menu",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/test_cupp.py",
       "source_location": "L102",
-      "id": "test_cupp_rationale_102",
       "community": 9,
-      "norm_label": "download wordlists via menu"
+      "norm_label": "download wordlists via menu",
+      "id": "test_cupp_rationale_102"
     },
     {
       "label": "Tests the interactive menu",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/test_cupp.py",
       "source_location": "L109",
-      "id": "test_cupp_rationale_109",
       "community": 9,
-      "norm_label": "tests the interactive menu"
+      "norm_label": "tests the interactive menu",
+      "id": "test_cupp_rationale_109"
     },
     {
       "label": "test run for the main function",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/test_cupp.py",
       "source_location": "L149",
-      "id": "test_cupp_rationale_149",
       "community": 9,
-      "norm_label": "test run for the main function"
+      "norm_label": "test run for the main function",
+      "id": "test_cupp_rationale_149"
     },
     {
       "label": "cupp.py",
@@ -9422,90 +9422,90 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L53",
-      "id": "cupp_rationale_53",
       "community": 9,
-      "norm_label": "read the given configuration file and update global variables to reflect     cha"
+      "norm_label": "read the given configuration file and update global variables to reflect     cha",
+      "id": "cupp_rationale_53"
     },
     {
       "label": "convert string to leet",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L96",
-      "id": "cupp_rationale_96",
       "community": 9,
-      "norm_label": "convert string to leet"
+      "norm_label": "convert string to leet",
+      "id": "cupp_rationale_96"
     },
     {
       "label": "Implementation of the -w option. Improve a dictionary by     interactively quest",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L178",
-      "id": "cupp_rationale_178",
       "community": 9,
-      "norm_label": "implementation of the -w option. improve a dictionary by     interactively quest"
+      "norm_label": "implementation of the -w option. improve a dictionary by     interactively quest",
+      "id": "cupp_rationale_178"
     },
     {
       "label": "Implementation of the -i switch. Interactively question the user and     create",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L300",
-      "id": "cupp_rationale_300",
       "community": 9,
-      "norm_label": "implementation of the -i switch. interactively question the user and     create"
+      "norm_label": "implementation of the -i switch. interactively question the user and     create",
+      "id": "cupp_rationale_300"
     },
     {
       "label": "Generates a wordlist from a given profile",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L372",
-      "id": "cupp_rationale_372",
       "community": 9,
-      "norm_label": "generates a wordlist from a given profile"
+      "norm_label": "generates a wordlist from a given profile",
+      "id": "cupp_rationale_372"
     },
     {
       "label": "Download csv from alectodb and save into local file as a list of     usernames a",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L716",
-      "id": "cupp_rationale_716",
       "community": 9,
-      "norm_label": "download csv from alectodb and save into local file as a list of     usernames a"
+      "norm_label": "download csv from alectodb and save into local file as a list of     usernames a",
+      "id": "cupp_rationale_716"
     },
     {
       "label": "Implementation of -l switch. Download wordlists from http repository as     defi",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L756",
-      "id": "cupp_rationale_756",
       "community": 9,
-      "norm_label": "implementation of -l switch. download wordlists from http repository as     defi"
+      "norm_label": "implementation of -l switch. download wordlists from http repository as     defi",
+      "id": "cupp_rationale_756"
     },
     {
       "label": "do the HTTP download of a wordlist",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L799",
-      "id": "cupp_rationale_799",
       "community": 9,
-      "norm_label": "do the http download of a wordlist"
+      "norm_label": "do the http download of a wordlist",
+      "id": "cupp_rationale_799"
     },
     {
       "label": "Command-line interface to the cupp utility",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L1021",
-      "id": "cupp_rationale_1021",
       "community": 9,
-      "norm_label": "command-line interface to the cupp utility"
+      "norm_label": "command-line interface to the cupp utility",
+      "id": "cupp_rationale_1021"
     },
     {
       "label": "Create and return a parser (argparse.ArgumentParser instance) for main()     to",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L1047",
-      "id": "cupp_rationale_1047",
       "community": 9,
-      "norm_label": "create and return a parser (argparse.argumentparser instance) for main()     to"
+      "norm_label": "create and return a parser (argparse.argumentparser instance) for main()     to",
+      "id": "cupp_rationale_1047"
     },
     {
       "label": "economic_calendar_analyzer.py",
@@ -20285,8 +20285,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L246",
       "weight": 1.0,
-      "_src": "cupp_improve_dictionary",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "cupp_improve_dictionary",
       "source": "tab_list",
       "target": "cupp_improve_dictionary"
     },
@@ -20297,8 +20297,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L432",
       "weight": 1.0,
-      "_src": "cupp_generate_wordlist_from_profile",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "cupp_generate_wordlist_from_profile",
       "source": "tab_list",
       "target": "cupp_generate_wordlist_from_profile"
     },
@@ -20309,8 +20309,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L738",
       "weight": 1.0,
-      "_src": "cupp_alectodb_download",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "cupp_alectodb_download",
       "source": "tab_list",
       "target": "cupp_alectodb_download"
     },
@@ -21293,8 +21293,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L143",
       "weight": 1.0,
-      "_src": "cupp_print_to_file",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "cupp_print_to_file",
       "source": "e2e_test_sleep",
       "target": "cupp_print_to_file"
     },
@@ -21857,8 +21857,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/test_cupp.py",
       "source_location": "L150",
       "weight": 1.0,
-      "_src": "test_cupp_testcupp_test_main",
-      "_tgt": "main_main",
+      "_src": "main_main",
+      "_tgt": "test_cupp_testcupp_test_main",
       "source": "main_main",
       "target": "test_cupp_testcupp_test_main"
     },
@@ -25061,8 +25061,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L90",
       "weight": 1.0,
-      "_src": "cupp_read_config",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "cupp_read_config",
       "source": "config_exit",
       "target": "cupp_read_config"
     },
@@ -25073,8 +25073,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L185",
       "weight": 1.0,
-      "_src": "cupp_improve_dictionary",
-      "_tgt": "config_exit",
+      "_src": "config_exit",
+      "_tgt": "cupp_improve_dictionary",
       "source": "config_exit",
       "target": "cupp_improve_dictionary"
     },
@@ -26093,8 +26093,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L123",
       "weight": 1.0,
-      "_src": "cupp_print_to_file",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "cupp_print_to_file",
       "source": "subgraph_client_subgraphclient_close",
       "target": "cupp_print_to_file"
     },
@@ -26105,8 +26105,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L296",
       "weight": 1.0,
-      "_src": "cupp_improve_dictionary",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "cupp_improve_dictionary",
       "source": "subgraph_client_subgraphclient_close",
       "target": "cupp_improve_dictionary"
     },
@@ -26117,8 +26117,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L711",
       "weight": 1.0,
-      "_src": "cupp_download_http",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "cupp_download_http",
       "source": "subgraph_client_subgraphclient_close",
       "target": "cupp_download_http"
     },
@@ -26129,8 +26129,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L748",
       "weight": 1.0,
-      "_src": "cupp_alectodb_download",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "cupp_alectodb_download",
       "source": "subgraph_client_subgraphclient_close",
       "target": "cupp_alectodb_download"
     },
@@ -33473,8 +33473,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L65",
       "weight": 1.0,
-      "_src": "cupp_read_config",
-      "_tgt": "cache_diskcache_get",
+      "_src": "cache_diskcache_get",
+      "_tgt": "cupp_read_config",
       "source": "cache_diskcache_get",
       "target": "cupp_read_config"
     },
@@ -33917,8 +33917,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/security-hacking-tools/cupp/cupp.py",
       "source_location": "L738",
       "weight": 1.0,
-      "_src": "cupp_alectodb_download",
-      "_tgt": "cache_diskcache_set",
+      "_src": "cache_diskcache_set",
+      "_tgt": "cupp_alectodb_download",
       "source": "cache_diskcache_set",
       "target": "cupp_alectodb_download"
     },
