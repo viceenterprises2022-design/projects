@@ -20336,8 +20336,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v2.py",
       "source_location": "L29",
       "weight": 1.0,
-      "_src": "market_analysis_v2_fetch_upstox_quote",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "market_analysis_v2_fetch_upstox_quote",
       "source": "tab_list",
       "target": "market_analysis_v2_fetch_upstox_quote"
     },
