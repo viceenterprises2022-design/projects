@@ -1,7 +1,7 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-27)
 
 ## Corpus Check
-- 262 files · ~599,851 words
+- 262 files · ~599,852 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -1310,9 +1310,9 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 4` to `Community 2`, `Community 3`, `Community 6`, `Community 8`, `Community 10`, `Community 11`, `Community 22`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `list()` connect `Community 6` to `Community 2`, `Community 3`, `Community 5`, `Community 8`, `Community 10`, `Community 11`, `Community 13`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+  _High betweenness centrality (0.075) - this node is a cross-community bridge._
+- **Why does `fetch_google_finance()` connect `Community 5` to `Community 2`?**
+  _High betweenness centrality (0.036) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 32 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
