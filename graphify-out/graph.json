@@ -7370,81 +7370,81 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L442",
-      "id": "market_analysis_v3_rationale_442",
       "community": 10,
-      "norm_label": "format oi value into readable lakhs."
+      "norm_label": "format oi value into readable lakhs.",
+      "id": "market_analysis_v3_rationale_442"
     },
     {
       "label": "Color-coded change-in-OI string.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L449",
-      "id": "market_analysis_v3_rationale_449",
       "community": 10,
-      "norm_label": "color-coded change-in-oi string."
+      "norm_label": "color-coded change-in-oi string.",
+      "id": "market_analysis_v3_rationale_449"
     },
     {
       "label": "Days remaining to expiry date string (YYYY-MM-DD).",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L457",
-      "id": "market_analysis_v3_rationale_457",
       "community": 10,
-      "norm_label": "days remaining to expiry date string (yyyy-mm-dd)."
+      "norm_label": "days remaining to expiry date string (yyyy-mm-dd).",
+      "id": "market_analysis_v3_rationale_457"
     },
     {
       "label": "Print a Bloomberg-style option chain strip, spot \u00b1500 pts.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L470",
-      "id": "market_analysis_v3_rationale_470",
       "community": 10,
-      "norm_label": "print a bloomberg-style option chain strip, spot \u00b1500 pts."
+      "norm_label": "print a bloomberg-style option chain strip, spot \u00b1500 pts.",
+      "id": "market_analysis_v3_rationale_470"
     },
     {
       "label": "Classify OI buildup pattern.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L542",
-      "id": "market_analysis_v3_rationale_542",
       "community": 10,
-      "norm_label": "classify oi buildup pattern."
+      "norm_label": "classify oi buildup pattern.",
+      "id": "market_analysis_v3_rationale_542"
     },
     {
       "label": "Print the Market Intelligence panel with key levels and derived signals.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L550",
-      "id": "market_analysis_v3_rationale_550",
       "community": 10,
-      "norm_label": "print the market intelligence panel with key levels and derived signals."
+      "norm_label": "print the market intelligence panel with key levels and derived signals.",
+      "id": "market_analysis_v3_rationale_550"
     },
     {
       "label": "Print a one-liner summary of all three indices.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L639",
-      "id": "market_analysis_v3_rationale_639",
       "community": 10,
-      "norm_label": "print a one-liner summary of all three indices."
+      "norm_label": "print a one-liner summary of all three indices.",
+      "id": "market_analysis_v3_rationale_639"
     },
     {
       "label": "Quick fetch of all three index quotes for the summary ticker.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L745",
-      "id": "market_analysis_v3_rationale_745",
       "community": 10,
-      "norm_label": "quick fetch of all three index quotes for the summary ticker."
+      "norm_label": "quick fetch of all three index quotes for the summary ticker.",
+      "id": "market_analysis_v3_rationale_745"
     },
     {
       "label": "Fetch data and run full analysis for one instrument. Returns display args.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L753",
-      "id": "market_analysis_v3_rationale_753",
       "community": 10,
-      "norm_label": "fetch data and run full analysis for one instrument. returns display args."
+      "norm_label": "fetch data and run full analysis for one instrument. returns display args.",
+      "id": "market_analysis_v3_rationale_753"
     },
     {
       "label": "patch_market_no_claude.py",
@@ -20000,8 +20000,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L757",
       "weight": 1.0,
-      "_src": "market_analysis_v3_run_analysis",
-      "_tgt": "replay_status",
+      "_src": "replay_status",
+      "_tgt": "market_analysis_v3_run_analysis",
       "source": "replay_status",
       "target": "market_analysis_v3_run_analysis"
     },
