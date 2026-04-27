@@ -1,11 +1,11 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-27)
 
 ## Corpus Check
-- 270 files · ~623,975 words
+- 270 files · ~619,797 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1585 nodes · 3032 edges · 218 communities detected
+- 1598 nodes · 3032 edges · 231 communities detected
 - Extraction: 62% EXTRACTED · 38% INFERRED · 0% AMBIGUOUS · INFERRED: 1156 edges (avg confidence: 0.7)
 - Token cost: 0 input · 0 output
 
@@ -228,6 +228,19 @@
 - [[_COMMUNITY_Community 215|Community 215]]
 - [[_COMMUNITY_Community 216|Community 216]]
 - [[_COMMUNITY_Community 217|Community 217]]
+- [[_COMMUNITY_Community 218|Community 218]]
+- [[_COMMUNITY_Community 219|Community 219]]
+- [[_COMMUNITY_Community 220|Community 220]]
+- [[_COMMUNITY_Community 221|Community 221]]
+- [[_COMMUNITY_Community 222|Community 222]]
+- [[_COMMUNITY_Community 223|Community 223]]
+- [[_COMMUNITY_Community 224|Community 224]]
+- [[_COMMUNITY_Community 225|Community 225]]
+- [[_COMMUNITY_Community 226|Community 226]]
+- [[_COMMUNITY_Community 227|Community 227]]
+- [[_COMMUNITY_Community 228|Community 228]]
+- [[_COMMUNITY_Community 229|Community 229]]
+- [[_COMMUNITY_Community 230|Community 230]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `TelegramJournal` - 62 edges
@@ -1057,78 +1070,130 @@ Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2     
 
 ### Community 200 - "Community 200"
 Cohesion: 1.0
-Nodes (1): Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.
+Nodes (1): Format OI value into readable Lakhs.
 
 ### Community 201 - "Community 201"
 Cohesion: 1.0
-Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
+Nodes (1): Color-coded change-in-OI string.
 
 ### Community 202 - "Community 202"
 Cohesion: 1.0
-Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
+Nodes (1): Days remaining to expiry date string (YYYY-MM-DD).
 
 ### Community 203 - "Community 203"
 Cohesion: 1.0
-Nodes (1): Fetch all crypto in a single CoinGecko call.
+Nodes (1): Print a Bloomberg-style option chain strip, spot ±500 pts.
 
 ### Community 204 - "Community 204"
 Cohesion: 1.0
-Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
+Nodes (1): Classify OI buildup pattern.
 
 ### Community 205 - "Community 205"
 Cohesion: 1.0
-Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
+Nodes (1): Print the Market Intelligence panel with key levels and derived signals.
 
 ### Community 206 - "Community 206"
 Cohesion: 1.0
-Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
+Nodes (1): Print a one-liner summary of all three indices.
 
 ### Community 207 - "Community 207"
 Cohesion: 1.0
-Nodes (1): Fetch all crypto in a single CoinGecko call.
+Nodes (1): Quick fetch of all three index quotes for the summary ticker.
 
 ### Community 208 - "Community 208"
 Cohesion: 1.0
-Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
+Nodes (1): Fetch data and run full analysis for one instrument. Returns display args.
 
 ### Community 209 - "Community 209"
 Cohesion: 1.0
-Nodes (1): parallel_researcher.py
+Nodes (1): Return sorted list of expiry date strings.
 
 ### Community 210 - "Community 210"
 Cohesion: 1.0
-Nodes (1): aiohttp>=3.9.0
+Nodes (1): Fetch full option chain for a given expiry.
 
 ### Community 211 - "Community 211"
 Cohesion: 1.0
-Nodes (1): aiofiles>=23.0.0
+Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
 
 ### Community 212 - "Community 212"
 Cohesion: 1.0
-Nodes (1): tenacity>=8.2.0
+Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
 
 ### Community 213 - "Community 213"
 Cohesion: 1.0
-Nodes (1): Research Priority: Asymmetric Exits
+Nodes (1): Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.
 
 ### Community 214 - "Community 214"
 Cohesion: 1.0
-Nodes (1): Research Priority: Consensus by Category
+Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
 
 ### Community 215 - "Community 215"
 Cohesion: 1.0
-Nodes (1): Research Priority: Memory-Augmented Decisions
+Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
 
 ### Community 216 - "Community 216"
 Cohesion: 1.0
-Nodes (1): Research Priority: Debate Quality
+Nodes (1): Fetch all crypto in a single CoinGecko call.
 
 ### Community 217 - "Community 217"
+Cohesion: 1.0
+Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
+
+### Community 218 - "Community 218"
+Cohesion: 1.0
+Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
+
+### Community 219 - "Community 219"
+Cohesion: 1.0
+Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
+
+### Community 220 - "Community 220"
+Cohesion: 1.0
+Nodes (1): Fetch all crypto in a single CoinGecko call.
+
+### Community 221 - "Community 221"
+Cohesion: 1.0
+Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
+
+### Community 222 - "Community 222"
+Cohesion: 1.0
+Nodes (1): parallel_researcher.py
+
+### Community 223 - "Community 223"
+Cohesion: 1.0
+Nodes (1): aiohttp>=3.9.0
+
+### Community 224 - "Community 224"
+Cohesion: 1.0
+Nodes (1): aiofiles>=23.0.0
+
+### Community 225 - "Community 225"
+Cohesion: 1.0
+Nodes (1): tenacity>=8.2.0
+
+### Community 226 - "Community 226"
+Cohesion: 1.0
+Nodes (1): Research Priority: Asymmetric Exits
+
+### Community 227 - "Community 227"
+Cohesion: 1.0
+Nodes (1): Research Priority: Consensus by Category
+
+### Community 228 - "Community 228"
+Cohesion: 1.0
+Nodes (1): Research Priority: Memory-Augmented Decisions
+
+### Community 229 - "Community 229"
+Cohesion: 1.0
+Nodes (1): Research Priority: Debate Quality
+
+### Community 230 - "Community 230"
 Cohesion: 1.0
 Nodes (1): NOAA/Wunderground Weather Resolution Data
 
 ## Knowledge Gaps
-- **183 isolated node(s):** `Fresh Telegram Integration Client.     Handles sending formatted messages and do`, `Send a text message to the configured chat.`, `Formats and sends a trading report.`, `Ingest equity data from Yahoo Finance.`, `Fetch fundamental data.` (+178 more)
+- **196 isolated node(s):** `Fresh Telegram Integration Client.     Handles sending formatted messages and do`, `Send a text message to the configured chat.`, `Formats and sends a trading report.`, `Ingest equity data from Yahoo Finance.`, `Fetch fundamental data.` (+191 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 47`** (2 nodes): `MobileNavigation.tsx`, `MobileNavigation()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -1436,50 +1501,76 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 199`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 200`** (1 nodes): `Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.`
+- **Thin community `Community 200`** (1 nodes): `Format OI value into readable Lakhs.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 201`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
+- **Thin community `Community 201`** (1 nodes): `Color-coded change-in-OI string.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 202`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
+- **Thin community `Community 202`** (1 nodes): `Days remaining to expiry date string (YYYY-MM-DD).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 203`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
+- **Thin community `Community 203`** (1 nodes): `Print a Bloomberg-style option chain strip, spot ±500 pts.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 204`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
+- **Thin community `Community 204`** (1 nodes): `Classify OI buildup pattern.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 205`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
+- **Thin community `Community 205`** (1 nodes): `Print the Market Intelligence panel with key levels and derived signals.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 206`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
+- **Thin community `Community 206`** (1 nodes): `Print a one-liner summary of all three indices.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 207`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
+- **Thin community `Community 207`** (1 nodes): `Quick fetch of all three index quotes for the summary ticker.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 208`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
+- **Thin community `Community 208`** (1 nodes): `Fetch data and run full analysis for one instrument. Returns display args.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 209`** (1 nodes): `parallel_researcher.py`
+- **Thin community `Community 209`** (1 nodes): `Return sorted list of expiry date strings.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 210`** (1 nodes): `aiohttp>=3.9.0`
+- **Thin community `Community 210`** (1 nodes): `Fetch full option chain for a given expiry.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 211`** (1 nodes): `aiofiles>=23.0.0`
+- **Thin community `Community 211`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 212`** (1 nodes): `tenacity>=8.2.0`
+- **Thin community `Community 212`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 213`** (1 nodes): `Research Priority: Asymmetric Exits`
+- **Thin community `Community 213`** (1 nodes): `Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 214`** (1 nodes): `Research Priority: Consensus by Category`
+- **Thin community `Community 214`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 215`** (1 nodes): `Research Priority: Memory-Augmented Decisions`
+- **Thin community `Community 215`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 216`** (1 nodes): `Research Priority: Debate Quality`
+- **Thin community `Community 216`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 217`** (1 nodes): `NOAA/Wunderground Weather Resolution Data`
+- **Thin community `Community 217`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 218`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 219`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 220`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 221`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 222`** (1 nodes): `parallel_researcher.py`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 223`** (1 nodes): `aiohttp>=3.9.0`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 224`** (1 nodes): `aiofiles>=23.0.0`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 225`** (1 nodes): `tenacity>=8.2.0`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 226`** (1 nodes): `Research Priority: Asymmetric Exits`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 227`** (1 nodes): `Research Priority: Consensus by Category`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 228`** (1 nodes): `Research Priority: Memory-Augmented Decisions`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 229`** (1 nodes): `Research Priority: Debate Quality`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 230`** (1 nodes): `NOAA/Wunderground Weather Resolution Data`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 7` to `Community 2`, `Community 3`, `Community 5`, `Community 6`, `Community 9`, `Community 12`, `Community 26`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
+  _High betweenness centrality (0.081) - this node is a cross-community bridge._
 - **Why does `fetch_google_finance()` connect `Community 4` to `Community 3`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+  _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 33 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
