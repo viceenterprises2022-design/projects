@@ -10070,18 +10070,18 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L7",
-      "id": "engine_rationale_7",
       "community": 26,
-      "norm_label": "normalize such that higher raw value = lower score [-1 to 1]"
+      "norm_label": "normalize such that higher raw value = lower score [-1 to 1]",
+      "id": "engine_rationale_7"
     },
     {
       "label": "Normalize such that higher raw value = higher score [-1 to 1]",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L16",
-      "id": "engine_rationale_16",
       "community": 26,
-      "norm_label": "normalize such that higher raw value = higher score [-1 to 1]"
+      "norm_label": "normalize such that higher raw value = higher score [-1 to 1]",
+      "id": "engine_rationale_16"
     },
     {
       "label": "fetchers.py",
@@ -10124,27 +10124,27 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L5",
-      "id": "fetchers_rationale_5",
       "community": 4,
-      "norm_label": "fetches the 13 minimal factors required for the alphaedge crypto signal engine."
+      "norm_label": "fetches the 13 minimal factors required for the alphaedge crypto signal engine.",
+      "id": "fetchers_rationale_5"
     },
     {
       "label": "Returns realistic mocked data for the 13 core features and some contextual data.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L18",
-      "id": "fetchers_rationale_18",
       "community": 4,
-      "norm_label": "returns realistic mocked data for the 13 core features and some contextual data."
+      "norm_label": "returns realistic mocked data for the 13 core features and some contextual data.",
+      "id": "fetchers_rationale_18"
     },
     {
       "label": "Mock events for the regulatory/event layer.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L56",
-      "id": "fetchers_rationale_56",
       "community": 4,
-      "norm_label": "mock events for the regulatory/event layer."
+      "norm_label": "mock events for the regulatory/event layer.",
+      "id": "fetchers_rationale_56"
     },
     {
       "label": "emerging_markets_platform.jsx",
@@ -20588,8 +20588,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/main.py",
       "source_location": "L57",
       "weight": 1.0,
-      "_src": "main_main",
-      "_tgt": "replay_status",
+      "_src": "replay_status",
+      "_tgt": "main_main",
       "source": "replay_status",
       "target": "main_main"
     },
