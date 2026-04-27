@@ -1,57 +1,58 @@
 import math
 import datetime
+import pandas as pd
 
-# --- Normalization Helpers ---
+# --- Normalization Helpers (Pandas) ---
 
-def normalize_inverse(val, min_val, max_val):
-    """Normalize such that higher raw value = lower score [-1 to 1]"""
-    # Clamp
-    val = max(min_val, min(val, max_val))
-    # Map to 0-1
-    pct = (val - min_val) / (max_val - min_val)
-    # Map to +1 to -1 (inverse)
-    return 1.0 - (pct * 2.0)
+def normalize_zscore(series, window=90):
+    """
+    Computes a rolling Z-Score over the specified window (Spec 14.2).
+    Returns the full normalized series.
+    """
+    rolling_mean = series.rolling(window=window, min_periods=1).mean()
+    rolling_std = series.rolling(window=window, min_periods=1).std()
+    
+    # Avoid division by zero
+    rolling_std = rolling_std.replace(0, 1e-6)
+    
+    z_scores = (series - rolling_mean) / rolling_std
+    # Clamp z-scores between -3 and 3 for stability, then map to [-1, 1]
+    clamped = z_scores.clip(-3, 3)
+    return clamped / 3.0
 
-def normalize_direct(val, min_val, max_val):
-    """Normalize such that higher raw value = higher score [-1 to 1]"""
-    # Clamp
-    val = max(min_val, min(val, max_val))
-    # Map to 0-1
-    pct = (val - min_val) / (max_val - min_val)
-    # Map to -1 to +1
-    return (pct * 2.0) - 1.0
+def apply_relationship(z_score, relationship):
+    """
+    Applies the inverse or direct relationship flag.
+    z_score is a single float [-1, 1].
+    """
+    if relationship == 'inverse':
+        return -z_score
+    elif relationship == 'direct':
+        return z_score
+    return z_score
 
 # --- Scoring Functions ---
 
-def compute_macro_regime_score(f):
-    # DXY: inverse (-1.0% to +1.0% daily change)
-    dxy_score = normalize_inverse(f['dxy_1d_pct_change'], -1.0, 1.0)
+def compute_macro_regime_score(df):
+    latest = df.iloc[-1]
     
-    # VIX: inverse (10 to 35)
-    vix_score = normalize_inverse(f['vix_level'], 10.0, 35.0)
-    
-    # US10Y Real: inverse (-1.0 to 3.0)
-    us10y_score = normalize_inverse(f['us10y_real'], -1.0, 3.0)
-    
-    # NDX: direct (-3.0% to +3.0%)
-    ndx_score = normalize_direct(f['ndx_1d_pct_change'], -3.0, 3.0)
-    
-    # Global M2: direct (-2.0% to 5.0%)
-    m2_score = normalize_direct(f['global_m2_13w_change'], -2.0, 5.0)
-    
-    # Fed cut prob: direct (0% to 100%)
-    fed_score = normalize_direct(f['fed_cut_probability_1m'], 0.0, 100.0)
+    # Normalize features using 90d z-score
+    dxy_norm = apply_relationship(normalize_zscore(df['dxy_1d_pct_change']).iloc[-1], 'inverse')
+    vix_norm = apply_relationship(normalize_zscore(df['vix_level']).iloc[-1], 'inverse')
+    us10y_norm = apply_relationship(normalize_zscore(df['us10y_real']).iloc[-1], 'inverse')
+    ndx_norm = apply_relationship(normalize_zscore(df['ndx_1d_pct_change']).iloc[-1], 'direct')
+    m2_norm = apply_relationship(normalize_zscore(df['global_m2_13w_change']).iloc[-1], 'direct')
+    fed_norm = apply_relationship(normalize_zscore(df['fed_cut_probability_1m']).iloc[-1], 'direct')
     
     scores = {
-        'dxy': dxy_score,
-        'vix': vix_score,
-        'us10y_real': us10y_score,
-        'ndx': ndx_score,
-        'global_m2': m2_score,
-        'fed_cut_prob': fed_score
+        'dxy': dxy_norm,
+        'vix': vix_norm,
+        'us10y_real': us10y_norm,
+        'ndx': ndx_norm,
+        'global_m2': m2_norm,
+        'fed_cut_prob': fed_norm
     }
     
-    # Base weights
     weights = {
         'dxy': 0.25,
         'vix': 0.20,
@@ -61,31 +62,31 @@ def compute_macro_regime_score(f):
         'fed_cut_prob': 0.10
     }
     
-    # Override: Liquidity Surge (M2 > 3.0)
-    if f['global_m2_13w_change'] > 3.0:
+    # Override: Liquidity Surge (raw M2 > 3.0%)
+    if latest['global_m2_13w_change'] > 3.0:
         weights['global_m2'] = 0.30
         weights['us10y_real'] = 0.10
         weights['fed_cut_prob'] = 0.05
     
     return sum(s * weights[k] for k, s in scores.items()), scores
 
-def compute_onchain_score(f):
-    # ETF Flows: direct (-500M to +1000M)
-    etf_score = normalize_direct(f['btc_etf_net_flow_7d'], -500_000_000, 1_000_000_000)
+def compute_onchain_score(df):
+    latest = df.iloc[-1]
     
-    # Stablecoin: direct (-2B to +3B)
-    stablecoin_score = normalize_direct(f['stablecoin_total_7d_change'], -2_000_000_000, 3_000_000_000)
+    etf_norm = apply_relationship(normalize_zscore(df['btc_etf_net_flow_7d']).iloc[-1], 'direct')
+    stablecoin_norm = apply_relationship(normalize_zscore(df['stablecoin_total_7d_change']).iloc[-1], 'direct')
     
-    # MVRV Z-score: mixed (-1 to 7)
-    # < 0 is strong buy (+1), > 6 is strong sell (-1), 1-3 is neutral (0)
-    mvrv = f['mvrv_z_score']
-    if mvrv < 0: mvrv_score = 1.0
-    elif mvrv > 6: mvrv_score = -1.0
-    else: mvrv_score = normalize_inverse(mvrv, 0.0, 6.0) # 0 maps to 1, 6 maps to -1
+    # MVRV uses absolute thresholds per spec
+    mvrv_raw = latest['mvrv_z_score']
+    if mvrv_raw < 0: mvrv_score = 1.0
+    elif mvrv_raw > 6: mvrv_score = -1.0
+    else: 
+        # Map 0->6 to 1->-1
+        mvrv_score = 1.0 - (mvrv_raw / 3.0)
         
     scores = {
-        'btc_etf_flow': etf_score,
-        'stablecoin_supply': stablecoin_score,
+        'btc_etf_flow': etf_norm,
+        'stablecoin_supply': stablecoin_norm,
         'mvrv': mvrv_score
     }
     
@@ -95,41 +96,36 @@ def compute_onchain_score(f):
         'mvrv': 0.25
     }
     
-    # Override: Deep Value (MVRV < 0)
-    if f['mvrv_z_score'] < 0:
+    # Override: Deep Value
+    if mvrv_raw < 0:
         weights['mvrv'] = 0.60
         weights['btc_etf_flow'] = 0.20
         weights['stablecoin_supply'] = 0.20
     
     return sum(s * weights[k] for k, s in scores.items()), scores
 
-def compute_intraday_score(f):
-    # Funding rate: contrarian (-0.05 to +0.10)
-    # High funding = overleveraged longs = bearish (-1)
-    # Low/negative funding = short squeeze fuel = bullish (+1)
-    funding_score = normalize_inverse(f['perp_funding_rate'], -0.05, 0.10)
+def compute_intraday_score(df):
+    latest = df.iloc[-1]
     
-    # Open interest: directional with price
-    oi_chg = f['oi_change']
-    px_chg = f['price_change']
-    if oi_chg > 0 and px_chg > 0: oi_score = 0.8  # Long buildup
-    elif oi_chg > 0 and px_chg < 0: oi_score = -0.8 # Short buildup
-    elif oi_chg < 0 and px_chg < 0: oi_score = -0.4 # Long unwinding
-    elif oi_chg < 0 and px_chg > 0: oi_score = 0.4  # Short covering
+    funding_norm = apply_relationship(normalize_zscore(df['perp_funding_rate']).iloc[-1], 'inverse')
+    
+    # OI Directional Logic (raw values)
+    oi_chg = latest['oi_change']
+    px_chg = latest['price_change']
+    if oi_chg > 0 and px_chg > 0: oi_score = 0.8
+    elif oi_chg > 0 and px_chg < 0: oi_score = -0.8
+    elif oi_chg < 0 and px_chg < 0: oi_score = -0.4
+    elif oi_chg < 0 and px_chg > 0: oi_score = 0.4
     else: oi_score = 0.0
         
-    # Liquidations: directional imbalance
-    # Positive means shorts liquidated (bullish push), Negative means longs liquidated (bearish dump)
-    liq_score = normalize_direct(f['liq_imbalance'], -50_000_000, 50_000_000)
-    
-    # Options skew: negative = put premium (bearish), positive = call premium (bullish)
-    iv_score = normalize_direct(f['deribit_25d_skew'], -10.0, 10.0)
+    liq_norm = apply_relationship(normalize_zscore(df['liq_imbalance']).iloc[-1], 'direct')
+    iv_norm = apply_relationship(normalize_zscore(df['deribit_25d_skew']).iloc[-1], 'direct')
     
     scores = {
-        'funding_rate': funding_score,
+        'funding_rate': funding_norm,
         'open_interest': oi_score,
-        'liquidations': liq_score,
-        'options_skew': iv_score
+        'liquidations': liq_norm,
+        'options_skew': iv_norm
     }
     
     weights = {
@@ -152,15 +148,16 @@ def apply_event_decay(base_score, events, today):
                 decay = 1 - (days_elapsed / event['impact_duration_days'])
             else:
                 decay = 1.0
-            # Normalize impact to [-1, 1] relative to a max impact of 3
             event_impact += (event['impact_score'] / 3.0) * decay
     
     return max(-1.0, min(1.0, base_score + event_impact))
 
-def run_engine(f, events):
-    mrs, mrs_breakdown = compute_macro_regime_score(f)
-    ocs, ocs_breakdown = compute_onchain_score(f)
-    ims, ims_breakdown = compute_intraday_score(f)
+def run_engine(df, events):
+    latest = df.iloc[-1]
+    
+    mrs, mrs_breakdown = compute_macro_regime_score(df)
+    ocs, ocs_breakdown = compute_onchain_score(df)
+    ims, ims_breakdown = compute_intraday_score(df)
     
     # Base weights
     w_mrs = 0.45
@@ -169,38 +166,34 @@ def run_engine(f, events):
     
     regime_name = "Normal"
     
-    # Global Overrides
-    if f['vix_level'] > 30.0:
+    # Global Overrides (using raw latest values)
+    if latest['vix_level'] > 30.0:
         regime_name = "VIX Crisis / Liquidation"
-        # Everything sells, correlations go to 1
         mrs = -0.9
         ocs = -0.7
         ims = -0.8
         w_mrs = 0.70
         w_ocs = 0.15
         w_ims = 0.15
-    elif f['mvrv_z_score'] < 0:
+    elif latest['mvrv_z_score'] < 0:
         regime_name = "Deep Value Accumulation"
         w_mrs = 0.20
         w_ocs = 0.50
         w_ims = 0.30
-    elif f['global_m2_13w_change'] > 3.0:
+    elif latest['global_m2_13w_change'] > 3.0:
         regime_name = "Liquidity Surge"
         w_mrs = 0.55
         w_ocs = 0.25
         w_ims = 0.20
-    elif 180 < f['halving_cycle_day'] < 540:
+    elif 180 < latest['halving_cycle_day'] < 540:
         regime_name = "Post-Halving Bull"
     
     base_composite = (mrs * w_mrs) + (ocs * w_ocs) + (ims * w_ims)
     
-    # Apply structural halving boost if applicable
     if regime_name == "Post-Halving Bull":
         base_composite += 0.15
         
     final_composite = apply_event_decay(base_composite, events, datetime.date.today())
-    
-    # Clamp to [-1, 1]
     final_composite = max(-1.0, min(1.0, final_composite))
     
     return {
@@ -209,7 +202,7 @@ def run_engine(f, events):
         "ims": ims,
         "composite": final_composite,
         "regime": regime_name,
-        "cycle_day": f['halving_cycle_day'],
+        "cycle_day": latest['halving_cycle_day'],
         "breakdown": {
             "macro": mrs_breakdown,
             "onchain": ocs_breakdown,
