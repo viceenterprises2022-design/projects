@@ -427,10 +427,6 @@ _AlphaEdge • Financial Intelligence_"""
 
 
 # ──────────────────────────────────────────────
-# STEP 5: GEMINI IMAGE GENERATION
-# ──────────────────────────────────────────────
-
-# ──────────────────────────────────────────────
 # STEP 5: TELEGRAM SENDER
 # ──────────────────────────────────────────────
 
@@ -449,6 +445,250 @@ def send_telegram(text: str, chat_id: str) -> bool:
     except Exception as e:
         log.error(f"Telegram send failed: {e}")
         return False
+
+
+def send_telegram_photo(image_bytes: bytes, caption: str, chat_id: str) -> bool:
+    """Send a PNG image as an inline photo with a text caption."""
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto"
+    try:
+        r = requests.post(
+            url,
+            data={"chat_id": chat_id, "caption": caption, "parse_mode": "Markdown"},
+            files={"photo": ("report.png", image_bytes, "image/png")},
+            timeout=30,
+        )
+        if r.status_code == 200:
+            return True
+        log.error(f"Telegram photo {r.status_code}: {r.text[:300]}")
+        return False
+    except Exception as e:
+        log.error(f"Telegram photo send failed: {e}")
+        return False
+
+
+# ──────────────────────────────────────────────
+# STEP 3.5: HTML TABLE BUILDER
+# ──────────────────────────────────────────────
+
+BIAS_COLOR = {
+    "Strongly Bullish": ("#052e16", "#4ade80"),   # bg, text
+    "Bullish":          ("#052e16", "#86efac"),
+    "Neutral":          ("#1c1f26", "#94a3b8"),
+    "Bearish":          ("#2d1515", "#fca5a5"),
+    "Strongly Bearish": ("#3b0a0a", "#f87171"),
+}
+
+
+def _chg_style(pct: float) -> str:
+    if pct > 0:
+        return "color:#4ade80;font-weight:600"
+    if pct < 0:
+        return "color:#f87171;font-weight:600"
+    return "color:#94a3b8"
+
+
+def build_html_table(enriched: list, ai_results: dict, date_str: str) -> str:
+    """Render all instruments into a 1200-px dark-themed HTML table string."""
+
+    rows_html = ""
+    enriched_map = {d["id"]: d for d in enriched}
+
+    for i, inst in enumerate(INSTRUMENTS):
+        iid = inst["id"]
+        d   = enriched_map.get(iid)
+        if not d:
+            continue
+        ai  = ai_results.get(iid, {})
+
+        bias      = ai.get("bias", d["trend"])
+        bg, fg    = BIAS_COLOR.get(bias, ("#1c1f26", "#94a3b8"))
+        bias_icon = BIAS_EMOJI.get(bias, "➡️")
+        chg_pct   = d["change_pct"]
+        chg_str   = f"{'+' if chg_pct >= 0 else ''}{chg_pct:.2f}%"
+        row_bg    = "#0d1117" if i % 2 == 0 else "#111827"
+
+        key_level = ai.get("key_level", "—")
+        key_label = ai.get("key_level_label", "")
+        key_color = "#f87171" if key_label == "Resistance" else "#4ade80" if key_label == "Support" else "#fbbf24"
+
+        outlook   = ai.get("outlook", "—")
+        sent_bar  = get_sentiment_bar(d["sentiment_score"])
+
+        rows_html += f"""
+        <tr style="background:{row_bg}">
+          <td class="inst">{d['emoji']} {d['name']}</td>
+          <td class="price mono">{d['price_fmt']}</td>
+          <td class="chg mono" style="{_chg_style(chg_pct)}">{chg_str}</td>
+          <td class="trend">{d['trend']}</td>
+          <td class="bias" style="background:{bg};color:{fg}">{bias_icon} {bias}</td>
+          <td class="key mono" style="color:{key_color}">{key_level} <span class="tag">{key_label}</span></td>
+          <td class="outlook">{outlook}</td>
+          <td class="sent">{sent_bar} <span class="snum">{d['sentiment_score']}</span></td>
+        </tr>"""
+
+    return f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    background: #0d1117;
+    font-family: 'Inter', sans-serif;
+    padding: 28px 32px 24px;
+    width: 1200px;
+    min-height: 100px;
+  }}
+  .header {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }}
+  .logo {{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }}
+  .logo-mark {{
+    width: 40px; height: 40px;
+    background: #10b981;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; color: #0d1117;
+  }}
+  .logo-text {{ font-size: 20px; font-weight: 700; color: #f1f5f9; letter-spacing: -0.3px; }}
+  .logo-sub  {{ font-size: 11px; color: #475569; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }}
+  .date-badge {{
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+  }}
+  table {{
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+  }}
+  thead tr {{
+    background: #0f172a;
+    border-bottom: 2px solid #10b981;
+  }}
+  th {{
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: #475569;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }}
+  td {{
+    padding: 11px 14px;
+    font-size: 13px;
+    color: #e2e8f0;
+    border-bottom: 1px solid #1e293b;
+    vertical-align: middle;
+    white-space: nowrap;
+  }}
+  td.inst   {{ font-weight: 600; font-size: 13.5px; white-space: nowrap; }}
+  td.price  {{ font-size: 13.5px; font-weight: 600; }}
+  td.chg    {{ font-size: 13px; }}
+  td.trend  {{ color: #94a3b8; font-size: 12px; }}
+  td.bias   {{
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }}
+  td.key    {{ font-size: 12px; }}
+  .tag      {{ font-size: 10px; color: #64748b; margin-left: 4px; }}
+  td.outlook {{ font-size: 11.5px; color: #94a3b8; white-space: normal; max-width: 220px; line-height: 1.45; }}
+  td.sent   {{ font-size: 13px; white-space: nowrap; }}
+  .snum     {{ font-family: 'JetBrains Mono', monospace; font-size: 11px;
+                color: #64748b; margin-left: 6px; }}
+  .mono     {{ font-family: 'JetBrains Mono', monospace; }}
+  .footer {{
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }}
+  .footer-left {{ font-size: 10px; color: #334155; }}
+  .footer-right {{ font-size: 10px; color: #334155; font-family: 'JetBrains Mono', monospace; }}
+  .disclaimer {{ font-size: 9.5px; color: #1e293b; margin-top: 6px; text-align: center; }}
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <div class="logo-mark">α</div>
+      <div>
+        <div class="logo-text">AlphaEdge</div>
+        <div class="logo-sub">Daily Market Intelligence</div>
+      </div>
+    </div>
+    <div class="date-badge">📅 {date_str}</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Instrument</th>
+        <th>Price</th>
+        <th>Change</th>
+        <th>Trend</th>
+        <th>AI Bias</th>
+        <th>Key Level</th>
+        <th>Outlook</th>
+        <th>Sentiment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows_html}
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <div class="footer-left">NSE/BSE · Upstox &nbsp;|&nbsp; Global/Commodities · Yahoo Finance &nbsp;|&nbsp; Crypto · CoinGecko &nbsp;|&nbsp; AI Analysis · Claude</div>
+    <div class="footer-right">alphaedge.ai</div>
+  </div>
+  <div class="disclaimer">For informational purposes only. Not financial advice.</div>
+</body>
+</html>"""
+
+
+# ──────────────────────────────────────────────
+# STEP 3.6: PLAYWRIGHT RENDERER
+# ──────────────────────────────────────────────
+
+def render_html_to_png(html: str) -> bytes:
+    """
+    Screenshot the HTML at 1200px wide, 2× device pixel ratio.
+    Returns raw PNG bytes (in-memory, no disk write).
+    """
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        browser = p.chromium.launch(args=["--no-sandbox", "--disable-dev-shm-usage"])
+        page = browser.new_page(
+            viewport={"width": 1200, "height": 900},
+            device_scale_factor=2,        # 2400px actual → sharp on mobile & desktop
+        )
+        page.set_content(html, wait_until="networkidle")  # wait for Google Fonts
+        # Clip to the actual content height — avoids whitespace below the table
+        content_height = page.evaluate("document.body.scrollHeight")
+        page.set_viewport_size({"width": 1200, "height": content_height})
+        png_bytes = page.screenshot(full_page=True)
+        browser.close()
+    log.info(f"  ✓ Screenshot rendered ({len(png_bytes)//1024} KB)")
+    return png_bytes
 
 
 # ──────────────────────────────────────────────
@@ -545,50 +785,57 @@ def main():
             for d in enriched
         }
 
-    # ── 3. Send to Telegram ──
+    # ── 3. Render HTML table → PNG ──
+    log.info("Building HTML table and rendering screenshot...")
+    html_table = build_html_table(enriched, ai_results, date_str)
+    try:
+        png_bytes = render_html_to_png(html_table)
+    except Exception as e:
+        log.error(f"Screenshot render failed: {e}")
+        png_bytes = None
+
+    # ── 4. Send to Telegram ──
     log.info("Sending to Telegram @dvr_market_snippet...")
 
     # Header
     header = (
         f"📊 *AlphaEdge — Daily Market Intelligence*\n"
         f"🗓 _{date_str}_\n\n"
-        f"Good morning! Today's snapshots across *11 instruments* — "
+        f"Good morning! Today's snapshot across *{len(enriched)} instruments* — "
         f"NSE, BSE, Global Indices, Commodities & Crypto.\n\n"
         f"_Powered by AlphaEdge Financial Intelligence_ 🚀"
     )
     send_telegram(header, TELEGRAM_CHANNEL)
-    time.sleep(2)
+    time.sleep(1)
 
-    # Snippets in original order
-    enriched_map = {d["id"]: d for d in enriched}
+    # Single photo with caption
     sent = 0
-
-    for inst in INSTRUMENTS:
-        iid = inst["id"]
-        if iid not in enriched_map:
-            log.warning(f"Skipping {iid} — no data available")
-            continue
-        d   = enriched_map[iid]
-        ai  = ai_results.get(iid, {})
-        msg = build_snippet(d, ai)
-        if send_telegram(msg, TELEGRAM_CHANNEL):
-            sent += 1
-            log.info(f"  ✓ {iid} sent")
+    if png_bytes:
+        caption = (
+            f"📊 *{len(enriched)} Instruments · {now_ist.strftime('%b %d, %Y · %I:%M %p IST')}*\n"
+            f"_NSE/BSE · Global Indices · Commodities · Crypto_"
+        )
+        if send_telegram_photo(png_bytes, caption, TELEGRAM_CHANNEL):
+            sent = len(enriched)
+            log.info("  ✓ Market snapshot photo sent")
         else:
-            log.error(f"  ✗ {iid} failed")
-        time.sleep(2)
+            log.error("  ✗ Photo send failed")
+    else:
+        log.error("No PNG to send — skipping photo")
+
+    time.sleep(1)
 
     # Footer
     footer = (
         f"✅ *Snapshot Complete*\n"
-        f"`{sent}/{len(enriched)}` snippets delivered\n"
+        f"`{len(enriched)}` instruments delivered in 1 report\n"
         f"⏱ {now_ist.strftime('%I:%M %p IST')}\n\n"
-        f"_NSE/BSE data via Upstox • Crypto via CoinGecko • Analysis by Claude AI_\n"
+        f"_NSE/BSE · Upstox  •  Crypto · CoinGecko  •  AI · Claude_\n"
         f"_AlphaEdge • alphaedge.ai_"
     )
     send_telegram(footer, TELEGRAM_CHANNEL)
 
-    log.info(f"Done — {sent}/{len(enriched)} sent. Failed: {failed or 'none'}")
+    log.info(f"Done — {sent}/{len(enriched)} instruments in report. Failed fetches: {failed or 'none'}")
 
 
 if __name__ == "__main__":
