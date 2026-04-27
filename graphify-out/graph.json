@@ -10169,18 +10169,18 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L58",
-      "id": "fetchers_rationale_58",
       "community": 4,
-      "norm_label": "mock events for the regulatory/event layer."
+      "norm_label": "mock events for the regulatory/event layer.",
+      "id": "fetchers_rationale_58"
     },
     {
       "label": "Generates a mock SQLite database with historical intraday OI data for BTC.     S",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L76",
-      "id": "fetchers_rationale_76",
       "community": 4,
-      "norm_label": "generates a mock sqlite database with historical intraday oi data for btc.     s"
+      "norm_label": "generates a mock sqlite database with historical intraday oi data for btc.     s",
+      "id": "fetchers_rationale_76"
     },
     {
       "label": "emerging_markets_platform.jsx",
@@ -18797,8 +18797,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/main.py",
       "source_location": "L60",
       "weight": 1.0,
-      "_src": "main_print_trending_oi",
-      "_tgt": "connection_connect",
+      "_src": "connection_connect",
+      "_tgt": "main_print_trending_oi",
       "source": "connection_connect",
       "target": "main_print_trending_oi"
     },
@@ -18809,8 +18809,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L80",
       "weight": 1.0,
-      "_src": "fetchers_generate_mock_oi_db",
-      "_tgt": "connection_connect",
+      "_src": "connection_connect",
+      "_tgt": "fetchers_generate_mock_oi_db",
       "source": "connection_connect",
       "target": "fetchers_generate_mock_oi_db"
     },
@@ -22673,8 +22673,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/main.py",
       "source_location": "L62",
       "weight": 1.0,
-      "_src": "main_print_trending_oi",
-      "_tgt": "router_execute",
+      "_src": "router_execute",
+      "_tgt": "main_print_trending_oi",
       "source": "router_execute",
       "target": "main_print_trending_oi"
     },
@@ -22685,8 +22685,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L82",
       "weight": 1.0,
-      "_src": "fetchers_generate_mock_oi_db",
-      "_tgt": "router_execute",
+      "_src": "router_execute",
+      "_tgt": "fetchers_generate_mock_oi_db",
       "source": "router_execute",
       "target": "fetchers_generate_mock_oi_db"
     },
@@ -28349,8 +28349,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/main.py",
       "source_location": "L64",
       "weight": 1.0,
-      "_src": "main_print_trending_oi",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "main_print_trending_oi",
       "source": "subgraph_client_subgraphclient_close",
       "target": "main_print_trending_oi"
     },
@@ -28361,8 +28361,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L106",
       "weight": 1.0,
-      "_src": "fetchers_generate_mock_oi_db",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "fetchers_generate_mock_oi_db",
       "source": "subgraph_client_subgraphclient_close",
       "target": "fetchers_generate_mock_oi_db"
     },
