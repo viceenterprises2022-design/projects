@@ -10061,18 +10061,18 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L18",
-      "id": "daemon_rationale_18",
       "community": 4,
-      "norm_label": "generates the last 1 hour of data to bootstrap the table if empty"
+      "norm_label": "generates the last 1 hour of data to bootstrap the table if empty",
+      "id": "daemon_rationale_18"
     },
     {
       "label": "In production, this would make an async API call to CoinGlass to get     the cur",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L41",
-      "id": "daemon_rationale_41",
       "community": 4,
-      "norm_label": "in production, this would make an async api call to coinglass to get     the cur"
+      "norm_label": "in production, this would make an async api call to coinglass to get     the cur",
+      "id": "daemon_rationale_41"
     },
     {
       "label": "engine.py",
@@ -10151,18 +10151,18 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L8",
-      "id": "engine_rationale_8",
       "community": 25,
-      "norm_label": "computes a rolling z-score over the specified window (spec 14.2).     returns th"
+      "norm_label": "computes a rolling z-score over the specified window (spec 14.2).     returns th",
+      "id": "engine_rationale_8"
     },
     {
       "label": "Applies the inverse or direct relationship flag.     z_score is a single float [",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L24",
-      "id": "engine_rationale_24",
       "community": 25,
-      "norm_label": "applies the inverse or direct relationship flag.     z_score is a single float ["
+      "norm_label": "applies the inverse or direct relationship flag.     z_score is a single float [",
+      "id": "engine_rationale_24"
     },
     {
       "label": "fetchers.py",
@@ -10205,27 +10205,27 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L9",
-      "id": "fetchers_rationale_9",
       "community": 4,
-      "norm_label": "simulates an async api call returning a 90-day historical time series for a sing"
+      "norm_label": "simulates an async api call returning a 90-day historical time series for a sing",
+      "id": "fetchers_rationale_9"
     },
     {
       "label": "Fetches the 13 minimal factors concurrently using asyncio.     Returns a Pandas",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L24",
-      "id": "fetchers_rationale_24",
       "community": 4,
-      "norm_label": "fetches the 13 minimal factors concurrently using asyncio.     returns a pandas"
+      "norm_label": "fetches the 13 minimal factors concurrently using asyncio.     returns a pandas",
+      "id": "fetchers_rationale_24"
     },
     {
       "label": "Mock events for the regulatory/event layer.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L75",
-      "id": "fetchers_rationale_75",
       "community": 4,
-      "norm_label": "mock events for the regulatory/event layer."
+      "norm_label": "mock events for the regulatory/event layer.",
+      "id": "fetchers_rationale_75"
     },
     {
       "label": "emerging_markets_platform.jsx",
@@ -18908,8 +18908,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L10",
       "weight": 1.0,
-      "_src": "daemon_init_db",
-      "_tgt": "connection_connect",
+      "_src": "connection_connect",
+      "_tgt": "daemon_init_db",
       "source": "connection_connect",
       "target": "daemon_init_db"
     },
@@ -18920,8 +18920,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L19",
       "weight": 1.0,
-      "_src": "daemon_generate_initial_history",
-      "_tgt": "connection_connect",
+      "_src": "connection_connect",
+      "_tgt": "daemon_generate_initial_history",
       "source": "connection_connect",
       "target": "daemon_generate_initial_history"
     },
@@ -18932,8 +18932,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L45",
       "weight": 1.0,
-      "_src": "daemon_fetch_and_log_oi",
-      "_tgt": "connection_connect",
+      "_src": "connection_connect",
+      "_tgt": "daemon_fetch_and_log_oi",
       "source": "connection_connect",
       "target": "daemon_fetch_and_log_oi"
     },
@@ -22808,8 +22808,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L12",
       "weight": 1.0,
-      "_src": "daemon_init_db",
-      "_tgt": "router_execute",
+      "_src": "router_execute",
+      "_tgt": "daemon_init_db",
       "source": "router_execute",
       "target": "daemon_init_db"
     },
@@ -22820,8 +22820,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L21",
       "weight": 1.0,
-      "_src": "daemon_generate_initial_history",
-      "_tgt": "router_execute",
+      "_src": "router_execute",
+      "_tgt": "daemon_generate_initial_history",
       "source": "router_execute",
       "target": "daemon_generate_initial_history"
     },
@@ -22832,8 +22832,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L49",
       "weight": 1.0,
-      "_src": "daemon_fetch_and_log_oi",
-      "_tgt": "router_execute",
+      "_src": "router_execute",
+      "_tgt": "daemon_fetch_and_log_oi",
       "source": "router_execute",
       "target": "daemon_fetch_and_log_oi"
     },
@@ -23432,8 +23432,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L81",
       "weight": 1.0,
-      "_src": "daemon_main",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "daemon_main",
       "source": "e2e_test_sleep",
       "target": "daemon_main"
     },
@@ -23444,8 +23444,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/fetchers.py",
       "source_location": "L13",
       "weight": 1.0,
-      "_src": "fetchers_fetch_factor_mock_history",
-      "_tgt": "e2e_test_sleep",
+      "_src": "e2e_test_sleep",
+      "_tgt": "fetchers_fetch_factor_mock_history",
       "source": "e2e_test_sleep",
       "target": "fetchers_fetch_factor_mock_history"
     },
@@ -28532,8 +28532,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L15",
       "weight": 1.0,
-      "_src": "daemon_init_db",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "daemon_init_db",
       "source": "subgraph_client_subgraphclient_close",
       "target": "daemon_init_db"
     },
@@ -28544,8 +28544,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L38",
       "weight": 1.0,
-      "_src": "daemon_generate_initial_history",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "daemon_generate_initial_history",
       "source": "subgraph_client_subgraphclient_close",
       "target": "daemon_generate_initial_history"
     },
@@ -28556,8 +28556,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/daemon.py",
       "source_location": "L69",
       "weight": 1.0,
-      "_src": "daemon_fetch_and_log_oi",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "daemon_fetch_and_log_oi",
       "source": "subgraph_client_subgraphclient_close",
       "target": "daemon_fetch_and_log_oi"
     },
