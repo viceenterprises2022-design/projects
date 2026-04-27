@@ -7721,27 +7721,27 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L451",
-      "id": "market_engine_rationale_451",
       "community": 12,
-      "norm_label": "send a png image as an inline photo with a text caption."
+      "norm_label": "send a png image as an inline photo with a text caption.",
+      "id": "market_engine_rationale_451"
     },
     {
       "label": "Render all instruments into a 1200-px dark-themed HTML table string.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L491",
-      "id": "market_engine_rationale_491",
       "community": 12,
-      "norm_label": "render all instruments into a 1200-px dark-themed html table string."
+      "norm_label": "render all instruments into a 1200-px dark-themed html table string.",
+      "id": "market_engine_rationale_491"
     },
     {
       "label": "Screenshot the HTML at 1200px wide, 2\u00d7 device pixel ratio.     Returns raw PNG b",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L673",
-      "id": "market_engine_rationale_673",
       "community": 12,
-      "norm_label": "screenshot the html at 1200px wide, 2\u00d7 device pixel ratio.     returns raw png b"
+      "norm_label": "screenshot the html at 1200px wide, 2\u00d7 device pixel ratio.     returns raw png b",
+      "id": "market_engine_rationale_673"
     },
     {
       "label": "alphaedge_db.py",
@@ -16187,8 +16187,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L454",
       "weight": 1.0,
-      "_src": "market_engine_send_telegram_photo",
-      "_tgt": "route_post",
+      "_src": "route_post",
+      "_tgt": "market_engine_send_telegram_photo",
       "source": "route_post",
       "target": "market_engine_send_telegram_photo"
     },
@@ -18539,8 +18539,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L679",
       "weight": 1.0,
-      "_src": "market_engine_render_html_to_png",
-      "_tgt": "health_launch",
+      "_src": "health_launch",
+      "_tgt": "market_engine_render_html_to_png",
       "source": "health_launch",
       "target": "market_engine_render_html_to_png"
     },
@@ -27155,8 +27155,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L689",
       "weight": 1.0,
-      "_src": "market_engine_render_html_to_png",
-      "_tgt": "subgraph_client_subgraphclient_close",
+      "_src": "subgraph_client_subgraphclient_close",
+      "_tgt": "market_engine_render_html_to_png",
       "source": "subgraph_client_subgraphclient_close",
       "target": "market_engine_render_html_to_png"
     },
@@ -28595,8 +28595,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_engine.py",
       "source_location": "L686",
       "weight": 1.0,
-      "_src": "market_engine_render_html_to_png",
-      "_tgt": "risk_engine_riskengine_evaluate",
+      "_src": "risk_engine_riskengine_evaluate",
+      "_tgt": "market_engine_render_html_to_png",
       "source": "risk_engine_riskengine_evaluate",
       "target": "market_engine_render_html_to_png"
     },
