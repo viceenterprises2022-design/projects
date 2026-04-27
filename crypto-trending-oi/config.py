@@ -37,13 +37,15 @@ SYMBOL_MAP = {
     "btc_iv":             ("BTC-DVOL",      "provider-specific", None),
 }
 
-# API Keys
 API_KEYS = {
-    "FRED_API_KEY": os.getenv("FRED_API_KEY", ""),
-    "ALPHA_VANTAGE_KEY": os.getenv("ALPHA_VANTAGE_KEY", ""),
-    "GLASSNODE_API_KEY": os.getenv("GLASSNODE_API_KEY", ""),
-    "COINGLASS_API_KEY": os.getenv("COINGLASS_API_KEY", ""),
-    "NEWSAPI_KEY": os.getenv("NEWSAPI_KEY", ""),
+    "fred": os.getenv("FRED_API_KEY", ""),
+    "alphavantage": os.getenv("ALPHAVANTAGE_API_KEY", ""),
+    "twelvedata": os.getenv("TWELVEDATA_API_KEY", ""),
+    "eia": os.getenv("EIA_API_KEY", ""),
+    "bls": os.getenv("BLS_API_KEY", ""),
+    "coinmarketcap": os.getenv("COINMARKETCAP_API_KEY", ""),
+    "metals": os.getenv("METALS_API_KEY", ""),
+    "finnhub": os.getenv("FINNHUB_API_KEY", "")
 }
 
 # General config

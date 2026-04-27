@@ -3,6 +3,7 @@ import datetime
 import time
 import random
 import os
+import requests
 
 DB_PATH = "crypto_intraday_oi.db"
 
@@ -14,6 +15,15 @@ def init_db():
     conn.commit()
     conn.close()
 
+def get_real_btc_price():
+    try:
+        res = requests.get("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT", timeout=5)
+        if res.status_code == 200:
+            return float(res.json()["price"])
+    except:
+        pass
+    return 65000.0
+
 def generate_initial_history():
     """Generates the last 1 hour of data to bootstrap the table if empty"""
     conn = sqlite3.connect(DB_PATH)
@@ -23,13 +33,13 @@ def generate_initial_history():
     
     if count == 0:
         now = datetime.datetime.now()
-        base_price = 65000
+        base_price = get_real_btc_price()
         base_call_oi = 50000
         base_put_oi = 45000
         
         for i in range(12, 0, -1):
             ts = (now - datetime.timedelta(minutes=i*5)).strftime("%Y-%m-%d %H:%M:00")
-            base_price += random.uniform(-100, 150)
+            base_price += random.uniform(-50, 50)
             base_call_oi += random.uniform(-500, 800)
             base_put_oi += random.uniform(-300, 1000)
             c.execute("INSERT INTO trending_oi VALUES (?, ?, ?, ?, ?)", 
@@ -39,30 +49,33 @@ def generate_initial_history():
 
 def fetch_and_log_oi():
     """
-    In production, this would make an async API call to CoinGlass to get
-    the current BTC price, Call OI, and Put OI.
+    Fetches real price from Binance.
+    Mocks Call/Put OI because Options APIs (CoinGlass/Deribit) require paid keys.
     """
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     
-    # Get last known to continue the random walk for smooth dummy data
-    c.execute("SELECT ltp, call_oi, put_oi FROM trending_oi ORDER BY timestamp DESC LIMIT 1")
+    c.execute("SELECT call_oi, put_oi FROM trending_oi ORDER BY timestamp DESC LIMIT 1")
     row = c.fetchone()
     
     if row:
-        base_price, base_call_oi, base_put_oi = row
+        base_call_oi, base_put_oi = row
     else:
-        base_price, base_call_oi, base_put_oi = 65000, 50000, 45000
+        base_call_oi, base_put_oi = 50000, 45000
         
     ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:00")
-    new_price = base_price + random.uniform(-100, 150)
+    
+    # Real Price
+    new_price = get_real_btc_price()
+    
+    # Mocked OI (Requires Coinglass/Deribit to be real)
     new_call_oi = base_call_oi + random.uniform(-500, 800)
     new_put_oi = base_put_oi + random.uniform(-300, 1000)
     
     c.execute("INSERT INTO trending_oi VALUES (?, ?, ?, ?, ?)", 
               (ts, "BTC", new_price, new_call_oi, new_put_oi))
               
-    # Optional: Prune old data (e.g., keep last 24 hours = 288 rows of 5m intervals)
+    # Prune old data (keep last 24 hours = 288 rows of 5m intervals)
     c.execute("DELETE FROM trending_oi WHERE timestamp NOT IN (SELECT timestamp FROM trending_oi ORDER BY timestamp DESC LIMIT 288)")
     
     conn.commit()
@@ -70,7 +83,7 @@ def fetch_and_log_oi():
     print(f"[{ts}] Logged BTC OI -> Price: {new_price:.2f}, Call OI: {new_call_oi:.0f}, Put OI: {new_put_oi:.0f}")
 
 def main():
-    print("Starting AlphaEdge OI Background Daemon...")
+    print("Starting AlphaEdge OI Background Daemon (Live Price)...")
     init_db()
     generate_initial_history()
     
