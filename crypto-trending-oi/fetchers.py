@@ -50,6 +50,8 @@ def fetch_mock_data():
         "dxy_value": 104.50 + random.uniform(-1, 1),
         "btc_price": 65000 + random.uniform(-2000, 2000),
         "stablecoin_supply_total": 160_000_000_000 + random.uniform(-1_000_000_000, 1_000_000_000),
+        "btc_call_oi_total": random.uniform(40_000, 60_000), # in BTC
+        "btc_put_oi_total": random.uniform(30_000, 50_000), # in BTC
     }
 
 def get_event_flags():
@@ -67,3 +69,38 @@ def get_event_flags():
             "notes": "CPI cooled slightly, dovish signal"
         }
     ]
+
+import sqlite3
+
+def generate_mock_oi_db():
+    """
+    Generates a mock SQLite database with historical intraday OI data for BTC.
+    Simulates the trending OI pulse.
+    """
+    conn = sqlite3.connect("crypto_intraday_oi.db")
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS trending_oi 
+                 (timestamp TEXT, symbol TEXT, ltp REAL, call_oi REAL, put_oi REAL)''')
+    
+    # Clear existing
+    c.execute("DELETE FROM trending_oi")
+    
+    now = datetime.datetime.now()
+    base_price = 65000
+    base_call_oi = 50000
+    base_put_oi = 45000
+    
+    # Generate 12 data points (1 hour, 5 min intervals)
+    for i in range(12, -1, -1):
+        ts = (now - datetime.timedelta(minutes=i*5)).strftime("%Y-%m-%d %H:%M:00")
+        
+        # Random walk
+        base_price += random.uniform(-100, 150)
+        base_call_oi += random.uniform(-500, 800)
+        base_put_oi += random.uniform(-300, 1000)
+        
+        c.execute("INSERT INTO trending_oi VALUES (?, ?, ?, ?, ?)", 
+                  (ts, "BTC", base_price, base_call_oi, base_put_oi))
+        
+    conn.commit()
+    conn.close()
