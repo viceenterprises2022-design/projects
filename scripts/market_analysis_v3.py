@@ -10,7 +10,7 @@ Usage:  python market_analysis_v3.py
 Output: alphaedge_<timestamp>.html  (auto-opens in browser)
 """
 
-import requests, datetime, os, webbrowser, time, json
+import requests, datetime, os, webbrowser, time, json, sqlite3, threading
 
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
@@ -33,6 +33,53 @@ OI_RANGE  = 1000   # spot ± 1000 pts
 YAHOO_SYM = {"DXY":"DX-Y.NYB","CRUDE_OIL":"CL=F","US30":"YM=F","GOLD":"GC=F","SILVER":"SI=F"}
 YAHOO_IDX = {"NIFTY":"^NSEI","SENSEX":"^BSESN","BANKNIFTY":"^NSEBANK"}
 YH = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+
+
+# ── INTRADAY OI COLLECTOR ────────────────────────────────────────────────────
+
+DB_PATH = "intraday_oi.db"
+
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS trending_oi 
+                 (timestamp TEXT, symbol TEXT, ltp REAL, call_oi REAL, put_oi REAL)''')
+    # Clean previous day's data
+    c.execute("DELETE FROM trending_oi WHERE date(timestamp) < date('now', 'localtime')")
+    conn.commit()
+    conn.close()
+
+def oi_collector_thread():
+    while True:
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            c = conn.cursor()
+            ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:00")
+            
+            for sym in ["NIFTY", "BANKNIFTY", "SENSEX"]:
+                key = INSTRUMENTS.get(sym)
+                oi_key = OI_INSTRUMENTS.get(sym)
+                if not key or not oi_key: continue
+                
+                q = fetch_quote(key)
+                if not q: continue
+                ltp = q.get("ltp", 0)
+                oi_raw = build_oi_data(sym, ltp)
+                if not oi_raw: continue
+                
+                c_oi = oi_raw.get("total_call_oi", 0)
+                p_oi = oi_raw.get("total_put_oi", 0)
+                
+                c.execute("INSERT INTO trending_oi VALUES (?, ?, ?, ?, ?)", (ts, sym, ltp, c_oi, p_oi))
+                
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            pass # Silent fail for background daemon
+            
+        time.sleep(300) # 5 minutes
+
+# ─────────────────────────────────────────────────────────────────────────────
 
 # ── Upstox Fetchers ───────────────────────────────────────────────────────────
 
@@ -650,6 +697,78 @@ def print_summary_ticker(quotes_all):
         )
     console.print("  " + "   │   ".join(row_parts) + "\n")
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PHASE 4 — TRENDING OI TABLE
+# ─────────────────────────────────────────────────────────────────────────────
+
+def print_trending_oi(sym):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute("SELECT timestamp, ltp, call_oi, put_oi FROM trending_oi WHERE symbol=? ORDER BY timestamp ASC", (sym,))
+        rows = c.fetchall()
+        conn.close()
+    except Exception:
+        return
+        
+    if not rows:
+        console.print("[dim]  Trending OI data is collecting... Please wait for the first 5-min interval.[/dim]")
+        return
+        
+    console.print(Rule("[bold cyan]Trending OI (Intraday Pulse)[/bold cyan]", style="cyan"))
+    
+    t_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
+    t_table.add_column("Time", justify="left")
+    t_table.add_column("LTP", justify="right")
+    t_table.add_column("Chng Call OI", justify="right", style="green")
+    t_table.add_column("Chng Put OI", justify="right", style="red")
+    t_table.add_column("Diff in OI", justify="right", style="bold")
+    t_table.add_column("Dir.", justify="center")
+    t_table.add_column("Chng in Dir", justify="right")
+    t_table.add_column("Net PCR", justify="right")
+    t_table.add_column("Sentiment", justify="center")
+    
+    base_c_oi = rows[0][2]
+    base_p_oi = rows[0][3]
+    prev_diff = None
+    
+    # Render reverse chronological
+    display_rows = []
+    
+    for r in rows:
+        ts_str, ltp, c_oi, p_oi = r
+        time_str = ts_str.split(" ")[1][:5]
+        
+        chng_c = c_oi - base_c_oi
+        chng_p = p_oi - base_p_oi
+        diff = p_oi - c_oi
+        
+        pcr = p_oi / c_oi if c_oi > 0 else 0
+        
+        chng_dir = diff - prev_diff if prev_diff is not None else 0
+        
+        # Format strings
+        dir_char = "[green]↑[/green]" if chng_dir > 0 else "[red]↓[/red]" if chng_dir < 0 else "—"
+        
+        sent = "[bold green]Bullish[/bold green]" if (diff > 0 and chng_dir >= 0) else                "[bold red]Bearish[/bold red]" if (diff < 0 and chng_dir <= 0) else                "[yellow]Neutral[/yellow]"
+               
+        chng_dir_str = f"[green]{chng_dir:,.0f}[/green]" if chng_dir > 0 else f"[red]{chng_dir:,.0f}[/red]"
+        diff_str = f"{diff:,.0f}"
+        
+        display_rows.insert(0, (
+            time_str, f"{ltp:,.2f}", f"{chng_c:,.0f}", f"{chng_p:,.0f}", 
+            diff_str, dir_char, chng_dir_str, f"{pcr:.2f}", sent
+        ))
+        
+        prev_diff = diff
+        
+    for dr in display_rows:
+        t_table.add_row(*dr)
+        
+    console.print(t_table)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # FULL DIAGNOSTIC REPORT
 # ─────────────────────────────────────────────────────────────────────────────
@@ -733,6 +852,10 @@ def print_diagnostic_report(sym, quote, oi_raw, res, final_signal, final_score):
     if oi_raw:
         print_intelligence_panel(sym, quote, oi_raw)
 
+    # Phase 4 — Trending OI
+    if oi_raw:
+        print_trending_oi(sym)
+
     # Footer shortcut reminder
     console.print("\n[dim]  [r] Refresh  │  [b] Back to menu  │  [q] Quit[/dim]")
 
@@ -787,6 +910,9 @@ def run_analysis(sym):
 
 
 def main():
+    init_db()
+    threading.Thread(target=oi_collector_thread, daemon=True).start()
+
     while True:
         # ── MENU ──────────────────────────────────────────────────────────────
         console.clear()
