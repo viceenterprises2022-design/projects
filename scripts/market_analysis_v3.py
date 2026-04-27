@@ -10,15 +10,8 @@ Usage:  python market_analysis_v3.py
 Output: alphaedge_<timestamp>.html  (auto-opens in browser)
 """
 
-import requests, datetime, os, sys, time, json
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
-from rich.text import Text
-from rich import box
+import requests, datetime, os, webbrowser, time, json
 
-ANTHROPIC_API_KEY  = "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"
-CLAUDE_MODEL       = "claude-sonnet-4-20250514"
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
 UH = {"Authorization": f"Bearer {UPSTOX_TOKEN}", "Accept": "application/json"}
@@ -428,64 +421,6 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
 
 # ── HTML Generator ────────────────────────────────────────────────────────────
 
-# ── CLAUDE AI INTEGRATION ─────────────────────────────────────────────────────
-
-def call_claude_for_diagnostics(sym, quote, res, final_signal, final_score):
-    """Pass the 10-factor technical breakdown to Claude for a targeted diagnostic."""
-    
-    # Build a textual representation of the 10 factors
-    factors_text = f"Instrument: {sym}\n"
-    factors_text += f"Price: {quote.get('ltp', 0):.2f} (Change: {quote.get('change_pct', 0):+.2f}%)\n"
-    factors_text += f"Technical Signal: {final_signal} ({final_score}/10)\n\n"
-    factors_text += "10-Factor Breakdown:\n"
-    
-    for key, val in res.items():
-        factors_text += f"- {key.upper()}: {val['label']} | Score: {val['score']} | Detail: {val['detail']}\n"
-        
-    prompt = f"""You are a professional quantitative analyst. 
-Review the following 10-factor technical analysis for {sym}.
-
-DATA:
-{factors_text}
-
-Provide a concise, sharp diagnostic summary. Focus on EXACTLY how these specific signals (e.g., VWAP, OI, VIX, Trend, PCR) interact to form the current picture.
-Return your response as a valid JSON object with EXACTLY these fields (no markdown, no preamble):
-- "bias": "Bullish" | "Bearish" | "Neutral"
-- "summary": 2-3 sentences synthesizing the 10 factors into a cohesive market narrative.
-- "key_level": A single price level to watch (number as string).
-- "outlook": 1 forward-looking sentence based on the data.
-- "risk_note": 1 caution note.
-"""
-
-    headers = {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-    }
-    payload = {
-        "model": CLAUDE_MODEL,
-        "max_tokens": 1000,
-        "messages": [{"role": "user", "content": prompt}],
-    }
-    
-    try:
-        import requests, json
-        r = requests.post("https://api.anthropic.com/v1/messages", headers=headers, json=payload, timeout=20)
-        r.raise_for_status()
-        raw = r.json()["content"][0]["text"].strip()
-        if raw.startswith("```"):
-            raw = raw.split("```")[1]
-            if raw.startswith("json"):
-                raw = raw[4:]
-        return json.loads(raw.strip())
-    except Exception as e:
-        return {
-            "bias": "Error",
-            "summary": f"Could not fetch AI analysis: {e}",
-            "key_level": "N/A",
-            "outlook": "N/A",
-            "risk_note": "N/A"
-        }
 
 # ── CLI INTERFACE ─────────────────────────────────────────────────────────────
 
@@ -497,7 +432,7 @@ from rich import box
 
 console = Console()
 
-def print_diagnostic_report(sym, quote, oi_raw, res, final_signal, final_score, ai_analysis):
+def print_diagnostic_report(sym, quote, oi_raw, res, final_signal, final_score):
     console.clear()
     
     # 1. Header Panel
@@ -552,16 +487,7 @@ def print_diagnostic_report(sym, quote, oi_raw, res, final_signal, final_score, 
         table.add_row(name, data["label"], data["detail"], score_str)
 
     console.print(table)
-    
-    # 3. AI Analysis Panel
-    ai_text = (
-        f"[bold white]Bias:[/bold white] {ai_analysis.get('bias', 'N/A')}\n\n"
-        f"[bold white]Synthesis:[/bold white] {ai_analysis.get('summary', 'N/A')}\n\n"
-        f"[bold white]Key Level:[/bold white] [cyan]{ai_analysis.get('key_level', 'N/A')}[/cyan]\n"
-        f"[bold white]Outlook:[/bold white] {ai_analysis.get('outlook', 'N/A')}\n"
-        f"[bold red]Risk:[/bold red] {ai_analysis.get('risk_note', 'N/A')}"
-    )
-    console.print(Panel(ai_text, title="[bold purple]Claude AI Narrative[/bold purple]", border_style="purple"))
+
 
 def main():
     while True:
@@ -615,12 +541,12 @@ def main():
             final_score = a_res["score"]
             final_signal = a_res["signal"]
 
-        with console.status(f"[purple]Generating Claude AI narrative...[/purple]"):
-            ai_analysis = call_claude_for_diagnostics(sym, q, res, final_signal, final_score)
-            
-        print_diagnostic_report(sym, q, oi_raw, res, final_signal, final_score, ai_analysis)
+        print_diagnostic_report(sym, q, oi_raw, res, final_signal, final_score)
         
-        input("\nPress Enter to return to menu...")
+        try:
+            input("\nPress Enter to return to menu...")
+        except EOFError:
+            break
 
 if __name__ == '__main__':
     main()
