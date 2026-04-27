@@ -7082,36 +7082,36 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L71",
-      "id": "market_analysis_v3_rationale_71",
       "community": 1,
-      "norm_label": "return sorted list of expiry date strings."
+      "norm_label": "return sorted list of expiry date strings.",
+      "id": "market_analysis_v3_rationale_71"
     },
     {
       "label": "Fetch full option chain for a given expiry.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L82",
-      "id": "market_analysis_v3_rationale_82",
       "community": 1,
-      "norm_label": "fetch full option chain for a given expiry."
+      "norm_label": "fetch full option chain for a given expiry.",
+      "id": "market_analysis_v3_rationale_82"
     },
     {
       "label": "Fetch option chain, filter to spot \u00b11000, compute:     - OI bars (call_oi, put_o",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L90",
-      "id": "market_analysis_v3_rationale_90",
       "community": 1,
-      "norm_label": "fetch option chain, filter to spot \u00b11000, compute:     - oi bars (call_oi, put_o"
+      "norm_label": "fetch option chain, filter to spot \u00b11000, compute:     - oi bars (call_oi, put_o",
+      "id": "market_analysis_v3_rationale_90"
     },
     {
       "label": "Factors:      1. Trend      (EMA 20/50/200)           weight \u00b12      2. Dow Jone",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L278",
-      "id": "market_analysis_v3_rationale_278",
       "community": 1,
-      "norm_label": "factors:      1. trend      (ema 20/50/200)           weight \u00b12      2. dow jone"
+      "norm_label": "factors:      1. trend      (ema 20/50/200)           weight \u00b12      2. dow jone",
+      "id": "market_analysis_v3_rationale_278"
     },
     {
       "label": "market_analysis_v2.py",
@@ -20534,8 +20534,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py",
       "source_location": "L51",
       "weight": 1.0,
-      "_src": "market_analysis_v3_fetch_quote",
-      "_tgt": "tab_list",
+      "_src": "tab_list",
+      "_tgt": "market_analysis_v3_fetch_quote",
       "source": "tab_list",
       "target": "market_analysis_v3_fetch_quote"
     },
