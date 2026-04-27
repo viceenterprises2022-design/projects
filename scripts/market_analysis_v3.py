@@ -9,9 +9,7 @@ AlphaEdge Market Intelligence Dashboard v3
 Usage:  python market_analysis_v3.py
 Output: alphaedge_<timestamp>.html  (auto-opens in browser)
 """
-
-import requests, datetime, os, webbrowser, time, json, sqlite3, threading
-
+import requests, datetime, os, webbrowser, time, json, sqlite3, threading, sys
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
 UH = {"Authorization": f"Bearer {UPSTOX_TOKEN}", "Accept": "application/json"}
@@ -89,7 +87,7 @@ def upstox_get(url, params):
         if r.status_code == 200:
             return r.json()
     except Exception as e:
-        print(f"    [W] {url.split('/')[-1]} {params}: {e}")
+        pass # print(f"    [W] {url.split('/')[-1]} {params}: {e}")
     return {}
 
 def fetch_quote(key):
@@ -148,14 +146,14 @@ def build_oi_data(symbol, spot):
 
     expiries = fetch_expiries(key)
     if not expiries:
-        print(f"    [W] No expiries for {symbol}")
+        # print(f"    [W] No expiries for {symbol}")
         return None
 
     nearest = expiries[0]
-    print(f"    {symbol} expiry: {nearest}")
+    # print(f"    {symbol} expiry: {nearest}")
     chain = fetch_option_chain(key, nearest)
     if not chain:
-        print(f"    [W] Empty chain for {symbol}")
+        # print(f"    [W] Empty chain for {symbol}")
         return None
 
     lo = spot - OI_RANGE
@@ -719,15 +717,15 @@ def print_trending_oi(sym):
     console.print(Rule("[bold cyan]Trending OI (Intraday Pulse)[/bold cyan]", style="cyan"))
     
     t_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
-    t_table.add_column("Time", justify="left")
-    t_table.add_column("LTP", justify="right")
-    t_table.add_column("Chng Call OI", justify="right", style="green")
-    t_table.add_column("Chng Put OI", justify="right", style="red")
-    t_table.add_column("Diff in OI", justify="right", style="bold")
-    t_table.add_column("Dir.", justify="center")
-    t_table.add_column("Chng in Dir", justify="right")
-    t_table.add_column("Net PCR", justify="right")
-    t_table.add_column("Sentiment", justify="center")
+    t_table.add_column("Time", justify="left", no_wrap=True)
+    t_table.add_column("LTP", justify="right", no_wrap=True)
+    t_table.add_column("Chng Call OI", justify="right", style="green", no_wrap=True)
+    t_table.add_column("Chng Put OI", justify="right", style="red", no_wrap=True)
+    t_table.add_column("Diff in OI", justify="right", style="bold", no_wrap=True)
+    t_table.add_column("Dir.", justify="center", no_wrap=True)
+    t_table.add_column("Chng in Dir", justify="right", no_wrap=True)
+    t_table.add_column("Net PCR", justify="right", no_wrap=True)
+    t_table.add_column("Sentiment", justify="center", no_wrap=True)
     
     base_c_oi = rows[0][2]
     base_p_oi = rows[0][3]
