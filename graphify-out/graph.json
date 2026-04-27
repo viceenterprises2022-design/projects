@@ -39191,8 +39191,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/scratch_coinapi.py",
       "source_location": "L10",
       "weight": 1.0,
-      "_src": "scratch_coinapi_fetch_coinapi_exchanges",
-      "_tgt": "cache_diskcache_get",
+      "_src": "cache_diskcache_get",
+      "_tgt": "scratch_coinapi_fetch_coinapi_exchanges",
       "source": "cache_diskcache_get",
       "target": "scratch_coinapi_fetch_coinapi_exchanges"
     },
@@ -39203,8 +39203,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/scratch_binance_options.py",
       "source_location": "L6",
       "weight": 1.0,
-      "_src": "scratch_binance_options_test_binance_options",
-      "_tgt": "cache_diskcache_get",
+      "_src": "cache_diskcache_get",
+      "_tgt": "scratch_binance_options_test_binance_options",
       "source": "cache_diskcache_get",
       "target": "scratch_binance_options_test_binance_options"
     },
