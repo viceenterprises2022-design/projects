@@ -1,7 +1,7 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-27)
 
 ## Corpus Check
-- 267 files · ~618,693 words
+- 267 files · ~618,702 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -1320,7 +1320,9 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 3` to `Community 0`, `Community 5`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 24`?**
-  _High betweenness centrality (0.083) - this node is a cross-community bridge._
+  _High betweenness centrality (0.061) - this node is a cross-community bridge._
+- **Why does `POST()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 5`, `Community 7`, `Community 10`, `Community 11`, `Community 14`?**
+  _High betweenness centrality (0.023) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 33 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
@@ -1331,5 +1333,3 @@ _Questions this graph is uniquely positioned to answer:_
   _`GlobalRiskConfig` has 33 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 34 inferred relationships involving `Position` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`Position` has 34 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `Fresh Telegram Integration Client.     Handles sending formatted messages and do`, `Send a text message to the configured chat.`, `Formats and sends a trading report.` to the rest of the system?**
-  _153 weakly-connected nodes found - possible documentation gaps or missing edges._
