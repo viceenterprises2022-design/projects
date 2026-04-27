@@ -527,7 +527,7 @@ def main():
                 "US30": fetch_yahoo("^DJI", days=5),
                 "VIX":  {"ltp": fetch_quote(INSTRUMENTS["INDIA_VIX"]).get("ltp", 15)} if fetch_quote(INSTRUMENTS["INDIA_VIX"]) else None,
                 "DXY":  fetch_yahoo("DX-Y.NYB", days=5),
-                "CRUDE":fetch_yahoo("CL=F", days=5)
+                "CRUDE_OIL":fetch_yahoo("CL=F", days=5)
             }
             if gd["VIX"]: gd["VIX"]["change_pct"] = 0 
                 
