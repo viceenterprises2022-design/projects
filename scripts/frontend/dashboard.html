@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlphaEdge · Market Intelligence</title>
+<meta name="description" content="10-factor signal engine for NIFTY, SENSEX, and BANKNIFTY — powered by Upstox + Yahoo Finance.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;510;600;700&display=swap" rel="stylesheet">
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────────────────── -->
+<header>
+  <div class="container header-inner">
+    <div class="logo">
+      <div class="logo-mark">α</div>
+      <div>
+        <div class="logo-name">AlphaEdge</div>
+        <div class="logo-sub">MARKET INTELLIGENCE · PINAKA.AI</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <div id="last-updated" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted)">
+        <span class="live-dot"></span>Connecting…
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Ticker ───────────────────────────────────────────────────────────────── -->
+<div class="ticker-bar">
+  <div class="ticker-track" id="ticker">
+    <!-- populated by app.js -->
+  </div>
+</div>
+
+<!-- ── Error Banner ─────────────────────────────────────────────────────────── -->
+<div class="container">
+  <div id="error-banner" class="error-banner" style="display:none"></div>
+</div>
+
+<!-- ── Main ─────────────────────────────────────────────────────────────────── -->
+<main>
+  <div class="container">
+
+    <!-- Symbol Tabs -->
+    <div class="sym-tabs" id="sym-tabs" role="tablist">
+      <!-- built by app.js -->
+    </div>
+
+    <!-- Symbol Panels -->
+    <div id="sym-panels">
+      <!-- built by app.js -->
+    </div>
+
+    <!-- Macro Row -->
+    <div class="macro-row" id="macro-row">
+      <!-- populated by app.js -->
+    </div>
+
+  </div>
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────────────────────── -->
+<footer style="border-top:1px solid var(--border);padding:20px 0;text-align:center;
+               font-family:var(--mono);font-size:0.7rem;color:var(--muted)">
+  <div class="container">
+    <span>⚠ For informational purposes only · Not financial advice</span>
+    <span style="margin:0 12px;color:var(--border)">|</span>
+    <span>AlphaEdge © 2026 · Data: Upstox API + Yahoo Finance</span>
+    <span style="margin:0 12px;color:var(--border)">|</span>
+    <span>API: <a href="http://localhost:8765/docs" target="_blank"
+          style="color:var(--primary);text-decoration:none">localhost:8765/docs</a></span>
+  </div>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
