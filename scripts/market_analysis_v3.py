@@ -428,125 +428,418 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
+from rich.columns import Columns
+from rich.rule import Rule
 from rich import box
 
 console = Console()
 
+# ─────────────────────────────────────────────────────────────────────────────
+# HELPERS
+# ─────────────────────────────────────────────────────────────────────────────
+
+def fmt_oi(v):
+    """Format OI value into readable Lakhs."""
+    if not v: return "—"
+    l = v / 100000
+    if l >= 100: return f"{l:,.0f}L"
+    return f"{l:.1f}L"
+
+def doi_str(v):
+    """Color-coded change-in-OI string."""
+    if not v: return "[dim]—[/dim]"
+    l = v / 100000
+    color = "green" if v > 0 else "red"
+    sign  = "+" if v > 0 else ""
+    return f"[{color}]{sign}{l:.1f}L[/{color}]"
+
+def days_to_expiry(expiry_str):
+    """Days remaining to expiry date string (YYYY-MM-DD)."""
+    try:
+        exp = datetime.datetime.strptime(expiry_str, "%Y-%m-%d").date()
+        delta = (exp - datetime.date.today()).days
+        return delta
+    except Exception:
+        return "?"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PHASE 1 — OPTION CHAIN TABLE
+# ─────────────────────────────────────────────────────────────────────────────
+
+def print_option_chain(oi_raw, spot):
+    """Print a Bloomberg-style option chain strip, spot ±500 pts."""
+    if not oi_raw:
+        console.print("[dim]  Option chain unavailable.[/dim]")
+        return
+
+    expiry  = oi_raw.get("expiry", "?")
+    dte     = days_to_expiry(expiry)
+    strikes = oi_raw.get("strikes", [])
+    max_p   = oi_raw.get("max_pain", 0)
+
+    # Narrow to spot ±500 for cleaner view
+    lo, hi  = spot - 500, spot + 500
+    visible = [s for s in strikes if lo <= s["strike"] <= hi]
+
+    if not visible:
+        visible = strikes   # fallback to full range
+
+    console.print(Rule(
+        f"[bold yellow]Option Chain — Expiry: {expiry}  |  DTE: {dte}d  |  Max Pain: {max_p:,}[/bold yellow]",
+        style="yellow"
+    ))
+
+    oc_table = Table(
+        box=box.SIMPLE_HEAD,
+        show_header=True,
+        header_style="bold",
+        padding=(0, 1),
+    )
+
+    # CALLS side
+    oc_table.add_column("C.LTP",    justify="right",  style="green",  no_wrap=True)
+    oc_table.add_column("C.IV%",    justify="right",  style="green",  no_wrap=True)
+    oc_table.add_column("C.OI",     justify="right",  style="green",  no_wrap=True)
+    oc_table.add_column("C.ΔOI",    justify="right",  no_wrap=True)
+    # Centre
+    oc_table.add_column("STRIKE",   justify="center", style="bold white", no_wrap=True)
+    # PUTS side
+    oc_table.add_column("P.ΔOI",    justify="left",   no_wrap=True)
+    oc_table.add_column("P.OI",     justify="right",  style="red",    no_wrap=True)
+    oc_table.add_column("P.IV%",    justify="right",  style="red",    no_wrap=True)
+    oc_table.add_column("P.LTP",    justify="right",  style="red",    no_wrap=True)
+
+    for s in visible:
+        k      = s["strike"]
+        is_atm = abs(k - spot) <= 50
+
+        c_ltp  = f"{s['call_ltp']:.1f}" if s['call_ltp'] else "—"
+        c_iv   = f"{s['call_iv']:.1f}"  if s['call_iv']  else "—"
+        c_oi   = fmt_oi(s['call_oi'])
+        c_doi  = doi_str(s['call_doi'])
+
+        p_ltp  = f"{s['put_ltp']:.1f}"  if s['put_ltp']  else "—"
+        p_iv   = f"{s['put_iv']:.1f}"   if s['put_iv']   else "—"
+        p_oi   = fmt_oi(s['put_oi'])
+        p_doi  = doi_str(s['put_doi'])
+
+        strike_str = (
+            f"[bold yellow]►{k:,}◄[/bold yellow]" if is_atm
+            else f"{k:,}"
+        )
+        if k == max_p:
+            strike_str += " [magenta]MP[/magenta]"
+
+        oc_table.add_row(c_ltp, c_iv, c_oi, c_doi, strike_str, p_doi, p_oi, p_iv, p_ltp)
+
+    console.print(oc_table)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PHASE 2 — TRADING INTELLIGENCE PANEL
+# ─────────────────────────────────────────────────────────────────────────────
+
+def oi_buildup_signal(price_chg, oi_chg):
+    """Classify OI buildup pattern."""
+    if price_chg > 0 and oi_chg > 0: return "[green]Long Build-up[/green]",        "Price↑ OI↑ — Bulls adding longs"
+    if price_chg > 0 and oi_chg < 0: return "[cyan]Short Covering[/cyan]",          "Price↑ OI↓ — Bears covering shorts"
+    if price_chg < 0 and oi_chg > 0: return "[red]Short Build-up[/red]",            "Price↓ OI↑ — Bears adding shorts"
+    if price_chg < 0 and oi_chg < 0: return "[yellow]Long Unwinding[/yellow]",      "Price↓ OI↓ — Bulls exiting longs"
+    return "[dim]Neutral[/dim]", "No clear buildup"
+
+def print_intelligence_panel(sym, quote, oi_raw):
+    """Print the Market Intelligence panel with key levels and derived signals."""
+    if not oi_raw:
+        return
+
+    console.print(Rule("[bold magenta]Market Intelligence[/bold magenta]", style="magenta"))
+
+    strikes      = oi_raw.get("strikes", [])
+    total_pcr    = oi_raw.get("total_pcr", 0)
+    max_pain     = oi_raw.get("max_pain", 0)
+    spot         = oi_raw.get("spot", 0)
+    total_c_oi   = oi_raw.get("total_call_oi", 0)
+    total_p_oi   = oi_raw.get("total_put_oi", 0)
+    price_chg    = quote.get("change_pct", 0)
+    total_oi_chg = sum(s.get("call_doi", 0) + s.get("put_doi", 0) for s in strikes)
+
+    # Key resistance/support — top 3 strikes by OI
+    top_call = sorted(strikes, key=lambda x: x["call_oi"], reverse=True)[:3]
+    top_put  = sorted(strikes, key=lambda x: x["put_oi"],  reverse=True)[:3]
+
+    # IV skew
+    call_ivs = [s["call_iv"] for s in strikes if s["call_iv"]]
+    put_ivs  = [s["put_iv"]  for s in strikes if s["put_iv"]]
+    avg_call_iv = sum(call_ivs) / len(call_ivs) if call_ivs else 0
+    avg_put_iv  = sum(put_ivs)  / len(put_ivs)  if put_ivs  else 0
+    iv_skew = avg_put_iv - avg_call_iv
+
+    # PCR colour
+    if total_pcr >= 1.0:
+        pcr_color, pcr_label = "green",  "Bullish"
+    elif total_pcr >= 0.7:
+        pcr_color, pcr_label = "yellow", "Neutral"
+    else:
+        pcr_color, pcr_label = "red",    "Bearish"
+
+    # OI buildup
+    buildup_sig, buildup_desc = oi_buildup_signal(price_chg, total_oi_chg)
+
+    # Build a 2-column layout
+    left  = Table(box=None, show_header=False, padding=(0,1))
+    right = Table(box=None, show_header=False, padding=(0,1))
+    left.add_column("k", style="dim",        no_wrap=True)
+    left.add_column("v", style="bold white", no_wrap=True)
+    right.add_column("k", style="dim",       no_wrap=True)
+    right.add_column("v", style="bold white",no_wrap=True)
+
+    # Left column
+    left.add_row("PCR",         f"[{pcr_color}]{total_pcr:.2f} ({pcr_label})[/{pcr_color}]")
+    left.add_row("Max Pain",    f"[magenta]{max_pain:,}[/magenta]  ({max_pain-spot:+,.0f} from spot)")
+    left.add_row("OI Buildup",  buildup_sig)
+    left.add_row("",            f"[dim]{buildup_desc}[/dim]")
+    left.add_row("Total Calls", f"[green]{fmt_oi(total_c_oi)}[/green]")
+    left.add_row("Total Puts",  f"[red]{fmt_oi(total_p_oi)}[/red]")
+    left.add_row("IV Skew",     (f"[red]+{iv_skew:.1f}% (Put IV > Call IV — Fear premium)[/red]"
+                                  if iv_skew > 2
+                                  else f"[green]{iv_skew:+.1f}% (Balanced)[/green]"))
+
+    # Right column — key levels
+    resist_strikes = ", ".join([f"[red]{s['strike']:,}[/red]" for s in top_call])
+    support_strikes = ", ".join([f"[green]{s['strike']:,}[/green]" for s in top_put])
+    right.add_row("Key Resistance", resist_strikes)
+    right.add_row("Key Support",    support_strikes)
+
+    right.add_row("", "")
+    right.add_row("[bold]Resistance Detail[/bold]", "")
+    for s in top_call:
+        right.add_row(
+            f"  {s['strike']:,}",
+            f"[dim]Call OI:[/dim] [green]{fmt_oi(s['call_oi'])}[/green]  "
+            f"[dim]IV:[/dim] {s['call_iv']:.1f}%  "
+            f"[dim]LTP:[/dim] {s['call_ltp']:.1f}"
+        )
+
+    right.add_row("", "")
+    right.add_row("[bold]Support Detail[/bold]", "")
+    for s in top_put:
+        right.add_row(
+            f"  {s['strike']:,}",
+            f"[dim]Put OI:[/dim] [red]{fmt_oi(s['put_oi'])}[/red]  "
+            f"[dim]IV:[/dim] {s['put_iv']:.1f}%  "
+            f"[dim]LTP:[/dim] {s['put_ltp']:.1f}"
+        )
+
+    console.print(Columns([Panel(left, border_style="magenta"), Panel(right, border_style="blue")]))
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PHASE 3 — SUMMARY TICKER (all indices at a glance)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def print_summary_ticker(quotes_all):
+    """Print a one-liner summary of all three indices."""
+    console.print(Rule("[bold cyan]Live Market Snapshot[/bold cyan]", style="cyan"))
+    row_parts = []
+    for sym, q in quotes_all.items():
+        if not q: continue
+        ltp = q.get("ltp", 0)
+        chg = q.get("change_pct", 0)
+        color = "green" if chg >= 0 else "red"
+        sign  = "+" if chg >= 0 else ""
+        row_parts.append(
+            f"[bold white]{sym}[/bold white] [{color}]{ltp:,.2f} ({sign}{chg:.2f}%)[/{color}]"
+        )
+    console.print("  " + "   │   ".join(row_parts) + "\n")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FULL DIAGNOSTIC REPORT
+# ─────────────────────────────────────────────────────────────────────────────
+
 def print_diagnostic_report(sym, quote, oi_raw, res, final_signal, final_score):
     console.clear()
-    
-    # 1. Header Panel
+
+    # Header
     ltp = quote.get("ltp", 0)
     chg = quote.get("change_pct", 0)
     chg_color = "green" if chg >= 0 else "red"
-    
+
     pcr_detail = res.get("pcr", {}).get("detail", "")
     pcr_val = "N/A"
     if "Total PCR: " in pcr_detail:
         pcr_val = pcr_detail.split("Total PCR: ")[1]
-        
+
     max_pain = "N/A"
+    expiry_str = ""
+    dte_str = ""
     if oi_raw:
-        max_pain = f"{oi_raw.get('max_pain', 0):,}"
-    
+        max_pain   = f"{oi_raw.get('max_pain', 0):,}"
+        expiry_str = oi_raw.get("expiry", "")
+        dte        = days_to_expiry(expiry_str)
+        dte_str    = f"  |  [bold white]DTE:[/bold white] [yellow]{dte}d ({expiry_str})[/yellow]"
+
+    sig_color = {"BUY": "green", "SELL": "red", "NEUTRAL": "yellow"}.get(final_signal, "white")
     header_text = (
         f"[bold white]LTP:[/bold white] [{chg_color}]{ltp:,.2f} ({chg:+.2f}%)[/{chg_color}]  |  "
         f"[bold white]PCR:[/bold white] {pcr_val}  |  "
-        f"[bold white]Max Pain:[/bold white] {max_pain}  |  "
-        f"[bold white]Technical Signal:[/bold white] [bold cyan]{final_signal} ({final_score}/10)[/bold cyan]"
+        f"[bold white]Max Pain:[/bold white] [magenta]{max_pain}[/magenta]"
+        f"{dte_str}  |  "
+        f"[bold white]Signal:[/bold white] [{sig_color}]{final_signal} ({final_score}/10)[/{sig_color}]"
     )
-    console.print(Panel(header_text, title=f"[bold yellow]AlphaEdge Diagnostics: {sym}[/bold yellow]", border_style="cyan"))
-    
-    # 2. Factor Table
-    table = Table(box=box.SIMPLE, show_lines=True)
-    table.add_column("Indicator", style="cyan", no_wrap=True)
-    table.add_column("Status / Label", style="white")
-    table.add_column("Detail", style="dim")
-    table.add_column("Score", justify="right")
+    console.print(Panel(
+        header_text,
+        title=f"[bold yellow]⚡ AlphaEdge Diagnostics: {sym}[/bold yellow]",
+        border_style="cyan"
+    ))
+
+    # 10-factor table
+    console.print(Rule("[bold cyan]10-Factor Technical Model[/bold cyan]", style="cyan"))
+    table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0, 1))
+    table.add_column("Indicator",      style="cyan",  no_wrap=True, min_width=22)
+    table.add_column("Status",         style="white", no_wrap=False)
+    table.add_column("Detail",         style="dim",   no_wrap=False)
+    table.add_column("Score",          justify="center", no_wrap=True, min_width=6)
 
     indicator_names = {
-        "trend": "1. Trend (EMA)",
+        "trend":     "1. Trend (EMA 20/50/200)",
         "dow_jones": "2. Dow Jones (US30)",
         "india_vix": "3. India VIX",
-        "oi": "4. Open Interest",
-        "vwap": "5. VWAP",
-        "supertrend": "6. Supertrend",
-        "rsi": "7. RSI (14)",
-        "dxy": "8. US Dollar (DXY)",
-        "crude": "9. Crude Oil (WTI)",
-        "pcr": "10. Put-Call Ratio",
+        "oi":        "4. Open Interest",
+        "vwap":      "5. VWAP",
+        "supertrend":"6. Supertrend",
+        "rsi":       "7. RSI (14)",
+        "dxy":       "8. US Dollar (DXY)",
+        "crude":     "9. Crude Oil (WTI)",
+        "pcr":       "10. Put-Call Ratio",
     }
-    
+
     for key, name in indicator_names.items():
         if key not in res: continue
-        data = res[key]
-        
+        data  = res[key]
         score = data["score"]
-        score_str = f"[green]+1[/green]" if score > 0 else f"[red]-1[/red]" if score < 0 else "[yellow] 0[/yellow]"
-        
+        if score > 0:
+            score_str = "[bold green]+1[/bold green]"
+        elif score < 0:
+            score_str = "[bold red]-1[/bold red]"
+        else:
+            score_str = "[yellow] 0[/yellow]"
         table.add_row(name, data["label"], data["detail"], score_str)
 
     console.print(table)
 
+    # Phase 1 — Option Chain
+    if oi_raw:
+        print_option_chain(oi_raw, ltp)
+
+    # Phase 2 — Intelligence Panel
+    if oi_raw:
+        print_intelligence_panel(sym, quote, oi_raw)
+
+    # Footer shortcut reminder
+    console.print("\n[dim]  [r] Refresh  │  [b] Back to menu  │  [q] Quit[/dim]")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MAIN LOOP
+# ─────────────────────────────────────────────────────────────────────────────
+
+def fetch_all_quotes():
+    """Quick fetch of all three index quotes for the summary ticker."""
+    quotes = {}
+    for sym in ["NIFTY", "BANKNIFTY", "SENSEX"]:
+        q = fetch_quote(INSTRUMENTS[sym])
+        quotes[sym] = q
+    return quotes
+
+def run_analysis(sym):
+    """Fetch data and run full analysis for one instrument. Returns display args."""
+    key    = INSTRUMENTS.get(sym)
+    oi_key = OI_INSTRUMENTS.get(sym)
+
+    with console.status(f"[cyan]  Fetching market data for {sym}...[/cyan]"):
+        q = fetch_quote(key)
+        if not q:
+            console.print(f"[red]  ✗ Failed to fetch quote for {sym}[/red]")
+            return None
+
+        c  = fetch_candles(key)
+        yc = fetch_yahoo({"NIFTY": "^NSEI", "SENSEX": "^BSESN", "BANKNIFTY": "^NSEBANK"}.get(sym, "^NSEI"))
+
+        gd = {
+            "US30":      fetch_yahoo("^DJI",       days=5),
+            "VIX":       None,
+            "DXY":       fetch_yahoo("DX-Y.NYB",   days=5),
+            "CRUDE_OIL": fetch_yahoo("CL=F",        days=5),
+        }
+        vix_q = fetch_quote(INSTRUMENTS["INDIA_VIX"])
+        if vix_q:
+            gd["VIX"] = {"ltp": vix_q.get("ltp", 15), "change_pct": 0}
+
+        oi_raw = None
+        if oi_key:
+            oi_raw = build_oi_data(sym, q["ltp"])
+
+    with console.status(f"[cyan]  Running 10-factor engine...[/cyan]"):
+        a_res        = analyze(sym, q, c, oi_raw, gd, yc)
+        res          = a_res["indicators"]
+        final_score  = a_res["score"]
+        final_signal = a_res["signal"]
+
+    return (sym, q, oi_raw, res, final_signal, final_score)
+
 
 def main():
     while True:
+        # ── MENU ──────────────────────────────────────────────────────────────
         console.clear()
-        console.print("[bold cyan]======================================[/bold cyan]")
-        console.print("[bold yellow] ALPHAEDGE DIAGNOSTICS (CLI)[/bold yellow]")
-        console.print("[bold cyan]======================================[/bold cyan]")
-        console.print("\n[1] NIFTY 50")
-        console.print("[2] BANKNIFTY")
-        console.print("[3] SENSEX")
-        console.print("[q] Quit\n")
-        
-        choice = input("Select instrument to analyze: ").strip().lower()
-        if choice == 'q':
-            import sys
+        console.print(Panel(
+            "[bold yellow]⚡ ALPHAEDGE MARKET DIAGNOSTICS[/bold yellow]\n[dim]Professional Terminal — v3[/dim]",
+            border_style="cyan", expand=False
+        ))
+
+        # Phase 3: Live snapshot of all indices
+        with console.status("[dim]  Fetching live prices...[/dim]"):
+            quotes_all = fetch_all_quotes()
+        print_summary_ticker(quotes_all)
+
+        console.print("  [cyan][1][/cyan] NIFTY 50")
+        console.print("  [cyan][2][/cyan] BANKNIFTY")
+        console.print("  [cyan][3][/cyan] SENSEX")
+        console.print("  [dim][q][/dim] Quit\n")
+
+        choice = input("  Select: ").strip().lower()
+        if choice == "q":
+            console.print("[dim]  Goodbye.[/dim]")
             sys.exit(0)
-            
+
         sym_map = {"1": "NIFTY", "2": "BANKNIFTY", "3": "SENSEX"}
         if choice not in sym_map:
             continue
-            
+
         sym = sym_map[choice]
-        key = INSTRUMENTS.get(sym)
-        oi_key = OI_INSTRUMENTS.get(sym)
-        
-        with console.status(f"[cyan]Fetching real-time data for {sym}...[/cyan]"):
-            q = fetch_quote(key)
-            if not q:
-                console.print(f"[red]Failed to fetch Upstox quote for {sym}[/red]")
+
+        # ── INSTRUMENT LOOP (supports refresh) ───────────────────────────────
+        while True:
+            result = run_analysis(sym)
+            if result is None:
                 time.sleep(2)
-                continue
-                
-            c = fetch_candles(key)
-            yc = fetch_yahoo({"NIFTY":"^NSEI", "SENSEX":"^BSESN", "BANKNIFTY":"^NSEBANK"}.get(sym, "^NSEI"))
-            
-            gd = {
-                "US30": fetch_yahoo("^DJI", days=5),
-                "VIX":  {"ltp": fetch_quote(INSTRUMENTS["INDIA_VIX"]).get("ltp", 15)} if fetch_quote(INSTRUMENTS["INDIA_VIX"]) else None,
-                "DXY":  fetch_yahoo("DX-Y.NYB", days=5),
-                "CRUDE_OIL":fetch_yahoo("CL=F", days=5)
-            }
-            if gd["VIX"]: gd["VIX"]["change_pct"] = 0 
-                
-            oi_raw = None
-            if oi_key and q:
-                oi_raw = build_oi_data(sym, q["ltp"])
+                break
 
-        with console.status(f"[cyan]Running 10-factor engine for {sym}...[/cyan]"):
-            a_res = analyze(sym, q, c, oi_raw, gd, yc)
-            res = a_res["indicators"]
-            final_score = a_res["score"]
-            final_signal = a_res["signal"]
+            print_diagnostic_report(*result)
 
-        print_diagnostic_report(sym, q, oi_raw, res, final_signal, final_score)
-        
-        try:
-            input("\nPress Enter to return to menu...")
-        except EOFError:
-            break
+            try:
+                cmd = input("\n  Command [r/b/q]: ").strip().lower()
+            except EOFError:
+                sys.exit(0)
 
-if __name__ == '__main__':
+            if cmd == "q":
+                console.print("[dim]  Goodbye.[/dim]")
+                sys.exit(0)
+            elif cmd == "r":
+                continue          # refresh same instrument
+            else:
+                break             # back to menu
+
+
+if __name__ == "__main__":
     main()
+
+
