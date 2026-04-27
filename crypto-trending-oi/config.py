@@ -1,7 +1,8 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()               # loads .env
+load_dotenv("API-KEYS.env") # loads API-KEYS.env (override=False so .env wins on conflicts)
 
 # Master feature list
 MINIMAL_FEATURE_SET = [
