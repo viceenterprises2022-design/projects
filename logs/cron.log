@@ -1,0 +1,66 @@
+2026-04-26 01:30:01,350 [INFO] ============================================================
+2026-04-26 01:30:01,350 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-04-26 01:30:01,350 [INFO] ============================================================
+2026-04-26 01:30:01,350 [INFO] Fetching 2 Indian indices from Upstox...
+2026-04-26 01:30:01,459 [INFO]   ✓ NSE [Upstox]: 23,897.95 (-1.15%)
+2026-04-26 01:30:01,759 [INFO]   ✓ BSE [Upstox]: 76,664.21 (-1.30%)
+2026-04-26 01:30:02,060 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-04-26 01:30:02,248 [INFO]   ✓ US30: 49230.71 (-0.16%)
+2026-04-26 01:30:02,920 [INFO]   ✓ USTEC: 27303.67 (+1.95%)
+2026-04-26 01:30:03,519 [INFO]   ✓ USOIL: 94.40 (-1.51%)
+2026-04-26 01:30:04,186 [INFO]   ✓ GOLD: 4740.90 (+0.76%)
+2026-04-26 01:30:04,864 [INFO]   ✓ SILVER: 76.41 (+1.26%)
+2026-04-26 01:30:05,365 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-04-26 01:30:05,766 [INFO]   ✓ BTC: 77334.0000 (-0.31%)
+2026-04-26 01:30:05,768 [INFO]   ✓ ETH: 2310.7000 (-0.45%)
+2026-04-26 01:30:05,768 [INFO]   ✓ XRP: 1.4200 (-1.31%)
+2026-04-26 01:30:05,768 [INFO]   ✓ SOL: 85.6900 (-0.75%)
+2026-04-26 01:30:05,769 [INFO] Fetched 11/11 instruments successfully
+2026-04-26 01:30:05,769 [INFO] Calling Claude API — batch of 11 instruments...
+2026-04-26 01:30:25,738 [INFO]   ✓ Claude analysis complete for 11 instruments
+2026-04-26 01:30:25,740 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-04-26 01:30:29,235 [INFO]   ✓ NSE sent
+2026-04-26 01:30:31,983 [INFO]   ✓ BSE sent
+2026-04-26 01:30:34,699 [INFO]   ✓ US30 sent
+2026-04-26 01:30:37,441 [INFO]   ✓ USTEC sent
+2026-04-26 01:30:40,215 [INFO]   ✓ USOIL sent
+2026-04-26 01:30:42,987 [INFO]   ✓ GOLD sent
+2026-04-26 01:30:45,739 [INFO]   ✓ SILVER sent
+2026-04-26 01:30:48,526 [INFO]   ✓ BTC sent
+2026-04-26 01:30:51,279 [INFO]   ✓ ETH sent
+2026-04-26 01:30:54,044 [INFO]   ✓ XRP sent
+2026-04-26 01:30:56,784 [INFO]   ✓ SOL sent
+2026-04-26 01:30:59,547 [INFO] Done — 11/11 sent. Failed: none
+2026-04-27 01:30:02,198 [INFO] ============================================================
+2026-04-27 01:30:02,199 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-04-27 01:30:02,199 [INFO] ============================================================
+2026-04-27 01:30:02,199 [INFO] Fetching 2 Indian indices from Upstox...
+2026-04-27 01:30:02,294 [INFO]   ✓ NSE [Upstox]: 23,897.95 (-1.15%)
+2026-04-27 01:30:02,595 [INFO]   ✓ BSE [Upstox]: 76,664.21 (-1.30%)
+2026-04-27 01:30:02,896 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-04-27 01:30:03,030 [INFO]   ✓ US30: 49230.71 (-0.16%)
+2026-04-27 01:30:03,713 [INFO]   ✓ USTEC: 27303.67 (+1.95%)
+2026-04-27 01:30:04,413 [INFO]   ✓ USOIL: 94.40 (-1.51%)
+2026-04-27 01:30:05,011 [INFO]   ✓ GOLD: 4740.90 (+0.76%)
+2026-04-27 01:30:05,703 [INFO]   ✓ SILVER: 76.41 (+1.26%)
+2026-04-27 01:30:06,205 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-04-27 01:30:06,566 [INFO]   ✓ BTC: 78241.0000 (+1.16%)
+2026-04-27 01:30:06,566 [INFO]   ✓ ETH: 2368.1000 (+2.47%)
+2026-04-27 01:30:06,566 [INFO]   ✓ XRP: 1.4300 (+0.73%)
+2026-04-27 01:30:06,566 [INFO]   ✓ SOL: 86.9000 (+1.41%)
+2026-04-27 01:30:06,566 [INFO] Fetched 11/11 instruments successfully
+2026-04-27 01:30:06,566 [INFO] Calling Claude API — batch of 11 instruments...
+2026-04-27 01:30:26,168 [INFO]   ✓ Claude analysis complete for 11 instruments
+2026-04-27 01:30:26,168 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-04-27 01:30:29,723 [INFO]   ✓ NSE sent
+2026-04-27 01:30:32,520 [INFO]   ✓ BSE sent
+2026-04-27 01:30:35,334 [INFO]   ✓ US30 sent
+2026-04-27 01:30:38,097 [INFO]   ✓ USTEC sent
+2026-04-27 01:30:40,860 [INFO]   ✓ USOIL sent
+2026-04-27 01:30:43,650 [INFO]   ✓ GOLD sent
+2026-04-27 01:30:46,394 [INFO]   ✓ SILVER sent
+2026-04-27 01:30:49,099 [INFO]   ✓ BTC sent
+2026-04-27 01:30:51,816 [INFO]   ✓ ETH sent
+2026-04-27 01:30:54,590 [INFO]   ✓ XRP sent
+2026-04-27 01:30:57,349 [INFO]   ✓ SOL sent
+2026-04-27 01:31:00,076 [INFO] Done — 11/11 sent. Failed: none
