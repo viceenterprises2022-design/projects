@@ -10241,45 +10241,45 @@
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L19",
-      "id": "engine_rationale_19",
       "community": 0,
-      "norm_label": "flip sign for inverse-correlated factors."
+      "norm_label": "flip sign for inverse-correlated factors.",
+      "id": "engine_rationale_19"
     },
     {
       "label": "Normalize a column if it exists, else return 0.",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L23",
-      "id": "engine_rationale_23",
       "community": 0,
-      "norm_label": "normalize a column if it exists, else return 0."
+      "norm_label": "normalize a column if it exists, else return 0.",
+      "id": "engine_rationale_23"
     },
     {
       "label": "Spec \u00a72 MRS weights:     DXY=0.20, VIX=0.18, US10Y_real=0.17, NDX=0.12, M2=0.12,",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L31",
-      "id": "engine_rationale_31",
       "community": 0,
-      "norm_label": "spec \u00a72 mrs weights:     dxy=0.20, vix=0.18, us10y_real=0.17, ndx=0.12, m2=0.12,"
+      "norm_label": "spec \u00a72 mrs weights:     dxy=0.20, vix=0.18, us10y_real=0.17, ndx=0.12, m2=0.12,",
+      "id": "engine_rationale_31"
     },
     {
       "label": "Spec \u00a72 OCS weights:     ExchReserves=0.25, Stablecoin=0.22, MVRV=0.20, MinerFlo",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L83",
-      "id": "engine_rationale_83",
       "community": 0,
-      "norm_label": "spec \u00a72 ocs weights:     exchreserves=0.25, stablecoin=0.22, mvrv=0.20, minerflo"
+      "norm_label": "spec \u00a72 ocs weights:     exchreserves=0.25, stablecoin=0.22, mvrv=0.20, minerflo",
+      "id": "engine_rationale_83"
     },
     {
       "label": "Spec \u00a72 IMS weights:     Funding=0.30, OI=0.25, Liquidations=0.22, Skew=0.13, Ba",
       "file_type": "rationale",
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L134",
-      "id": "engine_rationale_134",
       "community": 0,
-      "norm_label": "spec \u00a72 ims weights:     funding=0.30, oi=0.25, liquidations=0.22, skew=0.13, ba"
+      "norm_label": "spec \u00a72 ims weights:     funding=0.30, oi=0.25, liquidations=0.22, skew=0.13, ba",
+      "id": "engine_rationale_134"
     },
     {
       "label": "scratch.py",
@@ -39422,8 +39422,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L70",
       "weight": 1.0,
-      "_src": "engine_compute_macro_regime_score",
-      "_tgt": "cache_diskcache_get",
+      "_src": "cache_diskcache_get",
+      "_tgt": "engine_compute_macro_regime_score",
       "source": "cache_diskcache_get",
       "target": "engine_compute_macro_regime_score"
     },
@@ -39434,8 +39434,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L97",
       "weight": 1.0,
-      "_src": "engine_compute_onchain_score",
-      "_tgt": "cache_diskcache_get",
+      "_src": "cache_diskcache_get",
+      "_tgt": "engine_compute_onchain_score",
       "source": "cache_diskcache_get",
       "target": "engine_compute_onchain_score"
     },
@@ -39446,8 +39446,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L145",
       "weight": 1.0,
-      "_src": "engine_compute_intraday_score",
-      "_tgt": "cache_diskcache_get",
+      "_src": "cache_diskcache_get",
+      "_tgt": "engine_compute_intraday_score",
       "source": "cache_diskcache_get",
       "target": "engine_compute_intraday_score"
     },
@@ -39458,8 +39458,8 @@
       "source_file": "/home/vreddy1/Desktop/Projects/crypto-trending-oi/engine.py",
       "source_location": "L202",
       "weight": 1.0,
-      "_src": "engine_run_engine",
-      "_tgt": "cache_diskcache_get",
+      "_src": "cache_diskcache_get",
+      "_tgt": "engine_run_engine",
       "source": "cache_diskcache_get",
       "target": "engine_run_engine"
     },
