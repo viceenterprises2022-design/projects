@@ -212,8 +212,12 @@ class DataFetcher:
                 except Exception:
                     continue
 
-        # order: grouped by index label, then ascending strike, CE before PE
-        return sorted(out, key=lambda x: (x["label"][:6], x["strike"], x["kind"]))
+        # order: NIFTY → BANKNIFTY → SENSEX, then ascending strike, CE before PE
+        _order = {"NIFTY": 0, "BNKN": 1, "SENSEX": 2}
+        def _sort_key(x):
+            prefix = x["label"].split()[0] if " " in x["label"] else x["label"][:6]
+            return (_order.get(prefix, 99), x["strike"], x["kind"])
+        return sorted(out, key=_sort_key)
 
     # -- Public ---------------------------------------------------------------
     def refresh(self):
