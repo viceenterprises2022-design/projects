@@ -1,12 +1,12 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-28)
 
 ## Corpus Check
-- 279 files · ~643,854 words
+- 279 files · ~643,851 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1688 nodes · 3198 edges · 252 communities detected
-- Extraction: 62% EXTRACTED · 38% INFERRED · 0% AMBIGUOUS · INFERRED: 1203 edges (avg confidence: 0.71)
+- 1688 nodes · 3200 edges · 252 communities detected
+- Extraction: 62% EXTRACTED · 38% INFERRED · 0% AMBIGUOUS · INFERRED: 1204 edges (avg confidence: 0.71)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -323,7 +323,7 @@ Nodes (56): aiosqlite>=0.20.0, analysis.py (results.tsv analyzer), anthropic>=0.
 
 ### Community 8 - "Community 8"
 Cohesion: 0.1
-Nodes (8): DataFetcher, _f(), _fmt(), _nearest_expiry(), _oi_str(), _pct(), TickerBanner, load()
+Nodes (7): DataFetcher, _f(), _fmt(), _oi_str(), _pct(), TickerBanner, load()
 
 ### Community 9 - "Community 9"
 Cohesion: 0.08
@@ -1713,7 +1713,7 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 5` to `Community 1`, `Community 2`, `Community 3`, `Community 4`, `Community 8`, `Community 9`, `Community 12`, `Community 18`, `Community 27`?**
-  _High betweenness centrality (0.078) - this node is a cross-community bridge._
+  _High betweenness centrality (0.057) - this node is a cross-community bridge._
 - **Why does `fetch_google_finance()` connect `Community 6` to `Community 1`?**
   _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
