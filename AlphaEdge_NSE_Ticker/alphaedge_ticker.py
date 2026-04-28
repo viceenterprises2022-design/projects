@@ -29,18 +29,11 @@ DEFAULT_CONFIG = {
         "NSE_INDEX|Nifty Fin Service":  "FINNIFTY",
         "NSE_INDEX|NIFTY MIDCAP 100":  "MIDCAP",
     },
-    # expiry_weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
-    # NIFTY weekly → Thursday | BANKNIFTY weekly → Wednesday | SENSEX weekly → Friday
+    # expiry auto-detected from API — no manual weekday config needed
     "option_chains": {
-        "NSE_INDEX|Nifty 50": {
-            "label": "NIFTY",  "step": 50,  "expiry_weekday": 3, "strikes_around": 2
-        },
-        "NSE_INDEX|Nifty Bank": {
-            "label": "BNKN",   "step": 100, "expiry_weekday": 2, "strikes_around": 2
-        },
-        "BSE_INDEX|SENSEX": {
-            "label": "SENSEX", "step": 100, "expiry_weekday": 4, "strikes_around": 2
-        },
+        "NSE_INDEX|Nifty 50":   {"label": "NIFTY",  "step": 50,  "strikes_around": 2},
+        "NSE_INDEX|Nifty Bank": {"label": "BNKN",   "step": 100, "strikes_around": 2},
+        "BSE_INDEX|SENSEX":     {"label": "SENSEX", "step": 100, "strikes_around": 2},
     },
     "show_indices": True,
     "show_options": True,
@@ -91,12 +84,6 @@ def _f(val, default=0.0):
         return default
 
 
-def _nearest_expiry(weekday):
-    today = date.today()
-    d = weekday - today.weekday()
-    if d < 0:
-        d += 7
-    return (today + timedelta(days=d)).strftime("%Y-%m-%d")
 
 
 # ── Data fetcher ──────────────────────────────────────────────────────────────
@@ -108,7 +95,8 @@ class DataFetcher:
         self._lock   = threading.Lock()
         self.items   = []
         self.ts      = None
-        self._idx_px = {}   # instrument_key → live price (used for ATM calc)
+        self._idx_px      = {}  # instrument_key → live price (used for ATM calc)
+        self._expiry_cache = {}  # instrument_key → expiry date string
 
     def _hdrs(self):
         return {
@@ -157,6 +145,23 @@ class DataFetcher:
                 continue
         return out
 
+    # -- Expiry detection (probe forward from today, cache until expired) ------
+    def _resolve_expiry(self, ikey):
+        today_str = date.today().strftime("%Y-%m-%d")
+        cached = self._expiry_cache.get(ikey)
+        if cached and cached >= today_str:
+            return cached
+        for d in range(8):
+            expiry = (date.today() + timedelta(days=d)).strftime("%Y-%m-%d")
+            try:
+                r = self._get("/option/chain", {"instrument_key": ikey, "expiry_date": expiry})
+                if r.get("data"):
+                    self._expiry_cache[ikey] = expiry
+                    return expiry
+            except Exception:
+                continue
+        return None
+
     # -- Option chains --------------------------------------------------------
     def _fetch_options(self):
         if not self.config.get("show_options"):
@@ -165,9 +170,10 @@ class DataFetcher:
         for ikey, cfg in self.config.get("option_chains", {}).items():
             label  = cfg["label"]
             step   = int(cfg["step"])
-            wd     = int(cfg.get("expiry_weekday", 3))
             n      = int(cfg.get("strikes_around", 2))
-            expiry = _nearest_expiry(wd)
+            expiry = self._resolve_expiry(ikey)
+            if not expiry:
+                continue
             curr   = self._idx_px.get(ikey)
             if not curr:
                 continue
@@ -175,9 +181,8 @@ class DataFetcher:
             wanted = {atm + i * step for i in range(-n, n + 1)}
 
             try:
-                resp  = self._get("/option/chain",
-                                  {"instrument_key": ikey, "expiry_date": expiry})
-                chain = resp.get("data", [])
+                chain = self._get("/option/chain",
+                                  {"instrument_key": ikey, "expiry_date": expiry}).get("data", [])
             except Exception:
                 continue
 
@@ -194,7 +199,6 @@ class DataFetcher:
                             continue
                         close = _f(md.get("close_price"))
                         oi    = _f(md.get("oi"))
-                        iv    = _f(md.get("iv"))
                         pct   = _pct(ltp, close) if close else 0.0
                         out.append({
                             "kind":   side,
@@ -202,7 +206,6 @@ class DataFetcher:
                             "price":  ltp,
                             "change": pct,
                             "oi":     oi,
-                            "iv":     iv,
                             "strike": strike,
                             "atm":    is_atm,
                         })
@@ -394,15 +397,9 @@ class TickerBanner:
             segs.append((f"  {arrow}{abs(chg):.2f}%", c_chg, (FONT, fs, "bold")))
 
             if kind in ("CE", "PE"):
-                meta = []
                 oi = item.get("oi", 0)
-                iv = item.get("iv", 0)
                 if oi > 0:
-                    meta.append(f"OI:{_oi_str(oi)}")
-                if iv > 0:
-                    meta.append(f"IV:{iv:.1f}%")
-                if meta:
-                    segs.append((f"  {'  '.join(meta)}", C["meta"], (FONT, fs - 1)))
+                    segs.append((f"  OI:{_oi_str(oi)}", C["meta"], (FONT, fs - 1)))
 
             segs.append(("   ◆   ", C["sep"], (FONT, fs - 2)))
 
