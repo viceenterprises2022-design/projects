@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=AlphaEdge Ticker
+Comment=Live Crypto PERP + NSE ticker banner
+Exec=python3 /path/to/alphaedge_ticker.py
+Icon=utilities-terminal
+Terminal=false
+Categories=Finance;
+X-GNOME-Autostart-enabled=true
