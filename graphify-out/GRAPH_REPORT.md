@@ -1703,9 +1703,11 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `main()` connect `Community 3` to `Community 0`, `Community 2`, `Community 4`, `Community 5`, `Community 8`, `Community 11`, `Community 12`, `Community 17`, `Community 24`?**
-  _High betweenness centrality (0.057) - this node is a cross-community bridge._
-- **Why does `bootstrap()` connect `Community 6` to `Community 0`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+  _High betweenness centrality (0.096) - this node is a cross-community bridge._
+- **Why does `POST()` connect `Community 4` to `Community 0`, `Community 1`, `Community 2`, `Community 3`, `Community 5`, `Community 10`, `Community 11`, `Community 12`, `Community 13`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `Dashboard()` connect `Community 24` to `Community 3`?**
+  _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Are the 45 inferred relationships involving `TelegramJournal` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`TelegramJournal` has 45 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 38 inferred relationships involving `main()` (e.g. with `.run()` and `.get()`) actually correct?**
@@ -1714,5 +1716,3 @@ _Questions this graph is uniquely positioned to answer:_
   _`BotState` has 34 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 33 inferred relationships involving `GlobalRiskConfig` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
   _`GlobalRiskConfig` has 33 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 34 inferred relationships involving `Position` (e.g. with `RuleViolation` and `KillSwitchLevel`) actually correct?**
-  _`Position` has 34 INFERRED edges - model-reasoned connections that need verification._
