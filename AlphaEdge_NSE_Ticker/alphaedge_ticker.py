@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AlphaEdge Ticker v2.0 — NSE Indices · Equities · Options via Upstox
+AlphaEdge Ticker v2.0 — NSE/BSE Indices · Options via Upstox
 """
 import tkinter as tk
 import threading
@@ -29,16 +29,6 @@ DEFAULT_CONFIG = {
         "NSE_INDEX|Nifty Fin Service":  "FINNIFTY",
         "NSE_INDEX|NIFTY MIDCAP 100":  "MIDCAP",
     },
-    "stocks": {
-        "NSE_EQ|RELIANCE":  "RELIANCE",
-        "NSE_EQ|TCS":       "TCS",
-        "NSE_EQ|INFY":      "INFY",
-        "NSE_EQ|HDFCBANK":  "HDFCBANK",
-        "NSE_EQ|ICICIBANK": "ICICI",
-        "NSE_EQ|SBIN":      "SBIN",
-        "NSE_EQ|WIPRO":     "WIPRO",
-        "NSE_EQ|ADANIENT":  "ADANI",
-    },
     # expiry_weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
     # NIFTY weekly → Thursday | BANKNIFTY weekly → Wednesday | SENSEX weekly → Friday
     "option_chains": {
@@ -53,7 +43,6 @@ DEFAULT_CONFIG = {
         },
     },
     "show_indices": True,
-    "show_stocks":  True,
     "show_options": True,
 }
 
@@ -61,7 +50,6 @@ DEFAULT_CONFIG = {
 C = {
     "bg":     "#0d0d0f",
     "idx":    "#ffd54f",   # indices label  — gold
-    "stk":    "#64b5f6",   # stocks label   — sky blue
     "ce":     "#a5d6a7",   # call options   — muted green
     "pe":     "#ef9a9a",   # put options    — muted rose
     "ce_atm": "#69f0ae",   # ATM call       — bright green
@@ -138,27 +126,23 @@ class DataFetcher:
         r.raise_for_status()
         return r.json()
 
-    # -- Quotes (indices + stocks batched in one call) -------------------------
+    # -- Index quotes (batched) ------------------------------------------------
     def _fetch_quotes(self):
-        keys = {}
-        if self.config.get("show_indices"):
-            for k, lbl in self.config.get("indices", {}).items():
-                keys[k] = ("INDEX", lbl)
-        if self.config.get("show_stocks"):
-            for k, lbl in self.config.get("stocks", {}).items():
-                keys[k] = ("STOCK", lbl)
-        if not keys:
+        if not self.config.get("show_indices"):
+            return []
+        indices = self.config.get("indices", {})
+        if not indices:
             return []
 
         try:
             resp = self._get("/market-quote/quotes",
-                             {"instrument_key": ",".join(keys)})
+                             {"instrument_key": ",".join(indices)})
             data = resp.get("data", {})
         except Exception as exc:
             return [{"kind": "ERR", "label": f"Quote API: {exc}"}]
 
         out = []
-        for ikey, (kind, label) in keys.items():
+        for ikey, label in indices.items():
             try:
                 q    = data.get(ikey.replace("|", ":"), {})
                 if not q:
@@ -167,9 +151,8 @@ class DataFetcher:
                 ohlc = q.get("ohlc") or {}
                 prev = _f(ohlc.get("close"))
                 pct  = _pct(lp, prev)
-                if kind == "INDEX":
-                    self._idx_px[ikey] = lp
-                out.append({"kind": kind, "label": label, "price": lp, "change": pct})
+                self._idx_px[ikey] = lp
+                out.append({"kind": "INDEX", "label": label, "price": lp, "change": pct})
             except Exception:
                 continue
         return out
@@ -277,7 +260,7 @@ class TickerBanner:
             try:
                 saved  = json.load(open(CONFIG_FILE))
                 merged = {**DEFAULT_CONFIG, **saved}
-                for k in ("indices", "stocks", "option_chains"):
+                for k in ("indices", "option_chains"):
                     if k in saved:
                         merged[k] = saved[k]
                 return merged
@@ -400,8 +383,6 @@ class TickerBanner:
 
             if kind == "INDEX":
                 c_lbl = C["idx"]
-            elif kind == "STOCK":
-                c_lbl = C["stk"]
             elif kind == "CE":
                 c_lbl = C["ce_atm"] if is_atm else C["ce"]
             else:  # PE
@@ -494,9 +475,8 @@ class TickerBanner:
         m.add_separator()
 
         for key, on_lbl, off_lbl in [
-            ("show_indices", "Hide Indices",  "Show Indices"),
-            ("show_stocks",  "Hide Stocks",   "Show Stocks"),
-            ("show_options", "Hide Options",  "Show Options"),
+            ("show_indices", "Hide Indices", "Show Indices"),
+            ("show_options", "Hide Options", "Show Options"),
         ]:
             lbl = on_lbl if self.cfg.get(key) else off_lbl
             m.add_command(label=lbl, command=lambda k=key: self._toggle_section(k))
@@ -577,7 +557,7 @@ class TickerBanner:
 if __name__ == "__main__":
     print("=" * 60)
     print("  AlphaEdge Ticker v2.0")
-    print("  NSE Indices · Equities · Options (Upstox)")
+    print("  NSE/BSE Indices · Options (Upstox)")
     print("=" * 60)
     print(f"  Platform : {platform.system()} {platform.release()}")
     print(f"  Config   : {CONFIG_FILE}")
