@@ -1,7 +1,7 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-29)
 
 ## Corpus Check
-- 617 files · ~2,175,811 words
+- 617 files · ~2,415,458 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -415,8 +415,8 @@
   /home/vreddy1/Desktop/Projects/tradingview-mcp/src/core/tab.js → Polymarket_Claude/Claude/analysis.py
 - `sleep()` --calls--> `main()`  [INFERRED]
   /home/vreddy1/Desktop/Projects/tradingview-mcp/tests/e2e.test.js → Polymarket_Claude/Claude/dgm_h_loop.py
-- `selectModels()` --calls--> `exit()`  [INFERRED]
-  /home/vreddy1/Desktop/Projects/scripts/open-codesign/scripts/smoke-models.ts → Polymarket_Claude/Claude/config.py
+- `exit()` --calls--> `selectModels()`  [INFERRED]
+  Polymarket_Claude/Claude/config.py → /home/vreddy1/Desktop/Projects/scripts/open-codesign/scripts/smoke-models.ts
 
 ## Communities
 
@@ -2596,11 +2596,11 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `map()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 5`, `Community 6`, `Community 7`, `Community 10`, `Community 11`, `Community 13`, `Community 14`, `Community 19`?**
-  _High betweenness centrality (0.218) - this node is a cross-community bridge._
+  _High betweenness centrality (0.232) - this node is a cross-community bridge._
 - **Why does `parse()` connect `Community 5` to `Community 0`, `Community 2`, `Community 3`, `Community 6`, `Community 7`, `Community 8`, `Community 10`, `Community 11`, `Community 12`?**
-  _High betweenness centrality (0.072) - this node is a cross-community bridge._
+  _High betweenness centrality (0.065) - this node is a cross-community bridge._
 - **Why does `main()` connect `Community 1` to `Community 3`, `Community 7`, `Community 11`, `Community 12`, `Community 20`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+  _High betweenness centrality (0.035) - this node is a cross-community bridge._
 - **Are the 149 inferred relationships involving `map()` (e.g. with `Report()` and `addDeleteFavorite()`) actually correct?**
   _`map()` has 149 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 13 inferred relationships involving `a()` (e.g. with `.get()` and `T()`) actually correct?**
