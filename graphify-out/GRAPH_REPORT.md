@@ -2631,11 +2631,9 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `map()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 5`, `Community 6`, `Community 8`, `Community 10`, `Community 12`, `Community 13`, `Community 14`, `Community 21`?**
-  _High betweenness centrality (0.190) - this node is a cross-community bridge._
+  _High betweenness centrality (0.162) - this node is a cross-community bridge._
 - **Why does `parse()` connect `Community 5` to `Community 0`, `Community 1`, `Community 3`, `Community 6`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 17`, `Community 25`?**
-  _High betweenness centrality (0.073) - this node is a cross-community bridge._
-- **Why does `main()` connect `Community 2` to `Community 1`, `Community 3`, `Community 8`, `Community 11`, `Community 12`, `Community 14`, `Community 15`, `Community 22`, `Community 24`, `Community 27`?**
-  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+  _High betweenness centrality (0.078) - this node is a cross-community bridge._
 - **Are the 149 inferred relationships involving `map()` (e.g. with `Report()` and `addDeleteFavorite()`) actually correct?**
   _`map()` has 149 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 13 inferred relationships involving `a()` (e.g. with `.get()` and `T()`) actually correct?**
@@ -2644,3 +2642,5 @@ _Questions this graph is uniquely positioned to answer:_
   _`i()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Fresh Telegram Integration Client.     Handles sending formatted messages and do`, `Send a text message to the configured chat.`, `Formats and sends a trading report.` to the rest of the system?**
   _233 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
+  _Cohesion score 0.0 - nodes in this community are weakly interconnected._
