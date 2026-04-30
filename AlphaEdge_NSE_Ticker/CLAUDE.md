@@ -22,7 +22,7 @@ launch_windows.bat
 
 ## First-run setup
 
-Set `upstox_token` in `~/.alphaedge_ticker.json` before starting. The ticker shows a warning and refuses to call the API if the token is empty. Config file is auto-created with defaults on first `_load_cfg()`.
+`DEFAULT_CONFIG` in the source has a hardcoded fallback `upstox_token`. Override it by setting `upstox_token` in `~/.alphaedge_ticker.json`. Config file is auto-created with defaults on first `_load_cfg()`. The ticker shows a warning banner and skips all API calls if the resolved token is empty.
 
 ## Architecture
 
@@ -32,25 +32,26 @@ Single-file app (`alphaedge_ticker.py`). Two classes plus module-level helpers.
 - `_oi_str(oi)` — formats OI as Cr/L/K
 - `_pct(curr, prev)` — safe percentage change
 - `_f(val)` — safe `float()` with default 0.0
-- `_nearest_expiry(weekday)` — returns `"YYYY-MM-DD"` for the next occurrence of `weekday` (0=Mon…4=Fri); returns today if today matches
 
 **`DataFetcher`** — thread-safe data layer:
-- `_idx_px` dict caches live index prices from `_fetch_quotes()`; this must be populated before `_fetch_options()` runs (they are called sequentially in `refresh()`)
-- `_fetch_quotes()` — single batched `GET /v2/market-quote/quotes` call with all index + stock instrument keys comma-joined. Response keys use `:` not `|` — converted via `.replace("|", ":")`
-- `_fetch_options()` — one `GET /v2/option/chain` call per configured index. ATM = `round(curr_price / step) * step`. Shows ATM ± `strikes_around` strikes for both CE and PE. Items marked `"atm": True` when `strike == atm`
-- `refresh()` — called from daemon threads; writes atomically under `_lock`. Guards against empty token before making any HTTP call
+- `_idx_px` dict caches live index prices from `_fetch_quotes()`; must be populated before `_fetch_options()` runs (called sequentially in `refresh()`)
+- `_expiry_cache` dict caches resolved expiry date per instrument key; reused until the date passes
+- `_fetch_quotes()` — single batched `GET /v2/market-quote/quotes` call with all index instrument keys comma-joined. Response keys use `:` not `|` — converted via `.replace("|", ":")`
+- `_resolve_expiry(ikey)` — probes up to 8 days forward (`date.today() + timedelta(days=d)`) until the option/chain endpoint returns data; caches the result. No manual weekday config needed.
+- `_fetch_options()` — one `GET /v2/option/chain` call per configured index using the resolved expiry. ATM = `round(curr_price / step) * step`. Shows ATM ± `strikes_around` strikes for both CE and PE. Items marked `"atm": True` when `strike == atm`. Results sorted: NIFTY → BNKN → SENSEX, then ascending strike, CE before PE.
+- `refresh()` — called from daemon threads; writes atomically under `_lock`. Guards against empty token before making any HTTP call.
 
-**`TickerBanner`** — tkinter GUI (same scroll engine as v1):
+**`TickerBanner`** — tkinter GUI:
 - Canvas-based scrolling: `_segments = [[canvas_id, virtual_init_x, width]]`. `_scroll_loop()` runs at ~60fps via `root.after(16)`, advancing `_offset` and wrapping items when `vx + w < 0` by incrementing `init_x` by `_content_w + screen_w`
 - `_rebuild()` cancels any pending scroll loop before rebuilding canvas items; must be called via `root.after(0, ...)` from background threads
-- Config persisted to `~/.alphaedge_ticker.json`; merged over `DEFAULT_CONFIG` at startup; nested dicts (`indices`, `stocks`, `option_chains`) loaded verbatim from saved file to allow customization
+- Config persisted to `~/.alphaedge_ticker.json`; merged over `DEFAULT_CONFIG` at startup; nested dicts (`indices`, `option_chains`) loaded verbatim from saved file to allow customization
 
 ## Upstox API endpoints used
 
 | Endpoint | Purpose |
 |----------|---------|
-| `GET /v2/market-quote/quotes?instrument_key=A,B,C` | Batch index + stock quotes |
-| `GET /v2/option/chain?instrument_key=X&expiry_date=YYYY-MM-DD` | Option chain per index |
+| `GET /v2/market-quote/quotes?instrument_key=A,B,C` | Batch index quotes |
+| `GET /v2/option/chain?instrument_key=X&expiry_date=YYYY-MM-DD` | Option chain per index (also used for expiry probing) |
 
 Auth header: `Authorization: Bearer <token>`
 
@@ -66,20 +67,9 @@ Auth header: `Authorization: Bearer <token>`
 | Colour | Meaning |
 |--------|---------|
 | Gold `#ffd54f` | Index labels |
-| Sky blue `#64b5f6` | Stock labels |
 | Muted green `#a5d6a7` | OTM/ITM call labels |
 | Bright green `#69f0ae` | ATM call labels |
 | Muted rose `#ef9a9a` | OTM/ITM put labels |
 | Bright red `#ff5252` | ATM put labels |
 
 ATM strikes also append ` ◉` to the label text.
-
-## Expiry weekdays (defaults, verify with broker)
-
-| Index | Weekday | Value |
-|-------|---------|-------|
-| NIFTY | Thursday | 3 |
-| BANKNIFTY | Wednesday | 2 |
-| SENSEX | Friday | 4 |
-
-Configurable per index in `option_chains[key]["expiry_weekday"]`.
