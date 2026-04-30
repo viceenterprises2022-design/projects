@@ -100,19 +100,31 @@ class DataFetcher:
 
     # -- Index quotes (batched) ------------------------------------------------
     def _fetch_quotes(self, out):
+        import sys
         ikeys = [rd["ikey"] for rd in ROW_DEFS]
         try:
             resp = self._get("/market-quote/quotes", {"instrument_key": ",".join(ikeys)})
             data = resp.get("data", {})
         except Exception as exc:
+            print(f"[quote-ERR] {exc}", file=sys.stderr, flush=True)
             for rd in ROW_DEFS:
                 out[rd["ikey"]] = [{"kind": "ERR", "label": f"Quote: {exc}"}]
             return
 
+        print(f"[quote-keys] {list(data.keys())}", file=sys.stderr, flush=True)
+
         for rd in ROW_DEFS:
-            ikey = rd["ikey"]
+            ikey     = rd["ikey"]
+            resp_key = ikey.replace("|", ":")
+            q        = data.get(resp_key, {})
+            # fallback: case-insensitive key match
+            if not q:
+                for k, v in data.items():
+                    if k.lower() == resp_key.lower():
+                        q = v
+                        break
+            print(f"[quote] {rd['label']:8s} key='{resp_key}' → {'FOUND' if q else 'MISSING'}", file=sys.stderr, flush=True)
             try:
-                q    = data.get(ikey.replace("|", ":"), {})
                 if not q:
                     out[ikey] = []
                     continue
@@ -121,34 +133,42 @@ class DataFetcher:
                 self._idx_px[ikey] = lp
                 out[ikey] = [{"kind": "INDEX", "label": rd["label"],
                                "price": lp, "change": _pct(lp, prev)}]
-            except Exception:
+            except Exception as exc:
+                print(f"[quote] {rd['label']} parse error: {exc}", file=sys.stderr, flush=True)
                 out[ikey] = []
 
-    # -- Expiry auto-detection (probe forward up to 8 days) --------------------
+    # -- Expiry auto-detection (probe forward up to 14 days) -------------------
     def _resolve_expiry(self, ikey):
+        import sys
         today_str = date.today().strftime("%Y-%m-%d")
         cached = self._expiry_cache.get(ikey)
         if cached and cached >= today_str:
             return cached
-        for d in range(8):
+        for d in range(14):
             expiry = (date.today() + timedelta(days=d)).strftime("%Y-%m-%d")
             try:
                 r = self._get("/option/chain", {"instrument_key": ikey, "expiry_date": expiry})
                 if r.get("data"):
                     self._expiry_cache[ikey] = expiry
+                    label = next((rd["label"] for rd in ROW_DEFS if rd["ikey"] == ikey), ikey)
+                    print(f"[expiry] {label}: {expiry} (probe d={d})", file=sys.stderr, flush=True)
                     return expiry
             except Exception:
                 continue
+        label = next((rd["label"] for rd in ROW_DEFS if rd["ikey"] == ikey), ikey)
+        print(f"[expiry] {label}: NOT FOUND in 14-day probe", file=sys.stderr, flush=True)
         return None
 
     # -- Option chains (±300 pts = strikes_around strikes each side) -----------
     def _fetch_options(self, out):
+        import sys
         for rd in ROW_DEFS:
             ikey   = rd["ikey"]
             step   = int(rd["step"])
             n      = int(rd["strikes_around"])
             curr   = self._idx_px.get(ikey)
             expiry = self._resolve_expiry(ikey)
+            print(f"[opts]  {rd['label']:8s} curr={curr}, expiry={expiry}", file=sys.stderr, flush=True)
             if not expiry or not curr:
                 continue
             atm    = round(curr / step) * step
