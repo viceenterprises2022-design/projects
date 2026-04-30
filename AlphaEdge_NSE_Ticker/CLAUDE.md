@@ -33,18 +33,24 @@ Single-file app (`alphaedge_ticker.py`). Two classes plus module-level helpers.
 - `_pct(curr, prev)` — safe percentage change
 - `_f(val)` — safe `float()` with default 0.0
 
-**`DataFetcher`** — thread-safe data layer:
-- `_idx_px` dict caches live index prices from `_fetch_quotes()`; must be populated before `_fetch_options()` runs (called sequentially in `refresh()`)
-- `_expiry_cache` dict caches resolved expiry date per instrument key; reused until the date passes
-- `_fetch_quotes()` — single batched `GET /v2/market-quote/quotes` call with all index instrument keys comma-joined. Response keys use `:` not `|` — converted via `.replace("|", ":")`
-- `_resolve_expiry(ikey)` — probes up to 8 days forward (`date.today() + timedelta(days=d)`) until the option/chain endpoint returns data; caches the result. No manual weekday config needed.
-- `_fetch_options()` — one `GET /v2/option/chain` call per configured index using the resolved expiry. ATM = `round(curr_price / step) * step`. Shows ATM ± `strikes_around` strikes for both CE and PE. Items marked `"atm": True` when `strike == atm`. Results sorted: NIFTY → BNKN → SENSEX, then ascending strike, CE before PE.
-- `refresh()` — called from daemon threads; writes atomically under `_lock`. Guards against empty token before making any HTTP call.
+**`ROW_DEFS`** — module-level list defining the three rows (top→bottom): NIFTY (step 50, ±6 strikes = ±300 pts), BNKN (step 100, ±3 strikes = ±300 pts), SENSEX (step 100, ±3 strikes = ±300 pts). Changing `strikes_around` here controls option depth for all rows.
 
-**`TickerBanner`** — tkinter GUI:
-- Canvas-based scrolling: `_segments = [[canvas_id, virtual_init_x, width]]`. `_scroll_loop()` runs at ~60fps via `root.after(16)`, advancing `_offset` and wrapping items when `vx + w < 0` by incrementing `init_x` by `_content_w + screen_w`
-- `_rebuild()` cancels any pending scroll loop before rebuilding canvas items; must be called via `root.after(0, ...)` from background threads
-- Config persisted to `~/.alphaedge_ticker.json`; merged over `DEFAULT_CONFIG` at startup; nested dicts (`indices`, `option_chains`) loaded verbatim from saved file to allow customization
+**`DataFetcher`** — thread-safe data layer:
+- `_snapshot` dict (`ikey → [items]`) swapped atomically under `_lock` at end of `refresh()`; `get()` returns a shallow copy
+- `_idx_px` dict caches live index prices; populated by `_fetch_quotes(out)` before `_fetch_options(out)` runs (sequential in `refresh()`)
+- `_expiry_cache` dict caches resolved expiry per ikey; reused until date passes
+- `_fetch_quotes(out)` — single batched `GET /v2/market-quote/quotes`; writes INDEX items into `out[ikey]`
+- `_resolve_expiry(ikey)` — probes up to 8 days forward until option/chain returns data
+- `_fetch_options(out)` — one `GET /v2/option/chain` call per row; ATM = `round(curr/step)*step`; appends CE/PE items sorted by ascending strike then kind; `"atm": True` when `strike == atm`
+- `refresh()` builds a fresh `out` dict, calls both fetchers, then swaps `_snapshot` under lock
+
+**`TickerBanner`** — three-row tkinter GUI:
+- Window height = `height × 3`; three `tk.Frame` rows packed top→bottom
+- Each row: badge label (index name, distinct colour) + canvas + timestamp label (last row only)
+- `_rows` list of dicts: `{ikey, canvas, ts_lbl, segments, offset, content_w, after_id}`
+- Per-row scroll: `_scroll_row(row)` runs at ~60fps via `root.after(16, lambda r=row: ...)`, advancing `row["offset"]` and wrapping segments when `vx + w < 0` by incrementing `seg[1]` by `content_w + screen_w`
+- `_rebuild_row(row, items)` cancels the row's `after_id` before rebuilding; called via `root.after(0, ...)` from background threads
+- Config persisted to `~/.alphaedge_ticker.json`; flat merge over `DEFAULT_CONFIG` at startup (no nested dict special-casing)
 
 ## Upstox API endpoints used
 

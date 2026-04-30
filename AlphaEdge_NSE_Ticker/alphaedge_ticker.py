@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AlphaEdge Ticker v2.0 — NSE/BSE Indices · Options via Upstox
+AlphaEdge Ticker v3.0 — Three-row NSE/BSE Indices · Options via Upstox
 """
 import tkinter as tk
 import threading
@@ -13,49 +13,45 @@ from datetime import datetime, date, timedelta
 # ── Paths ─────────────────────────────────────────────────────────────────────
 CONFIG_FILE = os.path.join(os.path.expanduser("~"), ".alphaedge_ticker.json")
 
+# ── Row definitions — order = top→bottom ──────────────────────────────────────
+# strikes_around: how many strikes each side of ATM (±300 pts → step/300 strikes)
+ROW_DEFS = [
+    {"ikey": "NSE_INDEX|Nifty 50",   "label": "NIFTY",  "step": 50,  "strikes_around": 6},
+    {"ikey": "NSE_INDEX|Nifty Bank", "label": "BNKN",   "step": 100, "strikes_around": 3},
+    {"ikey": "BSE_INDEX|SENSEX",     "label": "SENSEX", "step": 100, "strikes_around": 3},
+]
+
 # ── Default config ────────────────────────────────────────────────────────────
 DEFAULT_CONFIG = {
-    "upstox_token": "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo",               # paste token here or in ~/.alphaedge_ticker.json
+    "upstox_token":     "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo",
     "position":         "bottom",
     "height":           28,
     "scroll_speed":     3.0,
     "refresh_interval": 30,
     "font_size":        11,
     "opacity":          0.96,
-    "indices": {
-        "NSE_INDEX|Nifty 50":           "NIFTY",
-        "NSE_INDEX|Nifty Bank":         "BANKNIFTY",
-        "BSE_INDEX|SENSEX":             "SENSEX",
-        "NSE_INDEX|Nifty Fin Service":  "FINNIFTY",
-        "NSE_INDEX|NIFTY MIDCAP 100":  "MIDCAP",
-    },
-    # expiry auto-detected from API — no manual weekday config needed
-    "option_chains": {
-        "NSE_INDEX|Nifty 50":   {"label": "NIFTY",  "step": 50,  "strikes_around": 2},
-        "NSE_INDEX|Nifty Bank": {"label": "BNKN",   "step": 100, "strikes_around": 2},
-        "BSE_INDEX|SENSEX":     {"label": "SENSEX", "step": 100, "strikes_around": 2},
-    },
-    "show_indices": True,
-    "show_options": True,
 }
 
 # ── Colours ───────────────────────────────────────────────────────────────────
 C = {
     "bg":     "#0d0d0f",
-    "idx":    "#ffd54f",   # indices label  — gold
-    "ce":     "#a5d6a7",   # call options   — muted green
-    "pe":     "#ef9a9a",   # put options    — muted rose
-    "ce_atm": "#69f0ae",   # ATM call       — bright green
-    "pe_atm": "#ff5252",   # ATM put        — bright red
+    "idx":    "#ffd54f",
+    "ce":     "#a5d6a7",
+    "pe":     "#ef9a9a",
+    "ce_atm": "#69f0ae",
+    "pe_atm": "#ff5252",
     "price":  "#c8cdd4",
     "up":     "#00e676",
     "down":   "#ff4444",
-    "meta":   "#8a8f9a",   # OI / IV labels
+    "meta":   "#8a8f9a",
     "sep":    "#353945",
     "border": "#1e2028",
     "ts":     "#3a3f4b",
     "warn":   "#ff7043",
 }
+
+# Badge foreground per row (NIFTY=gold, BNKN=green, SENSEX=rose)
+ROW_FG = ["#ffd54f", "#69f0ae", "#ef9a9a"]
 
 FONT = ("Consolas"        if platform.system() == "Windows" else
         "Menlo"           if platform.system() == "Darwin"  else
@@ -64,26 +60,17 @@ FONT = ("Consolas"        if platform.system() == "Windows" else
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def _oi_str(oi):
-    if oi >= 1_00_00_000:
-        return f"{oi / 1_00_00_000:.1f}Cr"
-    if oi >= 1_00_000:
-        return f"{oi / 1_00_000:.1f}L"
-    if oi >= 1_000:
-        return f"{oi / 1_000:.1f}K"
+    if oi >= 1_00_00_000: return f"{oi/1_00_00_000:.1f}Cr"
+    if oi >= 1_00_000:    return f"{oi/1_00_000:.1f}L"
+    if oi >= 1_000:       return f"{oi/1_000:.1f}K"
     return str(int(oi))
-
 
 def _pct(curr, prev):
     return (curr - prev) / prev * 100 if prev else 0.0
 
-
 def _f(val, default=0.0):
-    try:
-        return float(val) if val is not None else default
-    except (TypeError, ValueError):
-        return default
-
-
+    try:    return float(val) if val is not None else default
+    except: return default
 
 
 # ── Data fetcher ──────────────────────────────────────────────────────────────
@@ -91,12 +78,12 @@ class DataFetcher:
     BASE = "https://api.upstox.com/v2"
 
     def __init__(self, config):
-        self.config  = config
-        self._lock   = threading.Lock()
-        self.items   = []
-        self.ts      = None
-        self._idx_px      = {}  # instrument_key → live price (used for ATM calc)
-        self._expiry_cache = {}  # instrument_key → expiry date string
+        self.config        = config
+        self._lock         = threading.Lock()
+        self._snapshot     = {}   # ikey → [items]  (swapped atomically after refresh)
+        self.ts            = None
+        self._idx_px       = {}   # ikey → live price; written only from refresh thread
+        self._expiry_cache = {}   # ikey → expiry date string
 
     def _hdrs(self):
         return {
@@ -106,46 +93,38 @@ class DataFetcher:
 
     def _get(self, path, params=None):
         r = requests.get(
-            f"{self.BASE}{path}",
-            headers=self._hdrs(),
-            params=params,
-            timeout=10,
+            f"{self.BASE}{path}", headers=self._hdrs(), params=params, timeout=10,
         )
         r.raise_for_status()
         return r.json()
 
     # -- Index quotes (batched) ------------------------------------------------
-    def _fetch_quotes(self):
-        if not self.config.get("show_indices"):
-            return []
-        indices = self.config.get("indices", {})
-        if not indices:
-            return []
-
+    def _fetch_quotes(self, out):
+        ikeys = [rd["ikey"] for rd in ROW_DEFS]
         try:
-            resp = self._get("/market-quote/quotes",
-                             {"instrument_key": ",".join(indices)})
+            resp = self._get("/market-quote/quotes", {"instrument_key": ",".join(ikeys)})
             data = resp.get("data", {})
         except Exception as exc:
-            return [{"kind": "ERR", "label": f"Quote API: {exc}"}]
+            for rd in ROW_DEFS:
+                out[rd["ikey"]] = [{"kind": "ERR", "label": f"Quote: {exc}"}]
+            return
 
-        out = []
-        for ikey, label in indices.items():
+        for rd in ROW_DEFS:
+            ikey = rd["ikey"]
             try:
                 q    = data.get(ikey.replace("|", ":"), {})
                 if not q:
+                    out[ikey] = []
                     continue
                 lp   = _f(q.get("last_price"))
-                ohlc = q.get("ohlc") or {}
-                prev = _f(ohlc.get("close"))
-                pct  = _pct(lp, prev)
+                prev = _f((q.get("ohlc") or {}).get("close"))
                 self._idx_px[ikey] = lp
-                out.append({"kind": "INDEX", "label": label, "price": lp, "change": pct})
+                out[ikey] = [{"kind": "INDEX", "label": rd["label"],
+                               "price": lp, "change": _pct(lp, prev)}]
             except Exception:
-                continue
-        return out
+                out[ikey] = []
 
-    # -- Expiry detection (probe forward from today, cache until expired) ------
+    # -- Expiry auto-detection (probe forward up to 8 days) --------------------
     def _resolve_expiry(self, ikey):
         today_str = date.today().strftime("%Y-%m-%d")
         cached = self._expiry_cache.get(ikey)
@@ -162,36 +141,34 @@ class DataFetcher:
                 continue
         return None
 
-    # -- Option chains --------------------------------------------------------
-    def _fetch_options(self):
-        if not self.config.get("show_options"):
-            return []
-        out = []
-        for ikey, cfg in self.config.get("option_chains", {}).items():
-            label  = cfg["label"]
-            step   = int(cfg["step"])
-            n      = int(cfg.get("strikes_around", 2))
-            expiry = self._resolve_expiry(ikey)
-            if not expiry:
-                continue
+    # -- Option chains (±300 pts = strikes_around strikes each side) -----------
+    def _fetch_options(self, out):
+        for rd in ROW_DEFS:
+            ikey   = rd["ikey"]
+            step   = int(rd["step"])
+            n      = int(rd["strikes_around"])
             curr   = self._idx_px.get(ikey)
-            if not curr:
+            expiry = self._resolve_expiry(ikey)
+            if not expiry or not curr:
                 continue
             atm    = round(curr / step) * step
             wanted = {atm + i * step for i in range(-n, n + 1)}
 
             try:
-                chain = self._get("/option/chain",
-                                  {"instrument_key": ikey, "expiry_date": expiry}).get("data", [])
+                chain = self._get(
+                    "/option/chain",
+                    {"instrument_key": ikey, "expiry_date": expiry},
+                ).get("data", [])
             except Exception:
                 continue
 
+            opts = []
             for entry in chain:
                 try:
                     strike = _f(entry.get("strike_price"))
                     if strike not in wanted:
                         continue
-                    is_atm = (strike == atm)
+                    is_atm = strike == atm
                     for side, opt_key in (("CE", "call_options"), ("PE", "put_options")):
                         md    = entry.get(opt_key, {}).get("market_data", {})
                         ltp   = _f(md.get("ltp"))
@@ -199,12 +176,11 @@ class DataFetcher:
                             continue
                         close = _f(md.get("close_price"))
                         oi    = _f(md.get("oi"))
-                        pct   = _pct(ltp, close) if close else 0.0
-                        out.append({
+                        opts.append({
                             "kind":   side,
-                            "label":  f"{label} {int(strike)}{side}",
+                            "label":  f"{rd['label']} {int(strike)}{side}",
                             "price":  ltp,
-                            "change": pct,
+                            "change": _pct(ltp, close) if close else 0.0,
                             "oi":     oi,
                             "strike": strike,
                             "atm":    is_atm,
@@ -212,51 +188,45 @@ class DataFetcher:
                 except Exception:
                     continue
 
-        # order: NIFTY → BANKNIFTY → SENSEX, then ascending strike, CE before PE
-        _order = {"NIFTY": 0, "BNKN": 1, "SENSEX": 2}
-        def _sort_key(x):
-            prefix = x["label"].split()[0] if " " in x["label"] else x["label"][:6]
-            return (_order.get(prefix, 99), x["strike"], x["kind"])
-        return sorted(out, key=_sort_key)
+            # ascending strike, CE before PE within each strike
+            opts.sort(key=lambda x: (x["strike"], x["kind"]))
+            out[ikey] = out.get(ikey, []) + opts
 
-    # -- Public ---------------------------------------------------------------
+    # -- Public ----------------------------------------------------------------
     def refresh(self):
         if not self.config.get("upstox_token", "").strip():
+            err = [{"kind": "ERR", "label": "Set upstox_token in ~/.alphaedge_ticker.json"}]
             with self._lock:
-                self.items = [{"kind": "ERR",
-                               "label": "Set upstox_token in ~/.alphaedge_ticker.json"}]
+                self._snapshot = {rd["ikey"]: err[:] for rd in ROW_DEFS}
                 self.ts = datetime.now()
             return
-        items  = self._fetch_quotes()
-        items += self._fetch_options()
+
+        out = {rd["ikey"]: [] for rd in ROW_DEFS}
+        self._fetch_quotes(out)
+        self._fetch_options(out)
         with self._lock:
-            self.items = items
-            self.ts    = datetime.now()
+            self._snapshot = out
+            self.ts = datetime.now()
 
     def get(self):
         with self._lock:
-            return list(self.items), self.ts
+            return dict(self._snapshot), self.ts
 
 
-# ── Banner window ─────────────────────────────────────────────────────────────
+# ── Banner window — three stacked rows ────────────────────────────────────────
 class TickerBanner:
     def __init__(self):
-        self.cfg     = self._load_cfg()
-        self.fetcher = DataFetcher(self.cfg)
-
-        self.root = tk.Tk()
+        self.cfg      = self._load_cfg()
+        self.fetcher  = DataFetcher(self.cfg)
+        self.root     = tk.Tk()
         self.root.title("AlphaEdge Ticker")
-        self._setup_window()
-        self._build_ui()
-
-        self._segments  = []
-        self._offset    = 0
-        self._screen_w  = self.root.winfo_screenwidth()
-        self._content_w = 0
-        self._after_id  = None
+        self._rows    = []
+        self._screen_w = 0
         self._dx = self._dy = 0
 
-        self._set_loading()
+        self._setup_window()
+        self._build_ui()
+        self._set_loading_all()
         threading.Thread(target=self._initial_fetch, daemon=True).start()
         self._schedule_refresh()
         self.root.mainloop()
@@ -265,12 +235,8 @@ class TickerBanner:
     def _load_cfg(self):
         if os.path.exists(CONFIG_FILE):
             try:
-                saved  = json.load(open(CONFIG_FILE))
-                merged = {**DEFAULT_CONFIG, **saved}
-                for k in ("indices", "option_chains"):
-                    if k in saved:
-                        merged[k] = saved[k]
-                return merged
+                saved = json.load(open(CONFIG_FILE))
+                return {**DEFAULT_CONFIG, **saved}
             except Exception:
                 pass
         return dict(DEFAULT_CONFIG)
@@ -293,106 +259,137 @@ class TickerBanner:
         sw = self.root.winfo_screenwidth()
         sh = self.root.winfo_screenheight()
         h  = self.cfg["height"]
-        y  = 0 if self.cfg["position"] == "top" else sh - h - 1
-        self.root.geometry(f"{sw}x{h}+0+{y}")
+        total_h = h * len(ROW_DEFS)
+        y = 0 if self.cfg["position"] == "top" else sh - total_h - 1
+        self.root.geometry(f"{sw}x{total_h}+0+{y}")
+        self._screen_w = sw
 
     def _build_ui(self):
         h = self.cfg["height"]
-        self._badge = tk.Label(
-            self.root, text=" ◈ ALPHAEDGE ",
-            bg="#0a1628", fg="#ffd54f",
-            font=(FONT, 9, "bold"), padx=0, pady=0, bd=0,
-        )
-        self._badge.pack(side="left", fill="y")
-        self._badge.bind("<Button-3>",  self._show_menu)
-        self._badge.bind("<Button-1>",  self._drag_start)
-        self._badge.bind("<B1-Motion>", self._drag_do)
+        n = len(ROW_DEFS)
+        for i, rd in enumerate(ROW_DEFS):
+            frame = tk.Frame(self.root, bg=C["bg"], height=h)
+            frame.pack(side="top", fill="x")
+            frame.pack_propagate(False)
 
-        self._cv = tk.Canvas(
-            self.root, height=h,
-            bg=C["bg"], highlightthickness=0, bd=0,
-        )
-        self._cv.pack(side="left", fill="x", expand=True)
-        self._cv.bind("<Configure>",   self._on_resize)
-        self._cv.bind("<Button-1>",    self._drag_start)
-        self._cv.bind("<B1-Motion>",   self._drag_do)
-        self._cv.bind("<Button-3>",    self._show_menu)
+            badge = tk.Label(
+                frame, text=f" ◈ {rd['label']} ",
+                bg="#0a1628", fg=ROW_FG[i],
+                font=(FONT, 9, "bold"), padx=0, pady=0, bd=0,
+            )
+            badge.pack(side="left", fill="y")
 
-        self._cv.create_line(0, 0, 9999, 0,     fill=C["border"], width=1, tags="border")
-        self._cv.create_line(0, h-1, 9999, h-1, fill=C["border"], width=1, tags="border")
+            # Timestamp only on last row, right side
+            ts_lbl = None
+            if i == n - 1:
+                ts_lbl = tk.Label(
+                    frame, text=" ─── ",
+                    bg=C["bg"], fg=C["ts"],
+                    font=(FONT, 8), padx=4, pady=0,
+                )
+                ts_lbl.pack(side="right", fill="y")
+                ts_lbl.bind("<Button-3>",  self._show_menu)
+                ts_lbl.bind("<Button-1>",  self._drag_start)
+                ts_lbl.bind("<B1-Motion>", self._drag_do)
 
-        self._ts_lbl = tk.Label(
-            self.root, text=" ─── ",
-            bg=C["bg"], fg=C["ts"],
-            font=(FONT, 8), padx=4, pady=0,
-        )
-        self._ts_lbl.pack(side="right", fill="y")
-        self._ts_lbl.bind("<Button-3>", self._show_menu)
+            cv = tk.Canvas(
+                frame, height=h,
+                bg=C["bg"], highlightthickness=0, bd=0,
+            )
+            cv.pack(side="left", fill="x", expand=True)
+            cv.create_line(0, 0, 9999, 0,     fill=C["border"], width=1, tags="border")
+            cv.create_line(0, h-1, 9999, h-1, fill=C["border"], width=1, tags="border")
+            cv.bind("<Configure>", self._on_resize)
+
+            for w in (badge, cv, frame):
+                w.bind("<Button-3>",  self._show_menu)
+                w.bind("<Button-1>",  self._drag_start)
+                w.bind("<B1-Motion>", self._drag_do)
+
+            self._rows.append({
+                "ikey":      rd["ikey"],
+                "canvas":    cv,
+                "ts_lbl":    ts_lbl,
+                "segments":  [],
+                "offset":    0.0,
+                "content_w": 1,
+                "after_id":  None,
+            })
+
         self.root.bind("<Escape>", lambda e: self._quit())
 
     def _on_resize(self, event):
         self._screen_w = event.width
 
-    # ── Loading ───────────────────────────────────────────────────────────────
-    def _set_loading(self):
-        h = self.cfg["height"]
-        self._cv.delete("ticker")
-        self._cv.create_text(
+    # ── Loading state ─────────────────────────────────────────────────────────
+    def _set_loading_all(self):
+        for row in self._rows:
+            self._set_loading_row(row)
+
+    def _set_loading_row(self, row):
+        h  = self.cfg["height"]
+        cv = row["canvas"]
+        cv.delete("ticker")
+        cv.create_text(
             120, h // 2 + 1,
             text="⟳  Connecting to Upstox…",
             fill=C["ts"], font=(FONT, self.cfg["font_size"]),
             anchor="w", tags="ticker",
         )
 
+    # ── Fetch ─────────────────────────────────────────────────────────────────
     def _initial_fetch(self):
         self.fetcher.refresh()
-        self.root.after(0, self._rebuild)
+        self.root.after(0, self._rebuild_all)
 
     # ── Rebuild ───────────────────────────────────────────────────────────────
-    def _rebuild(self):
-        if self._after_id:
-            self.root.after_cancel(self._after_id)
-            self._after_id = None
-
-        self._cv.delete("ticker")
-        self._segments = []
-        items, ts = self.fetcher.get()
-
+    def _rebuild_all(self):
+        snapshot, ts = self.fetcher.get()
         if ts:
-            self._ts_lbl.config(text=ts.strftime(" %H:%M:%S "), fg=C["ts"])
+            for row in self._rows:
+                if row["ts_lbl"]:
+                    row["ts_lbl"].config(text=ts.strftime(" %H:%M:%S "), fg=C["ts"])
+        for row in self._rows:
+            self._rebuild_row(row, snapshot.get(row["ikey"], []))
 
-        if not items:
-            self._cv.create_text(
-                120, self.cfg["height"] // 2 + 1,
-                text="⚠  No data — right-click → Refresh",
-                fill=C["down"], font=(FONT, self.cfg["font_size"]),
-                anchor="w", tags="ticker",
-            )
-            return
+    def _rebuild_row(self, row, items):
+        cv = row["canvas"]
+        if row["after_id"]:
+            self.root.after_cancel(row["after_id"])
+            row["after_id"] = None
+
+        cv.delete("ticker")
+        row["segments"] = []
 
         h  = self.cfg["height"]
         fs = self.cfg["font_size"]
         cy = h // 2 + 1
         sw = self._screen_w or self.root.winfo_screenwidth()
+
+        if not items:
+            cv.create_text(
+                120, cy, text="⚠  No data",
+                fill=C["down"], font=(FONT, fs), anchor="w", tags="ticker",
+            )
+            return
+
         segs = []
-
         for item in items:
-            kind = item["kind"]
-
+            kind   = item["kind"]
             if kind == "ERR":
                 segs.append((f"  ⚠  {item['label']}  ", C["warn"], (FONT, fs)))
                 continue
 
-            chg   = item.get("change", 0.0)
-            c_chg = C["up"] if chg >= 0 else C["down"]
-            arrow = "▲" if chg >= 0 else "▼"
+            chg    = item.get("change", 0.0)
+            c_chg  = C["up"] if chg >= 0 else C["down"]
+            arrow  = "▲" if chg >= 0 else "▼"
             is_atm = item.get("atm", False)
 
             if kind == "INDEX":
                 c_lbl = C["idx"]
             elif kind == "CE":
                 c_lbl = C["ce_atm"] if is_atm else C["ce"]
-            else:  # PE
+            else:
                 c_lbl = C["pe_atm"] if is_atm else C["pe"]
 
             lbl_text = item["label"] + (" ◉" if is_atm else "")
@@ -400,54 +397,48 @@ class TickerBanner:
             segs.append((self._fmt(item["price"]), C["price"], (FONT, fs)))
             segs.append((f"  {arrow}{abs(chg):.2f}%", c_chg, (FONT, fs, "bold")))
 
-            if kind in ("CE", "PE"):
-                oi = item.get("oi", 0)
-                if oi > 0:
-                    segs.append((f"  OI:{_oi_str(oi)}", C["meta"], (FONT, fs - 1)))
+            if kind in ("CE", "PE") and item.get("oi", 0) > 0:
+                segs.append((f"  OI:{_oi_str(item['oi'])}", C["meta"], (FONT, fs - 1)))
 
             segs.append(("   ◆   ", C["sep"], (FONT, fs - 2)))
 
         cursor_x = sw
         for text, fill, fnt in segs:
-            tid = self._cv.create_text(
-                cursor_x, cy,
-                text=text, fill=fill, font=fnt,
-                anchor="w", tags="ticker",
-            )
-            bbox = self._cv.bbox(tid)
-            w = (bbox[2] - bbox[0]) if bbox else max(len(text) * (fs - 1), 1)
-            self._segments.append([tid, cursor_x, w])
+            tid  = cv.create_text(cursor_x, cy, text=text, fill=fill, font=fnt,
+                                   anchor="w", tags="ticker")
+            bbox = cv.bbox(tid)
+            w    = (bbox[2] - bbox[0]) if bbox else max(len(text) * (fs - 1), 1)
+            row["segments"].append([tid, cursor_x, w])
             cursor_x += w
 
-        self._content_w = max(cursor_x - sw, 1)
-        self._offset    = 0
-        self._scroll_loop()
+        row["content_w"] = max(cursor_x - sw, 1)
+        row["offset"]    = 0.0
+        self._scroll_row(row)
 
-    # ── Scroll loop (~60 fps) ─────────────────────────────────────────────────
-    def _scroll_loop(self):
+    # ── Per-row scroll loop (~60 fps) ─────────────────────────────────────────
+    def _scroll_row(self, row):
         speed = self.cfg["scroll_speed"]
         sw    = self._screen_w or self.root.winfo_screenwidth()
-        self._offset += speed
+        cv    = row["canvas"]
+        row["offset"] += speed
 
-        for seg in self._segments:
+        for seg in row["segments"]:
             tid, init_x, w = seg
-            vx = init_x - self._offset
+            vx = init_x - row["offset"]
             if vx + w < 0:
-                seg[1] += self._content_w + sw
-                vx = seg[1] - self._offset
-            cur = self._cv.coords(tid)
+                seg[1] += row["content_w"] + sw
+                vx = seg[1] - row["offset"]
+            cur = cv.coords(tid)
             if cur:
-                self._cv.coords(tid, vx, cur[1])
+                cv.coords(tid, vx, cur[1])
 
-        self._after_id = self.root.after(16, self._scroll_loop)
+        row["after_id"] = self.root.after(16, lambda r=row: self._scroll_row(r))
 
     # ── Format price ─────────────────────────────────────────────────────────
     @staticmethod
     def _fmt(price):
-        if price >= 10000:
-            return f"{price:,.0f}"
-        if price >= 1:
-            return f"{price:,.2f}"
+        if price >= 10000: return f"{price:,.0f}"
+        if price >= 1:     return f"{price:,.2f}"
         return f"{price:.4f}"
 
     # ── Drag ──────────────────────────────────────────────────────────────────
@@ -456,11 +447,11 @@ class TickerBanner:
         self._dy = e.y_root - self.root.winfo_y()
 
     def _drag_do(self, e):
-        sw = self.root.winfo_screenwidth()
-        sh = self.root.winfo_screenheight()
-        h  = self.cfg["height"]
-        ny = max(0, min(sh - h, e.y_root - self._dy))
-        self.root.geometry(f"{sw}x{h}+0+{ny}")
+        sw      = self.root.winfo_screenwidth()
+        sh      = self.root.winfo_screenheight()
+        total_h = self.cfg["height"] * len(ROW_DEFS)
+        ny      = max(0, min(sh - total_h, e.y_root - self._dy))
+        self.root.geometry(f"{sw}x{total_h}+0+{ny}")
         self.cfg["position"] = "top" if ny < sh // 2 else "bottom"
 
     # ── Context menu ──────────────────────────────────────────────────────────
@@ -469,18 +460,10 @@ class TickerBanner:
                     bg="#141620", fg="#c8cdd4",
                     activebackground="#252838", activeforeground="#ffffff",
                     font=(FONT, 10))
-        m.add_command(label="⟳   Refresh Now",    command=self._manual_refresh)
+        m.add_command(label="⟳   Refresh Now", command=self._manual_refresh)
         m.add_separator()
         pos = "Bottom" if self.cfg["position"] == "top" else "Top"
         m.add_command(label=f"↕   Move to {pos}", command=self._toggle_pos)
-        m.add_separator()
-
-        for key, on_lbl, off_lbl in [
-            ("show_indices", "Hide Indices", "Show Indices"),
-            ("show_options", "Hide Options", "Show Options"),
-        ]:
-            lbl = on_lbl if self.cfg.get(key) else off_lbl
-            m.add_command(label=lbl, command=lambda k=key: self._toggle_section(k))
         m.add_separator()
 
         sm = tk.Menu(m, tearoff=0, bg="#141620", fg="#c8cdd4",
@@ -504,26 +487,21 @@ class TickerBanner:
 
     def _manual_refresh(self):
         threading.Thread(
-            target=lambda: (self.fetcher.refresh(), self.root.after(0, self._rebuild)),
+            target=lambda: (self.fetcher.refresh(), self.root.after(0, self._rebuild_all)),
             daemon=True,
         ).start()
 
     def _toggle_pos(self):
-        sw = self.root.winfo_screenwidth()
-        sh = self.root.winfo_screenheight()
-        h  = self.cfg["height"]
+        sw      = self.root.winfo_screenwidth()
+        sh      = self.root.winfo_screenheight()
+        total_h = self.cfg["height"] * len(ROW_DEFS)
         if self.cfg["position"] == "top":
             self.cfg["position"] = "bottom"
-            self.root.geometry(f"{sw}x{h}+0+{sh-h-1}")
+            self.root.geometry(f"{sw}x{total_h}+0+{sh-total_h-1}")
         else:
             self.cfg["position"] = "top"
-            self.root.geometry(f"{sw}x{h}+0+0")
+            self.root.geometry(f"{sw}x{total_h}+0+0")
         self._save_cfg()
-
-    def _toggle_section(self, key):
-        self.cfg[key] = not self.cfg.get(key, True)
-        self._save_cfg()
-        self._manual_refresh()
 
     def _set_speed(self, s):
         self.cfg["scroll_speed"] = s
@@ -542,31 +520,31 @@ class TickerBanner:
 
     def _bg_refresh(self):
         threading.Thread(
-            target=lambda: (self.fetcher.refresh(), self.root.after(0, self._rebuild)),
+            target=lambda: (self.fetcher.refresh(), self.root.after(0, self._rebuild_all)),
             daemon=True,
         ).start()
         self._schedule_refresh()
 
     def _quit(self):
         self._save_cfg()
-        if self._after_id:
-            self.root.after_cancel(self._after_id)
+        for row in self._rows:
+            if row["after_id"]:
+                self.root.after_cancel(row["after_id"])
         self.root.destroy()
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print("=" * 60)
-    print("  AlphaEdge Ticker v2.0")
-    print("  NSE/BSE Indices · Options (Upstox)")
+    print("  AlphaEdge Ticker v3.0")
+    print("  Three-row NSE/BSE Indices · Options (Upstox)")
     print("=" * 60)
     print(f"  Platform : {platform.system()} {platform.release()}")
     print(f"  Config   : {CONFIG_FILE}")
     print()
     if not os.path.exists(CONFIG_FILE):
         print("  First run — no config found.")
-        print(f"  Edit {CONFIG_FILE}")
-        print("  and set your upstox_token before starting.")
+        print(f"  Edit {CONFIG_FILE} and set your upstox_token.")
         print()
     print("  Right-click for options  |  Esc to quit")
     print("=" * 60)
