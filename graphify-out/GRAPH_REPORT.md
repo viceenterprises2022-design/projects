@@ -1,7 +1,7 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-04-30)
 
 ## Corpus Check
-- 617 files · ~2,415,976 words
+- 617 files · ~2,415,966 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -2631,10 +2631,10 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `map()` connect `Community 3` to `Community 0`, `Community 1`, `Community 2`, `Community 5`, `Community 6`, `Community 8`, `Community 10`, `Community 12`, `Community 13`, `Community 14`, `Community 21`?**
-  _High betweenness centrality (0.208) - this node is a cross-community bridge._
+  _High betweenness centrality (0.214) - this node is a cross-community bridge._
 - **Why does `parse()` connect `Community 5` to `Community 0`, `Community 1`, `Community 3`, `Community 6`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 17`, `Community 25`?**
-  _High betweenness centrality (0.049) - this node is a cross-community bridge._
-- **Why does `T()` connect `Community 1` to `Community 0`, `Community 4`, `Community 9`, `Community 13`, `Community 18`?**
+  _High betweenness centrality (0.083) - this node is a cross-community bridge._
+- **Why does `main()` connect `Community 2` to `Community 1`, `Community 3`, `Community 8`, `Community 11`, `Community 12`, `Community 14`, `Community 15`, `Community 22`, `Community 24`, `Community 27`?**
   _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **Are the 149 inferred relationships involving `map()` (e.g. with `Report()` and `addDeleteFavorite()`) actually correct?**
   _`map()` has 149 INFERRED edges - model-reasoned connections that need verification._
