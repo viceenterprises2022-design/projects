@@ -1,7 +1,7 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-05-11)
 
 ## Corpus Check
-- 1830 files · ~9,179,958 words
+- 1830 files · ~9,179,721 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -4051,10 +4051,10 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `map()` connect `Community 5` to `Community 0`, `Community 1`, `Community 2`, `Community 3`, `Community 4`, `Community 6`, `Community 7`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 15`, `Community 16`, `Community 17`, `Community 18`, `Community 19`, `Community 20`, `Community 23`, `Community 26`, `Community 28`, `Community 29`, `Community 32`, `Community 33`, `Community 37`, `Community 38`, `Community 39`, `Community 40`, `Community 45`, `Community 46`, `Community 49`, `Community 50`, `Community 64`?**
-  _High betweenness centrality (0.197) - this node is a cross-community bridge._
-- **Why does `main()` connect `Community 3` to `Community 32`, `Community 0`, `Community 2`, `Community 4`, `Community 5`, `Community 6`, `Community 7`, `Community 9`, `Community 10`, `Community 42`, `Community 13`, `Community 15`, `Community 18`, `Community 20`, `Community 21`, `Community 22`, `Community 24`?**
-  _High betweenness centrality (0.053) - this node is a cross-community bridge._
+  _High betweenness centrality (0.199) - this node is a cross-community bridge._
 - **Why does `ok()` connect `Community 3` to `Community 32`, `Community 0`, `Community 35`, `Community 4`, `Community 5`, `Community 39`, `Community 9`, `Community 43`, `Community 12`, `Community 13`, `Community 14`, `Community 16`, `Community 18`?**
+  _High betweenness centrality (0.074) - this node is a cross-community bridge._
+- **Why does `parse()` connect `Community 9` to `Community 0`, `Community 2`, `Community 3`, `Community 4`, `Community 5`, `Community 6`, `Community 7`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 15`, `Community 17`, `Community 19`, `Community 20`, `Community 26`, `Community 28`, `Community 29`, `Community 31`, `Community 33`, `Community 37`, `Community 38`, `Community 39`, `Community 41`?**
   _High betweenness centrality (0.049) - this node is a cross-community bridge._
 - **Are the 591 inferred relationships involving `map()` (e.g. with `Report()` and `addDeleteFavorite()`) actually correct?**
   _`map()` has 591 INFERRED edges - model-reasoned connections that need verification._
