@@ -171,9 +171,9 @@ def main():
             os.system('clear' if os.name == 'posix' else 'cls')
             ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
-            print("=" * 135)
+            print("=" * 155)
             print(f" LIVE MULTI-INDEX OPTIONS DASHBOARD | {ts}")
-            print("=" * 135)
+            print("=" * 155)
 
             # 1. Batch Fetch Spot & Fut for all indices
             sf_keys = []
@@ -249,7 +249,7 @@ def main():
 
                 save_to_db(conn, ts, name, spot, snapshot_rows)
 
-            print("\n" + "=" * 135)
+            print("\n" + "=" * 155)
             print("Polling every 5s (Batch Mode). Press Ctrl+C to exit.")
             time.sleep(5)
 
