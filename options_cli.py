@@ -5,6 +5,7 @@ import time
 import sqlite3
 import os
 import sys
+import re
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -14,9 +15,9 @@ UH = {"Authorization": f"Bearer {UPSTOX_TOKEN}", "Accept": "application/json"}
 DB_PATH = Path(__file__).parent / "intraday_options_cli.db"
 
 INSTRUMENTS = {
-    1: {"name": "NIFTY",     "key": "NSE_INDEX|Nifty 50",   "exch": "NSE_FO", "step": 50},
-    2: {"name": "SENSEX",    "key": "BSE_INDEX|SENSEX",     "exch": "BSE_FO", "step": 100},
-    3: {"name": "BANKNIFTY", "key": "NSE_INDEX|Nifty Bank", "exch": "NSE_FO", "step": 100}
+    1: {"name": "NIFTY",     "key": "NSE_INDEX|Nifty 50",   "fut_key": "NSE_FO|66071",  "exch": "NSE_FO", "step": 50},
+    2: {"name": "SENSEX",    "key": "BSE_INDEX|SENSEX",     "fut_key": "BSE_FO|870220", "exch": "BSE_FO", "step": 100},
+    3: {"name": "BANKNIFTY", "key": "NSE_INDEX|Nifty Bank", "fut_key": "NSE_FO|66068",  "exch": "NSE_FO", "step": 100}
 }
 
 def get_futures_key(name, exch):
@@ -28,6 +29,19 @@ def get_futures_key(name, exch):
     year_short = now.strftime("%y")
     month_upper = now.strftime("%b").upper()
     return f"{exch}|{name}{year_short}{month_upper}FUT"
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+def strip_ansi(text):
+    """Remove ANSI escape sequences for length calculation."""
+    return re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])').sub('', text)
+
+def pad_colored(text, width, align='left'):
+    """Pad a string containing ANSI color codes correctly."""
+    visible_len = len(strip_ansi(text))
+    padding = " " * max(0, width - visible_len)
+    if align == 'left': return text + padding
+    return padding + text
 
 # ── Database Logic ────────────────────────────────────────────────────────────
 
@@ -87,21 +101,80 @@ def fetch_option_chain(key, expiry):
         return d.get("data", [])
     return []
 
+EXPIRY_CACHE = {} # {instrument_key: (expiry_date, timestamp)}
+
+def get_cached_expiry(key):
+    """Fetch expiry once every 30 mins to avoid redundant calls."""
+    now = time.time()
+    if key in EXPIRY_CACHE:
+        expiry, ts = EXPIRY_CACHE[key]
+        if now - ts < 1800: # 30 mins
+            return expiry
+    expiries = fetch_expiries(key)
+    if expiries:
+        expiry = expiries[0]
+        EXPIRY_CACHE[key] = (expiry, now)
+        return expiry
+    return None
+
+def fetch_quotes(key_list):
+    """Fetch multiple quotes at once."""
+    if not key_list: return {}
+    d = upstox_get("https://api.upstox.com/v2/market-quote/quotes", {"instrument_key": ",".join(key_list)})
+    if d.get("status") == "success" and d.get("data"):
+        return {v.get("instrument_token"): v for v in d["data"].values()}
+    return {}
+
+def get_ohlc_flags(ohlc):
+    """Flag O=H and O=L strategies."""
+    if not ohlc: return ""
+    o, h, l = ohlc.get("open"), ohlc.get("high"), ohlc.get("low")
+    if not o: return ""
+    flags = []
+    if o == h and o > 0: flags.append("OH")
+    if o == l and o > 0: flags.append("OL")
+    return "|".join(flags)
+
 # ── Formatting ────────────────────────────────────────────────────────────────
 
 def format_oi(n):
     """Format OI to Lakhs (L) or Crores (C)."""
     if n >= 10000000:
-        return f"{n/10000000:6.2f}C"
+        return f"{n/10000000:5.2f}C"
     if n >= 100000:
-        return f"{n/100000:6.2f}L"
-    return f"{n:7.0f}"
+        return f"{n/100000:5.2f}L"
+    return f"{n:6.0f}"
 
-def print_row(strike, ce_ltp, ce_oi, pe_ltp, pe_oi, is_atm=False):
+def print_row(strike, ce_data, pe_data, is_atm=False):
     marker = ">> " if is_atm else "   "
-    c_oi_s = format_oi(ce_oi)
-    p_oi_s = format_oi(pe_oi)
-    print(f"{marker}{ce_ltp:10.2f} | {c_oi_s:>9} | {strike:8} | {p_oi_s:>9} | {pe_ltp:10.2f}")
+    G, R, W = "\033[92m", "\033[91m", "\033[0m" # Green, Red, Reset
+    
+    def get_cols(d, is_ce):
+        ohlc = d.get("ohlc") or {}
+        o, h, l, c = ohlc.get("open", 0), ohlc.get("high", 0), ohlc.get("low", 0), ohlc.get("close", 0)
+        ltp = d.get("ltp", 0)
+        oi = format_oi(d.get("oi", 0))
+        
+        # Strategy Coloring
+        flags = get_ohlc_flags(ohlc)
+        o_s = f"{o:6.1f}"
+        if "OL" in flags: o_s = f"{G}{o_s}{W}" if is_ce else f"{R}{o_s}{W}"
+        if "OH" in flags: o_s = f"{R}{o_s}{W}" if is_ce else f"{G}{o_s}{W}"
+        
+        f_tags = []
+        if "OL" in flags: f_tags.append(f"{G}OL{W}" if is_ce else f"{R}OL{W}")
+        if "OH" in flags: f_tags.append(f"{R}OH{W}" if is_ce else f"{G}OH{W}")
+        f_tag_str = "|".join(f_tags)
+        
+        return o_s, f"{h:6.1f}", f"{l:6.1f}", f"{c:6.1f}", f"{ltp:7.2f}", f"{oi:>6}", f_tag_str
+
+    co, ch, cl, cc, cltp, coi, cf = get_cols(ce_data, True)
+    po, ph, pl, pc, pltp, poi, pf = get_cols(pe_data, False)
+    
+    # CE Side | Strike | PE Side
+    cf_col = pad_colored(cf, 5, 'left')
+    pf_col = pad_colored(pf, 5, 'left')
+    print(f"{marker}{cf_col}|{co} {ch} {cl} {cc}|{cltp}|{coi}|{strike:6.0f}|{poi}|{pltp}|{po} {ph} {pl} {pc}|{pf_col}")
 
 # ── Main Loop ─────────────────────────────────────────────────────────────────
 
@@ -113,73 +186,86 @@ def main():
             os.system('clear' if os.name == 'posix' else 'cls')
             ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
-            print("=" * 85)
+            print("=" * 107)
             print(f" LIVE MULTI-INDEX OPTIONS DASHBOARD | {ts}")
-            print("=" * 85)
+            print("=" * 107)
+
+            # 1. Batch Fetch Spot & Fut for all indices
+            sf_keys = []
+            for inst in INSTRUMENTS.values():
+                sf_keys.append(inst["key"])
+                sf_keys.append(inst["fut_key"])
+            sf_quotes = fetch_quotes(sf_keys)
+
+            # 2. Gather index data and collect all option keys
+            all_index_data = []
+            all_option_keys = []
 
             for _, inst in INSTRUMENTS.items():
                 name = inst["name"]
                 key = inst["key"]
                 step = inst["step"]
-                exch = inst["exch"]
-
-                # 1. Fetch Spot & Future
-                spot = fetch_quote(key)
-                if not spot:
-                    print(f"\n[{name}] Error: Could not fetch spot price.")
-                    continue
                 
-                fut_key = get_futures_key(name, exch)
-                fut = fetch_quote(fut_key) or spot # Fallback to spot
+                spot = sf_quotes.get(key, {}).get("last_price")
+                if not spot: continue
+                fut = sf_quotes.get(inst["fut_key"], {}).get("last_price") or spot
                 
-                # 2. Determine Strikes
-                atm_strike = round(spot / step) * step
-                target_strikes = [atm_strike + offset for offset in [-300, -200, -100, 0, 100, 200, 300]]
-
-                # 3. Fetch Expiry & Chain
-                expiries = fetch_expiries(key)
-                if not expiries:
-                    print(f"[{name}] Error: No expiries found.")
-                    continue
+                expiry = get_cached_expiry(key)
+                if not expiry: continue
                 
-                nearest_expiry = expiries[0]
-                chain = fetch_option_chain(key, nearest_expiry)
-                if not chain:
-                    print(f"[{name}] Error: Empty option chain.")
-                    continue
+                chain = fetch_option_chain(key, expiry)
+                if not chain: continue
 
-                # 4. Map & Display
+                display_step = 100 if name == "NIFTY" else step
+                atm_strike = round(spot / display_step) * display_step
+                target_strikes = [atm_strike + (offset * (display_step // step) * step) for offset in [-3, -2, -1, 0, 1, 2, 3]]
+                if name == "NIFTY":
+                    target_strikes = [s for s in target_strikes if s % 100 == 0]
+                    if len(target_strikes) < 7: target_strikes = [atm_strike + (i * 100) for i in range(-3, 4)]
+
                 chain_lookup = {row.get("strike_price"): row for row in chain if isinstance(row, dict)}
-                
-                print(f"\n>>> {name} | SPOT: {spot:10.2f} | FUT: {fut:10.2f} | Expiry: {nearest_expiry}")
-                print("-" * 85)
-                print(f"   {'CE LTP':>10} | {'CE OI':>9} | {'STRIKE':>8} | {'PE OI':>9} | {'PE LTP':>10}")
-                print("-" * 85)
-
-                snapshot_rows = []
                 for strike in target_strikes:
                     row = chain_lookup.get(strike, {})
-                    cmd = (row.get("call_options") or {}).get("market_data") or {}
-                    pmd = (row.get("put_options")  or {}).get("market_data") or {}
+                    ckey = (row.get("call_options") or {}).get("instrument_key")
+                    pkey = (row.get("put_options") or {}).get("instrument_key")
+                    if ckey: all_option_keys.append(ckey)
+                    if pkey: all_option_keys.append(pkey)
 
-                    r_data = {
-                        "strike": strike,
-                        "ce_ltp": cmd.get("ltp", 0) or 0,
-                        "ce_oi":  cmd.get("oi", 0) or 0,
-                        "pe_ltp": pmd.get("ltp", 0) or 0,
-                        "pe_oi":  pmd.get("oi", 0) or 0
-                    }
-                    snapshot_rows.append(r_data)
+                all_index_data.append({
+                    "inst": inst, "spot": spot, "fut": fut, "expiry": expiry,
+                    "target_strikes": target_strikes, "chain_lookup": chain_lookup,
+                    "atm_strike": atm_strike
+                })
+
+            # 3. Batch Fetch OHLC for ALL options
+            option_quotes = fetch_quotes(all_option_keys)
+
+            # 4. Display
+            for idx in all_index_data:
+                name, spot, fut, expiry = idx["inst"]["name"], idx["spot"], idx["fut"], idx["expiry"]
+                print(f"\n>>> {name} | SPOT: {spot:8.2f} | FUT: {fut:8.2f} | Exp: {expiry}")
+                print("-" * 107)
+                print(f"   FLAGS|  OPEN  HIGH   LOW CLOSE| CE LTP| CE OI|STRIKE| PE OI| PE LTP|  OPEN  HIGH   LOW CLOSE|FLAGS")
+                print("-" * 107)
+
+                snapshot_rows = []
+                for strike in idx["target_strikes"]:
+                    row = idx["chain_lookup"].get(strike, {})
+                    c_opt, p_opt = row.get("call_options") or {}, row.get("put_options") or {}
+                    c_full, p_full = option_quotes.get(c_opt.get("instrument_key"), {}), option_quotes.get(p_opt.get("instrument_key"), {})
                     
-                    print_row(strike, r_data['ce_ltp'], r_data['ce_oi'], 
-                              r_data['pe_ltp'], r_data['pe_oi'], strike == atm_strike)
+                    ce_data = {"ltp": c_full.get("last_price") or (c_opt.get("market_data") or {}).get("ltp", 0),
+                               "oi":  (c_opt.get("market_data") or {}).get("oi", 0), "ohlc": c_full.get("ohlc")}
+                    pe_data = {"ltp": p_full.get("last_price") or (p_opt.get("market_data") or {}).get("ltp", 0),
+                               "oi":  (p_opt.get("market_data") or {}).get("oi", 0), "ohlc": p_full.get("ohlc")}
 
-                # 5. Save to DB
+                    snapshot_rows.append({"strike": strike, "ce_ltp": ce_data['ltp'], "ce_oi": ce_data['oi'], "pe_ltp": pe_data['ltp'], "pe_oi": pe_data['oi']})
+                    print_row(strike, ce_data, pe_data, strike == idx["atm_strike"])
+
                 save_to_db(conn, ts, name, spot, snapshot_rows)
 
-            print("\n" + "=" * 85)
-            print("Polling every 5s. Press Ctrl+C to exit.")
-
+            print("\n" + "=" * 107)
+            print("Polling every 5s (Batch Mode). Press Ctrl+C to exit.")
             time.sleep(5)
 
     except KeyboardInterrupt:
