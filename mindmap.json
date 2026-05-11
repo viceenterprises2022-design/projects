@@ -1,0 +1,196 @@
+{
+  "name": "Indian Sectoral Analysis 2025",
+  "children": [
+    {
+      "name": "Hospitality Industry",
+      "children": [
+        {
+          "name": "Demand Drivers",
+          "children": [
+            {
+              "name": "Tier-II & III air traffic surge"
+            },
+            {
+              "name": "Spiritual and leisure tourism"
+            },
+            {
+              "name": "Corporate MICE & IT hub expansion"
+            },
+            {
+              "name": "Concert & wedding tourism"
+            }
+          ]
+        },
+        {
+          "name": "Market Dynamics",
+          "children": [
+            {
+              "name": "Average Room Rates (ARR) rebound"
+            },
+            {
+              "name": "Supply-demand deficit (12% vs 8%)"
+            },
+            {
+              "name": "Asset-light expansion models"
+            },
+            {
+              "name": "Deleveraging via IPOs/QIPs"
+            }
+          ]
+        },
+        {
+          "name": "Key Players",
+          "children": [
+            {
+              "name": "Chalet Hotels (Luxury/Metro focus)"
+            },
+            {
+              "name": "Lemon Tree (Mid-scale leader)"
+            },
+            {
+              "name": "Apeejay Surrendra Park (Upscale)"
+            },
+            {
+              "name": "Kamat Hotels (Premium/Turnaround)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cables & Wires (C&W)",
+      "children": [
+        {
+          "name": "Growth Catalysts",
+          "children": [
+            {
+              "name": "Real estate and infra spend"
+            },
+            {
+              "name": "Power T&D and Renewables"
+            },
+            {
+              "name": "EV infrastructure & Data centres"
+            },
+            {
+              "name": "China+1 export opportunity"
+            }
+          ]
+        },
+        {
+          "name": "Industry Trends",
+          "children": [
+            {
+              "name": "Shift from unorganised to organised"
+            },
+            {
+              "name": "Entry of UltraTech and Adani"
+            },
+            {
+              "name": "Rising share in global exports"
+            }
+          ]
+        },
+        {
+          "name": "Core Companies",
+          "children": [
+            {
+              "name": "Polycab (Market leader)"
+            },
+            {
+              "name": "KEI Industries (EHV segment)"
+            },
+            {
+              "name": "RR Kabel (Export focus)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "IT Solutions (Netweb)",
+      "children": [
+        {
+          "name": "High-End Computing",
+          "children": [
+            {
+              "name": "HPC clusters (Tyrone brand)"
+            },
+            {
+              "name": "Supercomputing (India AI Mission)"
+            },
+            {
+              "name": "Private Cloud & HCI (Skylus)"
+            }
+          ]
+        },
+        {
+          "name": "AI Ecosystem",
+          "children": [
+            {
+              "name": "Nvidia design partnership"
+            },
+            {
+              "name": "GPU-based infrastructure"
+            },
+            {
+              "name": "AI Sovereignty focus"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Retail & Logistics",
+      "children": [
+        {
+          "name": "V-Mart Retail",
+          "children": [
+            {
+              "name": "Value fashion in Tier III/IV"
+            },
+            {
+              "name": "Cluster-based store expansion"
+            },
+            {
+              "name": "Private label margin focus"
+            }
+          ]
+        },
+        {
+          "name": "Transport Corp (TCI)",
+          "children": [
+            {
+              "name": "Multimodal logistics leader"
+            },
+            {
+              "name": "Supply Chain Management (3PL)"
+            },
+            {
+              "name": "Seaways division expansion"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Financial Services",
+      "children": [
+        {
+          "name": "SBI Life Insurance",
+          "children": [
+            {
+              "name": "Shift to non-linked products"
+            },
+            {
+              "name": "VNB margin expansion"
+            },
+            {
+              "name": "Bancassurance channel productivity"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

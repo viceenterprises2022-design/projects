@@ -1,0 +1,12 @@
+/home/vreddy1/.npm-global/lib
+├── @gitlawb/openclaude@0.6.0
+├── @google/gemini-cli@0.41.2
+├── @openai/codex@0.130.0
+├── clawhub@0.9.0
+├── codeburn@0.4.4
+├── gbrain@ -> ./../../.npm/_cacache/tmp/git-cloneCZpezm
+├── kimiflare@0.16.0
+├── npm@11.12.1
+├── opencode-ai@1.14.24
+└── ruflo@3.5.80
+

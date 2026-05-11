@@ -1,0 +1,1981 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Exa AI Agents Tracker                                                        │
+│ Searching 5 sources for AI agent launches since 2026-05-08T04:02 UTC         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+[1/5] [GitHub] new AI agent framework tool launch release
+  10 results
+[2/5] [Research Papers] AI agent autonomous LLM agent system paper
+  5 results
+[3/5] [News] AI agent product launch release announcement 2025
+  3 results
+[4/5] [Web] new AI agent tool product launch announcement today
+  10 results
+[5/5] [HuggingFace + Blogs] AI agent release launch model agent system
+  1 results
+
+Total unique: 29
+
+                Latest AI Agent Launches — last 24h (29 results)                
+╭─────┬──────────────┬─────────────┬──────────────┬──────────────┬─────────────╮
+│ #   │ Source       │ Title       │ Highlights   │ Date         │ URL         │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 1   │ GitHub       │ ai@7.0.0-c… │ # Release:   │ 2026-05-08   │ https://gi… │
+│     │              │             │ vercel/ai    │              │             │
+│     │              │             │ ai@7.0.0-ca… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ -            │              │             │
+│     │              │             │ Repository:  │              │             │
+│     │              │             │ vercel/ai |  │              │             │
+│     │              │             │ The AI       │              │             │
+│     │              │             │ Toolkit for  │              │             │
+│     │              │             │ TypeScript.  │              │             │
+│     │              │             │ From the     │              │             │
+│     │              │             │ creators of  │              │             │
+│     │              │             │ Next.js, the │              │             │
+│     │              │             │ AI SDK is a  │              │             │
+│     │              │             │ free         │              │             │
+│     │              │             │ open-source  │              │             │
+│     │              │             │ library for  │              │             │
+│     │              │             │ building     │              │             │
+│     │              │             │ AI-powered   │              │             │
+│     │              │             │ applications │              │             │
+│     │              │             │ and agents | │              │             │
+│     │              │             │ 24K stars |  │              │             │
+│     │              │             │ TypeScript   │              │             │
+│     │              │             │ - Author:    │              │             │
+│     │              │             │ @github-act… │              │             │
+│     │              │             │ - Created:   │              │             │
+│     │              │             │ 2026-05-08T… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 2   │ GitHub       │ langchain=… │ # Release:   │ 2026-05-08   │ https://gi… │
+│     │              │             │ langchain-a… │              │             │
+│     │              │             │ langchain==… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ -            │              │             │
+│     │              │             │ Repository:  │              │             │
+│     │              │             │ langchain-a… │              │             │
+│     │              │             │ | The agent  │              │             │
+│     │              │             │ engineering  │              │             │
+│     │              │             │ platform.    │              │             │
+│     │              │             │ Available in │              │             │
+│     │              │             │ TypeScript!  │              │             │
+│     │              │             │ | 136K stars │              │             │
+│     │              │             │ | Python     │              │             │
+│     │              │             │ - Author:    │              │             │
+│     │              │             │ @github-act… │              │             │
+│     │              │             │ - Created:   │              │             │
+│     │              │             │ 2026-05-08T… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 3   │ GitHub       │ Agent-Fiel… │ Build, run   │ 2026-05-08   │ https://gi… │
+│     │              │ Build, run  │ and scale AI │              │             │
+│     │              │ and scale   │ agents like  │              │             │
+│     │              │ AI agents   │ API and      │              │             │
+│     │              │ like API    │ microservic… │              │             │
+│     │              │ and ...     │ -            │              │             │
+│     │              │             │ observable,… │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ identity-aw… │              │             │
+│     │              │             │ from day     │              │             │
+│     │              │             │ one.         │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ - Stars:     │              │             │
+│     │              │             │ 1642         │              │             │
+│     │              │             │ - Forks: 267 │              │             │
+│     │              │             │ - Watchers:  │              │             │
+│     │              │             │ 16           │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 4   │ GitHub       │ @ai-sdk/go… │ # Release:   │ 2026-05-08   │ https://gi… │
+│     │              │             │ vercel/ai    │              │             │
+│     │              │             │ @ai-sdk/goo… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ -            │              │             │
+│     │              │             │ Repository:  │              │             │
+│     │              │             │ vercel/ai |  │              │             │
+│     │              │             │ The AI       │              │             │
+│     │              │             │ Toolkit for  │              │             │
+│     │              │             │ TypeScript.  │              │             │
+│     │              │             │ From the     │              │             │
+│     │              │             │ creators of  │              │             │
+│     │              │             │ Next.js, the │              │             │
+│     │              │             │ AI SDK is a  │              │             │
+│     │              │             │ free         │              │             │
+│     │              │             │ open-source  │              │             │
+│     │              │             │ library for  │              │             │
+│     │              │             │ building     │              │             │
+│     │              │             │ AI-powered   │              │             │
+│     │              │             │ applications │              │             │
+│     │              │             │ and agents | │              │             │
+│     │              │             │ 24K stars |  │              │             │
+│     │              │             │ TypeScript   │              │             │
+│     │              │             │ - Author:    │              │             │
+│     │              │             │ @github-act… │              │             │
+│     │              │             │ - Created:   │              │             │
+│     │              │             │ 2026-05-08T… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 5   │ GitHub       │ framersai/… │ - Stars: 310 │ 2026-05-08   │ https://gi… │
+│     │              │ Build       │ - Forks: 7   │              │             │
+│     │              │ autonomous  │ - Watchers:  │              │             │
+│     │              │ AI agents   │ 1            │              │             │
+│     │              │ with ... -  │ - Open       │              │             │
+│     │              │ GitHub      │ issues: 0    │              │             │
+│     │              │             │ - Primary    │              │             │
+│     │              │             │ language:    │              │             │
+│     │              │             │ TypeScript   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 6   │ GitHub       │ BDSyou/Gen… │ **GenericAg… │ 2026-05-08   │ https://gi… │
+│     │              │             │ is a         │              │             │
+│     │              │             │ minimal,     │              │             │
+│     │              │             │ self-evolvi… │              │             │
+│     │              │             │ autonomous   │              │             │
+│     │              │             │ agent        │              │             │
+│     │              │             │ framework.   │              │             │
+│     │              │             │ Its core is  │              │             │
+│     │              │             │ just **~3K   │              │             │
+│     │              │             │ lines of     │              │             │
+│     │              │             │ code**.      │              │             │
+│     │              │             │ Through **9  │              │             │
+│     │              │             │ atomic tools │              │             │
+│     │              │             │ + a          │              │             │
+│     │              │             │ ~100-line    │              │             │
+│     │              │             │ Agent        │              │             │
+│     │              │             │ Loop**, it   │              │             │
+│     │              │             │ grants any   │              │             │
+│     │              │             │ LLM          │              │             │
+│     │              │             │ system-level │              │             │
+│     │              │             │ control over │              │             │
+│     │              │             │ a local      │              │             │
+│     │              │             │ computer —   │              │             │
+│     │              │             │ covering     │              │             │
+│     │              │             │ browser,     │              │             │
+│     │              │             │ terminal,    │              │             │
+│     │              │             │ filesystem,  │              │             │
+│     │              │             │ keyboard/mo… │              │             │
+│     │              │             │ input,       │              │             │
+│     │              │             │ screen       │              │             │
+│     │              │             │ vision, and  │              │             │
+│     │              │             │ mobile       │              │             │
+│     │              │             │ devices      │              │             │
+│     │              │             │ (ADB).       │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Every time   │              │             │
+│     │              │             │ GenericAgent │              │             │
+│     │              │             │ solves a new │              │             │
+│     │              │             │ task, it     │              │             │
+│     │              │             │ automatical… │              │             │
+│     │              │             │ crystallizes │              │             │
+│     │              │             │ the          │              │             │
+│     │              │             │ execution    │              │             │
+│     │              │             │ path into an │              │             │
+│     │              │             │ skill for    │              │             │
+│     │              │             │ direct reuse │              │             │
+│     │              │             │ later. The   │              │             │
+│     │              │             │ longer you   │              │             │
+│     │              │             │ use it, the  │              │             │
+│     │              │             │ more skills  │              │             │
+│     │              │             │ accumulate — │              │             │
+│     │              │             │ forming a    │              │             │
+│     │              │             │ skill tree   │              │             │
+│     │              │             │ that belongs │              │             │
+│     │              │             │ entirely to  │              │             │
+│     │              │             │ you, grown   │              │             │
+│     │              │             │ from         │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ 3K lines of  │              │             │
+│     │              │             │ seed code.   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 7   │ GitHub       │ NousResear… │ - Stars:     │ 2026-05-08   │ https://gi… │
+│     │              │ The agent   │ 139318       │              │             │
+│     │              │ that grows  │ - Forks:     │              │             │
+│     │              │ with you -  │ 21520        │              │             │
+│     │              │ GitHub      │ - Watchers:  │              │             │
+│     │              │             │ 532          │              │             │
+│     │              │             │ - Open       │              │             │
+│     │              │             │ issues: 9190 │              │             │
+│     │              │             │ - Primary    │              │             │
+│     │              │             │ language:    │              │             │
+│     │              │             │ Python       │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 8   │ GitHub       │ @ai-sdk/vu… │ # Release:   │ 2026-05-08   │ https://gi… │
+│     │              │             │ vercel/ai    │              │             │
+│     │              │             │ @ai-sdk/vue… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ -            │              │             │
+│     │              │             │ Repository:  │              │             │
+│     │              │             │ vercel/ai |  │              │             │
+│     │              │             │ The AI       │              │             │
+│     │              │             │ Toolkit for  │              │             │
+│     │              │             │ TypeScript.  │              │             │
+│     │              │             │ From the     │              │             │
+│     │              │             │ creators of  │              │             │
+│     │              │             │ Next.js, the │              │             │
+│     │              │             │ AI SDK is a  │              │             │
+│     │              │             │ free         │              │             │
+│     │              │             │ open-source  │              │             │
+│     │              │             │ library for  │              │             │
+│     │              │             │ building     │              │             │
+│     │              │             │ AI-powered   │              │             │
+│     │              │             │ applications │              │             │
+│     │              │             │ and agents | │              │             │
+│     │              │             │ 24K stars |  │              │             │
+│     │              │             │ TypeScript   │              │             │
+│     │              │             │ - Author:    │              │             │
+│     │              │             │ @github-act… │              │             │
+│     │              │             │ - Created:   │              │             │
+│     │              │             │ 2026-05-08T… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 9   │ GitHub       │ @ai-sdk/sv… │ # Release:   │ 2026-05-08   │ https://gi… │
+│     │              │             │ vercel/ai    │              │             │
+│     │              │             │ @ai-sdk/sve… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ -            │              │             │
+│     │              │             │ Repository:  │              │             │
+│     │              │             │ vercel/ai |  │              │             │
+│     │              │             │ The AI       │              │             │
+│     │              │             │ Toolkit for  │              │             │
+│     │              │             │ TypeScript.  │              │             │
+│     │              │             │ From the     │              │             │
+│     │              │             │ creators of  │              │             │
+│     │              │             │ Next.js, the │              │             │
+│     │              │             │ AI SDK is a  │              │             │
+│     │              │             │ free         │              │             │
+│     │              │             │ open-source  │              │             │
+│     │              │             │ library for  │              │             │
+│     │              │             │ building     │              │             │
+│     │              │             │ AI-powered   │              │             │
+│     │              │             │ applications │              │             │
+│     │              │             │ and agents | │              │             │
+│     │              │             │ 24K stars |  │              │             │
+│     │              │             │ TypeScript   │              │             │
+│     │              │             │ - Author:    │              │             │
+│     │              │             │ @github-act… │              │             │
+│     │              │             │ - Created:   │              │             │
+│     │              │             │ 2026-05-08T… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 10  │ GitHub       │ @ai-sdk/op… │ # Release:   │ 2026-05-08   │ https://gi… │
+│     │              │             │ vercel/ai    │              │             │
+│     │              │             │ @ai-sdk/ope… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ -            │              │             │
+│     │              │             │ Repository:  │              │             │
+│     │              │             │ vercel/ai |  │              │             │
+│     │              │             │ The AI       │              │             │
+│     │              │             │ Toolkit for  │              │             │
+│     │              │             │ TypeScript.  │              │             │
+│     │              │             │ From the     │              │             │
+│     │              │             │ creators of  │              │             │
+│     │              │             │ Next.js, the │              │             │
+│     │              │             │ AI SDK is a  │              │             │
+│     │              │             │ free         │              │             │
+│     │              │             │ open-source  │              │             │
+│     │              │             │ library for  │              │             │
+│     │              │             │ building     │              │             │
+│     │              │             │ AI-powered   │              │             │
+│     │              │             │ applications │              │             │
+│     │              │             │ and agents | │              │             │
+│     │              │             │ 24K stars |  │              │             │
+│     │              │             │ TypeScript   │              │             │
+│     │              │             │ - Author:    │              │             │
+│     │              │             │ @github-act… │              │             │
+│     │              │             │ - Created:   │              │             │
+│     │              │             │ 2026-05-08T… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 11  │ Research     │ Responsible │ Background:  │ 2026-05-08   │ https://ww… │
+│     │ Papers       │ AI for      │ Effective    │              │             │
+│     │              │ Personaliz… │ communicati… │              │             │
+│     │              │ Patient     │ with         │              │             │
+│     │              │ Education   │ patients is  │              │             │
+│     │              │ and         │ vital for    │              │             │
+│     │              │ Engagement  │ improving    │              │             │
+│     │              │ Across      │ health       │              │             │
+│     │              │ Medical     │ outcomes in  │              │             │
+│     │              │ Conditions: │ chronic      │              │             │
+│     │              │ Leveraging  │ disease      │              │             │
+│     │              │ Multi-Agent │ management.  │              │             │
+│     │              │ LLMs,       │ In this      │              │             │
+│     │              │ Ambient     │ study, we    │              │             │
+│     │              │ Technology, │ investigated │              │             │
+│     │              │ and         │ WoundScribe… │              │             │
+│     │              │ NotebookLM… │ Scribe AI,   │              │             │
+│     │              │ Case Study  │ also known   │              │             │
+│     │              │ in Diabetes │ as Ambient   │              │             │
+│     │              │ Education   │ Technology.  │              │             │
+│     │              │ and Limb    │ It employed  │              │             │
+│     │              │ Preservati… │ a            │              │             │
+│     │              │             │ multi-agent  │              │             │
+│     │              │             │ AI model     │              │             │
+│     │              │             │ that         │              │             │
+│     │              │             │ leveraged    │              │             │
+│     │              │             │ Large        │              │             │
+│     │              │             │ Language     │              │             │
+│     │              │             │ Models       │              │             │
+│     │              │             │ (LLMs) and   │              │             │
+│     │              │             │ NotebookLM   │              │             │
+│     │              │             │ to enhance   │              │             │
+│     │              │             │ patient      │              │             │
+│     │              │             │ communicati… │              │             │
+│     │              │             │ in clinical  │              │             │
+│     │              │             │ settings.    │              │             │
+│     │              │             │ Methods: The │              │             │
+│     │              │             │ system       │              │             │
+│     │              │             │ comprised    │              │             │
+│     │              │             │ specialized  │              │             │
+│     │              │             │ agents that  │              │             │
+│     │              │             │ transcribed  │              │             │
+│     │              │             │ healthcare   │              │             │
+│     │              │             │ provider–pa… │              │             │
+│     │              │             │ conversatio… │              │             │
+│     │              │             │ through      │              │             │
+│     │              │             │ ambient      │              │             │
+│     │              │             │ dictation.   │              │             │
+│     │              │             │ This         │              │             │
+│     │              │             │ transcripti… │              │             │
+│     │              │             │ generated    │              │             │
+│     │              │             │ medical      │              │             │
+│     │              │             │ notes that   │              │             │
+│     │              │             │ followed the │              │             │
+│     │              │             │ Subjective,  │              │             │
+│     │              │             │ Objective,   │              │             │
+│     │              │             │ Assessment,  │              │             │
+│     │              │             │ and Plan     │              │             │
+│     │              │             │ (SOAP)       │              │             │
+│     │              │             │ format—a     │              │             │
+│     │              │             │ structured   │              │             │
+│     │              │             │ document     │              │             │
+│     │              │             │ used by      │              │             │
+│     │              │             │ healthcare   │              │             │
+│     │              │             │ providers to │              │             │
+│     │              │             │ record and   │              │             │
+│     │              │             │ communicate  │              │             │
+│     │              │             │ information  │              │             │
+│     │              │             │ about        │              │             │
+│     │              │             │ patient      │              │             │
+│     │              │             │ encounters.  │              │             │
+│     │              │             │ Simultaneou… │              │             │
+│     │              │             │ comprehensi… │              │             │
+│     │              │             │ visit        │              │             │
+│     │              │             │ summaries    │              │             │
+│     │              │             │ were also    │              │             │
+│     │              │             │ created. In  │              │             │
+│     │              │             │ the next     │              │             │
+│     │              │             │ step, these  │              │             │
+│     │              │             │ visit        │              │             │
+│     │              │             │ summaries    │              │             │
+│     │              │             │ were used to │              │             │
+│     │              │             │ produce      │              │             │
+│     │              │             │ conversatio… │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ educational  │              │             │
+│     │              │             │ content by   │              │             │
+│     │              │             │ leveraging   │              │             │
+│     │              │             │ NotebookLM,  │              │             │
+│     │              │             │ an AI model  │              │             │
+│     │              │             │ introduced   │              │             │
+│     │              │             │ by Google    │              │             │
+│     │              │             │ that can     │              │             │
+│     │              │             │ generate     │              │             │
+│     │              │             │ podcast-sty… │              │             │
+│     │              │             │ conversatio… │              │             │
+│     │              │             │ from         │              │             │
+│     │              │             │ provided     │              │             │
+│     │              │             │ information. │              │             │
+│     │              │             │ Integrating  │              │             │
+│     │              │             │ these agents │              │             │
+│     │              │             │ allows       │              │             │
+│     │              │             │ clinicians   │              │             │
+│     │              │             │ to deliver   │              │             │
+│     │              │             │ engaging,    │              │             │
+│     │              │             │ empathetic,  │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ actionable   │              │             │
+│     │              │             │ information  │              │             │
+│     │              │             │ to patients. │              │             │
+│     │              │             │ Medical      │              │             │
+│     │              │             │ experts      │              │             │
+│     │              │             │ conducted a  │              │             │
+│     │              │             │ two-phase    │              │             │
+│     │              │             │ evaluation   │              │             │
+│     │              │             │ of the       │              │             │
+│     │              │             │ system’s     │              │             │
+│     │              │             │ performance  │              │             │
+│     │              │             │ based on     │              │             │
+│     │              │             │ multiple     │              │             │
+│     │              │             │ criteria,    │              │             │
+│     │              │             │ with a       │              │             │
+│     │              │             │ particular   │              │             │
+│     │              │             │ focus on     │              │             │
+│     │              │             │ diabetes     │              │             │
+│     │              │             │ education    │              │             │
+│     │              │             │ and diabetic │              │             │
+│     │              │             │ foot care.   │              │             │
+│     │              │             │ The first    │              │             │
+│     │              │             │ phase used   │              │             │
+│     │              │             │ pre-recorded │              │             │
+│     │              │             │ training     │              │             │
+│     │              │             │ videos,      │              │             │
+│     │              │             │ while the    │              │             │
+│     │              │             │ second phase │              │             │
+│     │              │             │ involved     │              │             │
+│     │              │             │ simulated    │              │             │
+│     │              │             │ consultatio… │              │             │
+│     │              │             │ by           │              │             │
+│     │              │             │ clinicians   │              │             │
+│     │              │             │ using the    │              │             │
+│     │              │             │ system. To   │              │             │
+│     │              │             │ validate the │              │             │
+│     │              │             │ AI-generated │              │             │
+│     │              │             │ educational  │              │             │
+│     │              │             │ content, we  │              │             │
+│     │              │             │ used several │              │             │
+│     │              │             │ established  │              │             │
+│     │              │             │ frameworks   │              │             │
+│     │              │             │ in health    │              │             │
+│     │              │             │ communicati… │              │             │
+│     │              │             │ that closely │              │             │
+│     │              │             │ align with   │              │             │
+│     │              │             │ our          │              │             │
+│     │              │             │ enhancement  │              │             │
+│     │              │             │ goals.       │              │             │
+│     │              │             │ Results: The │              │             │
+│     │              │             │ results      │              │             │
+│     │              │             │ showed that  │              │             │
+│     │              │             │ the AI model │              │             │
+│     │              │             │ generated    │              │             │
+│     │              │             │ accurate     │              │             │
+│     │              │             │ clinical     │              │             │
+│     │              │             │ documentati… │              │             │
+│     │              │             │ and met the  │              │             │
+│     │              │             │ criteria for │              │             │
+│     │              │             │ accurate     │              │             │
+│     │              │             │ SOAP Notes,  │              │             │
+│     │              │             │ visit        │              │             │
+│     │              │             │ summaries,   │              │             │
+│     │              │             │ and engaging │              │             │
+│     │              │             │ educational  │              │             │
+│     │              │             │ content for  │              │             │
+│     │              │             │ patients.    │              │             │
+│     │              │             │ Given that   │              │             │
+│     │              │             │ hallucinati… │              │             │
+│     │              │             │ is a         │              │             │
+│     │              │             │ significant  │              │             │
+│     │              │             │ concern      │              │             │
+│     │              │             │ related to   │              │             │
+│     │              │             │ large        │              │             │
+│     │              │             │ language     │              │             │
+│     │              │             │ models,      │              │             │
+│     │              │             │ especially   │              │             │
+│     │              │             │ in critical  │              │             │
+│     │              │             │ fields like  │              │             │
+│     │              │             │ healthcare,  │              │             │
+│     │              │             │ we           │              │             │
+│     │              │             │ meticulously │              │             │
+│     │              │             │ analyzed the │              │             │
+│     │              │             │ generated    │              │             │
+│     │              │             │ outputs to   │              │             │
+│     │              │             │ identify any │              │             │
+│     │              │             │ signs of     │              │             │
+│     │              │             │ hallucinated │              │             │
+│     │              │             │ information. │              │             │
+│     │              │             │ Three        │              │             │
+│     │              │             │ outcomes     │              │             │
+│     │              │             │ successfully │              │             │
+│     │              │             │ passed the   │              │             │
+│     │              │             │ validation   │              │             │
+│     │              │             │ criteria,    │              │             │
+│     │              │             │ including    │              │             │
+│     │              │             │ accuracy,    │              │             │
+│     │              │             │ completenes… │              │             │
+│     │              │             │ comprehensi… │              │             │
+│     │              │             │ absence of   │              │             │
+│     │              │             │ potential    │              │             │
+│     │              │             │ harm, and no │              │             │
+│     │              │             │ hallucinati… │              │             │
+│     │              │             │ Additionall… │              │             │
+│     │              │             │ the          │              │             │
+│     │              │             │ Conversatio… │              │             │
+│     │              │             │ Education    │              │             │
+│     │              │             │ content was  │              │             │
+│     │              │             │ confirmed    │              │             │
+│     │              │             │ against      │              │             │
+│     │              │             │ established  │              │             │
+│     │              │             │ patient      │              │             │
+│     │              │             │ education    │              │             │
+│     │              │             │ frameworks   │              │             │
+│     │              │             │ and met      │              │             │
+│     │              │             │ criteria     │              │             │
+│     │              │             │ such as the  │              │             │
+│     │              │             │ use of       │              │             │
+│     │              │             │ metaphors,   │              │             │
+│     │              │             │ empathetic   │              │             │
+│     │              │             │ tone, and    │              │             │
+│     │              │             │ appropriate  │              │             │
+│     │              │             │ language,    │              │             │
+│     │              │             │ providing    │              │             │
+│     │              │             │ additional   │              │             │
+│     │              │             │ detail to    │              │             │
+│     │              │             │ help manage  │              │             │
+│     │              │             │ the          │              │             │
+│     │              │             │ condition.   │              │             │
+│     │              │             │ Conclusions: │              │             │
+│     │              │             │ By providing │              │             │
+│     │              │             │ specific     │              │             │
+│     │              │             │ instructions │              │             │
+│     │              │             │ and prompts  │              │             │
+│     │              │             │ to           │              │             │
+│     │              │             │ NotebookLM   │              │             │
+│     │              │             │ to transform │              │             │
+│     │              │             │ visit        │              │             │
+│     │              │             │ summaries    │              │             │
+│     │              │             │ into         │              │             │
+│     │              │             │ educational  │              │             │
+│     │              │             │ conversatio… │              │             │
+│     │              │             │ we           │              │             │
+│     │              │             │ significant… │              │             │
+│     │              │             │ enhanced the │              │             │
+│     │              │             │ comprehensi… │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ engagement   │              │             │
+│     │              │             │ of the       │              │             │
+│     │              │             │ content for  │              │             │
+│     │              │             │ patients. In │              │             │
+│     │              │             │ contrast to  │              │             │
+│     │              │             │ a            │              │             │
+│     │              │             │ traditional  │              │             │
+│     │              │             │ summary of   │              │             │
+│     │              │             │ the clinical │              │             │
+│     │              │             │ visit, the   │              │             │
+│     │              │             │ podcast-sty… │              │             │
+│     │              │             │ conversation │              │             │
+│     │              │             │ enriched the │              │             │
+│     │              │             │ content with │              │             │
+│     │              │             │ background   │              │             │
+│     │              │             │ information, │              │             │
+│     │              │             │ encouraging  │              │             │
+│     │              │             │ language, an │              │             │
+│     │              │             │ empathetic   │              │             │
+│     │              │             │ tone, and    │              │             │
+│     │              │             │ helpful      │              │             │
+│     │              │             │ metaphors.   │              │             │
+│     │              │             │ Our analysis │              │             │
+│     │              │             │ confirmed    │              │             │
+│     │              │             │ that the     │              │             │
+│     │              │             │ system did   │              │             │
+│     │              │             │ not exhibit  │              │             │
+│     │              │             │ any          │              │             │
+│     │              │             │ hallucinati… │              │             │
+│     │              │             │ highlighting │              │             │
+│     │              │             │ the          │              │             │
+│     │              │             │ effectivene… │              │             │
+│     │              │             │ of our       │              │             │
+│     │              │             │ approach in  │              │             │
+│     │              │             │ mitigating   │              │             │
+│     │              │             │ this risk.   │              │             │
+│     │              │             │ These        │              │             │
+│     │              │             │ findings     │              │             │
+│     │              │             │ support the  │              │             │
+│     │              │             │ use of       │              │             │
+│     │              │             │ multi-agent  │              │             │
+│     │              │             │ AI models,   │              │             │
+│     │              │             │ combined     │              │             │
+│     │              │             │ with ambient │              │             │
+│     │              │             │ dictation    │              │             │
+│     │              │             │ and tools    │              │             │
+│     │              │             │ like         │              │             │
+│     │              │             │ NotebookLM,  │              │             │
+│     │              │             │ to improve   │              │             │
+│     │              │             │ patient      │              │             │
+│     │              │             │ communicati… │              │             │
+│     │              │             │ that         │              │             │
+│     │              │             │ surpasses    │              │             │
+│     │              │             │ traditional  │              │             │
+│     │              │             │ paper-based  │              │             │
+│     │              │             │ brochures,   │              │             │
+│     │              │             │ which are    │              │             │
+│     │              │             │ often        │              │             │
+│     │              │             │ impersonal,  │              │             │
+│     │              │             │ minimal, and │              │             │
+│     │              │             │ do not       │              │             │
+│     │              │             │ always       │              │             │
+│     │              │             │ adhere to    │              │             │
+│     │              │             │ recommended  │              │             │
+│     │              │             │ factors for  │              │             │
+│     │              │             │ health       │              │             │
+│     │              │             │ literacy.    │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ This study   │              │             │
+│     │              │             │ explored a   │              │             │
+│     │              │             │ multi-agent  │              │             │
+│     │              │             │ AI system    │              │             │
+│     │              │             │ designed to  │              │             │
+│     │              │             │ transcribe   │              │             │
+│     │              │             │ real-time    │              │             │
+│     │              │             │ physician–p… │              │             │
+│     │              │             │ conversatio… │              │             │
+│     │              │             │ and create   │              │             │
+│     │              │             │ SOAP notes   │              │             │
+│     │              │             │ for          │              │             │
+│     │              │             │ clinicians   │              │             │
+│     │              │             │ while also   │              │             │
+│     │              │             │ producing    │              │             │
+│     │              │             │ personalized │              │             │
+│     │              │             │ visit        │              │             │
+│     │              │             │ summaries    │              │             │
+│     │              │             │ and engaging │              │             │
+│     │              │             │ educational  │              │             │
+│     │              │             │ content for  │              │             │
+│     │              │             │ patients.    │              │             │
+│     │              │             │ The system   │              │             │
+│     │              │             │ consisted of │              │             │
+│     │              │             │ several      │              │             │
+│     │              │             │ specialized  │              │             │
+│     │              │             │ agents:      │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Conversatio… │              │             │
+│     │              │             │ Education    │              │             │
+│     │              │             │ Agent        │              │             │
+│     │              │             │ (NotebookLM… │              │             │
+│     │              │             │ Processed    │              │             │
+│     │              │             │ the visit    │              │             │
+│     │              │             │ summaries to │              │             │
+│     │              │             │ produce      │              │             │
+│     │              │             │ engaging,    │              │             │
+│     │              │             │ podcast-sty… │              │             │
+│     │              │             │ educational  │              │             │
+│     │              │             │ content by   │              │             │
+│     │              │             │ following    │              │             │
+│     │              │             │ specific     │              │             │
+│     │              │             │ instructions │              │             │
+│     │              │             │ and prompts  │              │             │
+│     │              │             │ [14].        │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 12  │ Research     │ The Trust   │ The Trust    │ 2026-05-08   │ https://ai… │
+│     │ Papers       │ Paradox in  │ Paradox in   │              │             │
+│     │              │ LLM-Based   │ LLM-Based    │              │             │
+│     │              │ Multi-Agent │ Multi-Agent  │              │             │
+│     │              │ Systems:    │ Systems:     │              │             │
+│     │              │ When        │ When         │              │             │
+│     │              │ Collaborat… │ Collaborati… │              │             │
+│     │              │ Becomes a   │ Becomes a    │              │             │
+│     │              │ Security    │ Security     │              │             │
+│     │              │ Vulnerabil… │ Vulnerabili… │              │             │
+│     │              │ | AI        │ | AI         │              │             │
+│     │              │ Security    │ Security     │              │             │
+│     │              │ Portal      │ Portal       │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ TOP          │              │             │
+│     │              │             │ Literature   │              │             │
+│     │              │             │ Database The │              │             │
+│     │              │             │ Trust        │              │             │
+│     │              │             │ Paradox in   │              │             │
+│     │              │             │ LLM-Based    │              │             │
+│     │              │             │ Multi-Agent  │              │             │
+│     │              │             │ Systems:     │              │             │
+│     │              │             │ When         │              │             │
+│     │              │             │ Collaborati… │              │             │
+│     │              │             │ Becomes a    │              │             │
+│     │              │             │ Security     │              │             │
+│     │              │             │ Vulnerabili… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ The Trust    │              │             │
+│     │              │             │ Paradox in   │              │             │
+│     │              │             │ LLM-Based    │              │             │
+│     │              │             │ Multi-Agent  │              │             │
+│     │              │             │ Systems:     │              │             │
+│     │              │             │ When         │              │             │
+│     │              │             │ Collaborati… │              │             │
+│     │              │             │ Becomes a    │              │             │
+│     │              │             │ Security     │              │             │
+│     │              │             │ Vulnerabili… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 13  │ Research     │ Sustainable │ Large        │ 2026-05-08   │ https://ww… │
+│     │ Papers       │ Transporta… │ language     │              │             │
+│     │              │ Decision-M… │ models       │              │             │
+│     │              │ Enabled by  │ (LLMs) have  │              │             │
+│     │              │ Specialized │ shown        │              │             │
+│     │              │ Large       │ promise in   │              │             │
+│     │              │ Language    │ intelligent  │              │             │
+│     │              │ Models: A   │ transportat… │              │             │
+│     │              │ Supervised  │ systems, but │              │             │
+│     │              │ Fine-Tuning │ their direct │              │             │
+│     │              │ Framework   │ use in       │              │             │
+│     │              │ for Route   │ constrained  │              │             │
+│     │              │ Planning    │ route        │              │             │
+│     │              │             │ planning     │              │             │
+│     │              │             │ remains      │              │             │
+│     │              │             │ unreliable   │              │             │
+│     │              │             │ because such │              │             │
+│     │              │             │ tasks        │              │             │
+│     │              │             │ require      │              │             │
+│     │              │             │ exact        │              │             │
+│     │              │             │ numerical    │              │             │
+│     │              │             │ consistency  │              │             │
+│     │              │             │ and strict   │              │             │
+│     │              │             │ compliance   │              │             │
+│     │              │             │ with         │              │             │
+│     │              │             │ operational  │              │             │
+│     │              │             │ constraints. │              │             │
+│     │              │             │ This         │              │             │
+│     │              │             │ challenge is │              │             │
+│     │              │             │ particularly │              │             │
+│     │              │             │ important in │              │             │
+│     │              │             │ urban        │              │             │
+│     │              │             │ freight and  │              │             │
+│     │              │             │ logistics,   │              │             │
+│     │              │             │ where        │              │             │
+│     │              │             │ routing      │              │             │
+│     │              │             │ errors can   │              │             │
+│     │              │             │ reduce       │              │             │
+│     │              │             │ efficiency   │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ undermine    │              │             │
+│     │              │             │ sustainabil… │              │             │
+│     │              │             │ To address   │              │             │
+│     │              │             │ this issue,  │              │             │
+│     │              │             │ this study   │              │             │
+│     │              │             │ proposes a   │              │             │
+│     │              │             │ supervised   │              │             │
+│     │              │             │ fine-tuning  │              │             │
+│     │              │             │ (SFT)        │              │             │
+│     │              │             │ framework    │              │             │
+│     │              │             │ that         │              │             │
+│     │              │             │ specializes  │              │             │
+│     │              │             │ a            │              │             │
+│     │              │             │ general-pur… │              │             │
+│     │              │             │ LLM as an    │              │             │
+│     │              │             │ orchestrati… │              │             │
+│     │              │             │ agent for    │              │             │
+│     │              │             │ route        │              │             │
+│     │              │             │ planning.    │              │             │
+│     │              │             │ Instead of   │              │             │
+│     │              │             │ generating   │              │             │
+│     │              │             │ routes       │              │             │
+│     │              │             │ directly,    │              │             │
+│     │              │             │ the model    │              │             │
+│     │              │             │ translates   │              │             │
+│     │              │             │ natural-lan… │              │             │
+│     │              │             │ requests     │              │             │
+│     │              │             │ into         │              │             │
+│     │              │             │ structured   │              │             │
+│     │              │             │ function     │              │             │
+│     │              │             │ calls that   │              │             │
+│     │              │             │ invoke       │              │             │
+│     │              │             │ determinist… │              │             │
+│     │              │             │ optimization │              │             │
+│     │              │             │ solvers for  │              │             │
+│     │              │             │ the          │              │             │
+│     │              │             │ Traveling    │              │             │
+│     │              │             │ Salesperson  │              │             │
+│     │              │             │ Problem      │              │             │
+│     │              │             │ (TSP),       │              │             │
+│     │              │             │ Capacitated  │              │             │
+│     │              │             │ Vehicle      │              │             │
+│     │              │             │ Routing      │              │             │
+│     │              │             │ Problem      │              │             │
+│     │              │             │ (CVRP), and  │              │             │
+│     │              │             │ Vehicle      │              │             │
+│     │              │             │ Routing      │              │             │
+│     │              │             │ Problem with │              │             │
+│     │              │             │ Time Windows │              │             │
+│     │              │             │ (VRPTW).     │              │             │
+│     │              │             │ Experiments  │              │             │
+│     │              │             │ on a         │              │             │
+│     │              │             │ controlled   │              │             │
+│     │              │             │ synthetic    │              │             │
+│     │              │             │ benchmark    │              │             │
+│     │              │             │ with         │              │             │
+│     │              │             │ thousands of │              │             │
+│     │              │             │ routing      │              │             │
+│     │              │             │ instances    │              │             │
+│     │              │             │ show that    │              │             │
+│     │              │             │ direct       │              │             │
+│     │              │             │ generation   │              │             │
+│     │              │             │ is           │              │             │
+│     │              │             │ ineffective  │              │             │
+│     │              │             │ for          │              │             │
+│     │              │             │ constrained  │              │             │
+│     │              │             │ routing,     │              │             │
+│     │              │             │ while tool   │              │             │
+│     │              │             │ augmentation │              │             │
+│     │              │             │ substantial… │              │             │
+│     │              │             │ improves     │              │             │
+│     │              │             │ reliability. │              │             │
+│     │              │             │ More         │              │             │
+│     │              │             │ importantly, │              │             │
+│     │              │             │ SFT further  │              │             │
+│     │              │             │ strengthens  │              │             │
+│     │              │             │ function-ca… │              │             │
+│     │              │             │ performance, │              │             │
+│     │              │             │ especially   │              │             │
+│     │              │             │ on the most  │              │             │
+│     │              │             │ challenging  │              │             │
+│     │              │             │ VRPTW task,  │              │             │
+│     │              │             │ where the    │              │             │
+│     │              │             │ overall      │              │             │
+│     │              │             │ success rate │              │             │
+│     │              │             │ of the 8B    │              │             │
+│     │              │             │ model        │              │             │
+│     │              │             │ increases    │              │             │
+│     │              │             │ from 0.408   │              │             │
+│     │              │             │ in the       │              │             │
+│     │              │             │ zero-shot    │              │             │
+│     │              │             │ setting to   │              │             │
+│     │              │             │ 0.792 after  │              │             │
+│     │              │             │ fine-tuning. │              │             │
+│     │              │             │ The          │              │             │
+│     │              │             │ fine-tuned   │              │             │
+│     │              │             │ 8B model     │              │             │
+│     │              │             │ also         │              │             │
+│     │              │             │ outperforms  │              │             │
+│     │              │             │ a much       │              │             │
+│     │              │             │ larger       │              │             │
+│     │              │             │ zero-shot    │              │             │
+│     │              │             │ 235B model   │              │             │
+│     │              │             │ while        │              │             │
+│     │              │             │ requiring    │              │             │
+│     │              │             │ far fewer    │              │             │
+│     │              │             │ computation… │              │             │
+│     │              │             │ resources.   │              │             │
+│     │              │             │ These        │              │             │
+│     │              │             │ findings     │              │             │
+│     │              │             │ indicate     │              │             │
+│     │              │             │ that         │              │             │
+│     │              │             │ reliable     │              │             │
+│     │              │             │ LLM-based    │              │             │
+│     │              │             │ transportat… │              │             │
+│     │              │             │ decision     │              │             │
+│     │              │             │ support is   │              │             │
+│     │              │             │ better       │              │             │
+│     │              │             │ achieved by  │              │             │
+│     │              │             │ combining    │              │             │
+│     │              │             │ compact      │              │             │
+│     │              │             │ language     │              │             │
+│     │              │             │ models with  │              │             │
+│     │              │             │ determinist… │              │             │
+│     │              │             │ optimization │              │             │
+│     │              │             │ tools rather │              │             │
+│     │              │             │ than relying │              │             │
+│     │              │             │ on larger    │              │             │
+│     │              │             │ models for   │              │             │
+│     │              │             │ direct route │              │             │
+│     │              │             │ generation,  │              │             │
+│     │              │             │ offering a   │              │             │
+│     │              │             │ lightweight  │              │             │
+│     │              │             │ and more     │              │             │
+│     │              │             │ sustainable  │              │             │
+│     │              │             │ path for     │              │             │
+│     │              │             │ real-world   │              │             │
+│     │              │             │ logistics    │              │             │
+│     │              │             │ deployment.  │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ To answer    │              │             │
+│     │              │             │ this         │              │             │
+│     │              │             │ question, we │              │             │
+│     │              │             │ propose a    │              │             │
+│     │              │             │ supervised   │              │             │
+│     │              │             │ fine-tuning  │              │             │
+│     │              │             │ framework    │              │             │
+│     │              │             │ that         │              │             │
+│     │              │             │ specializes  │              │             │
+│     │              │             │ an LLM for   │              │             │
+│     │              │             │ solver-orie… │              │             │
+│     │              │             │ function     │              │             │
+│     │              │             │ calling in   │              │             │
+│     │              │             │ transportat… │              │             │
+│     │              │             │ route        │              │             │
+│     │              │             │ planning.    │              │             │
+│     │              │             │ Instead of   │              │             │
+│     │              │             │ asking the   │              │             │
+│     │              │             │ model to     │              │             │
+│     │              │             │ compute      │              │             │
+│     │              │             │ routes       │              │             │
+│     │              │             │ directly, we │              │             │
+│     │              │             │ train it to  │              │             │
+│     │              │             │ transform    │              │             │
+│     │              │             │ natural-lan… │              │             │
+│     │              │             │ route-plann… │              │             │
+│     │              │             │ requests     │              │             │
+│     │              │             │ into         │              │             │
+│     │              │             │ structured   │              │             │
+│     │              │             │ calls to     │              │             │
+│     │              │             │ specialized  │              │             │
+│     │              │             │ routing      │              │             │
+│     │              │             │ tools for    │              │             │
+│     │              │             │ TSP, CVRP,   │              │             │
+│     │              │             │ and VRPTW.   │              │             │
+│     │              │             │ Through this │              │             │
+│     │              │             │ design, the  │              │             │
+│     │              │             │ study        │              │             │
+│     │              │             │ examines     │              │             │
+│     │              │             │ both the     │              │             │
+│     │              │             │ limitations  │              │             │
+│     │              │             │ of direct    │              │             │
+│     │              │             │ generation   │              │             │
+│     │              │             │ and the      │              │             │
+│     │              │             │ potential of │              │             │
+│     │              │             │ a            │              │             │
+│     │              │             │ tool-augmen… │              │             │
+│     │              │             │ domain-spec… │              │             │
+│     │              │             │ alternative. │              │             │
+│     │              │             │ The main     │              │             │
+│     │              │             │ contributio… │              │             │
+│     │              │             │ of this      │              │             │
+│     │              │             │ paper are    │              │             │
+│     │              │             │ summarized   │              │             │
+│     │              │             │ as follows:  │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ on           │              │             │
+│     │              │             │ single-query │              │             │
+│     │              │             │ route        │              │             │
+│     │              │             │ planning     │              │             │
+│     │              │             │ requests for │              │             │
+│     │              │             │ goods        │              │             │
+│     │              │             │ movement     │              │             │
+│     │              │             │ under        │              │             │
+│     │              │             │ explicit     │              │             │
+│     │              │             │ operational  │              │             │
+│     │              │             │ constraints. │              │             │
+│     │              │             │ Rather than  │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 14  │ Research     │ Multi-Agent │ Existing     │ 2026-05-08   │ https://ww… │
+│     │ Papers       │ Cooperative │ research on  │              │             │
+│     │              │ Control of  │ cooperative  │              │             │
+│     │              │ CAVs in     │ control of   │              │             │
+│     │              │ Toll Plaza  │ connected    │              │             │
+│     │              │ Diverging   │ and          │              │             │
+│     │              │ Areas: A    │ autonomous   │              │             │
+│     │              │ Target-Path │ vehicles     │              │             │
+│     │              │ Approach    │ (CAVs) has   │              │             │
+│     │              │             │ primarily    │              │             │
+│     │              │             │ focused on   │              │             │
+│     │              │             │ structured   │              │             │
+│     │              │             │ freeway      │              │             │
+│     │              │             │ environment… │              │             │
+│     │              │             │ Most         │              │             │
+│     │              │             │ existing     │              │             │
+│     │              │             │ approaches   │              │             │
+│     │              │             │ adopt        │              │             │
+│     │              │             │ lane-based   │              │             │
+│     │              │             │ modeling and │              │             │
+│     │              │             │ discrete     │              │             │
+│     │              │             │ lane-change  │              │             │
+│     │              │             │ actions.     │              │             │
+│     │              │             │ These        │              │             │
+│     │              │             │ assumptions  │              │             │
+│     │              │             │ are          │              │             │
+│     │              │             │ unsuitable   │              │             │
+│     │              │             │ for toll     │              │             │
+│     │              │             │ plaza        │              │             │
+│     │              │             │ diverging    │              │             │
+│     │              │             │ areas        │              │             │
+│     │              │             │ without lane │              │             │
+│     │              │             │ markings,    │              │             │
+│     │              │             │ where        │              │             │
+│     │              │             │ vehicles     │              │             │
+│     │              │             │ move toward  │              │             │
+│     │              │             │ multiple     │              │             │
+│     │              │             │ tollbooths.  │              │             │
+│     │              │             │ The absence  │              │             │
+│     │              │             │ of           │              │             │
+│     │              │             │ predefined   │              │             │
+│     │              │             │ lanes leads  │              │             │
+│     │              │             │ to           │              │             │
+│     │              │             │ continuous   │              │             │
+│     │              │             │ trajectory   │              │             │
+│     │              │             │ evolution,   │              │             │
+│     │              │             │ dense        │              │             │
+│     │              │             │ interaction… │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ increased    │              │             │
+│     │              │             │ safety risk. │              │             │
+│     │              │             │ To address   │              │             │
+│     │              │             │ this         │              │             │
+│     │              │             │ limitation,  │              │             │
+│     │              │             │ this study   │              │             │
+│     │              │             │ proposes a   │              │             │
+│     │              │             │ multi-agent  │              │             │
+│     │              │             │ cooperative  │              │             │
+│     │              │             │ control      │              │             │
+│     │              │             │ framework    │              │             │
+│     │              │             │ based on     │              │             │
+│     │              │             │ Multi-Agent  │              │             │
+│     │              │             │ Proximal     │              │             │
+│     │              │             │ Policy       │              │             │
+│     │              │             │ Optimization │              │             │
+│     │              │             │ (MAPPO)      │              │             │
+│     │              │             │ under a      │              │             │
+│     │              │             │ Centralized  │              │             │
+│     │              │             │ Training and │              │             │
+│     │              │             │ Decentraliz… │              │             │
+│     │              │             │ Execution    │              │             │
+│     │              │             │ (CTDE)       │              │             │
+│     │              │             │ architectur… │              │             │
+│     │              │             │ The          │              │             │
+│     │              │             │ multi-agent  │              │             │
+│     │              │             │ formulation  │              │             │
+│     │              │             │ captures     │              │             │
+│     │              │             │ multi-vehic… │              │             │
+│     │              │             │ interaction  │              │             │
+│     │              │             │ in toll      │              │             │
+│     │              │             │ plaza        │              │             │
+│     │              │             │ diverging    │              │             │
+│     │              │             │ areas, while │              │             │
+│     │              │             │ centralized  │              │             │
+│     │              │             │ training     │              │             │
+│     │              │             │ improves     │              │             │
+│     │              │             │ learning     │              │             │
+│     │              │             │ stability. A │              │             │
+│     │              │             │ target-path… │              │             │
+│     │              │             │ action space │              │             │
+│     │              │             │ is           │              │             │
+│     │              │             │ introduced   │              │             │
+│     │              │             │ to replace   │              │             │
+│     │              │             │ the discrete │              │             │
+│     │              │             │ lane-change  │              │             │
+│     │              │             │ action,      │              │             │
+│     │              │             │ enabling     │              │             │
+│     │              │             │ flexible     │              │             │
+│     │              │             │ tollbooth    │              │             │
+│     │              │             │ selection    │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ continuous   │              │             │
+│     │              │             │ trajectory   │              │             │
+│     │              │             │ generation.  │              │             │
+│     │              │             │ The proposed │              │             │
+│     │              │             │ cooperative  │              │             │
+│     │              │             │ strategy is  │              │             │
+│     │              │             │ trained and  │              │             │
+│     │              │             │ evaluated on │              │             │
+│     │              │             │ a simulation │              │             │
+│     │              │             │ platform     │              │             │
+│     │              │             │ structured   │              │             │
+│     │              │             │ under a      │              │             │
+│     │              │             │ Perception-… │              │             │
+│     │              │             │ framework,   │              │             │
+│     │              │             │ which        │              │             │
+│     │              │             │ provides a   │              │             │
+│     │              │             │ high-fideli… │              │             │
+│     │              │             │ environment  │              │             │
+│     │              │             │ for          │              │             │
+│     │              │             │ weak-constr… │              │             │
+│     │              │             │ traffic      │              │             │
+│     │              │             │ interaction… │              │             │
+│     │              │             │ Simulation   │              │             │
+│     │              │             │ results      │              │             │
+│     │              │             │ based on     │              │             │
+│     │              │             │ real-world   │              │             │
+│     │              │             │ traffic data │              │             │
+│     │              │             │ show that    │              │             │
+│     │              │             │ the proposed │              │             │
+│     │              │             │ method       │              │             │
+│     │              │             │ improves     │              │             │
+│     │              │             │ traffic      │              │             │
+│     │              │             │ efficiency   │              │             │
+│     │              │             │ and enhances │              │             │
+│     │              │             │ collision    │              │             │
+│     │              │             │ avoidance.   │              │             │
+│     │              │             │ Furthermore, │              │             │
+│     │              │             │ comparative  │              │             │
+│     │              │             │ analyses are │              │             │
+│     │              │             │ conducted to │              │             │
+│     │              │             │ evaluate the │              │             │
+│     │              │             │ model        │              │             │
+│     │              │             │ performance  │              │             │
+│     │              │             │ under        │              │             │
+│     │              │             │ varying      │              │             │
+│     │              │             │ traffic      │              │             │
+│     │              │             │ environment… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ To address   │              │             │
+│     │              │             │ this gap, we │              │             │
+│     │              │             │ propose a    │              │             │
+│     │              │             │ cooperative  │              │             │
+│     │              │             │ control      │              │             │
+│     │              │             │ framework    │              │             │
+│     │              │             │ based on     │              │             │
+│     │              │             │ Multi-Agent  │              │             │
+│     │              │             │ Proximal     │              │             │
+│     │              │             │ Policy       │              │             │
+│     │              │             │ Optimization │              │             │
+│     │              │             │ (MAPPO)      │              │             │
+│     │              │             │ under a      │              │             │
+│     │              │             │ Centralized  │              │             │
+│     │              │             │ Training and │              │             │
+│     │              │             │ Decentraliz… │              │             │
+│     │              │             │ Execution    │              │             │
+│     │              │             │ (CTDE)       │              │             │
+│     │              │             │ architectur… │              │             │
+│     │              │             │ The          │              │             │
+│     │              │             │ architecture │              │             │
+│     │              │             │ is designed  │              │             │
+│     │              │             │ for          │              │             │
+│     │              │             │ cooperative  │              │             │
+│     │              │             │ decision-ma… │              │             │
+│     │              │             │ in           │              │             │
+│     │              │             │ weak-constr… │              │             │
+│     │              │             │ toll plaza   │              │             │
+│     │              │             │ diverging    │              │             │
+│     │              │             │ areas and is │              │             │
+│     │              │             │ evaluated in │              │             │
+│     │              │             │ the          │              │             │
+│     │              │             │ developed    │              │             │
+│     │              │             │ high-fideli… │              │             │
+│     │              │             │ simulation   │              │             │
+│     │              │             │ environment. │              │             │
+│     │              │             │ Instead of   │              │             │
+│     │              │             │ modeling     │              │             │
+│     │              │             │ discrete     │              │             │
+│     │              │             │ lane-change  │              │             │
+│     │              │             │ actions, a   │              │             │
+│     │              │             │ target-path… │              │             │
+│     │              │             │ action space │              │             │
+│     │              │             │ is           │              │             │
+│     │              │             │ introduced   │              │             │
+│     │              │             │ to represent │              │             │
+│     │              │             │ feasible     │              │             │
+│     │              │             │ tollbooth    │              │             │
+│     │              │             │ paths under  │              │             │
+│     │              │             │ weak lane    │              │             │
+│     │              │             │ constraints. │              │             │
+│     │              │             │ The primary  │              │             │
+│     │              │             │ contributio… │              │             │
+│     │              │             │ of this      │              │             │
+│     │              │             │ research are │              │             │
+│     │              │             │ summarized   │              │             │
+│     │              │             │ as follows:  │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Based on     │              │             │
+│     │              │             │ this         │              │             │
+│     │              │             │ environment, │              │             │
+│     │              │             │ each CAV is  │              │             │
+│     │              │             │ modeled as   │              │             │
+│     │              │             │ an agent in  │              │             │
+│     │              │             │ the MAPPO    │              │             │
+│     │              │             │ framework.   │              │             │
+│     │              │             │ At time step │              │             │
+│     │              │             │ t , agent i  │              │             │
+│     │              │             │ receives its │              │             │
+│     │              │             │ observation  │              │             │
+│     │              │             │ o t i from   │              │             │
+│     │              │             │ the          │              │             │
+│     │              │             │ simulation   │              │             │
+│     │              │             │ environment  │              │             │
+│     │              │             │ and outputs  │              │             │
+│     │              │             │ an action a  │              │             │
+│     │              │             │ t i . Here,  │              │             │
+│     │              │             │ a t i        │              │             │
+│     │              │             │ includes     │              │             │
+│     │              │             │ longitudinal │              │             │
+│     │              │             │ acceleration │              │             │
+│     │              │             │ control and  │              │             │
+│     │              │             │ target toll  │              │             │
+│     │              │             │ lane         │              │             │
+│     │              │             │ selection.   │              │             │
+│     │              │             │ The reward   │              │             │
+│     │              │             │ function is  │              │             │
+│     │              │             │ designed     │              │             │
+│     │              │             │ from the     │              │             │
+│     │              │             │ perspectives │              │             │
+│     │              │             │ of both      │              │             │
+│     │              │             │ traffic      │              │             │
+│     │              │             │ efficiency   │              │             │
+│     │              │             │ and safety   │              │             │
+│     │              │             │ to encourage │              │             │
+│     │              │             │ coordinated  │              │             │
+│     │              │             │ behaviors    │              │             │
+│     │              │             │ among        │              │             │
+│     │              │             │ agents.      │              │             │
+│     │              │             │ Under the    │              │             │
+│     │              │             │ CTDE         │              │             │
+│     │              │             │ architectur… │              │             │
+│     │              │             │ the actors   │              │             │
+│     │              │             │ generate     │              │             │
+│     │              │             │ actions      │              │             │
+│     │              │             │ based on     │              │             │
+│     │              │             │ individual   │              │             │
+│     │              │             │ states,      │              │             │
+│     │              │             │ while the    │              │             │
+│     │              │             │ critics are  │              │             │
+│     │              │             │ trained      │              │             │
+│     │              │             │ using the    │              │             │
+│     │              │             │ global state │              │             │
+│     │              │             │ to evaluate  │              │             │
+│     │              │             │ the joint    │              │             │
+│     │              │             │ behavior of  │              │             │
+│     │              │             │ all agents,  │              │             │
+│     │              │             │ and the      │              │             │
+│     │              │             │ policy of    │              │             │
+│     │              │             │ each actor   │              │             │
+│     │              │             │ is optimized │              │             │
+│     │              │             │ through the  │              │             │
+│     │              │             │ clipped      │              │             │
+│     │              │             │ objective L  │              │             │
+│     │              │             │ i C L I P (  │              │             │
+│     │              │             │ θ i ) [24].  │              │             │
+│     │              │             │ Through      │              │             │
+│     │              │             │ repeated     │              │             │
+│     │              │             │ interaction  │              │             │
+│     │              │             │ with the     │              │             │
+│     │              │             │ simulation   │              │             │
+│     │              │             │ platform,    │              │             │
+│     │              │             │ the policy   │              │             │
+│     │              │             │ is           │              │             │
+│     │              │             │ iteratively  │              │             │
+│     │              │             │ updated and  │              │             │
+│     │              │             │ then used    │              │             │
+│     │              │             │ for          │              │             │
+│     │              │             │ cooperative  │              │             │
+│     │              │             │ control and  │              │             │
+│     │              │             │ performance  │              │             │
+│     │              │             │ evaluation   │              │             │
+│     │              │             │ in the       │              │             │
+│     │              │             │ diverging    │              │             │
+│     │              │             │ area.        │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 15  │ Research     │ Agentic,    │ Agentic,     │ 2026-05-08   │ https://sc… │
+│     │ Papers       │ Context-Aw… │ Context-Awa… │              │             │
+│     │              │ Risk        │ Risk         │              │             │
+│     │              │ Intelligen… │ Intelligence │              │             │
+│     │              │ in the      │ in the       │              │             │
+│     │              │ Internet of │ Internet of  │              │             │
+│     │              │ Value       │ Value        │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ # Agentic,   │              │             │
+│     │              │             │ Context-Awa… │              │             │
+│     │              │             │ Risk         │              │             │
+│     │              │             │ Intelligence │              │             │
+│     │              │             │ in the       │              │             │
+│     │              │             │ Internet of  │              │             │
+│     │              │             │ Value        │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ @misc{2605.… │              │             │
+│     │              │             │ author =     │              │             │
+│     │              │             │ {Basel       │              │             │
+│     │              │             │ Magableh and │              │             │
+│     │              │             │ OmniRisk     │              │             │
+│     │              │             │ Research},   │              │             │
+│     │              │             │ title =      │              │             │
+│     │              │             │ {{A}gentic,  │              │             │
+│     │              │             │ {C}ontext-{… │              │             │
+│     │              │             │ {R}isk       │              │             │
+│     │              │             │ {I}ntellige… │              │             │
+│     │              │             │ in the       │              │             │
+│     │              │             │ {I}nternet   │              │             │
+│     │              │             │ of {V}alue}, │              │             │
+│     │              │             │ year =       │              │             │
+│     │              │             │ {2026},      │              │             │
+│     │              │             │ eprint =     │              │             │
+│     │              │             │ {2605.05878… │              │             │
+│     │              │             │ note =       │              │             │
+│     │              │             │ {arXiv:2605… │              │             │
+│     │              │             │ }Copy        │              │             │
+│     │              │             │ Citation     │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 16  │ News         │ FIS         │ FIS Partners │ 2026-05-08   │ https://pu… │
+│     │              │ Partners    │ With         │              │             │
+│     │              │ With        │ Anthropic To │              │             │
+│     │              │ Anthropic   │ Launch       │              │             │
+│     │              │ To Launch   │ Agentic AI   │              │             │
+│     │              │ Agentic AI  │ Platform For │              │             │
+│     │              │ Platform    │ Banking,     │              │             │
+│     │              │ For         │ Starting     │              │             │
+│     │              │ Banking,    │ With         │              │             │
+│     │              │ Starting    │ Financial    │              │             │
+│     │              │ With        │ Crimes       │              │             │
+│     │              │ Financial   │ [...]        │              │             │
+│     │              │ Crimes      │ # FIS        │              │             │
+│     │              │             │ Partners     │              │             │
+│     │              │             │ With         │              │             │
+│     │              │             │ Anthropic To │              │             │
+│     │              │             │ Launch       │              │             │
+│     │              │             │ Agentic AI   │              │             │
+│     │              │             │ Platform For │              │             │
+│     │              │             │ Banking,     │              │             │
+│     │              │             │ Starting     │              │             │
+│     │              │             │ With         │              │             │
+│     │              │             │ Financial    │              │             │
+│     │              │             │ Crimes       │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ FIS Partners │              │             │
+│     │              │             │ With         │              │             │
+│     │              │             │ Anthropic To │              │             │
+│     │              │             │ Launch       │              │             │
+│     │              │             │ Agentic AI   │              │             │
+│     │              │             │ Platform For │              │             │
+│     │              │             │ Banking,     │              │             │
+│     │              │             │ Starting     │              │             │
+│     │              │             │ With         │              │             │
+│     │              │             │ Financial    │              │             │
+│     │              │             │ Crimes       │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 17  │ News         │ Teradata    │ Teradata     │ 2026-05-08   │ https://it… │
+│     │              │ launches    │ launches     │              │             │
+│     │              │ autonomous  │ autonomous   │              │             │
+│     │              │ knowledge   │ knowledge    │              │             │
+│     │              │ platform    │ platform for │              │             │
+│     │              │ for AI      │ AI           │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ # Teradata   │              │             │
+│     │              │             │ launches     │              │             │
+│     │              │             │ autonomous   │              │             │
+│     │              │             │ knowledge    │              │             │
+│     │              │             │ platform for │              │             │
+│     │              │             │ AI           │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Fri, 8th May │              │             │
+│     │              │             │ 2026 (Today) │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 18  │ News         │ Teradata    │ Teradata     │ 2026-05-08   │ https://co… │
+│     │              │ launches    │ launches     │              │             │
+│     │              │ Autonomous  │ Autonomous   │              │             │
+│     │              │ Knowledge   │ Knowledge    │              │             │
+│     │              │ Platform to │ Platform to  │              │             │
+│     │              │ bring       │ bring        │              │             │
+│     │              │ agentic AI  │ agentic AI   │              │             │
+│     │              │ into        │ into         │              │             │
+│     │              │ production  │ production   │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ # Teradata   │              │             │
+│     │              │             │ launches     │              │             │
+│     │              │             │ Autonomous   │              │             │
+│     │              │             │ Knowledge    │              │             │
+│     │              │             │ Platform to  │              │             │
+│     │              │             │ bring        │              │             │
+│     │              │             │ agentic AI   │              │             │
+│     │              │             │ into         │              │             │
+│     │              │             │ production   │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Teradata     │              │             │
+│     │              │             │ launched the │              │             │
+│     │              │             │ Autonomous   │              │             │
+│     │              │             │ Knowledge    │              │             │
+│     │              │             │ Platform     │              │             │
+│     │              │             │ Thursday to  │              │             │
+│     │              │             │ help         │              │             │
+│     │              │             │ enterprises  │              │             │
+│     │              │             │ move AI      │              │             │
+│     │              │             │ agents from  │              │             │
+│     │              │             │ pilot to     │              │             │
+│     │              │             │ production.  │              │             │
+│     │              │             │ Most agent   │              │             │
+│     │              │             │ projects     │              │             │
+│     │              │             │ stalled over │              │             │
+│     │              │             │ poor data    │              │             │
+│     │              │             │ retrieval-t… │              │             │
+│     │              │             │ platform     │              │             │
+│     │              │             │ embeds       │              │             │
+│     │              │             │ business     │              │             │
+│     │              │             │ context      │              │             │
+│     │              │             │ directly     │              │             │
+│     │              │             │ alongside    │              │             │
+│     │              │             │ data to fix  │              │             │
+│     │              │             │ that.        │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 19  │ Web          │ OpenAI      │ OpenAI       │ 2026-05-08   │ https://ww… │
+│     │              │ Brings      │ Brings Codex │              │             │
+│     │              │ Codex to    │ to Google    │              │             │
+│     │              │ Google      │ Chrome -     │              │             │
+│     │              │ Chrome -    │ Thurrott.com │              │             │
+│     │              │ Thurrott.c… │ [...]        │              │             │
+│     │              │             │ One year     │              │             │
+│     │              │             │ after it     │              │             │
+│     │              │             │ launched the │              │             │
+│     │              │             │ Codex in     │              │             │
+│     │              │             │ preview,     │              │             │
+│     │              │             │ OpenAI’s     │              │             │
+│     │              │             │ coding agent │              │             │
+│     │              │             │ is available │              │             │
+│     │              │             │ pretty much  │              │             │
+│     │              │             │ everywhere.  │              │             │
+│     │              │             │ And that now │              │             │
+│     │              │             │ includes the │              │             │
+│     │              │             │ browser,     │              │             │
+│     │              │             │ thanks to    │              │             │
+│     │              │             │ the release  │              │             │
+│     │              │             │ of a Codex   │              │             │
+│     │              │             │ extension    │              │             │
+│     │              │             │ for Google   │              │             │
+│     │              │             │ Chrome.      │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ “Codex can   │              │             │
+│     │              │             │ now take on  │              │             │
+│     │              │             │ more of your │              │             │
+│     │              │             │ browser dev  │              │             │
+│     │              │             │ work,”       │              │             │
+│     │              │             │ OpenAI       │              │             │
+│     │              │             │ announced on │              │             │
+│     │              │             │ Twitter/X.   │              │             │
+│     │              │             │ “With the    │              │             │
+│     │              │             │ new Chrome   │              │             │
+│     │              │             │ plugin in    │              │             │
+│     │              │             │ the Codex    │              │             │
+│     │              │             │ app, it can  │              │             │
+│     │              │             │ test web     │              │             │
+│     │              │             │ apps, gather │              │             │
+│     │              │             │ context      │              │             │
+│     │              │             │ across tabs, │              │             │
+│     │              │             │ use web      │              │             │
+│     │              │             │ DevTools     │              │             │
+│     │              │             │ efficiently  │              │             │
+│     │              │             │ in parallel, │              │             │
+│     │              │             │ and keep     │              │             │
+│     │              │             │ results      │              │             │
+│     │              │             │ organized    │              │             │
+│     │              │             │ without      │              │             │
+│     │              │             │ taking over  │              │             │
+│     │              │             │ your         │              │             │
+│     │              │             │ browser.”    │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 20  │ Web          │ OpenAI Adds │ OpenAI Adds  │ 2026-05-08   │ https://ww… │
+│     │              │ Chrome      │ Chrome       │              │             │
+│     │              │ Extension   │ Extension to │              │             │
+│     │              │ to Codex,   │ Codex,       │              │             │
+│     │              │ Letting Its │ Letting Its  │              │             │
+│     │              │ AI Agent    │ AI Agent     │              │             │
+│     │              │ Access      │ Access       │              │             │
+│     │              │ LinkedIn,   │ LinkedIn,    │              │             │
+│     │              │ Salesforce, │ Salesforce,  │              │             │
+│     │              │ Gmail, and  │ Gmail, and   │              │             │
+│     │              │ Internal    │ Internal     │              │             │
+│     │              │ Tools via   │ Tools via    │              │             │
+│     │              │ Signed-In   │ Signed-In    │              │             │
+│     │              │ Sessions -  │ Sessions -   │              │             │
+│     │              │ MarkTechPo… │ MarkTechPost │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Home Editors │              │             │
+│     │              │             │ Pick Agentic │              │             │
+│     │              │             │ AI OpenAI    │              │             │
+│     │              │             │ Adds Chrome  │              │             │
+│     │              │             │ Extension to │              │             │
+│     │              │             │ Codex,       │              │             │
+│     │              │             │ Letting Its  │              │             │
+│     │              │             │ AI Agent     │              │             │
+│     │              │             │ Access       │              │             │
+│     │              │             │ LinkedIn,... │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ OpenAI has   │              │             │
+│     │              │             │ launched a   │              │             │
+│     │              │             │ Codex Chrome │              │             │
+│     │              │             │ extension    │              │             │
+│     │              │             │ for Mac and  │              │             │
+│     │              │             │ PC to        │              │             │
+│     │              │             │ streamline   │              │             │
+│     │              │             │ browser-bas… │              │             │
+│     │              │             │ workflows    │              │             │
+│     │              │             │ that were    │              │             │
+│     │              │             │ previously   │              │             │
+│     │              │             │ difficult to │              │             │
+│     │              │             │ handle via   │              │             │
+│     │              │             │ APIs or      │              │             │
+│     │              │             │ plugins.     │              │             │
+│     │              │             │ This release │              │             │
+│     │              │             │ follows a    │              │             │
+│     │              │             │ trend where  │              │             │
+│     │              │             │ most users   │              │             │
+│     │              │             │ preferred    │              │             │
+│     │              │             │ working in a │              │             │
+│     │              │             │ browser      │              │             │
+│     │              │             │ after the    │              │             │
+│     │              │             │ launch of    │              │             │
+│     │              │             │ “Computer    │              │             │
+│     │              │             │ Use,”        │              │             │
+│     │              │             │ allowing     │              │             │
+│     │              │             │ Codex to     │              │             │
+│     │              │             │ operate more │              │             │
+│     │              │             │ effectively  │              │             │
+│     │              │             │ across       │              │             │
+│     │              │             │ various      │              │             │
+│     │              │             │ web-based    │              │             │
+│     │              │             │ tasks.       │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 21  │ Web          │ Gemini 3.1  │ Gemini 3.1   │ 2026-05-08   │ https://cl… │
+│     │              │ Flash-Lite  │ Flash-Lite   │              │             │
+│     │              │ is now      │ is now       │              │             │
+│     │              │ generally   │ generally    │              │             │
+│     │              │ available | │ available |  │              │             │
+│     │              │ Google      │ Google Cloud │              │             │
+│     │              │ Cloud Blog  │ Blog         │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ # Gemini 3.1 │              │             │
+│     │              │             │ Flash-Lite   │              │             │
+│     │              │             │ is now       │              │             │
+│     │              │             │ generally    │              │             │
+│     │              │             │ available on │              │             │
+│     │              │             │ Gemini       │              │             │
+│     │              │             │ Enterprise   │              │             │
+│     │              │             │ Agent        │              │             │
+│     │              │             │ Platform     │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ May 7, 2026  │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 22  │ Web          │ Perplexity… │ Perplexity's │ 2026-05-08   │ https://wh… │
+│     │              │ personal    │ personal     │              │             │
+│     │              │ computer is │ computer is  │              │             │
+│     │              │ now         │ now          │              │             │
+│     │              │ available   │ available to │              │             │
+│     │              │ to everyone │ everyone on  │              │             │
+│     │              │ on Mac      │ Mac          │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Perplexity’s │              │             │
+│     │              │             │ Personal     │              │             │
+│     │              │             │ Computer,    │              │             │
+│     │              │             │ the answer   │              │             │
+│     │              │             │ to OpenClaw  │              │             │
+│     │              │             │ and other    │              │             │
+│     │              │             │ local AI     │              │             │
+│     │              │             │ agents, is   │              │             │
+│     │              │             │ now          │              │             │
+│     │              │             │ available to │              │             │
+│     │              │             │ all Mac      │              │             │
+│     │              │             │ users        │              │             │
+│     │              │             │ through a    │              │             │
+│     │              │             │ desktop app, │              │             │
+│     │              │             │ the company  │              │             │
+│     │              │             │ announced    │              │             │
+│     │              │             │ Thursday.    │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ As a         │              │             │
+│     │              │             │ reminder,    │              │             │
+│     │              │             │ the Personal │              │             │
+│     │              │             │ Computer is  │              │             │
+│     │              │             │ an           │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 23  │ Web          │ OpenAI      │ OpenAI       │ 2026-05-08   │ https://ww… │
+│     │              │ Debuts      │ Debuts       │              │             │
+│     │              │ GPT-5.5     │ GPT-5.5 with │              │             │
+│     │              │ with        │ Advanced     │              │             │
+│     │              │ Advanced    │ Agentic      │              │             │
+│     │              │ Agentic     │ Reasoning    │              │             │
+│     │              │ Reasoning   │ and Tool Use │              │             │
+│     │              │ and Tool    │ - The AI     │              │             │
+│     │              │ Use - The   │ Software     │              │             │
+│     │              │ AI Software │ Report       │              │             │
+│     │              │ Report      │ [...]        │              │             │
+│     │              │             │ May 8, 2026  │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ OpenAI has   │              │             │
+│     │              │             │ officially   │              │             │
+│     │              │             │ released     │              │             │
+│     │              │             │ GPT-5.5, a   │              │             │
+│     │              │             │ model        │              │             │
+│     │              │             │ engineered   │              │             │
+│     │              │             │ to move      │              │             │
+│     │              │             │ beyond       │              │             │
+│     │              │             │ conversatio… │              │             │
+│     │              │             │ responses    │              │             │
+│     │              │             │ toward       │              │             │
+│     │              │             │ autonomous   │              │             │
+│     │              │             │ task         │              │             │
+│     │              │             │ execution.   │              │             │
+│     │              │             │ Described as │              │             │
+│     │              │             │ the "next    │              │             │
+│     │              │             │ step" in     │              │             │
+│     │              │             │ agentic AI,  │              │             │
+│     │              │             │ the model is │              │             │
+│     │              │             │ designed to  │              │             │
+│     │              │             │ navigate     │              │             │
+│     │              │             │ complex,     │              │             │
+│     │              │             │ multi-part   │              │             │
+│     │              │             │ workflows—s… │              │             │
+│     │              │             │ as debugging │              │             │
+│     │              │             │ code,        │              │             │
+│     │              │             │ operating    │              │             │
+│     │              │             │ software,    │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ conducting   │              │             │
+│     │              │             │ multi-step   │              │             │
+│     │              │             │ research—wi… │              │             │
+│     │              │             │ minimal      │              │             │
+│     │              │             │ human        │              │             │
+│     │              │             │ oversight.   │              │             │
+│     │              │             │ The model is │              │             │
+│     │              │             │ now rolling  │              │             │
+│     │              │             │ out to Plus, │              │             │
+│     │              │             │ Team, and    │              │             │
+│     │              │             │ Enterprise   │              │             │
+│     │              │             │ users across │              │             │
+│     │              │             │ ChatGPT and  │              │             │
+│     │              │             │ the Codex    │              │             │
+│     │              │             │ environment, │              │             │
+│     │              │             │ where it is  │              │             │
+│     │              │             │ already      │              │             │
+│     │              │             │ being used   │              │             │
+│     │              │             │ to automate  │              │             │
+│     │              │             │ engineering  │              │             │
+│     │              │             │ tasks and    │              │             │
+│     │              │             │ long-horizon │              │             │
+│     │              │             │ knowledge    │              │             │
+│     │              │             │ work.        │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 24  │ Web          │ Anthropic’s │ #            │ 2026-05-08   │ https://ww… │
+│     │              │ Microsoft   │ Anthropic’s  │              │             │
+│     │              │ 365         │ Microsoft    │              │             │
+│     │              │ Integration │ 365          │              │             │
+│     │              │ Expands     │ Integration  │              │             │
+│     │              │ With Claude │ Expands With │              │             │
+│     │              │ for Excel,  │ Claude for   │              │             │
+│     │              │ PowerPoint  │ Excel,       │              │             │
+│     │              │ and Word |  │ PowerPoint   │              │             │
+│     │              │ Technology  │ and Word     │              │             │
+│     │              │ News        │ [...]        │              │             │
+│     │              │             │ Anthropic    │              │             │
+│     │              │             │ said Claude  │              │             │
+│     │              │             │ for Outlook  │              │             │
+│     │              │             │ has now      │              │             │
+│     │              │             │ entered      │              │             │
+│     │              │             │ public beta. │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ - Claude’s   │              │             │
+│     │              │             │ Excel,       │              │             │
+│     │              │             │ PowerPoint,  │              │             │
+│     │              │             │ and Word     │              │             │
+│     │              │             │ add-ins are  │              │             │
+│     │              │             │ generally    │              │             │
+│     │              │             │ available    │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 25  │ Web          │ Anthropic   │ Anthropic    │ 2026-05-08   │ https://ve… │
+│     │              │ wants to    │ wants to own │              │             │
+│     │              │ own your    │ your agent's │              │             │
+│     │              │ agent's     │ memory,      │              │             │
+│     │              │ memory,     │ evals, and   │              │             │
+│     │              │ evals, and  │ orchestrati… │              │             │
+│     │              │ orchestrat… │ — and that   │              │             │
+│     │              │ — and that  │ should make  │              │             │
+│     │              │ should make │ enterprises  │              │             │
+│     │              │ enterprises │ nervous |    │              │             │
+│     │              │ nervous |   │ VentureBeat  │              │             │
+│     │              │ VentureBeat │ [...]        │              │             │
+│     │              │             │ Just a few   │              │             │
+│     │              │             │ weeks after  │              │             │
+│     │              │             │ announcing   │              │             │
+│     │              │             │ Claude       │              │             │
+│     │              │             │ Managed      │              │             │
+│     │              │             │ Agents,      │              │             │
+│     │              │             │ Anthropic    │              │             │
+│     │              │             │ has updated  │              │             │
+│     │              │             │ the platform │              │             │
+│     │              │             │ with three   │              │             │
+│     │              │             │ new          │              │             │
+│     │              │             │ capabilities │              │             │
+│     │              │             │ that         │              │             │
+│     │              │             │ collapse     │              │             │
+│     │              │             │ infrastruct… │              │             │
+│     │              │             │ layers like  │              │             │
+│     │              │             │ memory,      │              │             │
+│     │              │             │ evaluation,  │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ multi-agent  │              │             │
+│     │              │             │ orchestrati… │              │             │
+│     │              │             │ into a       │              │             │
+│     │              │             │ single       │              │             │
+│     │              │             │ runtime.     │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ The new      │              │             │
+│     │              │             │ capabilities │              │             │
+│     │              │             │ —            │              │             │
+│     │              │             │ 'Dreaming,'  │              │             │
+│     │              │             │ 'Outcomes,'  │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ 'Multi-Agent │              │             │
+│     │              │             │ Orchestrati… │              │             │
+│     │              │             │ — aim to     │              │             │
+│     │              │             │ make agents  │              │             │
+│     │              │             │ inside       │              │             │
+│     │              │             │ Claude       │              │             │
+│     │              │             │ Managed      │              │             │
+│     │              │             │ Agents “more │              │             │
+│     │              │             │ capable at   │              │             │
+│     │              │             │ handling     │              │             │
+│     │              │             │ complex      │              │             │
+│     │              │             │ tasks with   │              │             │
+│     │              │             │ minimal      │              │             │
+│     │              │             │ steering,”   │              │             │
+│     │              │             │ Anthropic    │              │             │
+│     │              │             │ said in a    │              │             │
+│     │              │             │ press        │              │             │
+│     │              │             │ release.     │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 26  │ Web          │ Perplexity  │ # Perplexity │ 2026-05-08   │ https://op… │
+│     │              │ Personal    │ Personal     │              │             │
+│     │              │ Computer    │ Computer for │              │             │
+│     │              │ for Mac     │ Mac Opens to │              │             │
+│     │              │ Opens to    │ Everyone     │              │             │
+│     │              │ Everyone    │ With Pro or  │              │             │
+│     │              │ Wi...       │ Max          │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Perplexity   │              │             │
+│     │              │             │ made its     │              │             │
+│     │              │             │ Personal     │              │             │
+│     │              │             │ Computer AI  │              │             │
+│     │              │             │ agent        │              │             │
+│     │              │             │ generally    │              │             │
+│     │              │             │ available to │              │             │
+│     │              │             │ all Mac      │              │             │
+│     │              │             │ users on May │              │             │
+│     │              │             │ 7, bringing  │              │             │
+│     │              │             │ local file   │              │             │
+│     │              │             │ access,      │              │             │
+│     │              │             │ native app   │              │             │
+│     │              │             │ control, and │              │             │
+│     │              │             │ 400+         │              │             │
+│     │              │             │ connectors   │              │             │
+│     │              │             │ to any Mac.  │              │             │
+│     │              │             │ The catch:   │              │             │
+│     │              │             │ you need a   │              │             │
+│     │              │             │ Perplexity   │              │             │
+│     │              │             │ Pro or Max   │              │             │
+│     │              │             │ subscriptio… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Perplexity's │              │             │
+│     │              │             │ Personal     │              │             │
+│     │              │             │ Computer —   │              │             │
+│     │              │             │ its answer   │              │             │
+│     │              │             │ to local AI  │              │             │
+│     │              │             │ agents like  │              │             │
+│     │              │             │ OpenClaw —   │              │             │
+│     │              │             │ is now       │              │             │
+│     │              │             │ available to │              │             │
+│     │              │             │ all Mac      │              │             │
+│     │              │             │ users        │              │             │
+│     │              │             │ through the  │              │             │
+│     │              │             │ company's    │              │             │
+│     │              │             │ desktop app, │              │             │
+│     │              │             │ according to │              │             │
+│     │              │             │ TechCrunch.  │              │             │
+│     │              │             │ The tool was │              │             │
+│     │              │             │ previously   │              │             │
+│     │              │             │ limited to   │              │             │
+│     │              │             │ Perplexity   │              │             │
+│     │              │             │ Max          │              │             │
+│     │              │             │ subscribers  │              │             │
+│     │              │             │ on a         │              │             │
+│     │              │             │ waitlist.    │              │             │
+│     │              │             │ Now anyone   │              │             │
+│     │              │             │ can download │              │             │
+│     │              │             │ the new Mac  │              │             │
+│     │              │             │ app, though  │              │             │
+│     │              │             │ Personal     │              │             │
+│     │              │             │ Computer     │              │             │
+│     │              │             │ still        │              │             │
+│     │              │             │ requires a   │              │             │
+│     │              │             │ Pro or Max   │              │             │
+│     │              │             │ subscriptio… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 27  │ Web          │ Perplexity  │ Perplexity   │ 2026-05-08   │ https://ww… │
+│     │              │ Computer    │ Computer now │              │             │
+│     │              │ now         │ available in │              │             │
+│     │              │ available   │ new Mac app  │              │             │
+│     │              │ in new Mac  │ for all      │              │             │
+│     │              │ app for all │ users        │              │             │
+│     │              │ users       │ [...]        │              │             │
+│     │              │             │ Perplexity   │              │             │
+│     │              │             │ AI has       │              │             │
+│     │              │             │ introduced   │              │             │
+│     │              │             │ Personal     │              │             │
+│     │              │             │ Computer in  │              │             │
+│     │              │             │ the new      │              │             │
+│     │              │             │ Perplexity   │              │             │
+│     │              │             │ Mac app,     │              │             │
+│     │              │             │ bringing     │              │             │
+│     │              │             │ Perplexity   │              │             │
+│     │              │             │ Computer to  │              │             │
+│     │              │             │ macOS. It    │              │             │
+│     │              │             │ enables AI   │              │             │
+│     │              │             │ agents to    │              │             │
+│     │              │             │ run tasks    │              │             │
+│     │              │             │ across local │              │             │
+│     │              │             │ files,       │              │             │
+│     │              │             │ native Mac   │              │             │
+│     │              │             │ apps, the    │              │             │
+│     │              │             │ web, and     │              │             │
+│     │              │             │ Perplexity’s │              │             │
+│     │              │             │ secure       │              │             │
+│     │              │             │ servers.     │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ Personal     │              │             │
+│     │              │             │ Computer     │              │             │
+│     │              │             │ represents   │              │             │
+│     │              │             │ the next     │              │             │
+│     │              │             │ step in      │              │             │
+│     │              │             │ Perplexity’s │              │             │
+│     │              │             │ system,      │              │             │
+│     │              │             │ taking       │              │             │
+│     │              │             │ Computer out │              │             │
+│     │              │             │ of the       │              │             │
+│     │              │             │ cloud-only   │              │             │
+│     │              │             │ world and    │              │             │
+│     │              │             │ onto the     │              │             │
+│     │              │             │ device where │              │             │
+│     │              │             │ most real    │              │             │
+│     │              │             │ work already │              │             │
+│     │              │             │ takes place. │              │             │
+│     │              │             │ It is        │              │             │
+│     │              │             │ designed to  │              │             │
+│     │              │             │ run          │              │             │
+│     │              │             │ continuousl… │              │             │
+│     │              │             │ autonomousl… │              │             │
+│     │              │             │ and locally  │              │             │
+│     │              │             │ while still  │              │             │
+│     │              │             │ coordinating │              │             │
+│     │              │             │ with cloud   │              │             │
+│     │              │             │ systems when │              │             │
+│     │              │             │ required.    │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 28  │ Web          │ Perplexity… │ Perplexity’s │ 2026-05-08   │ https://te… │
+│     │              │ Personal    │ Personal     │              │             │
+│     │              │ Computer is │ Computer is  │              │             │
+│     │              │ now         │ now          │              │             │
+│     │              │ available   │ available    │              │             │
+│     │              │ everyone on │ everyone on  │              │             │
+│     │              │ Mac -       │ Mac -        │              │             │
+│     │              │ TechFlowDa… │ TechFlowDai… │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ - Elon       │              │             │
+│     │              │             │ Musk’s       │              │             │
+│     │              │             │ lawsuit is   │              │             │
+│     │              │             │ putting      │              │             │
+│     │              │             │ OpenAI’s     │              │             │
+│     │              │             │ safety       │              │             │
+│     │              │             │ record under │              │             │
+│     │              │             │ [...]        │              │             │
+│     │              │             │ microscope   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 29  │ HuggingFace  │ Feature     │ Feature      │ 2026-05-08   │ https://co… │
+│     │ + Blogs      │ Request:    │ Request:     │              │             │
+│     │              │ Sentinel    │ Sentinel     │              │             │
+│     │              │ Mode for    │ Mode for     │              │             │
+│     │              │ Codex /     │ Codex /      │              │             │
+│     │              │ ChatGPT     │ ChatGPT      │              │             │
+│     │              │ Enterprise  │ Enterprise — │              │             │
+│     │              │ — Governed  │ Governed AI  │              │             │
+│     │              │ AI Agent    │ Agent        │              │             │
+│     │              │ Operations  │ Operations   │              │             │
+│     │              │ with        │ with         │              │             │
+│     │              │ Dry-Runs,   │ Dry-Runs,    │              │             │
+│     │              │ Approvals,  │ Approvals,   │              │             │
+│     │              │ and Audit   │ and Audit    │              │             │
+│     │              │ Logs -      │ Logs - Codex │              │             │
+│     │              │ Codex CLI - │ CLI - OpenAI │              │             │
+│     │              │ OpenAI      │ Developer    │              │             │
+│     │              │ Developer   │ Community    │              │             │
+│     │              │ Community   │ [...]        │              │             │
+│     │              │             │ Feature      │              │             │
+│     │              │             │ Request:     │              │             │
+│     │              │             │ Sentinel     │              │             │
+│     │              │             │ Mode for     │              │             │
+│     │              │             │ Codex /      │              │             │
+│     │              │             │ ChatGPT      │              │             │
+│     │              │             │ Enterprise — │              │             │
+│     │              │             │ Governed AI  │              │             │
+│     │              │             │ Agent        │              │             │
+│     │              │             │ Operations   │              │             │
+│     │              │             │ with         │              │             │
+│     │              │             │ Dry-Runs,    │              │             │
+│     │              │             │ Approvals,   │              │             │
+│     │              │             │ and Audit    │              │             │
+│     │              │             │ Logs - Codex │              │             │
+│     │              │             │ CLI - OpenAI │              │             │
+│     │              │             │ Developer    │              │             │
+│     │              │             │ Community    │              │             │
+╰─────┴──────────────┴─────────────┴──────────────┴──────────────┴─────────────╯
+─────────────────────────────── Reference Links ────────────────────────────────
+  1. [GitHub] ai@7.0.0-canary.127
+      https://github.com/vercel/ai/releases/tag/ai%407.0.0-canary.127  
+2026-05-08
+  2. [GitHub] langchain==1.2.18
+      https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.2.
+18  2026-05-08
+  3. [GitHub] Agent-Field/agentfield: Build, run and scale AI agents like API 
+and ...
+      https://github.com/Agent-Field/agentfield  2026-05-08
+  4. [GitHub] @ai-sdk/google-vertex@5.0.0-canary.76
+      https://github.com/vercel/ai/releases/tag/%40ai-sdk/google-vertex%405.0.0-
+canary.76  2026-05-08
+  5. [GitHub] framersai/agentos: Build autonomous AI agents with ... - GitHub
+      https://github.com/framersai/agentos  2026-05-08
+  6. [GitHub] BDSyou/GenericAgent
+      https://github.com/BDSyou/GenericAgent  2026-05-08
+  7. [GitHub] NousResearch/hermes-agent: The agent that grows with you - GitHub
+      https://github.com/nousresearch/hermes-agent  2026-05-08
+  8. [GitHub] @ai-sdk/vue@4.0.0-canary.127
+      https://github.com/vercel/ai/releases/tag/%40ai-sdk/vue%404.0.0-canary.127
+2026-05-08
+  9. [GitHub] @ai-sdk/svelte@5.0.0-canary.127
+      https://github.com/vercel/ai/releases/tag/%40ai-sdk/svelte%405.0.0-canary.
+127  2026-05-08
+ 10. [GitHub] @ai-sdk/open-responses@2.0.0-canary.39
+      https://github.com/vercel/ai/releases/tag/%40ai-sdk/open-responses%402.0.0
+-canary.39  2026-05-08
+ 11. [Research Papers] Responsible AI for Personalized Patient Education and 
+Engagement Across Medical Conditions: Leveraging Multi-Agent LLMs, Ambient 
+Technology, and NotebookLM—A Case Study in Diabetes Education and Limb 
+Preservation
+      https://www.mdpi.com/1930-8264/116/3/30  2026-05-08
+ 12. [Research Papers] The Trust Paradox in LLM-Based Multi-Agent Systems: When 
+Collaboration Becomes a Security Vulnerability | AI Security Portal
+      https://aisecurity-portal.org/en/literature-database/the-trust-paradox-in-
+llm-based-multi-agent-systems-when-collaboration-becomes-a-security-vulnerabilit
+y/  2026-05-08
+ 13. [Research Papers] Sustainable Transportation Decision-Making Enabled by 
+Specialized Large Language Models: A Supervised Fine-Tuning Framework for Route 
+Planning
+      https://www.mdpi.com/2071-1050/18/10/4683  2026-05-08
+ 14. [Research Papers] Multi-Agent Cooperative Control of CAVs in Toll Plaza 
+Diverging Areas: A Target-Path Approach
+      https://www.mdpi.com/2076-0825/15/5/267  2026-05-08
+ 15. [Research Papers] Agentic, Context-Aware Risk Intelligence in the Internet 
+of Value
+      https://scirate.com/arxiv/2605.05878  2026-05-08
+ 16. [News] FIS Partners With Anthropic To Launch Agentic AI Platform For 
+Banking, Starting With Financial Crimes
+      https://pulse2.com/fis-partners-with-anthropic-to-launch-agentic-ai-platfo
+rm-for-banking-starting-with-financial-crimes/  2026-05-08
+ 17. [News] Teradata launches autonomous knowledge platform for AI
+      https://itbrief.in/story/teradata-launches-autonomous-knowledge-platform-f
+or-ai  2026-05-08
+ 18. [News] Teradata launches Autonomous Knowledge Platform to bring agentic AI 
+into production
+      https://completeaitraining.com/news/teradata-launches-autonomous-knowledge
+-platform-to-bring/  2026-05-08
+ 19. [Web] OpenAI Brings Codex to Google Chrome - Thurrott.com
+      https://www.thurrott.com/a-i/openai-a-i/335842/openai-brings-codex-to-goog
+le-chrome  2026-05-08
+ 20. [Web] OpenAI Adds Chrome Extension to Codex, Letting Its AI Agent Access 
+LinkedIn, Salesforce, Gmail, and Internal Tools via Signed-In Sessions - 
+MarkTechPost
+      https://www.marktechpost.com/2026/05/08/openai-adds-chrome-extension-to-co
+dex-letting-its-ai-agent-access-linkedin-salesforce-gmail-and-internal-tools-via
+-signed-in-sessions/  2026-05-08
+ 21. [Web] Gemini 3.1 Flash-Lite is now generally available | Google Cloud Blog
+      https://cloud.google.com/blog/products/ai-machine-learning/gemini-3-1-flas
+h-lite-is-now-generally-available  2026-05-08
+ 22. [Web] Perplexity's personal computer is now available to everyone on Mac
+      https://whistlebuzz.com/ai/2026/05/07/perplexitys-personal-computer-is-now
+-available-to-everyone-on-mac/  2026-05-08
+ 23. [Web] OpenAI Debuts GPT-5.5 with Advanced Agentic Reasoning and Tool Use - 
+The AI Software Report
+      https://www.thesoftwarereport.com/openai-debuts-gpt-5-5-with-advanced-agen
+tic-reasoning-and-tool-use/  2026-05-08
+ 24. [Web] Anthropic’s Microsoft 365 Integration Expands With Claude for Excel, 
+PowerPoint and Word | Technology News
+      https://www.gadgets360.com/ai/news/anthropic-claude-excel-powerpoint-word-
+outlook-microsoft-365-integration-expansion-11466147  2026-05-08
+ 25. [Web] Anthropic wants to own your agent's memory, evals, and orchestration 
+— and that should make enterprises nervous | VentureBeat
+      https://venturebeat.com/orchestration/anthropic-wants-to-own-your-agents-m
+emory-evals-and-orchestration-and-that-should-make-enterprises-nervous  
+2026-05-08
+ 26. [Web] Perplexity Personal Computer for Mac Opens to Everyone Wi...
+      https://opentools.ai/news/perplexity-personal-computer-mac-opens-to-everyo
+ne  2026-05-08
+ 27. [Web] Perplexity Computer now available in new Mac app for all users
+      https://www.fonearena.com/blog/482206/perplexity-computer-mac-app.html  
+2026-05-08
+ 28. [Web] Perplexity’s Personal Computer is now available everyone on Mac - 
+TechFlowDaily
+      https://techflowdaily.com/perplexitys-personal-computer-is-now-available-e
+veryone-on-mac/  2026-05-08
+ 29. [HuggingFace + Blogs] Feature Request: Sentinel Mode for Codex / ChatGPT 
+Enterprise — Governed AI Agent Operations with Dry-Runs, Approvals, and Audit 
+Logs - Codex CLI - OpenAI Developer Community
+      https://community.openai.com/t/feature-request-sentinel-mode-for-codex-cha
+tgpt-enterprise-governed-ai-agent-operations-with-dry-runs-approvals-and-audit-l
+ogs/1380493  2026-05-08

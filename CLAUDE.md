@@ -38,15 +38,24 @@ Installed via `affaan-m/everything-claude-code` (full profile). Source cloned at
 
 ## Repository Overview
 
-This is a monorepo of several independent projects, primarily focused on trading, financial analysis, and AI agents. The main active codebases are:
+Monorepo of independent projects: trading, financial analysis, AI agents, and design tooling.
 
 | Project | Stack | Purpose |
 |---------|-------|---------|
 | `tradingview-mcp/` | Node.js (ESM) | MCP server bridging Claude to TradingView Desktop via CDP |
 | `Alphaedge_Copy/` | Python (async) | Multi-platform copy trading: Hyperliquid, Binance Futures, Polymarket |
+| `open-codesign/` | TypeScript, pnpm, Electron | Open-source AI design agent — prompt to prototype/slide/asset |
+| `crypto-trending-oi/` | Python (async) | Intraday OI + multi-factor crypto scoring engine with SQLite |
 | `daily_crypto_news/daily_market_report/` | Python, CrewAI | AI-generated daily market reports via multi-agent flows |
 | `AlphaEdge_Ticker/` | Python (tkinter) | Live desktop ticker for crypto PERP (Hyperliquid) + NSE equities |
 | `Alphaedge/` | JSX + docs | AlphaEdge platform design — UI components and architecture documents |
+| `alphaedge-journal/` | Static HTML/CSS | Trading journal UI kits deployed via Vercel |
+
+**Root-level artifacts**
+- `DESIGN.md` — design tokens (palette, typography, spacing). All UI work must follow this.
+- `graphify-out/` — AST knowledge graph. For architecture questions, read `graphify-out/GRAPH_REPORT.md` first. After modifying source files, run `graphify update .` to refresh.
+- `mempalace.yaml` — memory palace mapping project dirs to named rooms for context loading.
+- `.mcp.json` — claude-flow MCP server config (hierarchical-mesh, 15-agent max, hybrid memory).
 
 ---
 
@@ -118,6 +127,74 @@ python main.py --live --bot hl     # go live (after 2-week dry-run validation)
 - Hyperliquid: uses `hyperliquid-python-sdk` with EIP-712 signed orders; use separate API wallet (no withdrawal rights)
 - Binance: leaderboard endpoints are public but rate-limited — keep polling ≥5s intervals
 - Polymarket: USDC on Polygon (Chain ID 137); binary outcomes; thin books → severe slippage on large orders
+
+---
+
+## open-codesign
+
+**Commands**
+```bash
+cd open-codesign
+pnpm i                             # install (pnpm only — never npm/yarn)
+pnpm dev                           # start Electron app in dev mode
+pnpm build                         # build all packages via Turborepo
+pnpm test                          # Vitest unit tests
+pnpm test:e2e                      # Playwright E2E
+pnpm lint                          # Biome check
+pnpm lint:fix                      # Biome check --write
+pnpm typecheck                     # tsc --noEmit across all packages
+pnpm smoke                         # smoke-test all configured LLM providers
+pnpm changeset                     # create a changeset before publishing
+```
+
+**Architecture**
+
+```
+apps/desktop/          # Electron shell (main + renderer)
+packages/
+  core/                # Agent orchestration, prompts, design tools
+  providers/           # pi integration and provider shims
+  runtime/             # Sandbox renderer + preview runtime
+  ui/                  # Shared app UI tokens and Radix/shadcn components
+  artifacts/           # Artifact schemas and bundle formats
+  exporters/           # PDF/PPTX/ZIP exporters (lazy-loaded)
+  templates/           # Built-in starter templates
+  shared/              # Shared types, utils, schemas
+```
+
+**Key constraints**
+- BYOK only — no hosted API, proxied model, or telemetry by default
+- Local-first: pi JSONL sessions + workspace filesystem; no new SQLite tables for sessions/designs
+- All LLM calls go through `pi-ai`; never import `@anthropic-ai/sdk`, `openai`, etc. in app code
+- State: Zustand only — no Redux/Recoil/MobX
+- Animations: Tailwind transitions only — no framer-motion
+- Node 22 LTS; pnpm 9; Turborepo; Biome for lint+format; Vitest + Playwright for tests
+- Changesets for versioning — do not hand-edit `CHANGELOG.md`
+- Do not use `console.*` in `main/`, `core/`, `providers/`, `exporters/`, or `shared/` — use the project logger
+
+---
+
+## crypto-trending-oi
+
+**Commands**
+```bash
+cd crypto-trending-oi
+pip install -r requirements.txt
+cp API-KEYS.env .env               # add CoinAPI, Glassnode, etc.
+python main.py                     # print current factor scores + OI table
+python daemon.py                   # run continuous polling loop (writes to SQLite)
+```
+
+**Architecture**
+
+- `fetchers.py` — async fetchers for macro (DXY, VIX, M2), on-chain (ETF flows, MVRV-Z, stablecoin supply), and intraday (funding rate, OI) data
+- `engine.py` — factor scoring engine; composites weighted signals into a [-1, +1] directional score
+- `daemon.py` — scheduler loop; polls fetchers and writes rows to `crypto_intraday_oi.db` (SQLite)
+- `main.py` — rich terminal display; reads latest DB row and renders factor table + driver callouts
+- `config.py` — API keys, symbol lists, polling intervals
+- `AlphaEdge_Crypto_Factor_Intelligence_Spec_v1.md` — full factor-model spec; read before editing signal weights
+
+Score thresholds: ≥+0.4 → LEAN LONG, ≤−0.4 → LEAN SHORT, else CHOP/NEUTRAL.
 
 ---
 

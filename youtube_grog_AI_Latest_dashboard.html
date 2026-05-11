@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>grog AI Latest - Video Dashboard</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 20px; background: #f9f9f9; color: #333; }
+  h1 { margin-bottom: 0.2em; }
+  .filters { display: flex; flex-wrap: wrap; gap: 15px; margin: 15px 0; align-items: center; }
+  .filters label { font-weight: 600; }
+  input, button { padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9em; }
+  button { background: #007bff; color: white; border: none; cursor: pointer; }
+  button:hover { background: #0056b3; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  th, td { padding: 10px 12px; text-align: left; }
+  th { background: #007bff; color: white; cursor: pointer; user-select: none; position: sticky; top: 0; }
+  th:hover { background: #0056b3; }
+  th .sort-icon { margin-left: 4px; font-size: 0.8em; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  tr:hover { background: #e6f0ff; }
+  .thumbnail { width: 120px; height: 68px; object-fit: cover; border-radius: 4px; }
+  .views { font-weight: 600; }
+  .search-box { flex-grow: 1; }
+  #reset-filters { background: #6c757d; }
+  #reset-filters:hover { background: #545b62; }
+</style>
+</head>
+<body>
+<h1>YouTube Video Dashboard: grog AI Latest</h1>
+<p>Total videos: 100</p>
+
+<div class="filters">
+  <div class="search-box">
+    <label for="search">🔍 Search title:</label>
+    <input type="text" id="search" placeholder="Type to filter..." style="width:250px;">
+  </div>
+  <div>
+    <label for="date-from">From:</label>
+    <input type="date" id="date-from">
+  </div>
+  <div>
+    <label for="date-to">To:</label>
+    <input type="date" id="date-to">
+  </div>
+  <div>
+    <label for="min-views">Min views:</label>
+    <input type="number" id="min-views" placeholder="0" style="width:100px;" min="0">
+  </div>
+  <button id="reset-filters">Reset Filters</button>
+</div>
+
+<table id="video-table">
+  <thead>
+    <tr>
+      <th data-sort="thumbnail">Thumbnail</th>
+      <th data-sort="title">Title</th>
+      <th data-sort="publishedAt">Upload Date</th>
+      <th data-sort="views">Views</th>
+      <th data-sort="duration">Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Data will be rendered here by JavaScript -->
+  </tbody>
+</table>
+
+<script>
+// Video data directly embedded from the API fetch
+const VIDEOS = [
+  {
+    "title": "ChatGPT vs Grok\u2026 This Got Personal \ud83d\udc80 #chatgpt #memes #ai",
+    "publishedAt": "2025-08-07T15:20:23Z",
+    "views": 650465,
+    "duration": "0:07",
+    "thumbnail": "https://i.ytimg.com/vi/uVH9OAA3VEw/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=uVH9OAA3VEw"
+  },
+  {
+    "title": "How to Use Grok AI Better than 99% of People",
+    "publishedAt": "2026-02-05T13:41:10Z",
+    "views": 147109,
+    "duration": "6:08",
+    "thumbnail": "https://i.ytimg.com/vi/TAirq97G7ow/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=TAirq97G7ow"
+  },
+  {
+    "title": "Elon Musk's Grok AI is shocking everyone!",
+    "publishedAt": "2025-03-19T18:10:20Z",
+    "views": 161197,
+    "duration": "0:18",
+    "thumbnail": "https://i.ytimg.com/vi/r8eXf28crPo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=r8eXf28crPo"
+  },
+  {
+    "title": "Grok AI: \u0915\u093f\u0924\u0928\u093e \u0916\u0924\u0930\u0928\u093e\u0915 \u0939\u0948 Elon Musk \u0915\u093e AI Grok-3?\" #digitalsonustudio #grok3 #grokai #grok",
+    "publishedAt": "2025-04-06T09:45:15Z",
+    "views": 499286,
+    "duration": "0:16",
+    "thumbnail": "https://i.ytimg.com/vi/JHdEG1HkOio/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=JHdEG1HkOio"
+  },
+  {
+    "title": "Grok AI is Exposing Everyone! | Is it Biased? | Elon Musk | Dhruv Rathee",
+    "publishedAt": "2025-03-20T14:46:02Z",
+    "views": 12956164,
+    "duration": "17:21",
+    "thumbnail": "https://i.ytimg.com/vi/3cZNbwTXixU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=3cZNbwTXixU"
+  },
+  {
+    "title": "Grok AI Gooners Are Getting Out Of Hand\u2026 #shorts",
+    "publishedAt": "2025-08-20T23:46:56Z",
+    "views": 743028,
+    "duration": "0:31",
+    "thumbnail": "https://i.ytimg.com/vi/vyMlQqtXLiE/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=vyMlQqtXLiE"
+  },
+  {
+    "title": "GROK AI Uncensored & Unfiltered with Jailbreak Prompt!",
+    "publishedAt": "2025-07-15T15:42:47Z",
+    "views": 1075472,
+    "duration": "0:28",
+    "thumbnail": "https://i.ytimg.com/vi/EoLgep46Cbo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=EoLgep46Cbo"
+  },
+  {
+    "title": "How to Create Long-Form Videos with Free Grok AI (2026 Tutorial)",
+    "publishedAt": "2026-03-22T14:37:04Z",
+    "views": 66598,
+    "duration": "17:14",
+    "thumbnail": "https://i.ytimg.com/vi/yTp0tkc2EVg/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=yTp0tkc2EVg"
+  },
+  {
+    "title": "grok is based? \ud83d\udc80",
+    "publishedAt": "2025-06-02T19:08:01Z",
+    "views": 806847,
+    "duration": "0:10",
+    "thumbnail": "https://i.ytimg.com/vi/YT2OS_HgGVA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=YT2OS_HgGVA"
+  },
+  {
+    "title": "Elon Musk says Grok 4 is \"the smartest AI in the world\"",
+    "publishedAt": "2025-07-10T17:54:48Z",
+    "views": 251262,
+    "duration": "0:41",
+    "thumbnail": "https://i.ytimg.com/vi/E2Ot3wQzcUo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=E2Ot3wQzcUo"
+  },
+  {
+    "title": "Elon Musk's New \"GROK 5\" AI System is a Massive Wake-Up Call...",
+    "publishedAt": "2026-01-04T04:08:02Z",
+    "views": 17426,
+    "duration": "11:12",
+    "thumbnail": "https://i.ytimg.com/vi/iJ55wjL9yIM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=iJ55wjL9yIM"
+  },
+  {
+    "title": "Elon Musk's New \"GROK 4\" AI System is a Massive Wake-Up Call...",
+    "publishedAt": "2025-07-11T11:00:26Z",
+    "views": 1138369,
+    "duration": "12:36",
+    "thumbnail": "https://i.ytimg.com/vi/H1cJc1xek1s/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=H1cJc1xek1s"
+  },
+  {
+    "title": "Super Grok AI Video Generator Is FREE Unlimited (Here's How)",
+    "publishedAt": "2026-03-20T01:30:00Z",
+    "views": 14251,
+    "duration": "3:19",
+    "thumbnail": "https://i.ytimg.com/vi/-Pi1gj_k-_g/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=-Pi1gj_k-_g"
+  },
+  {
+    "title": "Grok Made ChatGPT CRY! The AI Battle Nobody Expected! #shorts",
+    "publishedAt": "2025-07-16T00:30:22Z",
+    "views": 6377497,
+    "duration": "1:10",
+    "thumbnail": "https://i.ytimg.com/vi/_LOymjuUWck/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=_LOymjuUWck"
+  },
+  {
+    "title": "Ultimate GROK 4 Guide 2026: How to Use GROK For Beginners",
+    "publishedAt": "2025-08-28T14:15:03Z",
+    "views": 143619,
+    "duration": "30:19",
+    "thumbnail": "https://i.ytimg.com/vi/V3YzhHlDt9c/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=V3YzhHlDt9c"
+  },
+  {
+    "title": "Why Grok Outshines ChatGPT and Gemini in AI Conversations",
+    "publishedAt": "2024-11-10T13:53:01Z",
+    "views": 493067,
+    "duration": "0:18",
+    "thumbnail": "https://i.ytimg.com/vi/4qGw9WH4Xj8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=4qGw9WH4Xj8"
+  },
+  {
+    "title": "How to create new ghibli photo in grok ai. #ghibli #photo #edit #tutorial #tech #smartphone #chatgpt",
+    "publishedAt": "2025-03-29T07:11:41Z",
+    "views": 1909376,
+    "duration": "0:37",
+    "thumbnail": "https://i.ytimg.com/vi/7CsWJ4PGewM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=7CsWJ4PGewM"
+  },
+  {
+    "title": "Use Grok AI for free  | Best FREE AI Video Generators 2026 (Unlimited & No Watermark)",
+    "publishedAt": "2026-03-28T13:16:04Z",
+    "views": 61869,
+    "duration": "11:23",
+    "thumbnail": "https://i.ytimg.com/vi/Dc44U_OZCHY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Dc44U_OZCHY"
+  },
+  {
+    "title": "GROK AI \ud83e\udd16\u2620\ufe0f made by X \ud83d\udc7d#shorts #grok3 #ai",
+    "publishedAt": "2025-03-21T12:28:55Z",
+    "views": 472668,
+    "duration": "0:20",
+    "thumbnail": "https://i.ytimg.com/vi/_XuCjnyIXr4/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=_XuCjnyIXr4"
+  },
+  {
+    "title": "Grok vs ChatGPT vs Gemini \ud83e\udd2f Best AI Showdown 2025! #Grok #ChatGPT #Gemini #AI #AIBattle #Tech",
+    "publishedAt": "2025-08-21T09:26:51Z",
+    "views": 135565,
+    "duration": "1:02",
+    "thumbnail": "https://i.ytimg.com/vi/kizTcej_D3o/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=kizTcej_D3o"
+  },
+  {
+    "title": "New Grok Companions are Wild",
+    "publishedAt": "2025-07-23T14:00:58Z",
+    "views": 257097,
+    "duration": "0:57",
+    "thumbnail": "https://i.ytimg.com/vi/VxE9pOFT-88/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=VxE9pOFT-88"
+  },
+  {
+    "title": "Grok AI EXPOSES ChatGPT Over Elon Musk! \ud83e\udd16\ud83d\udd25",
+    "publishedAt": "2025-03-03T14:52:23Z",
+    "views": 137184,
+    "duration": "0:20",
+    "thumbnail": "https://i.ytimg.com/vi/E00o8q1FwS4/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=E00o8q1FwS4"
+  },
+  {
+    "title": "GROK AI is BACK & FREE ? \ud83e\udd2f Unlimited Images + Videos (No Limits!)",
+    "publishedAt": "2026-04-21T09:12:17Z",
+    "views": 54894,
+    "duration": "10:06",
+    "thumbnail": "https://i.ytimg.com/vi/VNs-ZRCOj6E/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=VNs-ZRCOj6E"
+  },
+  {
+    "title": "Grok AI vs Chat GPT",
+    "publishedAt": "2025-09-02T05:33:00Z",
+    "views": 90196,
+    "duration": "0:54",
+    "thumbnail": "https://i.ytimg.com/vi/RzoSq3Ndobc/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=RzoSq3Ndobc"
+  },
+  {
+    "title": "Grok Ai Trending Photo to Video Editing\ud83d\ude0d #viral #shortsfeed #trending #shorts #ai #foryou",
+    "publishedAt": "2025-10-26T12:43:20Z",
+    "views": 160280,
+    "duration": "0:22",
+    "thumbnail": "https://i.ytimg.com/vi/j9fKyZgPUAA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=j9fKyZgPUAA"
+  },
+  {
+    "title": "Grok AI Finally Reveals Who Built The Pyramids \u2014 With Undeniable Proof",
+    "publishedAt": "2026-04-03T17:00:00Z",
+    "views": 1083230,
+    "duration": "23:04",
+    "thumbnail": "https://i.ytimg.com/vi/-6S3d-mEEN4/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=-6S3d-mEEN4"
+  },
+  {
+    "title": "\u0915\u093f\u0924\u0928\u093e \u0916\u093c\u0924\u0930\u0928\u093e\u0915 \u0939\u0948 Grok ai \u2620\ufe0f\ud83d\udcaf #shorts #grok3",
+    "publishedAt": "2025-03-23T14:06:00Z",
+    "views": 519884,
+    "duration": "0:31",
+    "thumbnail": "https://i.ytimg.com/vi/o4u8RAgah3I/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=o4u8RAgah3I"
+  },
+  {
+    "title": "Elon\u2019s Grok Chatbot Turns Hitler & Marco Rubio Gets an AI Imposter | The Daily Show",
+    "publishedAt": "2025-07-10T02:00:09Z",
+    "views": 2959564,
+    "duration": "10:23",
+    "thumbnail": "https://i.ytimg.com/vi/fOhhnF3zRBA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=fOhhnF3zRBA"
+  },
+  {
+    "title": "Tesla's New AI Went TOO FAR \ud83d\ude33",
+    "publishedAt": "2025-08-03T01:02:20Z",
+    "views": 2718858,
+    "duration": "1:05",
+    "thumbnail": "https://i.ytimg.com/vi/ANN3dA0A3qo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=ANN3dA0A3qo"
+  },
+  {
+    "title": "Generate Unlimited Ai Videos with Grok Ai | 100% Free Ai Video Kaise Banaye | Image to Video Ai",
+    "publishedAt": "2025-09-06T04:24:25Z",
+    "views": 217592,
+    "duration": "0:40",
+    "thumbnail": "https://i.ytimg.com/vi/9ce8T6revi0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=9ce8T6revi0"
+  },
+  {
+    "title": "How to Use Grok For Beginners!",
+    "publishedAt": "2025-04-25T16:48:40Z",
+    "views": 172475,
+    "duration": "0:27",
+    "thumbnail": "https://i.ytimg.com/vi/81rm_VC987M/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=81rm_VC987M"
+  },
+  {
+    "title": "\"GROK\" A NEW AI TOOL BY ELON MUSK\ud83e\udd2f #chatgpt #elonmusk #twitter #grok #ai #tamil #tamilnews #google",
+    "publishedAt": "2024-12-11T15:54:37Z",
+    "views": 24834,
+    "duration": "0:43",
+    "thumbnail": "https://i.ytimg.com/vi/Mdd4EsdyGQQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Mdd4EsdyGQQ"
+  },
+  {
+    "title": "Elon Musk\u2019s Grok Surpasses DeepSeek To Become Third-Biggest AI Chatbot",
+    "publishedAt": "2026-02-12T20:22:10Z",
+    "views": 23970,
+    "duration": "3:12",
+    "thumbnail": "https://i.ytimg.com/vi/vJd-VOgFrnM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=vJd-VOgFrnM"
+  },
+  {
+    "title": "GROK AI is BACK?! \ud83d\ude31 Unlimited images and videos FREE (No Limits Anymore)",
+    "publishedAt": "2026-03-29T11:32:10Z",
+    "views": 59803,
+    "duration": "10:09",
+    "thumbnail": "https://i.ytimg.com/vi/pKe-DaCuJYE/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=pKe-DaCuJYE"
+  },
+  {
+    "title": "Grok AI Sparks Storm Over Deepfake-Style Misuse On X",
+    "publishedAt": "2026-01-02T15:00:45Z",
+    "views": 8651,
+    "duration": "3:29",
+    "thumbnail": "https://i.ytimg.com/vi/Omg7frU8tzc/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Omg7frU8tzc"
+  },
+  {
+    "title": "Grok 5: Elon Musk\u2019s 6 Trillion-Parameter AI Explained (Release Date, Features, Real Demos)",
+    "publishedAt": "2025-11-28T20:08:47Z",
+    "views": 70187,
+    "duration": "18:08",
+    "thumbnail": "https://i.ytimg.com/vi/wGrw9C-1EOk/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=wGrw9C-1EOk"
+  },
+  {
+    "title": "\ud83d\udd8c\ufe0f Create in Grok Imagine or Google Imagen.\ud83c\udfac Animate in Vadoo AI.That\u2019s it. @GoogleDeepMind",
+    "publishedAt": "2025-08-14T09:02:55Z",
+    "views": 116471,
+    "duration": "0:13",
+    "thumbnail": "https://i.ytimg.com/vi/H2AZsIL3i9o/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=H2AZsIL3i9o"
+  },
+  {
+    "title": "Grok AI\u2019s controvery explained: From abuse to apology! \ud83e\udd16",
+    "publishedAt": "2025-03-18T12:30:46Z",
+    "views": 361817,
+    "duration": "0:54",
+    "thumbnail": "https://i.ytimg.com/vi/gOG-SwEomWI/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=gOG-SwEomWI"
+  },
+  {
+    "title": "Elon Musk's NEW AI Video Generator is FREE & UNLIMITED! | Grok Video Tutorial",
+    "publishedAt": "2025-11-17T12:05:19Z",
+    "views": 29939,
+    "duration": "8:13",
+    "thumbnail": "https://i.ytimg.com/vi/YTWMNPjJPyY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=YTWMNPjJPyY"
+  },
+  {
+    "title": "Grok AI answer the trolly question \ud83d\ude2d",
+    "publishedAt": "2025-07-09T21:00:56Z",
+    "views": 1094669,
+    "duration": "0:24",
+    "thumbnail": "https://i.ytimg.com/vi/kNfokHwwom8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=kNfokHwwom8"
+  },
+  {
+    "title": "Centre Issues Notice to X Over Grok AI Misuse, 72-Hour Deadline to Remove Obscene Content",
+    "publishedAt": "2026-01-02T16:11:51Z",
+    "views": 13684,
+    "duration": "1:46",
+    "thumbnail": "https://i.ytimg.com/vi/jfWytCnu1Ls/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=jfWytCnu1Ls"
+  },
+  {
+    "title": "Elon Musk's Grok AI tool says \"lapses in safeguards\" led to lewd images",
+    "publishedAt": "2026-01-02T19:58:34Z",
+    "views": 70833,
+    "duration": "3:18",
+    "thumbnail": "https://i.ytimg.com/vi/AsNESdqZKJ4/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=AsNESdqZKJ4"
+  },
+  {
+    "title": "X to stop Grok AI from undressing images of real people after backlash | BBC News",
+    "publishedAt": "2026-01-15T14:37:00Z",
+    "views": 53638,
+    "duration": "4:37",
+    "thumbnail": "https://i.ytimg.com/vi/_imoWbeE3OU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=_imoWbeE3OU"
+  },
+  {
+    "title": "Musk's Grok AI faces more scrutiny after generating sexual deepfake images",
+    "publishedAt": "2026-01-16T23:31:59Z",
+    "views": 76011,
+    "duration": "7:15",
+    "thumbnail": "https://i.ytimg.com/vi/vTM4bOZtGt0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=vTM4bOZtGt0"
+  },
+  {
+    "title": "Grok AI Was Asked Why Aliens Haven't Contacted Us \u2014 Its Answer Shook Scientists",
+    "publishedAt": "2026-04-02T02:15:01Z",
+    "views": 179473,
+    "duration": "21:36",
+    "thumbnail": "https://i.ytimg.com/vi/DVHGhq73u_g/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=DVHGhq73u_g"
+  },
+  {
+    "title": "New top AI video models, Google dominates, top 3D model generator, Grok 4.1, GPT-Codex-Max: AI NEWS",
+    "publishedAt": "2025-11-23T03:28:49Z",
+    "views": 107732,
+    "duration": "38:56",
+    "thumbnail": "https://i.ytimg.com/vi/XN-OL6YDZjs/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=XN-OL6YDZjs"
+  },
+  {
+    "title": "GROK AI is BACK & FREE \ud83d\udd25 Unlimited Images & Videos",
+    "publishedAt": "2026-04-24T12:36:50Z",
+    "views": 27953,
+    "duration": "4:05",
+    "thumbnail": "https://i.ytimg.com/vi/9qLgOfi-CCY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=9qLgOfi-CCY"
+  },
+  {
+    "title": "Using DeepSeek be like... \ud83d\udc80 #animation #chatgpt #AI #deepseek #fyi #technology #China",
+    "publishedAt": "2025-02-04T08:36:51Z",
+    "views": 753864,
+    "duration": "0:15",
+    "thumbnail": "https://i.ytimg.com/vi/E2Am7aEyQ5I/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=E2Am7aEyQ5I"
+  },
+  {
+    "title": "This NEW Grok Feature Creates UNLIMITED AI Videos with Consistent Characters (FREE)",
+    "publishedAt": "2026-03-14T19:13:09Z",
+    "views": 8243,
+    "duration": "13:49",
+    "thumbnail": "https://i.ytimg.com/vi/HJvripPT6Ug/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=HJvripPT6Ug"
+  },
+  {
+    "title": "Grok AI for Beginners: What Actually Works (Free Method)",
+    "publishedAt": "2026-03-21T11:00:06Z",
+    "views": 32155,
+    "duration": "5:30",
+    "thumbnail": "https://i.ytimg.com/vi/0D05Lwo4o18/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=0D05Lwo4o18"
+  },
+  {
+    "title": "Grok AI in Telugu \ud83d\udd25 Unlimited AI Video Generator Free | Full Guide 2026",
+    "publishedAt": "2026-01-30T07:49:59Z",
+    "views": 66413,
+    "duration": "11:55",
+    "thumbnail": "https://i.ytimg.com/vi/b3_7qDOn1Cw/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=b3_7qDOn1Cw"
+  },
+  {
+    "title": "X to stop Grok AI from undressing images of real people after backlash | BBC News",
+    "publishedAt": "2026-01-15T14:37:00Z",
+    "views": 53638,
+    "duration": "4:37",
+    "thumbnail": "https://i.ytimg.com/vi/_imoWbeE3OU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=_imoWbeE3OU"
+  },
+  {
+    "title": "Grok Under Fire for Obscene Content: India Issues 72-hour Ultimatum | Vantage with Palki Sharma",
+    "publishedAt": "2026-01-02T18:40:06Z",
+    "views": 749574,
+    "duration": "6:41",
+    "thumbnail": "https://i.ytimg.com/vi/kow3hnqvQb0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=kow3hnqvQb0"
+  },
+  {
+    "title": "New top AI video models, Google dominates, top 3D model generator, Grok 4.1, GPT-Codex-Max: AI NEWS",
+    "publishedAt": "2025-11-23T03:28:49Z",
+    "views": 107732,
+    "duration": "38:56",
+    "thumbnail": "https://i.ytimg.com/vi/XN-OL6YDZjs/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=XN-OL6YDZjs"
+  },
+  {
+    "title": "The Ultimate AI Battle!",
+    "publishedAt": "2025-06-27T11:33:36Z",
+    "views": 4635461,
+    "duration": "27:12",
+    "thumbnail": "https://i.ytimg.com/vi/cMuif_hJGPI/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=cMuif_hJGPI"
+  },
+  {
+    "title": "Musk's Grok AI faces more scrutiny after generating sexual deepfake images",
+    "publishedAt": "2026-01-16T23:31:59Z",
+    "views": 76011,
+    "duration": "7:15",
+    "thumbnail": "https://i.ytimg.com/vi/vTM4bOZtGt0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=vTM4bOZtGt0"
+  },
+  {
+    "title": "Grok AI Step-by-Step Guide 2025: Everything You Need to Know",
+    "publishedAt": "2025-07-18T17:00:06Z",
+    "views": 206336,
+    "duration": "16:50",
+    "thumbnail": "https://i.ytimg.com/vi/xGgvKZ98Yzs/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=xGgvKZ98Yzs"
+  },
+  {
+    "title": "How to Use Grok For Beginners!",
+    "publishedAt": "2025-04-25T16:48:40Z",
+    "views": 172475,
+    "duration": "0:27",
+    "thumbnail": "https://i.ytimg.com/vi/81rm_VC987M/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=81rm_VC987M"
+  },
+  {
+    "title": "RIP GROK Best Ai Video Generator \ud83d\udd25 Grok Alternative Text To Video | Ai se video kaise banaye",
+    "publishedAt": "2026-03-25T05:08:28Z",
+    "views": 149753,
+    "duration": "0:36",
+    "thumbnail": "https://i.ytimg.com/vi/3X9YErXBNqs/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=3X9YErXBNqs"
+  },
+  {
+    "title": "Grok AI Scanned Every Apollo Moon Photo \u2014 What It Discovered Shocked Experts",
+    "publishedAt": "2026-04-23T17:15:04Z",
+    "views": 39254,
+    "duration": "27:07",
+    "thumbnail": "https://i.ytimg.com/vi/ElidC8xVYa0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=ElidC8xVYa0"
+  },
+  {
+    "title": "Grok creating explicit images? \ud83d\ude33",
+    "publishedAt": "2026-01-04T09:50:38Z",
+    "views": 293176,
+    "duration": "0:38",
+    "thumbnail": "https://i.ytimg.com/vi/DdQ3NW0iOYU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=DdQ3NW0iOYU"
+  },
+  {
+    "title": "Using DeepSeek be like... \ud83d\udc80 #animation #chatgpt #AI #deepseek #fyi #technology #China",
+    "publishedAt": "2025-02-04T08:36:51Z",
+    "views": 753864,
+    "duration": "0:15",
+    "thumbnail": "https://i.ytimg.com/vi/E2Am7aEyQ5I/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=E2Am7aEyQ5I"
+  },
+  {
+    "title": "Elon Musk's Grok AI tool says \"lapses in safeguards\" led to lewd images",
+    "publishedAt": "2026-01-02T19:58:34Z",
+    "views": 70833,
+    "duration": "3:18",
+    "thumbnail": "https://i.ytimg.com/vi/AsNESdqZKJ4/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=AsNESdqZKJ4"
+  },
+  {
+    "title": "Grok AI Stopped FREE Videos Generation | Here's What to do",
+    "publishedAt": "2026-03-20T14:30:32Z",
+    "views": 78888,
+    "duration": "4:08",
+    "thumbnail": "https://i.ytimg.com/vi/QlzLbWp92YE/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=QlzLbWp92YE"
+  },
+  {
+    "title": "Grok AI NEW Update (FREE): Create 2 Characters with Perfect Lip Sync & Consistent AI Videos",
+    "publishedAt": "2026-02-27T15:40:40Z",
+    "views": 5049,
+    "duration": "29:28",
+    "thumbnail": "https://i.ytimg.com/vi/RWhIpkzmHwk/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=RWhIpkzmHwk"
+  },
+  {
+    "title": "How to Create Long AI Videos FREE | Grok AI Video Generator|AI Se Lambe Video Kaise Banaye|Ritika AI",
+    "publishedAt": "2026-01-02T13:04:00Z",
+    "views": 320815,
+    "duration": "8:28",
+    "thumbnail": "https://i.ytimg.com/vi/gW5RRHZ2azQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=gW5RRHZ2azQ"
+  },
+  {
+    "title": "Yes,\u00a0Musk's Grok chatbot is 'digitally undressing' women and children \u2022 FRANCE 24 English",
+    "publishedAt": "2026-01-08T21:02:54Z",
+    "views": 12968,
+    "duration": "3:40",
+    "thumbnail": "https://i.ytimg.com/vi/TVEPMRPojU8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=TVEPMRPojU8"
+  },
+  {
+    "title": "Grok Is the best AI // Grok edit // KillStealerExe",
+    "publishedAt": "2025-12-19T13:10:42Z",
+    "views": 817108,
+    "duration": "0:44",
+    "thumbnail": "https://i.ytimg.com/vi/KdAbskladSQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=KdAbskladSQ"
+  },
+  {
+    "title": "How to Make CONSISTENT Long-Form Videos with Grok AI (FREE Workflow)",
+    "publishedAt": "2025-12-08T18:30:28Z",
+    "views": 60131,
+    "duration": "9:19",
+    "thumbnail": "https://i.ytimg.com/vi/oHkIFhDs2Oc/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=oHkIFhDs2Oc"
+  },
+  {
+    "title": "Why Grok 4 is \"TERRIFYING\"",
+    "publishedAt": "2025-07-16T20:00:01Z",
+    "views": 377858,
+    "duration": "1:16",
+    "thumbnail": "https://i.ytimg.com/vi/apDsj9rPZM0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=apDsj9rPZM0"
+  },
+  {
+    "title": "Elon Musk\u2019s Grok AI Platform Just Blew Up In His Face",
+    "publishedAt": "2026-03-15T23:41:24Z",
+    "views": 144986,
+    "duration": "12:36",
+    "thumbnail": "https://i.ytimg.com/vi/qffXS2nPlWw/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=qffXS2nPlWw"
+  },
+  {
+    "title": "\u2018Good move\u2019: Elon Musk\u2019s Grok update to stop creation of explicit AI content",
+    "publishedAt": "2026-01-15T06:51:28Z",
+    "views": 10704,
+    "duration": "3:26",
+    "thumbnail": "https://i.ytimg.com/vi/IWmqKPI0j3c/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=IWmqKPI0j3c"
+  },
+  {
+    "title": "Grok AI Was Asked Why Aliens Haven't Contacted Us \u2014 Its Answer Shook Scientists",
+    "publishedAt": "2026-04-02T02:15:01Z",
+    "views": 179473,
+    "duration": "21:36",
+    "thumbnail": "https://i.ytimg.com/vi/DVHGhq73u_g/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=DVHGhq73u_g"
+  },
+  {
+    "title": "\ud83d\udd8c\ufe0f Create in Grok Imagine or Google Imagen.\ud83c\udfac Animate in Vadoo AI.That\u2019s it. @GoogleDeepMind",
+    "publishedAt": "2025-08-14T09:02:55Z",
+    "views": 116471,
+    "duration": "0:13",
+    "thumbnail": "https://i.ytimg.com/vi/H2AZsIL3i9o/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=H2AZsIL3i9o"
+  },
+  {
+    "title": "GROK NEW AI VIDEO UPDATE : New Multiple Image Animation Feature",
+    "publishedAt": "2026-03-14T14:15:28Z",
+    "views": 18359,
+    "duration": "4:50",
+    "thumbnail": "https://i.ytimg.com/vi/s5ztK2r6zHw/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=s5ztK2r6zHw"
+  },
+  {
+    "title": "Grok AI Is DONE \u274c Best FREE AI Video Generators (Unlimited & Better!)",
+    "publishedAt": "2026-03-20T11:18:29Z",
+    "views": 54940,
+    "duration": "8:02",
+    "thumbnail": "https://i.ytimg.com/vi/Ewn1KBqWVKY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Ewn1KBqWVKY"
+  },
+  {
+    "title": "How to use UNLIMITED Grok Ai Video Generator FREE | Ai Video Kaise Banaye",
+    "publishedAt": "2025-12-12T12:01:07Z",
+    "views": 208825,
+    "duration": "3:37",
+    "thumbnail": "https://i.ytimg.com/vi/VZJxKO4xVy8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=VZJxKO4xVy8"
+  },
+  {
+    "title": "Grok AI Finally Reveals Who Built The Pyramids \u2014 The Evidence Is Undeniable",
+    "publishedAt": "2026-04-27T18:15:00Z",
+    "views": 49177,
+    "duration": "20:45",
+    "thumbnail": "https://i.ytimg.com/vi/8SeAWP9Pz8E/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=8SeAWP9Pz8E"
+  },
+  {
+    "title": "Grok 5: The 6 Trillion Parameter AI That Could Change Everything",
+    "publishedAt": "2026-04-10T21:21:26Z",
+    "views": 29027,
+    "duration": "19:52",
+    "thumbnail": "https://i.ytimg.com/vi/rrov-peNLpA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=rrov-peNLpA"
+  },
+  {
+    "title": "Sam Altman's Latest Move Will Destroy The Smartphone Industry (+18 AI Updates)",
+    "publishedAt": "2026-05-04T16:36:41Z",
+    "views": 184196,
+    "duration": "18:54",
+    "thumbnail": "https://i.ytimg.com/vi/xH5ROS-t3uQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=xH5ROS-t3uQ"
+  },
+  {
+    "title": "Grok ai \ud83d\uddff-------------------------\u2620\ufe0f__#dhruvrathee #ai#grokai #aihuman",
+    "publishedAt": "2025-03-25T16:54:57Z",
+    "views": 177339,
+    "duration": "0:20",
+    "thumbnail": "https://i.ytimg.com/vi/QtBG2KgU06s/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=QtBG2KgU06s"
+  },
+  {
+    "title": "GPT-5 vs Grok 4: Who Wins the AI Showdown?",
+    "publishedAt": "2025-08-22T12:30:28Z",
+    "views": 46390,
+    "duration": "2:06",
+    "thumbnail": "https://i.ytimg.com/vi/g_DXe5nT6CE/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=g_DXe5nT6CE"
+  },
+  {
+    "title": "Ultimate Grok 4 Jailbreak Prompt: Unleash AI Power! #promptengineering #prompt #grok4",
+    "publishedAt": "2025-07-16T14:03:49Z",
+    "views": 212048,
+    "duration": "0:21",
+    "thumbnail": "https://i.ytimg.com/vi/PnuyRI-alS8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=PnuyRI-alS8"
+  },
+  {
+    "title": "Elon Musk NEW AI App \u201cGROK AI\u201d\u2728 50/100 Days of Tech stories\ud83e\udee1",
+    "publishedAt": "2025-01-15T11:47:35Z",
+    "views": 262405,
+    "duration": "0:45",
+    "thumbnail": "https://i.ytimg.com/vi/argqIXf2MUc/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=argqIXf2MUc"
+  },
+  {
+    "title": "Elon Musk's Grok AI faces global bans | 7NEWS",
+    "publishedAt": "2026-01-12T18:55:10Z",
+    "views": 24596,
+    "duration": "1:54",
+    "thumbnail": "https://i.ytimg.com/vi/szrTHR_jjEw/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=szrTHR_jjEw"
+  },
+  {
+    "title": "Grok AI Finally Reveals Who Built The Pyramids \u2014 With Proof",
+    "publishedAt": "2026-03-21T17:30:09Z",
+    "views": 199110,
+    "duration": "27:05",
+    "thumbnail": "https://i.ytimg.com/vi/MfJ3-GYdx2M/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=MfJ3-GYdx2M"
+  },
+  {
+    "title": "Elon added a \u201cSpicy\u201d mode to his AI\u2026 #c#carterpcst#techtechtok #ai #grok",
+    "publishedAt": "2025-08-12T20:01:24Z",
+    "views": 6128961,
+    "duration": "0:35",
+    "thumbnail": "https://i.ytimg.com/vi/79oEDXkSz8s/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=79oEDXkSz8s"
+  },
+  {
+    "title": "Stop Grok AI Abuse Before It Goes Too Far | Jist",
+    "publishedAt": "2026-01-04T10:27:08Z",
+    "views": 45197,
+    "duration": "9:00",
+    "thumbnail": "https://i.ytimg.com/vi/J4xB2Xud1ec/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=J4xB2Xud1ec"
+  },
+  {
+    "title": "Grok Ai Video Generator Free Unlimited \ud83d\udd25 Grok Ai se Long Video Kaise Banaye",
+    "publishedAt": "2026-04-04T14:14:00Z",
+    "views": 20473,
+    "duration": "7:04",
+    "thumbnail": "https://i.ytimg.com/vi/7iP3RKuAWIo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=7iP3RKuAWIo"
+  },
+  {
+    "title": "Grok AI model still generating sexualized content after changes",
+    "publishedAt": "2026-01-10T02:31:55Z",
+    "views": 33813,
+    "duration": "5:25",
+    "thumbnail": "https://i.ytimg.com/vi/Y3JZdJlwomE/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Y3JZdJlwomE"
+  },
+  {
+    "title": "Elon Musk\u2019s AI Power Grab is Collapsing",
+    "publishedAt": "2026-05-07T11:59:00Z",
+    "views": 17853,
+    "duration": "12:58",
+    "thumbnail": "https://i.ytimg.com/vi/dtIohCUCyCg/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=dtIohCUCyCg"
+  },
+  {
+    "title": "How to Use Grok AI in Telugu | Full Step-by-Step Tutorial 2026",
+    "publishedAt": "2026-01-30T07:57:31Z",
+    "views": 31285,
+    "duration": "25:09",
+    "thumbnail": "https://i.ytimg.com/vi/EJv8VYO0lRA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=EJv8VYO0lRA"
+  },
+  {
+    "title": "This AI Anime Girlfriend Is Too Real \ud83d\ude33 | Grok AI x Ani",
+    "publishedAt": "2025-07-17T14:03:04Z",
+    "views": 201119,
+    "duration": "0:50",
+    "thumbnail": "https://i.ytimg.com/vi/NEJSs22UI7g/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=NEJSs22UI7g"
+  },
+  {
+    "title": "Elon Musk\u2019s AI Was Asked About Jesus \u2014 Its Reply Is Going Viral for a Reason",
+    "publishedAt": "2025-10-28T10:17:54Z",
+    "views": 38075,
+    "duration": "2:43",
+    "thumbnail": "https://i.ytimg.com/vi/18omWxlBtmQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=18omWxlBtmQ"
+  },
+  {
+    "title": "Grok ai edit| Love me JMSN | Grok vs chatgpt",
+    "publishedAt": "2026-01-16T02:30:56Z",
+    "views": 400119,
+    "duration": "0:59",
+    "thumbnail": "https://i.ytimg.com/vi/v1kKp5DNwfw/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=v1kKp5DNwfw"
+  },
+  {
+    "title": "Elon Musk's X investigated by Ofcom over Grok AI sexual deepfakes | BBC News",
+    "publishedAt": "2026-01-12T14:43:30Z",
+    "views": 34775,
+    "duration": "3:09",
+    "thumbnail": "https://i.ytimg.com/vi/w-fRuMpB-rM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=w-fRuMpB-rM"
+  },
+  {
+    "title": "GROK AI ABUSING IN HINDI \ud83e\udd2c",
+    "publishedAt": "2025-03-18T06:31:54Z",
+    "views": 532980,
+    "duration": "1:29",
+    "thumbnail": "https://i.ytimg.com/vi/DljBG-ks9gQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=DljBG-ks9gQ"
+  },
+  {
+    "title": "Why Countries Are Investigating Elon Musk's X and Grok AI | Vantage with Palki Sharma",
+    "publishedAt": "2026-02-04T17:35:06Z",
+    "views": 47278,
+    "duration": "5:56",
+    "thumbnail": "https://i.ytimg.com/vi/3uyPDZ0gmsE/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=3uyPDZ0gmsE"
+  },
+  {
+    "title": "Grok 4 vs ChatGPT AI Voice: Who\u2019s the Real Winner? \ud83d\udd25",
+    "publishedAt": "2025-07-10T19:16:56Z",
+    "views": 137439,
+    "duration": "0:52",
+    "thumbnail": "https://i.ytimg.com/vi/Gq1V3Z7S9A8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Gq1V3Z7S9A8"
+  },
+  {
+    "title": "The Dark Side of Grok AI: Elon Musk\u2019s AI Sparks Global Outrage",
+    "publishedAt": "2026-01-07T14:31:38Z",
+    "views": 16272,
+    "duration": "1:40",
+    "thumbnail": "https://i.ytimg.com/vi/y_EB9WFGzuY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=y_EB9WFGzuY"
+  }
+];
+
+let currentSort = { field: 'publishedAt', order: 'desc' };  // default: newest first
+let filteredData = [...VIDEOS];
+
+function formatDate(isoString) {
+  if (!isoString) return '';
+  const d = new Date(isoString);
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function formatViews(views) {
+  return views.toLocaleString();
+}
+
+function renderTable(data) {
+  const tbody = document.querySelector('#video-table tbody');
+  tbody.innerHTML = '';
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No videos match the filters.</td></tr>';
+    return;
+  }
+  data.forEach(video => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><a href="${video.url}" target="_blank"><img src="${video.thumbnail}" alt="thumbnail" class="thumbnail" loading="lazy"></a></td>
+      <td><a href="${video.url}" target="_blank" style="text-decoration:none; color:#007bff;">${video.title}</a></td>
+      <td>${formatDate(video.publishedAt)}</td>
+      <td class="views">${formatViews(video.views)}</td>
+      <td>${video.duration}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function applyFilters() {
+  const searchText = document.getElementById('search').value.toLowerCase();
+  const dateFrom = document.getElementById('date-from').value;
+  const dateTo = document.getElementById('date-to').value;
+  const minViews = parseInt(document.getElementById('min-views').value) || 0;
+  
+  filteredData = VIDEOS.filter(v => {
+    // Search by title
+    if (searchText && !v.title.toLowerCase().includes(searchText)) return false;
+    
+    // Date range
+    if (dateFrom && v.publishedAt < dateFrom) return false;
+    if (dateTo) {
+      // Include whole day of dateTo by adding one day and comparing <
+      const nextDay = new Date(dateTo);
+      nextDay.setDate(nextDay.getDate() + 1);
+      if (v.publishedAt >= nextDay.toISOString().split('T')[0]) return false;
+    }
+    
+    // Minimum views
+    if (v.views < minViews) return false;
+    
+    return true;
+  });
+  
+  // Re-apply current sort on filtered data
+  sortData(currentSort.field, currentSort.order, true);
+}
+
+function sortData(field, order, skipToggle = false) {
+  if (!skipToggle) {
+    if (currentSort.field === field) {
+      currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort.field = field;
+      currentSort.order = 'asc';  // default asc when changing field
+    }
+  }
+  const direction = currentSort.order === 'asc' ? 1 : -1;
+  
+  filteredData.sort((a, b) => {
+    let valA, valB;
+    if (field === 'publishedAt') {
+      valA = a.publishedAt || '';
+      valB = b.publishedAt || '';
+    } else if (field === 'views') {
+      valA = a.views;
+      valB = b.views;
+    } else if (field === 'duration') {
+      // Convert "M:SS" or "H:MM:SS" to total seconds for comparison
+      const toSeconds = (str) => {
+        const parts = str.split(':').map(Number);
+        if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+        if (parts.length === 2) return parts[0]*60 + parts[1];
+        return 0;
+      };
+      valA = toSeconds(a.duration);
+      valB = toSeconds(b.duration);
+    } else if (field === 'title') {
+      valA = a.title.toLowerCase();
+      valB = b.title.toLowerCase();
+    } else if (field === 'thumbnail') {
+      // Sort by title if thumbnail column clicked (just because)
+      valA = a.title.toLowerCase();
+      valB = b.title.toLowerCase();
+    }
+    
+    if (valA < valB) return -1 * direction;
+    if (valA > valB) return 1 * direction;
+    return 0;
+  });
+  
+  renderTable(filteredData);
+  updateSortIcons();
+}
+
+function updateSortIcons() {
+  document.querySelectorAll('th').forEach(th => {
+    const field = th.dataset.sort;
+    const icon = th.querySelector('.sort-icon');
+    if (icon) {
+      if (field === currentSort.field) {
+        icon.textContent = currentSort.order === 'asc' ? ' ▲' : ' ▼';
+      } else {
+        icon.textContent = '';
+      }
+    }
+  });
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial render
+  applyFilters();
+  
+  // Add sort icons to header cells
+  document.querySelectorAll('th').forEach(th => {
+    const icon = document.createElement('span');
+    icon.className = 'sort-icon';
+    th.appendChild(icon);
+  });
+  
+  // Sort click handlers
+  document.querySelectorAll('th').forEach(th => {
+    th.addEventListener('click', () => {
+      const field = th.dataset.sort;
+      if (field) {
+        sortData(field, null);
+      }
+    });
+  });
+  
+  // Filter events
+  document.getElementById('search').addEventListener('input', applyFilters);
+  document.getElementById('date-from').addEventListener('change', applyFilters);
+  document.getElementById('date-to').addEventListener('change', applyFilters);
+  document.getElementById('min-views').addEventListener('input', applyFilters);
+  
+  // Reset
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    document.getElementById('search').value = '';
+    document.getElementById('date-from').value = '';
+    document.getElementById('date-to').value = '';
+    document.getElementById('min-views').value = '';
+    applyFilters();
+  });
+  
+  updateSortIcons();
+});
+</script>
+</body>
+</html>

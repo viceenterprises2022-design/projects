@@ -1,0 +1,10 @@
+# Core
+python-dotenv
+pyyaml
+
+# API
+requests
+
+# Testing
+pytest
+pytest-asyncio
