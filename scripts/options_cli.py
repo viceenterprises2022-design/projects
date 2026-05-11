@@ -140,10 +140,10 @@ def get_ohlc_flags(ohlc):
 def format_oi(n):
     """Format OI to Lakhs (L) or Crores (C)."""
     if n >= 10000000:
-        return f"{n/10000000:6.2f}C"
+        return f"{n/10000000:5.2f}C"
     if n >= 100000:
-        return f"{n/100000:6.2f}L"
-    return f"{n:7.0f}"
+        return f"{n/100000:5.2f}L"
+    return f"{n:6.0f}"
 
 def print_row(strike, ce_data, pe_data, is_atm=False):
     marker = ">> " if is_atm else "   "
@@ -157,23 +157,24 @@ def print_row(strike, ce_data, pe_data, is_atm=False):
         
         # Strategy Coloring
         flags = get_ohlc_flags(ohlc)
-        o_s = f"{o:7.2f}"
+        o_s = f"{o:6.1f}"
         if "OL" in flags: o_s = f"{G}{o_s}{W}" if is_ce else f"{R}{o_s}{W}"
         if "OH" in flags: o_s = f"{R}{o_s}{W}" if is_ce else f"{G}{o_s}{W}"
         
         f_tags = []
-        if "OL" in flags: f_tags.append(f"{G}[OL]{W}" if is_ce else f"{R}[OL]{W}")
-        if "OH" in flags: f_tags.append(f"{R}[OH]{W}" if is_ce else f"{G}[OH]{W}")
-        f_tag_str = " ".join(f_tags)
+        if "OL" in flags: f_tags.append(f"{G}OL{W}" if is_ce else f"{R}OL{W}")
+        if "OH" in flags: f_tags.append(f"{R}OH{W}" if is_ce else f"{G}OH{W}")
+        f_tag_str = "|".join(f_tags)
         
-        return o_s, f"{h:7.2f}", f"{l:7.2f}", f"{c:7.2f}", f"{ltp:8.2f}", f"{oi:>8}", f_tag_str
+        return o_s, f"{h:6.1f}", f"{l:6.1f}", f"{c:6.1f}", f"{ltp:7.2f}", f"{oi:>6}", f_tag_str
 
     co, ch, cl, cc, cltp, coi, cf = get_cols(ce_data, True)
     po, ph, pl, pc, pltp, poi, pf = get_cols(pe_data, False)
     
     # CE Side | Strike | PE Side
-    cf_col = pad_colored(cf, 11, 'left')
-    print(f"{marker}{cf_col} | {co} {ch} {cl} {cc} | {cltp} | {coi} | {strike:8.0f} | {poi} | {pltp} | {po} {ph} {pl} {pc} | {pf}")
+    cf_col = pad_colored(cf, 5, 'left')
+    pf_col = pad_colored(pf, 5, 'left')
+    print(f"{marker}{cf_col}|{co} {ch} {cl} {cc}|{cltp}|{coi}|{strike:6.0f}|{poi}|{pltp}|{po} {ph} {pl} {pc}|{pf_col}")
 
 # ── Main Loop ─────────────────────────────────────────────────────────────────
 
@@ -185,9 +186,9 @@ def main():
             os.system('clear' if os.name == 'posix' else 'cls')
             ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
-            print("=" * 155)
+            print("=" * 107)
             print(f" LIVE MULTI-INDEX OPTIONS DASHBOARD | {ts}")
-            print("=" * 155)
+            print("=" * 107)
 
             # 1. Batch Fetch Spot & Fut for all indices
             sf_keys = []
@@ -242,10 +243,10 @@ def main():
             # 4. Display
             for idx in all_index_data:
                 name, spot, fut, expiry = idx["inst"]["name"], idx["spot"], idx["fut"], idx["expiry"]
-                print(f"\n>>> {name} | SPOT: {spot:10.2f} | FUT: {fut:10.2f} | Expiry: {expiry}")
-                print("-" * 155)
-                print(f"   {'FLAGS':<11} | {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | {'CE LTP':>8} | {'CE OI':>8} | {'STRIKE':>8} | {'PE OI':>8} | {'PE LTP':>8} | {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | FLAGS")
-                print("-" * 155)
+                print(f"\n>>> {name} | SPOT: {spot:8.2f} | FUT: {fut:8.2f} | Exp: {expiry}")
+                print("-" * 107)
+                print(f"   FLAGS|  OPEN  HIGH   LOW CLOSE| CE LTP| CE OI|STRIKE| PE OI| PE LTP|  OPEN  HIGH   LOW CLOSE|FLAGS")
+                print("-" * 107)
 
                 snapshot_rows = []
                 for strike in idx["target_strikes"]:
@@ -263,7 +264,7 @@ def main():
 
                 save_to_db(conn, ts, name, spot, snapshot_rows)
 
-            print("\n" + "=" * 155)
+            print("\n" + "=" * 107)
             print("Polling every 5s (Batch Mode). Press Ctrl+C to exit.")
             time.sleep(5)
 

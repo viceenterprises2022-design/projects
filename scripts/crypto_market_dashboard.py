@@ -75,45 +75,86 @@ def get_binance_fut(symbol):
         }
     return None
 
+def get_option_ohlc_deribit(instrument_name):
+    """Fetch real OHLC for an instrument from Deribit."""
+    now = int(time.time() * 1000)
+    start = now - (24 * 3600 * 1000)
+    data = fetch_json(f"{DERIBIT_URL}/get_tradingview_chart_data", {
+        "instrument_name": instrument_name,
+        "start_timestamp": start,
+        "end_timestamp": now,
+        "resolution": "1D"
+    })
+    if data and data.get("result", {}).get("status") == "ok":
+        r = data["result"]
+        if r.get("open"):
+            # Return last candle
+            return {"o": r["open"][-1], "h": r["high"][-1], "l": r["low"][-1], "c": r["close"][-1]}
+    return None
+
 def get_deribit_options(symbol, spot_price):
     # 1. Get Summary for the currency
     summary = fetch_json(f"{DERIBIT_URL}/get_book_summary_by_currency", {"currency": symbol, "kind": "option"})
     if not summary: return None
     
     # 2. Extract unique expiries and find nearest
-    instruments = [s.get("instrument_name") for s in summary.get("result", [])]
-    # Name format: BTC-27JUN25-90000-C
+    results = summary.get("result", [])
+    if not results: return None
+    
+    instruments = [s.get("instrument_name") for s in results]
     
     def parse_expiry(name):
         parts = name.split('-')
-        if len(parts) < 2: return "99999999"
-        return parts[1] # e.g. 27JUN25
+        return parts[1] if len(parts) > 1 else "99999999"
         
     unique_expiries = sorted(list(set([parse_expiry(i) for i in instruments])))
-    if not unique_expiries: return None
     nearest_exp = unique_expiries[0]
     
     # 3. Filter for nearest expiry and find ATM strike
-    nearest_data = [s for s in summary.get("result", []) if nearest_exp in s.get("instrument_name")]
+    nearest_data = [s for s in results if nearest_exp in s.get("instrument_name")]
     
     def get_strike(name):
         parts = name.split('-')
         return float(parts[2]) if len(parts) > 2 else 0
         
     strikes = sorted(list(set([get_strike(s.get("instrument_name")) for s in nearest_data])))
-    if not strikes: return None
     atm_strike = min(strikes, key=lambda x: abs(x - spot_price))
     
-    # 4. Get CE and PE details
-    ce_data = next((s for s in nearest_data if f"-{int(atm_strike)}-C" in s.get("instrument_name")), None)
-    pe_data = next((s for s in nearest_data if f"-{int(atm_strike)}-P" in s.get("instrument_name")), None)
+    # 4. Get CE and PE names
+    ce_name = next((s.get("instrument_name") for s in nearest_data if f"-{int(atm_strike)}-C" in s.get("instrument_name")), None)
+    pe_name = next((s.get("instrument_name") for s in nearest_data if f"-{int(atm_strike)}-P" in s.get("instrument_name")), None)
     
-    return {
-        "expiry": nearest_exp,
-        "strike": atm_strike,
-        "ce": ce_data,
-        "pe": pe_data
-    }
+    # 5. Fetch OHLC and merge with summary
+    res = {"expiry": nearest_exp, "strike": atm_strike, "ce": None, "pe": None}
+    
+    for side, name in [("ce", ce_name), ("pe", pe_name)]:
+        if not name: continue
+        s_data = next((s for s in nearest_data if s.get("instrument_name") == name), {})
+        ohlc = get_option_ohlc_deribit(name)
+        
+        # Convert to USD if available
+        u_price = s_data.get("underlying_index", spot_price)
+        
+        def to_usd(val): return val * u_price if val else 0
+        
+        if ohlc:
+            res[side] = {
+                "o": to_usd(ohlc["o"]), "h": to_usd(ohlc["h"]), "l": to_usd(ohlc["l"]), "c": to_usd(ohlc["c"]),
+                "oi": s_data.get("open_interest", 0),
+                "ltp": to_usd(s_data.get("last", 0))
+            }
+        else:
+            # Fallback to summary if no candle
+            res[side] = {
+                "o": to_usd(s_data.get("last", 0)), # Approximation
+                "h": to_usd(s_data.get("high", 0)),
+                "l": to_usd(s_data.get("low", 0)),
+                "c": to_usd(s_data.get("last", 0)),
+                "oi": s_data.get("open_interest", 0),
+                "ltp": to_usd(s_data.get("last", 0))
+            }
+            
+    return res
 
 # ── Main Loop ─────────────────────────────────────────────────────────────────
 
@@ -150,21 +191,13 @@ def main():
             if opt:
                 print(f"  {'OPTIONS':<10} | Expiry: {opt['expiry']} | ATM Strike: {opt['strike']}")
                 
-                # CE
-                if opt['ce']:
-                    c = opt['ce']
-                    print(format_ohlc_row("CALL (CE)", c.get("open_low",0), c.get("high",0), c.get("low",0), c.get("last",0), 
-                                          f"OI: {c.get('open_interest',0):,.1f} | LTP: {c.get('last',0)}", True))
-                else:
-                    print(f"  {'CALL (CE)':<10} | No Data")
-                    
-                # PE
-                if opt['pe']:
-                    p = opt['pe']
-                    print(format_ohlc_row("PUT (PE)", p.get("open_low",0), p.get("high",0), p.get("low",0), p.get("last",0), 
-                                          f"OI: {p.get('open_interest',0):,.1f} | LTP: {p.get('last',0)}", False))
-                else:
-                    print(f"  {'PUT (PE)':<10} | No Data")
+                for side, label, bias in [("ce", "CALL (CE)", True), ("pe", "PUT (PE)", False)]:
+                    d = opt[side]
+                    if d:
+                        print(format_ohlc_row(label, d['o'], d['h'], d['l'], d['c'], 
+                                              f"OI: {d['oi']:,.1f} | LTP: ${d['ltp']:.2f}", bias))
+                    else:
+                        print(f"  {label:<10} | No Data")
 
         print("\n" + "=" * 125)
         print("Polling every 15s. Press Ctrl+C to exit.")
