@@ -1,0 +1,23 @@
+<h2>Trading Style & Data Fidelity</h2>
+<p class="subtitle">A, C, and D require significant bandwidth. How do you plan to use this?</p>
+
+<div class="options">
+  <div class="option" data-choice="scalp" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Active Scalping / Day Trading</h3>
+      <p>Needs < 5s updates. Focus on CVD, Liquidations, and Order Book walls to catch immediate moves.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="swing" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Swing / Positional Analysis</h3>
+      <p>Needs 1m - 5m updates. Focus on macro correlations, funding trends, and major liquidity pools.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <p>Your choice here dictates the architecture (Websockets vs. REST) and the potential cost/complexity of data providers.</p>
+</div>
