@@ -22,10 +22,10 @@ def make_layout() -> Layout:
     )
     return layout
 
-def render_header() -> Panel:
+def render_header(refresh_in: int) -> Panel:
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return Panel(
-        Align.center(f"[bold cyan]AlphaEdge Crypto Diagnostic 2.0[/] | [white]{now}[/]", vertical="middle"),
+        Align.center(f"[bold cyan]AlphaEdge Crypto Diagnostic 2.0[/] | [white]{now}[/] | Refresh in: [bold yellow]{refresh_in}s[/]", vertical="middle"),
         style="blue",
         box=box.ROUNDED
     )
@@ -41,15 +41,21 @@ def render_macro() -> Panel:
 
 def render_ticker(symbol: str) -> Panel:
     # Header: [SYM] | Spot: [price] | Fut: [price] ([change]%) | Sig: [NEUTRAL/BULL/BEAR] ([score]/10)
-    summary = f"[bold yellow]{symbol}[/] | Spot: 65200 | Fut: 65150 (-0.05%) | Sig: [green]BULL[/] (7/10)"
+    data = {
+        "BTC": {"spot": 98450.2, "fut": 98520.5, "chg": "+0.07", "sig": "[green]BULL[/]", "score": 8, "trend": "[green]UP[/]", "rsi": 62.5, "st": "[green]BUY[/]", "vwap": "+1.2%"},
+        "ETH": {"spot": 2680.4, "fut": 2675.1, "chg": "-0.20", "sig": "[yellow]NEUTRAL[/]", "score": 5, "trend": "[yellow]SIDE[/]", "rsi": 48.2, "st": "[yellow]HOLD[/]", "vwap": "-0.1%"},
+        "SOL": {"spot": 185.3, "fut": 186.1, "chg": "+0.43", "sig": "[green]BULL[/]", "score": 9, "trend": "[green]UP[/]", "rsi": 71.8, "st": "[green]BUY[/]", "vwap": "+2.5%"}
+    }.get(symbol, {"spot": 0, "fut": 0, "chg": "0", "sig": "N/A", "score": 0, "trend": "N/A", "rsi": 0, "st": "N/A", "vwap": "0%"})
+
+    summary = f"[bold yellow]{symbol}[/] | Spot: {data['spot']:,} | Fut: {data['fut']:,} ({data['chg']}%) | Sig: {data['sig']} ({data['score']}/10)"
     
     table = Table(show_header=True, header_style="bold cyan", box=box.SIMPLE, expand=True)
     table.add_column("INDICATOR", style="dim")
     table.add_column("VALUE", justify="right")
-    table.add_row("TREND", "[green]UP[/]")
-    table.add_row("RSI (14)", "58.2")
-    table.add_row("SUPERTREND", "[green]BUY[/]")
-    table.add_row("VWAP DIST", "+0.45%")
+    table.add_row("TREND", data['trend'])
+    table.add_row("RSI (14)", f"{data['rsi']:.1f}")
+    table.add_row("SUPERTREND", data['st'])
+    table.add_row("VWAP DIST", data['vwap'])
     
     return Panel(table, title=summary, border_style="cyan")
 
@@ -57,15 +63,27 @@ def main():
     console = Console()
     layout = make_layout()
     
+    refresh_interval = 30
+    counter = 0
+    
     with Live(layout, console=console, screen=True, refresh_per_second=1) as live:
         try:
             while True:
-                layout["header"].update(render_header())
-                layout["macro"].update(render_macro())
-                layout["BTC"].update(render_ticker("BTC"))
-                layout["ETH"].update(render_ticker("ETH"))
-                layout["SOL"].update(render_ticker("SOL"))
-                time.sleep(30)
+                # Calculate countdown
+                refresh_in = refresh_interval - (counter % refresh_interval)
+                
+                # Update header every second
+                layout["header"].update(render_header(refresh_in))
+                
+                # Update data only every 30 seconds (or on first run)
+                if counter % refresh_interval == 0:
+                    layout["macro"].update(render_macro())
+                    layout["BTC"].update(render_ticker("BTC"))
+                    layout["ETH"].update(render_ticker("ETH"))
+                    layout["SOL"].update(render_ticker("SOL"))
+                
+                time.sleep(1)
+                counter += 1
         except KeyboardInterrupt:
             pass
 
