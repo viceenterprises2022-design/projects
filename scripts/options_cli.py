@@ -14,9 +14,9 @@ UH = {"Authorization": f"Bearer {UPSTOX_TOKEN}", "Accept": "application/json"}
 DB_PATH = Path(__file__).parent / "intraday_options_cli.db"
 
 INSTRUMENTS = {
-    1: {"name": "NIFTY",     "key": "NSE_INDEX|Nifty 50",   "exch": "NSE_FO", "step": 50},
-    2: {"name": "SENSEX",    "key": "BSE_INDEX|SENSEX",     "exch": "BSE_FO", "step": 100},
-    3: {"name": "BANKNIFTY", "key": "NSE_INDEX|Nifty Bank", "exch": "NSE_FO", "step": 100}
+    1: {"name": "NIFTY",     "key": "NSE_INDEX|Nifty 50",   "fut_key": "NSE_FO|66071",  "exch": "NSE_FO", "step": 50},
+    2: {"name": "SENSEX",    "key": "BSE_INDEX|SENSEX",     "fut_key": "BSE_FO|870220", "exch": "BSE_FO", "step": 100},
+    3: {"name": "BANKNIFTY", "key": "NSE_INDEX|Nifty Bank", "fut_key": "NSE_FO|66068",  "exch": "NSE_FO", "step": 100}
 }
 
 def get_futures_key(name, exch):
