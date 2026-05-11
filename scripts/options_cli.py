@@ -135,33 +135,29 @@ def print_row(strike, ce_data, pe_data, is_atm=False):
     marker = ">> " if is_atm else "   "
     G, R, W = "\033[92m", "\033[91m", "\033[0m" # Green, Red, Reset
     
-    def fmt_ohlc(d, is_ce):
+    def get_cols(d, is_ce):
         ohlc = d.get("ohlc") or {}
-        o, h, l = ohlc.get("open", 0), ohlc.get("high", 0), ohlc.get("low", 0)
-        if not o: return f"{'0/0/0':>20}"
+        o, h, l, c = ohlc.get("open", 0), ohlc.get("high", 0), ohlc.get("low", 0), ohlc.get("close", 0)
+        ltp = d.get("ltp", 0)
+        oi = format_oi(d.get("oi", 0))
         
+        # Strategy Coloring
         flags = get_ohlc_flags(ohlc)
-        f_str = ""
-        if "OL" in flags:
-            # OL on CE is Bullish, OL on PE is Bearish
-            f_str = f" {G}[OL]{W}" if is_ce else f" {R}[OL]{W}"
-        elif "OH" in flags:
-            # OH on CE is Bearish, OH on PE is Bullish
-            f_str = f" {R}[OH]{W}" if is_ce else f" {G}[OH]{W}"
-            
-        return f"{o:g}/{h:g}/{l:g}{f_str}"
+        o_s = f"{o:7.2f}"
+        if "OL" in flags: o_s = f"{G}{o_s}{W}" if is_ce else f"{R}{o_s}{W}"
+        if "OH" in flags: o_s = f"{R}{o_s}{W}" if is_ce else f"{G}{o_s}{W}"
+        
+        f_tag = ""
+        if "OL" in flags: f_tag = f"{G}[OL]{W}" if is_ce else f"{R}[OL]{W}"
+        if "OH" in flags: f_tag = f"{R}[OH]{W}" if is_ce else f"{G}[OH]{W}"
+        
+        return o_s, f"{h:7.2f}", f"{l:7.2f}", f"{c:7.2f}", f"{ltp:8.2f}", f"{oi:>8}", f_tag
 
-    c_ohlc = fmt_ohlc(ce_data, True)
-    p_ohlc = fmt_ohlc(pe_data, False)
-    c_oi = format_oi(ce_data.get("oi", 0))
-    p_oi = format_oi(pe_data.get("oi", 0))
+    co, ch, cl, cc, cltp, coi, cf = get_cols(ce_data, True)
+    po, ph, pl, pc, pltp, poi, pf = get_cols(pe_data, False)
     
-    # Pad c_ohlc to 20 chars manually for color support alignment
-    c_raw_len = len(f"{ce_data.get('ohlc',{}).get('open',0):g}/{ce_data.get('ohlc',{}).get('high',0):g}/{ce_data.get('ohlc',{}).get('low',0):g}")
-    if "[OL]" in c_ohlc or "[OH]" in c_ohlc: c_raw_len += 5
-    c_pad = " " * (20 - c_raw_len)
-    
-    print(f"{marker}{c_pad}{c_ohlc} | {ce_data.get('ltp',0):10.2f} | {c_oi:>9} | {strike:8} | {p_oi:>9} | {pe_data.get('ltp',0):10.2f} | {p_ohlc}")
+    # CE Side | Strike | PE Side
+    print(f"{marker}{co} {ch} {cl} {cc} | {cltp} | {coi} | {strike:8.0f} | {poi} | {pltp} | {po} {ph} {pl} {pc} | {cf} {pf}")
 
 # ── Main Loop ─────────────────────────────────────────────────────────────────
 
@@ -173,9 +169,9 @@ def main():
             os.system('clear' if os.name == 'posix' else 'cls')
             ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
-            print("=" * 110)
+            print("=" * 135)
             print(f" LIVE MULTI-INDEX OPTIONS DASHBOARD | {ts}")
-            print("=" * 110)
+            print("=" * 135)
 
             # 1. Batch Fetch Spot & Fut for all indices
             sf_keys = []
@@ -231,9 +227,9 @@ def main():
             for idx in all_index_data:
                 name, spot, fut, expiry = idx["inst"]["name"], idx["spot"], idx["fut"], idx["expiry"]
                 print(f"\n>>> {name} | SPOT: {spot:10.2f} | FUT: {fut:10.2f} | Expiry: {expiry}")
-                print("-" * 110)
-                print(f"   {'CE OPEN/HI/LO':>20} | {'CE LTP':>10} | {'CE OI':>9} | {'STRIKE':>8} | {'PE OI':>9} | {'PE LTP':>10} | {'PE OPEN/HI/LO':<20}")
-                print("-" * 110)
+                print("-" * 135)
+                print(f"   {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | {'CE LTP':>8} | {'CE OI':>8} | {'STRIKE':>8} | {'PE OI':>8} | {'PE LTP':>8} | {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | FLAGS")
+                print("-" * 135)
 
                 snapshot_rows = []
                 for strike in idx["target_strikes"]:
