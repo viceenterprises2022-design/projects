@@ -229,9 +229,9 @@ def main():
             for idx in all_index_data:
                 name, spot, fut, expiry = idx["inst"]["name"], idx["spot"], idx["fut"], idx["expiry"]
                 print(f"\n>>> {name} | SPOT: {spot:10.2f} | FUT: {fut:10.2f} | Expiry: {expiry}")
-                print("-" * 135)
-                print(f"   {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | {'CE LTP':>8} | {'CE OI':>8} | {'STRIKE':>8} | {'PE OI':>8} | {'PE LTP':>8} | {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | FLAGS")
-                print("-" * 135)
+                print("-" * 155)
+                print(f"   {'FLAGS':<11} | {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | {'CE LTP':>8} | {'CE OI':>8} | {'STRIKE':>8} | {'PE OI':>8} | {'PE LTP':>8} | {'OPEN':>7} {'HIGH':>7} {'LOW':>7} {'CLOSE':>7} | FLAGS")
+                print("-" * 155)
 
                 snapshot_rows = []
                 for strike in idx["target_strikes"]:
