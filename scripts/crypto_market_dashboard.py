@@ -15,7 +15,7 @@ from rich.columns import Columns
 from rich.box import ROUNDED, DOUBLE_EDGE
 
 # ── Config ────────────────────────────────────────────────────────────────────
-SYMBOLS = ["BTC", "ETH"]
+SYMBOLS = ["BTC", "ETH", "SOL"]
 POLL_INTERVAL = 30 # Seconds
 
 # API Endpoints
@@ -315,6 +315,15 @@ def get_indicators_table(symbol, binance, deribit, macro):
         s = -1 if chg > 1.0 else 1 if chg < -1.0 else 0
         table.add_row("CRUDE", f"{'SURGING' if chg > 1.0 else 'FALLING' if chg < -1.0 else 'STABLE'} ({chg:+.2f}%)", f"{s:+d}")
         
+    if macro["VIX"]:
+        val = macro["VIX"]["ltp"]
+        s = 0
+        if val < 13: s, status = 1, "CALM"
+        elif val <= 17: s, status = 1, "STABLE"
+        elif val <= 21: s, status = 0, "CAUTION"
+        else: s, status = -1, "FEAR"
+        table.add_row("VIX (US)", f"{status} ({val:.2f})", f"{s:+d}")
+
     if deribit:
         pcr = deribit["pcr"]
         s = 1 if pcr > 1.1 else -1 if pcr < 0.7 else 0
