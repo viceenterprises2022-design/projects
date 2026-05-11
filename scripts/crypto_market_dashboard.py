@@ -133,7 +133,7 @@ def get_deribit_options(symbol, spot_price):
         ohlc = get_option_ohlc_deribit(name)
         
         # Convert to USD if available
-        u_price = s_data.get("underlying_index", spot_price)
+        u_price = s_data.get("underlying_price", spot_price)
         
         def to_usd(val): return val * u_price if val else 0
         
