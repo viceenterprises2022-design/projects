@@ -5,6 +5,7 @@ import time
 import sqlite3
 import os
 import sys
+import re
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -28,6 +29,19 @@ def get_futures_key(name, exch):
     year_short = now.strftime("%y")
     month_upper = now.strftime("%b").upper()
     return f"{exch}|{name}{year_short}{month_upper}FUT"
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+def strip_ansi(text):
+    """Remove ANSI escape sequences for length calculation."""
+    return re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])').sub('', text)
+
+def pad_colored(text, width, align='left'):
+    """Pad a string containing ANSI color codes correctly."""
+    visible_len = len(strip_ansi(text))
+    padding = " " * max(0, width - visible_len)
+    if align == 'left': return text + padding
+    return padding + text
 
 # ── Database Logic ────────────────────────────────────────────────────────────
 
@@ -158,7 +172,7 @@ def print_row(strike, ce_data, pe_data, is_atm=False):
     po, ph, pl, pc, pltp, poi, pf = get_cols(pe_data, False)
     
     # CE Side | Strike | PE Side
-    cf_col = f"{cf:<11}" if cf else " " * 11
+    cf_col = pad_colored(cf, 11, 'left')
     print(f"{marker}{cf_col} | {co} {ch} {cl} {cc} | {cltp} | {coi} | {strike:8.0f} | {poi} | {pltp} | {po} {ph} {pl} {pc} | {pf}")
 
 # ── Main Loop ─────────────────────────────────────────────────────────────────
