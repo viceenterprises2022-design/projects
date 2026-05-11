@@ -1,0 +1,91 @@
+╭─────────────────────────────────╮
+│ ⚡ ALPHAEDGE MARKET DIAGNOSTICS │
+│ Professional Terminal — v3      │
+╰─────────────────────────────────╯
+───────────────────────────── Live Market Snapshot ─────────────────────────────
+  NIFTY 23,997.55 (+0.00%)   │   BANKNIFTY 54,863.35 (+0.00%)   │   SENSEX 
+76,913.50 (+0.00%)
+
+  [1] NIFTY 50
+  [2] BANKNIFTY
+  [3] SENSEX
+   Quit
+
+  Select: ╭──────────────────── ⚡ AlphaEdge Diagnostics: BANKNIFTY ─────────────────────╮
+│ LTP: 54,863.35 (+0.00%)  |  PCR: 1.44  |  Max Pain: 55,000.0  |  DTE: 23d    │
+│ (2026-05-26)  |  Signal: NEUTRAL (1/10)                                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+────────────────────────── 10-Factor Technical Model ───────────────────────────
+                                                                                
+  Indicator                  Status               Detail                Score   
+ ────────────────────────────────────────────────────────────────────────────── 
+  1. Trend (EMA 20/50/200)   MILD DOWNTREND       EMA20=59,776 |          -1    
+                                                  EMA50=57,540 |                
+                                                  EMA200=56,987                 
+  2. Dow Jones (US30)        BEARISH (-0.31%)     DJIA Fut: 49,499        -1    
+  3. India VIX               ELEVATED (18.46) —   Chg: +0.00%              0    
+                             Caution                                            
+  4. Open Interest           PUT HEAVY —          Calls:13.7L |           +1    
+                             Support strong       Puts:19.7L |                  
+                                                  Exp:2026-05-26                
+  5. VWAP                    N/A                  No volume data           0    
+  6. Supertrend              BULLISH              ATR(10) × 3             +1    
+                             (Sup≈55,652)                                       
+  7. RSI (14)                BEARISH ZONE         RSI(14) Daily           -1    
+                             (27.7)                                             
+  8. US Dollar (DXY)         STABLE (+0.13%)      DXY: 98.210              0    
+  9. Crude Oil (WTI)         CRASHING (-2.98%)    WTI: $101.94            +1    
+  10. Put-Call Ratio         BULLISH — PCR 1.44   Max Pain: 55,000 |      +1    
+                             (above 1.3)          Total PCR: 1.44               
+                                                                                
+──── Option Chain — Expiry: 2026-05-26  |  DTE: 23d  |  Max Pain: 55,000.0 ─────
+                                                                               
+   C.LTP   C.IV%   C.OI   C.ΔOI     STRIKE      P.ΔOI   P.OI   P.IV%    P.LTP  
+ ───────────────────────────────────────────────────────────────────────────── 
+  1706.8       —   0.2L       —    54,400.0     —       0.3L       —    798.6  
+  1633.3       —   0.9L       —    54,500.0     —       2.1L       —    826.0  
+  1578.2       —   0.3L       —    54,600.0     —       0.5L       —    864.5  
+  1495.9       —   0.3L       —    54,700.0     —       0.4L       —    901.0  
+  1455.8       —   0.3L       —    54,800.0     —       0.6L       —    940.0  
+  1397.5       —   0.4L       —   ►54,900.0◄    —       0.5L       —    978.5  
+  1317.0       —   4.5L       —   55,000.0 MP   —       5.5L       —   1025.0  
+  1265.0       —   0.2L       —    55,100.0     —       0.2L       —   1065.4  
+  1215.2       —   0.7L       —    55,200.0     —       0.4L       —   1106.8  
+  1158.0       —   0.4L       —    55,300.0     —       0.4L       —   1153.9  
+                                                                               
+───────────────────────────── Market Intelligence ──────────────────────────────
+╭───────────────────────────────────────────────────────────╮
+│  PCR          1.44 (Bullish)                              │
+│  Max Pain     55,000.0  (+137 from spot)                  │
+│  OI Buildup   Neutral                                     │
+│               No clear buildup                            │
+│  Total Calls  13.7L                                       │
+│  Total Puts   19.7L                                       │
+│  IV Skew      +0.0% (Balanced)                            │
+╰───────────────────────────────────────────────────────────╯
+╭───────────────────────────────────────────────────────────╮
+│  Key Resistance     55,000.0, 55,500.0, 54,000.0          │
+│  Key Support        55,000.0, 54,000.0, 55,500.0          │
+│                                                           │
+│  Resistance Detail                                        │
+│    55,000.0         Call OI: 4.5L  IV: 0.0%  LTP: 1317.0  │
+│    55,500.0         Call OI: 1.8L  IV: 0.0%  LTP: 1060.5  │
+│    54,000.0         Call OI: 1.2L  IV: 0.0%  LTP: 1980.0  │
+│                                                           │
+│  Support Detail                                           │
+│    55,000.0         Put OI: 5.5L  IV: 0.0%  LTP: 1025.0   │
+│    54,000.0         Put OI: 4.1L  IV: 0.0%  LTP: 670.0    │
+│    55,500.0         Put OI: 2.2L  IV: 0.0%  LTP: 1241.3   │
+╰───────────────────────────────────────────────────────────╯
+───────────────────────── Trending OI (Intraday Pulse) ─────────────────────────
+                                                                                
+  T…      LTP   Chng Cal…   Chng Pu…   Diff i…   …   Chng in…   Net …   Senti…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  0…   54,86…           0          0   597,990   —          0    1.44   Bulli…  
+  0…   54,86…           0          0   597,990   —          0    1.44   Bulli…  
+  0…   54,86…           0          0   597,990   —          0    1.44   Bulli…  
+                                                                                
+
+   Refresh  │   Back to menu  │   Quit
+
+  Command [r/b/q]:   Goodbye.

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@claude - Video Dashboard</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 20px; background: #f9f9f9; color: #333; }
+  h1 { margin-bottom: 0.2em; }
+  .filters { display: flex; flex-wrap: wrap; gap: 15px; margin: 15px 0; align-items: center; }
+  .filters label { font-weight: 600; }
+  input, button { padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9em; }
+  button { background: #007bff; color: white; border: none; cursor: pointer; }
+  button:hover { background: #0056b3; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  th, td { padding: 10px 12px; text-align: left; }
+  th { background: #007bff; color: white; cursor: pointer; user-select: none; position: sticky; top: 0; }
+  th:hover { background: #0056b3; }
+  th .sort-icon { margin-left: 4px; font-size: 0.8em; }
+  tr:nth-child(even) { background: #f2f2f2; }
+  tr:hover { background: #e6f0ff; }
+  .thumbnail { width: 120px; height: 68px; object-fit: cover; border-radius: 4px; }
+  .views { font-weight: 600; }
+  .search-box { flex-grow: 1; }
+  #reset-filters { background: #6c757d; }
+  #reset-filters:hover { background: #545b62; }
+</style>
+</head>
+<body>
+<h1>YouTube Video Dashboard: @claude</h1>
+<p>Total videos: 67</p>
+
+<div class="filters">
+  <div class="search-box">
+    <label for="search">🔍 Search title:</label>
+    <input type="text" id="search" placeholder="Type to filter..." style="width:250px;">
+  </div>
+  <div>
+    <label for="date-from">From:</label>
+    <input type="date" id="date-from">
+  </div>
+  <div>
+    <label for="date-to">To:</label>
+    <input type="date" id="date-to">
+  </div>
+  <div>
+    <label for="min-views">Min views:</label>
+    <input type="number" id="min-views" placeholder="0" style="width:100px;" min="0">
+  </div>
+  <button id="reset-filters">Reset Filters</button>
+</div>
+
+<table id="video-table">
+  <thead>
+    <tr>
+      <th data-sort="thumbnail">Thumbnail</th>
+      <th data-sort="title">Title</th>
+      <th data-sort="publishedAt">Upload Date</th>
+      <th data-sort="views">Views</th>
+      <th data-sort="duration">Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Data will be rendered here by JavaScript -->
+  </tbody>
+</table>
+
+<script>
+// Video data directly embedded from the API fetch
+const VIDEOS = [
+  {
+    "title": "Claude FM \ud83c\udfb5 music for thinking and building",
+    "publishedAt": "2026-05-09T20:09:07Z",
+    "views": 30632,
+    "duration": "P0D",
+    "thumbnail": "https://i.ytimg.com/vi/YmQ7jRgf4f0/mqdefault_live.jpg",
+    "url": "https://www.youtube.com/watch?v=YmQ7jRgf4f0"
+  },
+  {
+    "title": "MCP in Claude Code",
+    "publishedAt": "2026-05-09T16:02:16Z",
+    "views": 58129,
+    "duration": "3:37",
+    "thumbnail": "https://i.ytimg.com/vi/kkBFmwkDzdo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=kkBFmwkDzdo"
+  },
+  {
+    "title": "The expanding toolkit",
+    "publishedAt": "2026-05-08T20:21:38Z",
+    "views": 5713,
+    "duration": "21:23",
+    "thumbnail": "https://i.ytimg.com/vi/KLCuxMDZSDg/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=KLCuxMDZSDg"
+  },
+  {
+    "title": "The capability curve",
+    "publishedAt": "2026-05-08T18:51:13Z",
+    "views": 6180,
+    "duration": "15:05",
+    "thumbnail": "https://i.ytimg.com/vi/tP4MGcJ80Y0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=tP4MGcJ80Y0"
+  },
+  {
+    "title": "Building with Claude Managed Agents and Asana AI teammates",
+    "publishedAt": "2026-05-08T18:50:14Z",
+    "views": 3236,
+    "duration": "24:57",
+    "thumbnail": "https://i.ytimg.com/vi/BrpB-h1e--k/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=BrpB-h1e--k"
+  },
+  {
+    "title": "Running an AI-native engineering org",
+    "publishedAt": "2026-05-08T18:50:11Z",
+    "views": 18932,
+    "duration": "28:38",
+    "thumbnail": "https://i.ytimg.com/vi/igO8iyca2_g/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=igO8iyca2_g"
+  },
+  {
+    "title": "The thinking lever",
+    "publishedAt": "2026-05-08T18:50:07Z",
+    "views": 6821,
+    "duration": "24:02",
+    "thumbnail": "https://i.ytimg.com/vi/OXJO4LldSnc/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=OXJO4LldSnc"
+  },
+  {
+    "title": "Building with Claude on Google Cloud",
+    "publishedAt": "2026-05-08T18:50:04Z",
+    "views": 3272,
+    "duration": "26:30",
+    "thumbnail": "https://i.ytimg.com/vi/SqHsS737CeA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=SqHsS737CeA"
+  },
+  {
+    "title": "Evaluating and improving Replit Agent at scale",
+    "publishedAt": "2026-05-08T18:50:01Z",
+    "views": 983,
+    "duration": "27:43",
+    "thumbnail": "https://i.ytimg.com/vi/snroDwX1-JU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=snroDwX1-JU"
+  },
+  {
+    "title": "Giving coding agents their own computers: How Cursor built cloud agents",
+    "publishedAt": "2026-05-08T18:49:58Z",
+    "views": 2474,
+    "duration": "14:36",
+    "thumbnail": "https://i.ytimg.com/vi/BbYSGxtsMic/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=BbYSGxtsMic"
+  },
+  {
+    "title": "Memory and dreaming for self-learning agents",
+    "publishedAt": "2026-05-08T18:49:54Z",
+    "views": 18311,
+    "duration": "24:29",
+    "thumbnail": "https://i.ytimg.com/vi/RtywqDFBYnQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=RtywqDFBYnQ"
+  },
+  {
+    "title": "Getting Started with Claude Cowork",
+    "publishedAt": "2026-05-08T14:43:26Z",
+    "views": 40491,
+    "duration": "4:17",
+    "thumbnail": "https://i.ytimg.com/vi/Lbml7IuGJYw/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Lbml7IuGJYw"
+  },
+  {
+    "title": "Collaborate with Claude across Microsoft365 apps",
+    "publishedAt": "2026-05-07T17:32:13Z",
+    "views": 33206,
+    "duration": "1:28",
+    "thumbnail": "https://i.ytimg.com/vi/F6dzjaBCBtU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=F6dzjaBCBtU"
+  },
+  {
+    "title": "Hooks in Claude Code",
+    "publishedAt": "2026-05-07T01:24:38Z",
+    "views": 105967,
+    "duration": "3:22",
+    "thumbnail": "https://i.ytimg.com/vi/IkaPHiMDazM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=IkaPHiMDazM"
+  },
+  {
+    "title": "Getting more out of the Claude Platform",
+    "publishedAt": "2026-05-07T00:23:26Z",
+    "views": 6262,
+    "duration": "28:16",
+    "thumbnail": "https://i.ytimg.com/vi/7oO37GRhwGk/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=7oO37GRhwGk"
+  },
+  {
+    "title": "How Datadog built a universal machine tool for Claude Code",
+    "publishedAt": "2026-05-06T23:47:28Z",
+    "views": 4584,
+    "duration": "30:51",
+    "thumbnail": "https://i.ytimg.com/vi/EdmuYPBt_EM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=EdmuYPBt_EM"
+  },
+  {
+    "title": "Architecting for model step-changes: A fireside with Vercel's Guillermo Rauch",
+    "publishedAt": "2026-05-06T22:49:02Z",
+    "views": 2871,
+    "duration": "27:16",
+    "thumbnail": "https://i.ytimg.com/vi/bJKdXhnw7NU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=bJKdXhnw7NU"
+  },
+  {
+    "title": "Building AI-native: Inside the stacks powering Cognition, Gamma, and Harvey",
+    "publishedAt": "2026-05-06T22:05:27Z",
+    "views": 5238,
+    "duration": "28:16",
+    "thumbnail": "https://i.ytimg.com/vi/OFDm3T7pVlc/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=OFDm3T7pVlc"
+  },
+  {
+    "title": "Live coding session with Boris Cherny and Jarred Sumner",
+    "publishedAt": "2026-05-06T21:31:24Z",
+    "views": 30673,
+    "duration": "32:00",
+    "thumbnail": "https://i.ytimg.com/vi/DlTCu_pNDHE/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=DlTCu_pNDHE"
+  },
+  {
+    "title": "A conversation with Dario Amodei & Daniela Amodei",
+    "publishedAt": "2026-05-06T21:18:03Z",
+    "views": 38306,
+    "duration": "33:10",
+    "thumbnail": "https://i.ytimg.com/vi/7xco5Qd2Oo8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=7xco5Qd2Oo8"
+  },
+  {
+    "title": "How to get to production faster with Claude Managed Agents",
+    "publishedAt": "2026-05-06T19:23:49Z",
+    "views": 11274,
+    "duration": "17:25",
+    "thumbnail": "https://i.ytimg.com/vi/E9gaQHrw_rg/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=E9gaQHrw_rg"
+  },
+  {
+    "title": "Caching, harnesses, and advisors: Building on Claude at GitHub scale",
+    "publishedAt": "2026-05-06T18:48:42Z",
+    "views": 11179,
+    "duration": "26:15",
+    "thumbnail": "https://i.ytimg.com/vi/y5TmF_6o6xk/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=y5TmF_6o6xk"
+  },
+  {
+    "title": "What's new in Claude Code",
+    "publishedAt": "2026-05-06T18:01:28Z",
+    "views": 48626,
+    "duration": "24:56",
+    "thumbnail": "https://i.ytimg.com/vi/IMZa42k6L6M/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=IMZa42k6L6M"
+  },
+  {
+    "title": "Code with Claude 2026: Opening Keynote",
+    "publishedAt": "2026-05-06T16:58:56Z",
+    "views": 170186,
+    "duration": "47:30",
+    "thumbnail": "https://i.ytimg.com/vi/GMIWm5y90xA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=GMIWm5y90xA"
+  },
+  {
+    "title": "What is Claude Code?",
+    "publishedAt": "2026-05-05T21:53:05Z",
+    "views": 263343,
+    "duration": "2:56",
+    "thumbnail": "https://i.ytimg.com/vi/fl1DSmwQKKY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=fl1DSmwQKKY"
+  },
+  {
+    "title": "New agents for financial services | Claude Cowork + Claude Managed Agents",
+    "publishedAt": "2026-05-05T14:51:34Z",
+    "views": 81573,
+    "duration": "1:04",
+    "thumbnail": "https://i.ytimg.com/vi/foxeK2AXfHQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=foxeK2AXfHQ"
+  },
+  {
+    "title": "Find and fix security vulnerabilities with Claude",
+    "publishedAt": "2026-04-30T17:22:32Z",
+    "views": 53587,
+    "duration": "0:50",
+    "thumbnail": "https://i.ytimg.com/vi/0SgCiUfoYo8/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=0SgCiUfoYo8"
+  },
+  {
+    "title": "Claude now connects to Autodesk Fusion",
+    "publishedAt": "2026-04-28T15:07:51Z",
+    "views": 230620,
+    "duration": "1:14",
+    "thumbnail": "https://i.ytimg.com/vi/Gen8rG40ntA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Gen8rG40ntA"
+  },
+  {
+    "title": "Claude now connects to Blender",
+    "publishedAt": "2026-04-28T15:07:37Z",
+    "views": 127527,
+    "duration": "0:56",
+    "thumbnail": "https://i.ytimg.com/vi/LZMWsZbZU5w/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=LZMWsZbZU5w"
+  },
+  {
+    "title": "Why does bias exist in AI models?",
+    "publishedAt": "2026-04-24T13:30:02Z",
+    "views": 13615,
+    "duration": "4:18",
+    "thumbnail": "https://i.ytimg.com/vi/RnOWJoHU_NY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=RnOWJoHU_NY"
+  },
+  {
+    "title": "All your everyday apps, in one conversation",
+    "publishedAt": "2026-04-23T17:39:30Z",
+    "views": 54156,
+    "duration": "1:11",
+    "thumbnail": "https://i.ytimg.com/vi/U9jGOz_Lcbo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=U9jGOz_Lcbo"
+  },
+  {
+    "title": "How Anthropic uses Claude in Product Engineering",
+    "publishedAt": "2026-04-20T17:51:49Z",
+    "views": 39926,
+    "duration": "2:58",
+    "thumbnail": "https://i.ytimg.com/vi/ma7oe_5h0ag/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=ma7oe_5h0ag"
+  },
+  {
+    "title": "Introducing Claude Design by Anthropic Labs",
+    "publishedAt": "2026-04-17T14:59:25Z",
+    "views": 764091,
+    "duration": "1:22",
+    "thumbnail": "https://i.ytimg.com/vi/t_LBECIQQqs/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=t_LBECIQQqs"
+  },
+  {
+    "title": "Working smarter with Claude in PowerPoint",
+    "publishedAt": "2026-04-16T19:31:04Z",
+    "views": 24353,
+    "duration": "2:16",
+    "thumbnail": "https://i.ytimg.com/vi/gRLMG5YNNTo/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=gRLMG5YNNTo"
+  },
+  {
+    "title": "Refining a PowerPoint with Claude",
+    "publishedAt": "2026-04-16T19:31:00Z",
+    "views": 75180,
+    "duration": "6:51",
+    "thumbnail": "https://i.ytimg.com/vi/TkSZqH0n7m0/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=TkSZqH0n7m0"
+  },
+  {
+    "title": "Building a PowerPoint with Claude",
+    "publishedAt": "2026-04-16T19:30:51Z",
+    "views": 50572,
+    "duration": "4:05",
+    "thumbnail": "https://i.ytimg.com/vi/TxS-1invhzg/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=TxS-1invhzg"
+  },
+  {
+    "title": "Why do AI models hallucinate?",
+    "publishedAt": "2026-04-15T15:40:43Z",
+    "views": 332593,
+    "duration": "5:14",
+    "thumbnail": "https://i.ytimg.com/vi/005JLRt3gXI/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=005JLRt3gXI"
+  },
+  {
+    "title": "The new Claude Code desktop app, redesigned for parallel agents",
+    "publishedAt": "2026-04-14T18:57:32Z",
+    "views": 122305,
+    "duration": "0:38",
+    "thumbnail": "https://i.ytimg.com/vi/rWaQSQEm_aY/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=rWaQSQEm_aY"
+  },
+  {
+    "title": "What is Claude Managed Agents?",
+    "publishedAt": "2026-04-09T21:06:56Z",
+    "views": 247650,
+    "duration": "3:53",
+    "thumbnail": "https://i.ytimg.com/vi/NLWiIj47IdI/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=NLWiIj47IdI"
+  },
+  {
+    "title": "Cowork is now generally available",
+    "publishedAt": "2026-04-09T15:55:13Z",
+    "views": 48938,
+    "duration": "0:33",
+    "thumbnail": "https://i.ytimg.com/vi/-AkiUPvAqbU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=-AkiUPvAqbU"
+  },
+  {
+    "title": "Introducing Claude Managed Agents",
+    "publishedAt": "2026-04-08T17:05:34Z",
+    "views": 181985,
+    "duration": "1:00",
+    "thumbnail": "https://i.ytimg.com/vi/I1BvAHOsjBU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=I1BvAHOsjBU"
+  },
+  {
+    "title": "How Notion built with Claude Managed Agents",
+    "publishedAt": "2026-04-08T17:03:32Z",
+    "views": 77265,
+    "duration": "3:41",
+    "thumbnail": "https://i.ytimg.com/vi/45hPRdfDEsI/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=45hPRdfDEsI"
+  },
+  {
+    "title": "How Anthropic uses Claude in Product Management",
+    "publishedAt": "2026-03-26T14:01:33Z",
+    "views": 189708,
+    "duration": "2:57",
+    "thumbnail": "https://i.ytimg.com/vi/91AJ0cpgLlQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=91AJ0cpgLlQ"
+  },
+  {
+    "title": "Your apps come alive on Claude mobile",
+    "publishedAt": "2026-03-25T17:00:36Z",
+    "views": 145681,
+    "duration": "0:53",
+    "thumbnail": "https://i.ytimg.com/vi/NAwvkrxompk/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=NAwvkrxompk"
+  },
+  {
+    "title": "Put Claude to work on your computer, from anywhere",
+    "publishedAt": "2026-03-23T21:30:07Z",
+    "views": 4069035,
+    "duration": "1:14",
+    "thumbnail": "https://i.ytimg.com/vi/NAauIR6JFps/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=NAauIR6JFps"
+  },
+  {
+    "title": "Preview your running app in Claude Code on desktop",
+    "publishedAt": "2026-03-19T01:15:54Z",
+    "views": 72468,
+    "duration": "1:16",
+    "thumbnail": "https://i.ytimg.com/vi/UCD7Hnx_THQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=UCD7Hnx_THQ"
+  },
+  {
+    "title": "Scheduled Tasks in Cowork: Set it once, Claude handles the rest",
+    "publishedAt": "2026-03-19T01:15:09Z",
+    "views": 27003,
+    "duration": "0:26",
+    "thumbnail": "https://i.ytimg.com/vi/b-ntWZqHF78/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=b-ntWZqHF78"
+  },
+  {
+    "title": "Using Claude Code Remote Control",
+    "publishedAt": "2026-03-17T23:19:22Z",
+    "views": 303312,
+    "duration": "2:40",
+    "thumbnail": "https://i.ytimg.com/vi/Ko7_tC1fMMM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Ko7_tC1fMMM"
+  },
+  {
+    "title": "Dispatch tasks to Claude Cowork from anywhere",
+    "publishedAt": "2026-03-17T21:32:11Z",
+    "views": 142592,
+    "duration": "0:41",
+    "thumbnail": "https://i.ytimg.com/vi/fVIV-L49eBs/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=fVIV-L49eBs"
+  },
+  {
+    "title": "Claude can now show you",
+    "publishedAt": "2026-03-12T15:55:35Z",
+    "views": 490271,
+    "duration": "1:20",
+    "thumbnail": "https://i.ytimg.com/vi/Ii99RU3mOJM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Ii99RU3mOJM"
+  },
+  {
+    "title": "One conversation across Claude for Excel and PowerPoint",
+    "publishedAt": "2026-03-12T15:49:59Z",
+    "views": 51661,
+    "duration": "1:37",
+    "thumbnail": "https://i.ytimg.com/vi/cIctgHKEeMA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=cIctgHKEeMA"
+  },
+  {
+    "title": "How Slack uses Claude for AI search and summaries",
+    "publishedAt": "2026-03-10T20:39:15Z",
+    "views": 30084,
+    "duration": "1:51",
+    "thumbnail": "https://i.ytimg.com/vi/yB7xjOA05GM/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=yB7xjOA05GM"
+  },
+  {
+    "title": "Introducing Code Review",
+    "publishedAt": "2026-03-09T19:53:34Z",
+    "views": 160672,
+    "duration": "0:45",
+    "thumbnail": "https://i.ytimg.com/vi/RKsADl0ZC3Y/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=RKsADl0ZC3Y"
+  },
+  {
+    "title": "What are skills?",
+    "publishedAt": "2026-02-27T07:02:03Z",
+    "views": 922371,
+    "duration": "2:54",
+    "thumbnail": "https://i.ytimg.com/vi/bjdBVZa66oU/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=bjdBVZa66oU"
+  },
+  {
+    "title": "Cowork and Plugins: Helping enterprises move faster",
+    "publishedAt": "2026-02-24T19:08:15Z",
+    "views": 61358,
+    "duration": "2:00",
+    "thumbnail": "https://i.ytimg.com/vi/v5IOHK5xFlc/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=v5IOHK5xFlc"
+  },
+  {
+    "title": "How Lyft uses Claude for faster, more human customer support",
+    "publishedAt": "2026-02-18T17:55:11Z",
+    "views": 11788,
+    "duration": "1:36",
+    "thumbnail": "https://i.ytimg.com/vi/sZHGbRYQti4/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=sZHGbRYQti4"
+  },
+  {
+    "title": "Our most capable Sonnet model yet",
+    "publishedAt": "2026-02-17T18:54:11Z",
+    "views": 125002,
+    "duration": "1:30",
+    "thumbnail": "https://i.ytimg.com/vi/2fHVTe7c--4/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=2fHVTe7c--4"
+  },
+  {
+    "title": "The making of our Williams F1 film",
+    "publishedAt": "2026-02-10T16:26:23Z",
+    "views": 15676,
+    "duration": "0:45",
+    "thumbnail": "https://i.ytimg.com/vi/zZlcNxSPMOA/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=zZlcNxSPMOA"
+  },
+  {
+    "title": "The making of our Williams F1 film",
+    "publishedAt": "2026-02-10T16:22:19Z",
+    "views": 11227,
+    "duration": "0:45",
+    "thumbnail": "https://i.ytimg.com/vi/MWhSjFu_K7E/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=MWhSjFu_K7E"
+  },
+  {
+    "title": "How HubSpot uses Claude for customer success",
+    "publishedAt": "2026-02-09T19:22:45Z",
+    "views": 11839,
+    "duration": "2:11",
+    "thumbnail": "https://i.ytimg.com/vi/U9s9Kxb7p5I/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=U9s9Kxb7p5I"
+  },
+  {
+    "title": "How Figma Make uses Claude to turn prompts into prototypes",
+    "publishedAt": "2026-02-06T20:19:08Z",
+    "views": 78926,
+    "duration": "1:17",
+    "thumbnail": "https://i.ytimg.com/vi/fVJGqzYkq3A/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=fVJGqzYkq3A"
+  },
+  {
+    "title": "Claude for everyday work",
+    "publishedAt": "2026-02-05T17:45:45Z",
+    "views": 257826,
+    "duration": "1:28",
+    "thumbnail": "https://i.ytimg.com/vi/orTd3grSYsQ/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=orTd3grSYsQ"
+  },
+  {
+    "title": "The Atlassian Williams F1 team is now thinking with Claude",
+    "publishedAt": "2026-02-02T16:27:12Z",
+    "views": 8167,
+    "duration": "0:30",
+    "thumbnail": "https://i.ytimg.com/vi/4KBAE92he8E/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=4KBAE92he8E"
+  },
+  {
+    "title": "The Atlassian Williams F1 team is now thinking with Claude",
+    "publishedAt": "2026-02-02T13:06:22Z",
+    "views": 14510,
+    "duration": "0:30",
+    "thumbnail": "https://i.ytimg.com/vi/xpmag2Gvi0g/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=xpmag2Gvi0g"
+  },
+  {
+    "title": "A.A.Murakami's The Moon Underwater",
+    "publishedAt": "2026-02-02T01:49:28Z",
+    "views": 10523,
+    "duration": "3:02",
+    "thumbnail": "https://i.ytimg.com/vi/sxfwDbi-_78/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=sxfwDbi-_78"
+  },
+  {
+    "title": "Getting started with Claude in Excel",
+    "publishedAt": "2026-01-30T20:14:21Z",
+    "views": 39696,
+    "duration": "7:10",
+    "thumbnail": "https://i.ytimg.com/vi/54BdUqMQUMI/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=54BdUqMQUMI"
+  },
+  {
+    "title": "How Anthropic uses Claude in Marketing",
+    "publishedAt": "2026-01-27T00:37:21Z",
+    "views": 144509,
+    "duration": "2:43",
+    "thumbnail": "https://i.ytimg.com/vi/Jp83_JMK74o/mqdefault.jpg",
+    "url": "https://www.youtube.com/watch?v=Jp83_JMK74o"
+  }
+];
+
+let currentSort = { field: 'publishedAt', order: 'desc' };  // default: newest first
+let filteredData = [...VIDEOS];
+
+function formatDate(isoString) {
+  if (!isoString) return '';
+  const d = new Date(isoString);
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function formatViews(views) {
+  return views.toLocaleString();
+}
+
+function renderTable(data) {
+  const tbody = document.querySelector('#video-table tbody');
+  tbody.innerHTML = '';
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No videos match the filters.</td></tr>';
+    return;
+  }
+  data.forEach(video => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><a href="${video.url}" target="_blank"><img src="${video.thumbnail}" alt="thumbnail" class="thumbnail" loading="lazy"></a></td>
+      <td><a href="${video.url}" target="_blank" style="text-decoration:none; color:#007bff;">${video.title}</a></td>
+      <td>${formatDate(video.publishedAt)}</td>
+      <td class="views">${formatViews(video.views)}</td>
+      <td>${video.duration}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function applyFilters() {
+  const searchText = document.getElementById('search').value.toLowerCase();
+  const dateFrom = document.getElementById('date-from').value;
+  const dateTo = document.getElementById('date-to').value;
+  const minViews = parseInt(document.getElementById('min-views').value) || 0;
+  
+  filteredData = VIDEOS.filter(v => {
+    // Search by title
+    if (searchText && !v.title.toLowerCase().includes(searchText)) return false;
+    
+    // Date range
+    if (dateFrom && v.publishedAt < dateFrom) return false;
+    if (dateTo) {
+      // Include whole day of dateTo by adding one day and comparing <
+      const nextDay = new Date(dateTo);
+      nextDay.setDate(nextDay.getDate() + 1);
+      if (v.publishedAt >= nextDay.toISOString().split('T')[0]) return false;
+    }
+    
+    // Minimum views
+    if (v.views < minViews) return false;
+    
+    return true;
+  });
+  
+  // Re-apply current sort on filtered data
+  sortData(currentSort.field, currentSort.order, true);
+}
+
+function sortData(field, order, skipToggle = false) {
+  if (!skipToggle) {
+    if (currentSort.field === field) {
+      currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort.field = field;
+      currentSort.order = 'asc';  // default asc when changing field
+    }
+  }
+  const direction = currentSort.order === 'asc' ? 1 : -1;
+  
+  filteredData.sort((a, b) => {
+    let valA, valB;
+    if (field === 'publishedAt') {
+      valA = a.publishedAt || '';
+      valB = b.publishedAt || '';
+    } else if (field === 'views') {
+      valA = a.views;
+      valB = b.views;
+    } else if (field === 'duration') {
+      // Convert "M:SS" or "H:MM:SS" to total seconds for comparison
+      const toSeconds = (str) => {
+        const parts = str.split(':').map(Number);
+        if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+        if (parts.length === 2) return parts[0]*60 + parts[1];
+        return 0;
+      };
+      valA = toSeconds(a.duration);
+      valB = toSeconds(b.duration);
+    } else if (field === 'title') {
+      valA = a.title.toLowerCase();
+      valB = b.title.toLowerCase();
+    } else if (field === 'thumbnail') {
+      // Sort by title if thumbnail column clicked (just because)
+      valA = a.title.toLowerCase();
+      valB = b.title.toLowerCase();
+    }
+    
+    if (valA < valB) return -1 * direction;
+    if (valA > valB) return 1 * direction;
+    return 0;
+  });
+  
+  renderTable(filteredData);
+  updateSortIcons();
+}
+
+function updateSortIcons() {
+  document.querySelectorAll('th').forEach(th => {
+    const field = th.dataset.sort;
+    const icon = th.querySelector('.sort-icon');
+    if (icon) {
+      if (field === currentSort.field) {
+        icon.textContent = currentSort.order === 'asc' ? ' ▲' : ' ▼';
+      } else {
+        icon.textContent = '';
+      }
+    }
+  });
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial render
+  applyFilters();
+  
+  // Add sort icons to header cells
+  document.querySelectorAll('th').forEach(th => {
+    const icon = document.createElement('span');
+    icon.className = 'sort-icon';
+    th.appendChild(icon);
+  });
+  
+  // Sort click handlers
+  document.querySelectorAll('th').forEach(th => {
+    th.addEventListener('click', () => {
+      const field = th.dataset.sort;
+      if (field) {
+        sortData(field, null);
+      }
+    });
+  });
+  
+  // Filter events
+  document.getElementById('search').addEventListener('input', applyFilters);
+  document.getElementById('date-from').addEventListener('change', applyFilters);
+  document.getElementById('date-to').addEventListener('change', applyFilters);
+  document.getElementById('min-views').addEventListener('input', applyFilters);
+  
+  // Reset
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    document.getElementById('search').value = '';
+    document.getElementById('date-from').value = '';
+    document.getElementById('date-to').value = '';
+    document.getElementById('min-views').value = '';
+    applyFilters();
+  });
+  
+  updateSortIcons();
+});
+</script>
+</body>
+</html>

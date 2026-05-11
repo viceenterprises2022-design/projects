@@ -64,3 +64,353 @@
 2026-04-27 01:30:54,590 [INFO]   ✓ XRP sent
 2026-04-27 01:30:57,349 [INFO]   ✓ SOL sent
 2026-04-27 01:31:00,076 [INFO] Done — 11/11 sent. Failed: none
+2026-04-28 01:30:01,776 [INFO] ============================================================
+2026-04-28 01:30:01,778 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-04-28 01:30:01,778 [INFO] ============================================================
+2026-04-28 01:30:01,778 [INFO] Fetching 2 Indian indices from Upstox...
+2026-04-28 01:30:01,852 [INFO]   ✓ NSE [Upstox]: 24,092.70 (+0.81%)
+2026-04-28 01:30:02,153 [INFO]   ✓ BSE [Upstox]: 77,303.63 (+0.83%)
+2026-04-28 01:30:02,454 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-04-28 01:30:02,623 [INFO]   ✓ US30: 49172.72 (-0.12%)
+2026-04-28 01:30:03,222 [INFO]   ✓ USTEC: 27305.81 (+0.01%)
+2026-04-28 01:30:03,823 [INFO]   ✓ USOIL: 96.50 (+2.22%)
+2026-04-28 01:30:04,492 [INFO]   ✓ GOLD: 4696.00 (-0.56%)
+2026-04-28 01:30:05,102 [INFO]   ✓ SILVER: 75.47 (-1.20%)
+2026-04-28 01:30:05,604 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-04-28 01:30:05,966 [INFO]   ✓ BTC: 76830.0000 (-1.79%)
+2026-04-28 01:30:05,968 [INFO]   ✓ ETH: 2287.5300 (-3.40%)
+2026-04-28 01:30:05,968 [INFO]   ✓ XRP: 1.3900 (-2.65%)
+2026-04-28 01:30:05,968 [INFO]   ✓ SOL: 84.1400 (-3.18%)
+2026-04-28 01:30:05,968 [INFO] Fetched 11/11 instruments successfully
+2026-04-28 01:30:05,969 [INFO] Calling Claude API — batch of 11 instruments...
+2026-04-28 01:30:06,308 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-04-28 01:30:06,309 [INFO] Building HTML table and rendering screenshot...
+2026-04-28 01:30:08,641 [INFO]   ✓ Screenshot rendered (347 KB)
+2026-04-28 01:30:08,641 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-04-28 01:30:12,647 [INFO]   ✓ Market snapshot photo sent
+2026-04-28 01:30:14,372 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-04-29 01:30:01,724 [INFO] ============================================================
+2026-04-29 01:30:01,724 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-04-29 01:30:01,724 [INFO] ============================================================
+2026-04-29 01:30:01,725 [INFO] Fetching 2 Indian indices from Upstox...
+2026-04-29 01:30:01,841 [INFO]   ✓ NSE [Upstox]: 23,995.70 (-0.40%)
+2026-04-29 01:30:02,141 [INFO]   ✓ BSE [Upstox]: 76,886.91 (-0.54%)
+2026-04-29 01:30:02,442 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-04-29 01:30:02,650 [INFO]   ✓ US30: 49137.13 (-0.06%)
+2026-04-29 01:30:03,246 [INFO]   ✓ USTEC: 27029.01 (-1.01%)
+2026-04-29 01:30:03,835 [INFO]   ✓ USOIL: 99.94 (+3.70%)
+2026-04-29 01:30:04,489 [INFO]   ✓ GOLD: 4612.10 (-1.35%)
+2026-04-29 01:30:05,110 [INFO]   ✓ SILVER: 73.75 (-1.66%)
+2026-04-29 01:30:05,610 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-04-29 01:30:05,992 [INFO]   ✓ BTC: 76338.0000 (-0.71%)
+2026-04-29 01:30:05,993 [INFO]   ✓ ETH: 2302.3600 (+0.44%)
+2026-04-29 01:30:05,994 [INFO]   ✓ XRP: 1.3800 (-0.70%)
+2026-04-29 01:30:05,994 [INFO]   ✓ SOL: 83.9300 (-0.27%)
+2026-04-29 01:30:05,994 [INFO] Fetched 11/11 instruments successfully
+2026-04-29 01:30:05,994 [INFO] Calling Claude API — batch of 11 instruments...
+2026-04-29 01:30:06,374 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-04-29 01:30:06,377 [INFO] Building HTML table and rendering screenshot...
+2026-04-29 01:30:08,100 [INFO]   ✓ Screenshot rendered (343 KB)
+2026-04-29 01:30:08,100 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-04-29 01:30:12,523 [INFO]   ✓ Market snapshot photo sent
+2026-04-29 01:30:14,248 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-04-30 01:30:01,763 [INFO] ============================================================
+2026-04-30 01:30:01,766 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-04-30 01:30:01,766 [INFO] ============================================================
+2026-04-30 01:30:01,766 [INFO] Fetching 2 Indian indices from Upstox...
+2026-04-30 01:30:01,848 [INFO]   ✓ NSE [Upstox]: 24,177.65 (+0.75%)
+2026-04-30 01:30:02,149 [INFO]   ✓ BSE [Upstox]: 77,496.36 (+0.79%)
+2026-04-30 01:30:02,449 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-04-30 01:30:02,549 [INFO]   ✓ US30: 48869.41 (-0.55%)
+2026-04-30 01:30:03,242 [INFO]   ✓ USTEC: 27186.98 (+0.58%)
+2026-04-30 01:30:03,867 [INFO]   ✓ USOIL: 107.94 (+8.02%)
+2026-04-30 01:30:04,544 [INFO]   ✓ GOLD: 4561.50 (-0.65%)
+2026-04-30 01:30:05,219 [INFO]   ✓ SILVER: 72.14 (-1.45%)
+2026-04-30 01:30:05,720 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-04-30 01:30:06,110 [INFO]   ✓ BTC: 75471.0000 (-1.21%)
+2026-04-30 01:30:06,112 [INFO]   ✓ ETH: 2231.9800 (-3.09%)
+2026-04-30 01:30:06,112 [INFO]   ✓ XRP: 1.3500 (-2.14%)
+2026-04-30 01:30:06,112 [INFO]   ✓ SOL: 82.1700 (-2.09%)
+2026-04-30 01:30:06,112 [INFO] Fetched 11/11 instruments successfully
+2026-04-30 01:30:06,113 [INFO] Calling Claude API — batch of 11 instruments...
+2026-04-30 01:30:06,516 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-04-30 01:30:06,517 [INFO] Building HTML table and rendering screenshot...
+2026-04-30 01:30:09,611 [INFO]   ✓ Screenshot rendered (355 KB)
+2026-04-30 01:30:09,611 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-04-30 01:30:13,861 [INFO]   ✓ Market snapshot photo sent
+2026-04-30 01:30:15,592 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-01 01:30:02,165 [INFO] ============================================================
+2026-05-01 01:30:02,166 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-01 01:30:02,167 [INFO] ============================================================
+2026-05-01 01:30:02,167 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-01 01:30:02,270 [INFO]   ✓ NSE [Upstox]: 23,997.55 (-0.75%)
+2026-05-01 01:30:02,571 [INFO]   ✓ BSE [Upstox]: 76,913.50 (-0.76%)
+2026-05-01 01:30:02,872 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-01 01:30:02,985 [INFO]   ✓ US30: 49652.75 (+1.62%)
+2026-05-01 01:30:03,653 [INFO]   ✓ USTEC: 27452.12 (+0.98%)
+2026-05-01 01:30:04,212 [INFO]   ✓ USOIL: 104.89 (-1.86%)
+2026-05-01 01:30:04,768 [INFO]   ✓ GOLD: 4633.80 (+1.95%)
+2026-05-01 01:30:05,430 [INFO]   ✓ SILVER: 74.16 (+3.62%)
+2026-05-01 01:30:05,931 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-01 01:30:06,313 [INFO]   ✓ BTC: 76392.0000 (+1.00%)
+2026-05-01 01:30:06,314 [INFO]   ✓ ETH: 2261.2300 (+1.01%)
+2026-05-01 01:30:06,314 [INFO]   ✓ XRP: 1.3700 (+0.82%)
+2026-05-01 01:30:06,315 [INFO]   ✓ SOL: 83.0600 (+0.83%)
+2026-05-01 01:30:06,315 [INFO] Fetched 11/11 instruments successfully
+2026-05-01 01:30:06,315 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-01 01:30:06,729 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-01 01:30:06,732 [INFO] Building HTML table and rendering screenshot...
+2026-05-01 01:30:10,015 [INFO]   ✓ Screenshot rendered (347 KB)
+2026-05-01 01:30:10,016 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-01 01:30:14,228 [INFO]   ✓ Market snapshot photo sent
+2026-05-01 01:30:15,929 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-02 01:30:01,600 [INFO] ============================================================
+2026-05-02 01:30:01,605 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-02 01:30:01,605 [INFO] ============================================================
+2026-05-02 01:30:01,605 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-02 01:30:01,695 [INFO]   ✓ NSE [Upstox]: 23,997.55 (-0.75%)
+2026-05-02 01:30:01,996 [INFO]   ✓ BSE [Upstox]: 76,913.50 (-0.76%)
+2026-05-02 01:30:02,297 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-02 01:30:02,512 [INFO]   ✓ US30: 49498.90 (-0.31%)
+2026-05-02 01:30:03,107 [INFO]   ✓ USTEC: 27710.36 (+0.94%)
+2026-05-02 01:30:03,656 [INFO]   ✓ USOIL: 102.10 (-2.83%)
+2026-05-02 01:30:04,312 [INFO]   ✓ GOLD: 4627.50 (+0.28%)
+2026-05-02 01:30:04,885 [INFO]   ✓ SILVER: 76.03 (+3.39%)
+2026-05-02 01:30:05,386 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-02 01:30:05,767 [INFO]   ✓ BTC: 78424.0000 (+2.66%)
+2026-05-02 01:30:05,768 [INFO]   ✓ ETH: 2305.8700 (+1.97%)
+2026-05-02 01:30:05,769 [INFO]   ✓ XRP: 1.3900 (+1.71%)
+2026-05-02 01:30:05,769 [INFO]   ✓ SOL: 83.8600 (+0.98%)
+2026-05-02 01:30:05,769 [INFO] Fetched 11/11 instruments successfully
+2026-05-02 01:30:05,770 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-02 01:30:06,161 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-02 01:30:06,163 [INFO] Building HTML table and rendering screenshot...
+2026-05-02 01:30:08,156 [INFO]   ✓ Screenshot rendered (342 KB)
+2026-05-02 01:30:08,156 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-02 01:30:12,386 [INFO]   ✓ Market snapshot photo sent
+2026-05-02 01:30:14,083 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-03 01:30:02,046 [INFO] ============================================================
+2026-05-03 01:30:02,048 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-03 01:30:02,048 [INFO] ============================================================
+2026-05-03 01:30:02,048 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-03 01:30:02,176 [INFO]   ✓ NSE [Upstox]: 23,997.55 (-0.75%)
+2026-05-03 01:30:02,477 [INFO]   ✓ BSE [Upstox]: 76,913.50 (-0.76%)
+2026-05-03 01:30:02,778 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-03 01:30:02,993 [INFO]   ✓ US30: 49499.27 (-0.31%)
+2026-05-03 01:30:03,671 [INFO]   ✓ USTEC: 27710.36 (+0.94%)
+2026-05-03 01:30:04,462 [INFO]   ✓ USOIL: 101.94 (-2.98%)
+2026-05-03 01:30:05,083 [INFO]   ✓ GOLD: 4644.50 (+0.65%)
+2026-05-03 01:30:05,704 [INFO]   ✓ SILVER: 76.43 (+3.94%)
+2026-05-03 01:30:06,205 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-03 01:30:06,612 [INFO]   ✓ BTC: 78450.0000 (+0.13%)
+2026-05-03 01:30:06,613 [INFO]   ✓ ETH: 2310.5900 (+0.29%)
+2026-05-03 01:30:06,613 [INFO]   ✓ XRP: 1.3900 (+0.08%)
+2026-05-03 01:30:06,614 [INFO]   ✓ SOL: 84.2000 (+0.40%)
+2026-05-03 01:30:06,614 [INFO] Fetched 11/11 instruments successfully
+2026-05-03 01:30:06,614 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-03 01:30:07,009 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-03 01:30:07,012 [INFO] Building HTML table and rendering screenshot...
+2026-05-03 01:30:09,379 [INFO]   ✓ Screenshot rendered (341 KB)
+2026-05-03 01:30:09,379 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-03 01:30:13,674 [INFO]   ✓ Market snapshot photo sent
+2026-05-03 01:30:15,448 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-04 01:30:01,505 [INFO] ============================================================
+2026-05-04 01:30:01,506 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-04 01:30:01,506 [INFO] ============================================================
+2026-05-04 01:30:01,506 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-04 01:30:01,648 [INFO]   ✓ NSE [Upstox]: 23,997.55 (-0.75%)
+2026-05-04 01:30:01,950 [INFO]   ✓ BSE [Upstox]: 76,913.50 (-0.76%)
+2026-05-04 01:30:02,251 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-04 01:30:02,389 [INFO]   ✓ US30: 49499.27 (-0.31%)
+2026-05-04 01:30:02,993 [INFO]   ✓ USTEC: 27710.36 (+0.94%)
+2026-05-04 01:30:03,666 [INFO]   ✓ USOIL: 101.94 (-2.98%)
+2026-05-04 01:30:04,337 [INFO]   ✓ GOLD: 4644.50 (+0.65%)
+2026-05-04 01:30:04,956 [INFO]   ✓ SILVER: 76.43 (+3.94%)
+2026-05-04 01:30:05,456 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-04 01:30:05,896 [INFO]   ✓ BTC: 78771.0000 (+0.42%)
+2026-05-04 01:30:05,897 [INFO]   ✓ ETH: 2335.2700 (+1.10%)
+2026-05-04 01:30:05,897 [INFO]   ✓ XRP: 1.4000 (+0.09%)
+2026-05-04 01:30:05,897 [INFO]   ✓ SOL: 84.3700 (+0.25%)
+2026-05-04 01:30:05,897 [INFO] Fetched 11/11 instruments successfully
+2026-05-04 01:30:05,897 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-04 01:30:06,277 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-04 01:30:06,278 [INFO] Building HTML table and rendering screenshot...
+2026-05-04 01:30:09,376 [INFO]   ✓ Screenshot rendered (340 KB)
+2026-05-04 01:30:09,376 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-04 01:30:13,413 [INFO]   ✓ Market snapshot photo sent
+2026-05-04 01:30:15,221 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-05 01:30:01,804 [INFO] ============================================================
+2026-05-05 01:30:01,805 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-05 01:30:01,805 [INFO] ============================================================
+2026-05-05 01:30:01,805 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-05 01:30:01,914 [INFO]   ✓ NSE [Upstox]: 24,119.30 (+0.50%)
+2026-05-05 01:30:02,215 [INFO]   ✓ BSE [Upstox]: 77,269.40 (+0.46%)
+2026-05-05 01:30:02,516 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-05 01:30:02,742 [INFO]   ✓ US30: 48949.29 (-1.11%)
+2026-05-05 01:30:03,380 [INFO]   ✓ USTEC: 27654.95 (-0.20%)
+2026-05-05 01:30:04,064 [INFO]   ✓ USOIL: 105.17 (+3.17%)
+2026-05-05 01:30:04,715 [INFO]   ✓ GOLD: 4531.10 (-2.13%)
+2026-05-05 01:30:05,427 [INFO]   ✓ SILVER: 73.36 (-3.42%)
+2026-05-05 01:30:05,928 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-05 01:30:06,337 [INFO]   ✓ BTC: 80052.0000 (+1.63%)
+2026-05-05 01:30:06,337 [INFO]   ✓ ETH: 2356.4500 (+0.89%)
+2026-05-05 01:30:06,338 [INFO]   ✓ XRP: 1.4000 (+0.22%)
+2026-05-05 01:30:06,338 [INFO]   ✓ SOL: 84.4100 (+0.06%)
+2026-05-05 01:30:06,338 [INFO] Fetched 11/11 instruments successfully
+2026-05-05 01:30:06,339 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-05 01:30:06,765 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-05 01:30:06,766 [INFO] Building HTML table and rendering screenshot...
+2026-05-05 01:30:09,735 [INFO]   ✓ Screenshot rendered (347 KB)
+2026-05-05 01:30:09,735 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-05 01:30:13,721 [INFO]   ✓ Market snapshot photo sent
+2026-05-05 01:30:15,531 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-06 01:30:02,227 [INFO] ============================================================
+2026-05-06 01:30:02,230 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-06 01:30:02,230 [INFO] ============================================================
+2026-05-06 01:30:02,230 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-06 01:30:02,343 [INFO]   ✓ NSE [Upstox]: 24,032.80 (-0.36%)
+2026-05-06 01:30:02,644 [INFO]   ✓ BSE [Upstox]: 77,017.79 (-0.33%)
+2026-05-06 01:30:02,944 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-06 01:30:03,177 [INFO]   ✓ US30: 49293.91 (+0.72%)
+2026-05-06 01:30:03,830 [INFO]   ✓ USTEC: 28017.44 (+1.32%)
+2026-05-06 01:30:04,427 [INFO]   ✓ USOIL: 102.77 (-3.43%)
+2026-05-06 01:30:05,041 [INFO]   ✓ GOLD: 4569.60 (+1.11%)
+2026-05-06 01:30:05,653 [INFO]   ✓ SILVER: 73.32 (+0.34%)
+2026-05-06 01:30:06,155 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-06 01:30:06,574 [INFO]   ✓ BTC: 81610.0000 (+2.05%)
+2026-05-06 01:30:06,575 [INFO]   ✓ ETH: 2372.2800 (+0.77%)
+2026-05-06 01:30:06,575 [INFO]   ✓ XRP: 1.4100 (+1.20%)
+2026-05-06 01:30:06,575 [INFO]   ✓ SOL: 86.4600 (+2.56%)
+2026-05-06 01:30:06,575 [INFO] Fetched 11/11 instruments successfully
+2026-05-06 01:30:06,575 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-06 01:30:06,985 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-06 01:30:06,987 [INFO] Building HTML table and rendering screenshot...
+2026-05-06 01:30:10,275 [INFO]   ✓ Screenshot rendered (345 KB)
+2026-05-06 01:30:10,275 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-06 01:30:14,124 [INFO]   ✓ Market snapshot photo sent
+2026-05-06 01:30:15,884 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-07 01:30:02,221 [INFO] ============================================================
+2026-05-07 01:30:02,223 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-07 01:30:02,223 [INFO] ============================================================
+2026-05-07 01:30:02,223 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-07 01:30:02,345 [INFO]   ✓ NSE [Upstox]: 24,330.95 (+1.23%)
+2026-05-07 01:30:02,647 [INFO]   ✓ BSE [Upstox]: 77,958.52 (+1.21%)
+2026-05-07 01:30:02,948 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-07 01:30:03,050 [INFO]   ✓ US30: 49901.76 (+1.22%)
+2026-05-07 01:30:04,345 [INFO]   ✓ USTEC: 28599.17 (+2.08%)
+2026-05-07 01:30:05,653 [INFO]   ✓ USOIL: 95.00 (-7.11%)
+2026-05-07 01:30:06,941 [INFO]   ✓ GOLD: 4708.00 (+3.34%)
+2026-05-07 01:30:08,179 [INFO]   ✓ SILVER: 77.99 (+6.68%)
+2026-05-07 01:30:08,680 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-07 01:30:09,084 [INFO]   ✓ BTC: 81467.0000 (-0.25%)
+2026-05-07 01:30:09,086 [INFO]   ✓ ETH: 2348.8500 (-1.10%)
+2026-05-07 01:30:09,086 [INFO]   ✓ XRP: 1.4300 (+1.09%)
+2026-05-07 01:30:09,086 [INFO]   ✓ SOL: 89.2100 (+3.17%)
+2026-05-07 01:30:09,086 [INFO] Fetched 11/11 instruments successfully
+2026-05-07 01:30:09,087 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-07 01:30:09,484 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-07 01:30:09,485 [INFO] Building HTML table and rendering screenshot...
+2026-05-07 01:30:12,442 [INFO]   ✓ Screenshot rendered (346 KB)
+2026-05-07 01:30:12,443 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-07 01:30:16,666 [INFO]   ✓ Market snapshot photo sent
+2026-05-07 01:30:18,455 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-08 01:30:02,127 [INFO] ============================================================
+2026-05-08 01:30:02,128 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-08 01:30:02,128 [INFO] ============================================================
+2026-05-08 01:30:02,128 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-08 01:30:02,209 [INFO]   ✓ NSE [Upstox]: 24,326.65 (-0.02%)
+2026-05-08 01:30:02,510 [INFO]   ✓ BSE [Upstox]: 77,844.52 (-0.15%)
+2026-05-08 01:30:02,811 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-08 01:30:02,948 [INFO]   ✓ US30: 49595.00 (-0.63%)
+2026-05-08 01:30:03,566 [INFO]   ✓ USTEC: 28563.95 (-0.12%)
+2026-05-08 01:30:04,181 [INFO]   ✓ USOIL: 96.22 (+1.20%)
+2026-05-08 01:30:05,006 [INFO]   ✓ GOLD: 4718.70 (+0.79%)
+2026-05-08 01:30:05,690 [INFO]   ✓ SILVER: 79.82 (+3.92%)
+2026-05-08 01:30:06,191 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-08 01:30:06,556 [INFO]   ✓ BTC: 80087.0000 (-1.75%)
+2026-05-08 01:30:06,557 [INFO]   ✓ ETH: 2293.7000 (-2.45%)
+2026-05-08 01:30:06,557 [INFO]   ✓ XRP: 1.3900 (-2.88%)
+2026-05-08 01:30:06,557 [INFO]   ✓ SOL: 88.4700 (-0.87%)
+2026-05-08 01:30:06,558 [INFO] Fetched 11/11 instruments successfully
+2026-05-08 01:30:06,558 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-08 01:30:07,069 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-08 01:30:07,070 [INFO] Building HTML table and rendering screenshot...
+2026-05-08 01:30:09,446 [INFO]   ✓ Screenshot rendered (348 KB)
+2026-05-08 01:30:09,446 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-08 01:30:14,014 [INFO]   ✓ Market snapshot photo sent
+2026-05-08 01:30:15,812 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-09 01:30:01,877 [INFO] ============================================================
+2026-05-09 01:30:01,877 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-09 01:30:01,877 [INFO] ============================================================
+2026-05-09 01:30:01,877 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-09 01:30:01,955 [INFO]   ✓ NSE [Upstox]: 24,176.15 (-0.62%)
+2026-05-09 01:30:02,256 [INFO]   ✓ BSE [Upstox]: 77,328.19 (-0.67%)
+2026-05-09 01:30:02,556 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-09 01:30:02,689 [INFO]   ✓ US30: 49607.07 (+0.02%)
+2026-05-09 01:30:03,374 [INFO]   ✓ USTEC: 29234.99 (+2.35%)
+2026-05-09 01:30:04,044 [INFO]   ✓ USOIL: 94.88 (+0.07%)
+2026-05-09 01:30:04,623 [INFO]   ✓ GOLD: 4733.90 (+0.73%)
+2026-05-09 01:30:05,288 [INFO]   ✓ SILVER: 81.27 (+1.97%)
+2026-05-09 01:30:05,789 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-09 01:30:06,164 [INFO]   ✓ BTC: 80096.0000 (-0.19%)
+2026-05-09 01:30:06,164 [INFO]   ✓ ETH: 2314.8700 (+0.69%)
+2026-05-09 01:30:06,164 [INFO]   ✓ XRP: 1.4200 (+2.21%)
+2026-05-09 01:30:06,164 [INFO]   ✓ SOL: 92.5000 (+4.58%)
+2026-05-09 01:30:06,165 [INFO] Fetched 11/11 instruments successfully
+2026-05-09 01:30:06,165 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-09 01:30:06,533 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-09 01:30:06,536 [INFO] Building HTML table and rendering screenshot...
+2026-05-09 01:30:08,880 [INFO]   ✓ Screenshot rendered (344 KB)
+2026-05-09 01:30:08,880 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-09 01:30:12,994 [INFO]   ✓ Market snapshot photo sent
+2026-05-09 01:30:14,665 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-10 01:30:01,615 [INFO] ============================================================
+2026-05-10 01:30:01,616 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-10 01:30:01,616 [INFO] ============================================================
+2026-05-10 01:30:01,616 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-10 01:30:01,727 [INFO]   ✓ NSE [Upstox]: 24,176.15 (-0.62%)
+2026-05-10 01:30:02,027 [INFO]   ✓ BSE [Upstox]: 77,328.19 (-0.67%)
+2026-05-10 01:30:02,328 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-10 01:30:02,424 [INFO]   ✓ US30: 49609.16 (+0.02%)
+2026-05-10 01:30:03,080 [INFO]   ✓ USTEC: 29234.99 (+2.35%)
+2026-05-10 01:30:03,669 [INFO]   ✓ USOIL: 95.42 (+0.64%)
+2026-05-10 01:30:04,339 [INFO]   ✓ GOLD: 4730.70 (+0.66%)
+2026-05-10 01:30:04,944 [INFO]   ✓ SILVER: 80.86 (+1.46%)
+2026-05-10 01:30:05,445 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-10 01:30:05,794 [INFO]   ✓ BTC: 80895.0000 (+0.92%)
+2026-05-10 01:30:05,795 [INFO]   ✓ ETH: 2331.7300 (+0.74%)
+2026-05-10 01:30:05,795 [INFO]   ✓ XRP: 1.4200 (+0.47%)
+2026-05-10 01:30:05,795 [INFO]   ✓ SOL: 93.5100 (+1.19%)
+2026-05-10 01:30:05,795 [INFO] Fetched 11/11 instruments successfully
+2026-05-10 01:30:05,795 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-10 01:30:06,186 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-10 01:30:06,187 [INFO] Building HTML table and rendering screenshot...
+2026-05-10 01:30:08,692 [INFO]   ✓ Screenshot rendered (340 KB)
+2026-05-10 01:30:08,692 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-10 01:30:12,864 [INFO]   ✓ Market snapshot photo sent
+2026-05-10 01:30:14,666 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+2026-05-11 01:30:01,526 [INFO] ============================================================
+2026-05-11 01:30:01,529 [INFO] AlphaEdge Daily Market Engine v2 — Starting
+2026-05-11 01:30:01,529 [INFO] ============================================================
+2026-05-11 01:30:01,530 [INFO] Fetching 2 Indian indices from Upstox...
+2026-05-11 01:30:01,654 [INFO]   ✓ NSE [Upstox]: 24,176.15 (-0.62%)
+2026-05-11 01:30:01,954 [INFO]   ✓ BSE [Upstox]: 77,328.19 (-0.67%)
+2026-05-11 01:30:02,255 [INFO] Fetching 5 instruments from Yahoo Finance...
+2026-05-11 01:30:02,426 [INFO]   ✓ US30: 49609.16 (+0.02%)
+2026-05-11 01:30:03,102 [INFO]   ✓ USTEC: 29234.99 (+2.35%)
+2026-05-11 01:30:03,645 [INFO]   ✓ USOIL: 95.42 (+0.64%)
+2026-05-11 01:30:04,314 [INFO]   ✓ GOLD: 4730.70 (+0.66%)
+2026-05-11 01:30:04,900 [INFO]   ✓ SILVER: 80.86 (+1.46%)
+2026-05-11 01:30:05,401 [INFO] Fetching 4 crypto from CoinGecko (1 batch call)...
+2026-05-11 01:30:05,756 [INFO]   ✓ BTC: 81413.0000 (+0.66%)
+2026-05-11 01:30:05,757 [INFO]   ✓ ETH: 2364.7300 (+1.46%)
+2026-05-11 01:30:05,757 [INFO]   ✓ XRP: 1.4800 (+4.30%)
+2026-05-11 01:30:05,757 [INFO]   ✓ SOL: 96.4400 (+3.21%)
+2026-05-11 01:30:05,757 [INFO] Fetched 11/11 instruments successfully
+2026-05-11 01:30:05,757 [INFO] Calling Claude API — batch of 11 instruments...
+2026-05-11 01:30:06,104 [ERROR] Claude API failed: 401 Client Error: Unauthorized for url: https://api.anthropic.com/v1/messages — using local fallback
+2026-05-11 01:30:06,104 [INFO] Building HTML table and rendering screenshot...
+2026-05-11 01:30:07,813 [INFO]   ✓ Screenshot rendered (348 KB)
+2026-05-11 01:30:07,813 [INFO] Sending to Telegram @dvr_market_snippet...
+2026-05-11 01:30:11,994 [INFO]   ✓ Market snapshot photo sent
+2026-05-11 01:30:13,668 [INFO] Done — 11/11 instruments in report. Failed fetches: none
