@@ -129,8 +129,7 @@ def main():
                     print(f"\n[{name}] Error: Could not fetch spot price.")
                     continue
                 
-                fut_key = get_futures_key(name, exch)
-                fut = fetch_quote(fut_key) or spot # Fallback to spot
+                fut = fetch_quote(inst["fut_key"]) or spot # Fallback to spot
                 
                 # 2. Determine Strikes
                 # NIFTY Specific: Force 100-point round strikes only
