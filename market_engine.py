@@ -82,6 +82,8 @@ class MarketEngine:
             return 0
         trs = []
         for i in range(1, len(candles)):
+            if len(candles[i]) < 5 or len(candles[i-1]) < 5:
+                continue
             h, l, cp = candles[i][2], candles[i][3], candles[i-1][4]
             tr = max(h - l, abs(h - cp), abs(l - cp))
             trs.append(tr)
@@ -95,9 +97,11 @@ class MarketEngine:
         if atr == 0:
             return None, 0
         # Formula: HL2 +/- Multiplier * ATR
+        if len(candles[-1]) < 4:
+            return None, 0
         hl2 = (candles[-1][2] + candles[-1][3]) / 2
         lo = hl2 - multiplier * atr
-        direction = 1 if candles[-1][4] > lo else -1
+        direction = 1 if (len(candles[-1]) > 4 and candles[-1][4] > lo) else -1
         return (lo if direction == 1 else hl2 + multiplier * atr), direction
 
     def calculate_vwap(self, candles, period=20):
@@ -105,6 +109,8 @@ class MarketEngine:
         tv = vol = 0.0
         # candles: [t, o, h, l, c, v]
         for x in candles[-period:]:
+            if len(x) < 6:
+                continue
             v = x[5] or 0
             tp = (x[2] + x[3] + x[4]) / 3
             tv += tp * v
