@@ -247,7 +247,7 @@ def main():
 
                 save_to_db(conn, ts, name, spot, snapshot_rows)
 
-            print("\n" + "=" * 110)
+            print("\n" + "=" * 135)
             print("Polling every 5s (Batch Mode). Press Ctrl+C to exit.")
             time.sleep(5)
 
