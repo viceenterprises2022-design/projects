@@ -1,0 +1,85 @@
+<h2>AlphaEdge Diagnostic 2.0: Multi-Ticker Grid</h2>
+<p class="subtitle">Spot & Futures prices added to ticker headers</p>
+
+<div class="mockup">
+  <div class="mockup-header">AlphaEdge Diagnostic | Shared Macro + Multi-Ticker Grid</div>
+  <div class="mockup-body">
+    
+    <!-- Shared Macro Panel -->
+    <div style="border: 1px solid #777; padding: 10px; margin-bottom: 15px; background: #222;">
+      <div style="font-size: 0.8em; color: #aaa; margin-bottom: 5px;">GLOBAL MACRO CONTEXT</div>
+      <div style="display: flex; justify-content: space-around; font-size: 0.9em;">
+        <span>DXY: <span style="color:#ff5555">104.2 (+0.18%)</span></span>
+        <span>VIX (US): <span style="color:#ffff55">18.14 (CAUTION)</span></span>
+        <span>S&P 500: <span style="color:#55ff55">5,214 (+0.00%)</span></span>
+        <span>CRUDE: <span style="color:#ff5555">82.1 (+2.00%)</span></span>
+      </div>
+    </div>
+
+    <!-- Multi-Ticker Grid -->
+    <div style="display: flex; gap: 10px;">
+      
+      <!-- BTC Column -->
+      <div style="flex: 1; border: 1px solid #444; padding: 5px; font-size: 0.8em;">
+        <div style="background: #333; padding: 2px; text-align: center; margin-bottom: 5px; font-weight: bold;">
+          BTC | S: 68,412 | F: 68,415 (-1.2%)
+        </div>
+        <div style="color: #aaa; margin-bottom: 5px;">Sig: NEUTRAL (4/10)</div>
+        <table style="width: 100%; border-bottom: 1px solid #333; margin-bottom: 5px;">
+          <tr><td>TREND</td><td align="right">UP</td></tr>
+          <tr><td>RSI</td><td align="right">65.7</td></tr>
+        </table>
+        <div style="font-size: 0.75em; border: 1px solid #333; padding: 2px; margin-bottom: 5px;">
+          PCR: 2.81 | Pain: 68k
+        </div>
+        <div style="text-align: center; font-size: 0.75em; color: #cyan;">
+          CALLS | STRIKE | PUTS<br>
+          10k | 68k | 8k
+        </div>
+      </div>
+
+      <!-- ETH Column -->
+      <div style="flex: 1; border: 1px solid #444; padding: 5px; font-size: 0.8em;">
+        <div style="background: #333; padding: 2px; text-align: center; margin-bottom: 5px; font-weight: bold;">
+          ETH | S: 3,412 | F: 3,414 (-0.8%)
+        </div>
+        <div style="color: #aaa; margin-bottom: 5px;">Sig: BULL (6/10)</div>
+        <table style="width: 100%; border-bottom: 1px solid #333; margin-bottom: 5px;">
+          <tr><td>TREND</td><td align="right">STR UP</td></tr>
+          <tr><td>RSI</td><td align="right">68.2</td></tr>
+        </table>
+        <div style="font-size: 0.75em; border: 1px solid #333; padding: 2px; margin-bottom: 5px;">
+          PCR: 1.12 | Pain: 3.4k
+        </div>
+        <div style="text-align: center; font-size: 0.75em; color: #cyan;">
+          CALLS | STRIKE | PUTS<br>
+          5k | 3.4k | 4k
+        </div>
+      </div>
+
+      <!-- SOL Column -->
+      <div style="flex: 1; border: 1px solid #444; padding: 5px; font-size: 0.8em;">
+        <div style="background: #333; padding: 2px; text-align: center; margin-bottom: 5px; font-weight: bold;">
+          SOL | S: 145.2 | F: 145.4 (+2.1%)
+        </div>
+        <div style="color: #aaa; margin-bottom: 5px;">Sig: STRONG BULL (8/10)</div>
+        <table style="width: 100%; border-bottom: 1px solid #333; margin-bottom: 5px;">
+          <tr><td>TREND</td><td align="right">STR UP</td></tr>
+          <tr><td>RSI</td><td align="right">72.1</td></tr>
+        </table>
+        <div style="font-size: 0.75em; border: 1px solid #333; padding: 2px; margin-bottom: 5px;">
+          PCR: 0.85 | Pain: 140
+        </div>
+        <div style="text-align: center; font-size: 0.75em; color: #cyan;">
+          CALLS | STRIKE | PUTS<br>
+          2k | 145 | 3k
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <p>Updated ticker headers to show <strong>S (Spot)</strong> and <strong>F (Futures)</strong> prices side-by-side. Is this finalized?</p>
+</div>
