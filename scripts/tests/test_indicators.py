@@ -53,3 +53,26 @@ def test_correlation_calculation():
     c = [5, 4, 3, 2, 1] # Perfect negative
     assert me.calculate_correlation(a, b) == pytest.approx(1.0)
     assert me.calculate_correlation(a, c) == pytest.approx(-1.0)
+
+def test_edge_cases():
+    me = MarketEngine()
+    
+    # Empty lists
+    assert me.calculate_rsi([]) == 50.0
+    assert me.calculate_ema([], 10) == []
+    assert me.calculate_vwap([], 20) is None
+    assert me.calculate_atr([], 14) == 0
+    assert me.calculate_supertrend([], 10) == (None, 0)
+    assert me.calculate_correlation([], []) == 0
+    
+    # Short lists
+    assert me.calculate_rsi([10, 11]) == 50.0
+    assert me.calculate_ema([10, 11], 5) == []
+    assert me.calculate_supertrend([[0,0,0,0,0,0]], 10) == (None, 0)
+    
+    # 0 Volume VWAP
+    candles = [[0, 10, 12, 8, 11, 0], [1, 11, 13, 9, 12, 0]]
+    assert me.calculate_vwap(candles, 2) is None
+    
+    # Constant series (zero variance) in correlation
+    assert me.calculate_correlation([1, 1, 1], [1, 2, 3]) == 0
