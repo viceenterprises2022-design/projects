@@ -34,14 +34,14 @@ def render_macro() -> Panel:
     table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE, expand=True)
     table.add_column("DXY", justify="center")
     table.add_column("VIX", justify="center")
-    table.add_column("SPX", justify="center")
+    table.add_column("DOW_JONES", justify="center")
     table.add_column("CRUDE", justify="center")
     table.add_row("104.20", "14.50", "5120.30", "78.40")
     return Panel(table, title="[bold]Global Macro[/]", border_style="magenta")
 
 def render_ticker(symbol: str) -> Panel:
-    # Header: [SYM] | S: [price] | F: [price] ([change]%) | Sig: [NEUTRAL/BULL/BEAR] ([score]/10)
-    summary = f"[bold yellow]{symbol}[/] | S: 65200 | F: 65150 (-0.05%) | Sig: [green]BULL[/] (7/10)"
+    # Header: [SYM] | Spot: [price] | Fut: [price] ([change]%) | Sig: [NEUTRAL/BULL/BEAR] ([score]/10)
+    summary = f"[bold yellow]{symbol}[/] | Spot: 65200 | Fut: 65150 (-0.05%) | Sig: [green]BULL[/] (7/10)"
     
     table = Table(show_header=True, header_style="bold cyan", box=box.SIMPLE, expand=True)
     table.add_column("INDICATOR", style="dim")
@@ -65,7 +65,7 @@ def main():
                 layout["BTC"].update(render_ticker("BTC"))
                 layout["ETH"].update(render_ticker("ETH"))
                 layout["SOL"].update(render_ticker("SOL"))
-                time.sleep(1)
+                time.sleep(30)
         except KeyboardInterrupt:
             pass
 
