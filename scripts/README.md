@@ -16,7 +16,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
 | `report_and_send.py` | Generates diagnostic reports and sends them to Telegram. |
-| `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) live terminal view. Shows Spot vs. Futures, human-readable OI (L/C), and ATM ± 300 strikes. **Nifty refined to show 100-pt round strikes only**. 5s polling, daily-reset SQLite. |
+| `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) live terminal view. Shows Spot vs. Futures, human-readable OI (L/C), and ATM ± 300 strikes. **Lean, compressed layout (107 chars)** for small terminal windows. 5s polling, daily-reset SQLite. |
 
 ### 🤖 AI Search & Discovery
 *Tools for tracking AI agent launches, events, and research using Exa AI.*
