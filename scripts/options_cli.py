@@ -147,17 +147,19 @@ def print_row(strike, ce_data, pe_data, is_atm=False):
         if "OL" in flags: o_s = f"{G}{o_s}{W}" if is_ce else f"{R}{o_s}{W}"
         if "OH" in flags: o_s = f"{R}{o_s}{W}" if is_ce else f"{G}{o_s}{W}"
         
-        f_tag = ""
-        if "OL" in flags: f_tag = f"{G}[OL]{W}" if is_ce else f"{R}[OL]{W}"
-        if "OH" in flags: f_tag = f"{R}[OH]{W}" if is_ce else f"{G}[OH]{W}"
+        f_tags = []
+        if "OL" in flags: f_tags.append(f"{G}[OL]{W}" if is_ce else f"{R}[OL]{W}")
+        if "OH" in flags: f_tags.append(f"{R}[OH]{W}" if is_ce else f"{G}[OH]{W}")
+        f_tag_str = " ".join(f_tags)
         
-        return o_s, f"{h:7.2f}", f"{l:7.2f}", f"{c:7.2f}", f"{ltp:8.2f}", f"{oi:>8}", f_tag
+        return o_s, f"{h:7.2f}", f"{l:7.2f}", f"{c:7.2f}", f"{ltp:8.2f}", f"{oi:>8}", f_tag_str
 
     co, ch, cl, cc, cltp, coi, cf = get_cols(ce_data, True)
     po, ph, pl, pc, pltp, poi, pf = get_cols(pe_data, False)
     
     # CE Side | Strike | PE Side
-    print(f"{marker}{co} {ch} {cl} {cc} | {cltp} | {coi} | {strike:8.0f} | {poi} | {pltp} | {po} {ph} {pl} {pc} | {cf} {pf}")
+    cf_col = f"{cf:<11}" if cf else " " * 11
+    print(f"{marker}{cf_col} | {co} {ch} {cl} {cc} | {cltp} | {coi} | {strike:8.0f} | {poi} | {pltp} | {po} {ph} {pl} {pc} | {pf}")
 
 # ── Main Loop ─────────────────────────────────────────────────────────────────
 
