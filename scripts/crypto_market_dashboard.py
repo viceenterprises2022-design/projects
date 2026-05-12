@@ -262,14 +262,6 @@ def get_diagnostics(symbol, binance, deribit, macro):
         chg = macro["DXY"]["change_pct"]
         sc += (-1 if chg > 0.1 else 1 if chg < -0.1 else 0)
         factors += 1
-    if macro["CRUDE"]:
-        chg = macro["CRUDE"]["change_pct"]
-        sc += (-1 if chg > 1.0 else 1 if chg < -1.0 else 0)
-        factors += 1
-    if macro["US30"]:
-        chg = macro["US30"]["change_pct"]
-        sc += (1 if chg > 0.2 else -1 if chg < -0.2 else 0)
-        factors += 1
         
     signal = "NEUTRAL"
     if sc >= 3: signal = "BULLISH"
@@ -300,20 +292,10 @@ def get_indicators_table(symbol, binance, deribit, macro):
         table.add_row(name, data['label'], f"[{color}]{score_str}[/]")
         
     # Macro rows
-    if macro["US30"]:
-        chg = macro["US30"]["change_pct"]
-        s = 1 if chg > 0.2 else -1 if chg < -0.2 else 0
-        table.add_row("DOW_JONES", f"{'BULLISH' if chg > 0.2 else 'BEARISH' if chg < -0.2 else 'FLAT'} ({chg:+.2f}%)", f"{s:+d}")
-    
     if macro["DXY"]:
         chg = macro["DXY"]["change_pct"]
         s = -1 if chg > 0.1 else 1 if chg < -0.1 else 0
         table.add_row("DXY", f"{'STRENGTHENING' if chg > 0.1 else 'WEAKENING' if chg < -0.1 else 'STABLE'} ({chg:+.2f}%)", f"{s:+d}")
-        
-    if macro["CRUDE"]:
-        chg = macro["CRUDE"]["change_pct"]
-        s = -1 if chg > 1.0 else 1 if chg < -1.0 else 0
-        table.add_row("CRUDE", f"{'SURGING' if chg > 1.0 else 'FALLING' if chg < -1.0 else 'STABLE'} ({chg:+.2f}%)", f"{s:+d}")
         
     if macro["VIX"]:
         val = macro["VIX"]["ltp"]
@@ -455,8 +437,6 @@ def main():
             # 1. Fetch Global Macro
             macro = {
                 "DXY": fetch_yahoo("DX-Y.NYB"),
-                "CRUDE": fetch_yahoo("CL=F"),
-                "US30": fetch_yahoo("YM=F"),
                 "VIX": fetch_yahoo("^VIX")
             }
             

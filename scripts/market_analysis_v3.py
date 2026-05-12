@@ -28,7 +28,7 @@ OI_INSTRUMENTS = {
 }
 LOT_SIZE = {"NIFTY": 75, "BANKNIFTY": 30, "SENSEX": 20}
 OI_RANGE  = 1000   # spot ± 1000 pts
-YAHOO_SYM = {"DXY":"DX-Y.NYB","CRUDE_OIL":"CL=F","US30":"YM=F","GOLD":"GC=F","SILVER":"SI=F"}
+YAHOO_SYM = {"DXY":"DX-Y.NYB","VIX":"^VIX"}
 YAHOO_IDX = {"NIFTY":"^NSEI","SENSEX":"^BSESN","BANKNIFTY":"^NSEBANK"}
 YH = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
@@ -573,7 +573,7 @@ def run_analysis(sym):
     if not q: return None
     c = fetch_candles(INSTRUMENTS[sym])
     yc = fetch_yahoo(YAHOO_IDX.get(sym, "^NSEI"))
-    gd = {"US30":fetch_yahoo(YAHOO_SYM["US30"], 5), "DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), "CRUDE_OIL":fetch_yahoo(YAHOO_SYM["CRUDE_OIL"], 5)}
+    gd = {"DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), "VIX":fetch_yahoo(YAHOO_SYM["VIX"], 5)}
     vix = fetch_quote(INSTRUMENTS["INDIA_VIX"])
     if vix: gd["VIX"] = {"ltp":vix.get("ltp",15), "change_pct":0}
     oi = build_oi_data(sym, q["ltp"])
