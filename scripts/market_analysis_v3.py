@@ -469,13 +469,6 @@ def fmt_oi(v):
     if l >= 100: return f"{l:,.0f}L"
     return f"{l:.1f}L"
 
-def doi_str(v):
-    if not v: return "[dim]—[/dim]"
-    l = v / 100000
-    color = "green" if v > 0 else "red"
-    sign  = "+" if v > 0 else ""
-    return f"[{color}]{sign}{l:.1f}L[/{color}]"
-
 def days_to_expiry(expiry_str):
     try:
         exp = datetime.datetime.strptime(expiry_str, "%Y-%m-%d").date()
@@ -495,25 +488,19 @@ def print_option_chain(oi_raw, spot):
     console.print(Rule(f"[bold yellow]Option Chain — Expiry: {expiry} | DTE: {dte}d | Max Pain: {max_p:,}[/bold yellow]", style="yellow"))
     oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 1))
     oc_table.add_column("C.LTP", justify="right", style="green")
-    oc_table.add_column("C.IV%", justify="right", style="green")
     oc_table.add_column("C.OI", justify="right", style="green")
-    oc_table.add_column("C.ΔOI", justify="right")
     oc_table.add_column("STRIKE", justify="center", style="bold white")
-    oc_table.add_column("P.ΔOI", justify="left")
     oc_table.add_column("P.OI", justify="right", style="red")
-    oc_table.add_column("P.IV%", justify="right", style="red")
     oc_table.add_column("P.LTP", justify="right", style="red")
     for s in visible:
         k=s["strike"]; is_atm = abs(k-spot)<=50
         c_ltp=f"{s['call_ltp']:.1f}" if s['call_ltp'] else "—"
-        c_iv=f"{s['call_iv']:.1f}" if s['call_iv'] else "—"
-        c_oi=fmt_oi(s['call_oi']); c_doi=doi_str(s['call_doi'])
+        c_oi=fmt_oi(s['call_oi'])
         p_ltp=f"{s['put_ltp']:.1f}" if s['put_ltp'] else "—"
-        p_iv=f"{s['put_iv']:.1f}" if s['put_iv'] else "—"
-        p_oi=fmt_oi(s['put_oi']); p_doi=doi_str(s['put_doi'])
+        p_oi=fmt_oi(s['put_oi'])
         strike_str = f"[bold yellow]►{k:,}◄[/bold yellow]" if is_atm else f"{k:,}"
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
-        oc_table.add_row(c_ltp, c_iv, c_oi, c_doi, strike_str, p_doi, p_oi, p_iv, p_ltp)
+        oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
     console.print(oc_table)
 
 def print_intelligence_panel(sym, quote, oi_raw):
