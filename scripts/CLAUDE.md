@@ -9,23 +9,29 @@ Always use **caveman ultra** mode (`/caveman ultra`). Never revert unless user s
 ---
 
 ## Repository Overview
-
-Two independent systems in one directory:
-
 1. **AlphaEdge Market Intelligence** — 10-factor signal engine for Indian indices (NIFTY, SENSEX, BANKNIFTY)
-2. **Exa AI Event Search** — upcoming online AI events/classes finder via Exa API
+2. **AlphaEdge Crypto Diagnostic 2.0** — High-density async dashboard for BTC, ETH, SOL
+3. **Exa AI Event Search** — upcoming online AI events/classes finder via Exa API
 
 ---
 
-## AlphaEdge: 3-Tier Architecture
+## AlphaEdge: 3-Tier Architecture (Indian Indices)
+...
+---
 
+## AlphaEdge Crypto Diagnostic 2.0
+
+**`crypto_market_dashboard_v2.py`** — Main entry point. Uses `rich.live` for a 3-column diagnostic view of BTC, ETH, and SOL.
+**`market_engine.py`** — Asynchronous data engine fetching from Binance (Spot/Futures/Depth), Deribit (Options), and Yahoo Finance (Macro).
+
+```bash
+# Start Crypto Dashboard
+python3 crypto_market_dashboard_v2.py
 ```
-collector.py          # Fetches data (Upstox + Yahoo Finance), runs signal engine, writes to SQLite
-    └─► alphaedge.db  # SQLite: metrics_history + macro_history tables
-alphaedge_db.py       # DB layer: init_db(), insert_metric(), insert_macro(), query_latest(), query_history()
-api_server.py         # FastAPI on :8765 — /api/latest, /api/history, /api/symbols + serves frontend/
-frontend/             # HTML/JS dashboard polling the API every 60s, Chart.js visualizations
-```
+
+---
+
+## Exa AI Event Search
 
 **market_analysis_v3.py** — monolithic legacy script (pre-decoupling). Generates a self-contained HTML report with embedded PixiJS/sparklines. Still used by `report_and_send.py` for Telegram delivery. The patched versions (`patch_market*.py`) injected Claude AI diagnostics into it.
 

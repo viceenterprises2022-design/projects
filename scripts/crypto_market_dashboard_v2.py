@@ -88,19 +88,26 @@ def render_ticker(symbol: str, data, engine) -> Panel:
     
     # Options
     if options:
-        table.add_row("[bold cyan]OPTIONS[/]", "")
-        table.add_row("PCR (OI)", f"{options['pcr']:.2f}")
+        table.add_row("[bold cyan]OPTIONS (DERIBIT)[/]", "")
+        table.add_row("PCR (OI/VOL)", f"{options['pcr']:.2f} / {options['vol_pcr']:.2f}")
+        skew_color = "red" if options['oi_skew'] < -0.1 else "green" if options['oi_skew'] > 0.1 else "white"
+        table.add_row("OI SKEW", f"[{skew_color}]{options['oi_skew']:+.2f}[/]")
         table.add_row("MAX PAIN", f"{options['max_oi']:,.0f}")
     
     table.add_row("", "") # Spacer
     
     # Whale Walls
     if depth:
-        table.add_row("[bold cyan]WHALE WALLS[/]", "")
+        table.add_row("[bold cyan]ORDER BOOK (1%)[/]", "")
+        book_skew = depth['skew']
+        bs_color = "green" if book_skew > 0.1 else "red" if book_skew < -0.1 else "white"
+        table.add_row("BOOK SKEW", f"[{bs_color}]{book_skew:+.2f}[/]")
         for bid in depth['bids'][:1]:
-            table.add_row("BID", f"[green]{bid['p']:,.0f}[/] (${bid['v']/1e6:.1f}M)")
+            table.add_row("WHALE BID", f"[green]{bid['p']:,.0f}[/] (${bid['v']/1e6:.1f}M)")
         for ask in depth['asks'][:1]:
-            table.add_row("ASK", f"[red]{ask['p']:,.0f}[/] (${ask['v']/1e6:.1f}M)")
+            table.add_row("WHALE ASK", f"[red]{ask['p']:,.0f}[/] (${ask['v']/1e6:.1f}M)")
+        if not depth['bids'] and not depth['asks']:
+            table.add_row("WALLS", "[dim]None >$1M[/]")
 
     return Panel(table, title=summary, border_style="cyan")
 

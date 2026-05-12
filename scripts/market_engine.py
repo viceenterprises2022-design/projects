@@ -127,7 +127,7 @@ class MarketEngine:
             return processed
 
     def process_options(self, data):
-        """Calculates Max Pain, Max OI, and PCR from Deribit data."""
+        """Calculates Max Pain, Max OI, PCR, and Skew from Deribit data."""
         if not data or 'result' not in data:
             return None
         
@@ -138,6 +138,12 @@ class MarketEngine:
         call_oi = sum(r.get('open_interest', 0) for r in calls)
         put_oi = sum(r.get('open_interest', 0) for r in puts)
         pcr = put_oi / call_oi if call_oi > 0 else 0
+        
+        call_vol = sum(r.get('volume', 0) for r in calls)
+        put_vol = sum(r.get('volume', 0) for r in puts)
+        vol_pcr = put_vol / call_vol if call_vol > 0 else 0
+        
+        oi_skew = (put_oi - call_oi) / (put_oi + call_oi) if (put_oi + call_oi) > 0 else 0
         
         # Simple Max Pain estimation (strike with highest total OI for now as proxy)
         all_strikes = {}
@@ -152,13 +158,15 @@ class MarketEngine:
         
         return {
             "pcr": pcr,
+            "vol_pcr": vol_pcr,
+            "oi_skew": oi_skew,
             "max_oi": max_oi_strike,
             "total_oi": call_oi + put_oi,
             "top_strikes": sorted(all_strikes.items(), key=lambda x: x[1], reverse=True)[:5]
         }
 
     def process_depth(self, depth, binance_data):
-        """Detects Whale Walls (> $1M within 1% of price)."""
+        """Detects Whale Walls (> $1M within 1% of price) and calculates book skew."""
         if not depth or not binance_data or not binance_data[1]:
             return None
         
@@ -170,37 +178,54 @@ class MarketEngine:
         whale_bids = []
         whale_asks = []
         
+        total_bid_val = 0
+        total_ask_val = 0
+        
         threshold = 1000000 # $1M USD
         
         for price, qty in bids:
             p, q = float(price), float(qty)
-            notional = p * q
-            if notional >= threshold and p >= ltp * 0.99:
-                whale_bids.append({"p": p, "v": notional})
+            val = p * q
+            if p >= ltp * 0.99:
+                total_bid_val += val
+                if val >= threshold:
+                    whale_bids.append({"p": p, "v": val})
                 
         for price, qty in asks:
             p, q = float(price), float(qty)
-            notional = p * q
-            if notional >= threshold and p <= ltp * 1.01:
-                whale_asks.append({"p": p, "v": notional})
+            val = p * q
+            if p <= ltp * 1.01:
+                total_ask_val += val
+                if val >= threshold:
+                    whale_asks.append({"p": p, "v": val})
+        
+        skew = (total_bid_val - total_ask_val) / (total_bid_val + total_ask_val) if (total_bid_val + total_ask_val) > 0 else 0
         
         return {
             "bids": sorted(whale_bids, key=lambda x: x['v'], reverse=True),
-            "asks": sorted(whale_asks, key=lambda x: x['v'], reverse=True)
+            "asks": sorted(whale_asks, key=lambda x: x['v'], reverse=True),
+            "skew": skew,
+            "bid_depth": total_bid_val,
+            "ask_depth": total_ask_val
         }
 
     def calculate_macro_correlations(self, symbol, binance_data, macro_data):
-        """Pearson correlation with DXY, VIX, SPX over 30 days."""
+        """Pearson correlation with DXY, VIX, SPX over available overlap."""
         if not binance_data or not binance_data[0] or not macro_data:
             return {}
         
+        # Use up to 30 days of spot closes
         btc_closes = [float(x[4]) for x in binance_data[0]][-30:]
         correlations = {}
         
         for key, mdata in macro_data.items():
-            m_history = mdata.get('history', [])[-len(btc_closes):]
-            if len(m_history) == len(btc_closes):
-                correlations[key] = self.calculate_correlation(btc_closes, m_history)
+            m_history = mdata.get('history', [])
+            # Align lengths
+            min_len = min(len(btc_closes), len(m_history))
+            if min_len >= 5: # Need at least some data for meaningful correlation
+                s1 = btc_closes[-min_len:]
+                s2 = m_history[-min_len:]
+                correlations[key] = self.calculate_correlation(s1, s2)
                 
         return correlations
 
