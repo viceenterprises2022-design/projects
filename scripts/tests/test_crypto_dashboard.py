@@ -204,8 +204,10 @@ def test_aggregate_liquidation_bins():
     
     # Expected: [(60000, 12005.0), (60100, 6009.9)]
     assert len(result) == 2
-    assert result[0] == (60000, 12005.0)
-    assert result[1] == (60100, 6009.9)
+    assert result[0][0] == 60000
+    assert result[0][1] == pytest.approx(12005.0)
+    assert result[1][0] == 60100
+    assert result[1][1] == pytest.approx(6009.9)
 
 def test_aggregate_liquidation_bins_symbols():
     from crypto_dashboard import aggregate_liquidation_bins

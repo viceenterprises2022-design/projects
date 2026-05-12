@@ -138,6 +138,52 @@ def calculate_max_pain(options_data):
             
     return max_pain_strike
 
+def aggregate_liquidation_bins(binance_data, bybit_data, symbol):
+    """
+    Combine, bin, and sum liquidation volumes from Binance and Bybit.
+    Returns sorted list of top 10 bins: [(price_bin, total_volume), ...]
+    """
+    if binance_data is None:
+        binance_data = []
+    if bybit_data is None:
+        bybit_data = []
+        
+    bin_size = 100
+    if symbol == "ETH":
+        bin_size = 10
+    elif symbol == "SOL":
+        bin_size = 1
+        
+    bins = {}
+    
+    # Binance: price, origQty
+    for item in binance_data:
+        try:
+            price = float(item.get("price", 0))
+            qty = float(item.get("origQty", 0))
+            volume = price * qty
+            
+            bin_price = int(round(price / bin_size) * bin_size)
+            bins[bin_price] = bins.get(bin_price, 0) + volume
+        except (ValueError, TypeError):
+            continue
+            
+    # Bybit: price, size
+    for item in bybit_data:
+        try:
+            price = float(item.get("price", 0))
+            qty = float(item.get("size", 0))
+            volume = price * qty
+            
+            bin_price = int(round(price / bin_size) * bin_size)
+            bins[bin_price] = bins.get(bin_price, 0) + volume
+        except (ValueError, TypeError):
+            continue
+            
+    # Sort by volume descending and take top 10
+    sorted_bins = sorted(bins.items(), key=lambda x: x[1], reverse=True)
+    return sorted_bins[:10]
+
 def main():
     """Main execution loop."""
     try:
