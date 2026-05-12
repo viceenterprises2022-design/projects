@@ -29,7 +29,7 @@ def render_header(refresh_in: int, macro_data: dict = None) -> Panel:
     ticker = ""
     if macro_data:
         parts = []
-        for key in ["DXY", "VIX"]:
+        for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
             if key in macro_data:
                 val = macro_data[key]['current']
                 parts.append(f"{key}: [bold cyan]{val:,.1f}[/]")
