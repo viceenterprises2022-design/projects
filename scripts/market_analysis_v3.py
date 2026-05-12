@@ -18,9 +18,7 @@ INSTRUMENTS = {
     "NIFTY":     "NSE_INDEX|Nifty 50",
     "SENSEX":    "BSE_INDEX|SENSEX",
     "BANKNIFTY": "NSE_INDEX|Nifty Bank",
-    "INDIA_VIX": "NSE_INDEX|India VIX",
-    "NIFTY_FUT": "NSE_FO|NIFTY26MAYFUT",
-    "BANKNIFTY_FUT": "NSE_FO|BANKNIFTY26MAYFUT"
+    "INDIA_VIX": "NSE_INDEX|India VIX"
 }
 # OI chain available for these only (NSE F&O)
 OI_INSTRUMENTS = {
@@ -578,8 +576,7 @@ def print_trending_oi(sym):
 def run_analysis(sym):
     q = fetch_quote(INSTRUMENTS[sym])
     if not q: return None
-    fut_key = f"{sym}_FUT"
-    fq = fetch_quote(INSTRUMENTS[fut_key]) if fut_key in INSTRUMENTS else None
+    fq = fetch_quote(get_futures_key(sym))
     c = fetch_candles(INSTRUMENTS[sym])
     yc = fetch_yahoo(YAHOO_IDX.get(sym, "^NSEI"))
     gd = {"DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), "VIX":fetch_yahoo(YAHOO_SYM["VIX"], 5)}
@@ -587,6 +584,13 @@ def run_analysis(sym):
     if vix: gd["VIX"] = {"ltp":vix.get("ltp",15), "change_pct":0}
     oi = build_oi_data(sym, q["ltp"])
     return (sym, q, fq, oi, analyze(sym, q, c, oi, gd, yc))
+
+def get_futures_key(sym):
+    now = datetime.datetime.now()
+    year = now.strftime("%y")
+    mon = now.strftime("%b").upper()
+    if sym == "SENSEX": return f"BSE_FO|SENSEX{year}{mon}FUT"
+    return f"NSE_FO|{sym}{year}{mon}FUT"
 
 def display_dashboard(sym, q, fq, oi, a_res):
     console.clear()
@@ -607,12 +611,10 @@ def display_dashboard(sym, q, fq, oi, a_res):
     ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0,0), expand=True)
     ind_table.add_column("Ind", style="cyan", justify="left"); ind_table.add_column("Status", justify="left"); ind_table.add_column("S", justify="center")
     for k, v in a_res["indicators"].items():
-        s = "[green]+1[/green]" if v["score"]>0 else "[red]-1[/red]" if v["score"]<0 else "[yellow]0[/yellow]"
-        # Map long names to short codes in CAPS
+        score_val = v["score"]
+        score_str = f"[green]+{score_val}[/green]" if score_val>0 else f"[red]{score_val}[/red]" if score_val<0 else "[yellow]0[/yellow]"
         short_k = k.upper().replace("INDIA_VIX", "VIX").replace("SUPERTREND", "S-TREND").replace("DOW_JONES", "DOW")
-        # Show status with detail if it's very short
-        status = v["label"]
-        ind_table.add_row(short_k, status[:32], s)
+        ind_table.add_row(short_k, v["label"][:32], score_str)
     
     # 2. Layout Structure (Grid Table for compact height)
     if oi:
