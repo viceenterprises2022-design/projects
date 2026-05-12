@@ -54,12 +54,14 @@ def test_calculate_max_pain():
 
 def test_aggregate_liquidation_bins_with_data():
     from crypto_dashboard import liq_collector, aggregate_liquidation_bins
+    import time
     
+    now = time.time()
     # Manually seed the global collector
     liq_collector.buffer["BTC"] = [
-        {"price": 60001, "qty": 0.1, "timestamp": 123},
-        {"price": 60049, "qty": 0.1, "timestamp": 123},
-        {"price": 60099, "qty": 0.1, "timestamp": 123}
+        {"price": 60001, "qty": 0.1, "timestamp": now},
+        {"price": 60049, "qty": 0.1, "timestamp": now},
+        {"price": 60099, "qty": 0.1, "timestamp": now}
     ]
     
     # Result for BTC (bin size 100)
