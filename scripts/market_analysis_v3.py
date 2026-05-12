@@ -475,18 +475,15 @@ def days_to_expiry(expiry_str):
         return (exp - datetime.date.today()).days
     except Exception: return "?"
 
-def print_option_chain(oi_raw, spot):
-    if not oi_raw:
-        console.print("[dim]  Option chain unavailable.[/dim]")
-        return
+def get_option_chain_table(oi_raw, spot):
+    if not oi_raw: return Text("Option chain unavailable", style="dim")
     expiry  = oi_raw.get("expiry", "?")
-    dte     = days_to_expiry(expiry)
     strikes = oi_raw.get("strikes", [])
     max_p   = oi_raw.get("max_pain", 0)
-    lo, hi  = spot - 500, spot + 500
+    lo, hi  = spot - 400, spot + 400
     visible = [s for s in strikes if lo <= s["strike"] <= hi] or strikes
-    console.print(Rule(f"[bold yellow]Option Chain — Expiry: {expiry} | DTE: {dte}d | Max Pain: {max_p:,}[/bold yellow]", style="yellow"))
-    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 1))
+    
+    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 1), title=f"Option Chain (Exp: {expiry})", title_style="bold yellow")
     oc_table.add_column("C.LTP", justify="right", style="green")
     oc_table.add_column("C.OI", justify="right", style="green")
     oc_table.add_column("STRIKE", justify="center", style="bold white")
@@ -501,11 +498,10 @@ def print_option_chain(oi_raw, spot):
         strike_str = f"[bold yellow]►{k:,}◄[/bold yellow]" if is_atm else f"{k:,}"
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
         oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
-    console.print(oc_table)
+    return oc_table
 
-def print_intelligence_panel(sym, quote, oi_raw):
-    if not oi_raw: return
-    console.print(Rule("[bold magenta]Market Intelligence[/bold magenta]", style="magenta"))
+def get_intelligence_panel(sym, quote, oi_raw):
+    if not oi_raw: return Text("")
     strikes=oi_raw.get("strikes", []); spot=oi_raw.get("spot", 0)
     total_pcr=oi_raw.get("total_pcr", 0); max_pain=oi_raw.get("max_pain", 0)
     total_c_oi=oi_raw.get("total_call_oi", 0); total_p_oi=oi_raw.get("total_put_oi", 0)
@@ -514,16 +510,17 @@ def print_intelligence_panel(sym, quote, oi_raw):
     top_call=sorted(strikes, key=lambda x: x["call_oi"], reverse=True)[:3]
     top_put=sorted(strikes, key=lambda x: x["put_oi"], reverse=True)[:3]
     pcr_color = "green" if total_pcr>=1.0 else "yellow" if total_pcr>=0.7 else "red"
-    buildup_sig = "[green]Long Build-up[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Short Covering[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short Build-up[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Long Unwinding[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neutral[/dim]"
-    left, right = Table(box=None, show_header=False), Table(box=None, show_header=False)
-    left.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
-    left.add_row("Max Pain", f"[magenta]{max_pain:,}[/magenta]")
-    left.add_row("OI Build", buildup_sig)
-    left.add_row("Calls", f"[green]{fmt_oi(total_c_oi)}[/green]")
-    left.add_row("Puts", f"[red]{fmt_oi(total_p_oi)}[/red]")
-    right.add_row("Resist", ", ".join([f"[red]{s['strike']:,}[/red]" for s in top_call]))
-    right.add_row("Support", ", ".join([f"[green]{s['strike']:,}[/green]" for s in top_put]))
-    console.print(Columns([Panel(left, border_style="magenta"), Panel(right, border_style="blue")]))
+    buildup_sig = "[green]Long Build[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Short Cov[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short Build[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Long Unwind[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neut[/dim]"
+    
+    intel = Table(box=None, show_header=False, title="Market Intel", title_style="bold magenta")
+    intel.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
+    intel.add_row("Max Pain", f"[magenta]{max_pain:,}[/magenta]")
+    intel.add_row("OI Build", buildup_sig)
+    intel.add_row("C.OI", f"[green]{fmt_oi(total_c_oi)}[/green]")
+    intel.add_row("P.OI", f"[red]{fmt_oi(total_p_oi)}[/red]")
+    intel.add_row("Resist", f"[red]{top_call[0]['strike']:,}[/red]")
+    intel.add_row("Support", f"[green]{top_put[0]['strike']:,}[/green]")
+    return Panel(intel, border_style="magenta")
 
 def print_summary_ticker(quotes_all):
     now = datetime.datetime.now().strftime("%H:%M:%S")
@@ -539,20 +536,18 @@ def print_summary_ticker(quotes_all):
 def print_trending_oi(sym):
     try:
         conn = sqlite3.connect(DB_PATH)
-        rows = conn.execute("SELECT timestamp, ltp, call_oi, put_oi FROM trending_oi WHERE symbol=? ORDER BY timestamp DESC LIMIT 15", (sym,)).fetchall()
+        rows = conn.execute("SELECT timestamp, ltp, call_oi, put_oi FROM trending_oi WHERE symbol=? ORDER BY timestamp DESC LIMIT 5", (sym,)).fetchall()
         conn.close()
     except Exception: return
     if not rows: return
-    console.print(Rule("[bold cyan]Trending OI (Intraday)[/bold cyan]", style="cyan"))
-    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
-    for c in ["Time", "LTP", "ΔCall OI", "ΔPut OI", "Diff", "PCR", "Sentiment"]: t.add_column(c, justify="right")
+    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", title="OI Trend", title_style="cyan")
+    for c in ["Time", "LTP", "ΔC", "ΔP", "Diff", "PCR"]: t.add_column(c, justify="right")
     base_c, base_p = rows[-1][2], rows[-1][3]
     for r in rows:
         ts, ltp, c_oi, p_oi = r
-        d_c, d_p = c_oi-base_c, p_oi-base_p; diff = p_oi-c_oi
+        d_c, d_p = (c_oi-base_c)/100000, (p_oi-base_p)/100000; diff = (p_oi-c_oi)/100000
         pcr = p_oi/c_oi if c_oi>0 else 0
-        sent = "[green]Bullish[/green]" if diff>0 else "[red]Bearish[/red]"
-        t.add_row(ts.split(" ")[1][:5], f"{ltp:,.2f}", f"{d_c:,.0f}", f"{d_p:,.0f}", f"{diff:,.0f}", f"{pcr:.2f}", sent)
+        t.add_row(ts.split(" ")[1][:5], f"{ltp:,.0f}", f"{d_c:+.1f}L", f"{d_p:+.1f}L", f"{diff:+.1f}L", f"{pcr:.2f}")
     console.print(t)
 
 def run_analysis(sym):
@@ -571,20 +566,26 @@ def display_dashboard(sym, q, oi, a_res):
     ltp, chg = q["ltp"], q["change_pct"]
     color = "green" if chg>=0 else "red"
     sig_c = {"BUY":"green", "SELL":"red", "NEUTRAL":"yellow"}.get(a_res["signal"], "white")
-    header = f"[bold white]LTP:[/bold white] [{color}]{ltp:,.2f} ({chg:+.2f}%)[/{color}]  |  [bold white]Signal:[/bold white] [{sig_c}]{a_res['signal']} ({a_res['score']}/10)[/{sig_c}]"
-    console.print(Panel(header, title=f"[bold yellow]⚡ AlphaEdge Diagnostics: {sym}[/bold yellow]", border_style="cyan"))
+    header = f"[bold white]{sym}[/bold white] | [{color}]{ltp:,.2f} ({chg:+.2f}%)[/{color}] | Signal: [{sig_c}]{a_res['signal']} ({a_res['score']}/10)[/{sig_c}]"
+    console.print(Panel(header, border_style="cyan"))
     
-    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
-    t.add_column("Indicator", style="cyan"); t.add_column("Status"); t.add_column("Score", justify="center")
+    # 1. Indicator Table
+    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", title="Indicators", title_style="bold cyan")
+    ind_table.add_column("Indicator", style="cyan"); ind_table.add_column("Status"); ind_table.add_column("Score", justify="center")
     for k, v in a_res["indicators"].items():
         s = "[green]+1[/green]" if v["score"]>0 else "[red]-1[/red]" if v["score"]<0 else "[yellow]0[/yellow]"
-        t.add_row(k.upper(), v["label"], s)
-    console.print(t)
+        ind_table.add_row(k.upper(), v["label"][:30], s)
+    
+    # 2. Layout
+    panels = [Panel(ind_table, border_style="cyan")]
     if oi:
-        print_option_chain(oi, ltp)
-        print_intelligence_panel(sym, q, oi)
-        print_trending_oi(sym)
-    console.print("\n[dim]  Auto-refreshing every 30s... [Ctrl+C] to return to menu[/dim]")
+        panels.append(get_option_chain_table(oi, ltp))
+        panels.append(get_intelligence_panel(sym, q, oi))
+    
+    console.print(Columns(panels, align="left"))
+    if oi: print_trending_oi(sym)
+    console.print(f"[dim]  Auto-refresh 30s | {datetime.datetime.now().strftime('%H:%M:%S')} | Ctrl+C to Exit[/dim]")
+
 
 def main():
     init_db()
