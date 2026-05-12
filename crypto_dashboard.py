@@ -26,6 +26,31 @@ def fetch_deribit_quotes(currency):
         print(f"Error fetching Deribit quotes for {currency}: {e}")
         return None
 
+def calculate_pcr(options_data):
+    """
+    Calculate Put-Call Ratio based on Open Interest.
+    PCR = Sum(Put OI) / Sum(Call OI)
+    """
+    if not options_data:
+        return 0.0
+        
+    call_oi = 0.0
+    put_oi = 0.0
+    
+    for opt in options_data:
+        instrument = opt.get("instrument_name", "")
+        oi = opt.get("open_interest", 0)
+        
+        if instrument.endswith("-C"):
+            call_oi += oi
+        elif instrument.endswith("-P"):
+            put_oi += oi
+            
+    if call_oi == 0:
+        return 0.0
+        
+    return put_oi / call_oi
+
 def main():
     """Main execution loop."""
     try:
