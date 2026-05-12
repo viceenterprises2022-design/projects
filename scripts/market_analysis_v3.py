@@ -573,24 +573,30 @@ def print_trending_oi(sym):
         )
     console.print(t)
 
+def get_futures_key(sym, next_month=False):
+    now = datetime.datetime.now()
+    if next_month:
+        if now.month == 12: now = now.replace(year=now.year+1, month=1)
+        else: now = now.replace(month=now.month+1)
+    year, mon = now.strftime("%y"), now.strftime("%b").upper()
+    if sym == "SENSEX": return f"BSE_FO|SENSEX{year}{mon}FUT"
+    return f"NSE_FO|{sym}{year}{mon}FUT"
+
 def run_analysis(sym):
     q = fetch_quote(INSTRUMENTS[sym])
     if not q: return None
     fq = fetch_quote(get_futures_key(sym))
+    if not fq: fq = fetch_quote(get_futures_key(sym, True))
+    
     c = fetch_candles(INSTRUMENTS[sym])
     yc = fetch_yahoo(YAHOO_IDX.get(sym, "^NSEI"))
-    gd = {"DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), "VIX":fetch_yahoo(YAHOO_SYM["VIX"], 5)}
+    gd = {"DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), 
+          "VIX":fetch_yahoo(YAHOO_SYM["VIX"], 5),
+          "US30":fetch_yahoo("^DJI", 5)}
     vix = fetch_quote(INSTRUMENTS["INDIA_VIX"])
     if vix: gd["VIX"] = {"ltp":vix.get("ltp",15), "change_pct":0}
     oi = build_oi_data(sym, q["ltp"])
     return (sym, q, fq, oi, analyze(sym, q, c, oi, gd, yc))
-
-def get_futures_key(sym):
-    now = datetime.datetime.now()
-    year = now.strftime("%y")
-    mon = now.strftime("%b").upper()
-    if sym == "SENSEX": return f"BSE_FO|SENSEX{year}{mon}FUT"
-    return f"NSE_FO|{sym}{year}{mon}FUT"
 
 def display_dashboard(sym, q, fq, oi, a_res):
     console.clear()
