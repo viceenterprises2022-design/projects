@@ -478,17 +478,18 @@ def days_to_expiry(expiry_str):
 def get_option_chain_table(oi_raw, spot):
     if not oi_raw: return Text("Option chain unavailable", style="dim")
     expiry  = oi_raw.get("expiry", "?")
+    dte     = days_to_expiry(expiry)
     strikes = oi_raw.get("strikes", [])
     max_p   = oi_raw.get("max_pain", 0)
     lo, hi  = spot - 400, spot + 400
     visible = [s for s in strikes if lo <= s["strike"] <= hi] or strikes
     
-    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 1))
-    oc_table.add_column("C.LTP", justify="right", style="green")
-    oc_table.add_column("C.OI", justify="right", style="green")
-    oc_table.add_column("STRIKE", justify="center", style="bold white")
-    oc_table.add_column("P.OI", justify="right", style="red")
-    oc_table.add_column("P.LTP", justify="right", style="red")
+    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 0))
+    oc_table.add_column("C.LTP", justify="right", style="green", width=7)
+    oc_table.add_column("C.OI", justify="right", style="green", width=6)
+    oc_table.add_column("STRIKE", justify="center", style="bold white", width=12)
+    oc_table.add_column("P.OI", justify="right", style="red", width=6)
+    oc_table.add_column("P.LTP", justify="right", style="red", width=7)
     for s in visible:
         k=s["strike"]; is_atm = abs(k-spot)<=50
         c_ltp=f"{s['call_ltp']:.1f}" if s['call_ltp'] else "—"
@@ -498,7 +499,9 @@ def get_option_chain_table(oi_raw, spot):
         strike_str = f"[bold yellow]►{k:,}◄[/bold yellow]" if is_atm else f"{k:,}"
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
         oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
-    return Panel(oc_table, title=Text(f"Option Chain (Exp: {expiry})", style="bold yellow"), border_style="yellow", padding=(0, 1))
+    
+    header = f"Option Chain — Exp: {expiry}\nDTE: {dte}d | MP: {max_p:,}"
+    return Panel(oc_table, title=Text(header, style="bold yellow"), border_style="yellow", padding=(0, 0))
 
 def get_intelligence_panel(sym, quote, oi_raw):
     if not oi_raw: return Text("")
@@ -510,17 +513,17 @@ def get_intelligence_panel(sym, quote, oi_raw):
     top_call=sorted(strikes, key=lambda x: x["call_oi"], reverse=True)[:3]
     top_put=sorted(strikes, key=lambda x: x["put_oi"], reverse=True)[:3]
     pcr_color = "green" if total_pcr>=1.0 else "yellow" if total_pcr>=0.7 else "red"
-    buildup_sig = "[green]Long Build[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Short Cov[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short Build[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Long Unwind[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neut[/dim]"
+    buildup_sig = "[green]Long[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Cov[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Unwnd[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neut[/dim]"
     
-    intel = Table(box=None, show_header=False)
+    intel = Table(box=None, show_header=False, padding=(0, 0))
     intel.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
-    intel.add_row("Max Pain", f"[magenta]{max_pain:,}[/magenta]")
-    intel.add_row("OI Build", buildup_sig)
+    intel.add_row("Max P", f"[magenta]{max_pain:,}[/magenta]")
+    intel.add_row("Build", buildup_sig)
     intel.add_row("C.OI", f"[green]{fmt_oi(total_c_oi)}[/green]")
     intel.add_row("P.OI", f"[red]{fmt_oi(total_p_oi)}[/red]")
-    intel.add_row("Resist", f"[red]{top_call[0]['strike']:,}[/red]")
-    intel.add_row("Support", f"[green]{top_put[0]['strike']:,}[/green]")
-    return Panel(intel, title=Text("Market Intel", style="bold magenta"), border_style="magenta")
+    intel.add_row("R", f"[red]{top_call[0]['strike']:,}[/red]")
+    intel.add_row("S", f"[green]{top_put[0]['strike']:,}[/green]")
+    return Panel(intel, title=Text("Intel", style="bold magenta"), border_style="magenta", padding=(0, 1))
 
 def print_summary_ticker(quotes_all):
     now = datetime.datetime.now().strftime("%H:%M:%S")
@@ -541,7 +544,7 @@ def print_trending_oi(sym):
     except Exception: return
     if not rows: return
     console.print(Rule("[bold cyan]Trending OI (Intraday)[/bold cyan]", style="cyan"))
-    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
+    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0, 1))
     t.add_column("Time", justify="center")
     t.add_column("LTP", justify="right")
     t.add_column("ΔCall OI", justify="right")
@@ -589,23 +592,22 @@ def display_dashboard(sym, q, oi, a_res):
     console.print(Panel(header, border_style="cyan"))
     
     # 1. Indicator Table (Condensed)
-    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
+    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0,0))
     ind_table.add_column("Ind", style="cyan"); ind_table.add_column("Status"); ind_table.add_column("S", justify="center")
     for k, v in a_res["indicators"].items():
         s = "[green]+1[/green]" if v["score"]>0 else "[red]-1[/red]" if v["score"]<0 else "[yellow]0[/yellow]"
-        # Map long names to short codes or truncate
         short_k = k.replace("INDIA_VIX", "VIX").replace("SUPERTREND", "SUPERT").replace("DOW_JONES", "DOW")[:8]
-        ind_table.add_row(short_k, v["label"][:22], s)
+        ind_table.add_row(short_k, v["label"][:26], s)
     
     # 2. Layout Structure
     layout = Layout()
     layout.split_row(
-        Layout(name="left", ratio=1),
-        Layout(name="mid", ratio=1),
-        Layout(name="right", ratio=1)
+        Layout(name="left", ratio=4),
+        Layout(name="mid", ratio=6),
+        Layout(name="right", ratio=3)
     )
     
-    layout["left"].update(Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan"))
+    layout["left"].update(Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan", padding=(0,0)))
     
     if oi:
         layout["mid"].update(get_option_chain_table(oi, ltp))
