@@ -1,11 +1,11 @@
 # Graph Report - /home/vreddy1/Desktop/Projects  (2026-05-12)
 
 ## Corpus Check
-- 1833 files · ~9,184,945 words
+- 1834 files · ~9,185,281 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 15006 nodes · 44730 edges · 661 communities detected
+- 15007 nodes · 44730 edges · 662 communities detected
 - Extraction: 61% EXTRACTED · 39% INFERRED · 0% AMBIGUOUS · INFERRED: 17667 edges (avg confidence: 0.73)
 - Token cost: 0 input · 0 output
 
@@ -671,6 +671,7 @@
 - [[_COMMUNITY_Community 658|Community 658]]
 - [[_COMMUNITY_Community 659|Community 659]]
 - [[_COMMUNITY_Community 660|Community 660]]
+- [[_COMMUNITY_Community 661|Community 661]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `map()` - 649 edges
@@ -2700,11 +2701,11 @@ Nodes (0):
 
 ### Community 500 - "Community 500"
 Cohesion: 1.0
-Nodes (1): Creates the CrewaiTesting crew
+Nodes (0): 
 
 ### Community 501 - "Community 501"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (1): Creates the CrewaiTesting crew
 
 ### Community 502 - "Community 502"
 Cohesion: 1.0
@@ -2732,613 +2733,617 @@ Nodes (0):
 
 ### Community 508 - "Community 508"
 Cohesion: 1.0
-Nodes (1): Return sorted list of expiry date strings.
+Nodes (0): 
 
 ### Community 509 - "Community 509"
 Cohesion: 1.0
-Nodes (1): Fetch full option chain for a given expiry.
+Nodes (1): Return sorted list of expiry date strings.
 
 ### Community 510 - "Community 510"
 Cohesion: 1.0
-Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
+Nodes (1): Fetch full option chain for a given expiry.
 
 ### Community 511 - "Community 511"
 Cohesion: 1.0
-Nodes (1): Aggregates all data sources.
+Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
 
 ### Community 512 - "Community 512"
 Cohesion: 1.0
-Nodes (1): Calculates Max Pain, Max OI, PCR, and Skew from Deribit data.
+Nodes (1): Aggregates all data sources.
 
 ### Community 513 - "Community 513"
 Cohesion: 1.0
-Nodes (1): Detects Whale Walls (> $1M within 1% of price) and calculates book skew.
+Nodes (1): Calculates Max Pain, Max OI, PCR, and Skew from Deribit data.
 
 ### Community 514 - "Community 514"
 Cohesion: 1.0
-Nodes (1): Pearson correlation with DXY, VIX, SPX over available overlap.
+Nodes (1): Detects Whale Walls (> $1M within 1% of price) and calculates book skew.
 
 ### Community 515 - "Community 515"
 Cohesion: 1.0
-Nodes (1): Backwards compatibility for previous version.
+Nodes (1): Pearson correlation with DXY, VIX, SPX over available overlap.
 
 ### Community 516 - "Community 516"
 Cohesion: 1.0
-Nodes (1): Standard EMA calculation matching collector.py.
+Nodes (1): Backwards compatibility for previous version.
 
 ### Community 517 - "Community 517"
 Cohesion: 1.0
-Nodes (1): RSI calculation matching collector.py.
+Nodes (1): Standard EMA calculation matching collector.py.
 
 ### Community 518 - "Community 518"
 Cohesion: 1.0
-Nodes (1): Average True Range matching collector.py.
+Nodes (1): RSI calculation matching collector.py.
 
 ### Community 519 - "Community 519"
 Cohesion: 1.0
-Nodes (1): Supertrend calculation matching collector.py.
+Nodes (1): Average True Range matching collector.py.
 
 ### Community 520 - "Community 520"
 Cohesion: 1.0
-Nodes (1): VWAP calculation matching collector.py.
+Nodes (1): Supertrend calculation matching collector.py.
 
 ### Community 521 - "Community 521"
 Cohesion: 1.0
-Nodes (1): Comprehensive trend analysis matching collector.py logic.
+Nodes (1): VWAP calculation matching collector.py.
 
 ### Community 522 - "Community 522"
 Cohesion: 1.0
-Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
+Nodes (1): Comprehensive trend analysis matching collector.py logic.
 
 ### Community 523 - "Community 523"
 Cohesion: 1.0
-Nodes (1): VWAP calculation matching collector.py.
+Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
 
 ### Community 524 - "Community 524"
 Cohesion: 1.0
-Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
+Nodes (1): VWAP calculation matching collector.py.
 
 ### Community 525 - "Community 525"
 Cohesion: 1.0
-Nodes (1): Detects Whale Walls (> $1M within 1% of price) and calculates book skew.
+Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
 
 ### Community 526 - "Community 526"
 Cohesion: 1.0
-Nodes (1): Pearson correlation with DXY, VIX, SPX over available overlap.
+Nodes (1): Detects Whale Walls (> $1M within 1% of price) and calculates book skew.
 
 ### Community 527 - "Community 527"
 Cohesion: 1.0
-Nodes (1): Backwards compatibility for previous version.
+Nodes (1): Pearson correlation with DXY, VIX, SPX over available overlap.
 
 ### Community 528 - "Community 528"
 Cohesion: 1.0
-Nodes (1): Supertrend calculation matching collector.py.
+Nodes (1): Backwards compatibility for previous version.
 
 ### Community 529 - "Community 529"
 Cohesion: 1.0
-Nodes (1): Average True Range matching collector.py.
+Nodes (1): Supertrend calculation matching collector.py.
 
 ### Community 530 - "Community 530"
 Cohesion: 1.0
-Nodes (1): Supertrend calculation matching collector.py.
+Nodes (1): Average True Range matching collector.py.
 
 ### Community 531 - "Community 531"
 Cohesion: 1.0
-Nodes (1): VWAP calculation matching collector.py.
+Nodes (1): Supertrend calculation matching collector.py.
 
 ### Community 532 - "Community 532"
 Cohesion: 1.0
-Nodes (1): Comprehensive trend analysis matching collector.py logic.
+Nodes (1): VWAP calculation matching collector.py.
 
 ### Community 533 - "Community 533"
 Cohesion: 1.0
-Nodes (1): Pearson Correlation Coefficient.
+Nodes (1): Comprehensive trend analysis matching collector.py logic.
 
 ### Community 534 - "Community 534"
 Cohesion: 1.0
-Nodes (1): Aggregates all data sources.
+Nodes (1): Pearson Correlation Coefficient.
 
 ### Community 535 - "Community 535"
 Cohesion: 1.0
-Nodes (1): Calculates Max Pain, Max OI, and PCR from Deribit data.
+Nodes (1): Aggregates all data sources.
 
 ### Community 536 - "Community 536"
 Cohesion: 1.0
-Nodes (1): Detects Whale Walls (> $1M within 1% of price) and calculates book skew.
+Nodes (1): Calculates Max Pain, Max OI, and PCR from Deribit data.
 
 ### Community 537 - "Community 537"
 Cohesion: 1.0
-Nodes (1): Pearson correlation with DXY, VIX, SPX over available overlap.
+Nodes (1): Detects Whale Walls (> $1M within 1% of price) and calculates book skew.
 
 ### Community 538 - "Community 538"
 Cohesion: 1.0
-Nodes (1): Backwards compatibility for previous version.
+Nodes (1): Pearson correlation with DXY, VIX, SPX over available overlap.
 
 ### Community 539 - "Community 539"
 Cohesion: 1.0
-Nodes (1): Standard EMA calculation matching collector.py.
+Nodes (1): Backwards compatibility for previous version.
 
 ### Community 540 - "Community 540"
 Cohesion: 1.0
-Nodes (1): RSI calculation matching collector.py.
+Nodes (1): Standard EMA calculation matching collector.py.
 
 ### Community 541 - "Community 541"
 Cohesion: 1.0
-Nodes (1): Average True Range matching collector.py.
+Nodes (1): RSI calculation matching collector.py.
 
 ### Community 542 - "Community 542"
 Cohesion: 1.0
-Nodes (1): Supertrend calculation matching collector.py.
+Nodes (1): Average True Range matching collector.py.
 
 ### Community 543 - "Community 543"
 Cohesion: 1.0
-Nodes (1): VWAP calculation matching collector.py.
+Nodes (1): Supertrend calculation matching collector.py.
 
 ### Community 544 - "Community 544"
 Cohesion: 1.0
-Nodes (1): Comprehensive trend analysis matching collector.py logic.
+Nodes (1): VWAP calculation matching collector.py.
 
 ### Community 545 - "Community 545"
 Cohesion: 1.0
-Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
+Nodes (1): Comprehensive trend analysis matching collector.py logic.
 
 ### Community 546 - "Community 546"
 Cohesion: 1.0
-Nodes (1): Detects Whale Walls (> $1M within 1% of price).
+Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
 
 ### Community 547 - "Community 547"
 Cohesion: 1.0
-Nodes (1): Pearson correlation with DXY, VIX, SPX over 30 days.
+Nodes (1): Detects Whale Walls (> $1M within 1% of price).
 
 ### Community 548 - "Community 548"
 Cohesion: 1.0
-Nodes (1): Backwards compatibility for previous version.
+Nodes (1): Pearson correlation with DXY, VIX, SPX over 30 days.
 
 ### Community 549 - "Community 549"
 Cohesion: 1.0
-Nodes (1): Standard EMA calculation matching collector.py.
+Nodes (1): Backwards compatibility for previous version.
 
 ### Community 550 - "Community 550"
 Cohesion: 1.0
-Nodes (1): RSI calculation matching collector.py.
+Nodes (1): Standard EMA calculation matching collector.py.
 
 ### Community 551 - "Community 551"
 Cohesion: 1.0
-Nodes (1): Average True Range matching collector.py.
+Nodes (1): RSI calculation matching collector.py.
 
 ### Community 552 - "Community 552"
 Cohesion: 1.0
-Nodes (1): VWAP calculation matching collector.py.
+Nodes (1): Average True Range matching collector.py.
 
 ### Community 553 - "Community 553"
 Cohesion: 1.0
-Nodes (1): Comprehensive trend analysis matching collector.py logic.
+Nodes (1): VWAP calculation matching collector.py.
 
 ### Community 554 - "Community 554"
 Cohesion: 1.0
-Nodes (1): Pearson Correlation Coefficient.
+Nodes (1): Comprehensive trend analysis matching collector.py logic.
 
 ### Community 555 - "Community 555"
 Cohesion: 1.0
-Nodes (1): Asynchronous engine for fetching market data from multiple sources.
+Nodes (1): Pearson Correlation Coefficient.
 
 ### Community 556 - "Community 556"
 Cohesion: 1.0
-Nodes (1): Initializes the engine with a list of symbols.          Args:             symbol
+Nodes (1): Asynchronous engine for fetching market data from multiple sources.
 
 ### Community 557 - "Community 557"
 Cohesion: 1.0
-Nodes (1): Fetches spot and futures kline data for a given symbol from Binance.          Ar
+Nodes (1): Initializes the engine with a list of symbols.          Args:             symbol
 
 ### Community 558 - "Community 558"
 Cohesion: 1.0
-Nodes (1): Fetches data for all configured symbols in parallel.          Returns:
+Nodes (1): Fetches spot and futures kline data for a given symbol from Binance.          Ar
 
 ### Community 559 - "Community 559"
 Cohesion: 1.0
-Nodes (1): RSI calculation matching collector.py.
+Nodes (1): Fetches data for all configured symbols in parallel.          Returns:
 
 ### Community 560 - "Community 560"
 Cohesion: 1.0
-Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
+Nodes (1): RSI calculation matching collector.py.
 
 ### Community 561 - "Community 561"
 Cohesion: 1.0
-Nodes (1): Supertrend calculation matching collector.py.
+Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
 
 ### Community 562 - "Community 562"
 Cohesion: 1.0
-Nodes (1): VWAP calculation matching collector.py.
+Nodes (1): Supertrend calculation matching collector.py.
 
 ### Community 563 - "Community 563"
 Cohesion: 1.0
-Nodes (1): Comprehensive trend analysis matching collector.py logic.
+Nodes (1): VWAP calculation matching collector.py.
 
 ### Community 564 - "Community 564"
 Cohesion: 1.0
-Nodes (1): Pearson Correlation Coefficient.
+Nodes (1): Comprehensive trend analysis matching collector.py logic.
 
 ### Community 565 - "Community 565"
 Cohesion: 1.0
-Nodes (1): Supertrend calculation matching collector.py.
+Nodes (1): Pearson Correlation Coefficient.
 
 ### Community 566 - "Community 566"
 Cohesion: 1.0
-Nodes (1): Comprehensive trend analysis matching collector.py logic.
+Nodes (1): Supertrend calculation matching collector.py.
 
 ### Community 567 - "Community 567"
 Cohesion: 1.0
-Nodes (1): Pearson Correlation Coefficient.
+Nodes (1): Comprehensive trend analysis matching collector.py logic.
 
 ### Community 568 - "Community 568"
 Cohesion: 1.0
-Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
+Nodes (1): Pearson Correlation Coefficient.
 
 ### Community 569 - "Community 569"
 Cohesion: 1.0
-Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
+Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
 
 ### Community 570 - "Community 570"
 Cohesion: 1.0
-Nodes (1): Fetch all crypto in a single CoinGecko call.
+Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
 
 ### Community 571 - "Community 571"
 Cohesion: 1.0
-Nodes (1): Send a PNG image as an inline photo with a text caption.
+Nodes (1): Fetch all crypto in a single CoinGecko call.
 
 ### Community 572 - "Community 572"
 Cohesion: 1.0
-Nodes (1): Render all instruments into a 1200-px dark-themed HTML table string.
+Nodes (1): Send a PNG image as an inline photo with a text caption.
 
 ### Community 573 - "Community 573"
 Cohesion: 1.0
-Nodes (1): Screenshot the HTML at 1200px wide, 2× device pixel ratio.     Returns raw PNG b
+Nodes (1): Render all instruments into a 1200-px dark-themed HTML table string.
 
 ### Community 574 - "Community 574"
 Cohesion: 1.0
-Nodes (1): Flag O=H and O=L strategies.
+Nodes (1): Screenshot the HTML at 1200px wide, 2× device pixel ratio.     Returns raw PNG b
 
 ### Community 575 - "Community 575"
 Cohesion: 1.0
-Nodes (1): Fetch real OHLC for an instrument from Deribit.
+Nodes (1): Flag O=H and O=L strategies.
 
 ### Community 576 - "Community 576"
 Cohesion: 1.0
-Nodes (1): Construct dynamic Futures key for the current month.     Format: EXCH|SYMBOL<YY>
+Nodes (1): Fetch real OHLC for an instrument from Deribit.
 
 ### Community 577 - "Community 577"
 Cohesion: 1.0
-Nodes (1): Create table and delete data from previous days.
+Nodes (1): Construct dynamic Futures key for the current month.     Format: EXCH|SYMBOL<YY>
 
 ### Community 578 - "Community 578"
 Cohesion: 1.0
-Nodes (1): Save the snapshot of option chain strikes to DB.
+Nodes (1): Create table and delete data from previous days.
 
 ### Community 579 - "Community 579"
 Cohesion: 1.0
-Nodes (1): Format OI to Lakhs (L) or Crores (C).
+Nodes (1): Save the snapshot of option chain strikes to DB.
 
 ### Community 580 - "Community 580"
 Cohesion: 1.0
-Nodes (1): Flag O=H and O=L strategies.
+Nodes (1): Format OI to Lakhs (L) or Crores (C).
 
 ### Community 581 - "Community 581"
 Cohesion: 1.0
-Nodes (1): Format OI to Lakhs (L) or Crores (C).
+Nodes (1): Flag O=H and O=L strategies.
 
 ### Community 582 - "Community 582"
 Cohesion: 1.0
-Nodes (1): Slack Incoming Webhook client for trading reports.
+Nodes (1): Format OI to Lakhs (L) or Crores (C).
 
 ### Community 583 - "Community 583"
 Cohesion: 1.0
-Nodes (1): Return sorted list of expiry date strings.
+Nodes (1): Slack Incoming Webhook client for trading reports.
 
 ### Community 584 - "Community 584"
 Cohesion: 1.0
-Nodes (1): Fetch full option chain for a given expiry.
+Nodes (1): Return sorted list of expiry date strings.
 
 ### Community 585 - "Community 585"
 Cohesion: 1.0
-Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
+Nodes (1): Fetch full option chain for a given expiry.
 
 ### Community 586 - "Community 586"
 Cohesion: 1.0
-Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
+Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
 
 ### Community 587 - "Community 587"
 Cohesion: 1.0
-Nodes (1): Format OI value into readable Lakhs.
+Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
 
 ### Community 588 - "Community 588"
 Cohesion: 1.0
-Nodes (1): Color-coded change-in-OI string.
+Nodes (1): Format OI value into readable Lakhs.
 
 ### Community 589 - "Community 589"
 Cohesion: 1.0
-Nodes (1): Days remaining to expiry date string (YYYY-MM-DD).
+Nodes (1): Color-coded change-in-OI string.
 
 ### Community 590 - "Community 590"
 Cohesion: 1.0
-Nodes (1): Print a Bloomberg-style option chain strip, spot ±500 pts.
+Nodes (1): Days remaining to expiry date string (YYYY-MM-DD).
 
 ### Community 591 - "Community 591"
 Cohesion: 1.0
-Nodes (1): Classify OI buildup pattern.
+Nodes (1): Print a Bloomberg-style option chain strip, spot ±500 pts.
 
 ### Community 592 - "Community 592"
 Cohesion: 1.0
-Nodes (1): Print the Market Intelligence panel with key levels and derived signals.
+Nodes (1): Classify OI buildup pattern.
 
 ### Community 593 - "Community 593"
 Cohesion: 1.0
-Nodes (1): Print a one-liner summary of all three indices.
+Nodes (1): Print the Market Intelligence panel with key levels and derived signals.
 
 ### Community 594 - "Community 594"
 Cohesion: 1.0
-Nodes (1): Quick fetch of all three index quotes for the summary ticker.
+Nodes (1): Print a one-liner summary of all three indices.
 
 ### Community 595 - "Community 595"
 Cohesion: 1.0
-Nodes (1): Fetch data and run full analysis for one instrument. Returns display args.
+Nodes (1): Quick fetch of all three index quotes for the summary ticker.
 
 ### Community 596 - "Community 596"
 Cohesion: 1.0
-Nodes (1): Send notification to all configured channels.
+Nodes (1): Fetch data and run full analysis for one instrument. Returns display args.
 
 ### Community 597 - "Community 597"
 Cohesion: 1.0
-Nodes (1): Applies the inverse or direct relationship flag.     z_score is a single float [
+Nodes (1): Send notification to all configured channels.
 
 ### Community 598 - "Community 598"
 Cohesion: 1.0
-Nodes (1): Fetches real price from Binance.     Mocks Call/Put OI because Options APIs (Coi
+Nodes (1): Applies the inverse or direct relationship flag.     z_score is a single float [
 
 ### Community 599 - "Community 599"
 Cohesion: 1.0
-Nodes (1): Fallback for missing data points.
+Nodes (1): Fetches real price from Binance.     Mocks Call/Put OI because Options APIs (Coi
 
 ### Community 600 - "Community 600"
 Cohesion: 1.0
-Nodes (1): Fetch economic data from FRED.
+Nodes (1): Fallback for missing data points.
 
 ### Community 601 - "Community 601"
 Cohesion: 1.0
-Nodes (1): Fetch total stablecoin supply from DefiLlama (Free).
+Nodes (1): Fetch economic data from FRED.
 
 ### Community 602 - "Community 602"
 Cohesion: 1.0
-Nodes (1): Mock events for the regulatory/event layer.
+Nodes (1): Fetch total stablecoin supply from DefiLlama (Free).
 
 ### Community 603 - "Community 603"
 Cohesion: 1.0
-Nodes (1): Fetch BTC price history from Binance.
+Nodes (1): Mock events for the regulatory/event layer.
 
 ### Community 604 - "Community 604"
 Cohesion: 1.0
-Nodes (1): Fetches the 13 minimal factors concurrently using real APIs where available,
+Nodes (1): Fetch BTC price history from Binance.
 
 ### Community 605 - "Community 605"
 Cohesion: 1.0
-Nodes (1): Mock events for the regulatory/event layer.
+Nodes (1): Fetches the 13 minimal factors concurrently using real APIs where available,
 
 ### Community 606 - "Community 606"
 Cohesion: 1.0
-Nodes (1): Generates the last 1 hour of data to bootstrap the table if empty
+Nodes (1): Mock events for the regulatory/event layer.
 
 ### Community 607 - "Community 607"
 Cohesion: 1.0
-Nodes (1): In production, this would make an async API call to CoinGlass to get     the cur
+Nodes (1): Generates the last 1 hour of data to bootstrap the table if empty
 
 ### Community 608 - "Community 608"
 Cohesion: 1.0
-Nodes (1): Simulates an async API call returning a 90-day historical time series for a sing
+Nodes (1): In production, this would make an async API call to CoinGlass to get     the cur
 
 ### Community 609 - "Community 609"
 Cohesion: 1.0
-Nodes (1): Fetches the 13 minimal factors concurrently using asyncio.     Returns a Pandas
+Nodes (1): Simulates an async API call returning a 90-day historical time series for a sing
 
 ### Community 610 - "Community 610"
 Cohesion: 1.0
-Nodes (1): Normalize such that higher raw value = lower score [-1 to 1]
+Nodes (1): Fetches the 13 minimal factors concurrently using asyncio.     Returns a Pandas
 
 ### Community 611 - "Community 611"
 Cohesion: 1.0
-Nodes (1): Normalize such that higher raw value = higher score [-1 to 1]
+Nodes (1): Normalize such that higher raw value = lower score [-1 to 1]
 
 ### Community 612 - "Community 612"
 Cohesion: 1.0
-Nodes (1): Fetches the 13 minimal factors required for the AlphaEdge Crypto Signal Engine.
+Nodes (1): Normalize such that higher raw value = higher score [-1 to 1]
 
 ### Community 613 - "Community 613"
 Cohesion: 1.0
-Nodes (1): Returns realistic mocked data for the 13 core features and some contextual data.
+Nodes (1): Fetches the 13 minimal factors required for the AlphaEdge Crypto Signal Engine.
 
 ### Community 614 - "Community 614"
 Cohesion: 1.0
-Nodes (1): Generates a mock SQLite database with historical intraday OI data for BTC.     S
+Nodes (1): Returns realistic mocked data for the 13 core features and some contextual data.
 
 ### Community 615 - "Community 615"
 Cohesion: 1.0
-Nodes (1): Mock events for the regulatory/event layer.
+Nodes (1): Generates a mock SQLite database with historical intraday OI data for BTC.     S
 
 ### Community 616 - "Community 616"
 Cohesion: 1.0
-Nodes (1): Return sorted list of expiry date strings.
+Nodes (1): Mock events for the regulatory/event layer.
 
 ### Community 617 - "Community 617"
 Cohesion: 1.0
-Nodes (1): Fetch full option chain for a given expiry.
+Nodes (1): Return sorted list of expiry date strings.
 
 ### Community 618 - "Community 618"
 Cohesion: 1.0
-Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
+Nodes (1): Fetch full option chain for a given expiry.
 
 ### Community 619 - "Community 619"
 Cohesion: 1.0
-Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
+Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
 
 ### Community 620 - "Community 620"
 Cohesion: 1.0
-Nodes (1): Format OI value into readable Lakhs.
+Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
 
 ### Community 621 - "Community 621"
 Cohesion: 1.0
-Nodes (1): Color-coded change-in-OI string.
+Nodes (1): Format OI value into readable Lakhs.
 
 ### Community 622 - "Community 622"
 Cohesion: 1.0
-Nodes (1): Days remaining to expiry date string (YYYY-MM-DD).
+Nodes (1): Color-coded change-in-OI string.
 
 ### Community 623 - "Community 623"
 Cohesion: 1.0
-Nodes (1): Print a Bloomberg-style option chain strip, spot ±500 pts.
+Nodes (1): Days remaining to expiry date string (YYYY-MM-DD).
 
 ### Community 624 - "Community 624"
 Cohesion: 1.0
-Nodes (1): Classify OI buildup pattern.
+Nodes (1): Print a Bloomberg-style option chain strip, spot ±500 pts.
 
 ### Community 625 - "Community 625"
 Cohesion: 1.0
-Nodes (1): Print the Market Intelligence panel with key levels and derived signals.
+Nodes (1): Classify OI buildup pattern.
 
 ### Community 626 - "Community 626"
 Cohesion: 1.0
-Nodes (1): Print a one-liner summary of all three indices.
+Nodes (1): Print the Market Intelligence panel with key levels and derived signals.
 
 ### Community 627 - "Community 627"
 Cohesion: 1.0
-Nodes (1): Quick fetch of all three index quotes for the summary ticker.
+Nodes (1): Print a one-liner summary of all three indices.
 
 ### Community 628 - "Community 628"
 Cohesion: 1.0
-Nodes (1): Fetch data and run full analysis for one instrument. Returns display args.
+Nodes (1): Quick fetch of all three index quotes for the summary ticker.
 
 ### Community 629 - "Community 629"
 Cohesion: 1.0
-Nodes (1): Return sorted list of expiry date strings.
+Nodes (1): Fetch data and run full analysis for one instrument. Returns display args.
 
 ### Community 630 - "Community 630"
 Cohesion: 1.0
-Nodes (1): Fetch full option chain for a given expiry.
+Nodes (1): Return sorted list of expiry date strings.
 
 ### Community 631 - "Community 631"
 Cohesion: 1.0
-Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
+Nodes (1): Fetch full option chain for a given expiry.
 
 ### Community 632 - "Community 632"
 Cohesion: 1.0
-Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
+Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
 
 ### Community 633 - "Community 633"
 Cohesion: 1.0
-Nodes (1): Format OI value into readable Lakhs.
+Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
 
 ### Community 634 - "Community 634"
 Cohesion: 1.0
-Nodes (1): Color-coded change-in-OI string.
+Nodes (1): Format OI value into readable Lakhs.
 
 ### Community 635 - "Community 635"
 Cohesion: 1.0
-Nodes (1): Days remaining to expiry date string (YYYY-MM-DD).
+Nodes (1): Color-coded change-in-OI string.
 
 ### Community 636 - "Community 636"
 Cohesion: 1.0
-Nodes (1): Print a Bloomberg-style option chain strip, spot ±500 pts.
+Nodes (1): Days remaining to expiry date string (YYYY-MM-DD).
 
 ### Community 637 - "Community 637"
 Cohesion: 1.0
-Nodes (1): Classify OI buildup pattern.
+Nodes (1): Print a Bloomberg-style option chain strip, spot ±500 pts.
 
 ### Community 638 - "Community 638"
 Cohesion: 1.0
-Nodes (1): Print the Market Intelligence panel with key levels and derived signals.
+Nodes (1): Classify OI buildup pattern.
 
 ### Community 639 - "Community 639"
 Cohesion: 1.0
-Nodes (1): Print a one-liner summary of all three indices.
+Nodes (1): Print the Market Intelligence panel with key levels and derived signals.
 
 ### Community 640 - "Community 640"
 Cohesion: 1.0
-Nodes (1): Quick fetch of all three index quotes for the summary ticker.
+Nodes (1): Print a one-liner summary of all three indices.
 
 ### Community 641 - "Community 641"
 Cohesion: 1.0
-Nodes (1): Fetch data and run full analysis for one instrument. Returns display args.
+Nodes (1): Quick fetch of all three index quotes for the summary ticker.
 
 ### Community 642 - "Community 642"
 Cohesion: 1.0
-Nodes (1): Return sorted list of expiry date strings.
+Nodes (1): Fetch data and run full analysis for one instrument. Returns display args.
 
 ### Community 643 - "Community 643"
 Cohesion: 1.0
-Nodes (1): Fetch full option chain for a given expiry.
+Nodes (1): Return sorted list of expiry date strings.
 
 ### Community 644 - "Community 644"
 Cohesion: 1.0
-Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
+Nodes (1): Fetch full option chain for a given expiry.
 
 ### Community 645 - "Community 645"
 Cohesion: 1.0
-Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
+Nodes (1): Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o
 
 ### Community 646 - "Community 646"
 Cohesion: 1.0
-Nodes (1): Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.
+Nodes (1): Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone
 
 ### Community 647 - "Community 647"
 Cohesion: 1.0
-Nodes (1): Fetch all crypto in a single CoinGecko call.
+Nodes (1): Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.
 
 ### Community 648 - "Community 648"
 Cohesion: 1.0
-Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
+Nodes (1): Fetch all crypto in a single CoinGecko call.
 
 ### Community 649 - "Community 649"
 Cohesion: 1.0
-Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
+Nodes (1): One Claude API call for ALL instruments. Returns dict keyed by id.
 
 ### Community 650 - "Community 650"
 Cohesion: 1.0
-Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
+Nodes (1): Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b
 
 ### Community 651 - "Community 651"
 Cohesion: 1.0
-Nodes (1): Fetch all crypto in a single CoinGecko call.
+Nodes (1): Fetch OHLCV + previous close from Yahoo Finance v8 API.
 
 ### Community 652 - "Community 652"
 Cohesion: 1.0
-Nodes (1): parallel_researcher.py
+Nodes (1): Fetch all crypto in a single CoinGecko call.
 
 ### Community 653 - "Community 653"
 Cohesion: 1.0
-Nodes (1): aiohttp>=3.9.0
+Nodes (1): parallel_researcher.py
 
 ### Community 654 - "Community 654"
 Cohesion: 1.0
-Nodes (1): aiofiles>=23.0.0
+Nodes (1): aiohttp>=3.9.0
 
 ### Community 655 - "Community 655"
 Cohesion: 1.0
-Nodes (1): tenacity>=8.2.0
+Nodes (1): aiofiles>=23.0.0
 
 ### Community 656 - "Community 656"
 Cohesion: 1.0
-Nodes (1): Research Priority: Asymmetric Exits
+Nodes (1): tenacity>=8.2.0
 
 ### Community 657 - "Community 657"
 Cohesion: 1.0
-Nodes (1): Research Priority: Consensus by Category
+Nodes (1): Research Priority: Asymmetric Exits
 
 ### Community 658 - "Community 658"
 Cohesion: 1.0
-Nodes (1): Research Priority: Memory-Augmented Decisions
+Nodes (1): Research Priority: Consensus by Category
 
 ### Community 659 - "Community 659"
 Cohesion: 1.0
-Nodes (1): Research Priority: Debate Quality
+Nodes (1): Research Priority: Memory-Augmented Decisions
 
 ### Community 660 - "Community 660"
+Cohesion: 1.0
+Nodes (1): Research Priority: Debate Quality
+
+### Community 661 - "Community 661"
 Cohesion: 1.0
 Nodes (1): NOAA/Wunderground Weather Resolution Data
 
@@ -4109,11 +4114,11 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 498`** (1 nodes): `mod.rs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 499`** (1 nodes): `__init__.py`
+- **Thin community `Community 499`** (1 nodes): `mockup_helper.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 500`** (1 nodes): `Creates the CrewaiTesting crew`
+- **Thin community `Community 500`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 501`** (1 nodes): `__init__.py`
+- **Thin community `Community 501`** (1 nodes): `Creates the CrewaiTesting crew`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 502`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -4125,324 +4130,326 @@ Nodes (1): NOAA/Wunderground Weather Resolution Data
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 506`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 507`** (1 nodes): `config.py`
+- **Thin community `Community 507`** (1 nodes): `__init__.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 508`** (1 nodes): `Return sorted list of expiry date strings.`
+- **Thin community `Community 508`** (1 nodes): `config.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 509`** (1 nodes): `Fetch full option chain for a given expiry.`
+- **Thin community `Community 509`** (1 nodes): `Return sorted list of expiry date strings.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 510`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
+- **Thin community `Community 510`** (1 nodes): `Fetch full option chain for a given expiry.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 511`** (1 nodes): `Aggregates all data sources.`
+- **Thin community `Community 511`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 512`** (1 nodes): `Calculates Max Pain, Max OI, PCR, and Skew from Deribit data.`
+- **Thin community `Community 512`** (1 nodes): `Aggregates all data sources.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 513`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price) and calculates book skew.`
+- **Thin community `Community 513`** (1 nodes): `Calculates Max Pain, Max OI, PCR, and Skew from Deribit data.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 514`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over available overlap.`
+- **Thin community `Community 514`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price) and calculates book skew.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 515`** (1 nodes): `Backwards compatibility for previous version.`
+- **Thin community `Community 515`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over available overlap.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 516`** (1 nodes): `Standard EMA calculation matching collector.py.`
+- **Thin community `Community 516`** (1 nodes): `Backwards compatibility for previous version.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 517`** (1 nodes): `RSI calculation matching collector.py.`
+- **Thin community `Community 517`** (1 nodes): `Standard EMA calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 518`** (1 nodes): `Average True Range matching collector.py.`
+- **Thin community `Community 518`** (1 nodes): `RSI calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 519`** (1 nodes): `Supertrend calculation matching collector.py.`
+- **Thin community `Community 519`** (1 nodes): `Average True Range matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 520`** (1 nodes): `VWAP calculation matching collector.py.`
+- **Thin community `Community 520`** (1 nodes): `Supertrend calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 521`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
+- **Thin community `Community 521`** (1 nodes): `VWAP calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 522`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
+- **Thin community `Community 522`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 523`** (1 nodes): `VWAP calculation matching collector.py.`
+- **Thin community `Community 523`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 524`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
+- **Thin community `Community 524`** (1 nodes): `VWAP calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 525`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price) and calculates book skew.`
+- **Thin community `Community 525`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 526`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over available overlap.`
+- **Thin community `Community 526`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price) and calculates book skew.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 527`** (1 nodes): `Backwards compatibility for previous version.`
+- **Thin community `Community 527`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over available overlap.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 528`** (1 nodes): `Supertrend calculation matching collector.py.`
+- **Thin community `Community 528`** (1 nodes): `Backwards compatibility for previous version.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 529`** (1 nodes): `Average True Range matching collector.py.`
+- **Thin community `Community 529`** (1 nodes): `Supertrend calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 530`** (1 nodes): `Supertrend calculation matching collector.py.`
+- **Thin community `Community 530`** (1 nodes): `Average True Range matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 531`** (1 nodes): `VWAP calculation matching collector.py.`
+- **Thin community `Community 531`** (1 nodes): `Supertrend calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 532`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
+- **Thin community `Community 532`** (1 nodes): `VWAP calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 533`** (1 nodes): `Pearson Correlation Coefficient.`
+- **Thin community `Community 533`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 534`** (1 nodes): `Aggregates all data sources.`
+- **Thin community `Community 534`** (1 nodes): `Pearson Correlation Coefficient.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 535`** (1 nodes): `Calculates Max Pain, Max OI, and PCR from Deribit data.`
+- **Thin community `Community 535`** (1 nodes): `Aggregates all data sources.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 536`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price) and calculates book skew.`
+- **Thin community `Community 536`** (1 nodes): `Calculates Max Pain, Max OI, and PCR from Deribit data.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 537`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over available overlap.`
+- **Thin community `Community 537`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price) and calculates book skew.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 538`** (1 nodes): `Backwards compatibility for previous version.`
+- **Thin community `Community 538`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over available overlap.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 539`** (1 nodes): `Standard EMA calculation matching collector.py.`
+- **Thin community `Community 539`** (1 nodes): `Backwards compatibility for previous version.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 540`** (1 nodes): `RSI calculation matching collector.py.`
+- **Thin community `Community 540`** (1 nodes): `Standard EMA calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 541`** (1 nodes): `Average True Range matching collector.py.`
+- **Thin community `Community 541`** (1 nodes): `RSI calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 542`** (1 nodes): `Supertrend calculation matching collector.py.`
+- **Thin community `Community 542`** (1 nodes): `Average True Range matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 543`** (1 nodes): `VWAP calculation matching collector.py.`
+- **Thin community `Community 543`** (1 nodes): `Supertrend calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 544`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
+- **Thin community `Community 544`** (1 nodes): `VWAP calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 545`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
+- **Thin community `Community 545`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 546`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price).`
+- **Thin community `Community 546`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 547`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over 30 days.`
+- **Thin community `Community 547`** (1 nodes): `Detects Whale Walls (> $1M within 1% of price).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 548`** (1 nodes): `Backwards compatibility for previous version.`
+- **Thin community `Community 548`** (1 nodes): `Pearson correlation with DXY, VIX, SPX over 30 days.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 549`** (1 nodes): `Standard EMA calculation matching collector.py.`
+- **Thin community `Community 549`** (1 nodes): `Backwards compatibility for previous version.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 550`** (1 nodes): `RSI calculation matching collector.py.`
+- **Thin community `Community 550`** (1 nodes): `Standard EMA calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 551`** (1 nodes): `Average True Range matching collector.py.`
+- **Thin community `Community 551`** (1 nodes): `RSI calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 552`** (1 nodes): `VWAP calculation matching collector.py.`
+- **Thin community `Community 552`** (1 nodes): `Average True Range matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 553`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
+- **Thin community `Community 553`** (1 nodes): `VWAP calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 554`** (1 nodes): `Pearson Correlation Coefficient.`
+- **Thin community `Community 554`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 555`** (1 nodes): `Asynchronous engine for fetching market data from multiple sources.`
+- **Thin community `Community 555`** (1 nodes): `Pearson Correlation Coefficient.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 556`** (1 nodes): `Initializes the engine with a list of symbols.          Args:             symbol`
+- **Thin community `Community 556`** (1 nodes): `Asynchronous engine for fetching market data from multiple sources.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 557`** (1 nodes): `Fetches spot and futures kline data for a given symbol from Binance.          Ar`
+- **Thin community `Community 557`** (1 nodes): `Initializes the engine with a list of symbols.          Args:             symbol`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 558`** (1 nodes): `Fetches data for all configured symbols in parallel.          Returns:`
+- **Thin community `Community 558`** (1 nodes): `Fetches spot and futures kline data for a given symbol from Binance.          Ar`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 559`** (1 nodes): `RSI calculation matching collector.py.`
+- **Thin community `Community 559`** (1 nodes): `Fetches data for all configured symbols in parallel.          Returns:`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 560`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
+- **Thin community `Community 560`** (1 nodes): `RSI calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 561`** (1 nodes): `Supertrend calculation matching collector.py.`
+- **Thin community `Community 561`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 562`** (1 nodes): `VWAP calculation matching collector.py.`
+- **Thin community `Community 562`** (1 nodes): `Supertrend calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 563`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
+- **Thin community `Community 563`** (1 nodes): `VWAP calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 564`** (1 nodes): `Pearson Correlation Coefficient.`
+- **Thin community `Community 564`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 565`** (1 nodes): `Supertrend calculation matching collector.py.`
+- **Thin community `Community 565`** (1 nodes): `Pearson Correlation Coefficient.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 566`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
+- **Thin community `Community 566`** (1 nodes): `Supertrend calculation matching collector.py.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 567`** (1 nodes): `Pearson Correlation Coefficient.`
+- **Thin community `Community 567`** (1 nodes): `Comprehensive trend analysis matching collector.py logic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 568`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
+- **Thin community `Community 568`** (1 nodes): `Pearson Correlation Coefficient.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 569`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
+- **Thin community `Community 569`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 570`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
+- **Thin community `Community 570`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 571`** (1 nodes): `Send a PNG image as an inline photo with a text caption.`
+- **Thin community `Community 571`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 572`** (1 nodes): `Render all instruments into a 1200-px dark-themed HTML table string.`
+- **Thin community `Community 572`** (1 nodes): `Send a PNG image as an inline photo with a text caption.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 573`** (1 nodes): `Screenshot the HTML at 1200px wide, 2× device pixel ratio.     Returns raw PNG b`
+- **Thin community `Community 573`** (1 nodes): `Render all instruments into a 1200-px dark-themed HTML table string.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 574`** (1 nodes): `Flag O=H and O=L strategies.`
+- **Thin community `Community 574`** (1 nodes): `Screenshot the HTML at 1200px wide, 2× device pixel ratio.     Returns raw PNG b`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 575`** (1 nodes): `Fetch real OHLC for an instrument from Deribit.`
+- **Thin community `Community 575`** (1 nodes): `Flag O=H and O=L strategies.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 576`** (1 nodes): `Construct dynamic Futures key for the current month.     Format: EXCH|SYMBOL<YY>`
+- **Thin community `Community 576`** (1 nodes): `Fetch real OHLC for an instrument from Deribit.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 577`** (1 nodes): `Create table and delete data from previous days.`
+- **Thin community `Community 577`** (1 nodes): `Construct dynamic Futures key for the current month.     Format: EXCH|SYMBOL<YY>`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 578`** (1 nodes): `Save the snapshot of option chain strikes to DB.`
+- **Thin community `Community 578`** (1 nodes): `Create table and delete data from previous days.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 579`** (1 nodes): `Format OI to Lakhs (L) or Crores (C).`
+- **Thin community `Community 579`** (1 nodes): `Save the snapshot of option chain strikes to DB.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 580`** (1 nodes): `Flag O=H and O=L strategies.`
+- **Thin community `Community 580`** (1 nodes): `Format OI to Lakhs (L) or Crores (C).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 581`** (1 nodes): `Format OI to Lakhs (L) or Crores (C).`
+- **Thin community `Community 581`** (1 nodes): `Flag O=H and O=L strategies.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 582`** (1 nodes): `Slack Incoming Webhook client for trading reports.`
+- **Thin community `Community 582`** (1 nodes): `Format OI to Lakhs (L) or Crores (C).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 583`** (1 nodes): `Return sorted list of expiry date strings.`
+- **Thin community `Community 583`** (1 nodes): `Slack Incoming Webhook client for trading reports.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 584`** (1 nodes): `Fetch full option chain for a given expiry.`
+- **Thin community `Community 584`** (1 nodes): `Return sorted list of expiry date strings.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 585`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
+- **Thin community `Community 585`** (1 nodes): `Fetch full option chain for a given expiry.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 586`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
+- **Thin community `Community 586`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 587`** (1 nodes): `Format OI value into readable Lakhs.`
+- **Thin community `Community 587`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 588`** (1 nodes): `Color-coded change-in-OI string.`
+- **Thin community `Community 588`** (1 nodes): `Format OI value into readable Lakhs.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 589`** (1 nodes): `Days remaining to expiry date string (YYYY-MM-DD).`
+- **Thin community `Community 589`** (1 nodes): `Color-coded change-in-OI string.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 590`** (1 nodes): `Print a Bloomberg-style option chain strip, spot ±500 pts.`
+- **Thin community `Community 590`** (1 nodes): `Days remaining to expiry date string (YYYY-MM-DD).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 591`** (1 nodes): `Classify OI buildup pattern.`
+- **Thin community `Community 591`** (1 nodes): `Print a Bloomberg-style option chain strip, spot ±500 pts.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 592`** (1 nodes): `Print the Market Intelligence panel with key levels and derived signals.`
+- **Thin community `Community 592`** (1 nodes): `Classify OI buildup pattern.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 593`** (1 nodes): `Print a one-liner summary of all three indices.`
+- **Thin community `Community 593`** (1 nodes): `Print the Market Intelligence panel with key levels and derived signals.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 594`** (1 nodes): `Quick fetch of all three index quotes for the summary ticker.`
+- **Thin community `Community 594`** (1 nodes): `Print a one-liner summary of all three indices.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 595`** (1 nodes): `Fetch data and run full analysis for one instrument. Returns display args.`
+- **Thin community `Community 595`** (1 nodes): `Quick fetch of all three index quotes for the summary ticker.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 596`** (1 nodes): `Send notification to all configured channels.`
+- **Thin community `Community 596`** (1 nodes): `Fetch data and run full analysis for one instrument. Returns display args.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 597`** (1 nodes): `Applies the inverse or direct relationship flag.     z_score is a single float [`
+- **Thin community `Community 597`** (1 nodes): `Send notification to all configured channels.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 598`** (1 nodes): `Fetches real price from Binance.     Mocks Call/Put OI because Options APIs (Coi`
+- **Thin community `Community 598`** (1 nodes): `Applies the inverse or direct relationship flag.     z_score is a single float [`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 599`** (1 nodes): `Fallback for missing data points.`
+- **Thin community `Community 599`** (1 nodes): `Fetches real price from Binance.     Mocks Call/Put OI because Options APIs (Coi`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 600`** (1 nodes): `Fetch economic data from FRED.`
+- **Thin community `Community 600`** (1 nodes): `Fallback for missing data points.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 601`** (1 nodes): `Fetch total stablecoin supply from DefiLlama (Free).`
+- **Thin community `Community 601`** (1 nodes): `Fetch economic data from FRED.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 602`** (1 nodes): `Mock events for the regulatory/event layer.`
+- **Thin community `Community 602`** (1 nodes): `Fetch total stablecoin supply from DefiLlama (Free).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 603`** (1 nodes): `Fetch BTC price history from Binance.`
+- **Thin community `Community 603`** (1 nodes): `Mock events for the regulatory/event layer.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 604`** (1 nodes): `Fetches the 13 minimal factors concurrently using real APIs where available,`
+- **Thin community `Community 604`** (1 nodes): `Fetch BTC price history from Binance.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 605`** (1 nodes): `Mock events for the regulatory/event layer.`
+- **Thin community `Community 605`** (1 nodes): `Fetches the 13 minimal factors concurrently using real APIs where available,`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 606`** (1 nodes): `Generates the last 1 hour of data to bootstrap the table if empty`
+- **Thin community `Community 606`** (1 nodes): `Mock events for the regulatory/event layer.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 607`** (1 nodes): `In production, this would make an async API call to CoinGlass to get     the cur`
+- **Thin community `Community 607`** (1 nodes): `Generates the last 1 hour of data to bootstrap the table if empty`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 608`** (1 nodes): `Simulates an async API call returning a 90-day historical time series for a sing`
+- **Thin community `Community 608`** (1 nodes): `In production, this would make an async API call to CoinGlass to get     the cur`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 609`** (1 nodes): `Fetches the 13 minimal factors concurrently using asyncio.     Returns a Pandas`
+- **Thin community `Community 609`** (1 nodes): `Simulates an async API call returning a 90-day historical time series for a sing`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 610`** (1 nodes): `Normalize such that higher raw value = lower score [-1 to 1]`
+- **Thin community `Community 610`** (1 nodes): `Fetches the 13 minimal factors concurrently using asyncio.     Returns a Pandas`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 611`** (1 nodes): `Normalize such that higher raw value = higher score [-1 to 1]`
+- **Thin community `Community 611`** (1 nodes): `Normalize such that higher raw value = lower score [-1 to 1]`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 612`** (1 nodes): `Fetches the 13 minimal factors required for the AlphaEdge Crypto Signal Engine.`
+- **Thin community `Community 612`** (1 nodes): `Normalize such that higher raw value = higher score [-1 to 1]`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 613`** (1 nodes): `Returns realistic mocked data for the 13 core features and some contextual data.`
+- **Thin community `Community 613`** (1 nodes): `Fetches the 13 minimal factors required for the AlphaEdge Crypto Signal Engine.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 614`** (1 nodes): `Generates a mock SQLite database with historical intraday OI data for BTC.     S`
+- **Thin community `Community 614`** (1 nodes): `Returns realistic mocked data for the 13 core features and some contextual data.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 615`** (1 nodes): `Mock events for the regulatory/event layer.`
+- **Thin community `Community 615`** (1 nodes): `Generates a mock SQLite database with historical intraday OI data for BTC.     S`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 616`** (1 nodes): `Return sorted list of expiry date strings.`
+- **Thin community `Community 616`** (1 nodes): `Mock events for the regulatory/event layer.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 617`** (1 nodes): `Fetch full option chain for a given expiry.`
+- **Thin community `Community 617`** (1 nodes): `Return sorted list of expiry date strings.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 618`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
+- **Thin community `Community 618`** (1 nodes): `Fetch full option chain for a given expiry.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 619`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
+- **Thin community `Community 619`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 620`** (1 nodes): `Format OI value into readable Lakhs.`
+- **Thin community `Community 620`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 621`** (1 nodes): `Color-coded change-in-OI string.`
+- **Thin community `Community 621`** (1 nodes): `Format OI value into readable Lakhs.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 622`** (1 nodes): `Days remaining to expiry date string (YYYY-MM-DD).`
+- **Thin community `Community 622`** (1 nodes): `Color-coded change-in-OI string.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 623`** (1 nodes): `Print a Bloomberg-style option chain strip, spot ±500 pts.`
+- **Thin community `Community 623`** (1 nodes): `Days remaining to expiry date string (YYYY-MM-DD).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 624`** (1 nodes): `Classify OI buildup pattern.`
+- **Thin community `Community 624`** (1 nodes): `Print a Bloomberg-style option chain strip, spot ±500 pts.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 625`** (1 nodes): `Print the Market Intelligence panel with key levels and derived signals.`
+- **Thin community `Community 625`** (1 nodes): `Classify OI buildup pattern.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 626`** (1 nodes): `Print a one-liner summary of all three indices.`
+- **Thin community `Community 626`** (1 nodes): `Print the Market Intelligence panel with key levels and derived signals.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 627`** (1 nodes): `Quick fetch of all three index quotes for the summary ticker.`
+- **Thin community `Community 627`** (1 nodes): `Print a one-liner summary of all three indices.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 628`** (1 nodes): `Fetch data and run full analysis for one instrument. Returns display args.`
+- **Thin community `Community 628`** (1 nodes): `Quick fetch of all three index quotes for the summary ticker.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 629`** (1 nodes): `Return sorted list of expiry date strings.`
+- **Thin community `Community 629`** (1 nodes): `Fetch data and run full analysis for one instrument. Returns display args.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 630`** (1 nodes): `Fetch full option chain for a given expiry.`
+- **Thin community `Community 630`** (1 nodes): `Return sorted list of expiry date strings.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 631`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
+- **Thin community `Community 631`** (1 nodes): `Fetch full option chain for a given expiry.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 632`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
+- **Thin community `Community 632`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 633`** (1 nodes): `Format OI value into readable Lakhs.`
+- **Thin community `Community 633`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 634`** (1 nodes): `Color-coded change-in-OI string.`
+- **Thin community `Community 634`** (1 nodes): `Format OI value into readable Lakhs.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 635`** (1 nodes): `Days remaining to expiry date string (YYYY-MM-DD).`
+- **Thin community `Community 635`** (1 nodes): `Color-coded change-in-OI string.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 636`** (1 nodes): `Print a Bloomberg-style option chain strip, spot ±500 pts.`
+- **Thin community `Community 636`** (1 nodes): `Days remaining to expiry date string (YYYY-MM-DD).`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 637`** (1 nodes): `Classify OI buildup pattern.`
+- **Thin community `Community 637`** (1 nodes): `Print a Bloomberg-style option chain strip, spot ±500 pts.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 638`** (1 nodes): `Print the Market Intelligence panel with key levels and derived signals.`
+- **Thin community `Community 638`** (1 nodes): `Classify OI buildup pattern.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 639`** (1 nodes): `Print a one-liner summary of all three indices.`
+- **Thin community `Community 639`** (1 nodes): `Print the Market Intelligence panel with key levels and derived signals.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 640`** (1 nodes): `Quick fetch of all three index quotes for the summary ticker.`
+- **Thin community `Community 640`** (1 nodes): `Print a one-liner summary of all three indices.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 641`** (1 nodes): `Fetch data and run full analysis for one instrument. Returns display args.`
+- **Thin community `Community 641`** (1 nodes): `Quick fetch of all three index quotes for the summary ticker.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 642`** (1 nodes): `Return sorted list of expiry date strings.`
+- **Thin community `Community 642`** (1 nodes): `Fetch data and run full analysis for one instrument. Returns display args.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 643`** (1 nodes): `Fetch full option chain for a given expiry.`
+- **Thin community `Community 643`** (1 nodes): `Return sorted list of expiry date strings.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 644`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
+- **Thin community `Community 644`** (1 nodes): `Fetch full option chain for a given expiry.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 645`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
+- **Thin community `Community 645`** (1 nodes): `Fetch option chain, filter to spot ±1000, compute:     - OI bars (call_oi, put_o`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 646`** (1 nodes): `Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.`
+- **Thin community `Community 646`** (1 nodes): `Factors:      1. Trend      (EMA 20/50/200)           weight ±2      2. Dow Jone`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 647`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
+- **Thin community `Community 647`** (1 nodes): `Pass the 10-factor technical breakdown to Claude for a targeted diagnostic.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 648`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
+- **Thin community `Community 648`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 649`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
+- **Thin community `Community 649`** (1 nodes): `One Claude API call for ALL instruments. Returns dict keyed by id.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 650`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
+- **Thin community `Community 650`** (1 nodes): `Fetch NSE/BSE indices from Upstox in a single API call.     Returns dict keyed b`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 651`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
+- **Thin community `Community 651`** (1 nodes): `Fetch OHLCV + previous close from Yahoo Finance v8 API.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 652`** (1 nodes): `parallel_researcher.py`
+- **Thin community `Community 652`** (1 nodes): `Fetch all crypto in a single CoinGecko call.`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 653`** (1 nodes): `aiohttp>=3.9.0`
+- **Thin community `Community 653`** (1 nodes): `parallel_researcher.py`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 654`** (1 nodes): `aiofiles>=23.0.0`
+- **Thin community `Community 654`** (1 nodes): `aiohttp>=3.9.0`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 655`** (1 nodes): `tenacity>=8.2.0`
+- **Thin community `Community 655`** (1 nodes): `aiofiles>=23.0.0`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 656`** (1 nodes): `Research Priority: Asymmetric Exits`
+- **Thin community `Community 656`** (1 nodes): `tenacity>=8.2.0`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 657`** (1 nodes): `Research Priority: Consensus by Category`
+- **Thin community `Community 657`** (1 nodes): `Research Priority: Asymmetric Exits`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 658`** (1 nodes): `Research Priority: Memory-Augmented Decisions`
+- **Thin community `Community 658`** (1 nodes): `Research Priority: Consensus by Category`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 659`** (1 nodes): `Research Priority: Debate Quality`
+- **Thin community `Community 659`** (1 nodes): `Research Priority: Memory-Augmented Decisions`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 660`** (1 nodes): `NOAA/Wunderground Weather Resolution Data`
+- **Thin community `Community 660`** (1 nodes): `Research Priority: Debate Quality`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 661`** (1 nodes): `NOAA/Wunderground Weather Resolution Data`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `map()` connect `Community 6` to `Community 0`, `Community 1`, `Community 4`, `Community 5`, `Community 8`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 14`, `Community 16`, `Community 17`, `Community 18`, `Community 19`, `Community 22`, `Community 23`, `Community 24`, `Community 25`, `Community 26`, `Community 30`, `Community 31`, `Community 34`, `Community 35`, `Community 36`, `Community 39`, `Community 41`, `Community 42`, `Community 45`, `Community 47`, `Community 48`, `Community 63`?**
-  _High betweenness centrality (0.185) - this node is a cross-community bridge._
+  _High betweenness centrality (0.167) - this node is a cross-community bridge._
 - **Why does `main()` connect `Community 5` to `Community 0`, `Community 1`, `Community 2`, `Community 3`, `Community 4`, `Community 37`, `Community 6`, `Community 8`, `Community 9`, `Community 11`, `Community 12`, `Community 13`, `Community 14`, `Community 19`, `Community 20`, `Community 26`, `Community 31`?**
-  _High betweenness centrality (0.056) - this node is a cross-community bridge._
-- **Why does `ok()` connect `Community 5` to `Community 0`, `Community 33`, `Community 1`, `Community 4`, `Community 6`, `Community 9`, `Community 10`, `Community 13`, `Community 15`, `Community 16`, `Community 30`, `Community 31`?**
-  _High betweenness centrality (0.041) - this node is a cross-community bridge._
+  _High betweenness centrality (0.059) - this node is a cross-community bridge._
+- **Why does `parse()` connect `Community 9` to `Community 0`, `Community 1`, `Community 3`, `Community 4`, `Community 5`, `Community 6`, `Community 8`, `Community 10`, `Community 11`, `Community 12`, `Community 13`, `Community 14`, `Community 17`, `Community 18`, `Community 19`, `Community 20`, `Community 22`, `Community 23`, `Community 25`, `Community 29`, `Community 34`, `Community 36`, `Community 39`, `Community 48`?**
+  _High betweenness centrality (0.057) - this node is a cross-community bridge._
 - **Are the 591 inferred relationships involving `map()` (e.g. with `Report()` and `addDeleteFavorite()`) actually correct?**
   _`map()` has 591 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 524 inferred relationships involving `ok()` (e.g. with `runQuestionFormSubmitPersistenceFlow()` and `getCurrentProjectContext()`) actually correct?**
