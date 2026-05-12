@@ -15,11 +15,16 @@ def fetch_deribit_quotes(currency):
     Args:
         currency (str): Currency symbol (e.g., 'BTC', 'ETH').
     Returns:
-        dict: JSON response from Deribit API.
+        dict: JSON response from Deribit API or None on error.
     """
     url = f"https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency={currency}&kind=option"
-    response = requests.get(url, timeout=10)
-    return response.json()
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching Deribit quotes for {currency}: {e}")
+        return None
 
 def main():
     """Main execution loop."""
