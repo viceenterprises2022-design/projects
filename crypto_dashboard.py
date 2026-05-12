@@ -51,6 +51,53 @@ def calculate_pcr(options_data):
         
     return put_oi / call_oi
 
+def calculate_max_pain(options_data):
+    """
+    Find strike price with minimum total loss for option buyers.
+    """
+    if not options_data:
+        return 0.0
+        
+    strikes = set()
+    parsed_data = []
+    
+    for opt in options_data:
+        name = opt.get("instrument_name", "")
+        parts = name.split("-")
+        if len(parts) < 4:
+            continue
+        
+        try:
+            strike = float(parts[2])
+            opt_type = parts[3] # 'C' or 'P'
+            oi = float(opt.get("open_interest", 0))
+            
+            strikes.add(strike)
+            parsed_data.append({"strike": strike, "type": opt_type, "oi": oi})
+        except (ValueError, IndexError):
+            continue
+            
+    if not strikes:
+        return 0.0
+        
+    min_loss = float('inf')
+    max_pain_strike = 0.0
+    
+    for expiry_price in sorted(strikes):
+        total_loss = 0.0
+        for opt in parsed_data:
+            if opt["type"] == "C":
+                loss = max(0, expiry_price - opt["strike"]) * opt["oi"]
+            else: # 'P'
+                loss = max(0, opt["strike"] - expiry_price) * opt["oi"]
+            total_loss += loss
+            
+        if total_loss < min_loss:
+            min_loss = total_loss
+            max_pain_strike = expiry_price
+            
+    return max_pain_strike
+
 def main():
     """Main execution loop."""
     try:

@@ -50,3 +50,17 @@ def test_calculate_pcr_zero_calls():
     ]
     # Should handle division by zero (return 0.0 if no calls)
     assert calculate_pcr(options_data) == 0.0
+
+def test_calculate_max_pain():
+    from crypto_dashboard import calculate_max_pain
+    options_data = [
+        {"instrument_name": "BTC-30AUG24-50000-C", "open_interest": 10},
+        {"instrument_name": "BTC-30AUG24-60000-C", "open_interest": 10},
+        {"instrument_name": "BTC-30AUG24-50000-P", "open_interest": 10},
+        {"instrument_name": "BTC-30AUG24-60000-P", "open_interest": 10},
+    ]
+    # Simple case: 50k and 60k strikes. 
+    # If 50k: Call 50k loss=0, Call 60k loss=0, Put 50k loss=0, Put 60k loss=(60-50)*10=100. Total=100.
+    # If 60k: Call 50k loss=(60-50)*10=100, Call 60k loss=0, Put 50k loss=0, Put 60k loss=0. Total=100.
+    # Both 50000 and 60000 result in 100 loss.
+    assert calculate_max_pain(options_data) in [50000, 60000]
