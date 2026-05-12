@@ -24,10 +24,20 @@ def make_layout() -> Layout:
     )
     return layout
 
-def render_header(refresh_in: int) -> Panel:
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def render_header(refresh_in: int, macro_data: dict = None) -> Panel:
+    now = datetime.now().strftime("%H:%M:%S")
+    ticker = ""
+    if macro_data:
+        parts = []
+        for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
+            if key in macro_data:
+                val = macro_data[key]['current']
+                parts.append(f"{key}: [bold cyan]{val:,.1f}[/]")
+        ticker = " | ".join(parts)
+        ticker = f" | {ticker}"
+
     return Panel(
-        Align.center(f"[bold cyan]AlphaEdge Crypto Diagnostic 2.0[/] | [white]{now}[/] | Refresh in: [bold yellow]{refresh_in}s[/]", vertical="middle"),
+        Align.center(f"[bold cyan]AlphaEdge Crypto 2.0[/] | [white]{now}[/]{ticker} | Refresh: [bold yellow]{refresh_in}s[/]", vertical="middle"),
         style="blue",
         box=box.ROUNDED
     )
@@ -111,10 +121,11 @@ def render_ticker(symbol: str, data, engine) -> Panel:
 
     return Panel(table, title=summary, border_style="cyan")
 
-async def update_data(engine, layout):
+async def update_data(engine, layout, state):
     while True:
         try:
             data = await engine.fetch_all_data()
+            state["macro"] = data["macro"]
             layout["macro"].update(render_macro(data["macro"], data["BTC"]["macro_corr"]))
             layout["BTC"].update(render_ticker("BTC", data["BTC"], engine))
             layout["ETH"].update(render_ticker("ETH", data["ETH"], engine))
@@ -128,16 +139,17 @@ async def run_dashboard():
     layout = make_layout()
     engine = MarketEngine(symbols=["BTC", "ETH", "SOL"])
     
+    state = {"macro": None}
     refresh_interval = 30
     
     # Start background data update
-    asyncio.create_task(update_data(engine, layout))
+    asyncio.create_task(update_data(engine, layout, state))
     
     with Live(layout, console=console, screen=True, refresh_per_second=1) as live:
         counter = 0
         while True:
             refresh_in = refresh_interval - (counter % refresh_interval)
-            layout["header"].update(render_header(refresh_in))
+            layout["header"].update(render_header(refresh_in, state["macro"]))
             await asyncio.sleep(1)
             counter += 1
 

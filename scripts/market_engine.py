@@ -74,8 +74,9 @@ class MarketEngine:
         tickers = {
             "DXY": "DX-Y.NYB",
             "VIX": "^VIX",
-            "SPX": "^GSPC",
-            "GOLD": "GC=F"
+            "US30": "^DJI",
+            "GOLD": "GC=F",
+            "OIL": "CL=F"
         }
         
         try:
