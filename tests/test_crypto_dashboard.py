@@ -136,3 +136,50 @@ def test_fetch_bybit_liquidations_retcode_error(mock_get):
 
     data = fetch_bybit_liquidations("BTC")
     assert data is None
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_deribit_quotes_invalid_json(mock_get):
+    """Verify Deribit handling of invalid JSON."""
+    mock_response = MagicMock()
+    mock_response.json.side_effect = ValueError("Invalid JSON")
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+
+    data = fetch_deribit_quotes("BTC")
+    assert data is None
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_binance_liquidations_invalid_json(mock_get):
+    """Verify Binance handling of invalid JSON."""
+    from crypto_dashboard import fetch_binance_liquidations
+    mock_response = MagicMock()
+    mock_response.json.side_effect = ValueError("Invalid JSON")
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+
+    data = fetch_binance_liquidations("BTC")
+    assert data is None
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_binance_liquidations_not_list(mock_get):
+    """Verify Binance handling when response is not a list."""
+    from crypto_dashboard import fetch_binance_liquidations
+    mock_response = MagicMock()
+    mock_response.json.return_value = {"error": "not a list"}
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+
+    data = fetch_binance_liquidations("BTC")
+    assert data is None
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_bybit_liquidations_invalid_json(mock_get):
+    """Verify Bybit handling of invalid JSON."""
+    from crypto_dashboard import fetch_bybit_liquidations
+    mock_response = MagicMock()
+    mock_response.json.side_effect = ValueError("Invalid JSON")
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+
+    data = fetch_bybit_liquidations("BTC")
+    assert data is None
