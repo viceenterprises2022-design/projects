@@ -1,6 +1,9 @@
 import asyncio
 import aiohttp
 import time
+import pandas as pd
+import yfinance as yf
+from datetime import datetime, timedelta
 
 class MarketEngine:
     """
@@ -16,6 +19,7 @@ class MarketEngine:
         self.symbols = symbols
         self.macro_cache = {}
         self.last_macro_update = 0
+        self.history_cache = {}
 
     async def fetch_binance(self, session, symbol):
         """
@@ -41,19 +45,202 @@ class MarketEngine:
             print(f"Network error for {symbol}: {e}")
             return None, None
 
-    async def fetch_all(self):
-        """
-        Fetches data for all configured symbols in parallel.
+    async def fetch_deribit_options(self, session, currency):
+        """Fetches Deribit option summaries."""
+        url = f"https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency={currency}&kind=option"
+        try:
+            async with session.get(url) as r:
+                return await r.json()
+        except Exception as e:
+            print(f"Deribit error for {currency}: {e}")
+            return None
 
-        Returns:
-            list: List of results from fetch_binance for each symbol.
-        """
+    async def fetch_binance_depth(self, session, symbol):
+        """Fetches order book depth for whale wall detection."""
+        url = f"https://api.binance.com/api/v3/depth?symbol={symbol}USDT&limit=100"
+        try:
+            async with session.get(url) as r:
+                return await r.json()
+        except Exception as e:
+            print(f"Binance Depth error for {symbol}: {e}")
+            return None
+
+    async def fetch_macro_data(self):
+        """Fetches macro indices via yfinance."""
+        now = time.time()
+        if now - self.last_macro_update < 300 and self.macro_cache:
+            return self.macro_cache
+        
+        tickers = {
+            "DXY": "DX-Y.NYB",
+            "VIX": "^VIX",
+            "US30": "^DJI",
+            "GOLD": "GC=F",
+            "OIL": "CL=F"
+        }
+        
+        try:
+            loop = asyncio.get_event_loop()
+            data = await loop.run_in_executor(None, lambda: yf.download(list(tickers.values()), period="1mo", interval="1d", progress=False))
+            
+            if data.empty:
+                return self.macro_cache
+
+            results = {}
+            for key, ticker in tickers.items():
+                if ticker in data['Close']:
+                    series = data['Close'][ticker].dropna()
+                    if len(series) >= 2:
+                        ltp = series.iloc[-1]
+                        prev = series.iloc[-2]
+                        chg = ((ltp - prev) / prev) * 100
+                        results[key] = {
+                            "current": ltp,
+                            "change": chg,
+                            "history": series.tolist()
+                        }
+            
+            self.macro_cache = results
+            self.last_macro_update = now
+            return results
+        except Exception as e:
+            print(f"Macro fetch error: {e}")
+            return self.macro_cache
+
+    async def fetch_all_data(self):
+        """Aggregates all data sources."""
+        async with aiohttp.ClientSession() as session:
+            binance_tasks = [self.fetch_binance(session, s) for s in self.symbols]
+            option_tasks = [self.fetch_deribit_options(session, s) for s in self.symbols]
+            depth_tasks = [self.fetch_binance_depth(session, s) for s in self.symbols]
+            
+            binance_results = await asyncio.gather(*binance_tasks)
+            option_results = await asyncio.gather(*option_tasks)
+            depth_results = await asyncio.gather(*depth_tasks)
+            macro_results = await self.fetch_macro_data()
+            
+            processed = {}
+            for i, symbol in enumerate(self.symbols):
+                processed[symbol] = {
+                    "binance": binance_results[i],
+                    "options": self.process_options(option_results[i]),
+                    "depth": self.process_depth(depth_results[i], binance_results[i]),
+                    "macro_corr": self.calculate_macro_correlations(symbol, binance_results[i], macro_results)
+                }
+            
+            processed["macro"] = macro_results
+            return processed
+
+    def process_options(self, data):
+        """Calculates Max Pain, Max OI, PCR, and Skew from Deribit data."""
+        if not data or 'result' not in data:
+            return None
+        
+        results = data['result']
+        calls = [r for r in results if r['instrument_name'].split('-')[-1] == 'C']
+        puts = [r for r in results if r['instrument_name'].split('-')[-1] == 'P']
+        
+        call_oi = sum(r.get('open_interest', 0) for r in calls)
+        put_oi = sum(r.get('open_interest', 0) for r in puts)
+        pcr = put_oi / call_oi if call_oi > 0 else 0
+        
+        call_vol = sum(r.get('volume', 0) for r in calls)
+        put_vol = sum(r.get('volume', 0) for r in puts)
+        vol_pcr = put_vol / call_vol if call_vol > 0 else 0
+        
+        oi_skew = (put_oi - call_oi) / (put_oi + call_oi) if (put_oi + call_oi) > 0 else 0
+        
+        # Simple Max Pain estimation (strike with highest total OI for now as proxy)
+        all_strikes = {}
+        for r in results:
+            try:
+                strike = float(r['instrument_name'].split('-')[-2])
+                oi = r.get('open_interest', 0)
+                all_strikes[strike] = all_strikes.get(strike, 0) + oi
+            except: continue
+        
+        max_oi_strike = max(all_strikes, key=all_strikes.get) if all_strikes else 0
+        
+        return {
+            "pcr": pcr,
+            "vol_pcr": vol_pcr,
+            "oi_skew": oi_skew,
+            "max_oi": max_oi_strike,
+            "total_oi": call_oi + put_oi,
+            "top_strikes": sorted(all_strikes.items(), key=lambda x: x[1], reverse=True)[:5]
+        }
+
+    def process_depth(self, depth, binance_data):
+        """Detects Whale Walls (> $1M within 1% of price) and calculates book skew."""
+        if not depth or not binance_data or not binance_data[1]:
+            return None
+        
+        ltp = float(binance_data[1][0][4]) # Current close from 1m kline
+        
+        bids = depth.get('bids', [])
+        asks = depth.get('asks', [])
+        
+        whale_bids = []
+        whale_asks = []
+        
+        total_bid_val = 0
+        total_ask_val = 0
+        
+        threshold = 1000000 # $1M USD
+        
+        for price, qty in bids:
+            p, q = float(price), float(qty)
+            val = p * q
+            if p >= ltp * 0.99:
+                total_bid_val += val
+                if val >= threshold:
+                    whale_bids.append({"p": p, "v": val})
+                
+        for price, qty in asks:
+            p, q = float(price), float(qty)
+            val = p * q
+            if p <= ltp * 1.01:
+                total_ask_val += val
+                if val >= threshold:
+                    whale_asks.append({"p": p, "v": val})
+        
+        skew = (total_bid_val - total_ask_val) / (total_bid_val + total_ask_val) if (total_bid_val + total_ask_val) > 0 else 0
+        
+        return {
+            "bids": sorted(whale_bids, key=lambda x: x['v'], reverse=True),
+            "asks": sorted(whale_asks, key=lambda x: x['v'], reverse=True),
+            "skew": skew,
+            "bid_depth": total_bid_val,
+            "ask_depth": total_ask_val
+        }
+
+    def calculate_macro_correlations(self, symbol, binance_data, macro_data):
+        """Pearson correlation with DXY, VIX, SPX over available overlap."""
+        if not binance_data or not binance_data[0] or not macro_data:
+            return {}
+        
+        # Use up to 30 days of spot closes
+        btc_closes = [float(x[4]) for x in binance_data[0]][-30:]
+        correlations = {}
+        
+        for key, mdata in macro_data.items():
+            m_history = mdata.get('history', [])
+            # Align lengths
+            min_len = min(len(btc_closes), len(m_history))
+            if min_len >= 5: # Need at least some data for meaningful correlation
+                s1 = btc_closes[-min_len:]
+                s2 = m_history[-min_len:]
+                correlations[key] = self.calculate_correlation(s1, s2)
+                
+        return correlations
+
+    # --- Existing methods ---
+    async def fetch_all(self):
+        """Backwards compatibility for previous version."""
         async with aiohttp.ClientSession() as session:
             tasks = [self.fetch_binance(session, s) for s in self.symbols]
             results = await asyncio.gather(*tasks)
             return results
-
-    # --- Technical Indicators ---
 
     def calculate_ema(self, data, period):
         """Standard EMA calculation matching collector.py."""
@@ -85,7 +272,7 @@ class MarketEngine:
             if len(candles[i]) < 5 or len(candles[i-1]) < 5:
                 continue
             h, l, cp = candles[i][2], candles[i][3], candles[i-1][4]
-            tr = max(h - l, abs(h - cp), abs(l - cp))
+            tr = max(float(h) - float(l), abs(float(h) - float(cp)), abs(float(l) - float(cp)))
             trs.append(tr)
         return sum(trs[-period:]) / min(period, len(trs)) if trs else 0
 
@@ -99,9 +286,9 @@ class MarketEngine:
         # Formula: HL2 +/- Multiplier * ATR
         if len(candles[-1]) < 4:
             return None, 0
-        hl2 = (candles[-1][2] + candles[-1][3]) / 2
+        hl2 = (float(candles[-1][2]) + float(candles[-1][3])) / 2
         lo = hl2 - multiplier * atr
-        direction = 1 if (len(candles[-1]) > 4 and candles[-1][4] > lo) else -1
+        direction = 1 if (len(candles[-1]) > 4 and float(candles[-1][4]) > lo) else -1
         return (lo if direction == 1 else hl2 + multiplier * atr), direction
 
     def calculate_vwap(self, candles, period=20):
@@ -111,15 +298,15 @@ class MarketEngine:
         for x in candles[-period:]:
             if len(x) < 6:
                 continue
-            v = x[5] or 0
-            tp = (x[2] + x[3] + x[4]) / 3
+            v = float(x[5]) or 0
+            tp = (float(x[2]) + float(x[3]) + float(x[4])) / 3
             tv += tp * v
             vol += v
         return tv / vol if vol > 0 else None
 
     def analyze_trend(self, candles):
         """Comprehensive trend analysis matching collector.py logic."""
-        closes = [x[4] for x in candles]
+        closes = [float(x[4]) for x in candles]
         if len(closes) < 20:
             return "N/A", 0, f"{len(closes)} bars"
         

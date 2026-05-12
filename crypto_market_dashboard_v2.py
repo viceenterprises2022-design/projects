@@ -1,3 +1,4 @@
+import asyncio
 import time
 from datetime import datetime
 from rich.console import Console
@@ -7,12 +8,13 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.align import Align
 from rich import box
+from market_engine import MarketEngine
 
 def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=5),
+        Layout(name="macro", size=8),
         Layout(name="body")
     )
     layout["body"].split_row(
@@ -22,70 +24,132 @@ def make_layout() -> Layout:
     )
     return layout
 
-def render_header(refresh_in: int) -> Panel:
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def render_header(refresh_in: int, macro_data: dict = None) -> Panel:
+    now = datetime.now().strftime("%H:%M:%S")
     return Panel(
-        Align.center(f"[bold cyan]AlphaEdge Crypto Diagnostic 2.0[/] | [white]{now}[/] | Refresh in: [bold yellow]{refresh_in}s[/]", vertical="middle"),
+        Align.center(f"[bold cyan]AlphaEdge Crypto 2.0[/] | [white]{now}[/] | Sync: [bold yellow]{refresh_in}s[/]", vertical="middle"),
         style="blue",
         box=box.ROUNDED
     )
 
-def render_macro() -> Panel:
-    table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE, expand=True)
-    table.add_column("DXY", justify="center")
-    table.add_column("VIX", justify="center")
-    table.add_column("DOW_JONES", justify="center")
-    table.add_column("CRUDE", justify="center")
-    table.add_row("104.20", "14.50", "5120.30", "78.40")
-    return Panel(table, title="[bold]Global Macro[/]", border_style="magenta")
-
-def render_ticker(symbol: str) -> Panel:
-    # Header: [SYM] | Spot: [price] | Fut: [price] ([change]%) | Sig: [NEUTRAL/BULL/BEAR] ([score]/10)
-    data = {
-        "BTC": {"spot": 98450.2, "fut": 98520.5, "chg": "+0.07", "sig": "[green]BULL[/]", "score": 8, "trend": "[green]UP[/]", "rsi": 62.5, "st": "[green]BUY[/]", "vwap": "+1.2%"},
-        "ETH": {"spot": 2680.4, "fut": 2675.1, "chg": "-0.20", "sig": "[yellow]NEUTRAL[/]", "score": 5, "trend": "[yellow]SIDE[/]", "rsi": 48.2, "st": "[yellow]HOLD[/]", "vwap": "-0.1%"},
-        "SOL": {"spot": 185.3, "fut": 186.1, "chg": "+0.43", "sig": "[green]BULL[/]", "score": 9, "trend": "[green]UP[/]", "rsi": 71.8, "st": "[green]BUY[/]", "vwap": "+2.5%"}
-    }.get(symbol, {"spot": 0, "fut": 0, "chg": "0", "sig": "N/A", "score": 0, "trend": "N/A", "rsi": 0, "st": "N/A", "vwap": "0%"})
-
-    summary = f"[bold yellow]{symbol}[/] | Spot: {data['spot']:,} | Fut: {data['fut']:,} ({data['chg']}%) | Sig: {data['sig']} ({data['score']}/10)"
+def render_macro(macro_data, correlations) -> Panel:
+    table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE, expand=True, padding=(0, 1))
+    table.add_column("IDX", justify="left", width=5)
+    table.add_column("PRICE", justify="right")
+    table.add_column("CHG", justify="right")
+    table.add_column("CORR", justify="right")
     
-    table = Table(show_header=True, header_style="bold cyan", box=box.SIMPLE, expand=True)
-    table.add_column("INDICATOR", style="dim")
-    table.add_column("VALUE", justify="right")
-    table.add_row("TREND", data['trend'])
-    table.add_row("RSI (14)", f"{data['rsi']:.1f}")
-    table.add_row("SUPERTREND", data['st'])
-    table.add_row("VWAP DIST", data['vwap'])
+    if not macro_data:
+        table.add_row("...", "---", "---", "---")
+    else:
+        for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
+            if key in macro_data:
+                mdata = macro_data[key]
+                val = f"{mdata['current']:,.1f}"
+                chg = mdata.get('change', 0)
+                chg_color = "green" if chg >= 0 else "red"
+                corr = correlations.get(key, 0)
+                corr_color = "green" if corr > 0.5 else "red" if corr < -0.5 else "white"
+                table.add_row(key, val, f"[{chg_color}]{chg:+.2f}%[/]", f"[{corr_color}]{corr:+.2f}[/]")
+            
+    return Panel(table, title="[bold]Macro & Corr[/]", border_style="magenta")
+
+def render_ticker(symbol: str, data, engine) -> Panel:
+    if not data or not data.get('binance'):
+        return Panel(Align.center("[yellow]Loading...[/]"), title=f"[bold yellow]{symbol}[/]")
+
+    binance = data['binance']
+    options = data.get('options')
+    depth = data.get('depth')
     
+    # Binance data: [spot_klines, fut_klines]
+    spot_close = float(binance[0][-1][4])
+    fut_close = float(binance[1][0][4])
+    change = ((spot_close - float(binance[0][-2][4])) / float(binance[0][-2][4])) * 100
+    
+    # Analyze trend
+    trend_str, trend_score, trend_det = engine.analyze_trend(binance[0])
+    rsi = engine.calculate_rsi([float(x[4]) for x in binance[0]])
+    st_val, st_dir = engine.calculate_supertrend(binance[0])
+    vwap = engine.calculate_vwap(binance[0])
+    vwap_dist = ((spot_close - vwap) / vwap) * 100 if vwap else 0
+
+    sig_color = "green" if trend_score > 0 else "red" if trend_score < 0 else "yellow"
+    summary = f"[bold yellow]{symbol}[/] | [white]{spot_close:,.1f}[/] ([{sig_color}]{change:+.1f}%[/])"
+    
+    table = Table(show_header=False, box=box.SIMPLE, expand=True, padding=(0, 0))
+    table.add_column("K", style="dim", width=8)
+    table.add_column("V", justify="right")
+    
+    # Technicals
+    table.add_row("TREND", f"[{sig_color}]{trend_str[:12]}[/]")
+    table.add_row("RSI", f"{rsi:.1f}")
+    st_color = "green" if st_dir == 1 else "red"
+    table.add_row("SUPERTREND", f"[{st_color}]{'BUY' if st_dir == 1 else 'SELL'}[/]")
+    vwap_color = "green" if vwap_dist > 0 else "red"
+    table.add_row("VWAP DIST", f"[{vwap_color}]{vwap_dist:+.1f}%[/]")
+    
+    table.add_row("", "") # Spacer
+    
+    # Options
+    if options:
+        table.add_row("[bold cyan]OPTIONS[/]", "")
+        table.add_row("PCR O/V", f"{options['pcr']:.2f}/{options['vol_pcr']:.2f}")
+        skew_color = "red" if options['oi_skew'] < -0.1 else "green" if options['oi_skew'] > 0.1 else "white"
+        table.add_row("OI SKEW", f"[{skew_color}]{options['oi_skew']:+.2f}[/]")
+        table.add_row("MAXPAIN", f"{options['max_oi']:,.0f}")
+    
+    table.add_row("", "") # Spacer
+    
+    # Whale Walls
+    if depth:
+        table.add_row("[bold cyan]ORDERBOOK[/]", "")
+        book_skew = depth['skew']
+        bs_color = "green" if book_skew > 0.1 else "red" if book_skew < -0.1 else "white"
+        table.add_row("BK SKEW", f"[{bs_color}]{book_skew:+.2f}[/]")
+        for bid in depth['bids'][:1]:
+            table.add_row("BID", f"[green]{bid['p']:,.0f}[/] (${bid['v']/1e6:.1f}M)")
+        for ask in depth['asks'][:1]:
+            table.add_row("ASK", f"[red]{ask['p']:,.0f}[/] (${ask['v']/1e6:.1f}M)")
+        if not depth['bids'] and not depth['asks']:
+            table.add_row("WALLS", "[dim]None[/]")
+
     return Panel(table, title=summary, border_style="cyan")
 
-def main():
+async def update_data(engine, layout, state):
+    while True:
+        try:
+            data = await engine.fetch_all_data()
+            state["macro"] = data["macro"]
+            layout["macro"].update(render_macro(data["macro"], data["BTC"]["macro_corr"]))
+            layout["BTC"].update(render_ticker("BTC", data["BTC"], engine))
+            layout["ETH"].update(render_ticker("ETH", data["ETH"], engine))
+            layout["SOL"].update(render_ticker("SOL", data["SOL"], engine))
+        except Exception as e:
+            print(f"Update error: {e}")
+        await asyncio.sleep(30)
+
+async def run_dashboard():
     console = Console()
     layout = make_layout()
+    engine = MarketEngine(symbols=["BTC", "ETH", "SOL"])
     
+    state = {"macro": None}
     refresh_interval = 30
-    counter = 0
+    
+    # Start background data update
+    asyncio.create_task(update_data(engine, layout, state))
     
     with Live(layout, console=console, screen=True, refresh_per_second=1) as live:
-        try:
-            while True:
-                # Calculate countdown
-                refresh_in = refresh_interval - (counter % refresh_interval)
-                
-                # Update header every second
-                layout["header"].update(render_header(refresh_in))
-                
-                # Update data only every 30 seconds (or on first run)
-                if counter % refresh_interval == 0:
-                    layout["macro"].update(render_macro())
-                    layout["BTC"].update(render_ticker("BTC"))
-                    layout["ETH"].update(render_ticker("ETH"))
-                    layout["SOL"].update(render_ticker("SOL"))
-                
-                time.sleep(1)
-                counter += 1
-        except KeyboardInterrupt:
-            pass
+        counter = 0
+        while True:
+            refresh_in = refresh_interval - (counter % refresh_interval)
+            layout["header"].update(render_header(refresh_in, state["macro"]))
+            await asyncio.sleep(1)
+            counter += 1
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(run_dashboard())
+    except KeyboardInterrupt:
+        pass

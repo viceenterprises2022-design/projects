@@ -183,3 +183,50 @@ def test_fetch_bybit_liquidations_invalid_json(mock_get):
 
     data = fetch_bybit_liquidations("BTC")
     assert data is None
+
+def test_aggregate_liquidation_bins():
+    from crypto_dashboard import aggregate_liquidation_bins
+    
+    # Binance data: price 60001, qty 0.1 -> bin 60000, vol 6000.1
+    # price 60049, qty 0.1 -> bin 60000, vol 6004.9
+    # total for bin 60000 = 12005.0
+    binance_data = [
+        {"price": "60001", "origQty": "0.1"},
+        {"price": "60049", "origQty": "0.1"}
+    ]
+    
+    # Bybit data: price 60099, size 0.1 -> bin 60100, vol 6009.9
+    bybit_data = [
+        {"price": "60099", "size": "0.1"}
+    ]
+    
+    result = aggregate_liquidation_bins(binance_data, bybit_data, "BTC")
+    
+    # Expected: [(60000, 12005.0), (60100, 6009.9)]
+    assert len(result) == 2
+    assert result[0][0] == 60000
+    assert result[0][1] == pytest.approx(12005.0)
+    assert result[1][0] == 60100
+    assert result[1][1] == pytest.approx(6009.9)
+
+def test_aggregate_liquidation_bins_symbols():
+    from crypto_dashboard import aggregate_liquidation_bins
+    
+    # ETH bin size 10
+    eth_binance = [{"price": "2504", "origQty": "1.0"}] # bin 2500, vol 2504
+    eth_bybit = [{"price": "2506", "size": "1.0"}]    # bin 2510, vol 2506
+    result_eth = aggregate_liquidation_bins(eth_binance, eth_bybit, "ETH")
+    assert (2500, 2504.0) in result_eth
+    assert (2510, 2506.0) in result_eth
+
+    # SOL bin size 1
+    sol_binance = [{"price": "145.4", "origQty": "10.0"}] # bin 145, vol 1454
+    sol_bybit = [{"price": "146.6", "size": "10.0"}]    # bin 147, vol 1466
+    result_sol = aggregate_liquidation_bins(sol_binance, sol_bybit, "SOL")
+    assert (145, 1454.0) in result_sol
+    assert (147, 1466.0) in result_sol
+
+def test_aggregate_liquidation_bins_empty():
+    from crypto_dashboard import aggregate_liquidation_bins
+    assert aggregate_liquidation_bins([], [], "BTC") == []
+    assert aggregate_liquidation_bins(None, None, "BTC") == []

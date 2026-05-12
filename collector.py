@@ -40,7 +40,7 @@ OI_INSTRUMENTS = {
     "SENSEX":    "BSE_INDEX|SENSEX",
 }
 OI_RANGE = 1000
-YAHOO_SYM = {"DXY": "DX-Y.NYB", "CRUDE_OIL": "CL=F", "US30": "YM=F", "GOLD": "GC=F", "SILVER": "SI=F"}
+YAHOO_SYM = {"DXY": "DX-Y.NYB", "VIX": "^VIX"}
 YAHOO_IDX = {"NIFTY": "^NSEI", "SENSEX": "^BSESN", "BANKNIFTY": "^NSEBANK"}
 YH = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
@@ -269,17 +269,7 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
     else:
         res["trend"] = {"label": "N/A", "score": 0, "detail": f"{len(c)} bars"}
 
-    # 2 DOW JONES
-    u = gd.get("US30")
-    if u:
-        ch = u["change_pct"]; s = 1 if ch > 0.3 else (-1 if ch < -0.3 else 0)
-        res["dow_jones"] = {"label": f"{'Bullish' if s > 0 else 'Bearish' if s < 0 else 'Flat'} ({ch:+.2f}%)",
-                            "score": s, "detail": f"DJIA Fut: {u['ltp']:,.0f}"}
-        sc += s; fa += 1
-    else:
-        res["dow_jones"] = {"label": "N/A", "score": 0, "detail": "Unavailable"}
-
-    # 3 INDIA VIX
+    # 2 US VIX
     v = gd.get("VIX")
     if v:
         vv = v["ltp"]
@@ -287,10 +277,10 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
         elif vv <= 17:   s, lb = 1,  f"Normal ({vv:.2f}) — Stable"
         elif vv <= 21:   s, lb = 0,  f"Elevated ({vv:.2f}) — Caution"
         else:            s, lb = -1, f"High ({vv:.2f}) — Fear"
-        res["india_vix"] = {"label": lb, "score": s, "detail": f"Chg: {v.get('change_pct', 0):+.2f}%"}
+        res["vix"] = {"label": lb, "score": s, "detail": f"US VIX Chg: {v.get('change_pct', 0):+.2f}%"}
         sc += s; fa += 1
     else:
-        res["india_vix"] = {"label": "N/A", "score": 0, "detail": "Unavailable"}
+        res["vix"] = {"label": "N/A", "score": 0, "detail": "Unavailable"}
 
     # 4 OPEN INTEREST
     if oi_raw:
@@ -347,7 +337,7 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
     else:
         res["rsi"] = {"label": "N/A", "score": 0, "detail": "Need ≥16 bars"}
 
-    # 8 DXY
+    # 7 DXY
     dx = gd.get("DXY")
     if dx:
         ch = dx["change_pct"]
@@ -355,27 +345,13 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
         elif ch > 0.2:  s, lb = -1, f"Strengthening ({ch:+.2f}%)"
         elif ch < -0.5: s, lb = 1,  f"Weakening ({ch:+.2f}%) — EM positive"
         elif ch < -0.2: s, lb = 1,  f"Softening ({ch:+.2f}%)"
-        else:            s, lb = 0,  f"Stable ({ch:+.2f}%)"
+        else:            s, lb = 0, f"Stable ({ch:+.2f}%)"
         res["dxy"] = {"label": lb, "score": s, "detail": f"DXY: {dx['ltp']:.3f}"}
         sc += s; fa += 1
     else:
         res["dxy"] = {"label": "N/A", "score": 0, "detail": "Unavailable"}
 
-    # 9 CRUDE OIL
-    cr = gd.get("CRUDE_OIL")
-    if cr:
-        ch = cr["change_pct"]
-        if ch > 2.0:    s, lb = -1, f"Surging ({ch:+.2f}%) — Inflation risk"
-        elif ch > 0.8:  s, lb = -1, f"Rising ({ch:+.2f}%)"
-        elif ch < -2.0: s, lb = 1,  f"Crashing ({ch:+.2f}%)"
-        elif ch < -0.8: s, lb = 1,  f"Falling ({ch:+.2f}%)"
-        else:            s, lb = 0,  f"Stable ({ch:+.2f}%)"
-        res["crude"] = {"label": lb, "score": s, "detail": f"WTI: ${cr['ltp']:.2f}"}
-        sc += s; fa += 1
-    else:
-        res["crude"] = {"label": "N/A", "score": 0, "detail": "Unavailable"}
-
-    # 10 PCR
+    # 8 PCR
     if oi_raw:
         pcr = oi_raw["total_pcr"]; mp = oi_raw["max_pain"]
         if pcr > 1.3:    s, lb = 1,  f"Bullish — PCR {pcr:.2f}"

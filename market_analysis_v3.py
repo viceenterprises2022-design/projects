@@ -28,7 +28,7 @@ OI_INSTRUMENTS = {
 }
 LOT_SIZE = {"NIFTY": 75, "BANKNIFTY": 30, "SENSEX": 20}
 OI_RANGE  = 1000   # spot ± 1000 pts
-YAHOO_SYM = {"DXY":"DX-Y.NYB","CRUDE_OIL":"CL=F","US30":"YM=F","GOLD":"GC=F","SILVER":"SI=F"}
+YAHOO_SYM = {"DXY":"DX-Y.NYB","VIX":"^VIX"}
 YAHOO_IDX = {"NIFTY":"^NSEI","SENSEX":"^BSESN","BANKNIFTY":"^NSEBANK"}
 YH = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
@@ -449,11 +449,12 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
         res["pcr"]={"label":"N/A","score":0,"detail":"Option chain req."}
 
     sg,sgc=sig_color(sc,fa)
-    return {"indicators":res,"score":sc,"factors":fa,"signal":sg,"signal_color":sgc}
+    total_score = min(abs(sc), 10)
+    return {"indicators":res,"score":total_score,"factors":fa,"signal":sg,"signal_color":sgc}
 
 # ── CLI INTERFACE ─────────────────────────────────────────────────────────────
 
-from rich.console import Console
+from rich.console import Console, Group
 from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
@@ -469,56 +470,42 @@ def fmt_oi(v):
     if l >= 100: return f"{l:,.0f}L"
     return f"{l:.1f}L"
 
-def doi_str(v):
-    if not v: return "[dim]—[/dim]"
-    l = v / 100000
-    color = "green" if v > 0 else "red"
-    sign  = "+" if v > 0 else ""
-    return f"[{color}]{sign}{l:.1f}L[/{color}]"
-
 def days_to_expiry(expiry_str):
     try:
         exp = datetime.datetime.strptime(expiry_str, "%Y-%m-%d").date()
         return (exp - datetime.date.today()).days
     except Exception: return "?"
 
-def print_option_chain(oi_raw, spot):
-    if not oi_raw:
-        console.print("[dim]  Option chain unavailable.[/dim]")
-        return
+def get_option_chain_table(oi_raw, spot):
+    if not oi_raw: return Text("Option chain unavailable", style="dim")
     expiry  = oi_raw.get("expiry", "?")
     dte     = days_to_expiry(expiry)
     strikes = oi_raw.get("strikes", [])
     max_p   = oi_raw.get("max_pain", 0)
     lo, hi  = spot - 500, spot + 500
     visible = [s for s in strikes if lo <= s["strike"] <= hi] or strikes
-    console.print(Rule(f"[bold yellow]Option Chain — Expiry: {expiry} | DTE: {dte}d | Max Pain: {max_p:,}[/bold yellow]", style="yellow"))
-    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 1))
-    oc_table.add_column("C.LTP", justify="right", style="green")
-    oc_table.add_column("C.IV%", justify="right", style="green")
-    oc_table.add_column("C.OI", justify="right", style="green")
-    oc_table.add_column("C.ΔOI", justify="right")
-    oc_table.add_column("STRIKE", justify="center", style="bold white")
-    oc_table.add_column("P.ΔOI", justify="left")
-    oc_table.add_column("P.OI", justify="right", style="red")
-    oc_table.add_column("P.IV%", justify="right", style="red")
-    oc_table.add_column("P.LTP", justify="right", style="red")
+    
+    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 0))
+    oc_table.add_column("C.LTP", justify="right", style="green", width=7)
+    oc_table.add_column("C.OI", justify="right", style="green", width=7)
+    oc_table.add_column("STRIKE", justify="center", style="bold white", width=14)
+    oc_table.add_column("P.OI", justify="right", style="red", width=7)
+    oc_table.add_column("P.LTP", justify="right", style="red", width=7)
     for s in visible:
         k=s["strike"]; is_atm = abs(k-spot)<=50
         c_ltp=f"{s['call_ltp']:.1f}" if s['call_ltp'] else "—"
-        c_iv=f"{s['call_iv']:.1f}" if s['call_iv'] else "—"
-        c_oi=fmt_oi(s['call_oi']); c_doi=doi_str(s['call_doi'])
+        c_oi=fmt_oi(s['call_oi'])
         p_ltp=f"{s['put_ltp']:.1f}" if s['put_ltp'] else "—"
-        p_iv=f"{s['put_iv']:.1f}" if s['put_iv'] else "—"
-        p_oi=fmt_oi(s['put_oi']); p_doi=doi_str(s['put_doi'])
-        strike_str = f"[bold yellow]►{k:,}◄[/bold yellow]" if is_atm else f"{k:,}"
+        p_oi=fmt_oi(s['put_oi'])
+        strike_str = f"[bold yellow]►{k:,.1f}◄[/bold yellow]" if is_atm else f"{k:,.1f}"
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
-        oc_table.add_row(c_ltp, c_iv, c_oi, c_doi, strike_str, p_doi, p_oi, p_iv, p_ltp)
-    console.print(oc_table)
+        oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
+    
+    header_text = Text(f"Option Chain — Exp: {expiry}\nDTE: {dte}d | MP: {max_p:,.1f}", style="bold yellow", justify="center")
+    return Panel(Group(header_text, oc_table), border_style="yellow", padding=(0, 1))
 
-def print_intelligence_panel(sym, quote, oi_raw):
-    if not oi_raw: return
-    console.print(Rule("[bold magenta]Market Intelligence[/bold magenta]", style="magenta"))
+def get_intelligence_panel(sym, quote, oi_raw):
+    if not oi_raw: return Text("")
     strikes=oi_raw.get("strikes", []); spot=oi_raw.get("spot", 0)
     total_pcr=oi_raw.get("total_pcr", 0); max_pain=oi_raw.get("max_pain", 0)
     total_c_oi=oi_raw.get("total_call_oi", 0); total_p_oi=oi_raw.get("total_put_oi", 0)
@@ -527,16 +514,19 @@ def print_intelligence_panel(sym, quote, oi_raw):
     top_call=sorted(strikes, key=lambda x: x["call_oi"], reverse=True)[:3]
     top_put=sorted(strikes, key=lambda x: x["put_oi"], reverse=True)[:3]
     pcr_color = "green" if total_pcr>=1.0 else "yellow" if total_pcr>=0.7 else "red"
-    buildup_sig = "[green]Long Build-up[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Short Covering[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short Build-up[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Long Unwinding[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neutral[/dim]"
-    left, right = Table(box=None, show_header=False), Table(box=None, show_header=False)
-    left.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
-    left.add_row("Max Pain", f"[magenta]{max_pain:,}[/magenta]")
-    left.add_row("OI Build", buildup_sig)
-    left.add_row("Calls", f"[green]{fmt_oi(total_c_oi)}[/green]")
-    left.add_row("Puts", f"[red]{fmt_oi(total_p_oi)}[/red]")
-    right.add_row("Resist", ", ".join([f"[red]{s['strike']:,}[/red]" for s in top_call]))
-    right.add_row("Support", ", ".join([f"[green]{s['strike']:,}[/green]" for s in top_put]))
-    console.print(Columns([Panel(left, border_style="magenta"), Panel(right, border_style="blue")]))
+    buildup_sig = "[green]Long[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Cov[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Unwnd[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neut[/dim]"
+    
+    intel = Table(box=None, show_header=False, padding=(0, 1), expand=True)
+    intel.add_column("L", justify="left")
+    intel.add_column("V", justify="right")
+    intel.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
+    intel.add_row("Max Pain", f"[magenta]{max_pain:,}[/magenta]")
+    intel.add_row("OI Build", buildup_sig)
+    intel.add_row("C.OI", f"[green]{fmt_oi(total_c_oi)}[/green]")
+    intel.add_row("P.OI", f"[red]{fmt_oi(total_p_oi)}[/red]")
+    intel.add_row("R", f"[red]{top_call[0]['strike']:,}[/red]")
+    intel.add_row("S", f"[green]{top_put[0]['strike']:,}[/green]")
+    return Panel(intel, title=Text("Intel", style="bold magenta"), border_style="magenta", padding=(0, 1))
 
 def print_summary_ticker(quotes_all):
     now = datetime.datetime.now().strftime("%H:%M:%S")
@@ -557,47 +547,99 @@ def print_trending_oi(sym):
     except Exception: return
     if not rows: return
     console.print(Rule("[bold cyan]Trending OI (Intraday)[/bold cyan]", style="cyan"))
-    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
-    for c in ["Time", "LTP", "ΔCall OI", "ΔPut OI", "Diff", "PCR", "Sentiment"]: t.add_column(c, justify="right")
+    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0, 1))
+    t.add_column("Time", justify="center")
+    t.add_column("LTP", justify="right")
+    t.add_column("ΔCall OI", justify="right")
+    t.add_column("ΔPut OI", justify="right")
+    t.add_column("Diff", justify="right")
+    t.add_column("PCR", justify="right")
+    t.add_column("Sentiment", justify="center")
+    
     base_c, base_p = rows[-1][2], rows[-1][3]
     for r in rows:
         ts, ltp, c_oi, p_oi = r
         d_c, d_p = c_oi-base_c, p_oi-base_p; diff = p_oi-c_oi
         pcr = p_oi/c_oi if c_oi>0 else 0
         sent = "[green]Bullish[/green]" if diff>0 else "[red]Bearish[/red]"
-        t.add_row(ts.split(" ")[1][:5], f"{ltp:,.2f}", f"{d_c:,.0f}", f"{d_p:,.0f}", f"{diff:,.0f}", f"{pcr:.2f}", sent)
+        t.add_row(
+            ts.split(" ")[1][:5], 
+            f"{ltp:,.2f}", 
+            f"{d_c:,.0f}", 
+            f"{d_p:,.0f}", 
+            f"{diff:,.0f}", 
+            f"{pcr:.2f}", 
+            sent
+        )
     console.print(t)
+
+def get_futures_key(sym, next_month=False):
+    now = datetime.datetime.now()
+    if next_month:
+        if now.month == 12: now = now.replace(year=now.year+1, month=1)
+        else: now = now.replace(month=now.month+1)
+    year, mon = now.strftime("%y"), now.strftime("%b").upper()
+    if sym == "SENSEX": return f"BSE_FO|SENSEX{year}{mon}FUT"
+    return f"NSE_FO|{sym}{year}{mon}FUT"
 
 def run_analysis(sym):
     q = fetch_quote(INSTRUMENTS[sym])
     if not q: return None
+    fq = fetch_quote(get_futures_key(sym))
+    if not fq: fq = fetch_quote(get_futures_key(sym, True))
+    
     c = fetch_candles(INSTRUMENTS[sym])
     yc = fetch_yahoo(YAHOO_IDX.get(sym, "^NSEI"))
-    gd = {"US30":fetch_yahoo(YAHOO_SYM["US30"], 5), "DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), "CRUDE_OIL":fetch_yahoo(YAHOO_SYM["CRUDE_OIL"], 5)}
+    gd = {"DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), 
+          "VIX":fetch_yahoo(YAHOO_SYM["VIX"], 5),
+          "US30":fetch_yahoo("^DJI", 5)}
     vix = fetch_quote(INSTRUMENTS["INDIA_VIX"])
     if vix: gd["VIX"] = {"ltp":vix.get("ltp",15), "change_pct":0}
     oi = build_oi_data(sym, q["ltp"])
-    return (sym, q, oi, analyze(sym, q, c, oi, gd, yc))
+    return (sym, q, fq, oi, analyze(sym, q, c, oi, gd, yc))
 
-def display_dashboard(sym, q, oi, a_res):
+def display_dashboard(sym, q, fq, oi, a_res):
     console.clear()
     ltp, chg = q["ltp"], q["change_pct"]
     color = "green" if chg>=0 else "red"
     sig_c = {"BUY":"green", "SELL":"red", "NEUTRAL":"yellow"}.get(a_res["signal"], "white")
-    header = f"[bold white]LTP:[/bold white] [{color}]{ltp:,.2f} ({chg:+.2f}%)[/{color}]  |  [bold white]Signal:[/bold white] [{sig_c}]{a_res['signal']} ({a_res['score']}/10)[/{sig_c}]"
-    console.print(Panel(header, title=f"[bold yellow]⚡ AlphaEdge Diagnostics: {sym}[/bold yellow]", border_style="cyan"))
     
-    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
-    t.add_column("Indicator", style="cyan"); t.add_column("Status"); t.add_column("Score", justify="center")
+    header = f"[bold white]{sym}[/bold white] | Spot: [{color}]{ltp:,.2f} ({chg:+.2f}%)[/{color}]"
+    if fq:
+        fltp, fchg = fq["ltp"], fq["change_pct"]
+        fcolor = "green" if fchg>=0 else "red"
+        header += f" | Fut: [{fcolor}]{fltp:,.2f} ({fchg:+.2f}%)[/{fcolor}]"
+    
+    header += f" | Signal: [{sig_c}]{a_res['signal']} ({a_res['score']}/10)[/{sig_c}]"
+    console.print(Panel(header, border_style="cyan"))
+    
+    # 1. Indicator Table (Condensed)
+    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0,0), expand=True)
+    ind_table.add_column("Ind", style="cyan", justify="left"); ind_table.add_column("Status", justify="left"); ind_table.add_column("S", justify="center")
     for k, v in a_res["indicators"].items():
-        s = "[green]+1[/green]" if v["score"]>0 else "[red]-1[/red]" if v["score"]<0 else "[yellow]0[/yellow]"
-        t.add_row(k.upper(), v["label"], s)
-    console.print(t)
+        score_val = v["score"]
+        score_str = f"[green]+{score_val}[/green]" if score_val>0 else f"[red]{score_val}[/red]" if score_val<0 else "[yellow]0[/yellow]"
+        short_k = k.upper().replace("INDIA_VIX", "VIX").replace("SUPERTREND", "S-TREND").replace("DOW_JONES", "DOW")
+        ind_table.add_row(short_k, v["label"][:32], score_str)
+    
+    # 2. Layout Structure (Grid Table for compact height)
     if oi:
-        print_option_chain(oi, ltp)
-        print_intelligence_panel(sym, q, oi)
+        grid = Table.grid(expand=True)
+        grid.add_column(ratio=4) # Indicators
+        grid.add_column(ratio=6) # OC
+        grid.add_column(ratio=3) # Intel
+        grid.add_row(
+            Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan", padding=(0,0)),
+            get_option_chain_table(oi, ltp),
+            get_intelligence_panel(sym, q, oi)
+        )
+        console.print(grid)
         print_trending_oi(sym)
-    console.print("\n[dim]  Auto-refreshing every 30s... [Ctrl+C] to return to menu[/dim]")
+    else:
+        console.print(Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan"))
+
+    console.print(f"[dim]  Refresh 30s | {datetime.datetime.now().strftime('%H:%M:%S')} | Ctrl+C Exit[/dim]")
+
 
 def main():
     init_db()
