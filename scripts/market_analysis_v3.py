@@ -483,7 +483,7 @@ def get_option_chain_table(oi_raw, spot):
     lo, hi  = spot - 400, spot + 400
     visible = [s for s in strikes if lo <= s["strike"] <= hi] or strikes
     
-    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 1), title=f"Option Chain (Exp: {expiry})", title_style="bold yellow")
+    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 1))
     oc_table.add_column("C.LTP", justify="right", style="green")
     oc_table.add_column("C.OI", justify="right", style="green")
     oc_table.add_column("STRIKE", justify="center", style="bold white")
@@ -498,7 +498,7 @@ def get_option_chain_table(oi_raw, spot):
         strike_str = f"[bold yellow]►{k:,}◄[/bold yellow]" if is_atm else f"{k:,}"
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
         oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
-    return oc_table
+    return Panel(oc_table, title=Text(f"Option Chain (Exp: {expiry})", style="bold yellow"), border_style="yellow", padding=(0, 1))
 
 def get_intelligence_panel(sym, quote, oi_raw):
     if not oi_raw: return Text("")
@@ -512,7 +512,7 @@ def get_intelligence_panel(sym, quote, oi_raw):
     pcr_color = "green" if total_pcr>=1.0 else "yellow" if total_pcr>=0.7 else "red"
     buildup_sig = "[green]Long Build[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Short Cov[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short Build[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Long Unwind[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neut[/dim]"
     
-    intel = Table(box=None, show_header=False, title="Market Intel", title_style="bold magenta")
+    intel = Table(box=None, show_header=False)
     intel.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
     intel.add_row("Max Pain", f"[magenta]{max_pain:,}[/magenta]")
     intel.add_row("OI Build", buildup_sig)
@@ -520,7 +520,7 @@ def get_intelligence_panel(sym, quote, oi_raw):
     intel.add_row("P.OI", f"[red]{fmt_oi(total_p_oi)}[/red]")
     intel.add_row("Resist", f"[red]{top_call[0]['strike']:,}[/red]")
     intel.add_row("Support", f"[green]{top_put[0]['strike']:,}[/green]")
-    return Panel(intel, border_style="magenta")
+    return Panel(intel, title=Text("Market Intel", style="bold magenta"), border_style="magenta")
 
 def print_summary_ticker(quotes_all):
     now = datetime.datetime.now().strftime("%H:%M:%S")
@@ -578,6 +578,8 @@ def run_analysis(sym):
     oi = build_oi_data(sym, q["ltp"])
     return (sym, q, oi, analyze(sym, q, c, oi, gd, yc))
 
+from rich.layout import Layout
+
 def display_dashboard(sym, q, oi, a_res):
     console.clear()
     ltp, chg = q["ltp"], q["change_pct"]
@@ -586,22 +588,34 @@ def display_dashboard(sym, q, oi, a_res):
     header = f"[bold white]{sym}[/bold white] | [{color}]{ltp:,.2f} ({chg:+.2f}%)[/{color}] | Signal: [{sig_c}]{a_res['signal']} ({a_res['score']}/10)[/{sig_c}]"
     console.print(Panel(header, border_style="cyan"))
     
-    # 1. Indicator Table
-    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", title="Indicators", title_style="bold cyan")
-    ind_table.add_column("Indicator", style="cyan"); ind_table.add_column("Status"); ind_table.add_column("Score", justify="center")
+    # 1. Indicator Table (Condensed)
+    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
+    ind_table.add_column("Ind", style="cyan"); ind_table.add_column("Status"); ind_table.add_column("S", justify="center")
     for k, v in a_res["indicators"].items():
         s = "[green]+1[/green]" if v["score"]>0 else "[red]-1[/red]" if v["score"]<0 else "[yellow]0[/yellow]"
-        ind_table.add_row(k.upper(), v["label"][:30], s)
+        # Map long names to short codes or truncate
+        short_k = k.replace("INDIA_VIX", "VIX").replace("SUPERTREND", "SUPERT").replace("DOW_JONES", "DOW")[:8]
+        ind_table.add_row(short_k, v["label"][:22], s)
     
-    # 2. Layout
-    panels = [Panel(ind_table, border_style="cyan")]
+    # 2. Layout Structure
+    layout = Layout()
+    layout.split_row(
+        Layout(name="left", ratio=1),
+        Layout(name="mid", ratio=1),
+        Layout(name="right", ratio=1)
+    )
+    
+    layout["left"].update(Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan"))
+    
     if oi:
-        panels.append(get_option_chain_table(oi, ltp))
-        panels.append(get_intelligence_panel(sym, q, oi))
-    
-    console.print(Columns(panels, align="left"))
-    if oi: print_trending_oi(sym)
-    console.print(f"[dim]  Auto-refresh 30s | {datetime.datetime.now().strftime('%H:%M:%S')} | Ctrl+C to Exit[/dim]")
+        layout["mid"].update(get_option_chain_table(oi, ltp))
+        layout["right"].update(get_intelligence_panel(sym, q, oi))
+        console.print(layout, height=22)
+        print_trending_oi(sym)
+    else:
+        console.print(Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan"))
+
+    console.print(f"[dim]  Refresh 30s | {datetime.datetime.now().strftime('%H:%M:%S')} | Ctrl+C Exit[/dim]")
 
 
 def main():
