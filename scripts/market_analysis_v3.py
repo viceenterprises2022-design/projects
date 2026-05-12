@@ -481,14 +481,14 @@ def get_option_chain_table(oi_raw, spot):
     dte     = days_to_expiry(expiry)
     strikes = oi_raw.get("strikes", [])
     max_p   = oi_raw.get("max_pain", 0)
-    lo, hi  = spot - 400, spot + 400
+    lo, hi  = spot - 500, spot + 500
     visible = [s for s in strikes if lo <= s["strike"] <= hi] or strikes
     
     oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold", padding=(0, 0))
     oc_table.add_column("C.LTP", justify="right", style="green", width=7)
-    oc_table.add_column("C.OI", justify="right", style="green", width=6)
-    oc_table.add_column("STRIKE", justify="center", style="bold white", width=12)
-    oc_table.add_column("P.OI", justify="right", style="red", width=6)
+    oc_table.add_column("C.OI", justify="right", style="green", width=7)
+    oc_table.add_column("STRIKE", justify="center", style="bold white", width=14)
+    oc_table.add_column("P.OI", justify="right", style="red", width=7)
     oc_table.add_column("P.LTP", justify="right", style="red", width=7)
     for s in visible:
         k=s["strike"]; is_atm = abs(k-spot)<=50
@@ -496,7 +496,7 @@ def get_option_chain_table(oi_raw, spot):
         c_oi=fmt_oi(s['call_oi'])
         p_ltp=f"{s['put_ltp']:.1f}" if s['put_ltp'] else "—"
         p_oi=fmt_oi(s['put_oi'])
-        strike_str = f"[bold yellow]►{k:,}◄[/bold yellow]" if is_atm else f"{k:,}"
+        strike_str = f"[bold yellow]►{k:,.1f}◄[/bold yellow]" if is_atm else f"{k:,.1f}"
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
         oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
     
@@ -594,17 +594,20 @@ def display_dashboard(sym, q, oi, a_res):
     console.print(Panel(header, border_style="cyan"))
     
     # 1. Indicator Table (Condensed)
-    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0,0))
-    ind_table.add_column("Ind", style="cyan"); ind_table.add_column("Status"); ind_table.add_column("S", justify="center")
+    ind_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", padding=(0,0), expand=True)
+    ind_table.add_column("Ind", style="cyan", justify="left"); ind_table.add_column("Status", justify="left"); ind_table.add_column("S", justify="center")
     for k, v in a_res["indicators"].items():
         s = "[green]+1[/green]" if v["score"]>0 else "[red]-1[/red]" if v["score"]<0 else "[yellow]0[/yellow]"
-        short_k = k.replace("INDIA_VIX", "VIX").replace("SUPERTREND", "SUPERT").replace("DOW_JONES", "DOW")[:8]
-        ind_table.add_row(short_k, v["label"][:26], s)
+        # Map long names to short codes in CAPS
+        short_k = k.upper().replace("INDIA_VIX", "VIX").replace("SUPERTREND", "S-TREND").replace("DOW_JONES", "DOW")
+        # Show status with detail if it's very short
+        status = v["label"]
+        ind_table.add_row(short_k, status[:32], s)
     
     # 2. Layout Structure
     layout = Layout()
     layout.split_row(
-        Layout(name="left", ratio=4),
+        Layout(name="left", ratio=5),
         Layout(name="mid", ratio=6),
         Layout(name="right", ratio=3)
     )
