@@ -18,7 +18,9 @@ INSTRUMENTS = {
     "NIFTY":     "NSE_INDEX|Nifty 50",
     "SENSEX":    "BSE_INDEX|SENSEX",
     "BANKNIFTY": "NSE_INDEX|Nifty Bank",
-    "INDIA_VIX": "NSE_INDEX|India VIX"
+    "INDIA_VIX": "NSE_INDEX|India VIX",
+    "NIFTY_FUT": "NSE_FO|NIFTY26MAYFUT",
+    "BANKNIFTY_FUT": "NSE_FO|BANKNIFTY26MAYFUT"
 }
 # OI chain available for these only (NSE F&O)
 OI_INSTRUMENTS = {
@@ -449,7 +451,8 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
         res["pcr"]={"label":"N/A","score":0,"detail":"Option chain req."}
 
     sg,sgc=sig_color(sc,fa)
-    return {"indicators":res,"score":sc,"factors":fa,"signal":sg,"signal_color":sgc}
+    total_score = min(abs(sc), 10)
+    return {"indicators":res,"score":total_score,"factors":fa,"signal":sg,"signal_color":sgc}
 
 # ── CLI INTERFACE ─────────────────────────────────────────────────────────────
 
@@ -575,20 +578,29 @@ def print_trending_oi(sym):
 def run_analysis(sym):
     q = fetch_quote(INSTRUMENTS[sym])
     if not q: return None
+    fut_key = f"{sym}_FUT"
+    fq = fetch_quote(INSTRUMENTS[fut_key]) if fut_key in INSTRUMENTS else None
     c = fetch_candles(INSTRUMENTS[sym])
     yc = fetch_yahoo(YAHOO_IDX.get(sym, "^NSEI"))
     gd = {"DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), "VIX":fetch_yahoo(YAHOO_SYM["VIX"], 5)}
     vix = fetch_quote(INSTRUMENTS["INDIA_VIX"])
     if vix: gd["VIX"] = {"ltp":vix.get("ltp",15), "change_pct":0}
     oi = build_oi_data(sym, q["ltp"])
-    return (sym, q, oi, analyze(sym, q, c, oi, gd, yc))
+    return (sym, q, fq, oi, analyze(sym, q, c, oi, gd, yc))
 
-def display_dashboard(sym, q, oi, a_res):
+def display_dashboard(sym, q, fq, oi, a_res):
     console.clear()
     ltp, chg = q["ltp"], q["change_pct"]
     color = "green" if chg>=0 else "red"
     sig_c = {"BUY":"green", "SELL":"red", "NEUTRAL":"yellow"}.get(a_res["signal"], "white")
-    header = f"[bold white]{sym}[/bold white] | [{color}]{ltp:,.2f} ({chg:+.2f}%)[/{color}] | Signal: [{sig_c}]{a_res['signal']} ({a_res['score']}/10)[/{sig_c}]"
+    
+    header = f"[bold white]{sym}[/bold white] | Spot: [{color}]{ltp:,.2f} ({chg:+.2f}%)[/{color}]"
+    if fq:
+        fltp, fchg = fq["ltp"], fq["change_pct"]
+        fcolor = "green" if fchg>=0 else "red"
+        header += f" | Fut: [{fcolor}]{fltp:,.2f} ({fchg:+.2f}%)[/{fcolor}]"
+    
+    header += f" | Signal: [{sig_c}]{a_res['signal']} ({a_res['score']}/10)[/{sig_c}]"
     console.print(Panel(header, border_style="cyan"))
     
     # 1. Indicator Table (Condensed)
