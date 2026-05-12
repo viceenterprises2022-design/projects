@@ -26,6 +26,43 @@ def fetch_deribit_quotes(currency):
         print(f"Error fetching Deribit quotes for {currency}: {e}")
         return None
 
+def fetch_binance_liquidations(symbol):
+    """
+    Fetch recent liquidations from Binance Futures for a given symbol.
+    Args:
+        symbol (str): Symbol without 'USDT' (e.g., 'BTC', 'ETH').
+    Returns:
+        list: List of liquidation orders or None on error.
+    """
+    url = f"https://fapi.binance.com/fapi/v1/allForceOrders?symbol={symbol}USDT&limit=100"
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching Binance liquidations for {symbol}: {e}")
+        return None
+
+def fetch_bybit_liquidations(symbol):
+    """
+    Fetch recent liquidations from Bybit for a given symbol.
+    Args:
+        symbol (str): Symbol without 'USDT' (e.g., 'BTC', 'ETH').
+    Returns:
+        list: List of liquidation orders or None on error.
+    """
+    url = f"https://api.bybit.com/v5/market/liquidation?category=linear&symbol={symbol}USDT&limit=50"
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        if data.get("retCode") == 0:
+            return data.get("result", {}).get("list", [])
+        return None
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching Bybit liquidations for {symbol}: {e}")
+        return None
+
 def calculate_pcr(options_data):
     """
     Calculate Put-Call Ratio based on Open Interest.

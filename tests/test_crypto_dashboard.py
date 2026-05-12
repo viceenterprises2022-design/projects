@@ -64,3 +64,75 @@ def test_calculate_max_pain():
     # If 60k: Call 50k loss=(60-50)*10=100, Call 60k loss=0, Put 50k loss=0, Put 60k loss=0. Total=100.
     # Both 50000 and 60000 result in 100 loss.
     assert calculate_max_pain(options_data) in [50000, 60000]
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_binance_liquidations(mock_get):
+    """Verify Binance liquidation data fetching."""
+    from crypto_dashboard import fetch_binance_liquidations
+    # Setup mock response
+    mock_response = MagicMock()
+    mock_response.json.return_value = [{"symbol": "BTCUSDT", "side": "SELL", "price": "60000"}]
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+
+    data = fetch_binance_liquidations("BTC")
+    
+    assert data is not None
+    assert isinstance(data, list)
+    assert data[0]["symbol"] == "BTCUSDT"
+    mock_get.assert_called_with("https://fapi.binance.com/fapi/v1/allForceOrders?symbol=BTCUSDT&limit=100", timeout=10)
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_bybit_liquidations(mock_get):
+    """Verify Bybit liquidation data fetching."""
+    from crypto_dashboard import fetch_bybit_liquidations
+    # Setup mock response
+    mock_response = MagicMock()
+    mock_response.json.return_value = {
+        "retCode": 0,
+        "result": {
+            "list": [{"symbol": "BTCUSDT", "side": "Buy", "price": "61000"}]
+        }
+    }
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+
+    data = fetch_bybit_liquidations("BTC")
+    
+    assert data is not None
+    assert isinstance(data, list)
+    assert data[0]["symbol"] == "BTCUSDT"
+    mock_get.assert_called_with("https://api.bybit.com/v5/market/liquidation?category=linear&symbol=BTCUSDT&limit=50", timeout=10)
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_binance_liquidations_error(mock_get):
+    """Verify Binance liquidation error handling."""
+    from crypto_dashboard import fetch_binance_liquidations
+    import requests
+    mock_get.side_effect = requests.exceptions.RequestException("Binance Down")
+
+    data = fetch_binance_liquidations("BTC")
+    assert data is None
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_bybit_liquidations_error(mock_get):
+    """Verify Bybit liquidation error handling."""
+    from crypto_dashboard import fetch_bybit_liquidations
+    import requests
+    mock_get.side_effect = requests.exceptions.RequestException("Bybit Down")
+
+    data = fetch_bybit_liquidations("BTC")
+    assert data is None
+
+@patch('crypto_dashboard.requests.get')
+def test_fetch_bybit_liquidations_retcode_error(mock_get):
+    """Verify Bybit liquidation handling when retCode is non-zero."""
+    from crypto_dashboard import fetch_bybit_liquidations
+    # Setup mock response with error code
+    mock_response = MagicMock()
+    mock_response.json.return_value = {"retCode": 10001, "retMsg": "Error"}
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+
+    data = fetch_bybit_liquidations("BTC")
+    assert data is None
