@@ -22,7 +22,7 @@ def fetch_deribit_quotes(currency):
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         return response.json()
-    except requests.exceptions.RequestException as e:
+    except (requests.exceptions.RequestException, ValueError) as e:
         print(f"Error fetching Deribit quotes for {currency}: {e}")
         return None
 
@@ -38,8 +38,11 @@ def fetch_binance_liquidations(symbol):
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
+        data = response.json()
+        if not isinstance(data, list):
+            return None
+        return data
+    except (requests.exceptions.RequestException, ValueError) as e:
         print(f"Error fetching Binance liquidations for {symbol}: {e}")
         return None
 
@@ -59,7 +62,7 @@ def fetch_bybit_liquidations(symbol):
         if data.get("retCode") == 0:
             return data.get("result", {}).get("list", [])
         return None
-    except requests.exceptions.RequestException as e:
+    except (requests.exceptions.RequestException, ValueError) as e:
         print(f"Error fetching Bybit liquidations for {symbol}: {e}")
         return None
 
