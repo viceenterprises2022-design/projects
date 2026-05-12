@@ -21,7 +21,7 @@ def test_fetch_deribit_quotes_btc(mock_get):
     assert "result" in data
     assert isinstance(data["result"], list)
     assert data["result"][0]["instrument_name"] == "BTC-28MAR25-100000-C"
-    mock_get.assert_called_once()
+    mock_get.assert_called_with("https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency=BTC&kind=option", timeout=5)
 
 @patch('crypto_dashboard.requests.get')
 def test_fetch_deribit_quotes_error(mock_get):
@@ -80,7 +80,7 @@ def test_fetch_binance_liquidations(mock_get):
     assert data is not None
     assert isinstance(data, list)
     assert data[0]["symbol"] == "BTCUSDT"
-    mock_get.assert_called_with("https://fapi.binance.com/fapi/v1/allForceOrders?symbol=BTCUSDT&limit=100", timeout=10)
+    mock_get.assert_called_with("https://fapi.binance.com/fapi/v1/allForceOrders?symbol=BTCUSDT&limit=100", timeout=5)
 
 @patch('crypto_dashboard.requests.get')
 def test_fetch_bybit_liquidations(mock_get):
@@ -102,7 +102,7 @@ def test_fetch_bybit_liquidations(mock_get):
     assert data is not None
     assert isinstance(data, list)
     assert data[0]["symbol"] == "BTCUSDT"
-    mock_get.assert_called_with("https://api.bybit.com/v5/market/liquidation?category=linear&symbol=BTCUSDT&limit=50", timeout=10)
+    mock_get.assert_called_with("https://api.bybit.com/v5/market/all-liquidation?category=linear&symbol=BTCUSDT&limit=50", timeout=5)
 
 @patch('crypto_dashboard.requests.get')
 def test_fetch_binance_liquidations_error(mock_get):
