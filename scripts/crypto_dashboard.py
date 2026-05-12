@@ -9,6 +9,7 @@ import requests
 import json
 import threading
 import websocket
+import logging
 from datetime import datetime
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
@@ -22,12 +23,19 @@ from rich.text import Text
 POLL_INTERVAL = 5
 console = Console(width=107)
 
+# ── Logging ──────────────────────────────────────────────────────────────────
+
+logging.basicConfig(
+    filename="websocket_debug.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
 # ── Liquidation Collector ───────────────────────────────────────────────────
 
 class LiquidationCollector:
     """
     Collects real-time liquidations from Binance and Bybit via WebSockets.
-    Maintains a rolling buffer of events for each symbol.
     """
     def __init__(self, symbols=["BTC", "ETH", "SOL"]):
         self.symbols = symbols
@@ -35,6 +43,12 @@ class LiquidationCollector:
         self.max_buffer_size = 500
         self.lock = threading.Lock()
         self.running = True
+        
+        # Stats for UI
+        self.stats = {
+            "Binance": {"msgs": 0, "status": "Disconnected", "last_msg": None},
+            "Bybit": {"msgs": 0, "status": "Disconnected", "last_msg": None}
+        }
         
     def add_event(self, symbol, price, qty, exchange):
         with self.lock:
@@ -44,12 +58,13 @@ class LiquidationCollector:
                 "exchange": exchange,
                 "timestamp": time.time()
             })
-            # Trim buffer
             if len(self.buffer[symbol]) > self.max_buffer_size:
                 self.buffer[symbol].pop(0)
+            
+            self.stats[exchange]["msgs"] += 1
+            self.stats[exchange]["last_msg"] = time.time()
 
     def get_events(self, symbol):
-        # Cleanup old events (older than 24h)
         now = time.time()
         with self.lock:
             self.buffer[symbol] = [e for e in self.buffer[symbol] if now - e["timestamp"] < 86400]
@@ -64,13 +79,12 @@ class LiquidationCollector:
                 if raw_sym == f"{s}USDT":
                     self.add_event(s, float(order["p"]), float(order["q"]), "Binance")
                     break
-        except Exception:
-            pass
+        except Exception as e:
+            logging.error(f"Binance parse error: {e}")
 
     def _on_bybit_message(self, ws, message):
         try:
             data = json.loads(message)
-            # Bybit V5: {"topic":"allLiquidation.BTCUSDT","data":{...}}
             topic = data.get("topic", "")
             if "allLiquidation" in topic:
                 liq_data = data.get("data", {})
@@ -79,30 +93,50 @@ class LiquidationCollector:
                     if raw_sym == f"{s}USDT":
                         self.add_event(s, float(liq_data["p"]), float(liq_data["v"]), "Bybit")
                         break
-        except Exception:
-            pass
+        except Exception as e:
+            logging.error(f"Bybit parse error: {e}")
 
     def _run_binance(self):
         url = "wss://fstream.binance.com/ws/!forceOrder@arr"
         while self.running:
             try:
-                ws = websocket.WebSocketApp(url, on_message=self._on_binance_message)
+                self.stats["Binance"]["status"] = "Connecting..."
+                ws = websocket.WebSocketApp(
+                    url, 
+                    on_message=self._on_binance_message,
+                    on_open=lambda ws: logging.info("Binance WS Opened"),
+                    on_error=lambda ws, e: logging.error(f"Binance WS Error: {e}")
+                )
+                self.stats["Binance"]["status"] = "Connected"
                 ws.run_forever()
-            except Exception:
-                time.sleep(5)
+                self.stats["Binance"]["status"] = "Disconnected"
+            except Exception as e:
+                logging.error(f"Binance thread error: {e}")
+                self.stats["Binance"]["status"] = "Error"
+            time.sleep(5)
 
     def _run_bybit(self):
         url = "wss://stream.bybit.com/v5/public/linear"
         while self.running:
             try:
-                ws = websocket.WebSocketApp(url, on_message=self._on_bybit_message)
+                self.stats["Bybit"]["status"] = "Connecting..."
+                ws = websocket.WebSocketApp(
+                    url, 
+                    on_message=self._on_bybit_message,
+                    on_error=lambda ws, e: logging.error(f"Bybit WS Error: {e}")
+                )
                 def on_open(ws):
+                    logging.info("Bybit WS Opened")
                     subs = [f"allLiquidation.{s}USDT" for s in self.symbols]
                     ws.send(json.dumps({"op": "subscribe", "args": subs}))
                 ws.on_open = on_open
+                self.stats["Bybit"]["status"] = "Connected"
                 ws.run_forever()
-            except Exception:
-                time.sleep(5)
+                self.stats["Bybit"]["status"] = "Disconnected"
+            except Exception as e:
+                logging.error(f"Bybit thread error: {e}")
+                self.stats["Bybit"]["status"] = "Error"
+            time.sleep(5)
 
     def start(self):
         threading.Thread(target=self._run_binance, daemon=True).start()
@@ -117,63 +151,48 @@ liq_collector = LiquidationCollector()
 # ── Fetchers ────────────────────────────────────────────────────────────────
 
 def fetch_deribit_quotes(currency):
-    """Fetch options book summary from Deribit."""
     url = f"https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency={currency}&kind=option"
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         return response.json()
-    except (requests.exceptions.RequestException, ValueError):
-        return None
+    except: return None
 
 def fetch_perp_oi(symbol):
-    """Fetch Perpetual Open Interest from Binance."""
     url = f"https://fapi.binance.com/fapi/v1/openInterest?symbol={symbol}USDT"
     try:
         r = requests.get(url, timeout=5)
         r.raise_for_status()
         data = r.json()
         return float(data.get("openInterest", 0))
-    except Exception:
-        return 0.0
+    except: return 0.0
 
 # ── Logic ───────────────────────────────────────────────────────────────────
 
 def calculate_pcr(options_data):
     if not options_data: return 0.0
-    call_oi = 0.0
-    put_oi = 0.0
-    for opt in options_data:
-        instrument = opt.get("instrument_name", "")
-        oi = opt.get("open_interest", 0)
-        if instrument.endswith("-C"): call_oi += oi
-        elif instrument.endswith("-P"): put_oi += oi
+    call_oi = sum(opt.get("open_interest", 0) for opt in options_data if opt.get("instrument_name", "").endswith("-C"))
+    put_oi = sum(opt.get("open_interest", 0) for opt in options_data if opt.get("instrument_name", "").endswith("-P"))
     return put_oi / call_oi if call_oi > 0 else 0.0
 
 def calculate_max_pain(options_data):
     if not options_data: return 0.0
-    parsed_data = []
+    parsed = []
     strikes = set()
     for opt in options_data:
-        name = opt.get("instrument_name", "")
-        parts = name.split("-")
+        parts = opt.get("instrument_name", "").split("-")
         if len(parts) < 4: continue
         try:
-            strike = float(parts[2])
-            opt_type = parts[3]
-            oi = float(opt.get("open_interest", 0))
-            strikes.add(strike)
-            parsed_data.append({"strike": strike, "type": opt_type, "oi": oi})
-        except (ValueError, IndexError): continue
+            s, t, oi = float(parts[2]), parts[3], float(opt.get("open_interest", 0))
+            strikes.add(s)
+            parsed.append({"strike": s, "type": t, "oi": oi})
+        except: continue
     if not strikes: return 0.0
-    min_loss = float('inf')
-    max_pain_strike = 0.0
+    min_loss, mp_strike = float('inf'), 0.0
     for ep in sorted(strikes):
-        loss = sum(max(0, ep - o["strike"]) * o["oi"] if o["type"] == "C" else max(0, o["strike"] - ep) * o["oi"] for o in parsed_data)
-        if loss < min_loss:
-            min_loss = loss
-            max_pain_strike = ep
-    return max_pain_strike
+        loss = sum(max(0, ep-o["strike"])*o["oi"] if o["type"] == "C" else max(0, o["strike"]-ep)*o["oi"] for o in parsed)
+        if loss < min_loss: min_loss, mp_strike = loss, ep
+    return mp_strike
 
 def aggregate_liquidation_bins(symbol):
     events = liq_collector.get_events(symbol)
@@ -202,13 +221,11 @@ def make_options_table(options_data, spot_price):
         parts = opt.get("instrument_name", "").split("-")
         if len(parts) < 4: continue
         try:
-            strike = float(parts[2])
-            opt_type = parts[3]
+            s, t = float(parts[2]), parts[3]
             ltp = float(opt.get("last_price", 0)) * spot_price
-            oi = float(opt.get("open_interest", 0))
-            if strike not in strikes_data: strikes_data[strike] = {"C": {"ltp": 0, "oi": 0}, "P": {"ltp": 0, "oi": 0}}
-            strikes_data[strike][opt_type] = {"ltp": ltp, "oi": oi}
-        except Exception: continue
+            if s not in strikes_data: strikes_data[s] = {"C": {"ltp": 0, "oi": 0}, "P": {"ltp": 0, "oi": 0}}
+            strikes_data[s][t] = {"ltp": ltp, "oi": float(opt.get("open_interest", 0))}
+        except: continue
     sorted_s = sorted(strikes_data.keys())
     if not sorted_s: return table
     atm_idx = min(range(len(sorted_s)), key=lambda i: abs(sorted_s[i] - spot_price))
@@ -235,8 +252,7 @@ def render_dashboard(asset):
     with ThreadPoolExecutor(max_workers=2) as executor:
         f_deribit = executor.submit(fetch_deribit_quotes, asset)
         f_oi = executor.submit(fetch_perp_oi, asset)
-        res_deribit = f_deribit.result()
-        perp_oi = f_oi.result()
+        res_deribit, perp_oi = f_deribit.result(), f_oi.result()
 
     data = res_deribit.get("result", []) if res_deribit else []
     spot = data[0].get("underlying_price", 0) if data else 0
@@ -244,10 +260,17 @@ def render_dashboard(asset):
     liq_bins = aggregate_liquidation_bins(asset)
     
     timestamp = datetime.now().strftime("%H:%M:%S")
-    header = Panel(Text.from_markup(f"[bold green]{asset}-DASHBOARD[/] | {timestamp} | SPOT: {spot:,.2f} | MAX PAIN: {mp:,.0f} | PCR: {pcr:.2f}"), style="white")
+    header_text = f"[bold green]{asset}-DASHBOARD[/] | {timestamp} | SPOT: {spot:,.2f} | MAX PAIN: {mp:,.0f} | PCR: {pcr:.2f}"
+    
+    # Connection Stats
+    b_st = liq_collector.stats["Binance"]
+    y_st = liq_collector.stats["Bybit"]
+    stats_line = f" [blue]Binance:[/] {b_st['status']} ({b_st['msgs']} evts) | [yellow]Bybit:[/] {y_st['status']} ({y_st['msgs']} evts)"
+    
+    header = Panel(Text.from_markup(f"{header_text}\n{stats_line}"), style="white")
     
     layout = Layout()
-    layout.split_column(Layout(header, size=3), Layout(name="main"))
+    layout.split_column(Layout(header, size=4), Layout(name="main"))
     layout["main"].split_row(Layout(Panel(make_options_table(data, spot))), Layout(Panel(make_liquidation_table(liq_bins, perp_oi))))
     return layout
 
