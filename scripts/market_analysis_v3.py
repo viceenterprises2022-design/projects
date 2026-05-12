@@ -536,18 +536,35 @@ def print_summary_ticker(quotes_all):
 def print_trending_oi(sym):
     try:
         conn = sqlite3.connect(DB_PATH)
-        rows = conn.execute("SELECT timestamp, ltp, call_oi, put_oi FROM trending_oi WHERE symbol=? ORDER BY timestamp DESC LIMIT 5", (sym,)).fetchall()
+        rows = conn.execute("SELECT timestamp, ltp, call_oi, put_oi FROM trending_oi WHERE symbol=? ORDER BY timestamp DESC LIMIT 15", (sym,)).fetchall()
         conn.close()
     except Exception: return
     if not rows: return
-    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim", title="OI Trend", title_style="cyan")
-    for c in ["Time", "LTP", "ΔC", "ΔP", "Diff", "PCR"]: t.add_column(c, justify="right")
+    console.print(Rule("[bold cyan]Trending OI (Intraday)[/bold cyan]", style="cyan"))
+    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold dim")
+    t.add_column("Time", justify="center")
+    t.add_column("LTP", justify="right")
+    t.add_column("ΔCall OI", justify="right")
+    t.add_column("ΔPut OI", justify="right")
+    t.add_column("Diff", justify="right")
+    t.add_column("PCR", justify="right")
+    t.add_column("Sentiment", justify="center")
+    
     base_c, base_p = rows[-1][2], rows[-1][3]
     for r in rows:
         ts, ltp, c_oi, p_oi = r
-        d_c, d_p = (c_oi-base_c)/100000, (p_oi-base_p)/100000; diff = (p_oi-c_oi)/100000
+        d_c, d_p = c_oi-base_c, p_oi-base_p; diff = p_oi-c_oi
         pcr = p_oi/c_oi if c_oi>0 else 0
-        t.add_row(ts.split(" ")[1][:5], f"{ltp:,.0f}", f"{d_c:+.1f}L", f"{d_p:+.1f}L", f"{diff:+.1f}L", f"{pcr:.2f}")
+        sent = "[green]Bullish[/green]" if diff>0 else "[red]Bearish[/red]"
+        t.add_row(
+            ts.split(" ")[1][:5], 
+            f"{ltp:,.2f}", 
+            f"{d_c:,.0f}", 
+            f"{d_p:,.0f}", 
+            f"{diff:,.0f}", 
+            f"{pcr:.2f}", 
+            sent
+        )
     console.print(t)
 
 def run_analysis(sym):
