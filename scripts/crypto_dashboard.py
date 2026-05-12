@@ -7,6 +7,7 @@ import time
 import sys
 import requests
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 from rich.console import Console
 from rich.layout import Layout
 from rich.live import Live
@@ -27,11 +28,10 @@ def fetch_deribit_quotes(currency):
     """
     url = f"https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency={currency}&kind=option"
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
         return response.json()
-    except (requests.exceptions.RequestException, ValueError) as e:
-        print(f"Error fetching Deribit quotes for {currency}: {e}")
+    except (requests.exceptions.RequestException, ValueError):
         return None
 
 def fetch_binance_liquidations(symbol):
@@ -44,14 +44,13 @@ def fetch_binance_liquidations(symbol):
     """
     url = f"https://fapi.binance.com/fapi/v1/allForceOrders?symbol={symbol}USDT&limit=100"
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
         if not isinstance(data, list):
             return None
         return data
-    except (requests.exceptions.RequestException, ValueError) as e:
-        print(f"Error fetching Binance liquidations for {symbol}: {e}")
+    except (requests.exceptions.RequestException, ValueError):
         return None
 
 def fetch_bybit_liquidations(symbol):
@@ -64,14 +63,13 @@ def fetch_bybit_liquidations(symbol):
     """
     url = f"https://api.bybit.com/v5/market/all-liquidation?category=linear&symbol={symbol}USDT&limit=50"
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
         if data.get("retCode") == 0:
             return data.get("result", {}).get("list", [])
         return None
-    except (requests.exceptions.RequestException, ValueError) as e:
-        print(f"Error fetching Bybit liquidations for {symbol}: {e}")
+    except (requests.exceptions.RequestException, ValueError):
         return None
 
 def calculate_pcr(options_data):
@@ -201,7 +199,7 @@ def make_options_table(options_data, spot_price):
     table.add_column("PUT OI", justify="right", style="magenta")
     table.add_column("PUT LTP", justify="right", style="cyan")
 
-    if not options_data:
+    if not options_data or not spot_price:
         return table
 
     strikes_data = {}
@@ -257,8 +255,16 @@ def make_liquidation_table(liq_bins):
 
 def render_dashboard(asset):
     """Fetch data and construct the full dashboard layout for a given asset."""
-    res = fetch_deribit_quotes(asset)
-    data = res.get("result", []) if res else []
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        f_deribit = executor.submit(fetch_deribit_quotes, asset)
+        f_binance = executor.submit(fetch_binance_liquidations, asset)
+        f_bybit = executor.submit(fetch_bybit_liquidations, asset)
+        
+        res_deribit = f_deribit.result()
+        binance_liq = f_binance.result()
+        bybit_liq = f_bybit.result()
+
+    data = res_deribit.get("result", []) if res_deribit else []
     
     spot = 0
     if data:
@@ -266,14 +272,15 @@ def render_dashboard(asset):
     
     pcr = calculate_pcr(data)
     max_pain = calculate_max_pain(data)
-    
-    binance_liq = fetch_binance_liquidations(asset)
-    bybit_liq = fetch_bybit_liquidations(asset)
     liq_bins = aggregate_liquidation_bins(binance_liq, bybit_liq, asset)
+    
+    spot_str = f"{spot:,.2f}" if spot else "N/A"
+    mp_str = f"{max_pain:,.0f}" if max_pain else "N/A"
+    pcr_str = f"{pcr:.2f}" if pcr else "N/A"
     
     timestamp = datetime.now().strftime("%H:%M:%S")
     header = Panel(
-        Text.from_markup(f"[bold green]{asset}-DASHBOARD[/] | {timestamp} | SPOT: {spot:,.2f} | MAX PAIN: {max_pain:,.0f} | PCR: {pcr:.2f}"),
+        Text.from_markup(f"[bold green]{asset}-DASHBOARD[/] | {timestamp} | SPOT: {spot_str} | MAX PAIN: {mp_str} | PCR: {pcr_str}"),
         style="white"
     )
     
