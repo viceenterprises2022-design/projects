@@ -14,7 +14,7 @@ def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=7),
+        Layout(name="macro", size=10),
         Layout(name="body")
     )
     layout["body"].split_row(
@@ -25,19 +25,9 @@ def make_layout() -> Layout:
     return layout
 
 def render_header(refresh_in: int, macro_data: dict = None) -> Panel:
-    now = datetime.now().strftime("%H:%M:%S")
-    ticker = ""
-    if macro_data:
-        parts = []
-        for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
-            if key in macro_data:
-                val = macro_data[key]['current']
-                parts.append(f"{key}: [bold cyan]{val:,.1f}[/]")
-        ticker = " | ".join(parts)
-        ticker = f" | {ticker}"
-
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return Panel(
-        Align.center(f"[bold cyan]AlphaEdge Crypto 2.0[/] | [white]{now}[/]{ticker} | Refresh: [bold yellow]{refresh_in}s[/]", vertical="middle"),
+        Align.center(f"[bold cyan]AlphaEdge Crypto Diagnostic 2.0[/] | [white]{now}[/] | Refresh in: [bold yellow]{refresh_in}s[/]", vertical="middle"),
         style="blue",
         box=box.ROUNDED
     )
@@ -51,11 +41,14 @@ def render_macro(macro_data, correlations) -> Panel:
     if not macro_data:
         table.add_row("Loading...", "---", "---")
     else:
-        for key, mdata in macro_data.items():
-            val = f"{mdata['current']:,.2f}"
-            corr = correlations.get(key, 0)
-            color = "green" if corr > 0.5 else "red" if corr < -0.5 else "white"
-            table.add_row(key, val, f"[{color}]{corr:+.2f}[/]")
+        # Fixed order for consistency
+        for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
+            if key in macro_data:
+                mdata = macro_data[key]
+                val = f"{mdata['current']:,.2f}"
+                corr = correlations.get(key, 0)
+                color = "green" if corr > 0.5 else "red" if corr < -0.5 else "white"
+                table.add_row(key, val, f"[{color}]{corr:+.2f}[/]")
             
     return Panel(table, title="[bold]Global Macro & Correlations[/]", border_style="magenta")
 
