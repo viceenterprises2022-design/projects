@@ -500,7 +500,7 @@ def get_option_chain_table(oi_raw, spot):
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
         oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
     
-    header_text = Text(f"Option Chain — Exp: {expiry}\nDTE: {dte}d | MP: {max_p:,.1f}\n", style="bold yellow", justify="center")
+    header_text = Text(f"Option Chain — Exp: {expiry}\nDTE: {dte}d | MP: {max_p:,.1f}", style="bold yellow", justify="center")
     return Panel(Group(header_text, oc_table), border_style="yellow", padding=(0, 1))
 
 def get_intelligence_panel(sym, quote, oi_raw):
@@ -583,8 +583,6 @@ def run_analysis(sym):
     oi = build_oi_data(sym, q["ltp"])
     return (sym, q, oi, analyze(sym, q, c, oi, gd, yc))
 
-from rich.layout import Layout
-
 def display_dashboard(sym, q, oi, a_res):
     console.clear()
     ltp, chg = q["ltp"], q["change_pct"]
@@ -604,20 +602,18 @@ def display_dashboard(sym, q, oi, a_res):
         status = v["label"]
         ind_table.add_row(short_k, status[:32], s)
     
-    # 2. Layout Structure
-    layout = Layout()
-    layout.split_row(
-        Layout(name="left", ratio=5),
-        Layout(name="mid", ratio=6),
-        Layout(name="right", ratio=3)
-    )
-    
-    layout["left"].update(Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan", padding=(0,0)))
-    
+    # 2. Layout Structure (Grid Table for compact height)
     if oi:
-        layout["mid"].update(get_option_chain_table(oi, ltp))
-        layout["right"].update(get_intelligence_panel(sym, q, oi))
-        console.print(layout, height=22)
+        grid = Table.grid(expand=True)
+        grid.add_column(ratio=4) # Indicators
+        grid.add_column(ratio=6) # OC
+        grid.add_column(ratio=3) # Intel
+        grid.add_row(
+            Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan", padding=(0,0)),
+            get_option_chain_table(oi, ltp),
+            get_intelligence_panel(sym, q, oi)
+        )
+        console.print(grid)
         print_trending_oi(sym)
     else:
         console.print(Panel(ind_table, title=Text("Indicators", style="bold cyan"), border_style="cyan"))
