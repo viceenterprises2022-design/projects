@@ -90,9 +90,13 @@ class MarketEngine:
             for key, ticker in tickers.items():
                 if ticker in data['Close']:
                     series = data['Close'][ticker].dropna()
-                    if not series.empty:
+                    if len(series) >= 2:
+                        ltp = series.iloc[-1]
+                        prev = series.iloc[-2]
+                        chg = ((ltp - prev) / prev) * 100
                         results[key] = {
-                            "current": series.iloc[-1],
+                            "current": ltp,
+                            "change": chg,
                             "history": series.tolist()
                         }
             

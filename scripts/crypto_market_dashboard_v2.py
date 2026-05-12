@@ -14,7 +14,7 @@ def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=10),
+        Layout(name="macro", size=8),
         Layout(name="body")
     )
     layout["body"].split_row(
@@ -25,32 +25,34 @@ def make_layout() -> Layout:
     return layout
 
 def render_header(refresh_in: int, macro_data: dict = None) -> Panel:
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now().strftime("%H:%M:%S")
     return Panel(
-        Align.center(f"[bold cyan]AlphaEdge Crypto Diagnostic 2.0[/] | [white]{now}[/] | Refresh in: [bold yellow]{refresh_in}s[/]", vertical="middle"),
+        Align.center(f"[bold cyan]AlphaEdge Crypto 2.0[/] | [white]{now}[/] | Sync: [bold yellow]{refresh_in}s[/]", vertical="middle"),
         style="blue",
         box=box.ROUNDED
     )
 
 def render_macro(macro_data, correlations) -> Panel:
-    table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE, expand=True)
-    table.add_column("INDEX", justify="left")
-    table.add_column("VALUE", justify="right")
-    table.add_column("CORR (BTC)", justify="right")
+    table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE, expand=True, padding=(0, 1))
+    table.add_column("IDX", justify="left", width=5)
+    table.add_column("PRICE", justify="right")
+    table.add_column("CHG", justify="right")
+    table.add_column("CORR", justify="right")
     
     if not macro_data:
-        table.add_row("Loading...", "---", "---")
+        table.add_row("...", "---", "---", "---")
     else:
-        # Fixed order for consistency
         for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
             if key in macro_data:
                 mdata = macro_data[key]
-                val = f"{mdata['current']:,.2f}"
+                val = f"{mdata['current']:,.1f}"
+                chg = mdata.get('change', 0)
+                chg_color = "green" if chg >= 0 else "red"
                 corr = correlations.get(key, 0)
-                color = "green" if corr > 0.5 else "red" if corr < -0.5 else "white"
-                table.add_row(key, val, f"[{color}]{corr:+.2f}[/]")
+                corr_color = "green" if corr > 0.5 else "red" if corr < -0.5 else "white"
+                table.add_row(key, val, f"[{chg_color}]{chg:+.2f}%[/]", f"[{corr_color}]{corr:+.2f}[/]")
             
-    return Panel(table, title="[bold]Global Macro & Correlations[/]", border_style="magenta")
+    return Panel(table, title="[bold]Macro & Corr[/]", border_style="magenta")
 
 def render_ticker(symbol: str, data, engine) -> Panel:
     if not data or not data.get('binance'):
@@ -73,44 +75,44 @@ def render_ticker(symbol: str, data, engine) -> Panel:
     vwap_dist = ((spot_close - vwap) / vwap) * 100 if vwap else 0
 
     sig_color = "green" if trend_score > 0 else "red" if trend_score < 0 else "yellow"
-    summary = f"[bold yellow]{symbol}[/] | Spot: [white]{spot_close:,.2f}[/] | Fut: [dim]{fut_close:,.2f}[/] ([{sig_color}]{change:+.2f}%[/])"
+    summary = f"[bold yellow]{symbol}[/] | [white]{spot_close:,.1f}[/] ([{sig_color}]{change:+.1f}%[/])"
     
-    table = Table(show_header=False, box=box.SIMPLE, expand=True)
-    table.add_column("K", style="dim")
+    table = Table(show_header=False, box=box.SIMPLE, expand=True, padding=(0, 0))
+    table.add_column("K", style="dim", width=8)
     table.add_column("V", justify="right")
     
     # Technicals
-    table.add_row("TREND", f"[{sig_color}]{trend_str}[/]")
+    table.add_row("TREND", f"[{sig_color}]{trend_str[:12]}[/]")
     table.add_row("RSI", f"{rsi:.1f}")
     st_color = "green" if st_dir == 1 else "red"
     table.add_row("SUPERTREND", f"[{st_color}]{'BUY' if st_dir == 1 else 'SELL'}[/]")
     vwap_color = "green" if vwap_dist > 0 else "red"
-    table.add_row("VWAP DIST", f"[{vwap_color}]{vwap_dist:+.2f}%[/]")
+    table.add_row("VWAP DIST", f"[{vwap_color}]{vwap_dist:+.1f}%[/]")
     
     table.add_row("", "") # Spacer
     
     # Options
     if options:
-        table.add_row("[bold cyan]OPTIONS (DERIBIT)[/]", "")
-        table.add_row("PCR (OI/VOL)", f"{options['pcr']:.2f} / {options['vol_pcr']:.2f}")
+        table.add_row("[bold cyan]OPTIONS[/]", "")
+        table.add_row("PCR O/V", f"{options['pcr']:.2f}/{options['vol_pcr']:.2f}")
         skew_color = "red" if options['oi_skew'] < -0.1 else "green" if options['oi_skew'] > 0.1 else "white"
         table.add_row("OI SKEW", f"[{skew_color}]{options['oi_skew']:+.2f}[/]")
-        table.add_row("MAX PAIN", f"{options['max_oi']:,.0f}")
+        table.add_row("MAXPAIN", f"{options['max_oi']:,.0f}")
     
     table.add_row("", "") # Spacer
     
     # Whale Walls
     if depth:
-        table.add_row("[bold cyan]ORDER BOOK (1%)[/]", "")
+        table.add_row("[bold cyan]ORDERBOOK[/]", "")
         book_skew = depth['skew']
         bs_color = "green" if book_skew > 0.1 else "red" if book_skew < -0.1 else "white"
-        table.add_row("BOOK SKEW", f"[{bs_color}]{book_skew:+.2f}[/]")
+        table.add_row("BK SKEW", f"[{bs_color}]{book_skew:+.2f}[/]")
         for bid in depth['bids'][:1]:
-            table.add_row("WHALE BID", f"[green]{bid['p']:,.0f}[/] (${bid['v']/1e6:.1f}M)")
+            table.add_row("BID", f"[green]{bid['p']:,.0f}[/] (${bid['v']/1e6:.1f}M)")
         for ask in depth['asks'][:1]:
-            table.add_row("WHALE ASK", f"[red]{ask['p']:,.0f}[/] (${ask['v']/1e6:.1f}M)")
+            table.add_row("ASK", f"[red]{ask['p']:,.0f}[/] (${ask['v']/1e6:.1f}M)")
         if not depth['bids'] and not depth['asks']:
-            table.add_row("WALLS", "[dim]None >$1M[/]")
+            table.add_row("WALLS", "[dim]None[/]")
 
     return Panel(table, title=summary, border_style="cyan")
 
