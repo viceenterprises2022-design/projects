@@ -105,10 +105,11 @@ class LiquidationCollector:
                     url, 
                     on_message=self._on_binance_message,
                     on_open=lambda ws: logging.info("Binance WS Opened"),
-                    on_error=lambda ws, e: logging.error(f"Binance WS Error: {e}")
+                    on_error=lambda ws, e: logging.error(f"Binance WS Error: {e}"),
+                    on_close=lambda ws, s, m: logging.info(f"Binance WS Closed: {s} {m}")
                 )
                 self.stats["Binance"]["status"] = "Connected"
-                ws.run_forever()
+                ws.run_forever(ping_interval=30, ping_timeout=10)
                 self.stats["Binance"]["status"] = "Disconnected"
             except Exception as e:
                 logging.error(f"Binance thread error: {e}")
@@ -123,15 +124,17 @@ class LiquidationCollector:
                 ws = websocket.WebSocketApp(
                     url, 
                     on_message=self._on_bybit_message,
-                    on_error=lambda ws, e: logging.error(f"Bybit WS Error: {e}")
+                    on_error=lambda ws, e: logging.error(f"Bybit WS Error: {e}"),
+                    on_close=lambda ws, s, m: logging.info(f"Bybit WS Closed: {s} {m}")
                 )
                 def on_open(ws):
-                    logging.info("Bybit WS Opened")
+                    logging.info("Bybit WS Opened - sending sub")
                     subs = [f"allLiquidation.{s}USDT" for s in self.symbols]
-                    ws.send(json.dumps({"op": "subscribe", "args": subs}))
+                    payload = {"op": "subscribe", "args": subs}
+                    ws.send(json.dumps(payload))
                 ws.on_open = on_open
                 self.stats["Bybit"]["status"] = "Connected"
-                ws.run_forever()
+                ws.run_forever(ping_interval=20, ping_timeout=10)
                 self.stats["Bybit"]["status"] = "Disconnected"
             except Exception as e:
                 logging.error(f"Bybit thread error: {e}")
