@@ -453,7 +453,7 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
 
 # ── CLI INTERFACE ─────────────────────────────────────────────────────────────
 
-from rich.console import Console
+from rich.console import Console, Group
 from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
@@ -500,8 +500,8 @@ def get_option_chain_table(oi_raw, spot):
         if k == max_p: strike_str += " [magenta]MP[/magenta]"
         oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
     
-    header = f"Option Chain — Exp: {expiry}\nDTE: {dte}d | MP: {max_p:,}"
-    return Panel(oc_table, title=Text(header, style="bold yellow"), border_style="yellow", padding=(0, 0))
+    header_text = Text(f"Option Chain — Exp: {expiry}\nDTE: {dte}d | MP: {max_p:,.1f}\n", style="bold yellow", justify="center")
+    return Panel(Group(header_text, oc_table), border_style="yellow", padding=(0, 1))
 
 def get_intelligence_panel(sym, quote, oi_raw):
     if not oi_raw: return Text("")
@@ -515,10 +515,12 @@ def get_intelligence_panel(sym, quote, oi_raw):
     pcr_color = "green" if total_pcr>=1.0 else "yellow" if total_pcr>=0.7 else "red"
     buildup_sig = "[green]Long[/green]" if price_chg>0 and total_oi_chg>0 else "[cyan]Cov[/cyan]" if price_chg>0 and total_oi_chg<0 else "[red]Short[/red]" if price_chg<0 and total_oi_chg>0 else "[yellow]Unwnd[/yellow]" if price_chg<0 and total_oi_chg<0 else "[dim]Neut[/dim]"
     
-    intel = Table(box=None, show_header=False, padding=(0, 0))
+    intel = Table(box=None, show_header=False, padding=(0, 1), expand=True)
+    intel.add_column("L", justify="left")
+    intel.add_column("V", justify="right")
     intel.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
-    intel.add_row("Max P", f"[magenta]{max_pain:,}[/magenta]")
-    intel.add_row("Build", buildup_sig)
+    intel.add_row("Max Pain", f"[magenta]{max_pain:,}[/magenta]")
+    intel.add_row("OI Build", buildup_sig)
     intel.add_row("C.OI", f"[green]{fmt_oi(total_c_oi)}[/green]")
     intel.add_row("P.OI", f"[red]{fmt_oi(total_p_oi)}[/red]")
     intel.add_row("R", f"[red]{top_call[0]['strike']:,}[/red]")
