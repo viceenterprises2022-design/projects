@@ -110,7 +110,10 @@ def generate_liquidation_map(depth_data, symbol):
     for p, v in bins.items():
         total = v["buy"] + v["sell"]
         flattened.append((p, v["buy"], v["sell"], total))
-    return sorted(flattened, key=lambda x: x[3], reverse=True)[:10]
+    # Get top 10 by total volume first
+    top_vols = sorted(flattened, key=lambda x: x[3], reverse=True)[:10]
+    # Then sort those 10 by price (Zone) descending for a natural price map view
+    return sorted(top_vols, key=lambda x: x[0], reverse=True)
 
 # ── UI ──────────────────────────────────────────────────────────────────────
 
