@@ -37,7 +37,7 @@ class MarketEngine:
             spot_symbol = "PAXG"
         
         url_spot = f"https://api.binance.com/api/v3/klines?symbol={spot_symbol}USDT&interval=1d&limit=100"
-        url_fut = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}USDT&interval=1d&limit=1"
+        url_fut = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}USDT&interval=1d&limit=100"
         
         async def safe_get(url):
             try:
@@ -51,13 +51,10 @@ class MarketEngine:
         try:
             spot, fut = await asyncio.gather(safe_get(url_spot), safe_get(url_fut))
             # Fallback for XAG which has no spot on Binance
-            if symbol == "XAG" and not spot:
-                # Use futures history as proxy for spot if needed, 
-                # but fapi klines url is different. For now just use what we have.
-                pass
+            if not spot and fut:
+                spot = fut # Use futures as spot proxy for technicals if spot is missing
             return spot, fut
         except Exception as e:
-            print(f"Binance fetch error for {symbol}: {e}")
             return None, None
 
     async def fetch_deribit_options(self, session, currency):
@@ -67,7 +64,6 @@ class MarketEngine:
             async with session.get(url) as r:
                 return await r.json()
         except Exception as e:
-            print(f"Deribit error for {currency}: {e}")
             return None
 
     async def fetch_binance_depth(self, session, symbol):
@@ -77,17 +73,15 @@ class MarketEngine:
             async with session.get(url) as r:
                 return await r.json()
         except Exception as e:
-            print(f"Binance Depth error for {symbol}: {e}")
             return None
 
     async def fetch_binance_futures_depth(self, session, symbol):
         """Fetches order book depth for whale wall detection from Futures."""
-        url = f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}USDT&limit=100"
+        url = f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}USDT&limit=1000"
         try:
             async with session.get(url) as r:
                 return await r.json()
         except Exception as e:
-            print(f"Binance Futures Depth error for {symbol}: {e}")
             return None
 
     async def fetch_macro_data(self):
@@ -130,7 +124,6 @@ class MarketEngine:
             self.last_macro_update = now
             return results
         except Exception as e:
-            print(f"Macro fetch error: {e}")
             return self.macro_cache
 
     async def fetch_all_data(self):
@@ -157,11 +150,33 @@ class MarketEngine:
                     "binance": binance_results[i],
                     "options": self.process_options(option_results[i]),
                     "depth": self.process_depth(depth_results[i], binance_results[i]),
+                    "liq_map": self.generate_liquidation_map(depth_results[i], symbol),
                     "macro_corr": self.calculate_macro_correlations(symbol, binance_results[i], macro_results)
                 }
             
             processed["macro"] = macro_results
             return processed
+
+    def generate_liquidation_map(self, depth_data, symbol):
+        """Bins depth data for visual map."""
+        if not depth_data: return []
+        # Metals need smaller bins than BTC
+        bin_size = 1.0 if symbol == "XAU" else (0.1 if symbol == "XAG" else 1.0)
+        from collections import defaultdict
+        bins = defaultdict(lambda: {"buy": 0.0, "sell": 0.0})
+        for side in ["bids", "asks"]:
+            key = "buy" if side == "bids" else "sell"
+            for price_str, qty_str in depth_data.get(side, []):
+                p, q = float(price_str), float(qty_str)
+                bin_p = round(p / bin_size) * bin_size
+                bins[bin_p][key] += (p * q)
+        flattened = []
+        for p, v in bins.items():
+            total = v["buy"] + v["sell"]
+            flattened.append((p, v["buy"], v["sell"], total))
+        # Get top 15 by total volume
+        top_vols = sorted(flattened, key=lambda x: x[3], reverse=True)[:15]
+        return sorted(top_vols, key=lambda x: x[0], reverse=True)
 
     def process_options(self, data):
         """Calculates Max Pain, Max OI, PCR, and Skew from Deribit data."""
@@ -203,11 +218,11 @@ class MarketEngine:
         }
 
     def process_depth(self, depth, binance_data):
-        """Detects Whale Walls (> $1M within 1% of price) and calculates book skew."""
+        """Detects Whale Walls (> $500k within 1% of price) and calculates book skew."""
         if not depth or not binance_data or not binance_data[1]:
             return None
         
-        ltp = float(binance_data[1][0][4]) # Current close from 1m kline
+        ltp = float(binance_data[1][0][4]) # Current close from futures kline
         
         bids = depth.get('bids', [])
         asks = depth.get('asks', [])
@@ -255,10 +270,8 @@ class MarketEngine:
         btc_closes = [float(x[4]) for x in binance_data[0]][-30:]
         correlations = {}
         
-        print(f"DEBUG: {symbol} closes count: {len(btc_closes)}")
         for key, mdata in macro_data.items():
             m_history = mdata.get('history', [])
-            print(f"DEBUG: {key} history count: {len(m_history)}")
             # Align lengths
             min_len = min(len(btc_closes), len(m_history))
             if min_len >= 5: # Need at least some data for meaningful correlation
