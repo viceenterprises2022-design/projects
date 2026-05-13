@@ -174,22 +174,14 @@ def create_asset_panel(asset, data, depth_data):
     
     return Panel(content_layout, title=header, title_align="left", height=15)
 
-def render_full_dashboard():
-    assets = ["BTC", "ETH", "SOL"]
-    all_data = {}
-    
-    with ThreadPoolExecutor(max_workers=6) as executor:
-        f_deribit = {a: executor.submit(fetch_deribit_quotes, a) for a in assets}
-        f_depth = {a: executor.submit(fetch_binance_depth, a) for a in assets}
-        for a in assets:
-            res_d, res_depth = f_deribit[a].result(), f_depth[a].result()
-            all_data[a] = {"options": res_d.get("result", []) if res_d else [], "depth": res_depth}
-
+def render_full_dashboard(all_data, countdown):
+    timestamp = datetime.now().strftime("%H:%M:%S")
     root = Layout()
     root.split_column(
-        Layout(Text(f"CRYPTO DEPTH MAP | {datetime.now().strftime('%H:%M:%S')}", justify="center", style="bold reverse"), size=1),
+        Layout(Text(f"CRYPTO DEPTH MAP | {timestamp} | NEXT POLL: {countdown}s", justify="center", style="bold reverse"), size=1),
         Layout(name="assets")
     )
+    
     root["assets"].split_column(
         Layout(create_asset_panel("BTC", all_data["BTC"]["options"], all_data["BTC"]["depth"])),
         Layout(create_asset_panel("ETH", all_data["ETH"]["options"], all_data["ETH"]["depth"])),
@@ -198,11 +190,30 @@ def render_full_dashboard():
     return root
 
 def main():
+    assets = ["BTC", "ETH", "SOL"]
+    last_data = {a: {"options": [], "depth": None} for a in assets}
+    
+    def fetch_all():
+        data = {}
+        with ThreadPoolExecutor(max_workers=6) as executor:
+            f_deribit = {a: executor.submit(fetch_deribit_quotes, a) for a in assets}
+            f_depth = {a: executor.submit(fetch_binance_depth, a) for a in assets}
+            for a in assets:
+                res_d, res_depth = f_deribit[a].result(), f_depth[a].result()
+                data[a] = {"options": res_d.get("result", []) if res_d else [], "depth": res_depth}
+        return data
+
     try:
-        with Live(render_full_dashboard(), refresh_per_second=0.2, screen=True) as live:
+        last_data = fetch_all()
+        countdown = POLL_INTERVAL
+        with Live(render_full_dashboard(last_data, countdown), refresh_per_second=1, screen=True) as live:
             while True:
-                live.update(render_full_dashboard())
-                time.sleep(POLL_INTERVAL)
+                time.sleep(1)
+                countdown -= 1
+                if countdown <= 0:
+                    last_data = fetch_all()
+                    countdown = POLL_INTERVAL
+                live.update(render_full_dashboard(last_data, countdown))
     except KeyboardInterrupt:
         sys.exit(0)
 
