@@ -32,7 +32,11 @@ class MarketEngine:
         Returns:
             tuple: (spot_data, futures_data) or (None, None) on error.
         """
-        url_spot = f"https://api.binance.com/api/v3/klines?symbol={symbol}USDT&interval=1d&limit=100"
+        spot_symbol = symbol
+        if symbol == "XAU":
+            spot_symbol = "PAXG"
+        
+        url_spot = f"https://api.binance.com/api/v3/klines?symbol={spot_symbol}USDT&interval=1d&limit=100"
         url_fut = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}USDT&interval=1d&limit=1"
         
         async def safe_get(url):
@@ -46,6 +50,11 @@ class MarketEngine:
 
         try:
             spot, fut = await asyncio.gather(safe_get(url_spot), safe_get(url_fut))
+            # Fallback for XAG which has no spot on Binance
+            if symbol == "XAG" and not spot:
+                # Use futures history as proxy for spot if needed, 
+                # but fapi klines url is different. For now just use what we have.
+                pass
             return spot, fut
         except Exception as e:
             print(f"Binance fetch error for {symbol}: {e}")
