@@ -54,24 +54,40 @@ def fetch_binance_depth(symbol):
 
 def calculate_pcr(options_data):
     if not options_data: return 0.0
-    call_oi = sum(opt.get("open_interest", 0) for opt in options_data if opt.get("instrument_name", "").endswith("-C"))
-    put_oi = sum(opt.get("open_interest", 0) for opt in options_data if opt.get("instrument_name", "").endswith("-P"))
-    return put_oi / call_oi if call_oi > 0 else 0.0
-
-def calculate_max_pain(options_data):
-    if not options_data: return 0.0
-    parsed, strikes = [], set()
+    now = datetime.now()
+    near_term_oi_call = 0.0
+    near_term_oi_put = 0.0
+    
     for opt in options_data:
         parts = opt.get("instrument_name", "").split("-")
         if len(parts) < 4: continue
         try:
-            # Handle both formats: BTC-30AUG24-60000-C and SOL_USDC-30AUG24-100-C
-            s = float(parts[2])
-            t = parts[3]
-            oi = float(opt.get("open_interest", 0))
-            strikes.add(s)
-            parsed.append({"strike": s, "type": t, "oi": oi})
+            exp_date = datetime.strptime(parts[1], "%d%b%y")
+            if (exp_date - now).days <= 7:
+                oi = float(opt.get("open_interest", 0))
+                if parts[3] == "C": near_term_oi_call += oi
+                else: near_term_oi_put += oi
         except: continue
+        
+    return near_term_oi_put / near_term_oi_call if near_term_oi_call > 0 else 0.0
+
+def calculate_max_pain(options_data):
+    if not options_data: return 0.0
+    now = datetime.now()
+    parsed, strikes = [], set()
+    
+    for opt in options_data:
+        parts = opt.get("instrument_name", "").split("-")
+        if len(parts) < 4: continue
+        try:
+            exp_date = datetime.strptime(parts[1], "%d%b%y")
+            # Only include expiries in the next 7 days
+            if (exp_date - now).days <= 7:
+                s, t, oi = float(parts[2]), parts[3], float(opt.get("open_interest", 0))
+                strikes.add(s)
+                parsed.append({"strike": s, "type": t, "oi": oi})
+        except: continue
+        
     if not strikes: return 0.0
     min_loss, mp_strike = float('inf'), 0.0
     for ep in sorted(strikes):
@@ -93,7 +109,7 @@ def generate_liquidation_map(depth_data, symbol):
     for p, v in bins.items():
         total = v["buy"] + v["sell"]
         flattened.append((p, v["buy"], v["sell"], total))
-    return sorted(flattened, key=lambda x: x[3], reverse=True)[:5]
+    return sorted(flattened, key=lambda x: x[3], reverse=True)[:10]
 
 # ── UI ──────────────────────────────────────────────────────────────────────
 
@@ -122,7 +138,8 @@ def make_options_table(options_data, spot_price):
     if not sorted_s: return table
     
     atm_idx = min(range(len(sorted_s)), key=lambda i: abs(sorted_s[i] - spot_price))
-    for s in sorted_s[max(0, atm_idx-2):min(len(sorted_s), atm_idx+3)]:
+    # Show 10 strikes
+    for s in sorted_s[max(0, atm_idx-4):min(len(sorted_s), atm_idx+6)]:
         d = strikes_data[s]
         table.add_row(f"{d['C']:,.1f}", f"{s:,.0f}", f"{d['P']:,.1f}")
     return table
@@ -155,7 +172,7 @@ def create_asset_panel(asset, data, depth_data):
         Layout(make_liquidation_map_table(liq_map), ratio=1)
     )
     
-    return Panel(content_layout, title=header, title_align="left", height=10)
+    return Panel(content_layout, title=header, title_align="left", height=15)
 
 def render_full_dashboard():
     assets = ["BTC", "ETH", "SOL"]

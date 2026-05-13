@@ -28,6 +28,13 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `exa_ai_agents.py` | Tracks new AI agent framework and tool launches from the last 24 hours. |
 | `exa_ai_search.py` | Searches for upcoming online AI workshops, webinars, and classes. |
 
+### 🪙 Crypto Intelligence
+*Real-time predictive mapping for Crypto markets (BTC, ETH, SOL).*
+
+| Script | Description |
+|:--- |:--- |
+| `crypto_dashboard.py` | **Crypto Depth Map**. Multi-asset terminal dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls). Displays Buy vs Sell liquidity breakdown for high-resolution market structure analysis. 15s parallel polling. |
+
 ### 🛠️ Utilities & Helpers
 | Script | Description |
 |:--- |:--- |
@@ -100,6 +107,11 @@ python3 youtube_video_search.py @mkbhd
 **Run Options CLI Dashboard:**
 ```bash
 python3 options_cli.py
+```
+
+**Run Crypto Depth Map Dashboard:**
+```bash
+python3 crypto_dashboard.py
 ```
 
 ---
