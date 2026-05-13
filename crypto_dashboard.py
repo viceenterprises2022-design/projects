@@ -1,6 +1,6 @@
 """
-Crypto Options & Liquidation Dashboard (Ultra-Compact Unified Edition).
-Optimized for small terminal windows.
+Crypto Options & Liquidation Dashboard (Depth Edition).
+Shows Buy/Sell depth for both options and liquidity zones in a compact view.
 """
 
 import time
@@ -20,7 +20,7 @@ from rich.table import Table
 from rich.text import Text
 
 POLL_INTERVAL = 15
-console = Console(width=100) # Slightly narrower for small windows
+console = Console(width=105)
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 
@@ -43,7 +43,7 @@ def fetch_deribit_quotes(currency):
     except: return None
 
 def fetch_binance_depth(symbol):
-    url = f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}USDT&limit=500" # Reduced limit for speed
+    url = f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}USDT&limit=1000"
     try:
         r = requests.get(url, timeout=5)
         r.raise_for_status()
@@ -60,13 +60,15 @@ def calculate_pcr(options_data):
 
 def calculate_max_pain(options_data):
     if not options_data: return 0.0
-    parsed = []
-    strikes = set()
+    parsed, strikes = [], set()
     for opt in options_data:
         parts = opt.get("instrument_name", "").split("-")
         if len(parts) < 4: continue
         try:
-            s, t, oi = float(parts[2]), parts[3], float(opt.get("open_interest", 0))
+            # Handle both formats: BTC-30AUG24-60000-C and SOL_USDC-30AUG24-100-C
+            s = float(parts[2])
+            t = parts[3]
+            oi = float(opt.get("open_interest", 0))
             strikes.add(s)
             parsed.append({"strike": s, "type": t, "oi": oi})
         except: continue
@@ -91,18 +93,19 @@ def generate_liquidation_map(depth_data, symbol):
     for p, v in bins.items():
         total = v["buy"] + v["sell"]
         flattened.append((p, v["buy"], v["sell"], total))
-    return sorted(flattened, key=lambda x: x[3], reverse=True)[:3] # Only top 3 for extreme compression
+    return sorted(flattened, key=lambda x: x[3], reverse=True)[:3]
 
 # ── UI ──────────────────────────────────────────────────────────────────────
 
 def make_options_table(options_data, spot_price):
+    """Shows Call OI | Strike | Put OI depth."""
     table = Table(expand=True, box=None, padding=(0,1))
-    table.add_column("LTP", justify="right", style="cyan")
+    table.add_column("C-OI", justify="right", style="cyan")
     table.add_column("STRIKE", justify="center", style="bold white")
-    table.add_column("OI", justify="right", style="magenta")
+    table.add_column("P-OI", justify="right", style="magenta")
     
     if not options_data or not spot_price:
-        table.add_row("", "-", "")
+        table.add_row("-", "-", "-")
         return table
         
     strikes_data = {}
@@ -111,36 +114,32 @@ def make_options_table(options_data, spot_price):
         if len(parts) < 4: continue
         try:
             s, t = float(parts[2]), parts[3]
-            if s not in strikes_data: strikes_data[s] = {"C": {"ltp": 0, "oi": 0}, "P": {"ltp": 0, "oi": 0}}
-            strikes_data[s][t] = {"ltp": float(opt.get("last_price", 0)) * spot_price, "oi": float(opt.get("open_interest", 0))}
+            if s not in strikes_data: strikes_data[s] = {"C": 0, "P": 0}
+            strikes_data[s][t] = float(opt.get("open_interest", 0))
         except: continue
         
     sorted_s = sorted(strikes_data.keys())
     if not sorted_s: return table
     
     atm_idx = min(range(len(sorted_s)), key=lambda i: abs(sorted_s[i] - spot_price))
-    # Show only 3 strikes for compression
     for s in sorted_s[max(0, atm_idx-1):min(len(sorted_s), atm_idx+2)]:
         d = strikes_data[s]
-        table.add_row(f"{d['C']['ltp']:,.0f}", f"{s:,.0f}", f"{d['P']['oi']:,.0f}")
+        table.add_row(f"{d['C']:,.1f}", f"{s:,.0f}", f"{d['P']:,.1f}")
     return table
 
 def make_liquidation_map_table(liq_map):
+    """Shows Buy Liquidity | Zone | Sell Liquidity depth."""
     table = Table(expand=True, box=None, padding=(0,1))
-    table.add_column("ZONE", justify="left", style="yellow")
-    table.add_column("LIQ", justify="right", style="green")
-    table.add_column("D", justify="left")
+    table.add_column("BUY", justify="right", style="green")
+    table.add_column("ZONE", justify="center", style="yellow")
+    table.add_column("SELL", justify="left", style="red")
     
     if not liq_map:
         table.add_row("-", "-", "-")
         return table
         
-    max_liq = max(b[3] for b in liq_map)
     for price, buy, sell, total in liq_map:
-        bar_len = int((total / max_liq) * 3) # Even smaller bar
-        color = "[green]" if buy > sell else "[red]"
-        bar = f"{color}{'█' * bar_len}[/]" + "░" * (3 - bar_len)
-        table.add_row(f"{price:,.0f}", f"${total/1e6:.1f}M", bar)
+        table.add_row(f"${buy/1e6:,.1f}M", f"{price:,.0f}", f"${sell/1e6:,.1f}M")
     return table
 
 def create_asset_panel(asset, data, depth_data):
@@ -148,7 +147,6 @@ def create_asset_panel(asset, data, depth_data):
     pcr, mp = calculate_pcr(data), calculate_max_pain(data)
     liq_map = generate_liquidation_map(depth_data, asset)
     
-    # Ultra-dense header
     header = f"[bold]{asset}[/] ${spot:,.0f} | MP:{mp:,.0f} | PCR:{pcr:.2f}"
     
     content_layout = Layout()
@@ -157,7 +155,7 @@ def create_asset_panel(asset, data, depth_data):
         Layout(make_liquidation_map_table(liq_map), ratio=1)
     )
     
-    return Panel(content_layout, title=header, title_align="left", height=5) # Fixed height of 5 rows
+    return Panel(content_layout, title=header, title_align="left", height=5)
 
 def render_full_dashboard():
     assets = ["BTC", "ETH", "SOL"]
@@ -166,23 +164,20 @@ def render_full_dashboard():
     with ThreadPoolExecutor(max_workers=6) as executor:
         f_deribit = {a: executor.submit(fetch_deribit_quotes, a) for a in assets}
         f_depth = {a: executor.submit(fetch_binance_depth, a) for a in assets}
-        
         for a in assets:
             res_d, res_depth = f_deribit[a].result(), f_depth[a].result()
             all_data[a] = {"options": res_d.get("result", []) if res_d else [], "depth": res_depth}
 
     root = Layout()
     root.split_column(
-        Layout(Text(f"CRYPTO MAP | {datetime.now().strftime('%H:%M:%S')}", justify="center", style="bold reverse"), size=1),
+        Layout(Text(f"CRYPTO DEPTH MAP | {datetime.now().strftime('%H:%M:%S')}", justify="center", style="bold reverse"), size=1),
         Layout(name="assets")
     )
-    
     root["assets"].split_column(
         Layout(create_asset_panel("BTC", all_data["BTC"]["options"], all_data["BTC"]["depth"])),
         Layout(create_asset_panel("ETH", all_data["ETH"]["options"], all_data["ETH"]["depth"])),
         Layout(create_asset_panel("SOL", all_data["SOL"]["options"], all_data["SOL"]["depth"]))
     )
-    
     return root
 
 def main():
