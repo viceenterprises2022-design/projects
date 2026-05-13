@@ -34,15 +34,21 @@ class MarketEngine:
         """
         url_spot = f"https://api.binance.com/api/v3/klines?symbol={symbol}USDT&interval=1d&limit=100"
         url_fut = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}USDT&interval=1d&limit=1"
+        
+        async def safe_get(url):
+            try:
+                async with session.get(url) as r:
+                    if r.status == 200:
+                        return await r.json()
+                    return None
+            except Exception:
+                return None
+
         try:
-            async with session.get(url_spot) as r1, session.get(url_fut) as r2:
-                try:
-                    return await asyncio.gather(r1.json(), r2.json())
-                except (ValueError, aiohttp.ContentTypeError) as e:
-                    print(f"JSON error for {symbol}: {e}")
-                    return None, None
-        except aiohttp.ClientError as e:
-            print(f"Network error for {symbol}: {e}")
+            spot, fut = await asyncio.gather(safe_get(url_spot), safe_get(url_fut))
+            return spot, fut
+        except Exception as e:
+            print(f"Binance fetch error for {symbol}: {e}")
             return None, None
 
     async def fetch_deribit_options(self, session, currency):
@@ -65,6 +71,16 @@ class MarketEngine:
             print(f"Binance Depth error for {symbol}: {e}")
             return None
 
+    async def fetch_binance_futures_depth(self, session, symbol):
+        """Fetches order book depth for whale wall detection from Futures."""
+        url = f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}USDT&limit=100"
+        try:
+            async with session.get(url) as r:
+                return await r.json()
+        except Exception as e:
+            print(f"Binance Futures Depth error for {symbol}: {e}")
+            return None
+
     async def fetch_macro_data(self):
         """Fetches macro indices via yfinance."""
         now = time.time()
@@ -76,6 +92,7 @@ class MarketEngine:
             "VIX": "^VIX",
             "US30": "^DJI",
             "GOLD": "GC=F",
+            "SILVER": "SI=F",
             "OIL": "CL=F"
         }
         
@@ -112,7 +129,13 @@ class MarketEngine:
         async with aiohttp.ClientSession() as session:
             binance_tasks = [self.fetch_binance(session, s) for s in self.symbols]
             option_tasks = [self.fetch_deribit_options(session, s) for s in self.symbols]
-            depth_tasks = [self.fetch_binance_depth(session, s) for s in self.symbols]
+            
+            depth_tasks = []
+            for s in self.symbols:
+                if s in ["XAU", "XAG"]:
+                    depth_tasks.append(self.fetch_binance_futures_depth(session, s))
+                else:
+                    depth_tasks.append(self.fetch_binance_depth(session, s))
             
             binance_results = await asyncio.gather(*binance_tasks)
             option_results = await asyncio.gather(*option_tasks)
