@@ -93,7 +93,7 @@ def generate_liquidation_map(depth_data, symbol):
     for p, v in bins.items():
         total = v["buy"] + v["sell"]
         flattened.append((p, v["buy"], v["sell"], total))
-    return sorted(flattened, key=lambda x: x[3], reverse=True)[:5]
+    return sorted(flattened, key=lambda x: x[3], reverse=True)[:10]
 
 # ── UI ──────────────────────────────────────────────────────────────────────
 
@@ -122,7 +122,8 @@ def make_options_table(options_data, spot_price):
     if not sorted_s: return table
     
     atm_idx = min(range(len(sorted_s)), key=lambda i: abs(sorted_s[i] - spot_price))
-    for s in sorted_s[max(0, atm_idx-2):min(len(sorted_s), atm_idx+3)]:
+    # Show 10 strikes
+    for s in sorted_s[max(0, atm_idx-4):min(len(sorted_s), atm_idx+6)]:
         d = strikes_data[s]
         table.add_row(f"{d['C']:,.1f}", f"{s:,.0f}", f"{d['P']:,.1f}")
     return table
@@ -155,7 +156,7 @@ def create_asset_panel(asset, data, depth_data):
         Layout(make_liquidation_map_table(liq_map), ratio=1)
     )
     
-    return Panel(content_layout, title=header, title_align="left", height=10)
+    return Panel(content_layout, title=header, title_align="left", height=15)
 
 def render_full_dashboard():
     assets = ["BTC", "ETH", "SOL"]
