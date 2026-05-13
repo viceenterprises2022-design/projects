@@ -97,7 +97,8 @@ def calculate_max_pain(options_data):
 
 def generate_liquidation_map(depth_data, symbol):
     if not depth_data: return []
-    bin_size = 100 if symbol == "BTC" else (10 if symbol == "ETH" else 1)
+    # Reduced bin sizes to increase resolution for BTC and ETH
+    bin_size = 10 if symbol == "BTC" else (1 if symbol == "ETH" else 1)
     bins = defaultdict(lambda: {"buy": 0.0, "sell": 0.0})
     for side in ["bids", "asks"]:
         key = "buy" if side == "bids" else "sell"
