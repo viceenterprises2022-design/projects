@@ -209,7 +209,7 @@ class MarketEngine:
         total_bid_val = 0
         total_ask_val = 0
         
-        threshold = 1000000 # $1M USD
+        threshold = 500000 # $500k USD
         
         for price, qty in bids:
             p, q = float(price), float(qty)
@@ -246,8 +246,10 @@ class MarketEngine:
         btc_closes = [float(x[4]) for x in binance_data[0]][-30:]
         correlations = {}
         
+        print(f"DEBUG: {symbol} closes count: {len(btc_closes)}")
         for key, mdata in macro_data.items():
             m_history = mdata.get('history', [])
+            print(f"DEBUG: {key} history count: {len(m_history)}")
             # Align lengths
             min_len = min(len(btc_closes), len(m_history))
             if min_len >= 5: # Need at least some data for meaningful correlation
