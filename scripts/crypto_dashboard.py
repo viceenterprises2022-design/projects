@@ -26,7 +26,6 @@ console = Console(width=107)
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 
-# Silence noisy libraries
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("websocket").setLevel(logging.WARNING)
@@ -52,8 +51,8 @@ class LiquidationCollector:
         
         # Stats for UI
         self.stats = {
-            "Binance": {"msgs": 0, "status": "Disconnected", "last_msg": "Never"},
-            "Bybit": {"msgs": 0, "status": "Disconnected", "last_msg": "Never"}
+            "Binance": {"msgs": 0, "raw": 0, "status": "Disconnected", "last_msg": "Never"},
+            "Bybit": {"msgs": 0, "raw": 0, "status": "Disconnected", "last_msg": "Never"}
         }
         
     def add_event(self, symbol, price, qty, exchange):
@@ -77,20 +76,44 @@ class LiquidationCollector:
             return list(self.buffer[symbol])
 
     def _on_binance_message(self, ws, message):
+        self.stats["Binance"]["raw"] += 1
         try:
+            if self.stats["Binance"]["raw"] < 5:
+                logging.debug(f"Binance Raw Sample: {message[:200]}")
             data = json.loads(message)
-            order = data.get("o", {})
-            raw_sym = order.get("s", "")
-            for s in self.symbols:
-                if raw_sym == f"{s}USDT":
-                    self.add_event(s, float(order["p"]), float(order["q"]), "Binance")
-                    break
+            
+            # Handle stream combined format: {"stream":"...", "data":{...}}
+            if "stream" in data and "data" in data:
+                stream = data["stream"]
+                payload = data["data"]
+                if "forceOrder" in stream:
+                    order = payload.get("o", {})
+                    raw_sym = order.get("s", "")
+                    for s in self.symbols:
+                        if raw_sym == f"{s}USDT":
+                            self.add_event(s, float(order["p"]), float(order["q"]), "Binance")
+                            break
+                return
+
+            # Handle direct stream format
+            order = data.get("o")
+            if order:
+                raw_sym = order.get("s", "")
+                for s in self.symbols:
+                    if raw_sym == f"{s}USDT":
+                        self.add_event(s, float(order["p"]), float(order["q"]), "Binance")
+                        break
         except Exception as e:
             logging.error(f"Binance parse error: {e}")
 
     def _on_bybit_message(self, ws, message):
+        self.stats["Bybit"]["raw"] += 1
         try:
+            if self.stats["Bybit"]["raw"] < 5:
+                logging.debug(f"Bybit Raw Sample: {message[:200]}")
             data = json.loads(message)
+            if "op" in data or "ret_code" in data:
+                return
             topic = data.get("topic", "")
             if "allLiquidation" in topic:
                 liq_data = data.get("data", {})
@@ -103,7 +126,8 @@ class LiquidationCollector:
             logging.error(f"Bybit parse error: {e}")
 
     def _run_binance(self):
-        url = "wss://fstream.binance.com/ws/!forceOrder@arr"
+        # Combined stream to include ticker for health verification
+        url = "wss://fstream.binance.com/stream?streams=!forceOrder@arr/btcusdt@ticker"
         while self.running:
             try:
                 self.stats["Binance"]["status"] = "Connecting..."
@@ -115,7 +139,6 @@ class LiquidationCollector:
                     on_close=lambda ws, s, m: logging.info(f"Binance WS Closed: {s} {m}")
                 )
                 self.stats["Binance"]["status"] = "Connected"
-                # Disable SSL verification for local environment issues
                 ws.run_forever(ping_interval=30, ping_timeout=10, sslopt={"cert_reqs": ssl.CERT_NONE})
                 self.stats["Binance"]["status"] = "Disconnected"
             except Exception as e:
@@ -140,7 +163,6 @@ class LiquidationCollector:
                     ws.send(json.dumps({"op": "subscribe", "args": subs}))
                 ws.on_open = on_open
                 self.stats["Bybit"]["status"] = "Connected"
-                # Disable SSL verification for local environment issues
                 ws.run_forever(ping_interval=20, ping_timeout=10, sslopt={"cert_reqs": ssl.CERT_NONE})
                 self.stats["Bybit"]["status"] = "Disconnected"
             except Exception as e:
@@ -275,7 +297,8 @@ def render_dashboard(asset):
     # Connection Stats
     b_st = liq_collector.stats["Binance"]
     y_st = liq_collector.stats["Bybit"]
-    stats_line = f" [blue]Binance:[/] {b_st['status']} ({b_st['msgs']} evts, last: {b_st['last_msg']}) | [yellow]Bybit:[/] {y_st['status']} ({y_st['msgs']} evts, last: {y_st['last_msg']})"
+    stats_line = (f" [blue]Binance:[/] {b_st['status']} ({b_st['msgs']}/{b_st['raw']} msgs, last: {b_st['last_msg']}) | "
+                  f"[yellow]Bybit:[/] {y_st['status']} ({y_st['msgs']}/{y_st['raw']} msgs, last: {y_st['last_msg']})")
     
     header = Panel(Text.from_markup(f"{header_text}\n{stats_line}"), style="white")
     
