@@ -54,24 +54,40 @@ def fetch_binance_depth(symbol):
 
 def calculate_pcr(options_data):
     if not options_data: return 0.0
-    call_oi = sum(opt.get("open_interest", 0) for opt in options_data if opt.get("instrument_name", "").endswith("-C"))
-    put_oi = sum(opt.get("open_interest", 0) for opt in options_data if opt.get("instrument_name", "").endswith("-P"))
-    return put_oi / call_oi if call_oi > 0 else 0.0
-
-def calculate_max_pain(options_data):
-    if not options_data: return 0.0
-    parsed, strikes = [], set()
+    now = datetime.now()
+    near_term_oi_call = 0.0
+    near_term_oi_put = 0.0
+    
     for opt in options_data:
         parts = opt.get("instrument_name", "").split("-")
         if len(parts) < 4: continue
         try:
-            # Handle both formats: BTC-30AUG24-60000-C and SOL_USDC-30AUG24-100-C
-            s = float(parts[2])
-            t = parts[3]
-            oi = float(opt.get("open_interest", 0))
-            strikes.add(s)
-            parsed.append({"strike": s, "type": t, "oi": oi})
+            exp_date = datetime.strptime(parts[1], "%d%b%y")
+            if (exp_date - now).days <= 7:
+                oi = float(opt.get("open_interest", 0))
+                if parts[3] == "C": near_term_oi_call += oi
+                else: near_term_oi_put += oi
         except: continue
+        
+    return near_term_oi_put / near_term_oi_call if near_term_oi_call > 0 else 0.0
+
+def calculate_max_pain(options_data):
+    if not options_data: return 0.0
+    now = datetime.now()
+    parsed, strikes = [], set()
+    
+    for opt in options_data:
+        parts = opt.get("instrument_name", "").split("-")
+        if len(parts) < 4: continue
+        try:
+            exp_date = datetime.strptime(parts[1], "%d%b%y")
+            # Only include expiries in the next 7 days
+            if (exp_date - now).days <= 7:
+                s, t, oi = float(parts[2]), parts[3], float(opt.get("open_interest", 0))
+                strikes.add(s)
+                parsed.append({"strike": s, "type": t, "oi": oi})
+        except: continue
+        
     if not strikes: return 0.0
     min_loss, mp_strike = float('inf'), 0.0
     for ep in sorted(strikes):
