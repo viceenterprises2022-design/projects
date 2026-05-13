@@ -36,15 +36,19 @@ Installed via `affaan-m/everything-claude-code` (full profile). Source cloned at
 
 **Install state:** `~/.claude/ecc/install-state.json`
 
+---
+
 ## Repository Overview
 
-Monorepo of independent projects: trading, financial analysis, AI agents, and design tooling.
+Monorepo of independent projects: trading bots, financial analysis, AI agents, and design tooling.
 
 | Project | Stack | Purpose |
-|---------|-------|---------|
+|---------|-------|----------|
 | `tradingview-mcp/` | Node.js (ESM) | MCP server bridging Claude to TradingView Desktop via CDP |
 | `Alphaedge_Copy/` | Python (async) | Multi-platform copy trading: Hyperliquid, Binance Futures, Polymarket |
+| `btcusdt-futures-bot/` | Python (async) | Paper-trading bot for Hyperliquid BTC perp — Donchian breakout strategy |
 | `open-codesign/` | TypeScript, pnpm, Electron | Open-source AI design agent — prompt to prototype/slide/asset |
+| `open-design/` | TypeScript/Node | Open-source Claude Design alternative — 13 coding CLIs, 31 skills, 72 design systems |
 | `crypto-trending-oi/` | Python (async) | Intraday OI + multi-factor crypto scoring engine with SQLite |
 | `daily_crypto_news/daily_market_report/` | Python, CrewAI | AI-generated daily market reports via multi-agent flows |
 | `AlphaEdge_Ticker/` | Python (tkinter) | Live desktop ticker for crypto PERP (Hyperliquid) + NSE equities |
@@ -59,12 +63,29 @@ Monorepo of independent projects: trading, financial analysis, AI agents, and de
 
 ---
 
+## graphify Knowledge Graph
+
+Before answering architecture or codebase questions, read `graphify-out/GRAPH_REPORT.md` for god nodes and community structure. If `graphify-out/wiki/index.md` exists, navigate it instead of reading raw files. After modifying source files in a session, run `graphify update .` to keep the graph current (AST-only, no API cost).
+
+---
+
+## UI / Styling Mandate
+
+All UI work must follow `DESIGN.md`. Key tokens:
+- **Background:** `#000000` | **Primary action:** `#10B981` | **Accent:** `#3B82F6`
+- **Text:** `#FFFFFF` / `#94A3B8` muted | **Border:** `#1E293B`
+- **Font:** `Inter` weight 510 for primary text | **Radius max:** 8px | **Spacing base:** 4px
+- Layering: `#000000` → `#0F172A` → `#1E293B`
+- No full-uppercase UI text, no gradients (except data viz), no shadows on dark elements.
+
+---
+
 ## tradingview-mcp
 
 **Commands**
 ```bash
 cd tradingview-mcp
-npm install                        # install dependencies
+npm install
 npm start                          # run MCP server (stdio transport)
 npm test                           # run all tests (requires TradingView on :9222)
 npm run test:unit                  # Pine analysis + CLI tests only (no TradingView needed)
@@ -114,19 +135,42 @@ python main.py --live --bot hl     # go live (after 2-week dry-run validation)
 **Architecture**
 
 - `main.py` — async orchestrator; starts all bot coroutines
-- `settings.py` — all tunable parameters (dry_run flag, position limits, alpha thresholds)
-- `risk_manager.py` / `risk_manager_v2/v3.py` — unified SL/TP/trailing/drawdown engine; position sizing formula: `MIN(equity × max_position_pct, max_copy_size_usd)`
-- `trader_selector.py` — alpha scoring (Sharpe 30%, ROI 20%, win rate 20%, drawdown 15%, consistency 10%, experience 5%)
-- `hyperliquid_bot.py` — WebSocket `userFills` subscription per tracked wallet (~50ms fill detection)
-- `binance_bot.py` — polls public leaderboard endpoint every 5s; mirrors via Binance Futures API
-- `polymarket_bot.py` — CLOB + Gamma API; consensus filter (2+ whale wallets on same market); no leverage
-- `notifier.py` — Telegram + Discord alerts
-- `dashboard.py` — console performance view
+- `config/settings.py` — all tunable parameters (`dry_run` flag, position limits, alpha thresholds)
+- `core/risk_manager.py` — unified SL/TP/trailing/drawdown engine; position sizing: `MIN(equity × max_position_pct, max_copy_size_usd)`
+- `core/trader_selector.py` — alpha scoring (Sharpe 30%, ROI 20%, win rate 20%, drawdown 15%, consistency 10%, experience 5%)
+- `bots/hyperliquid_bot.py` — WebSocket `userFills` subscription per tracked wallet (~50ms fill detection)
+- `bots/binance_bot.py` — polls public leaderboard endpoint every 5s; mirrors via Binance Futures API
+- `bots/polymarket_bot.py` — CLOB + Gamma API; consensus filter (2+ whale wallets on same market); no leverage
+- `utils/notifier.py` — Telegram + Discord alerts
+- `utils/dashboard.py` — console performance view
 
 **Platform notes**
 - Hyperliquid: uses `hyperliquid-python-sdk` with EIP-712 signed orders; use separate API wallet (no withdrawal rights)
 - Binance: leaderboard endpoints are public but rate-limited — keep polling ≥5s intervals
 - Polymarket: USDC on Polygon (Chain ID 137); binary outcomes; thin books → severe slippage on large orders
+
+---
+
+## btcusdt-futures-bot
+
+**Commands**
+```bash
+cd btcusdt-futures-bot
+pip install -r requirements.txt
+cp .env.example .env
+python main.py                     # paper trading only (no live path in V1)
+```
+
+**Architecture**
+
+Paper-trading bot on Hyperliquid BTC perpetual 15m candles.
+
+- **Strategy:** Donchian Channel breakout (20-candle lookback)
+  - Long only if price > EMA(200); short only if price < EMA(200)
+  - Volume filter: breakout candle volume > median of last 20 candles
+  - Strong close: Long → close in top 25% of range; Short → close in bottom 25%
+- SQLite for state persistence; Slack alerts for signals
+- No live trading path in V1 — paper broker only
 
 ---
 
@@ -171,6 +215,24 @@ packages/
 - Node 22 LTS; pnpm 9; Turborepo; Biome for lint+format; Vitest + Playwright for tests
 - Changesets for versioning — do not hand-edit `CHANGELOG.md`
 - Do not use `console.*` in `main/`, `core/`, `providers/`, `exporters/`, or `shared/` — use the project logger
+
+---
+
+## open-design
+
+**Commands**
+```bash
+cd open-design
+# See open-design/README.md for full setup — it auto-detects coding CLIs on PATH
+```
+
+**Architecture**
+
+Open-source alternative to Claude Design. Detects 13 coding-agent CLIs on `PATH` (Claude Code, Codex, Devin for Terminal, Cursor Agent, Gemini CLI, OpenCode, Qwen, GitHub Copilot CLI, Hermes, Kimi, Pi, Kiro, Mistral Vibe) and uses them as the design engine. Falls back to an OpenAI-compatible BYOK proxy when no CLI is found.
+
+- 31 composable Skills drive the design pipeline
+- 72 brand-grade Design Systems available as templates
+- Local-first, web-deployable
 
 ---
 
@@ -251,8 +313,7 @@ Output lands in `output_full/` as `.pdf`, `.html`, `.png` with UTC timestamp fil
 cd AlphaEdge_Ticker
 pip install -r requirements.txt    # requests, yfinance
 python alphaedge_ticker.py         # launch desktop ticker
-# Or use platform launchers:
-./launch_ubuntu.sh
+# Or: ./launch_ubuntu.sh
 ```
 
 **Architecture**
@@ -271,6 +332,8 @@ Contains architecture documents (`.docx`, `.md`, `.pdf`) and React/JSX component
 - `global_correlation_engine_ui.jsx` — correlation engine visualization
 - `ButterflyEffectEngine*.html` — standalone butterfly effect simulations
 - `DCC_GARCH_*` and `GLOBAL_CORRELATION_ENGINE_*` — technical specs for the quant engine
+
+---
 
 ## Skill routing
 
@@ -291,268 +354,3 @@ Key routing rules:
 - Architecture review → invoke plan-eng-review
 - Save progress, checkpoint, resume → invoke checkpoint
 - Code quality, health check → invoke health
-
-<!-- autoskills:start -->
-
-Summary generated by `autoskills`. Check the full files inside `.claude/skills`.
-
-## Accessibility (a11y)
-
-Audit and improve web accessibility following WCAG 2.2 guidelines. Use when asked to "improve accessibility", "a11y audit", "WCAG compliance", "screen reader support", "keyboard navigation", or "make accessible".
-
-- `.claude/skills/accessibility/SKILL.md`
-- `.claude/skills/accessibility/references/A11Y-PATTERNS.md`: Practical, copy-paste-ready patterns for common accessibility requirements. Each pattern is self-contained and linked from the main [SKILL.md](../SKILL.md).
-- `.claude/skills/accessibility/references/WCAG.md`
-
-## AgentDB Advanced Features
-
-Master advanced AgentDB features including QUIC synchronization, multi-database management, custom distance metrics, hybrid search, and distributed systems integration. Use when building distributed AI systems, multi-agent coordination, or advanced vector search applications.
-
-- `.claude/skills/agentdb-advanced/SKILL.md`
-
-## AgentDB Learning Plugins
-
-Create and train AI learning plugins with AgentDB's 9 reinforcement learning algorithms. Includes Decision Transformer, Q-Learning, SARSA, Actor-Critic, and more. Use when building self-learning agents, implementing RL, or optimizing agent behavior through experience.
-
-- `.claude/skills/agentdb-learning/SKILL.md`
-
-## AgentDB Memory Patterns
-
-Implement persistent memory patterns for AI agents using AgentDB. Includes session memory, long-term storage, pattern learning, and context management. Use when building stateful agents, chat systems, or intelligent assistants.
-
-- `.claude/skills/agentdb-memory-patterns/SKILL.md`
-
-## AgentDB Performance Optimization
-
-Optimize AgentDB performance with quantization (4-32x memory reduction), HNSW indexing (150x faster search), caching, and batch operations. Use when optimizing memory usage, improving search speed, or scaling to millions of vectors.
-
-- `.claude/skills/agentdb-optimization/SKILL.md`
-
-## AgentDB Vector Search
-
-Implement semantic vector search with AgentDB for intelligent document retrieval, similarity matching, and context-aware querying. Use when building RAG systems, semantic search engines, or intelligent knowledge bases.
-
-- `.claude/skills/agentdb-vector-search/SKILL.md`
-
-## Browser Automation Skill
-
-Web browser automation with AI-optimized snapshots for claude-flow agents
-
-- `.claude/skills/browser/SKILL.md`
-
-## Design Thinking
-
-Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beaut...
-
-- `.claude/skills/frontend-design/SKILL.md`
-
-## GitHub Code Review Skill
-
-Comprehensive GitHub code review with AI-powered swarm coordination
-
-- `.claude/skills/github-code-review/SKILL.md`
-
-## GitHub Multi-Repository Coordination Skill
-
-|
-
-- `.claude/skills/github-multi-repo/SKILL.md`
-
-## GitHub Project Management
-
-|
-
-- `.claude/skills/github-project-management/SKILL.md`
-
-## GitHub Release Management Skill
-
-|
-
-- `.claude/skills/github-release-management/SKILL.md`
-
-## GitHub Workflow Automation Skill
-
-|
-
-- `.claude/skills/github-workflow-automation/SKILL.md`
-
-## ADK Cheatsheet
-
->
-
-- `.claude/skills/google-agents-cli-adk-code/SKILL.md`
-- `.claude/skills/google-agents-cli-adk-code/references/adk-2.0.md`: Scaffolded projects pin `google-adk<2.0.0` — this must be updated before ADK 2.0 can install. Simply running `pip install --pre google-adk` or `uv add --prerelease=allow google-adk` will silently stay on 1.x.
-- `.claude/skills/google-agents-cli-adk-code/references/adk-python.md`: Workflow agents provide deterministic control flow without LLM orchestration.
-
-## ADK Deployment Guide
-
->
-
-- `.claude/skills/google-agents-cli-deploy/SKILL.md`
-- `.claude/skills/google-agents-cli-deploy/references/agent-runtime.md`: Agent Runtime uses **source-based deployment** — no Docker container or Dockerfile. Your agent code is packaged as a base64-encoded tarball and deployed directly to the managed Vertex AI service.
-- `.claude/skills/google-agents-cli-deploy/references/batch-inference.md`: Invoke an ADK agent as a BigQuery Remote Function for batch inference over table rows. This requires a custom `POST /` endpoint since BQ cannot use URL paths.
-- `.claude/skills/google-agents-cli-deploy/references/cicd-pipeline.md`: **Best for:** Production applications, teams requiring staging → production promotion.
-- `.claude/skills/google-agents-cli-deploy/references/cloud-run.md`: Agents CLI scaffolds Cloud Run infrastructure in `deployment/terraform/service.tf`. Check that file for current resource limits, scaling configuration, concurrency, and session affinity settings.
-- `.claude/skills/google-agents-cli-deploy/references/gke.md`: GKE uses **container-based deployment** to a managed GKE Autopilot cluster. Your agent is packaged as a Docker container (same Dockerfile as Cloud Run), pushed to Artifact Registry, and deployed via Terraform-managed Kubernetes resources.
-- `.claude/skills/google-agents-cli-deploy/references/terraform-patterns.md`: **For CI/CD environments (staging/prod):**
-- `.claude/skills/google-agents-cli-deploy/references/testing-deployed-agents.md`: The fastest way to test any deployed agent is the `run --url` command — it handles authentication, session creation, and streaming automatically:
-
-## ADK Evaluation Guide
-
->
-
-- `.claude/skills/google-agents-cli-eval/SKILL.md`
-- `.claude/skills/google-agents-cli-eval/references/builtin-tools-eval.md`: **Key behavior:** - Custom tools (`save_preferences`, `save_feedback`) → appear as `function_call` in trajectory - `google_search` → NEVER appears in trajectory (happens inside the model)
-- `.claude/skills/google-agents-cli-eval/references/criteria-guide.md`: Default when no config provided: `tool_trajectory_avg_score: 1.0` + `response_match_score: 0.8`
-- `.claude/skills/google-agents-cli-eval/references/multimodal-eval.md`: For GCS-hosted files, use `file_data` instead:
-- `.claude/skills/google-agents-cli-eval/references/user-simulation.md`: Use user simulation when fixed prompts are impractical — the agent may ask for information in different orders or respond in unexpected ways. Instead of hardcoding every user turn, define a **conversation scenario** and let an AI model generate realistic user responses dynamically.
-
-## ADK Observability Guide
-
->
-
-- `.claude/skills/google-agents-cli-observability/SKILL.md`
-- `.claude/skills/google-agents-cli-observability/references/bigquery-agent-analytics.md`: An optional plugin that logs structured agent events directly to BigQuery via the Storage Write API. Enables:
-- `.claude/skills/google-agents-cli-observability/references/cloud-trace-and-logging.md`: Always-on distributed tracing via `otel_to_cloud=True` in the FastAPI app. Tracks requests through LLM calls and tool executions with latency analysis and error visibility.
-
-## Gemini Enterprise Registration
-
->
-
-- `.claude/skills/google-agents-cli-publish/SKILL.md`
-
-## ADK Project Scaffolding Guide
-
->
-
-- `.claude/skills/google-agents-cli-scaffold/SKILL.md`
-- `.claude/skills/google-agents-cli-scaffold/references/flags.md`: For all available flags, run `agents-cli scaffold create --help`.
-
-## ADK Development Workflow & Guidelines
-
->
-
-- `.claude/skills/google-agents-cli-workflow/SKILL.md`
-- `.claude/skills/google-agents-cli-workflow/references/internals.md`: by the CLI — for debugging, customization, or edge cases — use these directly.
-
-## Hooks Automation
-
-Automated coordination, formatting, and learning from Claude Code operations using intelligent hooks with MCP integration. Includes pre/post task hooks, session management, Git integration, memory coordination, and neural pattern training for enhanced development workflows.
-
-- `.claude/skills/hooks-automation/SKILL.md`
-
-## Pair Programming
-
-AI-assisted pair programming with multiple modes (driver/navigator/switch), real-time verification, quality monitoring, and comprehensive testing. Supports TDD, debugging, refactoring, and learning sessions. Features automatic role switching, continuous code review, security scanning, and perform...
-
-- `.claude/skills/pair-programming/SKILL.md`
-
-## ReasoningBank with AgentDB
-
-Implement ReasoningBank adaptive learning with AgentDB's 150x faster vector database. Includes trajectory tracking, verdict judgment, memory distillation, and pattern recognition. Use when building self-learning agents, optimizing decision-making, or implementing experience replay systems.
-
-- `.claude/skills/reasoningbank-agentdb/SKILL.md`
-
-## ReasoningBank Intelligence
-
-Implement adaptive learning with ReasoningBank for pattern recognition, strategy optimization, and continuous improvement. Use when building self-learning agents, optimizing workflows, or implementing meta-cognitive systems.
-
-- `.claude/skills/reasoningbank-intelligence/SKILL.md`
-
-## SEO optimization
-
-Optimize for search engine visibility and ranking. Use when asked to "improve SEO", "optimize for search", "fix meta tags", "add structured data", "sitemap optimization", or "search engine optimization".
-
-- `.claude/skills/seo/SKILL.md`
-
-## Skill Builder
-
-Create new Claude Code Skills with proper YAML frontmatter, progressive disclosure structure, and complete directory organization. Use when you need to build custom skills for specific workflows, generate skill templates, or understand the Claude Skills specification.
-
-- `.claude/skills/skill-builder/SKILL.md`
-
-## SPARC Methodology - Comprehensive Development Framework
-
-|
-
-- `.claude/skills/sparc-methodology/SKILL.md`
-
-## Stream-Chain Skill
-
-Stream-JSON chaining for multi-agent pipelines, data transformation, and sequential workflows
-
-- `.claude/skills/stream-chain/SKILL.md`
-
-## Advanced Swarm Orchestration
-
-|
-
-- `.claude/skills/swarm-advanced/SKILL.md`
-
-## Swarm Orchestration
-
-Orchestrate multi-agent swarms with agentic-flow for parallel task execution, dynamic topology, and intelligent coordination. Use when scaling beyond single agents, implementing complex workflows, or building distributed AI systems.
-
-- `.claude/skills/swarm-orchestration/SKILL.md`
-
-## V3 CLI Modernization
-
-CLI modernization and hooks system enhancement for claude-flow v3. Implements interactive prompts, command decomposition, enhanced hooks integration, and intelligent workflow automation.
-
-- `.claude/skills/v3-cli-modernization/SKILL.md`
-
-## V3 Core Implementation
-
-Core module implementation for claude-flow v3. Implements DDD domains, clean architecture patterns, dependency injection, and modular TypeScript codebase with comprehensive testing.
-
-- `.claude/skills/v3-core-implementation/SKILL.md`
-
-## V3 DDD Architecture
-
-Domain-Driven Design architecture for claude-flow v3. Implements modular, bounded context architecture with clean separation of concerns and microkernel pattern.
-
-- `.claude/skills/v3-ddd-architecture/SKILL.md`
-
-## V3 Deep Integration
-
-Deep agentic-flow@alpha integration implementing ADR-001. Eliminates 10,000+ duplicate lines by building claude-flow as specialized extension rather than parallel implementation.
-
-- `.claude/skills/v3-integration-deep/SKILL.md`
-
-## V3 MCP Optimization
-
-MCP server optimization and transport layer enhancement for claude-flow v3. Implements connection pooling, load balancing, tool registry optimization, and performance monitoring for sub-100ms response times.
-
-- `.claude/skills/v3-mcp-optimization/SKILL.md`
-
-## V3 Memory Unification
-
-Unify 6+ memory systems into AgentDB with HNSW indexing for 150x-12,500x search improvements. Implements ADR-006 (Unified Memory Service) and ADR-009 (Hybrid Memory Backend).
-
-- `.claude/skills/v3-memory-unification/SKILL.md`
-
-## V3 Performance Optimization
-
-Achieve aggressive v3 performance targets: 2.49x-7.47x Flash Attention speedup, 150x-12,500x search improvements, 50-75% memory reduction. Comprehensive benchmarking and optimization suite.
-
-- `.claude/skills/v3-performance-optimization/SKILL.md`
-
-## V3 Security Overhaul
-
-Complete security architecture overhaul for claude-flow v3. Addresses critical CVEs (CVE-1, CVE-2, CVE-3) and implements secure-by-default patterns. Use for security-first v3 implementation.
-
-- `.claude/skills/v3-security-overhaul/SKILL.md`
-
-## V3 Swarm Coordination
-
-15-agent hierarchical mesh coordination for v3 implementation. Orchestrates parallel execution across security, core, and integration domains following 10 ADRs with 14-week timeline.
-
-- `.claude/skills/v3-swarm-coordination/SKILL.md`
-
-## Verification & Quality Assurance Skill
-
-|
-
-- `.claude/skills/verification-quality/SKILL.md`
-
-<!-- autoskills:end -->
