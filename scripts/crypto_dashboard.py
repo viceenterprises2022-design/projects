@@ -1,6 +1,6 @@
 """
-Crypto Options & Liquidation Dashboard.
-Fetches and displays market data for crypto options and liquidations.
+Crypto Options & Liquidation Dashboard (Map Edition).
+Uses Order Book Depth to predict liquidation zones.
 """
 
 import time
@@ -8,7 +8,6 @@ import sys
 import requests
 import json
 import threading
-import websocket
 import logging
 import ssl
 from datetime import datetime
@@ -21,164 +20,13 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-POLL_INTERVAL = 5
+POLL_INTERVAL = 10
 console = Console(width=107)
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("requests").setLevel(logging.WARNING)
-logging.getLogger("websocket").setLevel(logging.WARNING)
-
-logging.basicConfig(
-    filename="websocket_debug.log",
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
-# ── Liquidation Collector ───────────────────────────────────────────────────
-
-class LiquidationCollector:
-    """
-    Collects real-time liquidations from Binance and Bybit via WebSockets.
-    """
-    def __init__(self, symbols=["BTC", "ETH", "SOL"]):
-        self.symbols = symbols
-        self.buffer = defaultdict(list)
-        self.max_buffer_size = 500
-        self.lock = threading.Lock()
-        self.running = True
-        
-        # Stats for UI
-        self.stats = {
-            "Binance": {"msgs": 0, "raw": 0, "status": "Disconnected", "last_msg": "Never"},
-            "Bybit": {"msgs": 0, "raw": 0, "status": "Disconnected", "last_msg": "Never"}
-        }
-        
-    def add_event(self, symbol, price, qty, exchange):
-        with self.lock:
-            self.buffer[symbol].append({
-                "price": price,
-                "qty": qty,
-                "exchange": exchange,
-                "timestamp": time.time()
-            })
-            if len(self.buffer[symbol]) > self.max_buffer_size:
-                self.buffer[symbol].pop(0)
-            
-            self.stats[exchange]["msgs"] += 1
-            self.stats[exchange]["last_msg"] = datetime.now().strftime("%H:%M:%S")
-
-    def get_events(self, symbol):
-        now = time.time()
-        with self.lock:
-            self.buffer[symbol] = [e for e in self.buffer[symbol] if now - e["timestamp"] < 86400]
-            return list(self.buffer[symbol])
-
-    def _on_binance_message(self, ws, message):
-        self.stats["Binance"]["raw"] += 1
-        try:
-            if self.stats["Binance"]["raw"] < 5:
-                logging.debug(f"Binance Raw Sample: {message[:200]}")
-            data = json.loads(message)
-            
-            # Handle stream combined format: {"stream":"...", "data":{...}}
-            if "stream" in data and "data" in data:
-                stream = data["stream"]
-                payload = data["data"]
-                if "forceOrder" in stream:
-                    order = payload.get("o", {})
-                    raw_sym = order.get("s", "")
-                    for s in self.symbols:
-                        if raw_sym == f"{s}USDT":
-                            self.add_event(s, float(order["p"]), float(order["q"]), "Binance")
-                            break
-                return
-
-            # Handle direct stream format
-            order = data.get("o")
-            if order:
-                raw_sym = order.get("s", "")
-                for s in self.symbols:
-                    if raw_sym == f"{s}USDT":
-                        self.add_event(s, float(order["p"]), float(order["q"]), "Binance")
-                        break
-        except Exception as e:
-            logging.error(f"Binance parse error: {e}")
-
-    def _on_bybit_message(self, ws, message):
-        self.stats["Bybit"]["raw"] += 1
-        try:
-            if self.stats["Bybit"]["raw"] < 5:
-                logging.debug(f"Bybit Raw Sample: {message[:200]}")
-            data = json.loads(message)
-            if "op" in data or "ret_code" in data:
-                return
-            topic = data.get("topic", "")
-            if "allLiquidation" in topic:
-                liq_data = data.get("data", {})
-                raw_sym = liq_data.get("s", "")
-                for s in self.symbols:
-                    if raw_sym == f"{s}USDT":
-                        self.add_event(s, float(liq_data["p"]), float(liq_data["v"]), "Bybit")
-                        break
-        except Exception as e:
-            logging.error(f"Bybit parse error: {e}")
-
-    def _run_binance(self):
-        # Combined stream to include ticker for health verification
-        url = "wss://fstream.binance.com/stream?streams=!forceOrder@arr/btcusdt@ticker"
-        while self.running:
-            try:
-                self.stats["Binance"]["status"] = "Connecting..."
-                ws = websocket.WebSocketApp(
-                    url, 
-                    on_message=self._on_binance_message,
-                    on_open=lambda ws: logging.info("Binance WS Opened"),
-                    on_error=lambda ws, e: logging.error(f"Binance WS Error: {e}"),
-                    on_close=lambda ws, s, m: logging.info(f"Binance WS Closed: {s} {m}")
-                )
-                self.stats["Binance"]["status"] = "Connected"
-                ws.run_forever(ping_interval=30, ping_timeout=10, sslopt={"cert_reqs": ssl.CERT_NONE})
-                self.stats["Binance"]["status"] = "Disconnected"
-            except Exception as e:
-                logging.error(f"Binance thread error: {e}")
-                self.stats["Binance"]["status"] = "Error"
-            time.sleep(5)
-
-    def _run_bybit(self):
-        url = "wss://stream.bybit.com/v5/public/linear"
-        while self.running:
-            try:
-                self.stats["Bybit"]["status"] = "Connecting..."
-                ws = websocket.WebSocketApp(
-                    url, 
-                    on_message=self._on_bybit_message,
-                    on_error=lambda ws, e: logging.error(f"Bybit WS Error: {e}"),
-                    on_close=lambda ws, s, m: logging.info(f"Bybit WS Closed: {s} {m}")
-                )
-                def on_open(ws):
-                    logging.info("Bybit WS Opened - sending sub")
-                    subs = [f"allLiquidation.{s}USDT" for s in self.symbols]
-                    ws.send(json.dumps({"op": "subscribe", "args": subs}))
-                ws.on_open = on_open
-                self.stats["Bybit"]["status"] = "Connected"
-                ws.run_forever(ping_interval=20, ping_timeout=10, sslopt={"cert_reqs": ssl.CERT_NONE})
-                self.stats["Bybit"]["status"] = "Disconnected"
-            except Exception as e:
-                logging.error(f"Bybit thread error: {e}")
-                self.stats["Bybit"]["status"] = "Error"
-            time.sleep(5)
-
-    def start(self):
-        threading.Thread(target=self._run_binance, daemon=True).start()
-        threading.Thread(target=self._run_bybit, daemon=True).start()
-
-    def stop(self):
-        self.running = False
-
-# Global collector instance
-liq_collector = LiquidationCollector()
 
 # ── Fetchers ────────────────────────────────────────────────────────────────
 
@@ -188,6 +36,15 @@ def fetch_deribit_quotes(currency):
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         return response.json()
+    except: return None
+
+def fetch_binance_depth(symbol):
+    """Fetch 1000 levels of depth to find liquidity walls."""
+    url = f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}USDT&limit=1000"
+    try:
+        r = requests.get(url, timeout=5)
+        r.raise_for_status()
+        return r.json()
     except: return None
 
 def fetch_perp_oi(symbol):
@@ -226,17 +83,26 @@ def calculate_max_pain(options_data):
         if loss < min_loss: min_loss, mp_strike = loss, ep
     return mp_strike
 
-def aggregate_liquidation_bins(symbol):
-    events = liq_collector.get_events(symbol)
-    if not events: return []
+def generate_liquidation_map(depth_data, symbol):
+    """
+    Groups order book depth into price bins to identify Liquidity Walls.
+    Walls are high-density zones where liquidations are triggered or absorbed.
+    """
+    if not depth_data: return []
+    
     bin_size = 100 if symbol == "BTC" else (10 if symbol == "ETH" else 1)
-    bins = {}
-    for e in events:
-        price = e["price"]
-        vol = price * e["qty"]
-        bin_price = int(round(price / bin_size) * bin_size)
-        bins[bin_price] = bins.get(bin_price, 0) + vol
-    return sorted(bins.items(), key=lambda x: x[1], reverse=True)[:10]
+    bins = defaultdict(float)
+    
+    # Process Bids (Buy Walls) and Asks (Sell Walls)
+    for side in ["bids", "asks"]:
+        for price_str, qty_str in depth_data.get(side, []):
+            p, q = float(price_str), float(qty_str)
+            bin_p = int(round(p / bin_size) * bin_size)
+            bins[bin_p] += (p * q)
+            
+    # Sort by notional volume (Liquidity Density)
+    sorted_bins = sorted(bins.items(), key=lambda x: x[1], reverse=True)
+    return sorted_bins[:10]
 
 # ── UI ──────────────────────────────────────────────────────────────────────
 
@@ -266,49 +132,50 @@ def make_options_table(options_data, spot_price):
         table.add_row(f"{d['C']['ltp']:,.1f}", f"{d['C']['oi']:,.1f}", f"{s:,.0f}", f"{d['P']['oi']:,.1f}", f"{d['P']['ltp']:,.1f}")
     return table
 
-def make_liquidation_table(liq_bins, perp_oi):
-    table = Table(title="Liquidation Density (Live)", expand=True)
-    table.add_column("PRICE", justify="left")
-    table.add_column("VOLUME", justify="right")
+def make_liquidation_map_table(liq_map, perp_oi):
+    table = Table(title="Liquidation Map (Liquidity Walls)", expand=True)
+    table.add_column("ZONE (PRICE)", justify="left", style="yellow")
+    table.add_column("LIQUIDITY", justify="right", style="green")
     table.add_column("DENSITY", justify="left")
-    if not liq_bins:
-        table.add_row("Waiting for data...", f"OI: {perp_oi:,.0f}", "[░░░░░░░░░░░░░░░]")
+    
+    if not liq_map:
+        table.add_row("Calculating...", f"OI: {perp_oi:,.0f}", "[░░░░░░░░░░░░░░░]")
         return table
-    max_vol = max(b[1] for b in liq_bins)
-    for price, vol in liq_bins:
-        bar_len = int((vol / max_vol) * 15)
-        table.add_row(f"{price:,.0f}", f"${vol/1e3:.1f}k" if vol < 1e6 else f"${vol/1e6:.1f}M", f"[{'█'*bar_len}{'░'*(15-bar_len)}]")
+        
+    max_liq = max(b[1] for b in liq_map)
+    for price, liq in liq_map:
+        bar_len = int((liq / max_liq) * 15)
+        bar = "█" * bar_len + "░" * (15 - bar_len)
+        percentage = (liq / max_liq) * 100
+        table.add_row(f"{price:,.0f}", f"${liq/1e6:.1f}M", f"[{bar}] {percentage:.0f}%")
     return table
 
 def render_dashboard(asset):
-    with ThreadPoolExecutor(max_workers=2) as executor:
+    with ThreadPoolExecutor(max_workers=3) as executor:
         f_deribit = executor.submit(fetch_deribit_quotes, asset)
+        f_depth = executor.submit(fetch_binance_depth, asset)
         f_oi = executor.submit(fetch_perp_oi, asset)
-        res_deribit, perp_oi = f_deribit.result(), f_oi.result()
+        
+        res_deribit, depth_data, perp_oi = f_deribit.result(), f_depth.result(), f_oi.result()
 
     data = res_deribit.get("result", []) if res_deribit else []
     spot = data[0].get("underlying_price", 0) if data else 0
     pcr, mp = calculate_pcr(data), calculate_max_pain(data)
-    liq_bins = aggregate_liquidation_bins(asset)
+    liq_map = generate_liquidation_map(depth_data, asset)
     
     timestamp = datetime.now().strftime("%H:%M:%S")
     header_text = f"[bold green]{asset}-DASHBOARD[/] | {timestamp} | SPOT: {spot:,.2f} | MAX PAIN: {mp:,.0f} | PCR: {pcr:.2f}"
-    
-    # Connection Stats
-    b_st = liq_collector.stats["Binance"]
-    y_st = liq_collector.stats["Bybit"]
-    stats_line = (f" [blue]Binance:[/] {b_st['status']} ({b_st['msgs']}/{b_st['raw']} msgs, last: {b_st['last_msg']}) | "
-                  f"[yellow]Bybit:[/] {y_st['status']} ({y_st['msgs']}/{y_st['raw']} msgs, last: {y_st['last_msg']})")
-    
-    header = Panel(Text.from_markup(f"{header_text}\n{stats_line}"), style="white")
+    header = Panel(Text.from_markup(header_text), style="white")
     
     layout = Layout()
-    layout.split_column(Layout(header, size=4), Layout(name="main"))
-    layout["main"].split_row(Layout(Panel(make_options_table(data, spot))), Layout(Panel(make_liquidation_table(liq_bins, perp_oi))))
+    layout.split_column(Layout(header, size=3), Layout(name="main"))
+    layout["main"].split_row(
+        Layout(Panel(make_options_table(data, spot))),
+        Layout(Panel(make_liquidation_map_table(liq_map, perp_oi)))
+    )
     return layout
 
 def main():
-    liq_collector.start()
     assets, idx = ["BTC", "ETH", "SOL"], 0
     try:
         with Live(render_dashboard(assets[0]), refresh_per_second=1, screen=True) as live:
