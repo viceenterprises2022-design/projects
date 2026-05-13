@@ -8,17 +8,18 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.align import Align
 from rich import box
+from rich.text import Text
 from market_engine import MarketEngine
 
 def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=7),
+        Layout(name="macro", size=8),
         Layout(name="body")
     )
     layout["body"].split_row(
-        Layout(name="XAU", ratio=2),
+        Layout(name="XAU", ratio=1),
         Layout(name="XAG", ratio=1)
     )
     return layout
@@ -41,8 +42,7 @@ def render_macro(macro_data, correlations) -> Panel:
     if not macro_data:
         table.add_row("...", "---", "---", "---")
     else:
-        # Focus on relevant macros for metals
-        for key in ["DXY", "VIX", "GOLD", "SILVER", "US30"]:
+        for key in ["DXY", "VIX", "GOLD", "SILVER", "OIL", "US30"]:
             if key in macro_data:
                 mdata = macro_data[key]
                 val = f"{mdata['current']:,.2f}"
@@ -54,16 +54,36 @@ def render_macro(macro_data, correlations) -> Panel:
             
     return Panel(table, title="[bold]Macro Environment & Gold Correlation[/]", border_style="magenta")
 
-def render_metal_panel(symbol: str, data, engine, detailed: bool = True) -> Panel:
+def make_liquidation_map_table(liq_map):
+    """Shows Buy Liquidity | Zone | Sell Liquidity depth."""
+    table = Table(expand=True, box=None, padding=(0,0))
+    table.add_column("BUY", justify="right", style="green", width=10)
+    table.add_column("ZONE", justify="center", style="yellow", width=10)
+    table.add_column("SELL", justify="left", style="red", width=10)
+    
+    if not liq_map:
+        table.add_row("-", "-", "-")
+        return table
+        
+    for price, buy, sell, total in liq_map:
+        buy_str = f"${buy/1e6:,.1f}M" if buy > 1e5 else f"${buy/1e3:,.0f}K"
+        sell_str = f"${sell/1e6:,.1f}M" if sell > 1e5 else f"${sell/1e3:,.0f}K"
+        table.add_row(buy_str, f"{price:,.1f}", sell_str)
+    return table
+
+def render_metal_panel(symbol: str, data, engine) -> Panel:
     if not data or not data.get('binance'):
         return Panel(Align.center("[yellow]Loading...[/]"), title=f"[bold yellow]{symbol}[/]")
 
     binance = data['binance']
     depth = data.get('depth')
+    liq_map = data.get('liq_map', [])
     
     # Binance data: [spot_klines, fut_klines]
-    # Metals on Binance are usually USDT pairs, check MarketEngine for exact logic if needed
-    # spot_klines[-1][4] is close
+    # Handle missing spot data gracefully (fallback already in engine, but be safe)
+    if not binance[0] or len(binance[0]) < 2:
+        return Panel(Align.center("[red]No Price Data[/]"), title=f"[bold yellow]{symbol}[/]")
+        
     spot_close = float(binance[0][-1][4])
     change = ((spot_close - float(binance[0][-2][4])) / float(binance[0][-2][4])) * 100
     
@@ -77,63 +97,59 @@ def render_metal_panel(symbol: str, data, engine, detailed: bool = True) -> Pane
     sig_color = "green" if trend_score > 0 else "red" if trend_score < 0 else "yellow"
     summary = f"[bold yellow]{symbol}[/] | [white]{spot_close:,.2f}[/] ([{sig_color}]{change:+.2f}%[/])"
     
-    table = Table(show_header=False, box=box.SIMPLE, expand=True, padding=(0, 0))
-    table.add_column("K", style="dim", width=12)
-    table.add_column("V", justify="right")
+    # Create content layout
+    content_layout = Layout()
     
-    # Technicals
-    table.add_row("TREND", f"[{sig_color}]{trend_str}[/]")
-    table.add_row("RSI (14)", f"{rsi:.1f}")
+    # Left: Technicals
+    tech_table = Table(show_header=False, box=box.SIMPLE, expand=True, padding=(0, 0))
+    tech_table.add_column("K", style="dim", width=12)
+    tech_table.add_column("V", justify="right")
+    tech_table.add_row("TREND", f"[{sig_color}]{trend_str}[/]")
+    tech_table.add_row("RSI (14)", f"{rsi:.1f}")
     st_color = "green" if st_dir == 1 else "red"
-    table.add_row("SUPERTREND", f"[{st_color}]{'BUY' if st_dir == 1 else 'SELL'}[/]")
+    tech_table.add_row("SUPERTREND", f"[{st_color}]{'BUY' if st_dir == 1 else 'SELL'}[/]")
     vwap_color = "green" if vwap_dist > 0 else "red"
-    table.add_row("VWAP DIST", f"[{vwap_color}]{vwap_dist:+.2f}%[/]")
+    tech_table.add_row("VWAP DIST", f"[{vwap_color}]{vwap_dist:+.2f}%[/]")
     
-    if detailed and depth:
-        table.add_row("", "") # Spacer
-        table.add_row("[bold cyan]ORDERBOOK (Whales)[/]", "")
-        book_skew = depth['skew']
-        bs_color = "green" if book_skew > 0.1 else "red" if book_skew < -0.1 else "white"
-        table.add_row("BOOK SKEW", f"[{bs_color}]{book_skew:+.2f}[/]")
-        
-        # Filter walls for better display
-        whale_bids = depth['bids'][:2]
-        whale_asks = depth['asks'][:2]
-        
-        for bid in whale_bids:
-            table.add_row("SUPPORT", f"[green]{bid['p']:,.2f}[/] (${bid['v']/1e6:.1f}M)")
-        for ask in whale_asks:
-            table.add_row("RESISTANCE", f"[red]{ask['p']:,.2f}[/] (${ask['v']/1e6:.1f}M)")
-            
-        if not whale_bids and not whale_asks:
-            table.add_row("WALLS", "[dim]None > $500k[/]")
+    if depth:
+        tech_table.add_row("", "")
+        tech_table.add_row("[cyan]BOOK SKEW[/]", f"{depth['skew']:+.2f}")
+        for bid in depth['bids'][:1]:
+            tech_table.add_row("SUPPORT", f"[green]{bid['p']:,.1f}[/]")
+        for ask in depth['asks'][:1]:
+            tech_table.add_row("RESISTANCE", f"[red]{ask['p']:,.1f}[/]")
 
-    return Panel(table, title=summary, border_style="yellow" if symbol == "XAU" else "white")
+    # Right: Depth Map
+    map_table = make_liquidation_map_table(liq_map)
+    
+    content_layout.split_row(
+        Layout(tech_table, ratio=1),
+        Layout(Panel(map_table, title="[dim]Depth Map[/]", border_style="dim"), ratio=1.5)
+    )
+    
+    return Panel(content_layout, title=summary, border_style="yellow" if symbol == "XAU" else "white", height=18)
 
 async def update_data(engine, layout, state):
     while True:
         try:
             data = await engine.fetch_all_data()
             state["macro"] = data["macro"]
-            # XAU correlations are in data["XAU"]["macro_corr"]
             layout["macro"].update(render_macro(data["macro"], data["XAU"]["macro_corr"]))
-            layout["XAU"].update(render_metal_panel("XAU", data["XAU"], engine, detailed=True))
-            layout["XAG"].update(render_metal_panel("XAG", data["XAG"], engine, detailed=False))
+            layout["XAU"].update(render_metal_panel("XAU", data["XAU"], engine))
+            layout["XAG"].update(render_metal_panel("XAG", data["XAG"], engine))
         except Exception as e:
-            # layout["header"].update(Panel(f"[red]Error: {e}[/]"))
+            # Silent fail to keep UI alive
             pass
         await asyncio.sleep(30)
 
 async def run_dashboard():
     console = Console()
     layout = make_layout()
-    # MarketEngine symbols for metals
     engine = MarketEngine(symbols=["XAU", "XAG"])
     
     state = {"macro": None}
     refresh_interval = 30
     
-    # Start background data update
     asyncio.create_task(update_data(engine, layout, state))
     
     with Live(layout, console=console, screen=True, refresh_per_second=1) as live:
