@@ -27,7 +27,7 @@ console = Console(width=107)
 
 logging.basicConfig(
     filename="websocket_debug.log",
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
@@ -72,6 +72,7 @@ class LiquidationCollector:
 
     def _on_binance_message(self, ws, message):
         try:
+            logging.debug(f"Binance Raw: {message[:100]}")
             data = json.loads(message)
             order = data.get("o", {})
             raw_sym = order.get("s", "")
@@ -84,6 +85,7 @@ class LiquidationCollector:
 
     def _on_bybit_message(self, ws, message):
         try:
+            logging.debug(f"Bybit Raw: {message[:100]}")
             data = json.loads(message)
             topic = data.get("topic", "")
             if "allLiquidation" in topic:
