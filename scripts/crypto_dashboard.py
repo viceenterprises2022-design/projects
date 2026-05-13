@@ -10,6 +10,7 @@ import json
 import threading
 import websocket
 import logging
+import ssl
 from datetime import datetime
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
@@ -24,6 +25,11 @@ POLL_INTERVAL = 5
 console = Console(width=107)
 
 # ── Logging ──────────────────────────────────────────────────────────────────
+
+# Silence noisy libraries
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("websocket").setLevel(logging.WARNING)
 
 logging.basicConfig(
     filename="websocket_debug.log",
@@ -46,8 +52,8 @@ class LiquidationCollector:
         
         # Stats for UI
         self.stats = {
-            "Binance": {"msgs": 0, "status": "Disconnected", "last_msg": None},
-            "Bybit": {"msgs": 0, "status": "Disconnected", "last_msg": None}
+            "Binance": {"msgs": 0, "status": "Disconnected", "last_msg": "Never"},
+            "Bybit": {"msgs": 0, "status": "Disconnected", "last_msg": "Never"}
         }
         
     def add_event(self, symbol, price, qty, exchange):
@@ -62,7 +68,7 @@ class LiquidationCollector:
                 self.buffer[symbol].pop(0)
             
             self.stats[exchange]["msgs"] += 1
-            self.stats[exchange]["last_msg"] = time.time()
+            self.stats[exchange]["last_msg"] = datetime.now().strftime("%H:%M:%S")
 
     def get_events(self, symbol):
         now = time.time()
@@ -72,7 +78,6 @@ class LiquidationCollector:
 
     def _on_binance_message(self, ws, message):
         try:
-            logging.debug(f"Binance Raw: {message[:100]}")
             data = json.loads(message)
             order = data.get("o", {})
             raw_sym = order.get("s", "")
@@ -85,7 +90,6 @@ class LiquidationCollector:
 
     def _on_bybit_message(self, ws, message):
         try:
-            logging.debug(f"Bybit Raw: {message[:100]}")
             data = json.loads(message)
             topic = data.get("topic", "")
             if "allLiquidation" in topic:
@@ -111,7 +115,8 @@ class LiquidationCollector:
                     on_close=lambda ws, s, m: logging.info(f"Binance WS Closed: {s} {m}")
                 )
                 self.stats["Binance"]["status"] = "Connected"
-                ws.run_forever(ping_interval=30, ping_timeout=10)
+                # Disable SSL verification for local environment issues
+                ws.run_forever(ping_interval=30, ping_timeout=10, sslopt={"cert_reqs": ssl.CERT_NONE})
                 self.stats["Binance"]["status"] = "Disconnected"
             except Exception as e:
                 logging.error(f"Binance thread error: {e}")
@@ -132,11 +137,11 @@ class LiquidationCollector:
                 def on_open(ws):
                     logging.info("Bybit WS Opened - sending sub")
                     subs = [f"allLiquidation.{s}USDT" for s in self.symbols]
-                    payload = {"op": "subscribe", "args": subs}
-                    ws.send(json.dumps(payload))
+                    ws.send(json.dumps({"op": "subscribe", "args": subs}))
                 ws.on_open = on_open
                 self.stats["Bybit"]["status"] = "Connected"
-                ws.run_forever(ping_interval=20, ping_timeout=10)
+                # Disable SSL verification for local environment issues
+                ws.run_forever(ping_interval=20, ping_timeout=10, sslopt={"cert_reqs": ssl.CERT_NONE})
                 self.stats["Bybit"]["status"] = "Disconnected"
             except Exception as e:
                 logging.error(f"Bybit thread error: {e}")
@@ -270,7 +275,7 @@ def render_dashboard(asset):
     # Connection Stats
     b_st = liq_collector.stats["Binance"]
     y_st = liq_collector.stats["Bybit"]
-    stats_line = f" [blue]Binance:[/] {b_st['status']} ({b_st['msgs']} evts) | [yellow]Bybit:[/] {y_st['status']} ({y_st['msgs']} evts)"
+    stats_line = f" [blue]Binance:[/] {b_st['status']} ({b_st['msgs']} evts, last: {b_st['last_msg']}) | [yellow]Bybit:[/] {y_st['status']} ({y_st['msgs']} evts, last: {y_st['last_msg']})"
     
     header = Panel(Text.from_markup(f"{header_text}\n{stats_line}"), style="white")
     
@@ -289,7 +294,6 @@ def main():
                 time.sleep(POLL_INTERVAL)
                 idx = (idx + 1) % len(assets)
     except KeyboardInterrupt:
-        liq_collector.stop()
         sys.exit(0)
 
 if __name__ == "__main__":
