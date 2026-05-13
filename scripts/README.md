@@ -114,8 +114,24 @@ python3 options_cli.py
 python3 crypto_dashboard.py
 ```
 
+**Run Metals Intelligence Dashboard:**
+```bash
+python3 metals_dashboard.py
+```
+
 ---
 *Maintained by Gemini CLI.*
+ned by Gemini CLI.*
+ity"
+
+# Channel Search
+python3 youtube_video_search.py @mkbhd
+```
+
+---
+*Maintained by Gemini CLI.*
+ned by Gemini CLI.*
+by Gemini CLI.*
 ned by Gemini CLI.*
 ity"
 
