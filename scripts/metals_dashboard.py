@@ -130,12 +130,13 @@ def render_metal_panel(symbol: str, data, engine) -> Panel:
     # Right: Depth Map
     map_table = make_liquidation_map_table(liq_map)
     
-    content_layout.split_row(
-        Layout(tech_table, ratio=2),
-        Layout(Panel(map_table, title="[dim]Depth Map[/]", border_style="dim"), ratio=3)
+    # Stack Technicals and Depth Map vertically
+    content_layout.split_column(
+        Layout(tech_table, ratio=1),
+        Layout(Panel(map_table, title="[dim]Depth Map[/]", border_style="dim"), ratio=2)
     )
     
-    return Panel(content_layout, title=summary, border_style="yellow" if symbol == "XAU" else "white", height=18)
+    return Panel(content_layout, title=summary, border_style="yellow" if symbol == "XAU" else "white")
 
 async def update_data(engine, layout, state):
     while True:
@@ -183,4 +184,6 @@ if __name__ == "__main__":
     try:
         asyncio.run(run_dashboard())
     except KeyboardInterrupt:
+        pass
+
         pass
