@@ -33,7 +33,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 
 | Script | Description |
 |:--- |:--- |
-| `crypto_dashboard.py` | **Crypto Depth Map**. Multi-asset terminal dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls). Displays Buy vs Sell liquidity breakdown for high-resolution market structure analysis. 15s parallel polling. |
+| `crypto_dashboard.py` | **Unified Crypto Depth Map**. Simultaneous BTC, ETH, and SOL dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls) with 10-level depth. Displays Buy vs Sell breakdown to identify Support/Resistance. Features a live poll countdown and 15s parallel updates. |
 
 ### 🛠️ Utilities & Helpers
 | Script | Description |
