@@ -15,12 +15,21 @@ def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=8),
+        Layout(
+            Panel(Align.center("[yellow]Loading Macro & Correlation...[/]"), title="Macro Intelligence", border_style="magenta"),
+            name="macro", size=8
+        ),
         Layout(name="body")
     )
     layout["body"].split_row(
-        Layout(name="XAU", ratio=1),
-        Layout(name="XAG", ratio=1)
+        Layout(
+            Panel(Align.center("[yellow]Loading XAU Data...[/]"), title="XAU | Gold", border_style="yellow"),
+            name="XAU", ratio=1
+        ),
+        Layout(
+            Panel(Align.center("[yellow]Loading XAG Data...[/]"), title="XAG | Silver", border_style="white"),
+            name="XAG", ratio=1
+        )
     )
     return layout
 
@@ -80,7 +89,6 @@ def render_metal_panel(symbol: str, data, engine) -> Panel:
     liq_map = data.get('liq_map', [])
     
     # Binance data: [spot_klines, fut_klines]
-    # Handle missing spot data gracefully (fallback already in engine, but be safe)
     if not binance[0] or len(binance[0]) < 2:
         return Panel(Align.center("[red]No Price Data[/]"), title=f"[bold yellow]{symbol}[/]")
         
@@ -123,8 +131,8 @@ def render_metal_panel(symbol: str, data, engine) -> Panel:
     map_table = make_liquidation_map_table(liq_map)
     
     content_layout.split_row(
-        Layout(tech_table, ratio=1),
-        Layout(Panel(map_table, title="[dim]Depth Map[/]", border_style="dim"), ratio=1.5)
+        Layout(tech_table, ratio=2),
+        Layout(Panel(map_table, title="[dim]Depth Map[/]", border_style="dim"), ratio=3)
     )
     
     return Panel(content_layout, title=summary, border_style="yellow" if symbol == "XAU" else "white", height=18)
@@ -137,8 +145,7 @@ async def update_data(engine, layout, state):
             layout["macro"].update(render_macro(data["macro"], data["XAU"]["macro_corr"]))
             layout["XAU"].update(render_metal_panel("XAU", data["XAU"], engine))
             layout["XAG"].update(render_metal_panel("XAG", data["XAG"], engine))
-        except Exception as e:
-            # Silent fail to keep UI alive
+        except Exception:
             pass
         await asyncio.sleep(30)
 
@@ -150,6 +157,18 @@ async def run_dashboard():
     state = {"macro": None}
     refresh_interval = 30
     
+    # Fetch initial data before entering Live loop
+    console.print("[yellow]Initializing data...[/]")
+    try:
+        data = await engine.fetch_all_data()
+        state["macro"] = data["macro"]
+        layout["macro"].update(render_macro(data["macro"], data["XAU"]["macro_corr"]))
+        layout["XAU"].update(render_metal_panel("XAU", data["XAU"], engine))
+        layout["XAG"].update(render_metal_panel("XAG", data["XAG"], engine))
+    except Exception as e:
+        console.print(f"[red]Initialization error: {e}[/]")
+    
+    # Start background task for updates
     asyncio.create_task(update_data(engine, layout, state))
     
     with Live(layout, console=console, screen=True, refresh_per_second=1) as live:

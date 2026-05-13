@@ -139,19 +139,30 @@ class MarketEngine:
                 else:
                     depth_tasks.append(self.fetch_binance_depth(session, s))
             
-            binance_results = await asyncio.gather(*binance_tasks)
-            option_results = await asyncio.gather(*option_tasks)
-            depth_results = await asyncio.gather(*depth_tasks)
-            macro_results = await self.fetch_macro_data()
+            # Gather everything at once to ensure all coroutines are awaited
+            # even if one of them fails.
+            results = await asyncio.gather(
+                asyncio.gather(*binance_tasks),
+                asyncio.gather(*option_tasks),
+                asyncio.gather(*depth_tasks),
+                self.fetch_macro_data(),
+                return_exceptions=True
+            )
+            
+            # Unpack results, handling potential exceptions
+            binance_results = results[0] if not isinstance(results[0], Exception) else [ (None, None) for _ in self.symbols ]
+            option_results = results[1] if not isinstance(results[1], Exception) else [ None for _ in self.symbols ]
+            depth_results = results[2] if not isinstance(results[2], Exception) else [ None for _ in self.symbols ]
+            macro_results = results[3] if not isinstance(results[3], Exception) else {}
             
             processed = {}
             for i, symbol in enumerate(self.symbols):
                 processed[symbol] = {
-                    "binance": binance_results[i],
-                    "options": self.process_options(option_results[i]),
-                    "depth": self.process_depth(depth_results[i], binance_results[i]),
-                    "liq_map": self.generate_liquidation_map(depth_results[i], symbol),
-                    "macro_corr": self.calculate_macro_correlations(symbol, binance_results[i], macro_results)
+                    "binance": binance_results[i] if i < len(binance_results) else (None, None),
+                    "options": self.process_options(option_results[i] if i < len(option_results) else None),
+                    "depth": self.process_depth(depth_results[i] if i < len(depth_results) else None, binance_results[i] if i < len(binance_results) else (None, None)),
+                    "liq_map": self.generate_liquidation_map(depth_results[i] if i < len(depth_results) else None, symbol),
+                    "macro_corr": self.calculate_macro_correlations(symbol, binance_results[i] if i < len(binance_results) else (None, None), macro_results)
                 }
             
             processed["macro"] = macro_results
