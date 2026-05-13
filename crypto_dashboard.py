@@ -187,7 +187,7 @@ def render_full_dashboard():
 
     root = Layout()
     root.split_column(
-        Layout(Text(f"CRYPTO DEPTH MAP | {datetime.now().strftime('%H:%M:%S')}", justify="center", style="bold reverse"), size=1),
+        Layout(Text(f"CRYPTO DEPTH MAP | {datetime.now().strftime('%H:%M:%S')} | POLLING: {POLL_INTERVAL}s", justify="center", style="bold reverse"), size=1),
         Layout(name="assets")
     )
     root["assets"].split_column(
