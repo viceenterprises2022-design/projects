@@ -38,6 +38,25 @@ Installed via `affaan-m/everything-claude-code` (full profile). Source cloned at
 
 ---
 
+## agentmemory — Long-Term Memory Layer
+
+Project uses `@agentmemory/agentmemory` for cross-session, cross-agent persistence.
+
+**Config:**
+- **Daemon:** Runs on `:3111` (REST) and `:3113` (Viewer)
+- **Settings:** `~/.agentmemory/.env` and `~/.agentmemory/preferences.json`
+- **Features:** Graph extraction ENABLED (`GRAPH_EXTRACTION_ENABLED=true`), hybrid search (BM25 + Vector), temporal-graph recall.
+- **Wired Agents:** Claude Code, Cursor, Gemini CLI, Codex.
+
+**Commands:**
+```bash
+agentmemory status      # check health + memory count
+agentmemory stop        # kill worker
+npx @agentmemory/mcp    # start standalone MCP shim
+```
+
+---
+
 ## Repository Overview
 
 Monorepo of independent projects: trading bots, financial analysis, AI agents, and design tooling.
