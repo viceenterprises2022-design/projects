@@ -1,4 +1,6 @@
-## graphify
+## Tools
+- **Agentfield CLI (`af`):** Installed 2026-05-18.
+- **graphify**
 
 This project has a graphify knowledge graph at graphify-out/.
 
