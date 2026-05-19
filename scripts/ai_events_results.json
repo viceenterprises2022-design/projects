@@ -70,6 +70,16 @@
     "is_online": true
   },
   {
+    "title": "How to Build a Workspace Agent for Higher Education - Blog | OpenAI Academy",
+    "url": "https://academy.openai.com/en/public/clubs/higher-education-05x4z/blogs/how-to-build-a-workspace-agent-for-higher-education-2026-05-06",
+    "highlights": [
+      "How to Build a Workspace Agent for Higher Education - Blog | OpenAI Academy\n[...]\nChatGPT Edu Launch Guide for Higher Ed Universities\n[...]\nBy Kirk Gulezian \u2022 Aug 22nd, 2025 \u2022 Views 27.8K\n[...]\nChatGPT Edu Launch Guide for Higher Ed Universities\n[...]\nBy Kirk Gulezian \u2022 Aug 22nd, 2025 \u2022 Views 27.8K"
+    ],
+    "score": null,
+    "published_date": "2026-05-06T15:44:18.000Z",
+    "is_online": false
+  },
+  {
     "title": "How to Break into an AI Career in 10 Weeks Tickets, Wednesday, June 10 \u00a0\u2022\u00a0 12 AM - 1 AM UTC | Eventbrite",
     "url": "https://www.eventbrite.com/e/how-to-break-into-an-ai-career-in-10-weeks-tickets-1988801829810",
     "highlights": [
@@ -160,6 +170,16 @@
     "is_online": true
   },
   {
+    "title": "Anthropic Launches \"Code w/ Claude 2026\" \u2014 The Next Chapter of Agentic Coding Begins in SF",
+    "url": "https://ai-know.info/en/posts/2026-05-07-code-with-claude-2026-sf/",
+    "highlights": [
+      "Code w/ Claude 20\n[...]\nChapter of Agentic Coding\n[...]\n## Anthropic Kicks Off Its First Annual Developer Conference Across Three Continents\n[...]\nOn May 6, 2026, Anthropic launched its inaugural developer conference, \u201cCode w/ Claude 2026,\u201d in San Francisco. Chief Product Officer Ami Vora, Claude Code head Boris Cherny, and Claude Platform product head Angela Jiang took the stage to outline the next phase of AI Coding Agents development.\n[...]\nThe event continues in London (May 19) and Tokyo (June 10)\u2014marking Anthropic\u2019s first-ever global developer conference across three continents.\n[...]\nannual conference is\n[...]\ns declaration that the developer community sits at the core\n[...]\nBy moving before OpenAI DevDay (scheduled September 29), Anthropic is racing to build developer relationships early in the ecosystem formation window. Claude Code\u2014now available to Claude Pro subscribers after a period of uncertainty\u2014has grown rapidly, and the conference signals Anthropic\u2019s intent to match that momentum with community infrastructure.\n[...]\nThe inclusion of Tokyo (June 10) in the three-city lineup is a notable signal for the Japanese developer community. It reflects Anthropic\u2018s intent to build real developer relations in Japan\u2014and offers AI engineers in Tokyo one of the few opportunities to engage directly with the team building AI Coding Agents at the frontier.\n[...]\nThe follow-up announcements from Code w/ Claude 2026 are worth watching closely."
+    ],
+    "score": null,
+    "published_date": "2026-05-07T00:00:00.000Z",
+    "is_online": false
+  },
+  {
     "title": "Anthropic launches Claude for Small Business with PayPal course",
     "url": "https://www.resultsense.com/news/2026-05-14-anthropic-claude-small-business-launch/",
     "highlights": [
@@ -238,6 +258,26 @@
     "score": null,
     "published_date": "2026-05-07T12:11:57.000Z",
     "is_online": true
+  },
+  {
+    "title": "[GCP Practice][BwAI] AI-Powered Development: Quickly Deploy a LINE Bot Cloud Backup Tool with Gemini CLI - DEV Community",
+    "url": "https://dev.to/gde/gcp-practicebwai-ai-powered-development-quickly-deploy-a-line-bot-cloud-backup-tool-with-4ghi",
+    "highlights": [
+      "In the upcoming Build With AI 2026 workshop, we're bringing a very practical project: the LINE Bot File Backup Robot. It allows you to directly upload images and files from your LINE chatroom to Google Drive, and it will automatically create folders by month to keep things organized.\n[...]\nThis is the core spirit that Build With AI 2026 wants to convey: let AI handle the tedious DevOps chores, so that developers can focus more energy on innovation in core business logic."
+    ],
+    "score": null,
+    "published_date": "2026-05-07T04:36:40.000Z",
+    "is_online": false
+  },
+  {
+    "title": "[Workshop][Gemini CLI] Building with AI 2026: Hands-on with Gemini CLI and Official MCP to Launch a Google Drive LINE Bot from Scratch",
+    "url": "https://dev.to/gde/workshopgemini-cli-building-with-ai-2026-hands-on-with-gemini-cli-and-official-mcp-to-launch-a-296d",
+    "highlights": [
+      "program of three days a week, and if you do well, you have the opportunity to become a long-term partner. Finally, thank you to all the developers who came to the site and did hands-on together \u2014 those who are willing to spend their weekends on \"using new tools to get through the entire pipeline\" are always the most admirable group in the community. See you next time! Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's permalink. Hide child comments as well Confirm For further actions, you may consider blocking this person and/or reporting abuse We're a place where coders share, stay up-to-date and grow their careers. Log in Create account"
+    ],
+    "score": null,
+    "published_date": "2026-05-15T00:45:26.000Z",
+    "is_online": false
   },
   {
     "title": "Google DeepMind Gemini for Developers Specialization 2026: Become an AI App Builder with Gemini API and Google AI Studio - Opportunities for Youth",
@@ -328,6 +368,66 @@
     "score": null,
     "published_date": "2026-05-05T00:00:00.000Z",
     "is_online": true
+  },
+  {
+    "title": "2025 School on Analytical Connectionism | Analytical Connectionism",
+    "url": "https://www.analytical-connectionism.net/school/2025/",
+    "highlights": [
+      "2025 School on Analytical Connectionism | Analytical Connectionism 2025 School on Analytical Connectionism | Analytical Connectionism\n[...]\n# School on Analytical Connectionism \u2014 2025 \u2014\n[...]\nUniversity College London \u2502 25 Aug \u2013 5 Sep 2025\n[...]\n25 Aug \u2013 5 Sep\n[...]\n25 Aug \u2013 5 Sep2025\n[...]\n18 Aprtoday\n[...]\nAnalytical Connectionism is a 2-week summer course on analytical tools, including methods from statistical physics and probability theory, for probing neural networks and higher-level cognition. The course brings together neuroscience, psychology and machine-learning communities, and introduces attendees to analytical methods for neural network analysis and connectionist theories of higher-level cognition and psychology.\n[...]\n- attend lectures given by leading researchers on theoretical methods and applications, key\n[...]\nist models, and experimental observations;\n- participate in tutorials, Q&A sessions, and panel discussions;\n- present to and engage with lecturers\n[...]\nother participants during a poster session;\n- work in a group with other participants on a novel research project, mentored\n[...]\n## Important dates\n[...]\n| Milestone | Date |\n| --- | --- |\n| Application deadline | 18 Apr 2025 |\n| Outcome communicated | 25 May 2025 |\n| Deadline to accept admission | 15 Jun 2025 |\n| School begins | 25 Aug 2025 |\n[...]\n## Lecturers\n[...]\n#### Core lecturersP = 3\n[...]\nR\u00e9mi MonassonCNRS & Ecole Normale Sup\u00e9rieure\n[...]\nTim RogersUniversity of Wisconsin-Madison\n[...]\nTali SharotUCL & MIT\n[...]\n#### Topic lecturersP = 9\n[...]\nMerav AhissarThe Hebrew University of Jerusalem\n[...]\nXuechunzi BaiUniversity of Chicago\n[...]\nTiago MaiaUniversity of Lisbon\n[...]\nAngela RadulescuIcahn School of Medicine at Mt. Sinai\n[...]\n## Admissions & practicalities\n[...]\nThese components will be delivered as a set of core lectures in the first week, followed by a set of topic lectures in the second week."
+    ],
+    "score": null,
+    "published_date": "2026-05-02T22:20:51.000Z",
+    "is_online": false
+  },
+  {
+    "title": "JT IRREGULARS: What's next for AI at DeepMind, Google's artificial intelligence lab | 60 Minutes",
+    "url": "https://www.jtirregulars.com/2025/04/whats-next-for-ai-at-deepmind-googles.html",
+    "highlights": [
+      "JT IRREGULARS: What's next for AI at DeepMind, Google's artificial intelligence lab | 60 Minutes\n\nJT IRREGULARS: What's next for AI at DeepMind, Google's artificial intelligence lab | 60 Minutes\n#\n\nJT IRREGULARS\n\nInfotainment - Racine, Wisconsin, USA\n## Monday, April 21, 2025\n###\nWhat's next for AI at DeepMind, Google's artificial intelligence lab | 60 Minutes\nEmbedded YouTube video\nPosted by\n\nOrbsCorbs\n\nat\n5:00\u202fAM\n\n\n\nEmail ThisBlogThis!Share to XShare to FacebookShare to Pinterest\nLabels:\n60 Minutes,\nAGI,\nAI,\nApp,\nCBS News,\nChatbot,\nData,\nDeepMind,\nGoogle,\nInternet,\nIQ,\nLaboratory,\nLife,\nNobel Prize,\nPhilosophy,\ntraining,\nYouTube\n#### No comments:\nPost a Comment\n[...]\nNewer Post"
+    ],
+    "score": null,
+    "published_date": "2026-05-04T05:00:00.000Z",
+    "is_online": false
+  },
+  {
+    "title": "Chailis.com | A blog about Digital Marketing and Fintech: Athens Innovation Summit 2025 - Sir Demis Hassabis & Greek Prime Minister Kyriakos Mitsotakis",
+    "url": "http://www.chailis.com/2025/09/athens-innovation-demis-hassabis-kyriakos-mitsotakis-google-deepmind.html",
+    "highlights": [
+      "Chailis.com | A blog about Digital Marketing and Fintech: Athens Innovation Summit 2025 - Sir Demis Hassabis & Greek Prime Minister Kyriakos Mitsotakis\n\nOn Friday September 12th 2025 I had the great privilege of attending a landmark conversation about the future of AI and it's impact on our society between:\n\n- Kyriakos Mitsotakis, Prime Minister of Greece- Sir Demis Hassabis, CEO of Google DeepMind & 2024 Nobel Laureate. The event took place at one of the most amazing venues in the world, the Odeon of Herodes Atticus in Athens, was moderated by Linda Rottenberg, CEO of Endeavor Global and hosted by Peggy Antonakou, Regional General Manager of Google in Greece.\n\n| Marios Chailis, Sir Demis Hassabis & Peggy Antonakou |\n| --- |\n\nSir Demis Hassabis is an artificial intelligence researcher, entrepreneur, and Nobel Laureate. He is the co-founder and CEO of Google DeepMind. DeepMind, one of the world\u2019s leading AI companies, was founded in 2010 and acquired by Google in January 2014, and is now central to Google\u2019s AI efforts.\n\nDeepMind has achieved numerous landmark AI breakthroughs such as AlphaGo, the first program to beat the world champion at the game of Go, and AlphaFold, which solved the 50-year grand challenge of protein structure prediction by accurately predicting the 3D shape of proteins, critical for disease understanding and drug discovery.\n\nDemis has won many prestigious international awards for his research work including the 2024 Nobel Prize in Chemistry for protein structure prediction. In 2017 Demis featured in the Time 100 list of most influential people, and in 2024 he was awarded a knighthood for services to AI.\n\nLinda Rottenberg, Kyriakos Mitsotakis & Sir Demis Hassabis\n\nat Athens Innovation Summit 2025"
+    ],
+    "score": null,
+    "published_date": "2026-05-11T06:17:00.000Z",
+    "is_online": false
+  },
+  {
+    "title": "AlphaEvolve: Gemini-powered coding agent scaling impact across fields",
+    "url": "https://deepmind.google/blog/alphaevolve-impact/",
+    "highlights": [
+      "AlphaEvolve: Gemini-powered coding agent scaling impact across fields \u2014 Google DeepMind May"
+    ],
+    "score": null,
+    "published_date": "2026-05-07T15:00:00.000Z",
+    "is_online": false
+  },
+  {
+    "title": "Michael Faraday Prize lecture on contemporary AI systems",
+    "url": "https://community.deeplearning.ai/t/michael-faraday-prize-lecture-on-contemporary-ai-systems/892255",
+    "highlights": [
+      "# Michael Faraday Prize lecture on contemporary AI systems - AI Discussions - DeepLearning.AI\n\nPublished: 2026-05-16T17:17:22+00:00\n\n## Summary\n\nAwardised for the 2025 Michael Faraday Prize, Michael Wolff, has delivered a talk on contemporary AI systems, focusing on sharpening our thinking and understanding each other. The talk was delivered with humour, sincerity, and forward-thinking approach. Wolff's focus is on the future of the industry.\n\n## Story\n\nMichael Faraday Prize lecture on contemporary AI systems - AI Discussions - DeepLearning.AI Skip to last reply Skip to top Categories - AI Discussions - All categories Tags #### Enroll Now! # Michael Faraday Prize lecture on contemporary AI systems 1 You have selected 0 posts. 1 / 2 May 16 Reply DeepLearning.AI Forum To Grow and Connect the Global AI Community Company Invalid date Invalid date\n\n## Entities\n\n### People\n\n- Michael Wooldridge"
+    ],
+    "score": null,
+    "published_date": "2026-05-16T17:17:22.000Z",
+    "is_online": false
+  },
+  {
+    "title": "Shaping the future of AI interaction by reimagining the mouse pointer \u2014 Google DeepMind",
+    "url": "https://deepmind.google/blog/ai-pointer/",
+    "highlights": [
+      "Shaping the future of AI interaction by reimagining the mouse pointer \u2014 Google DeepMind\n[...]\nMay 12, 2026 Research\n[...]\n# Reimagining the mouse pointer for the AI era\n[...]\nToday, we\u2019re outlining the underlying principles guiding our thinking on future user interfaces, and sharing experimental demos of an AI-enabled pointer, powered by Gemini. For example, you could visit Google AI Studio to edit an image or find places on the map, just by pointing and speaking.\n[...]\n## Applying this work in our products\n[...]\nWe are now integrating these principles to reimagine pointing in Chrome and our new Googlebook laptop experience. Starting today, instead of writing a complex prompt, you can now use your pointer to ask Gemini in Chrome about the part of the webpage you care about. For example, you can select a few products on a page and ask to compare, or point to where you want to visualize a new couch in your living room. Similarly, we'll soon roll out Magic Pointer in Googlebook, allowing users to harness Gemini at their fingertips for a more intuitive experience. Because there are so many other potentially great applications, we'll continue to test future concepts across our platforms, including Google Labs\u2019 Disco.\n[...]\nTry the AI-enabled pointer in Google AI Studio"
+    ],
+    "score": null,
+    "published_date": "2026-05-12T18:00:00.000Z",
+    "is_online": false
   },
   {
     "title": "Learn foundational prompting techniques in AI Prompting For Everyone!",
@@ -470,6 +570,16 @@
     "is_online": true
   },
   {
+    "title": "How To Build Your Own Claude Code Tickets, Thursday, May 21 \u00a0\u2022\u00a0 7 PM - 9 PM | Eventbrite",
+    "url": "https://www.eventbrite.com/e/how-to-build-your-own-claude-code-tickets-1989726617876",
+    "highlights": [
+      "How To Build Your Own Claude Code Tickets, Thursday, May 21 \u2022 7 PM - 9 PM | Eventbrite\n[...]\n# How To Build Your Own Claude Code\n[...]\nTech Hub OrlandoOrlando, FL\n[...]\nThursday, May 21 \u2022 7 PM - 9 PM\n[...]\nWe will be going over how to build a minimal agent harness that works with both cloud models and locally hosted models.\n[...]\nPizza and light refreshments will be provided\n[...]\nWe will be going over how to build a minimal agent harness that works with both cloud models and locally hosted models.\n[...]\nPizza and light refreshments will be provided.\n[...]\n## Good to know\n[...]\n- Updates\n- 2 hours\n- In person\n[...]\n- 2 hours\n- In person\n[...]\n### Tech Hub Orlando\n[...]\n36 West Pine Street\n[...]\nOrlando, FL 32801\n[...]\nReport this event"
+    ],
+    "score": null,
+    "published_date": "2026-05-16T02:07:11.000Z",
+    "is_online": false
+  },
+  {
     "title": "AI Literacy for Entrepreneurs Tickets, Saturday, June 13-Saturday, June 27 \u00a0\u2022\u00a0 9:30 AM-1:45 PM | Eventbrite",
     "url": "https://www.eventbrite.com/e/ai-literacy-for-entrepreneurs-tickets-1988953113303",
     "highlights": [
@@ -538,6 +648,16 @@
     "score": null,
     "published_date": "2026-05-15T14:01:54.000Z",
     "is_online": true
+  },
+  {
+    "title": "Introduction to AI and Large Language Models (ChatGPT and NotebookLM)\n       - University of Oslo Library",
+    "url": "https://www.ub.uio.no/english/courses-events/courses/llm/2026-05-26-intro.html",
+    "highlights": [
+      "Introduction to AI and Large Language Models (ChatGPT and NotebookLM) - University of Oslo Library\n[...]\n# Introduction to AI and Large Language Models (ChatGPT and NotebookLM)\n[...]\nAre you curious about how ChatGPT and other large language models work? Do you want to get started using AI tools in a responsible way? This course will give an introduction to AI and Large Language Models (LLMs) like ChatGPT, NotebookLM and Copilot.\n[...]\nTime and place: May 26, 2026 12:15 PM \u2013 3:00 PM, Domus Juridica, Room 1101\n[...]\nThis course will give an introduction to AI and Large Language Models (LLMs) like ChatGPT, NotebookLM and Copilot. The course is divided into a theoretical and a practical part. First, we\u2019ll talk a bit about how language models work, and what possibilities and limitations they have. Then we\u2019ll demonstrate some practical usage, with the main focus on NotebookLM. The course concludes with exercises, including tasks in GPT UiO and NotebookLM.\n[...]\n| 45 min | How language models work |\n| --- | --- |\n| 15 min | Break |\n| 45 min | GPT UiO and NotebookLM, exercises |\n| 15 min | Break |\n| 45 min | NotebookLM and Google Scholar, exercises |\n[...]\n- No prior knowledge is required.\n- Format: In-person course\n- Bring: Laptop\n- To use NotebookLM, you must consent to UiO sharing your email address with Google Workspace. Go to Consent for services at UiO and give your \"Consent for the use of Google Workspace at UiO.\" After 15 minutes, you can log in to Google services using your @uio.no (Feide ID).\n[...]\nPublished Jan. 13, 2026 12:38 PM - Last modified Mar. 25, 2026 1:18 PM"
+    ],
+    "score": null,
+    "published_date": "2026-05-26T00:00:00.000Z",
+    "is_online": false
   },
   {
     "title": "AI Agents Engineering Course \u2013 Live Training | Isha",
