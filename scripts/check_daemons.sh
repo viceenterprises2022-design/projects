@@ -6,7 +6,9 @@ SERVICES=(
     "clawdi-serve-claude_code.service"
     "clawdi-serve-codex.service"
     "clawdi-serve-gemini.service"
+    "clawdi-serve-antigravity.service"
     "multica-daemon.service"
+
     "agentmemory-backend.service"
     "agentmemory-ui.service"
     "gbrain-autopilot.service"

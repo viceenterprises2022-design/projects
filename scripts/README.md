@@ -52,7 +52,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 - **Dashboard**: [cloud.clawdi.ai](https://cloud.clawdi.ai/)
 - **Active Agents**: Claude Code, Codex, Hermes.
 - **Live Sync**: Daemons managed via `systemd` (`clawdi serve`).
-- **Known Issue**: Gemini CLI sync in `clawdi` v0.5.7 is currently mapped to Hermes logic (Bug). Actual Gemini sessions do not sync to cloud yet.
+- **Known Issue**: Gemini CLI and Antigravity CLI sync in `clawdi` v0.5.7 is currently mapped to Hermes logic (Bug). Actual sessions do not sync to cloud yet.
 
 ---
 
@@ -120,25 +120,9 @@ python3 metals_dashboard.py
 ```
 
 ---
-*Maintained by Gemini CLI.*
-ned by Gemini CLI.*
-ity"
 
-# Channel Search
-python3 youtube_video_search.py @mkbhd
-```
+### ⚠️ Migration Note: Gemini CLI to Antigravity CLI
+Gemini CLI is being sunset on June 18, 2026. This project has been migrated to support the new Go-based **Antigravity CLI**. Legacy `.gemini` configurations are deprecated; please use the new `.agent` configurations. System-level extensions must be manually ported to the Antigravity Plugin format.
 
 ---
-*Maintained by Gemini CLI.*
-ned by Gemini CLI.*
-by Gemini CLI.*
-ned by Gemini CLI.*
-ity"
-
-# Channel Search
-python3 youtube_video_search.py @mkbhd
-```
-
----
-*Maintained by Gemini CLI.*
-ned by Gemini CLI.*
+*Maintained by Antigravity CLI (formerly Gemini CLI).*
