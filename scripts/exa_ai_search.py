@@ -2,6 +2,8 @@
 """Exa AI search: find online events & classes from major AI companies."""
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 import json
 from datetime import datetime, timezone
 from typing import Optional
@@ -13,7 +15,7 @@ from rich import box
 
 console = Console()
 
-EXA_API_KEY = os.environ.get("EXA_API_KEY", "b8556e11-bed3-4241-bb0e-27fcc3d09972")
+EXA_API_KEY = os.environ.get("EXA_API_KEY")
 
 AI_COMPANIES = [
     "OpenAI",

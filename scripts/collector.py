@@ -19,13 +19,15 @@ import json
 import argparse
 import sys
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Ensure we can import alphaedge_db from same dir
 sys.path.insert(0, os.path.dirname(__file__))
 import alphaedge_db as db
 
 # ── Config ────────────────────────────────────────────────────────────────────
-UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
+UPSTOX_TOKEN = os.environ.get("UPSTOX_TOKEN")
 UH = {"Authorization": f"Bearer {UPSTOX_TOKEN}", "Accept": "application/json"}
 
 INSTRUMENTS = {
