@@ -36,8 +36,15 @@ HEADERS = {
 
 # ── Config ────────────────────────────────────────────────────────────────────
 INDICES = {
-    "NIFTY 50": "NSE_INDEX|Nifty 50",
-    "NIFTY BANK": "NSE_INDEX|Nifty Bank"
+    "NIFTY 50":   "NSE_INDEX|Nifty 50",
+    "NIFTY BANK": "NSE_INDEX|Nifty Bank",
+    "SENSEX":     "BSE_INDEX|SENSEX"
+}
+
+INDEX_MENU = {
+    "1": "NIFTY 50",
+    "2": "NIFTY BANK",
+    "3": "SENSEX"
 }
 
 # ── Helper for HTTP Fetching ──────────────────────────────────────────────────
@@ -115,29 +122,21 @@ def render_header(state) -> Panel:
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     active_idx = state["active_idx"]
     status_msg = state["status"]
-    
+
     status_styled = "[bold green]ONLINE[/]" if "error" not in status_msg.lower() else f"[bold red]ERROR: {status_msg}[/]"
-    
-    # Render mini-banners for both indices
-    banners = []
-    for idx_name, idx_key in INDICES.items():
-        spot = state["spots"].get(idx_name, 0.0)
-        chg = state["spots_chg"].get(idx_name, 0.0)
-        chg_color = "green" if chg >= 0 else "red"
-        
-        border_style = "bold yellow" if idx_name == active_idx else "dim white"
-        active_indicator = "●" if idx_name == active_idx else "○"
-        
-        banners.append(f"[{border_style}]{active_indicator} {idx_name}: {spot:,.2f} ({chg:+.2f}%)[/{border_style}]")
-        
-    banners_str = "  │  ".join(banners)
+
+    spot = state["spots"].get(active_idx, 0.0)
+    chg = state["spots_chg"].get(active_idx, 0.0)
+    chg_color = "green" if chg >= 0 else "red"
     expiry_info = f"Expiry: [bold magenta]{state['current_expiry']}[/]" if state['current_expiry'] else "Expiry: ---"
-    
+
     header_text = Text.from_markup(
-        f"[bold cyan]AlphaEdge F&O Breakout Scanner 2.0[/]  │  {banners_str}  │  {expiry_info}\n"
-        f"Time: {now}  │  Auto-Switching index in {state['switch_in']}s  │  Status: {status_styled}"
+        f"[bold cyan]AlphaEdge F&O Breakout Scanner 2.0[/]  │  "
+        f"[bold yellow]● {active_idx}[/]: [bold white]{spot:,.2f}[/]  "
+        f"[{chg_color}]({chg:+.2f}%)[/{chg_color}]  │  {expiry_info}\n"
+        f"Time: {now}  │  Status: {status_styled}"
     )
-    
+
     return Panel(
         Align.center(header_text, vertical="middle"),
         style="cyan",
@@ -486,28 +485,28 @@ def process_option_chain(chain_data, spot):
 # ── One-shot pre-fetch (runs before Live starts) ─────────────────────────────
 async def prefetch_state(state):
     """Fetch one full tick of data before Live starts so frame 1 is never blank."""
+    active_idx = state["active_idx"]
+    active_key = INDICES[active_idx]
     async with aiohttp.ClientSession() as session:
         try:
+            # Fetch spot price for the selected index only
             url_quotes = "https://api.upstox.com/v2/market-quote/quotes"
-            quotes_res = await safe_get(session, url_quotes, {"instrument_key": ",".join(INDICES.values())})
+            quotes_res = await safe_get(session, url_quotes, {"instrument_key": active_key})
             if isinstance(quotes_res, dict) and quotes_res.get("status") == "success":
                 raw_data = quotes_res.get("data", {})
-                for idx_name, idx_key in INDICES.items():
-                    api_key = idx_key.replace('|', ':')
-                    q = raw_data.get(api_key, {})
-                    spot = q.get("last_price", 0.0)
-                    ohlc = q.get("ohlc", {})
-                    close = ohlc.get("close", 0.0) or spot or 1.0
-                    chg = ((spot - close) / close) * 100
-                    state["spots"][idx_name] = spot
-                    state["spots_chg"][idx_name] = chg
+                api_key = active_key.replace('|', ':')
+                q = raw_data.get(api_key, {})
+                spot = q.get("last_price", 0.0)
+                ohlc = q.get("ohlc", {})
+                close = ohlc.get("close", 0.0) or spot or 1.0
+                chg = ((spot - close) / close) * 100
+                state["spots"][active_idx] = spot
+                state["spots_chg"][active_idx] = chg
                 state["status"] = "OK"
             else:
                 state["status"] = f"Prefetch Spot Error: {quotes_res.get('error', str(quotes_res))}"
                 return
 
-            active_idx = state["active_idx"]
-            active_key = INDICES[active_idx]
             expiries = await fetch_expiries(session, active_key)
             if expiries:
                 state["current_expiry"] = expiries[0]
@@ -530,28 +529,27 @@ async def update_data_loop(state):
     async with aiohttp.ClientSession() as session:
         while True:
             try:
-                # 1. Fetch spot prices for indices
+                active_idx = state["active_idx"]
+                active_key = INDICES[active_idx]
+
+                # 1. Fetch spot price for the selected index only
                 url_quotes = "https://api.upstox.com/v2/market-quote/quotes"
-                quotes_res = await safe_get(session, url_quotes, {"instrument_key": ",".join(INDICES.values())})
+                quotes_res = await safe_get(session, url_quotes, {"instrument_key": active_key})
                 if isinstance(quotes_res, dict) and quotes_res.get("status") == "success":
                     raw_data = quotes_res.get("data", {})
-                    for idx_name, idx_key in INDICES.items():
-                        api_key = idx_key.replace('|', ':')
-                        q = raw_data.get(api_key, {})
-                        spot = q.get("last_price", 0.0)
-                        ohlc = q.get("ohlc", {})
-                        close = ohlc.get("close", 0.0) or spot or 1.0
-                        chg = ((spot - close) / close) * 100
-                        state["spots"][idx_name] = spot
-                        state["spots_chg"][idx_name] = chg
+                    api_key = active_key.replace('|', ':')
+                    q = raw_data.get(api_key, {})
+                    spot = q.get("last_price", 0.0)
+                    ohlc = q.get("ohlc", {})
+                    close = ohlc.get("close", 0.0) or spot or 1.0
+                    chg = ((spot - close) / close) * 100
+                    state["spots"][active_idx] = spot
+                    state["spots_chg"][active_idx] = chg
                     state["status"] = "OK"
                 else:
                     state["status"] = f"Spot Fetch Error: {quotes_res.get('error', str(quotes_res))}"
 
-                # 2. Fetch Option Expiries & Chain for active index
-                active_idx = state["active_idx"]
-                active_key = INDICES[active_idx]
-
+                # 2. Fetch Option Expiries & Chain
                 expiries = await fetch_expiries(session, active_key)
                 if expiries:
                     state["current_expiry"] = expiries[0]
@@ -566,66 +564,68 @@ async def update_data_loop(state):
             except Exception as e:
                 state["status"] = f"Update loop error: {e}"
 
-            await asyncio.sleep(5)  # Poll option chain every 5 seconds
-
-# ── Index Switcher Loop ───────────────────────────────────────────────────────
-async def index_switcher_loop(state):
-    while True:
-        state["switch_in"] = 15
-        while state["switch_in"] > 0:
-            await asyncio.sleep(1)
-            state["switch_in"] -= 1
-            
-        # Switch index
-        keys = list(INDICES.keys())
-        curr_idx = keys.index(state["active_idx"])
-        next_idx = keys[(curr_idx + 1) % len(keys)]
-        state["active_idx"] = next_idx
-        state["visible_rows"] = []
-        state["walls"] = {}
-        state["alerts"] = {"volume_spurts": [], "iv_squeeze": ""}
+            await asyncio.sleep(5)  # Poll every 5 seconds
 
 # ── Main Run Dashboard ────────────────────────────────────────────────────────
-async def run_scanner():
+async def run_scanner(selected_idx: str):
     console = Console()
     layout = make_layout()
 
     state = {
-        "spots": {"NIFTY 50": 0.0, "NIFTY BANK": 0.0},
-        "spots_chg": {"NIFTY 50": 0.0, "NIFTY BANK": 0.0},
-        "active_idx": "NIFTY 50",
+        "spots":   {selected_idx: 0.0},
+        "spots_chg": {selected_idx: 0.0},
+        "active_idx": selected_idx,
         "current_expiry": None,
         "visible_rows": [],
         "walls": {},
         "alerts": {"volume_spurts": [], "iv_squeeze": ""},
         "status": "Initializing...",
-        "switch_in": 15
     }
 
     # ── PRE-FETCH: Warm state before Live starts so frame 1 is never blank ──
-    console.print("[bold cyan]AlphaEdge F&O Scanner[/] — Fetching initial data...", highlight=False)
+    console.print(f"[bold cyan]AlphaEdge F&O Scanner[/] — Fetching initial data for [bold yellow]{selected_idx}[/]...", highlight=False)
     await prefetch_state(state)
-    console.print(f"[dim]Pre-fetch complete. Status: {state['status']} | Spot NIFTY 50: {state['spots'].get('NIFTY 50', 0):.2f} | Rows: {len(state['visible_rows'])}[/]")
+    console.print(f"[dim]Pre-fetch complete. Status: {state['status']} | Spot: {state['spots'].get(selected_idx, 0):.2f} | Rows: {len(state['visible_rows'])}[/]")
 
-    # ── Start background polling tasks ──
+    # ── Start background polling task ──
     asyncio.create_task(update_data_loop(state))
-    asyncio.create_task(index_switcher_loop(state))
 
-    # screen=True + refresh_per_second: same proven pattern as live_market_dashboard.py
-    with Live(layout, console=console, screen=True, refresh_per_second=2) as live:
+    # screen=True + refresh_per_second: proven pattern from live_market_dashboard.py
+    with Live(layout, console=console, screen=True, refresh_per_second=2):
         while True:
-            # Render all panels into the layout
             layout["header"].update(render_header(state))
             layout["calls_panel"].update(render_chains(state, "CALLS"))
             layout["strikes_panel"].update(render_strikes(state))
             layout["puts_panel"].update(render_chains(state, "PUTS"))
             layout["walls_panel"].update(render_walls(state))
             layout["alerts_panel"].update(render_alerts(state))
-
             await asyncio.sleep(0.5)
+
+
+def select_index() -> str:
+    """Interactive startup menu — returns the chosen index name."""
+    print()
+    print("  ╔══════════════════════════════════════════╗")
+    print("  ║   AlphaEdge F&O Breakout Scanner 2.0    ║")
+    print("  ╠══════════════════════════════════════════╣")
+    print("  ║  Select index to scan:                   ║")
+    print("  ║   1 → NIFTY 50                           ║")
+    print("  ║   2 → NIFTY BANK                         ║")
+    print("  ║   3 → SENSEX                             ║")
+    print("  ╚══════════════════════════════════════════╝")
+    print()
+    while True:
+        choice = input("  Enter choice [1/2/3]: ").strip()
+        if choice in INDEX_MENU:
+            selected = INDEX_MENU[choice]
+            print(f"  → Launching scanner for [bold]{selected}[/bold]...")
+            return selected
+        print("  Invalid choice. Please enter 1, 2, or 3.")
+
 
 if __name__ == "__main__":
     try:
-        asyncio.run(run_scanner())
+        chosen = select_index()
+        asyncio.run(run_scanner(chosen))
     except KeyboardInterrupt:
         pass
