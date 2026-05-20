@@ -148,7 +148,7 @@ def render_chains(state, side):
     """
     Renders either CALLS or PUTS table.
     """
-    table = Table(show_header=True, header_style="bold cyan" if side == "CALLS" else "bold pink", box=box.SIMPLE, expand=True, padding=(0, 1))
+    table = Table(show_header=True, header_style="bold cyan" if side == "CALLS" else "bold magenta", box=box.SIMPLE, expand=True, padding=(0, 1))
     
     if side == "CALLS":
         table.add_column("BUILDUP", justify="center")
@@ -169,7 +169,7 @@ def render_chains(state, side):
 
     rows = state["visible_rows"]
     if not rows:
-        return Panel(Align.center("[dim]No option chain data available[/]", vertical="middle"), border_style="cyan" if side == "CALLS" else "pink")
+        return Panel(Align.center("[dim]No option chain data available[/]", vertical="middle"), border_style="cyan" if side == "CALLS" else "magenta")
 
     for r in rows:
         strike = r["strike"]
@@ -226,8 +226,8 @@ def render_chains(state, side):
         else:
             table.add_row(ltp_cell, oi_cell, oi_chg_cell, vol_oi_cell, iv_cell, delta_cell, b_cell)
             
-    title = "[bold cyan]CALL OPTIONS (CE)[/]" if side == "CALLS" else "[bold pink]PUT OPTIONS (PE)[/]"
-    return Panel(table, title=title, border_style="cyan" if side == "CALLS" else "pink")
+    title = "[bold cyan]CALL OPTIONS (CE)[/]" if side == "CALLS" else "[bold magenta]PUT OPTIONS (PE)[/]"
+    return Panel(table, title=title, border_style="cyan" if side == "CALLS" else "magenta")
 
 def render_strikes(state):
     """
@@ -611,9 +611,8 @@ async def run_scanner():
     asyncio.create_task(update_data_loop(state))
     asyncio.create_task(index_switcher_loop(state))
 
-    # screen=False: avoids alternate-buffer issues in some terminals;
-    # auto_refresh=False: we control refresh timing ourselves via asyncio.sleep.
-    with Live(layout, console=console, screen=False, auto_refresh=False, transient=False) as live:
+    # screen=True + refresh_per_second: same proven pattern as live_market_dashboard.py
+    with Live(layout, console=console, screen=True, refresh_per_second=2) as live:
         while True:
             # Render all panels into the layout
             layout["header"].update(render_header(state))
@@ -623,7 +622,6 @@ async def run_scanner():
             layout["walls_panel"].update(render_walls(state))
             layout["alerts_panel"].update(render_alerts(state))
 
-            live.refresh()  # Explicit refresh after each update cycle
             await asyncio.sleep(0.5)
 
 if __name__ == "__main__":
