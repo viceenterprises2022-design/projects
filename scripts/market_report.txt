@@ -1,0 +1,8 @@
+Running analysis for NIFTY...
+Running analysis for BANKNIFTY...
+
+================================================================================
+MARKET ANALYSIS REPORT
+================================================================================
+Error analyzing NIFTY: module 'market_analysis_v3' has no attribute 'print_diagnostic_report'
+Error analyzing BANKNIFTY: module 'market_analysis_v3' has no attribute 'print_diagnostic_report'
