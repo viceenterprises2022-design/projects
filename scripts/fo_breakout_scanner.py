@@ -483,6 +483,48 @@ def process_option_chain(chain_data, spot):
         }
     }
 
+# ── One-shot pre-fetch (runs before Live starts) ─────────────────────────────
+async def prefetch_state(state):
+    """Fetch one full tick of data before Live starts so frame 1 is never blank."""
+    async with aiohttp.ClientSession() as session:
+        try:
+            url_quotes = "https://api.upstox.com/v2/market-quote/quotes"
+            quotes_res = await safe_get(session, url_quotes, {"instrument_key": ",".join(INDICES.values())})
+            if isinstance(quotes_res, dict) and quotes_res.get("status") == "success":
+                raw_data = quotes_res.get("data", {})
+                for idx_name, idx_key in INDICES.items():
+                    api_key = idx_key.replace('|', ':')
+                    q = raw_data.get(api_key, {})
+                    spot = q.get("last_price", 0.0)
+                    ohlc = q.get("ohlc", {})
+                    close = ohlc.get("close", 0.0) or spot or 1.0
+                    chg = ((spot - close) / close) * 100
+                    state["spots"][idx_name] = spot
+                    state["spots_chg"][idx_name] = chg
+                state["status"] = "OK"
+            else:
+                state["status"] = f"Prefetch Spot Error: {quotes_res.get('error', str(quotes_res))}"
+                return
+
+            active_idx = state["active_idx"]
+            active_key = INDICES[active_idx]
+            expiries = await fetch_expiries(session, active_key)
+            if expiries:
+                state["current_expiry"] = expiries[0]
+                chain_raw = await fetch_option_chain(session, active_key, expiries[0])
+                spot = state["spots"].get(active_idx, 0.0)
+                if chain_raw and spot > 0:
+                    processed = process_option_chain(chain_raw, spot)
+                    state["visible_rows"] = processed["visible_rows"]
+                    state["walls"] = processed["walls"]
+                    state["alerts"] = processed["alerts"]
+                else:
+                    state["status"] = f"Prefetch: chain empty or spot=0 (spot={spot}, chain_len={len(chain_raw)})"
+            else:
+                state["status"] = f"Prefetch: No expiries returned for {active_idx}"
+        except Exception as e:
+            state["status"] = f"Prefetch error: {e}"
+
 # ── Dynamic Async Loops ───────────────────────────────────────────────────────
 async def update_data_loop(state):
     async with aiohttp.ClientSession() as session:
@@ -500,34 +542,31 @@ async def update_data_loop(state):
                         ohlc = q.get("ohlc", {})
                         close = ohlc.get("close", 0.0) or spot or 1.0
                         chg = ((spot - close) / close) * 100
-                        
                         state["spots"][idx_name] = spot
                         state["spots_chg"][idx_name] = chg
                     state["status"] = "OK"
                 else:
-                    state["status"] = f"Spot Fetch Error: {quotes_res.get('error', 'Unknown')}"
-                    
+                    state["status"] = f"Spot Fetch Error: {quotes_res.get('error', str(quotes_res))}"
+
                 # 2. Fetch Option Expiries & Chain for active index
                 active_idx = state["active_idx"]
                 active_key = INDICES[active_idx]
-                
+
                 expiries = await fetch_expiries(session, active_key)
                 if expiries:
                     state["current_expiry"] = expiries[0]
-                    
                     chain_raw = await fetch_option_chain(session, active_key, expiries[0])
                     spot = state["spots"].get(active_idx, 0.0)
-                    
                     if chain_raw and spot > 0:
                         processed = process_option_chain(chain_raw, spot)
                         state["visible_rows"] = processed["visible_rows"]
                         state["walls"] = processed["walls"]
                         state["alerts"] = processed["alerts"]
-                        
+
             except Exception as e:
                 state["status"] = f"Update loop error: {e}"
-                
-            await asyncio.sleep(5) # Poll option chain every 5 seconds
+
+            await asyncio.sleep(5)  # Poll option chain every 5 seconds
 
 # ── Index Switcher Loop ───────────────────────────────────────────────────────
 async def index_switcher_loop(state):
@@ -550,7 +589,7 @@ async def index_switcher_loop(state):
 async def run_scanner():
     console = Console()
     layout = make_layout()
-    
+
     state = {
         "spots": {"NIFTY 50": 0.0, "NIFTY BANK": 0.0},
         "spots_chg": {"NIFTY 50": 0.0, "NIFTY BANK": 0.0},
@@ -562,21 +601,29 @@ async def run_scanner():
         "status": "Initializing...",
         "switch_in": 15
     }
-    
-    # Start tasks
+
+    # ── PRE-FETCH: Warm state before Live starts so frame 1 is never blank ──
+    console.print("[bold cyan]AlphaEdge F&O Scanner[/] — Fetching initial data...", highlight=False)
+    await prefetch_state(state)
+    console.print(f"[dim]Pre-fetch complete. Status: {state['status']} | Spot NIFTY 50: {state['spots'].get('NIFTY 50', 0):.2f} | Rows: {len(state['visible_rows'])}[/]")
+
+    # ── Start background polling tasks ──
     asyncio.create_task(update_data_loop(state))
     asyncio.create_task(index_switcher_loop(state))
-    
-    with Live(layout, console=console, screen=True, refresh_per_second=2) as live:
+
+    # screen=False: avoids alternate-buffer issues in some terminals;
+    # auto_refresh=False: we control refresh timing ourselves via asyncio.sleep.
+    with Live(layout, console=console, screen=False, auto_refresh=False, transient=False) as live:
         while True:
-            # Update Layout Panels
+            # Render all panels into the layout
             layout["header"].update(render_header(state))
             layout["calls_panel"].update(render_chains(state, "CALLS"))
             layout["strikes_panel"].update(render_strikes(state))
             layout["puts_panel"].update(render_chains(state, "PUTS"))
             layout["walls_panel"].update(render_walls(state))
             layout["alerts_panel"].update(render_alerts(state))
-            
+
+            live.refresh()  # Explicit refresh after each update cycle
             await asyncio.sleep(0.5)
 
 if __name__ == "__main__":
