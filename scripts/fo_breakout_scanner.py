@@ -119,7 +119,8 @@ def make_layout() -> Layout:
 
 # ── Render Component Functions ────────────────────────────────────────────────
 def render_header(state) -> Panel:
-    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.datetime.now()
+    now_str = now.strftime("%Y-%m-%d %H:%M:%S")
     active_idx = state["active_idx"]
     status_msg = state["status"]
 
@@ -130,11 +131,33 @@ def render_header(state) -> Panel:
     chg_color = "green" if chg >= 0 else "red"
     expiry_info = f"Expiry: [bold magenta]{state['current_expiry']}[/]" if state['current_expiry'] else "Expiry: ---"
 
+    # ── Refresh countdown ──
+    poll_interval = state.get("poll_interval", 5)
+    last_refreshed = state.get("last_refreshed")
+    if last_refreshed:
+        elapsed = (now - last_refreshed).total_seconds()
+        next_in = max(0, poll_interval - elapsed)
+        last_str = last_refreshed.strftime("%H:%M:%S")
+        # Color: green > 3s, yellow 1-3s, red < 1s
+        if next_in > 3:
+            refresh_color = "green"
+        elif next_in > 1:
+            refresh_color = "yellow"
+        else:
+            refresh_color = "bold red"
+        refresh_info = (
+            f"Poll: every {poll_interval}s  │  "
+            f"Last: [dim]{last_str}[/]  │  "
+            f"Next: [{refresh_color}]{next_in:.0f}s[/{refresh_color}]"
+        )
+    else:
+        refresh_info = f"Poll: every {poll_interval}s  │  [dim]Fetching...[/]"
+
     header_text = Text.from_markup(
         f"[bold cyan]AlphaEdge F&O Breakout Scanner 2.0[/]  │  "
         f"[bold yellow]● {active_idx}[/]: [bold white]{spot:,.2f}[/]  "
         f"[{chg_color}]({chg:+.2f}%)[/{chg_color}]  │  {expiry_info}\n"
-        f"Time: {now}  │  Status: {status_styled}"
+        f"Time: {now_str}  │  {refresh_info}  │  Status: {status_styled}"
     )
 
     return Panel(
@@ -524,7 +547,8 @@ async def prefetch_state(state):
         except Exception as e:
             state["status"] = f"Prefetch error: {e}"
 
-# ── Dynamic Async Loops ───────────────────────────────────────────────────────
+POLL_INTERVAL = 5  # seconds between data refreshes
+
 async def update_data_loop(state):
     async with aiohttp.ClientSession() as session:
         while True:
@@ -564,7 +588,9 @@ async def update_data_loop(state):
             except Exception as e:
                 state["status"] = f"Update loop error: {e}"
 
-            await asyncio.sleep(5)  # Poll every 5 seconds
+            # Stamp refresh time AFTER the full cycle completes
+            state["last_refreshed"] = datetime.datetime.now()
+            await asyncio.sleep(POLL_INTERVAL)
 
 # ── Main Run Dashboard ────────────────────────────────────────────────────────
 async def run_scanner(selected_idx: str):
@@ -572,19 +598,22 @@ async def run_scanner(selected_idx: str):
     layout = make_layout()
 
     state = {
-        "spots":   {selected_idx: 0.0},
-        "spots_chg": {selected_idx: 0.0},
-        "active_idx": selected_idx,
+        "spots":        {selected_idx: 0.0},
+        "spots_chg":    {selected_idx: 0.0},
+        "active_idx":   selected_idx,
         "current_expiry": None,
         "visible_rows": [],
-        "walls": {},
-        "alerts": {"volume_spurts": [], "iv_squeeze": ""},
-        "status": "Initializing...",
+        "walls":        {},
+        "alerts":       {"volume_spurts": [], "iv_squeeze": ""},
+        "status":       "Initializing...",
+        "last_refreshed": None,
+        "poll_interval":  POLL_INTERVAL,
     }
 
     # ── PRE-FETCH: Warm state before Live starts so frame 1 is never blank ──
     console.print(f"[bold cyan]AlphaEdge F&O Scanner[/] — Fetching initial data for [bold yellow]{selected_idx}[/]...", highlight=False)
     await prefetch_state(state)
+    state["last_refreshed"] = datetime.datetime.now()  # Seed the timer from prefetch
     console.print(f"[dim]Pre-fetch complete. Status: {state['status']} | Spot: {state['spots'].get(selected_idx, 0):.2f} | Rows: {len(state['visible_rows'])}[/]")
 
     # ── Start background polling task ──
