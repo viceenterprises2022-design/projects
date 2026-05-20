@@ -358,10 +358,11 @@ async def update_data_loop(state):
                     normalized = {}
                     for k, v in raw_data.items():
                         symbol_name = v.get("symbol")
+                        if not symbol_name or symbol_name == "NA":
+                            symbol_name = k.split(":")[-1]
+                        
                         if symbol_name:
                             normalized[symbol_name.upper()] = v
-                        else:
-                            normalized[k.split(":")[-1].upper()] = v
                     state["quotes"] = normalized
                     state["status"] = "OK"
                 else:
