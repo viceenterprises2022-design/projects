@@ -18,17 +18,30 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # --- Config & Credentials ---
-UPSTOX_TOKEN = os.environ.get("UPSTOX_TOKEN")
-DHAN_ACCESS_TOKEN = os.environ.get("DHAN_ACCESS_TOKEN")
+UPSTOX_TOKEN        = os.environ.get("UPSTOX_TOKEN")
+DHAN_ACCESS_TOKEN   = os.environ.get("DHAN_ACCESS_TOKEN")
 
 # TradeSmart Noren OMS Credentials
-TS_UID = os.environ.get("TRADESMART_CLIENT_ID")
-TS_PWD = os.environ.get("TRADESMART_PASSWORD")
+TS_UID     = os.environ.get("TRADESMART_CLIENT_ID")
+TS_PWD     = os.environ.get("TRADESMART_PASSWORD")
 TS_FACTOR2 = os.environ.get("TRADESMART_FACTOR2")
-TS_VC = os.environ.get("TRADESMART_VENDOR_CODE")
+TS_VC      = os.environ.get("TRADESMART_VENDOR_CODE")
 TS_API_KEY = os.environ.get("TRADESMART_API_KEY")
-
 TS_BASE_URL = "https://api.tradesmartonline.in/NorenWClientTP"
+
+# Fyers API Credentials
+FYERS_CLIENT_ID   = os.environ.get("FYERS_CLIENT_ID")
+FYERS_ACCESS_TOKEN = os.environ.get("FYERS_ACCESS_TOKEN")
+
+# Hyperliquid API Credentials (public address)
+HL_WALLET_ADDRESS = os.environ.get("HYPERLIQUID_WALLET_ADDRESS")
+
+# Exness (FTMO-style REST) — no standard public API; will always use mock
+EXNESS_API_KEY    = os.environ.get("EXNESS_API_KEY")
+
+# Binance API Credentials
+BINANCE_API_KEY    = os.environ.get("BINANCE_API_KEY")
+BINANCE_API_SECRET = os.environ.get("BINANCE_API_SECRET")
 
 # --- Helper function for dynamic fluctuation ---
 def get_fluctuation_factor():
@@ -70,16 +83,63 @@ def get_mock_portfolio(broker):
         positions = [
             {"scrip": "ZOMATO", "qty": 500, "avg_price": 185.0, "ltp": round(189.40 * fluc, 2), "product": "MIS", "status": "OPEN"},
         ]
-    else: # tradesmart
-        # TradeSmart mock portfolio (focused on defensive / commodities / FMCG)
+    elif broker == "tradesmart":
+        # TradeSmart mock portfolio (defensive / commodities / FMCG)
         holdings = [
-            {"scrip": "ITC", "qty": 350, "avg_price": 410.0, "ltp": round(430.50 * fluc, 2), "close": 428.50},
-            {"scrip": "LICI", "qty": 75, "avg_price": 940.0, "ltp": round(995.0 * fluc, 2), "close": 985.0},
-            {"scrip": "GOLD_BEES", "qty": 500, "avg_price": 54.2, "ltp": round(61.80 * fluc, 2), "close": 61.50},
+            {"scrip": "ITC",       "qty": 350, "avg_price": 410.0,  "ltp": round(430.50 * fluc, 2), "close": 428.50},
+            {"scrip": "LICI",      "qty": 75,  "avg_price": 940.0,  "ltp": round(995.0  * fluc, 2), "close": 985.0},
+            {"scrip": "GOLD_BEES", "qty": 500, "avg_price": 54.2,   "ltp": round(61.80  * fluc, 2), "close": 61.50},
         ]
         positions = [
             {"scrip": "CRUDEOIL26MAY", "qty": 100, "avg_price": 6550.0, "ltp": round(6510.0 * fluc, 2), "product": "NRML", "status": "OPEN"},
         ]
+
+    elif broker == "fyers":
+        # Fyers mock portfolio (Indian equities CNC + short F&O)
+        holdings = [
+            {"scrip": "NSE:TATASTEEL-EQ", "qty": 400, "avg_price": 142.0, "ltp": round(156.80 * fluc, 2), "close": 155.0},
+            {"scrip": "NSE:ADANIENT-EQ",  "qty": 60,  "avg_price": 2480.0, "ltp": round(2850.0 * fluc, 2), "close": 2830.0},
+            {"scrip": "NSE:WIPRO-EQ",     "qty": 200, "avg_price": 420.0,  "ltp": round(468.50 * fluc, 2), "close": 465.0},
+        ]
+        positions = [
+            {"scrip": "NSE:NIFTY28MAY22100PE", "qty": -50,  "avg_price": 92.0,   "ltp": round(67.50 * fluc, 2), "product": "NRML", "status": "OPEN"},
+            {"scrip": "NSE:MIDCPNIFTY28MAY",   "qty":  25,  "avg_price": 1140.0,  "ltp": round(1185.0 * fluc, 2), "product": "MIS",  "status": "OPEN"},
+        ]
+
+    elif broker == "hyperliquid":
+        # Hyperliquid mock (spot + decentralised perpetuals in USD)
+        holdings = [
+            {"scrip": "HYPE", "qty": 1200, "avg_price": 8.40,   "ltp": round(14.20 * fluc, 2),    "close": 14.05},
+        ]
+        positions = [
+            {"scrip": "BTC-PERP",  "qty": 0.15,  "avg_price": 62000.0, "ltp": round(68400.0 * fluc, 2), "product": "PERP", "status": "OPEN"},
+            {"scrip": "SOL-PERP",  "qty": 12.0,  "avg_price": 148.0,   "ltp": round(172.0  * fluc, 2), "product": "PERP", "status": "OPEN"},
+            {"scrip": "HYPE-PERP", "qty": 500.0, "avg_price": 10.20,   "ltp": round(14.30  * fluc, 2), "product": "PERP", "status": "OPEN"},
+        ]
+
+    elif broker == "exness":
+        # Exness mock (FX majors + metals, CFD platform — no equity holdings)
+        holdings = []
+        positions = [
+            {"scrip": "EURUSD", "qty":  100000, "avg_price": 1.0812, "ltp": round(1.0874 * fluc, 5), "product": "CFD", "status": "OPEN"},
+            {"scrip": "XAUUSD", "qty":  5,      "avg_price": 2300.0, "ltp": round(2385.0 * fluc, 2), "product": "CFD", "status": "OPEN"},
+            {"scrip": "GBPJPY", "qty": -50000, "avg_price": 196.80, "ltp": round(198.50 * fluc, 2), "product": "CFD", "status": "OPEN"},
+        ]
+
+    elif broker == "binance":
+        # Binance mock (spot token holdings + leveraged futures)
+        holdings = [
+            {"scrip": "BTC",  "qty": 0.42,  "avg_price": 55000.0, "ltp": round(68200.0 * fluc, 2), "close": 67500.0},
+            {"scrip": "ETH",  "qty": 5.8,   "avg_price": 2800.0,  "ltp": round(3550.0  * fluc, 2), "close": 3480.0},
+            {"scrip": "SOL",  "qty": 38.0,  "avg_price": 105.0,   "ltp": round(172.0   * fluc, 2), "close": 168.0},
+        ]
+        positions = [
+            {"scrip": "DOGEUSDT", "qty": 50000, "avg_price": 0.098, "ltp": round(0.165 * fluc, 4), "product": "FUTURES", "status": "OPEN"},
+        ]
+
+    else:
+        holdings  = []
+        positions = []
 
     # Process holdings metrics
     processed_holdings = []
@@ -437,11 +497,41 @@ def get_aggregated_portfolio():
         all_holdings.extend(h)
         all_positions.extend(p)
     else:
-        # Fallback to Mock
         h, p = get_mock_portfolio("tradesmart")
         brokers_data["tradesmart"] = {"status": "active", "is_mock": True}
         all_holdings.extend(h)
         all_positions.extend(p)
+
+    # 4. Poll Fyers (always mock until live token provided)
+    if FYERS_CLIENT_ID and FYERS_ACCESS_TOKEN:
+        # Live Fyers integration placeholder — falls through to mock for now
+        print("[Fyers] Credentials detected but live integration pending; using mock.", file=sys.stderr)
+    h, p = get_mock_portfolio("fyers")
+    brokers_data["fyers"] = {"status": "active", "is_mock": True}
+    all_holdings.extend(h)
+    all_positions.extend(p)
+
+    # 5. Poll Hyperliquid (public address based; always mock until address provided)
+    if HL_WALLET_ADDRESS:
+        print("[Hyperliquid] Wallet address detected but live integration pending; using mock.", file=sys.stderr)
+    h, p = get_mock_portfolio("hyperliquid")
+    brokers_data["hyperliquid"] = {"status": "active", "is_mock": True}
+    all_holdings.extend(h)
+    all_positions.extend(p)
+
+    # 6. Poll Exness (always mock — no standard public REST API)
+    h, p = get_mock_portfolio("exness")
+    brokers_data["exness"] = {"status": "active", "is_mock": True}
+    all_holdings.extend(h)
+    all_positions.extend(p)
+
+    # 7. Poll Binance
+    if BINANCE_API_KEY and BINANCE_API_SECRET:
+        print("[Binance] Credentials detected but live integration pending; using mock.", file=sys.stderr)
+    h, p = get_mock_portfolio("binance")
+    brokers_data["binance"] = {"status": "active", "is_mock": True}
+    all_holdings.extend(h)
+    all_positions.extend(p)
 
     # 4. Compute broker-level aggregates and overall metrics
     total_invested = 0.0
