@@ -1,17 +1,26 @@
 #!/usr/bin/env python3
 """
-AlphaEdge API Server
+DVR Portfolio API Server
 FastAPI on localhost:8765
 
 Endpoints:
-    GET /api/latest                       — latest snapshot for all symbols + macro
-    GET /api/history?sym=NIFTY&days=30   — time-series for Chart.js
-    GET /api/symbols                      — list available symbols
-    GET /                                 — serves dashboard.html
+    GET /                                            — DVR Portfolio dashboard
+    GET /pixi                                        — PixiJS Options Intelligence
+    GET /api/latest                                  — latest snapshot (all symbols + macro)
+    GET /api/history?sym=NIFTY&days=30               — time-series for Chart.js
+    GET /api/symbols                                 — list available symbols
+    GET /api/portfolio/pnl                           — multi-broker portfolio P&L
+    GET /api/pixi/chain?symbol=NIFTY                 — live options chain (all strikes)
+    GET /api/pixi/oi-trend?symbol=NIFTY              — intraday total Call/Put OI trend
+    GET /api/pixi/signal?symbol=NIFTY                — signal, score, all 10 factor values
+    GET /api/pixi/macro                              — latest macro snapshot
+    GET /api/pixi/strike-history?symbol=NIFTY&strike=23700  — per-minute OI for one strike
 """
 
 import os
 import sys
+import sqlite3
+import json as _json
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
@@ -22,6 +31,19 @@ from fastapi.responses import FileResponse
 sys.path.insert(0, os.path.dirname(__file__))
 import alphaedge_db as db
 import pnl_poller
+
+# ── Extra DB Paths (PixiJS endpoints) ─────────────────────────────────────────
+_BASE        = Path(__file__).parent
+DB_OPT_CLI   = _BASE / "intraday_options_cli.db"
+DB_INTRA_OI  = _BASE / "intraday_oi.db"
+DB_ALPHA     = _BASE / "alphaedge.db"
+
+def _pixi_conn(db_path: Path) -> sqlite3.Connection:
+    """Open a read-only SQLite connection with Row factory."""
+    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True,
+                           check_same_thread=False)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 # ── App ───────────────────────────────────────────────────────────────────────
 
@@ -51,6 +73,14 @@ def serve_dashboard():
     if not index.exists():
         raise HTTPException(status_code=404, detail="dashboard.html not found")
     return FileResponse(str(index))
+
+
+@app.get("/pixi", include_in_schema=False)
+def serve_pixi():
+    pixi = FRONTEND_DIR / "pixi_dashboard.html"
+    if not pixi.exists():
+        raise HTTPException(status_code=404, detail="pixi_dashboard.html not found")
+    return FileResponse(str(pixi))
 
 
 if FRONTEND_DIR.exists():
@@ -134,6 +164,171 @@ def api_portfolio_pnl():
         return pnl_poller.get_aggregated_portfolio()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── PixiJS Data Endpoints ─────────────────────────────────────────────────────
+
+@app.get("/api/pixi/chain")
+def api_pixi_chain(
+    symbol: str = Query("NIFTY", description="NIFTY | SENSEX | BANKNIFTY"),
+):
+    """
+    Returns the latest full options chain snapshot from intraday_options_cli.db.
+    All strikes for the given symbol at the most recent recorded timestamp.
+    """
+    symbol = symbol.upper()
+    conn = _pixi_conn(DB_OPT_CLI)
+    try:
+        row = conn.execute(
+            "SELECT MAX(timestamp) AS ts FROM options_data WHERE index_name = ?",
+            (symbol,)
+        ).fetchone()
+        latest_ts = row["ts"] if row else None
+        if not latest_ts:
+            return {"symbol": symbol, "timestamp": None, "spot": None, "strikes": []}
+
+        rows = conn.execute(
+            """
+            SELECT strike, ce_ltp, ce_oi, pe_ltp, pe_oi, spot
+            FROM   options_data
+            WHERE  index_name = ? AND timestamp = ?
+            ORDER  BY strike
+            """,
+            (symbol, latest_ts),
+        ).fetchall()
+
+        spot = rows[0]["spot"] if rows else None
+        return {
+            "symbol":    symbol,
+            "timestamp": latest_ts,
+            "spot":      spot,
+            "strikes":   [dict(r) for r in rows],
+        }
+    finally:
+        conn.close()
+
+
+@app.get("/api/pixi/oi-trend")
+def api_pixi_oi_trend(
+    symbol: str = Query("NIFTY", description="NIFTY | SENSEX | BANKNIFTY"),
+):
+    """
+    Returns the full intraday total Call OI vs Put OI time-series from intraday_oi.db.
+    """
+    symbol = symbol.upper()
+    conn = _pixi_conn(DB_INTRA_OI)
+    try:
+        rows = conn.execute(
+            "SELECT timestamp, ltp, call_oi, put_oi FROM trending_oi "
+            "WHERE symbol = ? ORDER BY timestamp",
+            (symbol,),
+        ).fetchall()
+        return {"symbol": symbol, "series": [dict(r) for r in rows]}
+    finally:
+        conn.close()
+
+
+@app.get("/api/pixi/signal")
+def api_pixi_signal(
+    symbol: str = Query("NIFTY", description="NIFTY | SENSEX | BANKNIFTY"),
+):
+    """
+    Returns the latest signal row from alphaedge.db including all 10 factor scores.
+    """
+    symbol = symbol.upper()
+    conn = _pixi_conn(DB_ALPHA)
+    try:
+        row = conn.execute(
+            "SELECT * FROM metrics_history WHERE symbol = ? "
+            "ORDER BY recorded_at DESC LIMIT 1",
+            (symbol,),
+        ).fetchone()
+        if not row:
+            return {"symbol": symbol, "signal": None}
+        d = dict(row)
+        indicators = {}
+        try:
+            indicators = _json.loads(d.get("indicators_json") or "{}")
+        except Exception:
+            pass
+        return {
+            "symbol":      symbol,
+            "recorded_at": d["recorded_at"],
+            "ltp":         d["ltp"],
+            "signal":      d["signal"],
+            "score":       d["score"],
+            "factors":     d["factors"],
+            "pcr":         d["pcr"],
+            "max_pain":    d["max_pain"],
+            "expiry":      d["expiry"],
+            "factors_detail": {
+                "trend":      d["f_trend"],
+                "dow":        d["f_dow"],
+                "india_vix":  d["f_vix"],
+                "oi":         d["f_oi"],
+                "vwap":       d["f_vwap"],
+                "supertrend": d["f_supertrend"],
+                "rsi":        d["f_rsi"],
+                "dxy":        d["f_dxy"],
+                "crude":      d["f_crude"],
+                "pcr":        d["f_pcr"],
+            },
+            "indicators": indicators,
+        }
+    finally:
+        conn.close()
+
+
+@app.get("/api/pixi/macro")
+def api_pixi_macro():
+    """
+    Returns the latest macro snapshot (VIX, DXY, Crude, US30, Gold, Silver).
+    """
+    conn = _pixi_conn(DB_ALPHA)
+    try:
+        row = conn.execute(
+            "SELECT * FROM macro_history ORDER BY recorded_at DESC LIMIT 1"
+        ).fetchone()
+        if not row:
+            return {}
+        d = dict(row)
+        return {
+            "recorded_at": d["recorded_at"],
+            "vix":    {"value": d["vix"],    "chg": d["vix_chg"]},
+            "dxy":    {"value": d["dxy"],    "chg": d["dxy_chg"]},
+            "crude":  {"value": d["crude"],  "chg": d["crude_chg"]},
+            "us30":   {"value": d["us30"],   "chg": d["us30_chg"]},
+            "gold":   {"value": d["gold"],   "chg": d["gold_chg"]},
+            "silver": {"value": d["silver"], "chg": d["silver_chg"]},
+        }
+    finally:
+        conn.close()
+
+
+@app.get("/api/pixi/strike-history")
+def api_pixi_strike_history(
+    symbol: str  = Query("NIFTY",   description="NIFTY | SENSEX | BANKNIFTY"),
+    strike: float = Query(...,        description="Strike price (e.g. 23700)"),
+):
+    """
+    Returns the per-minute CE and PE OI time-series for a specific strike today.
+    Used by the PixiJS click-to-drill-down feature.
+    """
+    symbol = symbol.upper()
+    conn = _pixi_conn(DB_OPT_CLI)
+    try:
+        rows = conn.execute(
+            """
+            SELECT timestamp, ce_ltp, ce_oi, pe_ltp, pe_oi
+            FROM   options_data
+            WHERE  index_name = ? AND strike = ?
+            ORDER  BY timestamp
+            """,
+            (symbol, strike),
+        ).fetchall()
+        return {"symbol": symbol, "strike": strike, "series": [dict(r) for r in rows]}
+    finally:
+        conn.close()
 
 
 # ── Formatters ────────────────────────────────────────────────────────────────
