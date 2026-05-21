@@ -121,6 +121,55 @@ python3 metals_dashboard.py
 
 ---
 
+## 🛠️ Troubleshooting & Database Recovery (GBrain / PGlite)
+
+If `gbrain-autopilot.service` crashes or fails to start with the following WASM runtime abort error:
+```
+PGLite failed to initialize its WASM runtime.
+Original error: Aborted()
+...
+PANIC: could not locate a valid checkpoint record at ...
+```
+This is caused by an unclean shutdown leaving the PGlite (embedded WASM Postgres) Write-Ahead Log (WAL) in an inconsistent/corrupted state.
+
+### Recovery Procedure
+To repair the database without losing your stored data (avoiding database deletion):
+
+1. **Download PostgreSQL Utilities**:
+   Download the PostgreSQL package matching your major version (e.g., PostgreSQL 17 for Ubuntu/Debian) to extract administrative tools without needing system-wide installation or `sudo`:
+   ```bash
+   apt-get download postgresql-17
+   dpkg -x postgresql-17_*.deb ./extracted_pg
+   ```
+
+2. **Clean up Stale Locks**:
+   Ensure `gbrain-autopilot` is stopped and remove any stale postmaster PID lock file:
+   ```bash
+   systemctl --user stop gbrain-autopilot.service
+   rm -f ~/.gbrain/brain.pglite/postmaster.pid
+   ```
+
+3. **Verify control file**:
+   Check the current system state using `pg_controldata`:
+   ```bash
+   ./extracted_pg/usr/lib/postgresql/17/bin/pg_controldata -D ~/.gbrain/brain.pglite
+   ```
+
+4. **Reset Write-Ahead Log (WAL)**:
+   Force a reset of the WAL using `pg_resetwal` to bypass the corrupted checkpoint record and return the database to a clean, runnable state:
+   ```bash
+   ./extracted_pg/usr/lib/postgresql/17/bin/pg_resetwal -f -D ~/.gbrain/brain.pglite
+   ```
+
+5. **Clean Up & Restart Daemon**:
+   Delete the extracted utility directory and restart the autopilot service:
+   ```bash
+   rm -rf ./extracted_pg postgresql-17_*.deb
+   systemctl --user start gbrain-autopilot.service
+   ```
+
+---
+
 ### ⚠️ Migration Note: Gemini CLI to Antigravity CLI
 Gemini CLI is being sunset on June 18, 2026. This project has been migrated to support the new Go-based **Antigravity CLI**. Legacy `.gemini` configurations are deprecated; please use the new `.agent` configurations. System-level extensions must be manually ported to the Antigravity Plugin format.
 

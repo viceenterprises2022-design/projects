@@ -65,4 +65,3 @@ Run: `rm TODO.md`
 ```bash
 git add GEMINI.md docs/superpowers/specs/ docs/superpowers/plans/
 git commit -m "docs: install agentfield and update project docs"
-```
