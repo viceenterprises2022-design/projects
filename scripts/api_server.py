@@ -21,6 +21,7 @@ from fastapi.responses import FileResponse
 
 sys.path.insert(0, os.path.dirname(__file__))
 import alphaedge_db as db
+import pnl_poller
 
 # ── App ───────────────────────────────────────────────────────────────────────
 
@@ -122,6 +123,17 @@ def api_history(
 @app.get("/api/symbols")
 def api_symbols():
     return {"symbols": list(SYMBOLS)}
+
+
+@app.get("/api/portfolio/pnl")
+def api_portfolio_pnl():
+    """
+    Returns the aggregated portfolio P&L data from Upstox, Dhan, and TradeSmart.
+    """
+    try:
+        return pnl_poller.get_aggregated_portfolio()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ── Formatters ────────────────────────────────────────────────────────────────
