@@ -623,9 +623,17 @@ def make_layout(mode="unified") -> Layout:
             Layout(name="intel",   size=11),
         )
         layout["body"].split_row(
+            Layout(name="breakout_section", ratio=3),
+            Layout(name="classic_section",  ratio=2),
+        )
+        layout["breakout_section"].split_row(
             Layout(name="calls_panel",   ratio=1),
             Layout(name="strikes_panel", size=14),
             Layout(name="puts_panel",    ratio=1),
+        )
+        layout["classic_section"].split_row(
+            Layout(name="classic_option_chain", ratio=2),
+            Layout(name="classic_intel",        ratio=1),
         )
         layout["intel"].split_row(
             Layout(name="indicators_panel",  ratio=3),
@@ -1326,6 +1334,8 @@ async def run_dashboard(selected_idx: str, mode: str):
                 layout["calls_panel"].update(render_chains(state, "CALLS"))
                 layout["strikes_panel"].update(render_strikes(state))
                 layout["puts_panel"].update(render_chains(state, "PUTS"))
+                layout["classic_option_chain"].update(render_classic_option_chain(state))
+                layout["classic_intel"].update(render_classic_intel(state))
                 layout["indicators_panel"].update(render_indicators(state))
                 layout["trending_oi_panel"].update(render_classic_trending_oi(state))
                 layout["walls_panel"].update(render_walls(state))
