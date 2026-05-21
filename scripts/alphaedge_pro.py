@@ -587,24 +587,37 @@ def days_to_expiry(expiry_str):
         return "?"
 
 # ── Layout Construction ───────────────────────────────────────────────────────
-def make_layout() -> Layout:
+def make_layout(mode="breakout") -> Layout:
     layout = Layout()
-    layout.split_column(
-        Layout(name="header",  size=5),
-        Layout(name="body",    ratio=1),
-        Layout(name="intel",   size=11),
-    )
-    layout["body"].split_row(
-        Layout(name="calls_panel",   ratio=1),
-        Layout(name="strikes_panel", size=14),
-        Layout(name="puts_panel",    ratio=1),
-    )
-    layout["intel"].split_row(
-        Layout(name="indicators_panel", ratio=3),
-        Layout(name="walls_panel",      ratio=2),
-        Layout(name="alerts_panel",     ratio=2),
-    )
+    if mode == "classic":
+        layout.split_column(
+            Layout(name="header",  size=5),
+            Layout(name="body",    ratio=1),
+            Layout(name="footer",  size=11),
+        )
+        layout["body"].split_row(
+            Layout(name="indicators_panel",     ratio=3),
+            Layout(name="classic_option_chain", ratio=6),
+            Layout(name="classic_intel",        ratio=3),
+        )
+    else:
+        layout.split_column(
+            Layout(name="header",  size=5),
+            Layout(name="body",    ratio=1),
+            Layout(name="intel",   size=11),
+        )
+        layout["body"].split_row(
+            Layout(name="calls_panel",   ratio=1),
+            Layout(name="strikes_panel", size=14),
+            Layout(name="puts_panel",    ratio=1),
+        )
+        layout["intel"].split_row(
+            Layout(name="indicators_panel", ratio=3),
+            Layout(name="walls_panel",      ratio=2),
+            Layout(name="alerts_panel",     ratio=2),
+        )
     return layout
+
 
 # ── Render: Header ────────────────────────────────────────────────────────────
 def render_header(state) -> Panel:
@@ -898,6 +911,146 @@ def render_alerts(state) -> Panel:
     return Panel(Group(*items), title="[bold magenta]Alerts & Macro[/]",
                  border_style="magenta", padding=(0, 1))
 
+
+# ── Classic Render Panels ─────────────────────────────────────────────────────
+def render_classic_option_chain(state) -> Panel:
+    """Classic combined option chain table: C.LTP | C.OI | STRIKE | P.OI | P.LTP."""
+    oi_sum = state.get("oi_summary")
+    spot   = state["spots"].get(state["active_idx"], 0.0)
+    if not oi_sum or not spot:
+        return Panel(
+            Align.center("[dim]Option chain unavailable[/]", vertical="middle"),
+            title="[bold yellow]Classic Option Chain[/]",
+            border_style="yellow",
+        )
+
+    expiry  = state.get("current_expiry", "?")
+    dte     = days_to_expiry(expiry)
+    strikes = oi_sum.get("strikes", [])
+    max_p   = oi_sum.get("max_pain", 0)
+    lo, hi  = spot - 500, spot + 500
+    visible = [s for s in strikes if lo <= s["strike"] <= hi] or strikes
+
+    oc_table = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold yellow",
+                     expand=True, padding=(0, 1))
+    oc_table.add_column("C.LTP",  justify="right", style="green")
+    oc_table.add_column("C.OI",   justify="right", style="green")
+    oc_table.add_column("STRIKE", justify="center", style="bold white")
+    oc_table.add_column("P.OI",   justify="right", style="red")
+    oc_table.add_column("P.LTP",  justify="right", style="red")
+
+    # ATM proximity: NIFTY 50 strikes are 50pt apart, BANK/SENSEX 100pt
+    atm_tol = 26 if "BANK" not in state["active_idx"] and "SENSEX" not in state["active_idx"] else 51
+
+    for s in visible:
+        k = s["strike"]
+        is_atm = abs(k - spot) < atm_tol
+        is_mp  = abs(k - max_p) < 1
+
+        c_ltp = f"{s['call_ltp']:.1f}" if s['call_ltp'] else "—"
+        c_oi  = fmt_oi(s['call_oi'])
+        p_ltp = f"{s['put_ltp']:.1f}" if s['put_ltp'] else "—"
+        p_oi  = fmt_oi(s['put_oi'])
+
+        strike_str = f"[bold reverse yellow] {k:,.0f} [/]" if is_atm else f"{k:,.0f}"
+        if is_mp:
+            strike_str += " [magenta]MP[/]"
+
+        oc_table.add_row(c_ltp, c_oi, strike_str, p_oi, p_ltp)
+
+    title = f"[bold yellow]Option Chain — Exp: {expiry} (DTE: {dte}d) | MP: {max_p:,.0f}[/]"
+    return Panel(oc_table, title=title, border_style="yellow")
+
+
+def render_classic_trending_oi(state) -> Panel:
+    """Beautiful intraday trending OI table from market_analysis_v3.py."""
+    toi = state.get("trending_oi", [])
+    if not toi:
+        return Panel(
+            Align.center("[dim]Waiting for SQLite intraday snapshots...[/]", vertical="middle"),
+            title="[bold cyan]Trending OI (Intraday)[/]",
+            border_style="cyan",
+        )
+
+    t = Table(box=box.SIMPLE_HEAD, show_header=True, header_style="bold cyan",
+              expand=True, padding=(0, 1))
+    t.add_column("Time",      justify="center")
+    t.add_column("LTP",       justify="right")
+    t.add_column("ΔCall OI",  justify="right")
+    t.add_column("ΔPut OI",   justify="right")
+    t.add_column("Diff",      justify="right")
+    t.add_column("PCR",       justify="right")
+    t.add_column("Sentiment", justify="center")
+
+    base_c, base_p = toi[-1][2], toi[-1][3]
+    for r in toi:
+        ts, ltp, c_oi, p_oi = r
+        d_c = c_oi - base_c
+        d_p = p_oi - base_p
+        diff = p_oi - c_oi
+        pcr = p_oi / c_oi if c_oi > 0 else 0.0
+        
+        sent = "[green]Bullish[/green]" if diff > 0 else "[red]Bearish[/red]"
+        dc_str = f"[green]{d_c:+,.0f}[/green]" if d_c > 0 else f"[red]{d_c:+,.0f}[/red]" if d_c < 0 else "[yellow]0[/yellow]"
+        dp_str = f"[green]{d_p:+,.0f}[/green]" if d_p > 0 else f"[red]{d_p:+,.0f}[/red]" if d_p < 0 else "[yellow]0[/yellow]"
+        diff_str = f"[green]{diff:+,.0f}[/green]" if diff > 0 else f"[red]{diff:+,.0f}[/red]" if diff < 0 else "[yellow]0[/yellow]"
+
+        t.add_row(
+            ts.split(" ")[1][:5],
+            f"{ltp:,.2f}",
+            dc_str,
+            dp_str,
+            diff_str,
+            f"{pcr:.2f}",
+            sent
+        )
+
+    return Panel(t, title="[bold cyan]Trending OI (Intraday Snapshots)[/]", border_style="cyan")
+
+
+def render_classic_intel(state) -> Panel:
+    """Classic compact Intelligence Panel."""
+    oi_sum = state.get("oi_summary")
+    spot   = state["spots"].get(state["active_idx"], 0.0)
+    chg_p  = state["spots_chg"].get(state["active_idx"], 0.0)
+    
+    intel = Table(box=None, show_header=False, padding=(0, 1), expand=True)
+    intel.add_column("L", justify="left",  style="cyan")
+    intel.add_column("V", justify="right", style="white")
+
+    if oi_sum and spot > 0:
+        total_pcr = oi_sum.get("total_pcr", 0.0)
+        max_pain  = oi_sum.get("max_pain", 0.0)
+        total_c_oi = oi_sum.get("total_call_oi", 0.0)
+        total_p_oi = oi_sum.get("total_put_oi", 0.0)
+        
+        # Calculate buildup
+        total_oi_chg = sum(s.get("call_doi", 0) + s.get("put_doi", 0) for s in oi_sum.get("strikes", []))
+        if chg_p > 0 and total_oi_chg > 0:   buildup = "[green]Long Buildup[/green]"
+        elif chg_p > 0 and total_oi_chg < 0: buildup = "[cyan]Short Covering[/cyan]"
+        elif chg_p < 0 and total_oi_chg > 0: buildup = "[red]Short Buildup[/red]"
+        elif chg_p < 0 and total_oi_chg < 0: buildup = "[yellow]Long Unwinding[/yellow]"
+        else:                                buildup = "[dim]Neutral[/dim]"
+
+        pcr_color = "green" if total_pcr >= 1.0 else "yellow" if total_pcr >= 0.7 else "red"
+        
+        walls = state.get("walls", {})
+        res_strike = walls.get("resistance_strike", 0.0)
+        sup_strike = walls.get("support_strike", 0.0)
+
+        intel.add_row("PCR", f"[{pcr_color}]{total_pcr:.2f}[/{pcr_color}]")
+        intel.add_row("Max Pain", f"[magenta]{max_pain:,.0f}[/magenta]")
+        intel.add_row("OI Build", buildup)
+        intel.add_row("Calls OI", f"[green]{fmt_oi(total_c_oi)}[/green]")
+        intel.add_row("Puts OI", f"[red]{fmt_oi(total_p_oi)}[/red]")
+        intel.add_row("Resistance", f"[red]{res_strike:,.0f}[/red]" if res_strike else "[dim]—[/dim]")
+        intel.add_row("Support", f"[green]{sup_strike:,.0f}[/green]" if sup_strike else "[dim]—[/dim]")
+    else:
+        intel.add_row("[dim]Scanning...[/]", "")
+
+    return Panel(intel, title="[bold magenta]Intelligence[/]", border_style="magenta", padding=(0, 1))
+
+
 # ── Async Data Loops ──────────────────────────────────────────────────────────
 async def prefetch_state(state):
     """Warm all state before Live starts — ensures frame 1 has real data."""
@@ -938,6 +1091,12 @@ async def prefetch_state(state):
             # Historical candles (for technical indicators)
             candles = await fetch_candles(session, key)
             state["candles"] = candles
+
+            # SQLite Intraday OI snapshot trail warm-up
+            try:
+                state["trending_oi"] = db_read_oi(sym, limit=15)
+            except Exception:
+                pass
 
             # Initial signal (macro will be empty until macro_loop runs)
             a = run_analyze(sym, q, candles, state.get("oi_summary"), state.get("macro", {}))
@@ -1036,10 +1195,11 @@ async def oi_db_loop(state):
             sym    = SYM_MAP[state["active_idx"]]
             if oi_sum and spot > 0:
                 db_write_oi(sym, spot, oi_sum["total_call_oi"], oi_sum["total_put_oi"])
-            state["trending_oi"] = db_read_oi(sym, limit=5)
+            state["trending_oi"] = db_read_oi(sym, limit=15)
         except Exception:
             pass
         await asyncio.sleep(DB_INTERVAL)
+
 
 # ── Main Dashboard ────────────────────────────────────────────────────────────
 async def run_dashboard(selected_idx: str):
