@@ -71,14 +71,27 @@ Monorepo of independent projects: trading bots, financial analysis, AI agents, a
 | `crypto-trending-oi/` | Python (async) | Intraday OI + multi-factor crypto scoring engine with SQLite |
 | `daily_crypto_news/daily_market_report/` | Python, CrewAI | AI-generated daily market reports via multi-agent flows |
 | `AlphaEdge_Ticker/` | Python (tkinter) | Live desktop ticker for crypto PERP (Hyperliquid) + NSE equities |
+| `AlphaEdge_NSE_Ticker/` | Python (tkinter) | NSE options ticker — Nifty/BankNifty/Sensex option chain via Upstox API |
+| `scripts/` | Python | Market intelligence scripts: 10-factor Indian index signals, crypto dashboard, AI event search |
 | `Alphaedge/` | JSX + docs | AlphaEdge platform design — UI components and architecture documents |
-| `alphaedge-journal/` | Static HTML/CSS | Trading journal UI kits deployed via Vercel |
+| `alphaedge-journal/` | Next.js + Static HTML | Trading journal — Next.js at `/app`, static React at `/` and `/marketing` via Vercel |
+| `crewai_testing/` | Python, CrewAI | CrewAI multi-agent sandbox/playground |
+| `hello-reasoner/` | Python, AgentField | AgentField agent scaffold — `af init` template with echo + sentiment reasoners |
 
 **Root-level artifacts**
 - `DESIGN.md` — design tokens (palette, typography, spacing). All UI work must follow this.
 - `graphify-out/` — AST knowledge graph. For architecture questions, read `graphify-out/GRAPH_REPORT.md` first. After modifying source files, run `graphify update .` to refresh.
 - `mempalace.yaml` — memory palace mapping project dirs to named rooms for context loading.
 - `.mcp.json` — claude-flow MCP server config (hierarchical-mesh, 15-agent max, hybrid memory).
+
+---
+
+## System Note — pip installs
+
+This system runs managed Python 3.13 (no venv). All `pip install` commands require:
+```bash
+pip install <pkg> --break-system-packages
+```
 
 ---
 
@@ -325,14 +338,52 @@ Output lands in `output_full/` as `.pdf`, `.html`, `.png` with UTC timestamp fil
 
 ---
 
+## scripts/
+
+**Commands**
+```bash
+cd scripts
+python3 -m pip install fastapi uvicorn[standard] requests rich --break-system-packages
+
+# Indian index market intelligence
+python3 collector.py               # fetch signals + write to alphaedge.db
+python3 collector.py --loop --interval 5  # continuous 5-min polling
+python3 api_server.py              # FastAPI dashboard on :8765
+python3 market_analysis_v3.py     # rich terminal dashboard with auto-refresh
+python3 run_analysis_headless.py  # headless stdout only
+python3 report_and_send.py        # send analysis to Telegram
+python3 options_cli.py            # live options chain: Nifty/BankNifty/Sensex (107-char layout)
+
+# Crypto dashboard
+python3 crypto_market_dashboard_v2.py   # BTC/ETH/SOL rich 3-column dashboard
+
+# AI event search
+EXA_API_KEY=<key> python3 exa_ai_search.py
+```
+
+**Architecture**
+
+10-factor signal engine for Indian indices (NIFTY, SENSEX, BANKNIFTY). Signals: Trend, Dow Jones, India VIX, OI skew, VWAP, SuperTrend, RSI, DXY, Crude, PCR. Sum ≥6 → BUY, ≤4 → SELL, else NEUTRAL.
+
+- `collector.py` — data fetch + signal calculation + SQLite writes to `alphaedge.db`
+- `alphaedge_db.py` — SQLite schema + query helpers
+- `api_server.py` — FastAPI REST on `:8765`; calls `db.init_db()` per request (safe, CREATE IF NOT EXISTS)
+- `market_analysis_v3.py` — has background `oi_collector_thread()` writing to `intraday_oi.db` every minute; do not block main thread
+- `options_cli.py` — live 5s-polling terminal view of ATM ±300 strikes for all three indices; SQLite daily reset
+- `crypto_market_dashboard_v2.py` + `market_engine.py` — async BTC/ETH/SOL dashboard from Binance + Deribit + Yahoo Finance
+- **Upstox token** in `collector.py` and `market_analysis_v3.py` is a hardcoded JWT — expires and must be rotated manually
+
+---
+
 ## AlphaEdge_Ticker
 
 **Commands**
 ```bash
 cd AlphaEdge_Ticker
-pip install -r requirements.txt    # requests, yfinance
-python alphaedge_ticker.py         # launch desktop ticker
-# Or: ./launch_ubuntu.sh
+pip install requests
+sudo apt install python3-tk        # Ubuntu
+python alphaedge_ticker.py
+bash launch_ubuntu.sh              # handles dep install
 ```
 
 **Architecture**
@@ -341,6 +392,78 @@ Single-file tkinter app. Config persisted to `~/.alphaedge_ticker.json`.
 - Crypto prices: Hyperliquid REST API (`api.hyperliquid.xyz`)
 - NSE prices: `yfinance` (optional — degrades gracefully if not installed)
 - Scrolling banner rendered in a borderless, always-on-top `tk.Canvas` row
+
+---
+
+## AlphaEdge_NSE_Ticker
+
+**Commands**
+```bash
+cd AlphaEdge_NSE_Ticker
+pip install requests --break-system-packages
+sudo apt install python3-tk        # Ubuntu
+python alphaedge_ticker.py
+bash launch_ubuntu.sh
+```
+
+**Architecture**
+
+Single-file tkinter NSE options ticker for Nifty 50, BankNifty, and Sensex.
+
+- `ROW_DEFS` — defines 3 rows: NIFTY (step 50, ±6 strikes), BNKN (step 100, ±3), SENSEX (step 100, ±3)
+- `DataFetcher` — two-phase async fetch: `_fetch_quotes()` batches index quotes; `_fetch_options()` one chain call per row; `_snapshot` dict swapped atomically under `_lock`
+- `_resolve_expiry()` probes up to 8 days forward until option chain returns data
+- `TickerBanner` — three-row tkinter GUI; each row scrolls at ~60fps via `root.after(16, ...)`
+- Upstox bearer token: override `upstox_token` in `~/.alphaedge_ticker.json`; fallback hardcoded in `DEFAULT_CONFIG`
+- Upstox endpoints: `GET /v2/market-quote/quotes` (batch) + `GET /v2/option/chain` (per row)
+
+---
+
+## alphaedge-journal
+
+**Architecture**
+
+Two separate apps deployed to Vercel — no local build step for the static kits:
+
+| URL | App | Notes |
+|-----|-----|-------|
+| `/app` | Next.js (App Router) | `source/` — Clerk auth, Redux, local fonts |
+| `/marketing` | Static React (CDN) | `ui_kits/marketing/` |
+| `/` | Static React (CDN) | `ui_kits/app/` |
+
+- `vercel.json` controls routing
+- `ui_kits/` loads React + Tailwind via CDN, Babel standalone — no build required; edit and push to deploy
+- `source/` uses `@clerk/nextjs`; Tailwind config is inline `<script>` tags in HTML kits
+- Trading colors: `buy` (#76b562), `sell` (#e96a5e)
+- `colors_and_type.css` — shared design tokens
+
+---
+
+## crewai_testing
+
+**Commands**
+```bash
+cd crewai_testing
+crewai install                     # install via uv
+crewai run                         # run crew (outputs report.md)
+crewai test -n 2                   # run tests
+```
+
+Sandbox for CrewAI multi-agent experiments. Edit `src/crewai_testing/config/agents.yaml` and `tasks.yaml` to define agents and tasks. Requires Python 3.10–3.13 and `uv`.
+
+---
+
+## hello-reasoner
+
+**Commands**
+```bash
+cd hello-reasoner
+pip install -r requirements.txt
+af server                          # start AgentField server (separate terminal)
+python main.py                     # register agent + start serving
+```
+
+AgentField agent scaffold (`af init` template). Two reasoners: `demo_echo` (no AI) and `demo_analyze_sentiment` (requires LLM API key). Set `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, or `GOOGLE_API_KEY` — LiteLLM auto-detects provider from model name. See `reasoners.py` to add new reasoners.
 
 ---
 
