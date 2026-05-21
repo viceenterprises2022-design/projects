@@ -1,48 +1,58 @@
 /**
- * AlphaEdge Dashboard — app.js (Portfolio-Only Edition)
+ * DVR Portfolio Dashboard — app.js
  * Fetches from FastAPI on localhost:8765
- * Renders portfolio stats, asset allocation, broker accounts, holdings/positions tables, macros, and combined ticker
+ * Renders 7-broker portfolio with interactive deepdive modals
  */
 
-const API_BASE = "http://localhost:8765";
-const REFRESH_MS = 30_000; // re-poll every 30 seconds for dynamic feel
+const API_BASE   = "http://localhost:8765";
+const REFRESH_MS = 30_000;
+
+// Broker metadata: display name, logo letter, category label, accent color
+const BROKER_META = {
+  upstox:      { name: "Upstox",      letter: "U", category: "Indian Equities & F&O",       accent: "#c084fc" },
+  dhan:        { name: "Dhan",        letter: "D", category: "Indian Equities & Futures",    accent: "#34d399" },
+  tradesmart:  { name: "TradeSmart",  letter: "T", category: "Indian Equities & Commodities",accent: "#60a5fa" },
+  fyers:       { name: "Fyers",       letter: "F", category: "Indian Equities & Options",    accent: "#06b6d4" },
+  hyperliquid: { name: "Hyperliquid", letter: "H", category: "DeFi Perps & Spot Crypto",    accent: "#84cc16" },
+  exness:      { name: "Exness",      letter: "E", category: "FX & CFD",                     accent: "#fbbf24" },
+  binance:     { name: "Binance",     letter: "B", category: "Spot & Futures Crypto",        accent: "#f59e0b" },
+};
+
+// Chart color palette (per-scrip allocation inside deepdive)
+const SCRIP_COLORS = [
+  "#10B981","#3B82F6","#F59E0B","#EF4444","#8B5CF6",
+  "#06B6D4","#84CC16","#F97316","#EC4899","#14B8A6",
+];
 
 let latestPortfolioData = null;
-let latestMacroData = null;
+let latestMacroData     = null;
+let deepdiveChartInst   = null;
+let allocChartInstance  = null;
 
 // ── Bootstrap ────────────────────────────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
-  // First load
   refreshAll();
-
-  // Polling loop
   setInterval(refreshAll, REFRESH_MS);
 });
 
 async function refreshAll() {
-  await Promise.allSettled([
-    loadLatest(),
-    loadPortfolio()
-  ]);
+  await Promise.allSettled([loadLatest(), loadPortfolio()]);
 }
 
 // ── Data Fetch ───────────────────────────────────────────────────────────────
 
 async function loadLatest() {
   try {
-    const res = await fetch(`${API_BASE}/api/latest`);
+    const res    = await fetch(`${API_BASE}/api/latest`);
     if (!res.ok) throw new Error(`/api/latest → ${res.status}`);
     const latest = await res.json();
-
     renderTimestamp(latest.recorded_at);
     latestMacroData = latest.macro;
     updateTicker();
     renderMacro(latest.macro);
-    
-    // Hide error banner if success
-    const errBanner = document.getElementById("error-banner");
-    if (errBanner) errBanner.style.display = "none";
+    const el = document.getElementById("error-banner");
+    if (el) el.style.display = "none";
   } catch (err) {
     showError("Macro data update failed: " + err.message);
   }
@@ -50,10 +60,9 @@ async function loadLatest() {
 
 async function loadPortfolio() {
   try {
-    const res = await fetch(`${API_BASE}/api/portfolio/pnl`);
+    const res  = await fetch(`${API_BASE}/api/portfolio/pnl`);
     if (!res.ok) throw new Error(`/api/portfolio/pnl → ${res.status}`);
     const data = await res.json();
-
     latestPortfolioData = data;
     updateTicker();
     renderPortfolio(data);
@@ -62,92 +71,75 @@ async function loadPortfolio() {
     showError("Portfolio P&L update failed: " + err.message);
     const container = document.getElementById("portfolio-container");
     if (container && !latestPortfolioData) {
-      container.innerHTML = `
-        <div class="error-banner" style="display:block">
-          ⚠ Failed to load Portfolio data: ${err.message}. Please verify the backend is running.
-        </div>`;
+      container.innerHTML = `<div class="error-banner" style="display:block">⚠ ${err.message}</div>`;
     }
   }
 }
 
-// ── Ticker & Macro ───────────────────────────────────────────────────────────
+// ── Ticker ───────────────────────────────────────────────────────────────────
 
 function updateTicker() {
   const items = [];
 
-  // 1. Add Portfolio Stats if available
-  if (latestPortfolioData && latestPortfolioData.summary) {
+  if (latestPortfolioData?.summary) {
     const s = latestPortfolioData.summary;
-    items.push({
-      name: "PORTFOLIO VALUE",
-      val: `₹${fmtIN(s.current_value)}`,
-      chg: s.total_pnl_pct,
-      isPortfolio: true
-    });
-    items.push({
-      name: "TODAY'S P&L",
-      val: `${s.today_pnl >= 0 ? "+" : "-"}₹${fmtIN(Math.abs(s.today_pnl))}`,
-      chg: s.today_pnl_pct,
-      isPortfolio: true
-    });
+    items.push({ name: "PORTFOLIO VALUE", val: `₹${fmtIN(s.current_value)}`,
+                 chg: s.total_pnl_pct, isPortfolio: true });
+    items.push({ name: "TODAY'S P&L",
+                 val: `${s.today_pnl >= 0 ? "+" : "-"}₹${fmtIN(Math.abs(s.today_pnl))}`,
+                 chg: s.today_pnl_pct, isPortfolio: true });
   } else {
-    items.push({
-      name: "PORTFOLIO",
-      val: "Loading...",
-      chg: 0,
-      isPortfolio: true
-    });
+    items.push({ name: "PORTFOLIO", val: "Loading...", chg: 0, isPortfolio: true });
   }
 
-  // 2. Add Macro Stats if available
   if (latestMacroData) {
+    const m = latestMacroData;
     items.push(
-      { name: "VIX",    val: fmt(latestMacroData.vix?.ltp, 2),    chg: latestMacroData.vix?.chg },
-      { name: "DXY",    val: fmt(latestMacroData.dxy?.ltp, 3),    chg: latestMacroData.dxy?.chg },
-      { name: "CRUDE",  val: "$" + fmt(latestMacroData.crude?.ltp, 2), chg: latestMacroData.crude?.chg },
-      { name: "US30",   val: fmt(latestMacroData.us30?.ltp, 0),   chg: latestMacroData.us30?.chg },
-      { name: "GOLD",   val: "$" + fmt(latestMacroData.gold?.ltp, 1), chg: latestMacroData.gold?.chg },
-      { name: "SILVER", val: "$" + fmt(latestMacroData.silver?.ltp, 2), chg: latestMacroData.silver?.chg }
+      { name: "VIX",    val: fmt(m.vix?.ltp, 2),        chg: m.vix?.chg },
+      { name: "DXY",    val: fmt(m.dxy?.ltp, 3),        chg: m.dxy?.chg },
+      { name: "CRUDE",  val: "$" + fmt(m.crude?.ltp, 2), chg: m.crude?.chg },
+      { name: "US30",   val: fmt(m.us30?.ltp, 0),       chg: m.us30?.chg },
+      { name: "GOLD",   val: "$" + fmt(m.gold?.ltp, 1), chg: m.gold?.chg },
+      { name: "SILVER", val: "$" + fmt(m.silver?.ltp, 2), chg: m.silver?.chg },
     );
   }
 
-  const tickerEl = document.getElementById("ticker");
-  if (!tickerEl) return;
-
-  tickerEl.innerHTML = [...items, ...items].map(({ name, val, chg, isPortfolio }) => {
-    const cv = parseFloat(chg) || 0;
+  const el = document.getElementById("ticker");
+  if (!el) return;
+  el.innerHTML = [...items, ...items].map(({ name, val, chg, isPortfolio }) => {
+    const cv  = parseFloat(chg) || 0;
     const cls = cv > 0 ? "up" : cv < 0 ? "dn" : "flat";
-    const arrow = cv >= 0 ? "▲" : "▼";
-    const highlightClass = isPortfolio ? "portfolio-ticker-highlight" : "";
-    return `<div class="ticker-item ${highlightClass}">
+    const arr = cv >= 0 ? "▲" : "▼";
+    return `<div class="ticker-item ${isPortfolio ? "portfolio-ticker-highlight" : ""}">
       <span class="ticker-name">${name}</span>
       <span class="ticker-val">${val ?? "—"}</span>
-      <span class="ticker-chg ${cls}">${arrow} ${Math.abs(cv).toFixed(2)}%</span>
+      <span class="ticker-chg ${cls}">${arr} ${Math.abs(cv).toFixed(2)}%</span>
     </div>`;
   }).join("");
 }
 
+// ── Macro Row ────────────────────────────────────────────────────────────────
+
 function renderMacro(macro) {
   const items = [
-    { name: "India VIX", key: "vix",    pre: "" },
-    { name: "DXY",       key: "dxy",    pre: "" },
-    { name: "Crude Oil", key: "crude",  pre: "$" },
-    { name: "US30",      key: "us30",   pre: "" },
-    { name: "Gold",      key: "gold",   pre: "$" },
-    { name: "Silver",    key: "silver", pre: "$" },
+    { name: "India VIX", key: "vix",   pre: "" },
+    { name: "DXY",       key: "dxy",   pre: "" },
+    { name: "Crude Oil", key: "crude", pre: "$" },
+    { name: "US30",      key: "us30",  pre: "" },
+    { name: "Gold",      key: "gold",  pre: "$" },
+    { name: "Silver",    key: "silver",pre: "$" },
   ];
   const container = document.getElementById("macro-row");
   if (!container) return;
-
   container.innerHTML = items.map(({ name, key, pre }) => {
-    const d = macro[key] || {};
+    const d   = macro[key] || {};
     const chg = d.chg ?? 0;
     const cls = chg > 0 ? "up" : chg < 0 ? "dn" : "flat";
-    const arrow = chg >= 0 ? "▲" : "▼";
+    const arr = chg >= 0 ? "▲" : "▼";
     return `<div class="macro-cell">
       <div class="macro-name">${name}</div>
       <div class="macro-val">${pre}${d.ltp != null ? fmtIN(d.ltp, key === "dxy" ? 3 : 2) : "—"}</div>
-      <div class="macro-chg ${cls}">${arrow} ${Math.abs(chg).toFixed(2)}%</div>
+      <div class="macro-chg ${cls}">${arr} ${Math.abs(chg).toFixed(2)}%</div>
     </div>`;
   }).join("");
 }
@@ -167,68 +159,72 @@ function renderPortfolio(data) {
   const container = document.getElementById("portfolio-container");
   if (!container) return;
 
-  const s = data.summary;
-  const brokers = data.brokers;
-  const holdings = data.holdings;
+  const s         = data.summary;
+  const brokers   = data.brokers;
+  const holdings  = data.holdings;
   const positions = data.positions;
 
   const totalPnlCls = s.total_pnl > 0 ? "up" : s.total_pnl < 0 ? "dn" : "flat";
   const todayPnlCls = s.today_pnl > 0 ? "up" : s.today_pnl < 0 ? "dn" : "flat";
-  const totalArrow = s.total_pnl >= 0 ? "▲" : "▼";
-  const todayArrow = s.today_pnl >= 0 ? "▲" : "▼";
+  const totalArr    = s.total_pnl >= 0 ? "▲" : "▼";
+  const todayArr    = s.today_pnl >= 0 ? "▲" : "▼";
 
-  // Remember search query and broker filter state
-  const prevQuery = document.getElementById("portfolio-search")?.value || "";
+  // Remember filter state
+  const prevQuery  = document.getElementById("portfolio-search")?.value || "";
   const prevBroker = document.getElementById("portfolio-broker-filter")?.value || "ALL";
 
+  // Build broker filter options dynamically
+  const brokerKeys = Object.keys(brokers);
+  const brokerFilterOptions = brokerKeys.map(b => {
+    const meta = BROKER_META[b] || { name: b };
+    return `<option value="${b}">${meta.name}</option>`;
+  }).join("");
+
   container.innerHTML = `
-    <!-- Top Summary Cards -->
+    <!-- Summary Cards -->
     <div class="portfolio-summary-grid">
       <div class="port-card glass">
         <div class="port-card-label">Net Portfolio Value</div>
         <div class="port-card-val primary-glow">₹${fmtIN(s.current_value)}</div>
-        <div class="port-card-sub ${totalPnlCls}">${totalArrow} ₹${fmtIN(Math.abs(s.total_pnl))} (${s.total_pnl_pct.toFixed(2)}%)</div>
+        <div class="port-card-sub ${totalPnlCls}">${totalArr} ₹${fmtIN(Math.abs(s.total_pnl))} (${s.total_pnl_pct.toFixed(2)}%)</div>
       </div>
-      
       <div class="port-card glass">
         <div class="port-card-label">Invested Capital</div>
         <div class="port-card-val">₹${fmtIN(s.total_invested)}</div>
-        <div class="port-card-sub text-muted">All active brokers</div>
+        <div class="port-card-sub text-muted">Across ${brokerKeys.length} platforms</div>
       </div>
- 
       <div class="port-card glass">
         <div class="port-card-label">Total Returns</div>
-        <div class="port-card-val ${totalPnlCls}">${totalArrow} ₹${fmtIN(Math.abs(s.total_pnl))}</div>
+        <div class="port-card-val ${totalPnlCls}">${totalArr} ₹${fmtIN(Math.abs(s.total_pnl))}</div>
         <div class="port-card-sub ${totalPnlCls}">${s.total_pnl_pct.toFixed(2)}% Cumulative</div>
       </div>
- 
       <div class="port-card glass">
         <div class="port-card-label">Today's Returns</div>
-        <div class="port-card-val ${todayPnlCls}">${todayArrow} ₹${fmtIN(Math.abs(s.today_pnl))}</div>
+        <div class="port-card-val ${todayPnlCls}">${todayArr} ₹${fmtIN(Math.abs(s.today_pnl))}</div>
         <div class="port-card-sub ${todayPnlCls}">${s.today_pnl_pct.toFixed(2)}% Daily</div>
       </div>
     </div>
- 
-    <!-- Mid Section: Broker Cards + Allocation Chart -->
+
+    <!-- Broker Cards + Allocation -->
     <div class="portfolio-mid-grid">
       <div class="broker-cards-wrap">
-        <h3 class="section-title">Broker Accounts</h3>
+        <h3 class="section-title">Broker &amp; Exchange Accounts <span style="font-size:0.65rem;font-family:var(--mono);color:var(--muted);font-weight:400;margin-left:8px;">Click any tile to deepdive</span></h3>
         <div class="broker-cards-list">
-          ${Object.entries(brokers).map(([name, b]) => {
-            const bPnlCls = b.total_pnl > 0 ? "up" : b.total_pnl < 0 ? "dn" : "flat";
-            const statusLabel = b.is_mock ? "Mocked" : "Live";
-            const statusClass = b.is_mock ? "badge-mock" : "badge-live";
+          ${brokerKeys.map(name => {
+            const b    = brokers[name];
+            const meta = BROKER_META[name] || { name: name, letter: name[0].toUpperCase(), category: "Platform", accent: "#94a3b8" };
+            const pnlCls = b.total_pnl > 0 ? "up" : b.total_pnl < 0 ? "dn" : "flat";
             return `
-              <div class="broker-card glass">
+              <div class="broker-card glass" onclick="openBrokerDeepdive('${name}')" title="Click for ${meta.name} deepdive">
                 <div class="broker-card-header">
                   <div class="broker-logo-wrap">
-                    <span class="broker-logo logo-${name}">${name[0].toUpperCase()}</span>
+                    <span class="broker-logo logo-${name}">${meta.letter}</span>
                     <div>
-                      <div class="broker-name">${name.toUpperCase()}</div>
-                      <span class="broker-badge ${statusClass}">${statusLabel}</span>
+                      <div class="broker-name">${meta.name}</div>
+                      <span class="broker-badge ${b.is_mock ? "badge-mock" : "badge-live"}">${b.is_mock ? "Mocked" : "Live"}</span>
                     </div>
                   </div>
-                  <div class="broker-pnl ${bPnlCls}">${b.total_pnl >= 0 ? "+" : ""}${fmtIN(b.total_pnl)}</div>
+                  <div class="broker-pnl ${pnlCls}">${b.total_pnl >= 0 ? "+" : ""}${fmtIN(b.total_pnl)}</div>
                 </div>
                 <div class="broker-details">
                   <div class="broker-detail-row">
@@ -244,16 +240,13 @@ function renderPortfolio(data) {
                     <span class="mono text-sm ${b.today_pnl >= 0 ? "up" : "dn"}">${b.today_pnl >= 0 ? "+" : ""}${fmtIN(b.today_pnl)}</span>
                   </div>
                 </div>
-              </div>
-            `;
+              </div>`;
           }).join("")}
         </div>
       </div>
- 
+
       <div class="allocation-wrap card glass">
-        <div class="card-header">
-          <h3>Asset Allocation</h3>
-        </div>
+        <div class="card-header"><h3>Asset Allocation by Platform</h3></div>
         <div class="allocation-body">
           <div class="chart-container">
             <canvas id="portfolio-allocation-chart"></canvas>
@@ -262,105 +255,83 @@ function renderPortfolio(data) {
         </div>
       </div>
     </div>
- 
-    <!-- Filter & Search Controls -->
+
+    <!-- Filters -->
     <div class="portfolio-controls glass">
       <div class="search-input-wrap">
         <span class="search-icon">🔍</span>
-        <input type="text" id="portfolio-search" placeholder="Search scrip (e.g. RELIANCE, TCS)..." oninput="filterPortfolioTables()">
+        <input type="text" id="portfolio-search" placeholder="Search scrip (e.g. RELIANCE, BTC, EURUSD)..." oninput="filterPortfolioTables()">
       </div>
       <div class="filter-select-wrap">
-        <label for="portfolio-broker-filter" class="text-xs text-muted">Broker:</label>
+        <label for="portfolio-broker-filter" class="text-xs text-muted">Platform:</label>
         <select id="portfolio-broker-filter" onchange="filterPortfolioTables()">
-          <option value="ALL">All Brokers</option>
-          <option value="upstox">Upstox</option>
-          <option value="dhan">Dhan</option>
-          <option value="tradesmart">TradeSmart</option>
+          <option value="ALL">All Platforms</option>
+          ${brokerFilterOptions}
         </select>
       </div>
     </div>
- 
-    <!-- Bottom Section: Holdings & Positions Tables -->
+
+    <!-- Tables -->
     <div class="portfolio-tables-grid">
-      <!-- Holdings Section -->
       <div class="table-card card glass">
         <div class="card-header table-card-header">
-          <h3>Long-Term Holdings</h3>
+          <h3>Holdings</h3>
           <span class="badge-count" id="holdings-count">${holdings.length} scrips</span>
         </div>
         <div class="table-wrap">
           <table class="port-table" id="holdings-table">
-            <thead>
-              <tr>
-                <th>Scrip</th>
-                <th>Broker</th>
-                <th class="num">Qty</th>
-                <th class="num">Avg. Price</th>
-                <th class="num">LTP</th>
-                <th class="num">Market Value</th>
-                <th class="num">P&L (%)</th>
-              </tr>
-            </thead>
+            <thead><tr>
+              <th>Scrip</th><th>Platform</th>
+              <th class="num">Qty</th><th class="num">Avg. Price</th>
+              <th class="num">LTP</th><th class="num">Market Value</th>
+              <th class="num">P&L (%)</th>
+            </tr></thead>
             <tbody>
               ${holdings.map(h => {
-                const hPnlCls = h.pnl > 0 ? "up" : h.pnl < 0 ? "dn" : "flat";
-                return `
-                  <tr class="table-row" data-scrip="${h.scrip}" data-broker="${h.broker}">
-                    <td class="bold">${h.scrip}</td>
-                    <td><span class="broker-pill pill-${h.broker}">${h.broker.toUpperCase()}</span></td>
-                    <td class="num mono">${h.qty}</td>
-                    <td class="num mono">₹${fmtIN(h.avg_price)}</td>
-                    <td class="num mono">₹${fmtIN(h.ltp)}</td>
-                    <td class="num mono">₹${fmtIN(h.current_value)}</td>
-                    <td class="num mono ${hPnlCls} bold">
-                      ${h.pnl >= 0 ? "+" : ""}${fmtIN(h.pnl)}
-                      <div class="text-xxs">${h.pnl_pct >= 0 ? "+" : ""}${h.pnl_pct.toFixed(2)}%</div>
-                    </td>
-                  </tr>
-                `;
+                const cls = h.pnl > 0 ? "up" : h.pnl < 0 ? "dn" : "flat";
+                return `<tr class="table-row" data-scrip="${h.scrip}" data-broker="${h.broker}">
+                  <td class="bold">${h.scrip}</td>
+                  <td><span class="broker-pill pill-${h.broker}">${(BROKER_META[h.broker]?.name || h.broker).toUpperCase()}</span></td>
+                  <td class="num mono">${h.qty}</td>
+                  <td class="num mono">${fmtPrice(h.avg_price, h.broker)}</td>
+                  <td class="num mono">${fmtPrice(h.ltp, h.broker)}</td>
+                  <td class="num mono">${fmtPrice(h.current_value, h.broker)}</td>
+                  <td class="num mono ${cls} bold">
+                    ${h.pnl >= 0 ? "+" : ""}${fmtIN(h.pnl)}
+                    <div class="text-xxs">${h.pnl_pct >= 0 ? "+" : ""}${h.pnl_pct.toFixed(2)}%</div>
+                  </td>
+                </tr>`;
               }).join("")}
             </tbody>
           </table>
         </div>
       </div>
- 
-      <!-- Positions Section -->
+
       <div class="table-card card glass">
         <div class="card-header table-card-header">
-          <h3>Intraday Positions</h3>
+          <h3>Open Positions</h3>
           <span class="badge-count" id="positions-count">${positions.length} active</span>
         </div>
         <div class="table-wrap">
           <table class="port-table" id="positions-table">
-            <thead>
-              <tr>
-                <th>Scrip</th>
-                <th>Broker</th>
-                <th>Product</th>
-                <th class="num">Net Qty</th>
-                <th class="num">Avg. Price</th>
-                <th class="num">LTP</th>
-                <th class="num">P&L</th>
-              </tr>
-            </thead>
+            <thead><tr>
+              <th>Scrip</th><th>Platform</th><th>Product</th>
+              <th class="num">Net Qty</th><th class="num">Avg. Price</th>
+              <th class="num">LTP</th><th class="num">P&L</th>
+            </tr></thead>
             <tbody>
               ${positions.map(p => {
-                const pPnlCls = p.pnl > 0 ? "up" : p.pnl < 0 ? "dn" : "flat";
-                const statusClass = p.qty !== 0 ? "open-pos" : "closed-pos";
-                return `
-                  <tr class="table-row" data-scrip="${p.scrip}" data-broker="${p.broker}">
-                    <td class="bold">
-                      ${p.scrip}
-                      <span class="status-dot ${statusClass}"></span>
-                    </td>
-                    <td><span class="broker-pill pill-${p.broker}">${p.broker.toUpperCase()}</span></td>
-                    <td><span class="product-badge">${p.product}</span></td>
-                    <td class="num mono">${p.qty > 0 ? "+" : ""}${p.qty}</td>
-                    <td class="num mono">₹${fmtIN(p.avg_price)}</td>
-                    <td class="num mono">₹${fmtIN(p.ltp)}</td>
-                    <td class="num mono ${pPnlCls} bold">${p.pnl >= 0 ? "+" : ""}${fmtIN(p.pnl)}</td>
-                  </tr>
-                `;
+                const cls = p.pnl > 0 ? "up" : p.pnl < 0 ? "dn" : "flat";
+                const sDot = p.qty !== 0 ? "open-pos" : "closed-pos";
+                return `<tr class="table-row" data-scrip="${p.scrip}" data-broker="${p.broker}">
+                  <td class="bold">${p.scrip}<span class="status-dot ${sDot}"></span></td>
+                  <td><span class="broker-pill pill-${p.broker}">${(BROKER_META[p.broker]?.name || p.broker).toUpperCase()}</span></td>
+                  <td><span class="product-badge">${p.product}</span></td>
+                  <td class="num mono">${p.qty > 0 ? "+" : ""}${p.qty}</td>
+                  <td class="num mono">${fmtPrice(p.avg_price, p.broker)}</td>
+                  <td class="num mono">${fmtPrice(p.ltp, p.broker)}</td>
+                  <td class="num mono ${cls} bold">${p.pnl >= 0 ? "+" : ""}${fmtIN(p.pnl)}</td>
+                </tr>`;
               }).join("")}
             </tbody>
           </table>
@@ -369,68 +340,42 @@ function renderPortfolio(data) {
     </div>
   `;
 
-  // Restore input values
-  if (prevQuery) {
-    const searchEl = document.getElementById("portfolio-search");
-    if (searchEl) searchEl.value = prevQuery;
-  }
-  if (prevBroker) {
-    const brokerEl = document.getElementById("portfolio-broker-filter");
-    if (brokerEl) brokerEl.value = prevBroker;
-  }
+  // Restore filter state
+  if (prevQuery)  { const el = document.getElementById("portfolio-search");        if (el) el.value = prevQuery; }
+  if (prevBroker) { const el = document.getElementById("portfolio-broker-filter"); if (el) el.value = prevBroker; }
 
-  // Draw chart
   renderAllocationChart(brokers);
-  
-  // Re-apply filters
   filterPortfolioTables();
 }
 
-let allocationChartInstance = null;
+// ── Allocation Chart ─────────────────────────────────────────────────────────
 
 function renderAllocationChart(brokers) {
   const canvas = document.getElementById("portfolio-allocation-chart");
   if (!canvas) return;
+  const keys   = Object.keys(brokers);
+  const labels = keys.map(b => BROKER_META[b]?.name || b.toUpperCase());
+  const values = keys.map(b => brokers[b].value || 0);
+  const colors = keys.map((_, i) => SCRIP_COLORS[i % SCRIP_COLORS.length]);
 
-  const labels = Object.keys(brokers).map(b => b.toUpperCase());
-  const dataValues = Object.values(brokers).map(b => b.value);
-  const colors = ["#10B981", "#3B82F6", "#F59E0B"]; // Emerald, Blue, Gold
-
-  if (allocationChartInstance) {
-    allocationChartInstance.destroy();
-  }
-
+  if (allocChartInstance) { allocChartInstance.destroy(); allocChartInstance = null; }
   const ctx = canvas.getContext("2d");
-  allocationChartInstance = new Chart(ctx, {
+  allocChartInstance = new Chart(ctx, {
     type: "doughnut",
-    data: {
-      labels,
-      datasets: [{
-        data: dataValues,
-        backgroundColor: colors,
-        borderWidth: 2,
-        borderColor: "#0F172A",
-      }]
-    },
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2, borderColor: "#0F172A" }] },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: "#0F172A",
-          borderColor: "#1E293B",
-          borderWidth: 1,
-          titleColor: "#FFFFFF",
-          bodyColor: "#94A3B8",
-          callbacks: {
-            label: (ctx) => {
-              const val = ctx.parsed;
-              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-              const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
-              return ` ${ctx.label}: ₹${fmtIN(val)} (${pct}%)`;
-            }
-          }
+          backgroundColor: "#0F172A", borderColor: "#1E293B", borderWidth: 1,
+          titleColor: "#FFF", bodyColor: "#94A3B8",
+          callbacks: { label: ctx => {
+            const val = ctx.parsed;
+            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+            const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+            return ` ${ctx.label}: ₹${fmtIN(val)} (${pct}%)`;
+          }}
         }
       },
       cutout: "70%"
@@ -439,59 +384,327 @@ function renderAllocationChart(brokers) {
 
   const legend = document.getElementById("allocation-legend");
   if (legend) {
-    const total = dataValues.reduce((a, b) => a + b, 0);
-    legend.innerHTML = Object.entries(brokers).map(([name, b], i) => {
-      const pct = total > 0 ? ((b.value / total) * 100).toFixed(1) : 0;
-      return `
-        <div class="legend-item">
-          <span class="legend-color-dot" style="background:${colors[i]}"></span>
-          <span class="legend-name">${name.toUpperCase()}</span>
-          <span class="legend-val mono">${pct}%</span>
-        </div>
-      `;
+    const total = values.reduce((a, b) => a + b, 0);
+    legend.innerHTML = keys.map((b, i) => {
+      const pct = total > 0 ? ((brokers[b].value / total) * 100).toFixed(1) : 0;
+      return `<div class="legend-item">
+        <span class="legend-color-dot" style="background:${colors[i]}"></span>
+        <span class="legend-name">${labels[i]}</span>
+        <span class="legend-val mono">${pct}%</span>
+      </div>`;
     }).join("");
   }
 }
 
+// ── Broker Deepdive Modal ────────────────────────────────────────────────────
+
+function openBrokerDeepdive(brokerName) {
+  if (!latestPortfolioData) return;
+  const data   = latestPortfolioData;
+  const meta   = BROKER_META[brokerName] || { name: brokerName, letter: brokerName[0].toUpperCase(), category: "Platform", accent: "#94a3b8" };
+  const b      = data.brokers[brokerName];
+  if (!b) return;
+
+  const bHoldings  = data.holdings.filter(h => h.broker === brokerName);
+  const bPositions = data.positions.filter(p => p.broker === brokerName);
+
+  const totalPnlCls = b.total_pnl > 0 ? "up" : b.total_pnl < 0 ? "dn" : "flat";
+  const todayPnlCls = b.today_pnl > 0 ? "up" : b.today_pnl < 0 ? "dn" : "flat";
+
+  // Win Rate metrics
+  const winningHoldings  = bHoldings.filter(h => h.pnl > 0).length;
+  const winningPositions = bPositions.filter(p => p.pnl > 0).length;
+  const totalScrips      = bHoldings.length + bPositions.length;
+  const winCount         = winningHoldings + winningPositions;
+  const winRatePct       = totalScrips > 0 ? Math.round((winCount / totalScrips) * 100) : 0;
+  const holdingsWinPct   = bHoldings.length > 0 ? Math.round((winningHoldings / bHoldings.length) * 100) : 0;
+  const positionsWinPct  = bPositions.length > 0 ? Math.round((winningPositions / bPositions.length) * 100) : 0;
+  const winColor         = winRatePct >= 60 ? "#10B981" : winRatePct >= 40 ? "#F59E0B" : "#EF4444";
+
+  // Return on invested
+  const roi = b.invested > 0 ? ((b.total_pnl / b.invested) * 100).toFixed(2) : "0.00";
+
+  // Build modal HTML
+  const overlay = document.createElement("div");
+  overlay.className = "deepdive-overlay";
+  overlay.id = "deepdive-overlay";
+
+  overlay.innerHTML = `
+    <div class="deepdive-modal" id="deepdive-modal">
+      <!-- Header -->
+      <div class="deepdive-header">
+        <div class="deepdive-broker-identity">
+          <div class="deepdive-logo logo-${brokerName}">${meta.letter}</div>
+          <div>
+            <div class="deepdive-broker-name">${meta.name}</div>
+            <div class="deepdive-broker-type">${meta.category} &nbsp;·&nbsp; <span class="${b.is_mock ? "badge-mock" : "badge-live"}">${b.is_mock ? "Mocked Data" : "Live Feed"}</span></div>
+          </div>
+        </div>
+        <button class="deepdive-close" onclick="closeDeepdive()" title="Close">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div class="deepdive-body">
+
+        <!-- Stats Row -->
+        <div class="deepdive-stats-row">
+          <div class="deepdive-stat">
+            <div class="deepdive-stat-label">Invested Capital</div>
+            <div class="deepdive-stat-val">₹${fmtIN(b.invested)}</div>
+            <div class="deepdive-stat-sub text-muted">${bHoldings.length} holdings · ${bPositions.length} positions</div>
+          </div>
+          <div class="deepdive-stat">
+            <div class="deepdive-stat-label">Current Value</div>
+            <div class="deepdive-stat-val">₹${fmtIN(b.value)}</div>
+            <div class="deepdive-stat-sub text-muted">Market-to-market</div>
+          </div>
+          <div class="deepdive-stat">
+            <div class="deepdive-stat-label">Total Returns</div>
+            <div class="deepdive-stat-val ${totalPnlCls}">${b.total_pnl >= 0 ? "+" : ""}${fmtIN(b.total_pnl)}</div>
+            <div class="deepdive-stat-sub ${totalPnlCls}">ROI ${b.total_pnl >= 0 ? "+" : ""}${roi}%</div>
+          </div>
+          <div class="deepdive-stat">
+            <div class="deepdive-stat-label">Today's P&L</div>
+            <div class="deepdive-stat-val ${todayPnlCls}">${b.today_pnl >= 0 ? "+" : ""}${fmtIN(b.today_pnl)}</div>
+            <div class="deepdive-stat-sub ${todayPnlCls}">Intraday movement</div>
+          </div>
+        </div>
+
+        <!-- Mid: scrip allocation donut + win-rate metrics -->
+        <div class="deepdive-mid">
+          <div class="deepdive-chart-wrap">
+            <h4>Scrip Allocation</h4>
+            <div class="deepdive-donut-container">
+              <canvas id="deepdive-donut-chart"></canvas>
+            </div>
+            <div class="deepdive-legend" id="deepdive-donut-legend"></div>
+          </div>
+
+          <div class="deepdive-win-rate-wrap">
+            <h4>Performance Analytics</h4>
+
+            <div class="win-rate-metric">
+              <span class="win-rate-label">Overall Win Rate</span>
+              <div class="win-rate-bar-wrap">
+                <div class="win-rate-bar" style="width:${winRatePct}%;background:${winColor}"></div>
+              </div>
+              <span class="win-rate-val" style="color:${winColor}">${winRatePct}%</span>
+            </div>
+
+            <div class="win-rate-metric">
+              <span class="win-rate-label">Holdings Win Rate</span>
+              <div class="win-rate-bar-wrap">
+                <div class="win-rate-bar" style="width:${holdingsWinPct}%;background:#10B981"></div>
+              </div>
+              <span class="win-rate-val up">${holdingsWinPct}%</span>
+            </div>
+
+            <div class="win-rate-metric">
+              <span class="win-rate-label">Positions Win Rate</span>
+              <div class="win-rate-bar-wrap">
+                <div class="win-rate-bar" style="width:${positionsWinPct}%;background:#3B82F6"></div>
+              </div>
+              <span class="win-rate-val" style="color:#93c5fd">${positionsWinPct}%</span>
+            </div>
+
+            <div style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.05);padding-top:14px;">
+              <div class="win-rate-metric">
+                <span class="win-rate-label">Winning Positions</span>
+                <div class="win-rate-bar-wrap"></div>
+                <span class="win-rate-val up">${winCount} / ${totalScrips}</span>
+              </div>
+              <div class="win-rate-metric">
+                <span class="win-rate-label">Total P&L Contribution</span>
+                <div class="win-rate-bar-wrap"></div>
+                <span class="win-rate-val ${totalPnlCls}">${b.total_pnl >= 0 ? "+" : ""}${roi}%</span>
+              </div>
+              <div class="win-rate-metric">
+                <span class="win-rate-label">Unrealised Gain/Loss</span>
+                <div class="win-rate-bar-wrap"></div>
+                <span class="win-rate-val ${totalPnlCls}">${b.total_pnl >= 0 ? "+" : ""}${fmtIN(b.total_pnl)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Holdings Table -->
+        ${bHoldings.length > 0 ? `
+        <div class="deepdive-section-title">Holdings (${bHoldings.length})</div>
+        <div class="table-wrap" style="margin-bottom:20px">
+          <table class="port-table">
+            <thead><tr>
+              <th>Scrip</th><th class="num">Qty</th><th class="num">Avg Price</th>
+              <th class="num">LTP</th><th class="num">Market Value</th><th class="num">P&L</th><th class="num">Return %</th>
+            </tr></thead>
+            <tbody>
+              ${bHoldings.map(h => {
+                const cls = h.pnl > 0 ? "up" : h.pnl < 0 ? "dn" : "flat";
+                return `<tr>
+                  <td class="bold">${h.scrip}</td>
+                  <td class="num mono">${h.qty}</td>
+                  <td class="num mono">${fmtPrice(h.avg_price, brokerName)}</td>
+                  <td class="num mono">${fmtPrice(h.ltp, brokerName)}</td>
+                  <td class="num mono">${fmtPrice(h.current_value, brokerName)}</td>
+                  <td class="num mono ${cls} bold">${h.pnl >= 0 ? "+" : ""}${fmtIN(h.pnl)}</td>
+                  <td class="num mono ${cls}">${h.pnl_pct >= 0 ? "+" : ""}${h.pnl_pct.toFixed(2)}%</td>
+                </tr>`;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>` : `<div class="deepdive-empty">No holdings for this account.</div>`}
+
+        <!-- Positions Table -->
+        ${bPositions.length > 0 ? `
+        <div class="deepdive-section-title">Open Positions (${bPositions.length})</div>
+        <div class="table-wrap">
+          <table class="port-table">
+            <thead><tr>
+              <th>Scrip</th><th>Product</th>
+              <th class="num">Net Qty</th><th class="num">Avg Price</th>
+              <th class="num">LTP</th><th class="num">P&L</th>
+            </tr></thead>
+            <tbody>
+              ${bPositions.map(p => {
+                const cls  = p.pnl > 0 ? "up" : p.pnl < 0 ? "dn" : "flat";
+                const sDot = p.qty !== 0 ? "open-pos" : "closed-pos";
+                return `<tr>
+                  <td class="bold">${p.scrip}<span class="status-dot ${sDot}"></span></td>
+                  <td><span class="product-badge">${p.product}</span></td>
+                  <td class="num mono">${p.qty > 0 ? "+" : ""}${p.qty}</td>
+                  <td class="num mono">${fmtPrice(p.avg_price, brokerName)}</td>
+                  <td class="num mono">${fmtPrice(p.ltp, brokerName)}</td>
+                  <td class="num mono ${cls} bold">${p.pnl >= 0 ? "+" : ""}${fmtIN(p.pnl)}</td>
+                </tr>`;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>` : `<div class="deepdive-empty">No open positions.</div>`}
+
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = "hidden";
+
+  // Close on overlay background click
+  overlay.addEventListener("click", e => { if (e.target === overlay) closeDeepdive(); });
+
+  // Close on Escape key
+  document.addEventListener("keydown", _escHandler);
+
+  // Render scrip-level allocation doughnut
+  renderDeepdiveDonut(bHoldings, bPositions, meta.accent);
+}
+
+function _escHandler(e) {
+  if (e.key === "Escape") closeDeepdive();
+}
+
+function closeDeepdive() {
+  if (deepdiveChartInst) { deepdiveChartInst.destroy(); deepdiveChartInst = null; }
+  const overlay = document.getElementById("deepdive-overlay");
+  if (overlay) overlay.remove();
+  document.body.style.overflow = "";
+  document.removeEventListener("keydown", _escHandler);
+}
+
+function renderDeepdiveDonut(holdings, positions, accentColor) {
+  const canvas = document.getElementById("deepdive-donut-chart");
+  if (!canvas) return;
+
+  // Build scrip → value mapping (holdings use current_value; positions use abs pnl contribution)
+  const scripMap = {};
+  holdings.forEach(h  => { scripMap[h.scrip] = (scripMap[h.scrip] || 0) + Math.abs(h.current_value || 0); });
+  positions.forEach(p => { scripMap[p.scrip] = (scripMap[p.scrip] || 0) + Math.abs(p.pnl || 0) + 100; });
+
+  const entries = Object.entries(scripMap).filter(([, v]) => v > 0);
+  if (!entries.length) return;
+
+  const labels = entries.map(([s]) => s);
+  const values = entries.map(([, v]) => v);
+  const colors = labels.map((_, i) => SCRIP_COLORS[i % SCRIP_COLORS.length]);
+
+  const ctx = canvas.getContext("2d");
+  deepdiveChartInst = new Chart(ctx, {
+    type: "doughnut",
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 1.5, borderColor: "#0A1120" }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#0F172A", borderColor: "#1E293B", borderWidth: 1,
+          titleColor: "#FFF", bodyColor: "#94A3B8",
+          callbacks: { label: ctx => {
+            const val   = ctx.parsed;
+            const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+            const pct   = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+            return ` ${ctx.label}: ${pct}%`;
+          }}
+        }
+      },
+      cutout: "65%"
+    }
+  });
+
+  const legend = document.getElementById("deepdive-donut-legend");
+  if (legend) {
+    const total = values.reduce((a, b) => a + b, 0);
+    legend.innerHTML = entries.map(([scrip, val], i) => {
+      const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+      return `<div class="deepdive-legend-item">
+        <span class="deepdive-legend-dot" style="background:${colors[i]}"></span>
+        <span style="flex:1;color:var(--text)">${scrip}</span>
+        <span style="color:var(--muted)">${pct}%</span>
+      </div>`;
+    }).join("");
+  }
+}
+
+// ── Table Filtering ───────────────────────────────────────────────────────────
+
 function filterPortfolioTables() {
-  const query = document.getElementById("portfolio-search")?.value.toLowerCase().trim() || "";
+  const query  = document.getElementById("portfolio-search")?.value.toLowerCase().trim() || "";
   const broker = document.getElementById("portfolio-broker-filter")?.value || "ALL";
 
-  let visibleHoldings = 0;
-  const holdingsRows = document.querySelectorAll("#holdings-table tbody tr");
-  holdingsRows.forEach(row => {
-    const scrip = row.getAttribute("data-scrip").toLowerCase();
-    const rowBroker = row.getAttribute("data-broker");
-    const matchesSearch = scrip.includes(query);
-    const matchesBroker = broker === "ALL" || rowBroker === broker;
-
-    if (matchesSearch && matchesBroker) {
-      row.style.display = "";
-      visibleHoldings++;
-    } else {
-      row.style.display = "none";
-    }
+  let vh = 0;
+  document.querySelectorAll("#holdings-table tbody tr").forEach(row => {
+    const scrip   = row.getAttribute("data-scrip").toLowerCase();
+    const rb      = row.getAttribute("data-broker");
+    const show    = scrip.includes(query) && (broker === "ALL" || rb === broker);
+    row.style.display = show ? "" : "none";
+    if (show) vh++;
   });
-  const holdingsCountEl = document.getElementById("holdings-count");
-  if (holdingsCountEl) holdingsCountEl.textContent = `${visibleHoldings} scrips`;
+  const hc = document.getElementById("holdings-count");
+  if (hc) hc.textContent = `${vh} scrips`;
 
-  let visiblePositions = 0;
-  const positionsRows = document.querySelectorAll("#positions-table tbody tr");
-  positionsRows.forEach(row => {
-    const scrip = row.getAttribute("data-scrip").toLowerCase();
-    const rowBroker = row.getAttribute("data-broker");
-    const matchesSearch = scrip.includes(query);
-    const matchesBroker = broker === "ALL" || rowBroker === broker;
-
-    if (matchesSearch && matchesBroker) {
-      row.style.display = "";
-      visiblePositions++;
-    } else {
-      row.style.display = "none";
-    }
+  let vp = 0;
+  document.querySelectorAll("#positions-table tbody tr").forEach(row => {
+    const scrip   = row.getAttribute("data-scrip").toLowerCase();
+    const rb      = row.getAttribute("data-broker");
+    const show    = scrip.includes(query) && (broker === "ALL" || rb === broker);
+    row.style.display = show ? "" : "none";
+    if (show) vp++;
   });
-  const positionsCountEl = document.getElementById("positions-count");
-  if (positionsCountEl) positionsCountEl.textContent = `${visiblePositions} active`;
+  const pc = document.getElementById("positions-count");
+  if (pc) pc.textContent = `${vp} active`;
+}
+
+// ── Price Formatting (platform-aware) ────────────────────────────────────────
+
+function fmtPrice(v, broker) {
+  if (v == null) return "—";
+  // Crypto / FX brokers show USD values without ₹
+  const fxBrokers = ["hyperliquid", "exness", "binance"];
+  if (fxBrokers.includes(broker)) {
+    // For very small prices (DOGE, EURUSD decimals) use more decimal places
+    const decimals = Math.abs(v) < 1 ? 4 : 2;
+    return "$" + Number(v).toLocaleString("en-US", {
+      minimumFractionDigits: decimals, maximumFractionDigits: decimals,
+    });
+  }
+  return "₹" + fmtIN(v, 2);
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -508,23 +721,12 @@ function fmtIN(v, d = 2) {
   });
 }
 
-function fmtTime(ts) {
-  if (!ts) return "";
-  const d = new Date(ts + (ts.endsWith("Z") ? "" : "Z"));
-  const today = new Date();
-  if (d.toDateString() === today.toDateString()) {
-    return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false });
-  }
-  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
-}
-
-// Loading state HTML helper
-function loadingHTML() {
-  return `<div class="loading"><div class="spinner"></div><span>Fetching data…</span></div>`;
-}
-
 function showError(msg) {
   const el = document.getElementById("error-banner");
   if (el) { el.textContent = `⚠ ${msg}`; el.style.display = "block"; }
-  console.error("[AlphaEdge]", msg);
+  console.error("[DVR Portfolio]", msg);
+}
+
+function loadingHTML() {
+  return `<div class="loading"><div class="spinner"></div><span>Fetching data…</span></div>`;
 }
