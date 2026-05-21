@@ -21,6 +21,9 @@ import os
 import sys
 import sqlite3
 import json as _json
+import time
+import threading
+import urllib.request
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Query
@@ -279,30 +282,99 @@ def api_pixi_signal(
         conn.close()
 
 
+# ── Live Macro Fetcher (Yahoo Finance, 5-min cache) ───────────────────────────
+_MACRO_SYMBOLS = {
+    "vix":   "^VIX",          # CBOE Volatility Index
+    "dxy":   "DX-Y.NYB",     # US Dollar Index
+    "crude": "CL=F",         # WTI Crude Oil Futures
+    "gold":  "GC=F",         # Gold Futures
+    "silver":"SI=F",         # Silver Futures
+    "us30":  "^DJI",         # Dow Jones Industrial Average
+}
+_macro_cache: dict = {}
+_macro_cache_ts: float = 0.0
+_macro_lock = threading.Lock()
+_MACRO_TTL = 300  # seconds (5 min)
+
+def _yahoo_quote(ticker: str) -> dict | None:
+    """Fetch a single quote from Yahoo Finance v8 JSON API."""
+    url = (
+        f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+        "?interval=1d&range=5d"
+    )
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=6) as r:
+            data = _json.loads(r.read())
+        result = data["chart"]["result"][0]
+        meta   = result["meta"]
+        ltp    = meta.get("regularMarketPrice") or meta.get("previousClose")
+        prev   = meta.get("previousClose") or meta.get("chartPreviousClose")
+        chg_pct = ((ltp - prev) / prev) if prev and ltp else 0.0
+        return {"ltp": ltp, "chg": chg_pct}
+    except Exception as exc:
+        print(f"[Macro Yahoo] {ticker}: {exc}")
+        return None
+
+def _fetch_live_macro() -> dict:
+    """Fetch all macro symbols, update cache, return result dict."""
+    result = {}
+    for key, ticker in _MACRO_SYMBOLS.items():
+        q = _yahoo_quote(ticker)
+        if q:
+            result[key] = q
+    return result
+
+def _get_macro_cached() -> dict:
+    """Return cached macro data, refreshing if stale."""
+    global _macro_cache, _macro_cache_ts
+    with _macro_lock:
+        if time.time() - _macro_cache_ts > _MACRO_TTL or not _macro_cache:
+            fresh = _fetch_live_macro()
+            if fresh:  # only update if we got something
+                _macro_cache    = fresh
+                _macro_cache_ts = time.time()
+        return dict(_macro_cache)
+
+
 @app.get("/api/pixi/macro")
 def api_pixi_macro():
     """
-    Returns the latest macro snapshot (VIX, DXY, Crude, US30, Gold, Silver).
+    Returns live macro snapshot (VIX, DXY, Crude, Gold, Silver, US30).
+    Fetched directly from Yahoo Finance with a 5-minute in-memory cache.
+    Falls back to DB for VIX/DXY if Yahoo is unavailable.
     """
-    conn = _pixi_conn(DB_ALPHA)
-    try:
-        row = conn.execute(
-            "SELECT * FROM macro_history ORDER BY recorded_at DESC LIMIT 1"
-        ).fetchone()
-        if not row:
-            return {}
-        d = dict(row)
-        return {
-            "recorded_at": d["recorded_at"],
-            "vix":    {"value": d["vix"],    "chg": d["vix_chg"]},
-            "dxy":    {"value": d["dxy"],    "chg": d["dxy_chg"]},
-            "crude":  {"value": d["crude"],  "chg": d["crude_chg"]},
-            "us30":   {"value": d["us30"],   "chg": d["us30_chg"]},
-            "gold":   {"value": d["gold"],   "chg": d["gold_chg"]},
-            "silver": {"value": d["silver"], "chg": d["silver_chg"]},
-        }
-    finally:
-        conn.close()
+    live = _get_macro_cached()
+
+    # DB fallback for VIX / DXY only
+    db_row = {}
+    if not live.get("vix") or not live.get("dxy"):
+        try:
+            conn = _pixi_conn(DB_ALPHA)
+            row  = conn.execute(
+                "SELECT * FROM macro_history ORDER BY recorded_at DESC LIMIT 1"
+            ).fetchone()
+            conn.close()
+            if row:
+                db_row = dict(row)
+        except Exception:
+            pass
+
+    def _val(key, db_key, db_chg_key):
+        if live.get(key):
+            return {"value": live[key]["ltp"], "chg": live[key]["chg"]}
+        return {"value": db_row.get(db_key), "chg": db_row.get(db_chg_key)}
+
+    import datetime
+    return {
+        "recorded_at": datetime.datetime.utcnow().isoformat(),
+        "vix":    _val("vix",   "vix",   "vix_chg"),
+        "dxy":    _val("dxy",   "dxy",   "dxy_chg"),
+        "crude":  _val("crude", "crude", "crude_chg"),
+        "gold":   _val("gold",  "gold",  "gold_chg"),
+        "silver": _val("silver","silver","silver_chg"),
+        "us30":   _val("us30",  "us30",  "us30_chg"),
+    }
 
 
 @app.get("/api/pixi/strike-history")
