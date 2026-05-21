@@ -1,372 +1,131 @@
 /**
- * AlphaEdge Dashboard — app.js
+ * AlphaEdge Dashboard — app.js (Portfolio-Only Edition)
  * Fetches from FastAPI on localhost:8765
- * Renders signal cards, Chart.js history charts, macro cells, and ticker
+ * Renders portfolio stats, asset allocation, broker accounts, holdings/positions tables, macros, and combined ticker
  */
 
 const API_BASE = "http://localhost:8765";
-const SYMBOLS  = ["NIFTY", "SENSEX", "BANKNIFTY"];
-const REFRESH_MS = 60_000; // re-poll every 60 seconds
+const REFRESH_MS = 30_000; // re-poll every 30 seconds for dynamic feel
 
-// Chart instances (keyed by sym)
-const chartInstances = {};
+let latestPortfolioData = null;
+let latestMacroData = null;
 
 // ── Bootstrap ────────────────────────────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
-  buildTabs();
-  loadLatest();
-  setInterval(() => {
-    loadLatest();
-    if (document.getElementById("tab-PORTFOLIO")?.classList.contains("active")) {
-      loadPortfolio();
-    }
-  }, REFRESH_MS);
+  // First load
+  refreshAll();
+
+  // Polling loop
+  setInterval(refreshAll, REFRESH_MS);
 });
 
-// ── Tab Logic ────────────────────────────────────────────────────────────────
-
-function buildTabs() {
-  const tabBar  = document.getElementById("sym-tabs");
-  const panels  = document.getElementById("sym-panels");
-
-  SYMBOLS.forEach((sym, i) => {
-    // Tab button
-    const btn = document.createElement("button");
-    btn.className = "sym-tab" + (i === 0 ? " active" : "");
-    btn.id = `tab-${sym}`;
-    btn.textContent = sym;
-    btn.addEventListener("click", () => switchTab(sym));
-    tabBar.appendChild(btn);
-
-    // Panel
-    const panel = document.createElement("div");
-    panel.className = "sym-panel" + (i === 0 ? " active" : "");
-    panel.id = `panel-${sym}`;
-    panel.innerHTML = loadingHTML();
-    panels.appendChild(panel);
-  });
-
-  // Build Portfolio Tab
-  const pBtn = document.createElement("button");
-  pBtn.className = "sym-tab";
-  pBtn.id = "tab-PORTFOLIO";
-  pBtn.textContent = "PORTFOLIO";
-  pBtn.addEventListener("click", () => switchTab("PORTFOLIO"));
-  tabBar.appendChild(pBtn);
-
-  // Build Portfolio Panel
-  const pPanel = document.createElement("div");
-  pPanel.className = "sym-panel";
-  pPanel.id = "panel-PORTFOLIO";
-  pPanel.innerHTML = loadingHTML();
-  panels.appendChild(pPanel);
-}
-
-function switchTab(sym) {
-  SYMBOLS.forEach(s => {
-    document.getElementById(`tab-${s}`)?.classList.toggle("active", s === sym);
-    document.getElementById(`panel-${s}`)?.classList.toggle("active", s === sym);
-  });
-
-  document.getElementById("tab-PORTFOLIO")?.classList.toggle("active", sym === "PORTFOLIO");
-  document.getElementById("panel-PORTFOLIO")?.classList.toggle("active", sym === "PORTFOLIO");
-
-  if (sym === "PORTFOLIO") {
-    loadPortfolio();
-  } else {
-    // Trigger chart resize on tab show
-    const inst = chartInstances[sym];
-    if (inst) Object.values(inst).forEach(c => c?.resize());
-  }
+async function refreshAll() {
+  await Promise.allSettled([
+    loadLatest(),
+    loadPortfolio()
+  ]);
 }
 
 // ── Data Fetch ───────────────────────────────────────────────────────────────
 
 async function loadLatest() {
   try {
-    const [latest] = await Promise.all([
-      fetch(`${API_BASE}/api/latest`).then(r => {
-        if (!r.ok) throw new Error(`/api/latest → ${r.status}`);
-        return r.json();
-      }),
-    ]);
+    const res = await fetch(`${API_BASE}/api/latest`);
+    if (!res.ok) throw new Error(`/api/latest → ${res.status}`);
+    const latest = await res.json();
 
     renderTimestamp(latest.recorded_at);
-    renderTicker(latest.symbols, latest.macro);
+    latestMacroData = latest.macro;
+    updateTicker();
     renderMacro(latest.macro);
-
-    for (const sym of SYMBOLS) {
-      const data = latest.symbols[sym];
-      if (data) {
-        renderSignalCard(sym, data);
-        loadHistory(sym, "30");
-      }
-    }
+    
+    // Hide error banner if success
+    const errBanner = document.getElementById("error-banner");
+    if (errBanner) errBanner.style.display = "none";
   } catch (err) {
-    showError(err.message);
+    showError("Macro data update failed: " + err.message);
   }
 }
 
-async function loadHistory(sym, days) {
+async function loadPortfolio() {
   try {
-    const res = await fetch(`${API_BASE}/api/history?sym=${sym}&days=${days}`);
-    if (!res.ok) throw new Error(`/api/history → ${res.status}`);
+    const res = await fetch(`${API_BASE}/api/portfolio/pnl`);
+    if (!res.ok) throw new Error(`/api/portfolio/pnl → ${res.status}`);
     const data = await res.json();
-    renderChartCard(sym, data.rows);
+
+    latestPortfolioData = data;
+    updateTicker();
+    renderPortfolio(data);
   } catch (err) {
-    console.warn(`History fetch failed for ${sym}:`, err);
+    console.error("Failed to load portfolio:", err);
+    showError("Portfolio P&L update failed: " + err.message);
+    const container = document.getElementById("portfolio-container");
+    if (container && !latestPortfolioData) {
+      container.innerHTML = `
+        <div class="error-banner" style="display:block">
+          ⚠ Failed to load Portfolio data: ${err.message}. Please verify the backend is running.
+        </div>`;
+    }
   }
 }
 
-// ── Ticker ───────────────────────────────────────────────────────────────────
+// ── Ticker & Macro ───────────────────────────────────────────────────────────
 
-function renderTicker(symbols, macro) {
-  const items = [
-    ...SYMBOLS.map(sym => {
-      const d = symbols[sym] || {};
-      return { name: sym, val: fmt(d.ltp, 2), chg: d.change_pct };
-    }),
-    { name: "VIX",    val: fmt(macro.vix?.ltp, 2),    chg: macro.vix?.chg },
-    { name: "DXY",    val: fmt(macro.dxy?.ltp, 3),    chg: macro.dxy?.chg },
-    { name: "CRUDE",  val: "$" + fmt(macro.crude?.ltp, 2), chg: macro.crude?.chg },
-    { name: "US30",   val: fmt(macro.us30?.ltp, 0),   chg: macro.us30?.chg },
-    { name: "GOLD",   val: "$" + fmt(macro.gold?.ltp, 1), chg: macro.gold?.chg },
-    { name: "SILVER", val: "$" + fmt(macro.silver?.ltp, 2), chg: macro.silver?.chg },
-  ];
+function updateTicker() {
+  const items = [];
 
-  const html = [...items, ...items].map(({ name, val, chg }) => {
+  // 1. Add Portfolio Stats if available
+  if (latestPortfolioData && latestPortfolioData.summary) {
+    const s = latestPortfolioData.summary;
+    items.push({
+      name: "PORTFOLIO VALUE",
+      val: `₹${fmtIN(s.current_value)}`,
+      chg: s.total_pnl_pct,
+      isPortfolio: true
+    });
+    items.push({
+      name: "TODAY'S P&L",
+      val: `${s.today_pnl >= 0 ? "+" : "-"}₹${fmtIN(Math.abs(s.today_pnl))}`,
+      chg: s.today_pnl_pct,
+      isPortfolio: true
+    });
+  } else {
+    items.push({
+      name: "PORTFOLIO",
+      val: "Loading...",
+      chg: 0,
+      isPortfolio: true
+    });
+  }
+
+  // 2. Add Macro Stats if available
+  if (latestMacroData) {
+    items.push(
+      { name: "VIX",    val: fmt(latestMacroData.vix?.ltp, 2),    chg: latestMacroData.vix?.chg },
+      { name: "DXY",    val: fmt(latestMacroData.dxy?.ltp, 3),    chg: latestMacroData.dxy?.chg },
+      { name: "CRUDE",  val: "$" + fmt(latestMacroData.crude?.ltp, 2), chg: latestMacroData.crude?.chg },
+      { name: "US30",   val: fmt(latestMacroData.us30?.ltp, 0),   chg: latestMacroData.us30?.chg },
+      { name: "GOLD",   val: "$" + fmt(latestMacroData.gold?.ltp, 1), chg: latestMacroData.gold?.chg },
+      { name: "SILVER", val: "$" + fmt(latestMacroData.silver?.ltp, 2), chg: latestMacroData.silver?.chg }
+    );
+  }
+
+  const tickerEl = document.getElementById("ticker");
+  if (!tickerEl) return;
+
+  tickerEl.innerHTML = [...items, ...items].map(({ name, val, chg, isPortfolio }) => {
     const cv = parseFloat(chg) || 0;
     const cls = cv > 0 ? "up" : cv < 0 ? "dn" : "flat";
     const arrow = cv >= 0 ? "▲" : "▼";
-    return `<div class="ticker-item">
+    const highlightClass = isPortfolio ? "portfolio-ticker-highlight" : "";
+    return `<div class="ticker-item ${highlightClass}">
       <span class="ticker-name">${name}</span>
       <span class="ticker-val">${val ?? "—"}</span>
       <span class="ticker-chg ${cls}">${arrow} ${Math.abs(cv).toFixed(2)}%</span>
     </div>`;
   }).join("");
-
-  document.getElementById("ticker").innerHTML = html;
 }
-
-// ── Timestamp ────────────────────────────────────────────────────────────────
-
-function renderTimestamp(ts) {
-  const el = document.getElementById("last-updated");
-  if (!el || !ts) return;
-  const d = new Date(ts + "Z");
-  el.textContent = `Updated: ${d.toLocaleTimeString("en-IN", { hour12: false })} UTC`;
-}
-
-// ── Signal Card ───────────────────────────────────────────────────────────────
-
-function renderSignalCard(sym, data) {
-  const panel = document.getElementById(`panel-${sym}`);
-  if (!panel) return;
-
-  // Find or create the signal card slot
-  let slot = panel.querySelector(".signal-card");
-  if (!slot) {
-    // First render: build full panel structure
-    panel.innerHTML = `
-      <div class="panel-grid">
-        <div class="signal-card card"></div>
-        <div class="chart-card card">
-          <div class="card-header">
-            <h3>Price &amp; Signal Score History</h3>
-            <div class="chart-tabs">
-              <button class="chart-tab active" data-days="7"  data-sym="${sym}">7d</button>
-              <button class="chart-tab"        data-days="30" data-sym="${sym}">30d</button>
-            </div>
-          </div>
-          <div class="chart-wrap">
-            <canvas id="chart-${sym}"></canvas>
-          </div>
-        </div>
-      </div>`;
-
-    // Attach tab listeners
-    panel.querySelectorAll(".chart-tab").forEach(btn => {
-      btn.addEventListener("click", () => {
-        panel.querySelectorAll(".chart-tab").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        loadHistory(btn.dataset.sym, btn.dataset.days);
-      });
-    });
-
-    slot = panel.querySelector(".signal-card");
-  }
-
-  const sig   = data.signal || "NEUTRAL";
-  const chg   = data.change_pct ?? 0;
-  const ltpColor = sig === "BUY" ? "var(--primary)" : sig === "SELL" ? "var(--error)" : "var(--warning)";
-  const scoreColor = sig === "BUY" ? "#10B981" : sig === "SELL" ? "#EF4444" : "#F59E0B";
-  const scorePct = data.factors ? Math.round(((data.score / data.factors) + 1) / 2 * 100) : 50;
-
-  const indRows = Object.entries(data.indicators || {}).map(([key, ind], i) => {
-    const ic = ind.score > 0 ? "#10B981" : ind.score < 0 ? "#EF4444" : "#F59E0B";
-    return `<div class="ind-row">
-      <div class="ind-num" style="background:${ic}22;color:${ic};border:1px solid ${ic}33">${i + 1}</div>
-      <div class="ind-body">
-        <div class="ind-name">${indName(key)}</div>
-        <div class="ind-label">${ind.label ?? "—"}</div>
-        <div class="ind-detail">${ind.detail ?? ""}</div>
-      </div>
-      <div class="ind-pip" style="background:${ic};box-shadow:0 0 4px ${ic}"></div>
-    </div>`;
-  }).join("");
-
-  slot.innerHTML = `
-    <div class="card-header signal-card-head">
-      <div>
-        <div class="sym-label">${sym}</div>
-        <div class="price-row">
-          <div class="ltp" style="color:${ltpColor}">${fmtIN(data.ltp, 2)}</div>
-          <div class="chg-pct ${chg >= 0 ? "up" : "dn"}">${chg >= 0 ? "▲" : "▼"} ${Math.abs(chg).toFixed(2)}%</div>
-        </div>
-        <div class="ohlc-row">
-          <div class="ohlc-cell"><span class="ohlc-label">OPEN</span><span class="ohlc-val">${fmtIN(data.open, 2)}</span></div>
-          <div class="ohlc-cell"><span class="ohlc-label">HIGH</span><span class="ohlc-val up">${fmtIN(data.high, 2)}</span></div>
-          <div class="ohlc-cell"><span class="ohlc-label">LOW</span><span class="ohlc-val dn">${fmtIN(data.low, 2)}</span></div>
-        </div>
-      </div>
-      <div class="signal-badge ${sig}">${sigIcon(sig)} ${sig}</div>
-    </div>
-    <div class="score-row">
-      <span class="score-label text-xs text-muted">Score</span>
-      <div class="score-bar-wrap">
-        <div class="score-bar" style="width:${scorePct}%;background:${scoreColor}"></div>
-      </div>
-      <span class="score-num">${data.score > 0 ? "+" : ""}${data.score}/${data.factors}</span>
-    </div>
-    <div class="ind-list">${indRows}</div>
-    ${data.pcr ? `
-    <div class="card-body" style="padding-top:8px;border-top:1px solid var(--border)">
-      <div style="display:flex;gap:16px;font-family:var(--mono);font-size:0.7rem;color:var(--muted)">
-        <span>PCR <strong style="color:var(--text)">${(data.pcr).toFixed(2)}</strong></span>
-        <span>Max Pain <strong style="color:#a78bfa">${fmtIN(data.max_pain, 0)}</strong></span>
-        <span>Expiry <strong style="color:var(--text)">${data.expiry ?? "—"}</strong></span>
-      </div>
-    </div>` : ""}`;
-}
-
-// ── Chart.js ─────────────────────────────────────────────────────────────────
-
-function renderChartCard(sym, rows) {
-  const canvas = document.getElementById(`chart-${sym}`);
-  if (!canvas || !rows?.length) return;
-
-  const labels    = rows.map(r => fmtTime(r.recorded_at));
-  const ltpData   = rows.map(r => r.ltp);
-  const scoreData = rows.map(r => r.score);
-
-  if (chartInstances[sym]) {
-    chartInstances[sym].destroy();
-  }
-
-  const ctx = canvas.getContext("2d");
-
-  chartInstances[sym] = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Price (LTP)",
-          data: ltpData,
-          borderColor: "#10B981",
-          backgroundColor: "rgba(16,185,129,0.08)",
-          borderWidth: 1.5,
-          pointRadius: 0,
-          pointHoverRadius: 4,
-          tension: 0.3,
-          fill: true,
-          yAxisID: "yPrice",
-        },
-        {
-          label: "Signal Score",
-          data: scoreData,
-          borderColor: "#3B82F6",
-          backgroundColor: "rgba(59,130,246,0.08)",
-          borderWidth: 1.5,
-          pointRadius: 0,
-          pointHoverRadius: 4,
-          tension: 0.3,
-          fill: false,
-          yAxisID: "yScore",
-          borderDash: [4, 2],
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      animation: { duration: 300 },
-      plugins: {
-        legend: {
-          labels: {
-            color: "#94A3B8",
-            font: { family: "JetBrains Mono, monospace", size: 11 },
-            boxWidth: 12,
-            padding: 16,
-          },
-        },
-        tooltip: {
-          backgroundColor: "#0F172A",
-          borderColor: "#1E293B",
-          borderWidth: 1,
-          titleColor: "#FFFFFF",
-          bodyColor: "#94A3B8",
-          titleFont: { family: "JetBrains Mono, monospace", size: 11 },
-          bodyFont:  { family: "JetBrains Mono, monospace", size: 11 },
-          callbacks: {
-            label: ctx => {
-              const v = ctx.parsed.y;
-              if (ctx.datasetIndex === 0) return ` Price: ${fmtIN(v, 2)}`;
-              return ` Score: ${v > 0 ? "+" : ""}${v}`;
-            },
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: "#94A3B8",
-            font: { family: "JetBrains Mono, monospace", size: 10 },
-            maxTicksLimit: 8,
-            maxRotation: 0,
-          },
-          grid: { color: "rgba(30,41,59,0.8)" },
-          border: { color: "#1E293B" },
-        },
-        yPrice: {
-          position: "left",
-          ticks: {
-            color: "#94A3B8",
-            font: { family: "JetBrains Mono, monospace", size: 10 },
-            callback: v => fmtIN(v, 0),
-          },
-          grid: { color: "rgba(30,41,59,0.8)" },
-          border: { color: "#1E293B" },
-        },
-        yScore: {
-          position: "right",
-          min: -10, max: 10,
-          ticks: {
-            color: "#3B82F6",
-            font: { family: "JetBrains Mono, monospace", size: 10 },
-            stepSize: 2,
-          },
-          grid: { drawOnChartArea: false },
-          border: { color: "#1E293B" },
-        },
-      },
-    },
-  });
-}
-
-// ── Macro Cells ───────────────────────────────────────────────────────────────
 
 function renderMacro(macro) {
   const items = [
@@ -393,72 +152,20 @@ function renderMacro(macro) {
   }).join("");
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Timestamp ────────────────────────────────────────────────────────────────
 
-function fmt(v, d = 2) {
-  if (v == null) return "—";
-  return Number(v).toFixed(d);
+function renderTimestamp(ts) {
+  const el = document.getElementById("last-updated");
+  if (!el || !ts) return;
+  const d = new Date(ts + "Z");
+  el.innerHTML = `<span class="live-dot"></span>Updated: ${d.toLocaleTimeString("en-IN", { hour12: false })} UTC`;
 }
 
-function fmtIN(v, d = 2) {
-  if (v == null) return "—";
-  return Number(v).toLocaleString("en-IN", {
-    minimumFractionDigits: d, maximumFractionDigits: d,
-  });
-}
-
-function fmtTime(ts) {
-  if (!ts) return "";
-  const d = new Date(ts + (ts.endsWith("Z") ? "" : "Z"));
-  // If same day, show time only; else show date
-  const today = new Date();
-  if (d.toDateString() === today.toDateString()) {
-    return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false });
-  }
-  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
-}
-
-function sigIcon(sig) {
-  return sig === "BUY" ? "▲" : sig === "SELL" ? "▼" : "◆";
-}
-
-const IND_NAMES = {
-  trend: "Trend", dow_jones: "Dow Jones", india_vix: "India VIX",
-  oi: "Open Interest", vwap: "VWAP", supertrend: "Supertrend",
-  rsi: "RSI (14)", dxy: "USD Index", crude: "Crude Oil", pcr: "Put-Call Ratio",
-};
-function indName(k) { return IND_NAMES[k] || k; }
-
-function loadingHTML() {
-  return `<div class="loading"><div class="spinner"></div><span>Fetching data…</span></div>`;
-}
-
-function showError(msg) {
-  const el = document.getElementById("error-banner");
-  if (el) { el.textContent = `⚠ ${msg}`; el.style.display = "block"; }
-  console.error("[AlphaEdge]", msg);
-}
-
-// ── Portfolio Logic ──────────────────────────────────────────────────────────
-
-async function loadPortfolio() {
-  try {
-    const res = await fetch(`${API_BASE}/api/portfolio/pnl`);
-    if (!res.ok) throw new Error(`/api/portfolio/pnl → ${res.status}`);
-    const data = await res.json();
-    renderPortfolio(data);
-  } catch (err) {
-    console.error("Failed to load portfolio:", err);
-    const panel = document.getElementById("panel-PORTFOLIO");
-    if (panel) {
-      panel.innerHTML = `<div class="error-banner">Failed to fetch Portfolio P&L: ${err.message}</div>`;
-    }
-  }
-}
+// ── Portfolio Render ─────────────────────────────────────────────────────────
 
 function renderPortfolio(data) {
-  const panel = document.getElementById("panel-PORTFOLIO");
-  if (!panel) return;
+  const container = document.getElementById("portfolio-container");
+  if (!container) return;
 
   const s = data.summary;
   const brokers = data.brokers;
@@ -470,7 +177,11 @@ function renderPortfolio(data) {
   const totalArrow = s.total_pnl >= 0 ? "▲" : "▼";
   const todayArrow = s.today_pnl >= 0 ? "▲" : "▼";
 
-  panel.innerHTML = `
+  // Remember search query and broker filter state
+  const prevQuery = document.getElementById("portfolio-search")?.value || "";
+  const prevBroker = document.getElementById("portfolio-broker-filter")?.value || "ALL";
+
+  container.innerHTML = `
     <!-- Top Summary Cards -->
     <div class="portfolio-summary-grid">
       <div class="port-card glass">
@@ -484,20 +195,20 @@ function renderPortfolio(data) {
         <div class="port-card-val">₹${fmtIN(s.total_invested)}</div>
         <div class="port-card-sub text-muted">All active brokers</div>
       </div>
-
+ 
       <div class="port-card glass">
         <div class="port-card-label">Total Returns</div>
         <div class="port-card-val ${totalPnlCls}">${totalArrow} ₹${fmtIN(Math.abs(s.total_pnl))}</div>
         <div class="port-card-sub ${totalPnlCls}">${s.total_pnl_pct.toFixed(2)}% Cumulative</div>
       </div>
-
+ 
       <div class="port-card glass">
         <div class="port-card-label">Today's Returns</div>
         <div class="port-card-val ${todayPnlCls}">${todayArrow} ₹${fmtIN(Math.abs(s.today_pnl))}</div>
         <div class="port-card-sub ${todayPnlCls}">${s.today_pnl_pct.toFixed(2)}% Daily</div>
       </div>
     </div>
-
+ 
     <!-- Mid Section: Broker Cards + Allocation Chart -->
     <div class="portfolio-mid-grid">
       <div class="broker-cards-wrap">
@@ -538,7 +249,7 @@ function renderPortfolio(data) {
           }).join("")}
         </div>
       </div>
-
+ 
       <div class="allocation-wrap card glass">
         <div class="card-header">
           <h3>Asset Allocation</h3>
@@ -551,7 +262,7 @@ function renderPortfolio(data) {
         </div>
       </div>
     </div>
-
+ 
     <!-- Filter & Search Controls -->
     <div class="portfolio-controls glass">
       <div class="search-input-wrap">
@@ -568,7 +279,7 @@ function renderPortfolio(data) {
         </select>
       </div>
     </div>
-
+ 
     <!-- Bottom Section: Holdings & Positions Tables -->
     <div class="portfolio-tables-grid">
       <!-- Holdings Section -->
@@ -612,7 +323,7 @@ function renderPortfolio(data) {
           </table>
         </div>
       </div>
-
+ 
       <!-- Positions Section -->
       <div class="table-card card glass">
         <div class="card-header table-card-header">
@@ -658,7 +369,21 @@ function renderPortfolio(data) {
     </div>
   `;
 
+  // Restore input values
+  if (prevQuery) {
+    const searchEl = document.getElementById("portfolio-search");
+    if (searchEl) searchEl.value = prevQuery;
+  }
+  if (prevBroker) {
+    const brokerEl = document.getElementById("portfolio-broker-filter");
+    if (brokerEl) brokerEl.value = prevBroker;
+  }
+
+  // Draw chart
   renderAllocationChart(brokers);
+  
+  // Re-apply filters
+  filterPortfolioTables();
 }
 
 let allocationChartInstance = null;
@@ -767,4 +492,39 @@ function filterPortfolioTables() {
   });
   const positionsCountEl = document.getElementById("positions-count");
   if (positionsCountEl) positionsCountEl.textContent = `${visiblePositions} active`;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function fmt(v, d = 2) {
+  if (v == null) return "—";
+  return Number(v).toFixed(d);
+}
+
+function fmtIN(v, d = 2) {
+  if (v == null) return "—";
+  return Number(v).toLocaleString("en-IN", {
+    minimumFractionDigits: d, maximumFractionDigits: d,
+  });
+}
+
+function fmtTime(ts) {
+  if (!ts) return "";
+  const d = new Date(ts + (ts.endsWith("Z") ? "" : "Z"));
+  const today = new Date();
+  if (d.toDateString() === today.toDateString()) {
+    return d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false });
+  }
+  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+}
+
+// Loading state HTML helper
+function loadingHTML() {
+  return `<div class="loading"><div class="spinner"></div><span>Fetching data…</span></div>`;
+}
+
+function showError(msg) {
+  const el = document.getElementById("error-banner");
+  if (el) { el.textContent = `⚠ ${msg}`; el.style.display = "block"; }
+  console.error("[AlphaEdge]", msg);
 }

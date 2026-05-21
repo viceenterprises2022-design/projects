@@ -764,3 +764,14 @@ canvas { display: block; }
   border-radius: 2px;
   border: 1px solid rgba(255, 255, 255, 0.04);
 }
+
+/* ── Portfolio Ticker Highlight ─────────────────── */
+.portfolio-ticker-highlight {
+  background: rgba(16, 185, 129, 0.05);
+  border-right: 1px solid rgba(16, 185, 129, 0.2);
+}
+.portfolio-ticker-highlight .ticker-name {
+  color: var(--primary) !important;
+  font-weight: 600;
+}
+

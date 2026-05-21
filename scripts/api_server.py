@@ -26,8 +26,8 @@ import pnl_poller
 # ── App ───────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title="AlphaEdge API",
-    description="Market Intelligence API for NIFTY, SENSEX, BANKNIFTY",
+    title="DVR Portfolio API",
+    description="Multi-Broker Portfolio Aggregator & Macro Data Service",
     version="1.0.0",
 )
 
