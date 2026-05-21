@@ -1202,12 +1202,13 @@ async def oi_db_loop(state):
 
 
 # ── Main Dashboard ────────────────────────────────────────────────────────────
-async def run_dashboard(selected_idx: str):
+async def run_dashboard(selected_idx: str, mode: str):
     console = Console()
-    layout  = make_layout()
+    layout  = make_layout(mode)
 
     state = {
         "active_idx":    selected_idx,
+        "mode":          mode,
         "spots":         {selected_idx: 0.0},
         "spots_chg":     {selected_idx: 0.0},
         "futures_quote": None,
@@ -1229,7 +1230,7 @@ async def run_dashboard(selected_idx: str):
 
     # ── Phase 1: Pre-fetch option chain + candles ──────────────────────────────
     console.print(
-        f"\n[bold cyan]⚡ AlphaEdge Pro[/] — Warming up [bold yellow]{selected_idx}[/]..."
+        f"\n[bold cyan]⚡ AlphaEdge Pro[/] — Warming up [bold yellow]{selected_idx}[/] ({mode.upper()} view)..."
     )
     console.print("[dim]  › Fetching spot price, option chain, historical candles...[/]")
     await prefetch_state(state)
@@ -1276,17 +1277,23 @@ async def run_dashboard(selected_idx: str):
     with Live(layout, console=console, screen=True, refresh_per_second=2):
         while True:
             layout["header"].update(render_header(state))
-            layout["calls_panel"].update(render_chains(state, "CALLS"))
-            layout["strikes_panel"].update(render_strikes(state))
-            layout["puts_panel"].update(render_chains(state, "PUTS"))
-            layout["indicators_panel"].update(render_indicators(state))
-            layout["walls_panel"].update(render_walls(state))
-            layout["alerts_panel"].update(render_alerts(state))
+            if mode == "classic":
+                layout["indicators_panel"].update(render_indicators(state))
+                layout["classic_option_chain"].update(render_classic_option_chain(state))
+                layout["classic_intel"].update(render_classic_intel(state))
+                layout["footer"].update(render_classic_trending_oi(state))
+            else:
+                layout["calls_panel"].update(render_chains(state, "CALLS"))
+                layout["strikes_panel"].update(render_strikes(state))
+                layout["puts_panel"].update(render_chains(state, "PUTS"))
+                layout["indicators_panel"].update(render_indicators(state))
+                layout["walls_panel"].update(render_walls(state))
+                layout["alerts_panel"].update(render_alerts(state))
             await asyncio.sleep(0.5)
 
 
-def select_index() -> str:
-    """Startup index selection menu."""
+def select_index() -> tuple:
+    """Startup menu to select index and dashboard layout mode."""
     print()
     print("  ╔══════════════════════════════════════════════════╗")
     print("  ║     ⚡  AlphaEdge Pro — Unified Terminal         ║")
@@ -1299,20 +1306,44 @@ def select_index() -> str:
     print("  ║   3  →  SENSEX                                  ║")
     print("  ╚══════════════════════════════════════════════════╝")
     print()
+    
     while True:
         choice = input("  Select index [1/2/3]: ").strip()
         if choice in INDEX_MENU:
-            sel = INDEX_MENU[choice]
-            print(f"  → Launching AlphaEdge Pro for [bold]{sel}[/bold]...")
-            print()
-            return sel
+            selected_idx = INDEX_MENU[choice]
+            break
         print("  Invalid choice — please enter 1, 2 or 3.")
+
+    print()
+    print("  ╔══════════════════════════════════════════════════╗")
+    print("  ║     📊  Select Dashboard View Mode               ║")
+    print("  ╠══════════════════════════════════════════════════╣")
+    print("  ║   1  →  Pro F&O Breakout View (fo_breakout)     ║")
+    print("  ║   2  →  Classic Intelligence View (v3 style)    ║")
+    print("  ╚══════════════════════════════════════════════════╝")
+    print()
+    
+    while True:
+        mode_choice = input("  Select view mode [1/2]: ").strip()
+        if mode_choice == "1":
+            mode = "breakout"
+            print(f"  → Launching Pro F&O Breakout View for [bold]{selected_idx}[/bold]...")
+            break
+        elif mode_choice == "2":
+            mode = "classic"
+            print(f"  → Launching Classic Intelligence View for [bold]{selected_idx}[/bold]...")
+            break
+        print("  Invalid choice — please enter 1 or 2.")
+        
+    print()
+    return selected_idx, mode
 
 
 if __name__ == "__main__":
     init_db()
     try:
-        chosen = select_index()
-        asyncio.run(run_dashboard(chosen))
+        chosen, mode = select_index()
+        asyncio.run(run_dashboard(chosen, mode))
     except KeyboardInterrupt:
         print("\n  [AlphaEdge Pro] Session ended.")
+
