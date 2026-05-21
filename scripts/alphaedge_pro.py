@@ -587,7 +587,7 @@ def days_to_expiry(expiry_str):
         return "?"
 
 # ── Layout Construction ───────────────────────────────────────────────────────
-def make_layout(mode="breakout") -> Layout:
+def make_layout(mode="unified") -> Layout:
     layout = Layout()
     if mode == "classic":
         layout.split_column(
@@ -600,7 +600,7 @@ def make_layout(mode="breakout") -> Layout:
             Layout(name="classic_option_chain", ratio=6),
             Layout(name="classic_intel",        ratio=3),
         )
-    else:
+    elif mode == "breakout":
         layout.split_column(
             Layout(name="header",  size=5),
             Layout(name="body",    ratio=1),
@@ -615,6 +615,23 @@ def make_layout(mode="breakout") -> Layout:
             Layout(name="indicators_panel", ratio=3),
             Layout(name="walls_panel",      ratio=2),
             Layout(name="alerts_panel",     ratio=2),
+        )
+    else:  # unified
+        layout.split_column(
+            Layout(name="header",  size=5),
+            Layout(name="body",    ratio=1),
+            Layout(name="intel",   size=11),
+        )
+        layout["body"].split_row(
+            Layout(name="calls_panel",   ratio=1),
+            Layout(name="strikes_panel", size=14),
+            Layout(name="puts_panel",    ratio=1),
+        )
+        layout["intel"].split_row(
+            Layout(name="indicators_panel",  ratio=3),
+            Layout(name="trending_oi_panel", ratio=5),
+            Layout(name="walls_panel",       ratio=4),
+            Layout(name="alerts_panel",      ratio=3),
         )
     return layout
 
@@ -812,6 +829,7 @@ def render_walls(state) -> Panel:
     walls  = state.get("walls", {})
     oi_sum = state.get("oi_summary") or {}
     spot   = state["spots"].get(state["active_idx"], 0.0)
+    mode   = state.get("mode", "unified")
 
     # Resistance wall
     rs = walls.get("resistance_strike")
@@ -846,20 +864,35 @@ def render_walls(state) -> Panel:
         pc  = "green" if pcr >= 1.0 else ("yellow" if pcr >= 0.7 else "red")
         items.append(f"PCR: [{pc}]{pcr:.2f}[/]  │  MaxPain: [magenta]{mp:,.0f}[/]")
 
-    # Intraday OI trail (SQLite — last 4 rows)
-    toi = state.get("trending_oi", [])
-    if toi:
-        items.append(Rule(style="dim"))
-        items.append("[dim]Time   LTP        C.OI     P.OI[/]")
-        for row in toi[:4]:
-            ts, ltp, c_oi, p_oi = row
-            diff = p_oi - c_oi
-            sc   = "green" if diff > 0 else "red"
-            items.append(
-                f"[dim]{ts.split(' ')[1][:5]}[/]  "
-                f"[white]{ltp:>9,.0f}[/]  "
-                f"[{sc}]{fmt_oi(c_oi)}[/]  [{sc}]{fmt_oi(p_oi)}[/]"
-            )
+    if mode == "unified":
+        if oi_sum:
+            tc, tp = oi_sum.get("total_call_oi", 0), oi_sum.get("total_put_oi", 0)
+            chg_p  = state["spots_chg"].get(state["active_idx"], 0.0)
+            total_oi_chg = sum(s.get("call_doi", 0) + s.get("put_doi", 0) for s in oi_sum.get("strikes", []))
+            if chg_p > 0 and total_oi_chg > 0:   buildup, b_clr = "Long Buildup", "bold green"
+            elif chg_p > 0 and total_oi_chg < 0: buildup, b_clr = "Short Covering", "bold cyan"
+            elif chg_p < 0 and total_oi_chg > 0: buildup, b_clr = "Short Buildup", "bold red"
+            elif chg_p < 0 and total_oi_chg < 0: buildup, b_clr = "Long Unwinding", "dim yellow"
+            else:                                buildup, b_clr = "Neutral", "dim white"
+            
+            items.append(Rule(style="dim"))
+            items.append(f"Calls OI: [green]{fmt_oi(tc)}[/green]  │  Puts OI: [red]{fmt_oi(tp)}[/red]")
+            items.append(f"OI Build: [{b_clr}]{buildup}[/{b_clr}]")
+    else:
+        # Intraday OI trail (SQLite — last 4 rows)
+        toi = state.get("trending_oi", [])
+        if toi:
+            items.append(Rule(style="dim"))
+            items.append("[dim]Time   LTP        C.OI     P.OI[/]")
+            for row in toi[:4]:
+                ts, ltp, c_oi, p_oi = row
+                diff = p_oi - c_oi
+                sc   = "green" if diff > 0 else "red"
+                items.append(
+                    f"[dim]{ts.split(' ')[1][:5]}[/]  "
+                    f"[white]{ltp:>9,.0f}[/]  "
+                    f"[{sc}]{fmt_oi(c_oi)}[/]  [{sc}]{fmt_oi(p_oi)}[/]"
+                )
 
     return Panel(Group(*items), title="[bold yellow]OI Walls & Intelligence[/]",
                  border_style="yellow", padding=(0, 1))
@@ -1282,11 +1315,19 @@ async def run_dashboard(selected_idx: str, mode: str):
                 layout["classic_option_chain"].update(render_classic_option_chain(state))
                 layout["classic_intel"].update(render_classic_intel(state))
                 layout["footer"].update(render_classic_trending_oi(state))
-            else:
+            elif mode == "breakout":
                 layout["calls_panel"].update(render_chains(state, "CALLS"))
                 layout["strikes_panel"].update(render_strikes(state))
                 layout["puts_panel"].update(render_chains(state, "PUTS"))
                 layout["indicators_panel"].update(render_indicators(state))
+                layout["walls_panel"].update(render_walls(state))
+                layout["alerts_panel"].update(render_alerts(state))
+            else:  # unified
+                layout["calls_panel"].update(render_chains(state, "CALLS"))
+                layout["strikes_panel"].update(render_strikes(state))
+                layout["puts_panel"].update(render_chains(state, "PUTS"))
+                layout["indicators_panel"].update(render_indicators(state))
+                layout["trending_oi_panel"].update(render_classic_trending_oi(state))
                 layout["walls_panel"].update(render_walls(state))
                 layout["alerts_panel"].update(render_alerts(state))
             await asyncio.sleep(0.5)
@@ -1318,22 +1359,27 @@ def select_index() -> tuple:
     print("  ╔══════════════════════════════════════════════════╗")
     print("  ║     📊  Select Dashboard View Mode               ║")
     print("  ╠══════════════════════════════════════════════════╣")
-    print("  ║   1  →  Pro F&O Breakout View (fo_breakout)     ║")
-    print("  ║   2  →  Classic Intelligence View (v3 style)    ║")
+    print("  ║   1  →  Ultimate Unified View (All in One)      ║")
+    print("  ║   2  →  Pro F&O Breakout View (fo_breakout)     ║")
+    print("  ║   3  →  Classic Intelligence View (v3 style)    ║")
     print("  ╚══════════════════════════════════════════════════╝")
     print()
     
     while True:
-        mode_choice = input("  Select view mode [1/2]: ").strip()
+        mode_choice = input("  Select view mode [1/2/3]: ").strip()
         if mode_choice == "1":
+            mode = "unified"
+            print(f"  → Launching Ultimate Unified View for [bold]{selected_idx}[/bold]...")
+            break
+        elif mode_choice == "2":
             mode = "breakout"
             print(f"  → Launching Pro F&O Breakout View for [bold]{selected_idx}[/bold]...")
             break
-        elif mode_choice == "2":
+        elif mode_choice == "3":
             mode = "classic"
             print(f"  → Launching Classic Intelligence View for [bold]{selected_idx}[/bold]...")
             break
-        print("  Invalid choice — please enter 1 or 2.")
+        print("  Invalid choice — please enter 1, 2 or 3.")
         
     print()
     return selected_idx, mode
