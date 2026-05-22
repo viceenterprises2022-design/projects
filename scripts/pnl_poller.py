@@ -8,6 +8,9 @@ Includes a high-fidelity dynamic mock engine for fallback when credentials are e
 import os
 import sys
 import json
+import logging
+
+log = logging.getLogger(__name__)
 import hashlib
 import time
 import datetime
@@ -205,7 +208,7 @@ def fetch_live_upstox():
         p_res = requests.get("https://api.upstox.com/v2/portfolio/short-term-positions", headers=headers, timeout=8)
         
         if h_res.status_code in (401, 403) or p_res.status_code in (401, 403):
-            print(f"[Upstox API] Unauthorized ({h_res.status_code}/{p_res.status_code}) - falling back to mock", file=sys.stderr)
+            log.warning("[Upstox API] Unauthorized (%s/%s) - falling back to mock", h_res.status_code, p_res.status_code)
             return None
 
         holdings = []
@@ -265,7 +268,7 @@ def fetch_live_upstox():
                 
         return holdings, positions
     except Exception as e:
-        print(f"[Upstox API Error] {e}", file=sys.stderr)
+        log.error("[Upstox API Error] %s", e)
         return None
 
 def fetch_live_dhan():
@@ -285,7 +288,7 @@ def fetch_live_dhan():
         p_res = requests.get("https://api.dhan.co/v2/positions", headers=headers, timeout=8)
         
         if h_res.status_code in (401, 403) or p_res.status_code in (401, 403):
-            print(f"[Dhan API] Unauthorized ({h_res.status_code}/{p_res.status_code}) - falling back to mock", file=sys.stderr)
+            log.warning("[Dhan API] Unauthorized (%s/%s) - falling back to mock", h_res.status_code, p_res.status_code)
             return None
 
         holdings = []
@@ -344,7 +347,7 @@ def fetch_live_dhan():
                 
         return holdings, positions
     except Exception as e:
-        print(f"[Dhan API Error] {e}", file=sys.stderr)
+        log.error("[Dhan API Error] %s", e)
         return None
 
 def fetch_live_tradesmart():
@@ -380,7 +383,7 @@ def fetch_live_tradesmart():
             
         auth_json = auth_res.json()
         if auth_json.get("stat") != "Ok":
-            print(f"[TradeSmart Auth Fail] {auth_json.get('emsg')}", file=sys.stderr)
+            log.warning("[TradeSmart Auth Fail] %s", auth_json.get('emsg'))
             return None
             
         susertoken = auth_json.get("susertoken")
@@ -450,7 +453,7 @@ def fetch_live_tradesmart():
                     
         return holdings, positions
     except Exception as e:
-        print(f"[TradeSmart API Error] {e}", file=sys.stderr)
+        log.error("[TradeSmart API Error] %s", e)
         return None
 
 # --- Main Polling & Aggregation Core ---
@@ -505,7 +508,7 @@ def get_aggregated_portfolio():
     # 4. Poll Fyers (always mock until live token provided)
     if FYERS_CLIENT_ID and FYERS_ACCESS_TOKEN:
         # Live Fyers integration placeholder — falls through to mock for now
-        print("[Fyers] Credentials detected but live integration pending; using mock.", file=sys.stderr)
+        log.info("[Fyers] Credentials detected but live integration pending; using mock.")
     h, p = get_mock_portfolio("fyers")
     brokers_data["fyers"] = {"status": "active", "is_mock": True}
     all_holdings.extend(h)
@@ -513,7 +516,7 @@ def get_aggregated_portfolio():
 
     # 5. Poll Hyperliquid (public address based; always mock until address provided)
     if HL_WALLET_ADDRESS:
-        print("[Hyperliquid] Wallet address detected but live integration pending; using mock.", file=sys.stderr)
+        log.info("[Hyperliquid] Wallet address detected but live integration pending; using mock.")
     h, p = get_mock_portfolio("hyperliquid")
     brokers_data["hyperliquid"] = {"status": "active", "is_mock": True}
     all_holdings.extend(h)
@@ -527,7 +530,7 @@ def get_aggregated_portfolio():
 
     # 7. Poll Binance
     if BINANCE_API_KEY and BINANCE_API_SECRET:
-        print("[Binance] Credentials detected but live integration pending; using mock.", file=sys.stderr)
+        log.info("[Binance] Credentials detected but live integration pending; using mock.")
     h, p = get_mock_portfolio("binance")
     brokers_data["binance"] = {"status": "active", "is_mock": True}
     all_holdings.extend(h)
