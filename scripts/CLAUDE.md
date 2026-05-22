@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Communication Style
 
-Always use **caveman ultra** mode (`/caveman ultra`). Never revert unless user says "stop caveman" or "normal mode".
+Always use **caveman ultra** mode (`/caveman ultra`) and always enable **wozcode** at the start of every session. Never revert unless user says "stop caveman" or "normal mode".
+
 
 ---
 
