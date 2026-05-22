@@ -35,6 +35,14 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 |:--- |:--- |
 | `crypto_dashboard.py` | **Unified Crypto Depth Map**. Simultaneous BTC, ETH, and SOL dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls) with 10-level depth. Displays Buy vs Sell breakdown to identify Support/Resistance. Features a live poll countdown and 15s parallel updates. |
 
+### 📊 Live Market Dashboards
+*Async real-time dashboards requiring venv python.*
+
+| Script | Description |
+|:--- |:--- |
+| `alphaedge_pro.py` | **AlphaEdge Pro**. Advanced async market dashboard. |
+| `live_market_dashboard.py` | **Live Market Dashboard**. Real-time async market view. |
+
 ### 🛠️ Utilities & Helpers
 | Script | Description |
 |:--- |:--- |
@@ -50,9 +58,30 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 *Current environment is integrated with Clawdi Cloud for session continuity.*
 
 - **Dashboard**: [cloud.clawdi.ai](https://cloud.clawdi.ai/)
-- **Active Agents**: Claude Code, Codex, Hermes.
+- **Active Agents**: Claude Code, Codex, Hermes, Gemini, Cursor.
 - **Live Sync**: Daemons managed via `systemd` (`clawdi serve`).
 - **Known Issue**: Gemini CLI and Antigravity CLI sync in `clawdi` v0.5.7 is currently mapped to Hermes logic (Bug). Actual sessions do not sync to cloud yet.
+
+## ⚙️ Systemd Services
+
+| Service | Description | Port |
+|:--- |:--- |:--- |
+| `alphaedge-api.service` | AlphaEdge Market Intelligence API (FastAPI + uvicorn) | `:8765` |
+| `multica-daemon.service` | Multica Agent Runtime (Claude, Codex, Gemini, Hermes, Cursor) | — |
+
+```bash
+# Check status
+sudo systemctl status alphaedge-api
+sudo systemctl status multica-daemon
+
+# Restart
+sudo systemctl restart alphaedge-api
+sudo systemctl restart multica-daemon
+
+# Logs
+journalctl -u alphaedge-api -f
+journalctl -u multica-daemon -f
+```
 
 ---
 
@@ -67,9 +96,13 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 
 ## 🛠️ Setup
 
-Install dependencies:
+### Python Environment
+
+System Python 3.14 blocks global pip installs. Use the project venv:
+
 ```bash
-python3 -m pip install fastapi uvicorn[standard] requests rich exa-py python-dotenv
+python3 -m venv venv
+venv/bin/pip install fastapi "uvicorn[standard]" requests rich exa-py python-dotenv aiohttp
 ```
 
 ### Usage Examples
@@ -86,8 +119,14 @@ python3 astro_report.py
 
 **Run AlphaEdge Dashboard:**
 ```bash
-python3 api_server.py  # Server
+venv/bin/python api_server.py  # Server (or managed by systemd: alphaedge-api.service)
 python3 collector.py --loop --interval 5 # Data collector
+```
+
+**Run AlphaEdge Pro / Live Market Dashboard:**
+```bash
+venv/bin/python alphaedge_pro.py
+venv/bin/python live_market_dashboard.py
 ```
 
 **Run AI Agent Search:**
