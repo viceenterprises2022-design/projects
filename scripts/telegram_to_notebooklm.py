@@ -6,7 +6,8 @@ Daily pipeline (runs at 4PM IST via cron):
   1. Fetch PDFs posted in the last DAYS_BACK days from Telegram channel
   2. Download PDFs locally to notebooklm_output/pdfs/
   3. Upload each PDF to a new dated NotebookLM notebook
-  4. Generate: briefing-doc report + mind-map
+  4. Inject 6 Q&A coverage notes into notebook
+  5. Generate: custom comprehensive report + mind-map
   5. Download artifacts to notebooklm_output/YYYY-MM-DD/
 
 Config via .env:
@@ -162,24 +163,79 @@ def wait_for_sources(nb_id: str, source_ids: list[str]):
 
 
 # ── Step 5: Generate + Download artifacts ─────────────────────────────────────
+
+# Targeted questions — answers saved as notes before report generation.
+# Notes become notebook sources, giving the report generator richer content to draw from.
+COVERAGE_QUESTIONS = [
+    ("stock-picks",
+     "List ALL specific stock recommendations, buy/sell calls, price targets, and entry/exit levels "
+     "mentioned across ALL reports. Be exhaustive — include every ticker and level."),
+    ("technical-analysis",
+     "Summarize ALL technical analysis across ALL reports: chart patterns, support/resistance levels, "
+     "moving averages, RSI, volume signals, and breakout/breakdown setups."),
+    ("sector-themes",
+     "What sector rotations, thematic plays, and macro trends are discussed across ALL reports? "
+     "Include every sector-specific insight and relative strength observation."),
+    ("risk-warnings",
+     "List ALL risk factors, stop-loss levels, cautionary notes, and downside scenarios mentioned "
+     "across ALL reports."),
+    ("macro-outlook",
+     "Summarize the macro and market outlook from ALL reports: index targets, FII/DII activity, "
+     "global cues, options data (PCR, OI, max pain), and derivative signals."),
+    ("high-conviction-plays",
+     "What are the most unique, contrarian, or high-conviction trade setups and insights across "
+     "ALL reports? Include specific reasoning for each."),
+]
+
+REPORT_PROMPT = (
+    "Generate a comprehensive, exhaustive daily market intelligence briefing covering ALL sources "
+    "and notes. Required sections: "
+    "1) Market Overview & Index Targets "
+    "2) Top Stock Picks — full reasoning, price targets, entry/exit for every call "
+    "3) Technical Analysis Highlights "
+    "4) Sector Analysis & Themes "
+    "5) Macro & Global Cues "
+    "6) Options & Derivatives Data "
+    "7) Risk Factors & Stop-Losses "
+    "8) High-Conviction & Contrarian Plays. "
+    "Include specific numbers, levels, and tickers from every source. "
+    "Do NOT omit any report's key calls or analysis."
+)
+
+
 def generate_and_download(nb_id: str):
-    # ── Briefing-doc report (async)
-    p("\nGenerating briefing-doc report...")
-    data = nlm_json("generate", "report", "--format", "briefing-doc", "--notebook", nb_id)
+    # ── Phase 1: Inject Q&A notes for comprehensive coverage
+    # Each answer is saved as a notebook note, expanding the source pool for report generation.
+    p("\nPhase 1: Injecting coverage notes (Q&A → notes)...")
+    for note_title, question in COVERAGE_QUESTIONS:
+        p(f"  Q: {note_title}...")
+        result = nlm(
+            "ask", question,
+            "--save-as-note", "--note-title", note_title,
+            "--notebook", nb_id,
+        )
+        if result.returncode != 0:
+            p(f"    [WARN] failed: {result.stderr.strip()[:120]}")
+        else:
+            p(f"    ✓ note saved: {note_title}")
+
+    # ── Phase 2: Custom comprehensive report (notes + PDFs as sources)
+    p("\nPhase 2: Generating comprehensive report...")
+    data = nlm_json("generate", "report", "--format", "custom", REPORT_PROMPT, "--notebook", nb_id)
     report_id = data.get("task_id", "")
     p(f"  report task: {report_id or '(none)'}")
 
-    # ── Mind-map (sync — available immediately)
-    p("Generating mind-map...")
+    # ── Phase 3: Mind-map (sync — available immediately)
+    p("Phase 3: Generating mind-map...")
     nlm_json("generate", "mind-map", "--notebook", nb_id)
     out_mm = DAILY_DIR / "mindmap.json"
     nlm("download", "mind-map", str(out_mm), "--notebook", nb_id, capture=False)
     p(f"  ✓ Mind-map → {out_mm}")
 
-    # ── Wait + download report
+    # ── Phase 4: Wait + download report
     if report_id:
-        p("Waiting for report (1-5 min)...")
-        nlm("artifact", "wait", report_id, "-n", nb_id, "--timeout", "600", capture=False)
+        p("Phase 4: Waiting for report (up to 15 min)...")
+        nlm("artifact", "wait", report_id, "-n", nb_id, "--timeout", "900", capture=False)
         out_r = DAILY_DIR / "report.md"
         nlm("download", "report", str(out_r), "-a", report_id, "-n", nb_id, capture=False)
         p(f"  ✓ Report → {out_r}")
@@ -222,7 +278,7 @@ async def main():
     p("\n[4/5] Waiting for source processing...")
     wait_for_sources(nb_id, source_ids)
 
-    p("\n[5/5] Generating report + mind-map...")
+    p("\n[5/5] Injecting coverage notes + generating report + mind-map...")
     generate_and_download(nb_id)
 
     p(f"\n{'=' * 50}")
