@@ -80,6 +80,13 @@ def strip_rich(text: str) -> str:
 async def fetch_channels(channels: list[str]) -> dict[str, list]:
     client = TelegramClient("tg_session", API_ID, API_HASH)
     await client.connect()
+    if not await client.is_user_authorized():
+        await client.disconnect()
+        raise RuntimeError(
+            "Telegram session not authorized. Run:\n"
+            f"  venv/bin/python -c \"import asyncio; from telethon import TelegramClient; "
+            f"asyncio.run(TelegramClient('tg_session', {API_ID}, '{API_HASH}').start())\""
+        )
     results = {}
     for ch in channels:
         print(f"  Fetching {MSG_LIMIT} messages from {ch}...")
