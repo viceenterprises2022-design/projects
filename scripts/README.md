@@ -35,6 +35,64 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 |:--- |:--- |
 | `crypto_dashboard.py` | **Unified Crypto Depth Map**. Simultaneous BTC, ETH, and SOL dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls) with 10-level depth. Displays Buy vs Sell breakdown to identify Support/Resistance. Features a live poll countdown and 15s parallel updates. |
 
+### 📰 Beat the Street — NotebookLM Daily Pipeline
+*Automated daily pipeline: fetches PDFs from Telegram, uploads to NotebookLM, generates briefing-doc report and mind-map.*
+
+| Script | Description |
+|:--- |:--- |
+| `telegram_to_notebooklm.py` | **Daily Pipeline**. Fetches PDFs from `@btsreports` posted in the last 24h, uploads to a dated NotebookLM notebook (`Beat-the-street-report-YYYY-MM-DD`), generates briefing-doc report + mind-map, saves to `notebooklm_output/Beat-the-street-report-YYYY-MM-DD/`. Runs daily at **4PM IST** via cron. |
+
+**Setup:**
+```bash
+# Install dependencies
+venv/bin/pip install telethon python-dotenv
+pipx install notebooklm-py
+
+# Authenticate Telegram (one-time, interactive)
+venv/bin/python - <<'EOF'
+import asyncio
+from telethon import TelegramClient
+import os; from dotenv import load_dotenv; load_dotenv()
+async def auth():
+    client = TelegramClient('tg_session', int(os.environ['TELEGRAM_API_ID']), os.environ['TELEGRAM_API_HASH'])
+    await client.start()
+    await client.disconnect()
+asyncio.run(auth())
+EOF
+
+# Authenticate NotebookLM (one-time, browser)
+notebooklm login
+
+# Run manually
+PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py
+```
+
+**Cron (already installed):**
+```
+30 10 * * *  cd /path/to/scripts && PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py >> notebooklm_output/cron.log 2>&1
+```
+
+**Output:**
+```
+notebooklm_output/
+├── pdfs/                                    # cached PDFs
+├── Beat-the-street-report-YYYY-MM-DD/
+│   ├── report.md                            # briefing-doc
+│   └── mindmap.json                         # mind-map
+└── cron.log                                 # daily run log
+```
+
+**Config (`.env`):**
+```
+TELEGRAM_API_ID=...
+TELEGRAM_API_HASH=...
+TELEGRAM_CHANNELS=@btsreports
+DAYS_BACK=1
+PDF_LIMIT=20
+```
+
+---
+
 ### 📊 Live Market Dashboards
 *Async real-time dashboards requiring venv python.*
 
