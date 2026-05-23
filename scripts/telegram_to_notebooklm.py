@@ -81,7 +81,7 @@ async def download_pdfs(channels: list[str]) -> list[Path]:
     await client.connect()
     if not await client.is_user_authorized():
         await client.disconnect()
-        print("ERROR: Not authorized. Run: venv/bin/python -c \"import asyncio; from telethon import TelegramClient; asyncio.run(TelegramClient('tg_session', API_ID, API_HASH).start())\"")
+        p("ERROR: Not authorized. Run: venv/bin/python -c \"import asyncio; from telethon import TelegramClient; asyncio.run(TelegramClient('tg_session', API_ID, API_HASH).start())\"")
         sys.exit(1)
 
     all_pdfs = []
@@ -131,7 +131,7 @@ def create_notebook() -> str:
     data = nlm_json("create", NB_TITLE)
     nb_id = data.get("notebook", {}).get("id", "")
     if not nb_id:
-        print("ERROR: Failed to create notebook. Run 'notebooklm login' first.")
+        p("ERROR: Failed to create notebook. Run 'notebooklm login' first.")
         sys.exit(1)
     p(f"  Notebook ID: {nb_id}")
     return nb_id
@@ -141,14 +141,14 @@ def create_notebook() -> str:
 def upload_pdfs(nb_id: str, pdf_paths: list[Path]) -> list[str]:
     p(f"\nUploading {len(pdf_paths)} PDFs to NotebookLM...")
     source_ids = []
-    for p in pdf_paths:
-        data = nlm_json("source", "add", str(p), "--notebook", nb_id)
+    for pdf in pdf_paths:
+        data = nlm_json("source", "add", str(pdf), "--notebook", nb_id)
         sid = data.get("source", {}).get("id", "")
         if sid:
             source_ids.append(sid)
-            p(f"  ✓ {path.name[:60]} → {sid[:8]}...")
+            p(f"  ✓ {pdf.name[:60]} → {sid[:8]}...")
         else:
-            p(f"  ✗ Failed: {path.name}")
+            p(f"  ✗ Failed: {pdf.name}")
     return source_ids
 
 
@@ -225,7 +225,7 @@ async def main():
     p(f"Output    : {OUTPUT_DIR}/\n")
 
     # 1. Download PDFs
-    print("[1/6] Downloading PDFs from Telegram...")
+    p("[1/6] Downloading PDFs from Telegram...")
     pdf_paths = await download_pdfs(CHANNELS)
 
     if not pdf_paths:
@@ -234,28 +234,28 @@ async def main():
     p(f"\n  Total PDFs: {len(pdf_paths)}")
 
     # 2. Create notebook
-    print("\n[2/6] Creating NotebookLM notebook...")
+    p("\n[2/6] Creating NotebookLM notebook...")
     nb_id = create_notebook()
 
     # 3. Upload PDFs
-    print("\n[3/6] Uploading PDFs as sources...")
+    p("\n[3/6] Uploading PDFs as sources...")
     source_ids = upload_pdfs(nb_id, pdf_paths)
-    print(f"  Uploaded: {len(source_ids)}/{len(pdf_paths)}")
+    p(f"  Uploaded: {len(source_ids)}/{len(pdf_paths)}")
 
     if not source_ids:
         p("No sources uploaded. Exiting.")
         sys.exit(1)
 
     # 4. Wait for processing
-    print("\n[4/6] Waiting for source processing...")
+    p("\n[4/6] Waiting for source processing...")
     wait_for_sources(nb_id, source_ids)
 
     # 5. Generate
-    print("\n[5/6] Generating artifacts...")
+    p("\n[5/6] Generating artifacts...")
     artifacts = generate_artifacts(nb_id)
 
     # 6. Download
-    print("\n[6/6] Downloading artifacts...")
+    p("\n[6/6] Downloading artifacts...")
     wait_and_download(nb_id, artifacts)
 
     p(f"\n=== DONE ===")
