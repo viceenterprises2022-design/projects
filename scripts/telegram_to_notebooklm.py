@@ -39,6 +39,7 @@ API_ID    = int(os.environ["TELEGRAM_API_ID"])
 API_HASH  = os.environ["TELEGRAM_API_HASH"]
 CHANNELS  = [c.strip() for c in os.environ.get("TELEGRAM_CHANNELS", "").split(",") if c.strip()]
 MSG_LIMIT = int(os.environ.get("TELEGRAM_MSG_LIMIT", "100"))
+PDF_LIMIT = int(os.environ.get("PDF_LIMIT", "30"))
 NB_TITLE  = os.environ.get(
     "NOTEBOOKLM_NOTEBOOK_TITLE",
     f"Telegram Intel {datetime.now().strftime('%Y-%m-%d %H:%M')}"
@@ -53,12 +54,16 @@ NLM = "notebooklm"
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+def p(msg):
+    print(msg, flush=True)
+
+
 def nlm(*args, capture=True):
     cmd = [NLM] + list(str(a) for a in args)
-    print(f"  $ {' '.join(cmd)}")
+    p(f"  $ {' '.join(cmd)}")
     result = subprocess.run(cmd, capture_output=capture, text=True)
     if result.returncode != 0 and capture:
-        print(f"  [WARN] exit {result.returncode}: {result.stderr.strip()[:300]}")
+        p(f"  [WARN] exit {result.returncode}: {result.stderr.strip()[:300]}")
     return result
 
 
@@ -81,7 +86,7 @@ async def download_pdfs(channels: list[str]) -> list[Path]:
 
     all_pdfs = []
     for ch in channels:
-        print(f"  Scanning {MSG_LIMIT} messages from {ch}...")
+        p(f"  Scanning {MSG_LIMIT} messages from {ch}...")
         pdf_count = 0
         async for msg in client.iter_messages(ch, limit=MSG_LIMIT):
             if not msg.media or not isinstance(msg.media, MessageMediaDocument):
@@ -103,15 +108,18 @@ async def download_pdfs(channels: list[str]) -> list[Path]:
             safe = fname.replace("/", "_").replace("\\", "_")
             dest = PDFS_DIR / safe
             if dest.exists():
-                print(f"    skip (exists): {safe}")
+                p(f"    skip (exists): {safe}")
                 all_pdfs.append(dest)
                 pdf_count += 1
-                continue
-            print(f"    Downloading: {safe}")
-            await client.download_media(msg, file=str(dest))
-            all_pdfs.append(dest)
-            pdf_count += 1
-        print(f"    → {pdf_count} PDFs from {ch}")
+            else:
+                p(f"    Downloading: {safe}")
+                await client.download_media(msg, file=str(dest))
+                all_pdfs.append(dest)
+                pdf_count += 1
+            if len(all_pdfs) >= PDF_LIMIT:
+                p(f"    PDF_LIMIT {PDF_LIMIT} reached, stopping")
+                break
+        p(f"    → {pdf_count} PDFs from {ch}")
 
     await client.disconnect()
     return all_pdfs
@@ -119,110 +127,111 @@ async def download_pdfs(channels: list[str]) -> list[Path]:
 
 # ── Step 2: NotebookLM — create notebook ─────────────────────────────────────────
 def create_notebook() -> str:
-    print(f"\nCreating notebook: {NB_TITLE}")
+    p(f"\nCreating notebook: {NB_TITLE}")
     data = nlm_json("create", NB_TITLE)
     nb_id = data.get("notebook", {}).get("id", "")
     if not nb_id:
         print("ERROR: Failed to create notebook. Run 'notebooklm login' first.")
         sys.exit(1)
-    print(f"  Notebook ID: {nb_id}")
+    p(f"  Notebook ID: {nb_id}")
     return nb_id
 
 
 # ── Step 3: Upload PDFs as sources ───────────────────────────────────────────────
 def upload_pdfs(nb_id: str, pdf_paths: list[Path]) -> list[str]:
-    print(f"\nUploading {len(pdf_paths)} PDFs to NotebookLM...")
+    p(f"\nUploading {len(pdf_paths)} PDFs to NotebookLM...")
     source_ids = []
     for p in pdf_paths:
         data = nlm_json("source", "add", str(p), "--notebook", nb_id)
         sid = data.get("source", {}).get("id", "")
         if sid:
             source_ids.append(sid)
-            print(f"  ✓ {p.name[:60]} → {sid[:8]}...")
+            p(f"  ✓ {path.name[:60]} → {sid[:8]}...")
         else:
-            print(f"  ✗ Failed: {p.name}")
+            p(f"  ✗ Failed: {path.name}")
     return source_ids
 
 
 # ── Step 4: Wait for sources ─────────────────────────────────────────────────────
 def wait_for_sources(nb_id: str, source_ids: list[str]):
-    print(f"\nWaiting for {len(source_ids)} sources to process...")
+    p(f"\nWaiting for {len(source_ids)} sources to process...")
     for sid in source_ids:
         result = nlm("source", "wait", sid, "-n", nb_id, "--timeout", "600")
         status = "✓" if result.returncode == 0 else "✗"
-        print(f"  {status} {sid[:8]}...")
+        p(f"  {status} {sid[:8]}...")
 
 
 # ── Step 5: Generate artifacts ───────────────────────────────────────────────────
 def generate_artifacts(nb_id: str) -> dict:
     artifacts = {}
 
-    print("\nGenerating briefing-doc report...")
+    p("\nGenerating briefing-doc report...")
     data = nlm_json("generate", "report", "--format", "briefing-doc", "--notebook", nb_id)
     artifacts["report"] = data.get("task_id", "")
 
-    print("Generating mind-map...")
+    p("Generating mind-map...")
     data = nlm_json("generate", "mind-map", "--notebook", nb_id)
     artifacts["mind_map"] = data.get("task_id", "")
 
-    print("Generating audio podcast (deep-dive)...")
+    p("Generating audio podcast (deep-dive)...")
     data = nlm_json("generate", "audio",
                     "Comprehensive deep-dive covering all key market insights from these reports",
                     "--format", "deep-dive", "--notebook", nb_id)
     artifacts["audio"] = data.get("task_id", "")
 
     for k, v in artifacts.items():
-        print(f"  {k}: {v or '(no task_id)'}")
+        p(f"  {k}: {v or '(no task_id)'}")
     return artifacts
 
 
 # ── Step 6: Wait + Download ───────────────────────────────────────────────────
 def wait_and_download(nb_id: str, artifacts: dict):
-    print("\nWaiting for artifacts (5-20 min for audio)...")
+    p("\nWaiting for artifacts (5-20 min for audio)...")
 
     if artifacts.get("report"):
         aid = artifacts["report"]
         nlm("artifact", "wait", aid, "-n", nb_id, "--timeout", "900", capture=False)
         out = OUTPUT_DIR / "report.md"
         nlm("download", "report", str(out), "-a", aid, "-n", nb_id, capture=False)
-        print(f"  ✓ Report → {out}")
+        p(f"  ✓ Report → {out}")
 
     if artifacts.get("mind_map"):
         aid = artifacts["mind_map"]
         nlm("artifact", "wait", aid, "-n", nb_id, "--timeout", "300", capture=False)
         out = OUTPUT_DIR / "mindmap.json"
         nlm("download", "mind-map", str(out), "-a", aid, "-n", nb_id, capture=False)
-        print(f"  ✓ Mind-map → {out}")
+        p(f"  ✓ Mind-map → {out}")
 
     if artifacts.get("audio"):
         aid = artifacts["audio"]
-        print("  Audio takes 10-20 min...")
+        p("  Audio takes 10-20 min...")
         nlm("artifact", "wait", aid, "-n", nb_id, "--timeout", "1200", capture=False)
         out = OUTPUT_DIR / "podcast.mp3"
         nlm("download", "audio", str(out), "-a", aid, "-n", nb_id, capture=False)
-        print(f"  ✓ Audio → {out}")
+        p(f"  ✓ Audio → {out}")
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 async def main():
     if not CHANNELS:
-        print("ERROR: Set TELEGRAM_CHANNELS in .env")
+        p("ERROR: Set TELEGRAM_CHANNELS in .env")
         sys.exit(1)
 
-    print(f"=== Telegram PDF → NotebookLM Pipeline ===")
-    print(f"Channels  : {', '.join(CHANNELS)}")
-    print(f"Scan limit: {MSG_LIMIT} messages per channel")
-    print(f"PDFs dir  : {PDFS_DIR}/")
-    print(f"Output    : {OUTPUT_DIR}/\n")
+    p(f"=== Telegram PDF → NotebookLM Pipeline ===")
+    p(f"Channels  : {', '.join(CHANNELS)}")
+    p(f"Scan limit: {MSG_LIMIT} messages per channel")
+    p(f"PDF limit : {PDF_LIMIT}")
+    p(f"PDFs dir  : {PDFS_DIR}/")
+    p(f"Output    : {OUTPUT_DIR}/\n")
 
     # 1. Download PDFs
     print("[1/6] Downloading PDFs from Telegram...")
     pdf_paths = await download_pdfs(CHANNELS)
 
     if not pdf_paths:
-        print("No PDFs found. Check channel name and that channel has PDF documents.")
+        p("No PDFs found. Check channel name and that channel has PDF documents.")
         sys.exit(1)
-    print(f"\n  Total PDFs: {len(pdf_paths)}")
+    p(f"\n  Total PDFs: {len(pdf_paths)}")
 
     # 2. Create notebook
     print("\n[2/6] Creating NotebookLM notebook...")
@@ -234,7 +243,7 @@ async def main():
     print(f"  Uploaded: {len(source_ids)}/{len(pdf_paths)}")
 
     if not source_ids:
-        print("No sources uploaded. Exiting.")
+        p("No sources uploaded. Exiting.")
         sys.exit(1)
 
     # 4. Wait for processing
@@ -249,14 +258,14 @@ async def main():
     print("\n[6/6] Downloading artifacts...")
     wait_and_download(nb_id, artifacts)
 
-    print(f"\n=== DONE ===")
-    print(f"Notebook ID : {nb_id}")
-    print(f"PDFs used   : {len(pdf_paths)}")
-    print(f"Sources     : {len(source_ids)}")
-    print(f"\nOutputs in {OUTPUT_DIR}/")
+    p(f"\n=== DONE ===")
+    p(f"Notebook ID : {nb_id}")
+    p(f"PDFs used   : {len(pdf_paths)}")
+    p(f"Sources     : {len(source_ids)}")
+    p(f"\nOutputs in {OUTPUT_DIR}/")
     for f in sorted(OUTPUT_DIR.glob("*")):
         if f.is_file():
-            print(f"  {f.name} ({f.stat().st_size:,} bytes)")
+            p(f"  {f.name} ({f.stat().st_size:,} bytes)")
 
 
 if __name__ == "__main__":
