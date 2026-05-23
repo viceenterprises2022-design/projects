@@ -35,6 +35,72 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 |:--- |:--- |
 | `crypto_dashboard.py` | **Unified Crypto Depth Map**. Simultaneous BTC, ETH, and SOL dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls) with 10-level depth. Displays Buy vs Sell breakdown to identify Support/Resistance. Features a live poll countdown and 15s parallel updates. |
 
+### 📰 Beat the Street — NotebookLM Daily Pipeline
+*Automated daily pipeline: fetches PDFs from Telegram, uploads to NotebookLM, generates briefing-doc report and mind-map.*
+
+| Script | Description |
+|:--- |:--- |
+| `telegram_to_notebooklm.py` | **Daily Pipeline**. Fetches PDFs from `@btsreports` posted in the last 24h, uploads to a dated NotebookLM notebook (`Beat-the-street-report-YYYY-MM-DD`), generates briefing-doc report + mind-map, saves to `notebooklm_output/Beat-the-street-report-YYYY-MM-DD/`. Runs daily at **4PM IST** via cron. |
+
+**Setup:**
+```bash
+# Install dependencies
+venv/bin/pip install telethon python-dotenv
+pipx install notebooklm-py
+
+# Authenticate Telegram (one-time, interactive)
+venv/bin/python - <<'EOF'
+import asyncio
+from telethon import TelegramClient
+import os; from dotenv import load_dotenv; load_dotenv()
+async def auth():
+    client = TelegramClient('tg_session', int(os.environ['TELEGRAM_API_ID']), os.environ['TELEGRAM_API_HASH'])
+    await client.start()
+    await client.disconnect()
+asyncio.run(auth())
+EOF
+
+# Authenticate NotebookLM (one-time, browser)
+notebooklm login
+
+# Run manually
+PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py
+```
+
+**Cron (already installed):**
+```
+30 10 * * *  cd /path/to/scripts && PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py >> notebooklm_output/cron.log 2>&1
+```
+
+**Output:**
+```
+notebooklm_output/
+├── pdfs/                                    # cached PDFs
+├── Beat-the-street-report-YYYY-MM-DD/
+│   ├── report.md                            # briefing-doc
+│   └── mindmap.json                         # mind-map
+└── cron.log                                 # daily run log
+```
+
+**Config (`.env`):**
+```
+TELEGRAM_API_ID=...
+TELEGRAM_API_HASH=...
+TELEGRAM_CHANNELS=@btsreports
+DAYS_BACK=1
+PDF_LIMIT=20
+```
+
+---
+
+### 📊 Live Market Dashboards
+*Async real-time dashboards requiring venv python.*
+
+| Script | Description |
+|:--- |:--- |
+| `alphaedge_pro.py` | **AlphaEdge Pro**. Advanced async market dashboard. |
+| `live_market_dashboard.py` | **Live Market Dashboard**. Real-time async market view. |
+
 ### 🛠️ Utilities & Helpers
 | Script | Description |
 |:--- |:--- |
@@ -50,9 +116,30 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 *Current environment is integrated with Clawdi Cloud for session continuity.*
 
 - **Dashboard**: [cloud.clawdi.ai](https://cloud.clawdi.ai/)
-- **Active Agents**: Claude Code, Codex, Hermes.
+- **Active Agents**: Claude Code, Codex, Hermes, Gemini, Cursor.
 - **Live Sync**: Daemons managed via `systemd` (`clawdi serve`).
-- **Known Issue**: Gemini CLI sync in `clawdi` v0.5.7 is currently mapped to Hermes logic (Bug). Actual Gemini sessions do not sync to cloud yet.
+- **Known Issue**: Gemini CLI and Antigravity CLI sync in `clawdi` v0.5.7 is currently mapped to Hermes logic (Bug). Actual sessions do not sync to cloud yet.
+
+## ⚙️ Systemd Services
+
+| Service | Description | Port |
+|:--- |:--- |:--- |
+| `alphaedge-api.service` | AlphaEdge Market Intelligence API (FastAPI + uvicorn) | `:8765` |
+| `multica-daemon.service` | Multica Agent Runtime (Claude, Codex, Gemini, Hermes, Cursor) | — |
+
+```bash
+# Check status
+sudo systemctl status alphaedge-api
+sudo systemctl status multica-daemon
+
+# Restart
+sudo systemctl restart alphaedge-api
+sudo systemctl restart multica-daemon
+
+# Logs
+journalctl -u alphaedge-api -f
+journalctl -u multica-daemon -f
+```
 
 ---
 
@@ -67,9 +154,13 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 
 ## 🛠️ Setup
 
-Install dependencies:
+### Python Environment
+
+System Python 3.14 blocks global pip installs. Use the project venv:
+
 ```bash
-python3 -m pip install fastapi uvicorn[standard] requests rich exa-py python-dotenv
+python3 -m venv venv
+venv/bin/pip install fastapi "uvicorn[standard]" requests rich exa-py python-dotenv aiohttp
 ```
 
 ### Usage Examples
@@ -86,8 +177,14 @@ python3 astro_report.py
 
 **Run AlphaEdge Dashboard:**
 ```bash
-python3 api_server.py  # Server
+venv/bin/python api_server.py  # Server (or managed by systemd: alphaedge-api.service)
 python3 collector.py --loop --interval 5 # Data collector
+```
+
+**Run AlphaEdge Pro / Live Market Dashboard:**
+```bash
+venv/bin/python alphaedge_pro.py
+venv/bin/python live_market_dashboard.py
 ```
 
 **Run AI Agent Search:**
@@ -114,15 +211,103 @@ python3 options_cli.py
 python3 crypto_dashboard.py
 ```
 
----
-*Maintained by Gemini CLI.*
-ned by Gemini CLI.*
-ity"
-
-# Channel Search
-python3 youtube_video_search.py @mkbhd
+**Run Metals Intelligence Dashboard:**
+```bash
+python3 metals_dashboard.py
 ```
 
 ---
-*Maintained by Gemini CLI.*
-ned by Gemini CLI.*
+
+## 🛠️ Troubleshooting & Database Recovery (GBrain / PGlite)
+
+If `gbrain-autopilot.service` crashes or fails to start with the following WASM runtime abort error:
+```
+PGLite failed to initialize its WASM runtime.
+Original error: Aborted()
+...
+PANIC: could not locate a valid checkpoint record at ...
+```
+This is caused by an unclean shutdown leaving the PGlite (embedded WASM Postgres) Write-Ahead Log (WAL) in an inconsistent/corrupted state.
+
+### Recovery Procedure
+To repair the database without losing your stored data (avoiding database deletion):
+
+1. **Download PostgreSQL Utilities**:
+   Download the PostgreSQL package matching your major version (e.g., PostgreSQL 17 for Ubuntu/Debian) to extract administrative tools without needing system-wide installation or `sudo`:
+   ```bash
+   apt-get download postgresql-17
+   dpkg -x postgresql-17_*.deb ./extracted_pg
+   ```
+
+2. **Clean up Stale Locks**:
+   Ensure `gbrain-autopilot` is stopped and remove any stale postmaster PID lock file:
+   ```bash
+   systemctl --user stop gbrain-autopilot.service
+   rm -f ~/.gbrain/brain.pglite/postmaster.pid
+   ```
+
+3. **Verify control file**:
+   Check the current system state using `pg_controldata`:
+   ```bash
+   ./extracted_pg/usr/lib/postgresql/17/bin/pg_controldata -D ~/.gbrain/brain.pglite
+   ```
+
+4. **Reset Write-Ahead Log (WAL)**:
+   Force a reset of the WAL using `pg_resetwal` to bypass the corrupted checkpoint record and return the database to a clean, runnable state:
+   ```bash
+   ./extracted_pg/usr/lib/postgresql/17/bin/pg_resetwal -f -D ~/.gbrain/brain.pglite
+   ```
+
+5. **Clean Up & Restart Daemon**:
+   Delete the extracted utility directory and restart the autopilot service:
+   ```bash
+   rm -rf ./extracted_pg postgresql-17_*.deb
+   systemctl --user start gbrain-autopilot.service
+   ```
+
+---
+
+### ⚠️ Migration Note: Gemini CLI to Antigravity CLI
+Gemini CLI is being sunset on June 18, 2026. This project has been migrated to support the new Go-based **Antigravity CLI**. Legacy `.gemini` configurations are deprecated; please use the new `.agent` configurations. System-level extensions must be manually ported to the Antigravity Plugin format.
+
+---
+
+### 📈 PKScreener — NSE Automated Stock Scanner
+
+Automated NSE stock screening using [PKScreener](https://github.com/pkjmesra/PKScreener) with Telegram delivery.
+
+**Setup**
+```bash
+# Python 3.12 venv at:
+/home/vreddy1/Desktop/Projects/pkscreener_venv
+
+# PKScreener repo at:
+/home/vreddy1/Desktop/Projects/pkscreener
+
+# Wrapper script:
+python3 pkscreener_runner.py
+```
+
+**Scan Strategies** (8 scans, runs on weekdays):
+| Scan | Options |
+|------|---------|
+| Nifty50 — Probable Breakouts | X:1:1 |
+| Nifty50 — Bullish RSI & MACD | X:1:13 |
+| Nifty50 — Strong Buy Signals | X:1:44 |
+| NiftyAll — Probable Breakouts | X:12:1 |
+| NiftyAll — SuperTrend Uptrend | X:12:24 |
+| NiftyAll — Strong Buy Signals | X:12:44 |
+| NiftyAll — Breaking Out Now | X:12:23 |
+| NiftyAll — Bullish RSI & MACD | X:12:13 |
+
+**Cron Schedule** (IST, weekdays only):
+```
+55 3  * * 1-5   # 9:25 AM IST  — pre-open scan
+5  10 * * 1-5   # 3:35 PM IST  — close-of-day scan
+30 12 * * 1-5   # 6:00 PM IST  — evening review
+```
+
+**Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
+
+---
+*Maintained by Antigravity CLI (formerly Gemini CLI).*
