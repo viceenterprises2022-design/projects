@@ -25,9 +25,9 @@ import os
 import sys
 import subprocess
 import json
-from datetime import datetime, timezone
 from pathlib import Path
 
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 from telethon import TelegramClient
 from telethon.tl.types import DocumentAttributeFilename, MessageMediaDocument
@@ -38,9 +38,10 @@ load_dotenv()
 API_ID    = int(os.environ["TELEGRAM_API_ID"])
 API_HASH  = os.environ["TELEGRAM_API_HASH"]
 CHANNELS  = [c.strip() for c in os.environ.get("TELEGRAM_CHANNELS", "").split(",") if c.strip()]
-MSG_LIMIT = int(os.environ.get("TELEGRAM_MSG_LIMIT", "100"))
-PDF_LIMIT = int(os.environ.get("PDF_LIMIT", "30"))
-NB_TITLE  = os.environ.get(
+MSG_LIMIT  = int(os.environ.get("TELEGRAM_MSG_LIMIT", "200"))
+PDF_LIMIT  = int(os.environ.get("PDF_LIMIT", "30"))
+DAYS_BACK  = float(os.environ.get("DAYS_BACK", "1"))
+NB_TITLE   = os.environ.get(
     "NOTEBOOKLM_NOTEBOOK_TITLE",
     f"Telegram Intel {datetime.now().strftime('%Y-%m-%d %H:%M')}"
 )
@@ -84,15 +85,18 @@ async def download_pdfs(channels: list[str]) -> list[Path]:
         p("ERROR: Not authorized. Run: venv/bin/python -c \"import asyncio; from telethon import TelegramClient; asyncio.run(TelegramClient('tg_session', API_ID, API_HASH).start())\"")
         sys.exit(1)
 
+    cutoff = datetime.now(timezone.utc) - timedelta(days=DAYS_BACK)
     all_pdfs = []
     for ch in channels:
-        p(f"  Scanning {MSG_LIMIT} messages from {ch}...")
+        p(f"  Scanning messages from {ch} (last {DAYS_BACK}d, cutoff {cutoff.strftime('%Y-%m-%d %H:%M UTC')})...")
         pdf_count = 0
-        async for msg in client.iter_messages(ch, limit=MSG_LIMIT):
+        async for msg in client.iter_messages(ch, limit=MSG_LIMIT, reverse=False):
+            # Stop scanning once messages are older than cutoff
+            if msg.date and msg.date.replace(tzinfo=timezone.utc) < cutoff:
+                break
             if not msg.media or not isinstance(msg.media, MessageMediaDocument):
                 continue
             doc = msg.media.document
-            # Check if PDF
             mime = getattr(doc, "mime_type", "")
             if mime != "application/pdf":
                 continue
@@ -172,12 +176,6 @@ def generate_artifacts(nb_id: str) -> dict:
     p("Generating mind-map...")
     data = nlm_json("generate", "mind-map", "--notebook", nb_id)
     artifacts["mind_map"] = data.get("task_id", "")
-
-    p("Generating audio podcast (deep-dive)...")
-    data = nlm_json("generate", "audio",
-                    "Comprehensive deep-dive covering all key market insights from these reports",
-                    "--format", "deep-dive", "--notebook", nb_id)
-    artifacts["audio"] = data.get("task_id", "")
 
     for k, v in artifacts.items():
         p(f"  {k}: {v or '(no task_id)'}")
