@@ -31,7 +31,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from telethon import TelegramClient
-from telethon.tl.types import Message
 
 load_dotenv()
 
@@ -77,10 +76,10 @@ def strip_rich(text: str) -> str:
     return re.sub(r"\[/?[a-z0-9 _,=#\.]+\]", "", text)
 
 
-# ── Step 1: Fetch Telegram messages ──────────────────────────────────────────
-async def fetch_channels(channels: list[str]) -> dict[str, list[Message]]:
+# ── Step 1: Fetch Telegram messages via Telethon ───────────────────────────
+async def fetch_channels(channels: list[str]) -> dict[str, list]:
     client = TelegramClient("tg_session", API_ID, API_HASH)
-    await client.start()
+    await client.connect()
     results = {}
     for ch in channels:
         print(f"  Fetching {MSG_LIMIT} messages from {ch}...")
@@ -100,7 +99,7 @@ def save_channel_doc(channel: str, messages: list) -> Path:
     path = DOCS_DIR / f"{safe_name}.md"
     lines = [f"# Telegram Channel: {channel}\n",
              f"_Fetched {len(messages)} messages on {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}_\n\n"]
-    for msg in reversed(messages):  # chronological order
+    for msg in reversed(messages):  # chronological
         ts = msg.date.strftime("%Y-%m-%d %H:%M")
         text = msg.text.strip()
         lines.append(f"---\n**[{ts}]**\n\n{text}\n\n")
@@ -245,3 +244,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
