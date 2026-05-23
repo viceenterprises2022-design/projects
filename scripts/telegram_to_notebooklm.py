@@ -44,11 +44,11 @@ PDF_LIMIT = int(os.environ.get("PDF_LIMIT", "20"))
 DAYS_BACK = float(os.environ.get("DAYS_BACK", "1"))
 
 TODAY     = datetime.now().strftime("%Y-%m-%d")
-NB_TITLE  = f"@btsreports Daily Intel {TODAY}"
+NB_TITLE  = f"Beat-the-street-report-{TODAY}"
 
 OUTPUT_DIR = Path("notebooklm_output")
 PDFS_DIR   = OUTPUT_DIR / "pdfs"
-DAILY_DIR  = OUTPUT_DIR / TODAY
+DAILY_DIR  = OUTPUT_DIR / f"Beat-the-street-report-{TODAY}"
 for d in [OUTPUT_DIR, PDFS_DIR, DAILY_DIR]:
     d.mkdir(exist_ok=True)
 
@@ -185,6 +185,8 @@ def generate_and_download(nb_id: str):
         p(f"  ✓ Report → {out_r}")
     else:
         p("  [WARN] No report task_id — skipping download")
+
+
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
