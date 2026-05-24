@@ -12,6 +12,7 @@ Cron (once daily at 09:00):
   0 9 * * * cd /path/to/scripts && python3 youtube_to_notebooklm.py >> logs/youtube_nlm_cron.log 2>&1
 """
 
+import argparse
 import json
 import os
 import re
@@ -373,8 +374,61 @@ def _send_slack(video: dict, nb_id: str, report_path: Path, mm_path: Path) -> bo
     return ok
 
 
+# ── Channel Management ───────────────────────────────────────────────────
+def _add_channel(handle: str):
+    data = json.loads(CHANNELS_FILE.read_text())
+    existing = [h.lower() for h in data["channels"]]
+    h = handle if handle.startswith("@") else f"@{handle}"
+    if h.lower() in existing:
+        p(f"Already present: {h}")
+        return
+    data["channels"].append(h)
+    data["channels"].sort(key=str.casefold)
+    CHANNELS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    p(f"Added: {h}")
+
+
+def _remove_channel(handle: str):
+    data = json.loads(CHANNELS_FILE.read_text())
+    h = handle if handle.startswith("@") else f"@{handle}"
+    matches = [c for c in data["channels"] if c.lower() == h.lower()]
+    if not matches:
+        p(f"Not found: {h}")
+        return
+    for m in matches:
+        data["channels"].remove(m)
+    CHANNELS_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    p(f"Removed: {h}")
+
+
+def _list_channels():
+    data = json.loads(CHANNELS_FILE.read_text())
+    p(f"Configured channels ({len(data['channels'])}):")
+    for c in data["channels"]:
+        p(f"  {c}")
+
+
 # ── Main ─────────────────────────────────────────────────────────────────
 def main():
+    parser = argparse.ArgumentParser(
+        description="YouTube → NotebookLM synthesis pipeline",
+    )
+    group = parser.add_argument_group("channel management")
+    group.add_argument("--add-channel", metavar="@handle", help="Add a YouTube channel to monitor")
+    group.add_argument("--remove-channel", metavar="@handle", help="Remove a YouTube channel")
+    group.add_argument("--list-channels", action="store_true", help="List configured channels")
+    args = parser.parse_args()
+
+    if args.add_channel:
+        _add_channel(args.add_channel)
+        return
+    if args.remove_channel:
+        _remove_channel(args.remove_channel)
+        return
+    if args.list_channels:
+        _list_channels()
+        return
+
     p("=" * 55)
     p("  YouTube \u2192 NotebookLM Synthesis")
     p(f"  {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
