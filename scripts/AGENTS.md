@@ -94,3 +94,17 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 
 ### Parent Projects (~/Desktop/Projects/)
 Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), copy trading bots (Hyperliquid/Binance/Polymarket), BTC futures bot, CrewAI agents, open-codesign (Electron/TypeScript), tradingview-mcp (Node.js CDP bridge), crypto-trending-oi engine, and more.
+
+## Session Memory — OpenCode `/pursue` Goal Plugin
+
+Built for OpenCode v1.15.10 at `~/.config/opencode/plugins/opencode-goal/`.
+
+- **Name:** `/pursue` (not `/goal` — built-in conflict in v1.15.10)
+- **4 plugin tools:** `goal_define`, `goal_checkpoint`, `goal_status`, `goal_complete`
+- **2 hooks:** `experimental.chat.system.transform` (injects evaluator prompt), `experimental.compaction.autocontinue` (resumes loop while pursuing)
+- **Agent:** `goal` (Claude Sonnet 4, steps:100, full perms) — configured in `opencode.jsonc`
+- **Self-evaluating pattern:** no separate LLM — system transform hook enriches agent's system prompt with evaluation instructions; agent self-evaluates, verifies condition with actual commands before `goal_complete("achieved")`, auto-fails after 3 consecutive blocked checkpoints
+- **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
+- **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints
+- **Command template** uses `$ARGUMENTS` for raw user input, routes to `goal` agent
+- **Tested:** plugin loads, all 4 tools execute correctly, state persists

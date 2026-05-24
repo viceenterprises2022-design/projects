@@ -460,5 +460,31 @@ python3 pkscreener_runner.py
 
 **Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
 
+## OpenCode `/pursue` Goal Plugin
+
+Location: `~/.config/opencode/plugins/opencode-goal/`
+
+Autonomous goal pursuit mode for OpenCode. Agent self-evaluates and iterates until verification condition is proven met.
+
+**Usage in OpenCode TUI:**
+```
+/pursue <objective with verification condition>
+```
+
+**Components:**
+| Component | Location |
+|-----------|----------|
+| Plugin (4 tools + 2 hooks) | `~/.config/opencode/plugins/opencode-goal/src/` |
+| Config (agent + command) | `~/.config/opencode/opencode.jsonc` |
+| State file | `~/.opencode/goals/state.json` |
+
+**Tools:** `goal_define`, `goal_checkpoint`, `goal_status`, `goal_complete`
+
+**Hooks:** `experimental.chat.system.transform` (injects evaluator prompt when goal active), `experimental.compaction.autocontinue` (re-enables agent loop while pursuing)
+
+**Agent:** Claude Sonnet 4, 100 steps, unrestricted perms
+
+See `~/.config/opencode/plugins/opencode-goal/src/index.js` for full implementation.
+
 ---
 *Maintained by Antigravity CLI (formerly Gemini CLI).*
