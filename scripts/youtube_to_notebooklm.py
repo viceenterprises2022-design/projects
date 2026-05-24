@@ -443,14 +443,11 @@ def _delete_notebook(nb_id: str) -> bool:
         return False
 
     p(f"  Cleaning up notebook {nb_id[:16]}...")
-    for cmd in (["delete", nb_id], ["notebook", "delete", nb_id]):
-        result = nlm(*cmd, capture=True)
-        if result.returncode == 0:
-            p(f"  Deleted \u2713")
-            return True
-        p(f"  `{' '.join(cmd)}` exit {result.returncode} — trying next syntax")
-
-    p(f"  WARN: could not delete notebook {nb_id}")
+    result = nlm("delete", "-n", nb_id, capture=True)
+    if result.returncode == 0:
+        p(f"  Deleted \u2713")
+        return True
+    p(f"  WARN: could not delete notebook {nb_id} (exit {result.returncode})")
     return False
 
 
