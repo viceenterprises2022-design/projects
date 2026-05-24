@@ -1,0 +1,69 @@
+{
+  "name": "GBrain AI Memory System",
+  "children": [
+    {
+      "name": "Core Problem",
+      "children": [
+        {
+          "name": "AI Agents forgetting context"
+        },
+        {
+          "name": "Memory organization issues"
+        }
+      ]
+    },
+    {
+      "name": "Key Creator",
+      "children": [
+        {
+          "name": "Gary Tan"
+        },
+        {
+          "name": "Head of Y Combinator"
+        }
+      ]
+    },
+    {
+      "name": "Organizational Structure",
+      "children": [
+        {
+          "name": "Dedicated Pages"
+        },
+        {
+          "name": "Above the Bar (Summary)"
+        },
+        {
+          "name": "Below the Bar (Transactions)"
+        }
+      ]
+    },
+    {
+      "name": "Mechanism",
+      "children": [
+        {
+          "name": "Dynamic updates from transactions to summary"
+        },
+        {
+          "name": "Agent chooses to read summary or full detail"
+        },
+        {
+          "name": "Reduced processing load for agents"
+        }
+      ]
+    },
+    {
+      "name": "Use Cases",
+      "children": [
+        {
+          "name": "Investor pitching"
+        },
+        {
+          "name": "Customer support"
+        },
+        {
+          "name": "Relationship tracking"
+        }
+      ]
+    }
+  ]
+}
