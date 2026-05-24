@@ -242,7 +242,7 @@ def process_video(video: dict, state: dict):
 
     # ── Create notebook ─────────────────────────────────────────────
     nb_name = f"YT: {channel.lstrip('@')} \u2014 {title[:60]}"
-    p(f"\n[1/6] Creating notebook...")
+    p(f"\n[1/7] Creating notebook...")
     data = nlm_json("create", nb_name)
     nb_id = data.get("notebook", {}).get("id", "")
     if not nb_id:
@@ -251,7 +251,7 @@ def process_video(video: dict, state: dict):
     p(f"  ID: {nb_id}")
 
     # ── Add YouTube source ──────────────────────────────────────────
-    p(f"\n[2/6] Adding YouTube source...")
+    p(f"\n[2/7] Adding YouTube source...")
     data = nlm_json("source", "add", url, "--notebook", nb_id)
     sid = data.get("source", {}).get("id", "")
     if not sid:
@@ -260,12 +260,12 @@ def process_video(video: dict, state: dict):
     p(f"  Source: {sid[:12]}")
 
     # ── Wait for processing ─────────────────────────────────────────
-    p(f"\n[3/6] Waiting for source processing...")
+    p(f"\n[3/7] Waiting for source processing...")
     nlm("source", "wait", sid, "-n", nb_id, "--timeout", "600", capture=False)
     p("  Ready")
 
     # ── Generate briefing report ────────────────────────────────────
-    p(f"\n[4/6] Generating briefing report (detailed)...")
+    p(f"\n[4/7] Generating briefing report (detailed)...")
     data = nlm_json(
         "generate", "report",
         "--format", "briefing-doc",
@@ -282,12 +282,12 @@ def process_video(video: dict, state: dict):
         p(f"  Task: {report_id[:12]}")
 
     # ── Generate mind-map ───────────────────────────────────────────
-    p(f"\n[5/6] Generating mind-map...")
+    p(f"\n[5/7] Generating mind-map...")
     nlm_json("generate", "mind-map", "--notebook", nb_id)
     p("  Done (sync)")
 
     # ── Wait + download ─────────────────────────────────────────────
-    p(f"\n[6/6] Downloading artifacts...")
+    p(f"\n[6/7] Downloading artifacts...")
 
     report_path = out_dir / "report.md"
     mm_path = out_dir / "mindmap.json"
@@ -305,9 +305,15 @@ def process_video(video: dict, state: dict):
             p(f"  {path.name} — not available")
 
     # ── Send to Slack ───────────────────────────────────────────────
-    p(f"\n  Sending to Slack...")
+    p(f"\n[7/7] Sending to Slack...")
     slack_ok = _send_slack(video, nb_id, report_path, mm_path)
     p(f"  {'OK' if slack_ok else 'FAILED'}")
+
+    # ── Delete notebook (only after Slack confirms OK) ──────────────
+    if slack_ok:
+        _delete_notebook(nb_id)
+    else:
+        p("  Slack failed — keeping notebook (will retry next run).")
 
     # ── Mark processed in state ─────────────────────────────────────
     ch_state = state.setdefault(channel, {"known_ids": []})
@@ -421,6 +427,31 @@ def _send_slack(video: dict, nb_id: str, report_path: Path, mm_path: Path) -> bo
             p(f"  Slack error (msg {i}): {res.get('error')}")
 
     return ok
+
+
+# ── Notebook Deletion (safety-gated) ─────────────────────────────────────
+def _delete_notebook(nb_id: str) -> bool:
+    """Delete a NotebookLM notebook.
+
+    SAFETY: This is the ONLY function in this file that can delete notebooks.
+    - Only proceeds if nb_id matches expected format (UUID-like: 20+ alphanumeric/hyphen chars)
+    - Only called after Slack delivery confirms OK (see process_video)
+    - Every nb_id passed here was freshly created in the same process_video call
+    """
+    if not re.match(r"^[a-zA-Z0-9][a-zA-Z0-9_-]{19,}$", nb_id):
+        p(f"  SAFETY BLOCKED: notebook ID '{nb_id}' looks invalid, skipping delete.")
+        return False
+
+    p(f"  Cleaning up notebook {nb_id[:16]}...")
+    for cmd in (["delete", nb_id], ["notebook", "delete", nb_id]):
+        result = nlm(*cmd, capture=True)
+        if result.returncode == 0:
+            p(f"  Deleted \u2713")
+            return True
+        p(f"  `{' '.join(cmd)}` exit {result.returncode} — trying next syntax")
+
+    p(f"  WARN: could not delete notebook {nb_id}")
+    return False
 
 
 # ── Channel Management ───────────────────────────────────────────────────
