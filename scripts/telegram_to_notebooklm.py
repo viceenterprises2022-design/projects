@@ -53,7 +53,7 @@ DAILY_DIR  = OUTPUT_DIR / f"Beat-the-street-report-{TODAY}"
 for d in [OUTPUT_DIR, PDFS_DIR, DAILY_DIR]:
     d.mkdir(exist_ok=True)
 
-NLM = "notebooklm"
+NLM = os.path.join(os.path.dirname(__file__), "venv", "bin", "notebooklm")
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
