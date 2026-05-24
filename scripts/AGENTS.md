@@ -95,15 +95,25 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 ### Parent Projects (~/Desktop/Projects/)
 Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), copy trading bots (Hyperliquid/Binance/Polymarket), BTC futures bot, CrewAI agents, open-codesign (Electron/TypeScript), tradingview-mcp (Node.js CDP bridge), crypto-trending-oi engine, and more.
 
-## Session Memory — OpenCode `/pursue` Goal Plugin
+## Session Memory — Recent Work
 
-Built for OpenCode v1.15.10 at `~/.config/opencode/plugins/opencode-goal/`.
+### 2026-05-23: YouTube & Telegram → NotebookLM Pipelines
+- `youtube_to_notebooklm.py` — maintained YouTube channel monitor pipeline. Tracks 4 channels, ingests to NotebookLM, delivers Block Kit reports to Slack. CLI channel management (`--add-channel`, `--remove-channel`, `--list-channels`). Notebook safety (regex-gated delete on successful Slack delivery).
+- `telegram_to_notebooklm.py` — maintained Telegram PDF ingestion pipeline. Fetches PDFs from `@btsreports`, uploads to dated NotebookLM notebook, generates briefing-doc + mind-map. Runs daily at 4PM IST.
+- **Multica:** ALP-336, ALP-337 (done, assigned Vinod-AI-CEO)
 
-- **Name:** `/pursue` (not `/goal` — built-in conflict in v1.15.10)
-- **4 plugin tools:** `goal_define`, `goal_checkpoint`, `goal_status`, `goal_complete`
-- **2 hooks:** `experimental.chat.system.transform` (injects evaluator prompt), `experimental.compaction.autocontinue` (resumes loop while pursuing)
-- **Agent:** `goal` (Claude Sonnet 4, steps:100, full perms) — configured in `opencode.jsonc`
-- **Self-evaluating pattern:** no separate LLM — system transform hook enriches agent's system prompt with evaluation instructions; agent self-evaluates, verifies condition with actual commands before `goal_complete("achieved")`, auto-fails after 3 consecutive blocked checkpoints
+### 2026-05-24: OpenCode `/pursue` Goal Plugin
+- Built plugin at `~/.config/opencode/plugins/opencode-goal/` with 4 tools (`goal_define`, `goal_checkpoint`, `goal_status`, `goal_complete`) and 2 hooks (`experimental.chat.system.transform`, `experimental.compaction.autocontinue`)
+- Created self-evaluating agent pattern (no separate LLM — evaluator prompt injected via system transform hook)
+- Configured `agent.goal` (Sonnet 4, 100 steps, full perms) and `command.pursue` (`$ARGUMENTS` template)
+- Fixed name collision with built-in `/goal` command (renamed to `/pursue`)
+- Removed markdown command file that was overriding JSON template
+- Installed, verified, smoke-tested end-to-end
+- Updated `README.md` with plugin section and `AGENTS.md` with session memory
+- Built `/logwork` command for automated multica issue creation
+- **Multica:** ALP-335 (done, assigned Vinod-AI-CEO)
+
+### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints
 - **Command template** uses `$ARGUMENTS` for raw user input, routes to `goal` agent
