@@ -9510,8 +9510,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/telegram_to_notebooklm.py": {
-    "mtime": 1779628989.5761065,
-    "ast_hash": "fa22c6218afde1029e8a7757dcce6cf7",
+    "mtime": 1779630028.4066296,
+    "ast_hash": "29df6dfb093266e84f0238fb32e94537",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_no_claude.py": {
@@ -35967,6 +35967,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/cron_watchdog.py": {
     "mtime": 1779629434.6905973,
     "ast_hash": "d1545bfa59962e9259a195a4cabad52a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/Beat-the-street-report-2026-05-24/mindmap.json": {
+    "mtime": 1779629494.6676903,
+    "ast_hash": "6f35671a1a7c5d7300ac9cc6f286765b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/Beat-the-street-report-2026-05-24/report.md": {
+    "mtime": 1779629578.3023345,
+    "ast_hash": "3e955fa81df6e87fc9a6a3865d0bac9c",
     "semantic_hash": ""
   }
 }
