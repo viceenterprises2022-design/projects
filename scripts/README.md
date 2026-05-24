@@ -398,8 +398,29 @@ To repair the database without losing your stored data (avoiding database deleti
 
 ---
 
-### ⚠️ Migration Note: Gemini CLI to Antigravity CLI
-Gemini CLI is being sunset on June 18, 2026. This project has been migrated to support the new Go-based **Antigravity CLI**. Legacy `.gemini` configurations are deprecated; please use the new `.agent` configurations. System-level extensions must be manually ported to the Antigravity Plugin format.
+### 🤖 Antigravity CLI — AI Agent IDE
+*VS Code-based agent CLI with `chat` mode (ask/edit/agent). Replaces Gemini CLI.*
+
+**Version:** v2.0.6 (Electron, `/usr/share/antigravity/`)
+**Binary:** `/usr/bin/antigravity` → launcher → `antigravity` (ELF, 197MB)
+
+**Usage:**
+```bash
+antigravity --version
+antigravity chat "prompt"                        # agent mode
+antigravity chat --mode ask "question"           # Q&A mode
+antigravity chat --mode edit "change this"       # edit mode
+```
+
+**Upgrade:**
+Download latest tar.gz, extract, then:
+```bash
+sudo cp extracted/Antigravity-x64/antigravity /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/*.so /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/*.pak /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/*.bin /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/icudtl.dat /usr/share/antigravity/
+```
 
 ---
 
