@@ -26,9 +26,10 @@
 │   │   └── ai_news_reporter.py         # Posts to Slack
 │   │
 │   ├── 📰 NotebookLM Pipeline
-│   │   ├── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → report/mindmap
+│   │   ├── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → all artifacts → Slack
 │   │   ├── youtube_to_notebooklm.py   # YouTube channel monitor → NotebookLM → Slack
-│   │   └── youtube_channels.json       # Config: YouTube channel @handles
+│   │   ├── youtube_channels.json       # Config: YouTube channel @handles
+│   │   └── cron_watchdog.py            # Cron failure monitor → Slack alerts
 │   │
 │   ├── 📊 PKScreener NSE Scanner
 │   │   └── pkscreener_runner.py
@@ -114,11 +115,12 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `crypto_dashboard.py` | **Unified Crypto Depth Map**. Simultaneous BTC, ETH, and SOL dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls) with 10-level depth. Displays Buy vs Sell breakdown to identify Support/Resistance. Features a live poll countdown and 15s parallel updates. |
 
 ### 📰 Beat the Street — NotebookLM Daily Pipeline
-*Automated daily pipeline: fetches PDFs from Telegram, uploads to NotebookLM, generates briefing-doc report and mind-map.*
+*Automated daily pipeline: fetches PDFs from Telegram, uploads to NotebookLM, generates all artifact types, delivers to Slack, then cleans up.*
 
 | Script | Description |
 |:--- |:--- |
-| `telegram_to_notebooklm.py` | **Daily Pipeline**. Fetches PDFs from `@btsreports` posted in the last 24h, uploads to a dated NotebookLM notebook (`Beat-the-street-report-YYYY-MM-DD`), generates briefing-doc report + mind-map, saves to `notebooklm_output/Beat-the-street-report-YYYY-MM-DD/`. Runs daily at **4PM IST** via cron. |
+| `telegram_to_notebooklm.py` | **Daily Pipeline** (7 steps). Fetches PDFs from `@btsreports` (last 24h) → creates dated NotebookLM notebook → uploads sources → generates 5 artifacts (report, mind-map, infographic, quiz, podcast) → sends all to Slack via `format_file_for_slack()` → deletes notebook. Saves to `notebooklm_output/Beat-the-street-report-YYYY-MM-DD/`. Runs at **4PM IST** via cron. |
+| `cron_watchdog.py` | **Cron Failure Monitor**. Parses cron logs via byte-offset tracking, detects tracebacks/ERROR/CRITICAL, alerts Slack. Runs at `:15` hourly. |
 
 **Setup:**
 ```bash
@@ -148,15 +150,28 @@ PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py
 **Cron (already installed):**
 ```
 30 10 * * *  cd /path/to/scripts && PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py >> notebooklm_output/cron.log 2>&1
+15 * * * *    cd /path/to/scripts && PYTHONUNBUFFERED=1 venv/bin/python cron_watchdog.py 2>&1
 ```
+
+**Pipeline steps:**
+1. Fetch PDFs from Telegram channel (last 24h)
+2. Create NotebookLM notebook (`Beat-the-street-report-YYYY-MM-DD`)
+3. Upload PDFs as notebook sources
+4. Generate 5 artifacts: report (`.md`), mind-map (`.json`), infographic (`.png`), quiz (`.json`), podcast (`.mp3`)
+5. Save artifacts to `notebooklm_output/` per-date directory
+6. Send all artifacts to Slack (generic: `.md` = summary+full, `.json` = tree or raw, `.csv`, binary files noted)
+7. Delete NotebookLM notebook from cloud
 
 **Output:**
 ```
 notebooklm_output/
 ├── pdfs/                                    # cached PDFs
 ├── Beat-the-street-report-YYYY-MM-DD/
-│   ├── report.md                            # briefing-doc
-│   └── mindmap.json                         # mind-map
+│   ├── report.md                            # briefing-doc (full text)
+│   ├── mindmap.json                         # mind-map (nested tree JSON)
+│   ├── infographic.png                      # visual infographic
+│   ├── quiz.json                            # quiz questions
+│   └── podcast.mp3                          # audio podcast
 └── cron.log                                 # daily run log
 ```
 
@@ -167,6 +182,7 @@ TELEGRAM_API_HASH=...
 TELEGRAM_CHANNELS=@btsreports
 DAYS_BACK=1
 PDF_LIMIT=20
+SLACK_WEBHOOK_URL=...
 ```
 
 ---
@@ -218,6 +234,7 @@ python3 youtube_to_notebooklm.py --list-channels
 | Script | Description |
 |:--- |:--- |
 | `send_slack.py` | Generic utility to send text or file content to any Slack webhook. |
+| `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. |
 | `send_telegram.py` | Generic utility to send messages via Telegram Bot API. |
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
 | `patch_market.py` | Utility to apply specific logic patches to the market analysis scripts. |
