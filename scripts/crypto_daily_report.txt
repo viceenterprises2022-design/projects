@@ -1,0 +1,117 @@
+Crypto Daily Brief — 2026-05-23 15:53 UTC
+
+▸ BTC
+  • Bitcoin New Lows 'Extremely' Unlikely as Long-Term Holder Supply Nears Record | CoinMarketCap
+    Bitcoin New Lows 'Extremely' Un
+[...]
+as Long-Term
+[...]
+Supply Nears Record
+[...]
+s 'Extremely' Un
+[...]
+Bitcoin long-t...
+    https://coinmarketcap.com/academy/article/bitcoin-long-term-holder-supply-record
+  • Bitcoin analysis: BTC long-term holder supply rises by more than 2 million coins
+    Bitcoin analysis: BTC long-term holder supply rises by more than 2 million coins
+
+Share
+
+Share this article
+
+# Bitcoin's...
+    https://www.coindesk.com/markets/2026/05/21/bitcoin-s-long-term-holder-supply-approaches-record-high-breaking-multi-year-downtrend
+  • BTC Price Prediction: $73K Support Test Before $88K Rally Attempt - Blockchain.News
+    BTC Price Prediction: $73K Support Test Before $88K Rally Attempt - Blockchain.News
+[...]
+# BTC Price Prediction: $73K S...
+    https://blockchain.news/news/20260523-price-prediction-btc-73k-support-test-before-88k-rally
+
+▸ ETH
+  • Ethereum is still a good long-term buy, according data: Analyst — TradingView News
+    Ether’s (ETH) long-term investment case is drawing fresh attention as Ethereum continues to lead in key areas of onchain...
+    https://www.tradingview.com/news/cointelegraph:25560e2b8094b:0-ethereum-is-still-a-good-long-term-buy-according-data-analyst/
+  • Ethereum Hits All-Time High in Quarterly Network Activity - BitRss - Crypto World News
+    Ethereum recorded a major on-chain milestone in the first quarter of 2026 across its base layer activity. Data from Arte...
+    https://bitrss.com/ethereum-hits-all-time-high-in-quarterly-network-activity-202488
+  • Grayscale's Zach Pandl highlights Ethereum's dominance in onchain finance metrics
+    The asset manager's research arm lays out the numbers: Ethereum controls the majority of stablecoins, DeFi TVL, and toke...
+    https://cryptobriefing.com/grayscale-ethereum-dominance-onchain-finance/
+
+▸ SOL
+  • Solana Posts Best Week of 2026 Amid ETF Inflows and Alpenglow Upgrade
+    Alpenglow Upgrade
+[...]
+- Solana SOL-- surged 13% in its best 2026 week, breaking above $90, driven by ETF inflows and t...
+    https://www.ainvest.com/news/solana-posts-week-2026-etf-inflows-alpenglow-upgrade-2605/
+  • Solana's Alpenglow goes live for testing, finality drops to 150ms - The Industry Spread
+    Solana’s Alpenglow upgrade went live for community testing on May 11, 2026, and while the headline number is a finality ...
+    https://theindustryspread.com/solana-alpenglow-live-testing-150ms-finality/
+  • Solana Holds Near $87 as ETF Inflows and Alpenglow Upgrade Drive Focus - TokenPost
+    Solana hovers near $87 as steady ETF inflows and the upcoming Alpenglow upgrade shape investor expectations for a potent...
+    https://www.tokenpost.com/news/investing/20769
+
+▸ RWA
+  • Ethereum Leads $65B RWA Market as Blockchains Compete for Institutional Share | CoinMarketCap
+    Ethereum Leads $65B RWA Market as Blockchains Compete for Institutional Share | CoinMarketCap
+[...]
+Ethereum leads the $...
+    https://coinmarketcap.com/academy/article/ethereum-rwa-market-leader
+  • BUIDL, OUSG, and BENJI: inside the $7bn tokenised T-bill market - FinanceFeeds
+    The story of tokenised US Treasuries is not a story about retail crypto investors discovering yield. It is a story about...
+    https://financefeeds.com/buidl-ousg-benji-tokenized-treasury-market-2026/
+  • DP21512 Digital Ownership: The Tokenization of Real-World Assets | CEPR
+    DP21512 Digital Ownership: The Tokenization of Real-World Assets | CEPR
+[...]
+# DP21512 Digital Ownership: The Tokenizat...
+    https://cepr.org/publications/dp21512
+
+▸ Stablecoins
+  • How Stablecoins Became Part of America’s Dollar Strategy - Bloomberg
+    Washington’s answer to the future of dollar hegemony is striking. Rather than rely on a central bank digital currency (C...
+    https://www.bloomberg.com/news/articles/2026-05-22/how-stablecoins-became-part-of-america-s-dollar-strategy
+  • Stablecoins Surge Past $320B Mark, Institutional Adoption Grows As Large Holders Stay Cautious : Analysis | Crowdfund Insider
+    The stablecoin ecosystem has achieved a significant milestone, with total circulating supply now exceeding $322 billion....
+    https://www.crowdfundinsider.com/2026/05/279619-stablecoins-surge-past-320b-mark-institutional-adoption-grows-as-large-holders-stay-cautious-analysis/
+  • Can Stablecoins Help Tame Rising US Treasury Yields?
+    Stablecoin growth creates a durable, expanding bid for short-duration Treasuries, reinforcing the U.S. Treasury’s delibe...
+    https://www.investing.com/analysis/can-stablecoins-help-tame-rising-us-treasury-yields-200680676
+
+▸ Onchain
+  • Chainlink’s CCIP stack drives $110b in value secured, overtaking DeFi oracles
+    # Chainlink’s CCIP stack drives $110b in value secured, overtaking DeFi oracles
+[...]
+Chainlink now secures more than $1...
+    https://crypto.news/chainlinks-ccip-stack-drives-110b-in-value-secured-overtaking-defi-oracles/
+  • RWA Tokenization Surpasses $155 Billion: Structural Competition Among ONDO, RIO, and PLUME | Gate Blog
+    In May 2026, the on-chain tokenized Treasury market continued to break records. On May 13, total value locked (TVL) reac...
+    https://www.gate.com/blog/rwa-tokenization-market-exceeds-155-billion-ondo-rio-plume-competitive-analysis
+  • Tokenized ETF Market Surpasses $1.4B TVL as Onchain Equity Adoption Accelerates - Blockonomi
+    # Tokenized ETF Market Surpasses $1.4B TVL as Onchain Equity Adoption Accelerates - Blockonomi
+[...]
+# Tokenized ETF Mar...
+    https://blockonomi.com/tokenized-etf-market-surpasses-1-4b-tvl-as-onchain-equity-adoption-accelerates/
+
+▸ Growth
+  • 2026 Institutional Crypto Asset Allocation Landscape: The Evolution from Bitcoin-Only to Diversified Portfolios | Gate Blog
+    The crypto asset market is undergoing a profound structural reset. At the heart of this transformation is not just the c...
+    https://www.gate.com/blog/2026-institutional-crypto-asset-allocation-from-bitcoin-to-diversified-portfolios
+  • Strategy Watch #4
+    The report is structured across six core sections, each focused on a distinct dimension of institutional activity in dig...
+    https://insights.glassnode.com/strategy-watch-04-2026/
+  • [Issue] Crypto ETFs: What the $120B Experiment Proved and What Korea Builds Next | FP RESEARCH
+    * In Korea, the core value of crypto ETFs is not retail access, since retail investors already use exchanges, but unlock...
+    https://research.4pillars.io/en/research/crypto-etfs-what-the-120b-experiment-proved-and-what-korea-builds-next
+
+▸ Price & Predictions
+  • Bitcoin vs. Ethereum in 2026: Institutional Flows Drive Market Dominance
+    Explore the 2026 crypto landscape as Bitcoin trades at $77,853.70. Analyze Tom Lee's price targets, institutional ETF de...
+    https://dailycryptonews.com/bitcoin-vs-ethereum-2026-price-projections-institutional-trends/
+  • How Will Bitcoin Prices Move in 2026? ETFs and Macro Capital Are Reshaping the BTC Market | Gate Blog
+    In October 2025, Bitcoin’s price surged past its all-time high of $124,000, sparking widespread belief that BTC was ente...
+    https://www.gate.com/blog/how-will-bitcoin-prices-move-in-2026-etfs-and-macro-capital-are-reshaping-the-btc-market
+  • Bitcoin vs. Ethereum: Price Predictions for 2026
+    Bitcoin and Ethereum 2026 forecasts explore institutional adoption, halving effects, risks, and future growth.
+[...]
+Bit...
+    https://coinfomania.com/bitcoin-vs-ethereum-price-predictions-for-2026/

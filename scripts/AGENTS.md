@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This repository contains two root-level script systems. AlphaEdge market intelligence is the primary app: `collector.py` fetches Upstox/Yahoo Finance data, `market_engine.py` and `market_analysis_v*.py` hold analysis logic, `alphaedge_db.py` manages SQLite storage, and `api_server.py` serves the FastAPI API and dashboard. Static dashboard files live in `frontend/` (`dashboard.html`, `app.js`, `style.css`). Exa event-search scripts live in `exa_ai_search.py` and `exa_ai_agents.py`. Runtime artifacts include `*.db`, `logs/`, `*_report.txt`, and `ai_events_results.json`; do not treat these as source unless the task is explicitly data-related. `everything-claude-code/` is a separate embedded project/reference tree.
+This repository contains multiple root-level script systems. AlphaEdge market intelligence is the primary app: `collector.py` fetches Upstox/Yahoo Finance data, `market_engine.py` and `market_analysis_v*.py` hold analysis logic, `alphaedge_db.py` manages SQLite storage, and `api_server.py` serves the FastAPI API and dashboard. Static dashboard files live in `frontend/` (`dashboard.html`, `app.js`, `style.css`). Exa-powered search/agents scripts live in `exa_ai_search.py`, `exa_ai_agents.py`, and `crypto_news_search.py`. Runtime artifacts include `*.db`, `logs/`, `*_report.txt`, and `ai_events_results.json`; do not treat these as source unless the task is explicitly data-related. `everything-claude-code/` is a separate embedded project/reference tree.
 
 ## Build, Test, and Development Commands
 
@@ -29,3 +29,64 @@ Recent commits use Conventional Commits, especially `feat: ...`; follow that pat
 ## Security & Configuration Tips
 
 Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Telegram credentials, and rotated market-data tokens. Avoid committing regenerated `*.db`, logs, caches, or report outputs unless the change intentionally updates sample data.
+
+## Project Map — Full Understanding
+
+### Script Systems in this Repo
+
+**1. AlphaEdge Market Intelligence (primary)**
+- `collector.py` → fetches Upstox (bearer JWT) + Yahoo Finance data, runs 10-factor signal engine (Trend, DJ, VIX, OI Skew, VWAP, SuperTrend, RSI, DXY, Crude, PCR), writes to `alphaedge.db`
+- `alphaedge_db.py` → SQLite schema + CRUD helpers for `alphaedge.db`
+- `api_server.py` → FastAPI on `:8765` serving REST (`/api/latest`, `/api/history`, `/api/symbols`, `/api/pixi/*`) + static dashboard HTML (`frontend/dashboard.html`, `frontend/pixi_dashboard.html`)
+- `market_analysis_v3.py` → legacy monolith with terminal dashboard, has background `oi_collector_thread()` writing to `intraday_oi.db` every minute
+- `options_cli.py` → live 5s-polling terminal for Nifty/Sensex/BankNifty option chain (107-char compressed layout), daily-reset SQLite at `intraday_options_cli.db`
+- Signal scoring: each factor -1/0/+1, sum ≥6 → BUY, ≤4 → SELL, else NEUTRAL
+
+**2. AlphaEdge Crypto (BTC/ETH/SOL)**
+- `crypto_dashboard.py` → 15s polling Rich terminal dashboard, simultaneous BTC/ETH/SOL, shows Options Chain (Deribit) + Liquidation Map (Binance order book walls) with 10-level depth + Buy/Sell breakdown
+- `crypto_market_dashboard_v2.py` → variant with 3-column diagnostic view
+- `market_engine.py` → async data engine (aiohttp) fetching from Binance (Spot/Futures/Depth), Deribit (Options), Yahoo Finance (macro)
+
+**3. NotebookLM Daily Pipeline**
+- `telegram_to_notebooklm.py` → daily cron (4PM IST), fetches PDFs from Telegram channel `@btsreports`, uploads to dated NotebookLM notebook, generates briefing report + mind-map, saves to `notebooklm_output/`
+
+**4. Exa AI Event Search**
+- `exa_ai_search.py` / `exa_ai_agents.py` → Exa-powered search for upcoming AI events/workshops from OpenAI, Anthropic, Google AI, etc. Outputs `ai_events_results.json`
+- `ai_news_reporter.py` → fetches AI agent launches + events, posts to Slack
+- `crypto_news_search.py` → Exa-powered daily crypto news across 8 categories with AI summaries, plain-text report
+- `crypto_to_notebooklm.py` → wraps `crypto_news_search.py` report → NotebookLM infographic → Telegram delivery. Cron at 8AM IST
+
+**5. PKScreener NSE Scanner**
+- `pkscreener_runner.py` → runs 8 scan strategies via PKScreener repo (at `~/Desktop/Projects/pkscreener/`), outputs to `pkscreener_output/`, delivers to Telegram. 3 cron slots weekdays.
+
+**6. Utilities**
+- `send_slack.py`, `debug_telegram.py` → notification helpers
+- `report_and_send.py`, `run_and_send_v2.py` → wraps analysis + Telegram delivery
+- `git-autosync.sh` → auto-commit/push
+- `pnl_poller.py` → portfolio P&L polling
+- `probe_pcr_pain.py` → Put-Call Ratio / Max Pain probe
+- `metals_dashboard.py` → Gold/Silver dashboard
+- `fo_breakout_scanner.py` → F&O breakout scanner
+- `youtube_video_search.py` → YouTube keyword/channel search
+
+### Data Sources
+- **Upstox REST API** → JWT bearer token (`UPSTOX_TOKEN` env) for live quotes + option chain OI (Indian indices)
+- **Yahoo Finance** (yfinance) → DXY, Crude, US30, Gold, Silver; index fallback
+- **Binance** → Spot/Futures/Depth for BTC, ETH, SOL
+- **Deribit** → Options chain for crypto
+- **Exa API** → AI event search
+- **Telegram** (Telethon) → PDF ingestion for NotebookLM pipeline
+- **PKScreener** → NSE technical scans
+
+### Running Services (systemd)
+- `alphaedge-api.service` → FastAPI/uvicorn on `:8765`
+- `multica-daemon.service` → Multica Agent Runtime (Claude, Codex, Gemini, Hermes, Cursor)
+
+### Tech Stack
+- Python 3, FastAPI, uvicorn, SQLite (alphaedge.db + intraday OI DBs), Rich (terminal dashboards), requests/aiohttp (async HTTP)
+- Frontend: vanilla HTML/CSS/JS, Chart.js (in dashboard.html)
+- System Python 3.13 (managed) — pip installs need `--break-system-packages`
+- Project venv at `venv/` for heavier deps (telethon, aiohttp)
+
+### Parent Projects (~/Desktop/Projects/)
+Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), copy trading bots (Hyperliquid/Binance/Polymarket), BTC futures bot, CrewAI agents, open-codesign (Electron/TypeScript), tradingview-mcp (Node.js CDP bridge), crypto-trending-oi engine, and more.

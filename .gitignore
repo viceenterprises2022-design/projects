@@ -61,3 +61,22 @@ Jupiter/
 Github_Projects/
 tradingview-mcp/
 *.conda_trash
+
+# Large generated files
+graphify-out/
+pkscreener_venv/
+
+# Common binary formats
+*.so
+*.dll
+*.exe
+*.bin
+*.zip
+*.pdf
+*.mp3
+*.mp4
+*.xlsx
+*.docx
+*.pptx
+*.db
+*.sqlite

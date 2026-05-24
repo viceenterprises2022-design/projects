@@ -1,3 +1,79 @@
+~/Desktop/Projects/                     # Monorepo — ~40 projects
+├── scripts/                            # <<< CURRENT WORKSPACE
+│   ├── 📈 AlphaEdge Market Intelligence
+│   │   ├── collector.py                # Upstox + Yahoo → 10-factor signals → alphaedge.db
+│   │   ├── alphaedge_db.py             # SQLite schema + CRUD
+│   │   ├── api_server.py               # FastAPI REST :8765
+│   │   ├── market_analysis_v3.py       # Legacy monolith + OI collector thread
+│   │   ├── market_analysis_v2.py       # Older version
+│   │   ├── market_engine.py            # Async engine for crypto (aiohttp)
+│   │   ├── report_and_send.py          # Report + Telegram delivery
+│   │   ├── run_analysis_headless.py    # Stdout-only analysis
+│   │   └── frontend/
+│   │       ├── dashboard.html          # Chart.js dashboard
+│   │       ├── pixi_dashboard.html     # PixiJS options chain viz
+│   │       ├── app.js                  # Dashboard logic
+│   │       └── style.css
+│   │
+│   ├── 🪙 Crypto Intelligence
+│   │   ├── crypto_dashboard.py         # BTC/ETH/SOL Rich dashboard (15s)
+│   │   ├── crypto_market_dashboard_v2.py
+│   │   └── crypto_market_dashboard.py
+│   │
+│   ├── 🔍 Exa AI Event Search
+│   │   ├── exa_ai_search.py
+│   │   ├── exa_ai_agents.py
+│   │   └── ai_news_reporter.py         # Posts to Slack
+│   │
+│   ├── 📰 NotebookLM Pipeline
+│   │   └── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → report/mindmap
+│   │
+│   ├── 📊 PKScreener NSE Scanner
+│   │   └── pkscreener_runner.py
+│   │
+│   ├── 🖥️ Terminal Dashboards
+│   │   ├── options_cli.py             # Live option chain (5s polling)
+│   │   ├── live_market_dashboard.py
+│   │   ├── alphaedge_pro.py
+│   │   ├── metals_dashboard.py
+│   │   └── fo_breakout_scanner.py
+│   │
+│   ├── 🔧 Utilities
+│   │   ├── send_slack.py / debug_telegram.py
+│   │   ├── pnl_poller.py / probe_pcr_pain.py
+│   │   ├── patch_market*.py
+│   │   ├── report_and_summary.py / run_and_send_v2.py
+│   │   └── youtube_video_search.py
+│   │
+│   ├── 📁 Config / Runtime
+│   │   ├── AGENTS.md / CLAUDE.md / GEMINI.md / README.md / TODO.md
+│   │   ├── alphaedge.db / intraday_oi.db / intraday_options_cli.db
+│   │   ├── frontend/ / tests/ / logs/ / docs/ / scratch/
+│   │   ├── venv/ / .env / .gitignore
+│   │   └── alphaedge-api.service / multica-daemon.service
+│   │
+│   └── 🧪 Tests
+│       ├── test_crypto_dashboard.py
+│       └── test_indicators.py
+│
+├── AlphaEdge_Ticker/                   # tkinter desktop ticker (crypto + NSE)
+├── AlphaEdge_NSE_Ticker/               # tkinter NSE options chain ticker
+├── Alphaedge_Copy/                     # Multi-platform copy trading bot
+├── btcusdt-futures-bot/                # Hyperliquid BTC paper trading
+├── crypto-trending-oi/                 # Multi-factor crypto OI scoring
+├── tradingview-mcp/                    # MCP server → TradingView CDP
+├── open-codesign/                      # Electron AI design agent (pnpm/TS)
+├── open-design/                        # Open-source Claude Design alt
+├── crewai_testing/                     # CrewAI sandbox
+├── hello-reasoner/                     # AgentField scaffold
+├── daily_crypto_news/                  # CrewAI daily market reports
+├── alphaedge-journal/                  # Next.js trading journal
+├── pkscreener/                         # NSE stock screener (external)
+├── Polymarket_Claude/                  # Polymarket prediction market agent
+├── AI-Agentic-Security/                # Security research
+├── Claude_Com_playbook/                # Claude playbook
+├── ... 12 more dirs                    # misc: data, docs, pdf, etc.
+
 # Scripts Repository
 
 Comprehensive collection of scripts for Market Intelligence, AI Search, and automated reporting.
@@ -269,6 +345,83 @@ To repair the database without losing your stored data (avoiding database deleti
 
 ### ⚠️ Migration Note: Gemini CLI to Antigravity CLI
 Gemini CLI is being sunset on June 18, 2026. This project has been migrated to support the new Go-based **Antigravity CLI**. Legacy `.gemini` configurations are deprecated; please use the new `.agent` configurations. System-level extensions must be manually ported to the Antigravity Plugin format.
+
+---
+
+### 📡 Crypto Daily News — AI-Powered Crypto Briefing
+
+*Daily crypto news summaries across 8 categories, delivered to Telegram at 8:00 AM IST.*
+
+| Script | Description |
+|:--- |:--- |
+| `crypto_news_search.py` | Fetches top crypto stories via Exa API for BTC, ETH, SOL, RWA, Stablecoins, Onchain, Growth, and Price & Predictions. Each article gets an AI-generated 1-sentence summary. |
+| `crypto_to_notebooklm.py` | Wraps `crypto_news_search.py --report` → creates NotebookLM notebook → generates infographic → sends to Telegram. Used by cron at 8AM IST. |
+
+**Features:**
+- 8 curated search topics with Exa's neural search (last 3 days)
+- AI-generated summaries per article (no links to click)
+- Rich terminal dashboard mode (`--report`)
+- NotebookLM infographic pipeline: news → bento-grid PNG → Telegram
+
+**Usage:**
+```bash
+# Terminal report
+python3 crypto_news_search.py --report --num 10
+
+# Full infographic pipeline (with Telegram delivery)
+python3 crypto_to_notebooklm.py --telegram
+```
+
+**Cron (8:00 AM IST, already installed):**
+```
+0 8 * * * cd /home/vreddy1/Desktop/Projects/scripts && python3 crypto_to_notebooklm.py --telegram >> logs/crypto_news_cron.log 2>&1
+```
+
+**Config (`.env`):**
+```
+EXA_API_KEY=...
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+```
+
+---
+
+### 📈 PKScreener — NSE Automated Stock Scanner
+
+Automated NSE stock screening using [PKScreener](https://github.com/pkjmesra/PKScreener) with Telegram delivery.
+
+**Setup**
+```bash
+# Python 3.12 venv at:
+/home/vreddy1/Desktop/Projects/pkscreener_venv
+
+# PKScreener repo at:
+/home/vreddy1/Desktop/Projects/pkscreener
+
+# Wrapper script:
+python3 pkscreener_runner.py
+```
+
+**Scan Strategies** (8 scans, runs on weekdays):
+| Scan | Options |
+|------|---------|
+| Nifty50 — Probable Breakouts | X:1:1 |
+| Nifty50 — Bullish RSI & MACD | X:1:13 |
+| Nifty50 — Strong Buy Signals | X:1:44 |
+| NiftyAll — Probable Breakouts | X:12:1 |
+| NiftyAll — SuperTrend Uptrend | X:12:24 |
+| NiftyAll — Strong Buy Signals | X:12:44 |
+| NiftyAll — Breaking Out Now | X:12:23 |
+| NiftyAll — Bullish RSI & MACD | X:12:13 |
+
+**Cron Schedule** (IST, weekdays only):
+```
+55 3  * * 1-5   # 9:25 AM IST  — pre-open scan
+5  10 * * 1-5   # 3:35 PM IST  — close-of-day scan
+30 12 * * 1-5   # 6:00 PM IST  — evening review
+```
+
+**Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
 
 ---
 *Maintained by Antigravity CLI (formerly Gemini CLI).*
