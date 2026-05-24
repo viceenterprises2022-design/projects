@@ -82,6 +82,7 @@ def fetch_all_from_playlist(api_key, playlist_id):
             content = stats.get("contentDetails", {})
             stats_detail = stats.get("statistics", {})
             videos.append({
+                "id": vid,
                 "title": snippet.get("title", ""),
                 "publishedAt": snippet.get("publishedAt", ""),
                 "views": int(stats_detail.get("viewCount", 0)),
