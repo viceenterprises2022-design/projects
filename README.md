@@ -1,3 +1,81 @@
+~/Desktop/Projects/                     # Monorepo — ~40 projects
+├── scripts/                            # <<< CURRENT WORKSPACE
+│   ├── 📈 AlphaEdge Market Intelligence
+│   │   ├── collector.py                # Upstox + Yahoo → 10-factor signals → alphaedge.db
+│   │   ├── alphaedge_db.py             # SQLite schema + CRUD
+│   │   ├── api_server.py               # FastAPI REST :8765
+│   │   ├── market_analysis_v3.py       # Legacy monolith + OI collector thread
+│   │   ├── market_analysis_v2.py       # Older version
+│   │   ├── market_engine.py            # Async engine for crypto (aiohttp)
+│   │   ├── report_and_send.py          # Report + Telegram delivery
+│   │   ├── run_analysis_headless.py    # Stdout-only analysis
+│   │   └── frontend/
+│   │       ├── dashboard.html          # Chart.js dashboard
+│   │       ├── pixi_dashboard.html     # PixiJS options chain viz
+│   │       ├── app.js                  # Dashboard logic
+│   │       └── style.css
+│   │
+│   ├── 🪙 Crypto Intelligence
+│   │   ├── crypto_dashboard.py         # BTC/ETH/SOL Rich dashboard (15s)
+│   │   ├── crypto_market_dashboard_v2.py
+│   │   └── crypto_market_dashboard.py
+│   │
+│   ├── 🔍 Exa AI Event Search
+│   │   ├── exa_ai_search.py
+│   │   ├── exa_ai_agents.py
+│   │   └── ai_news_reporter.py         # Posts to Slack
+│   │
+│   ├── 📰 NotebookLM Pipeline
+│   │   ├── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → report/mindmap
+│   │   ├── youtube_to_notebooklm.py   # YouTube channel monitor → NotebookLM → Slack
+│   │   └── youtube_channels.json       # Config: YouTube channel @handles
+│   │
+│   ├── 📊 PKScreener NSE Scanner
+│   │   └── pkscreener_runner.py
+│   │
+│   ├── 🖥️ Terminal Dashboards
+│   │   ├── options_cli.py             # Live option chain (5s polling)
+│   │   ├── live_market_dashboard.py
+│   │   ├── alphaedge_pro.py
+│   │   ├── metals_dashboard.py
+│   │   └── fo_breakout_scanner.py
+│   │
+│   ├── 🔧 Utilities
+│   │   ├── send_slack.py / debug_telegram.py
+│   │   ├── pnl_poller.py / probe_pcr_pain.py
+│   │   ├── patch_market*.py
+│   │   ├── report_and_summary.py / run_and_send_v2.py
+│   │   └── youtube_video_search.py
+│   │
+│   ├── 📁 Config / Runtime
+│   │   ├── AGENTS.md / CLAUDE.md / GEMINI.md / README.md / TODO.md
+│   │   ├── alphaedge.db / intraday_oi.db / intraday_options_cli.db
+│   │   ├── frontend/ / tests/ / logs/ / docs/ / scratch/
+│   │   ├── venv/ / .env / .gitignore
+│   │   └── alphaedge-api.service / multica-daemon.service
+│   │
+│   └── 🧪 Tests
+│       ├── test_crypto_dashboard.py
+│       └── test_indicators.py
+│
+├── AlphaEdge_Ticker/                   # tkinter desktop ticker (crypto + NSE)
+├── AlphaEdge_NSE_Ticker/               # tkinter NSE options chain ticker
+├── Alphaedge_Copy/                     # Multi-platform copy trading bot
+├── btcusdt-futures-bot/                # Hyperliquid BTC paper trading
+├── crypto-trending-oi/                 # Multi-factor crypto OI scoring
+├── tradingview-mcp/                    # MCP server → TradingView CDP
+├── open-codesign/                      # Electron AI design agent (pnpm/TS)
+├── open-design/                        # Open-source Claude Design alt
+├── crewai_testing/                     # CrewAI sandbox
+├── hello-reasoner/                     # AgentField scaffold
+├── daily_crypto_news/                  # CrewAI daily market reports
+├── alphaedge-journal/                  # Next.js trading journal
+├── pkscreener/                         # NSE stock screener (external)
+├── Polymarket_Claude/                  # Polymarket prediction market agent
+├── AI-Agentic-Security/                # Security research
+├── Claude_Com_playbook/                # Claude playbook
+├── ... 12 more dirs                    # misc: data, docs, pdf, etc.
+
 # Scripts Repository
 
 Comprehensive collection of scripts for Market Intelligence, AI Search, and automated reporting.
@@ -11,7 +89,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 |:--- |:--- |
 | `collector.py` | **Core Engine**. Fetches market data from Upstox/Yahoo, calculates 10-factor signals, and saves to DB. |
 | `alphaedge_db.py` | **Database Manager**. Handles SQLite schema and data persistence for `alphaedge.db`. |
-| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. |
+| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest` (signals + live macro via Yahoo Finance), `/api/gainers-losers` (NSE top 5 gainers/losers, 30s cache), `/api/pixi/*` (options chain). |
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
@@ -93,6 +171,41 @@ PDF_LIMIT=20
 
 ---
 
+### 🤖 YouTube → NotebookLM
+*Monitors YouTube channels for new videos, ingests each into NotebookLM, and delivers reports to Slack via Block Kit.*
+
+| Script | Description |
+|:--- |:--- |
+| `youtube_to_notebooklm.py` | **Pipeline**. Checks tracked YouTube channels for videos published ≤24h ago, uploads each to a standalone NotebookLM notebook, generates `briefing-doc` report + mind-map, converts mind-map JSON to indented text tree, and sends a structured **Block Kit** Slack message. Safely deletes the notebook after successful Slack delivery. |
+| `youtube_channels.json` | **Config**. JSON array of YouTube channel @handles to monitor. |
+
+**Channels tracked (default):** `@DavidOndrej`, `@AkshatZayn`, `@TheNextNewThingAI`, `@LewisWJackson`
+
+**CLI channel management:**
+```bash
+python3 youtube_to_notebooklm.py --add-channel @NewChannel
+python3 youtube_to_notebooklm.py --remove-channel @OldChannel
+python3 youtube_to_notebooklm.py --list-channels
+```
+
+**Slack output format (Block Kit):**
+1. **Header** with pipeline name
+2. **Fields** — channel handle + NotebookLM notebook link
+3. **Video link**
+4. **Divider**
+5. **Mind-map** (indented text tree, ≤25 lines, in code block)
+6. **Divider**
+7. **Report** (first ~2,500 chars; remainder in continuation messages)
+
+**Cron (already installed):**
+```
+30 11 * * * cd /path/to/scripts && python3 youtube_to_notebooklm.py >> logs/youtube_nlm_cron.log 2>&1
+```
+
+**Notebook safety:** Notebooks are deleted ONLY after successful Slack delivery. Deletion is regex-gated (`^[a-zA-Z0-9][a-zA-Z0-9_-]{19,}$`) and `_delete_notebook()` is the sole function authorized to call `notebooklm delete`.
+
+---
+
 ### 📊 Live Market Dashboards
 *Async real-time dashboards requiring venv python.*
 
@@ -109,6 +222,7 @@ PDF_LIMIT=20
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
 | `patch_market.py` | Utility to apply specific logic patches to the market analysis scripts. |
 | `clawdi` | **Environment Sync**. Cross-agent sync for sessions, skills, and secrets (Clawdi Cloud). |
+| `crontab-viz` | **Crontab Visualizer**. Pretty-prints `crontab -l` with UTC→IST conversion, human-readable schedule, next run times, monthly calendar, and weekly grid. Run: `./crontab-viz` or alias `crons`. |
 
 ---
 
@@ -147,8 +261,8 @@ journalctl -u multica-daemon -f
 
 1. **Data Collector**: Runs signals (Trend, VIX, OI Skew, PCR, Max Pain) and writes to `alphaedge.db`.
 2. **Database**: SQLite storage for historical snapshots.
-3. **API Server**: Connects to DB and serves REST endpoints (`/api/latest`, `/api/history`).
-4. **Dashboard**: HTML/JS frontend in `frontend/` visualizing trends via Chart.js.
+3. **API Server**: Connects to DB and serves REST endpoints (`/api/latest`, `/api/history`, `/api/gainers-losers`, `/api/pixi/*`). Macro data (Crude, US30, Gold, Silver) fetched live from Yahoo Finance with 5-min cache.
+4. **Dashboard**: HTML/JS frontend in `frontend/` — main dashboard (`dashboard.html`) with portfolio, macro cards, gainers/losers, and Chart.js signal charts. PixiJS options chain viz at `/pixi`.
 
 ---
 
@@ -272,6 +386,44 @@ Gemini CLI is being sunset on June 18, 2026. This project has been migrated to s
 
 ---
 
+### 📡 Crypto Daily News — AI-Powered Crypto Briefing
+
+*Daily crypto news summaries across 8 categories, delivered to Telegram at 8:00 AM IST.*
+
+| Script | Description |
+|:--- |:--- |
+| `crypto_news_search.py` | Fetches top crypto stories via Exa API for BTC, ETH, SOL, RWA, Stablecoins, Onchain, Growth, and Price & Predictions. Each article gets an AI-generated 1-sentence summary. |
+| `crypto_to_notebooklm.py` | Wraps `crypto_news_search.py --report` → creates NotebookLM notebook → generates infographic → sends to Telegram. Used by cron at 8AM IST. |
+
+**Features:**
+- 8 curated search topics with Exa's neural search (last 3 days)
+- AI-generated summaries per article (no links to click)
+- Rich terminal dashboard mode (`--report`)
+- NotebookLM infographic pipeline: news → bento-grid PNG → Telegram
+
+**Usage:**
+```bash
+# Terminal report
+python3 crypto_news_search.py --report --num 10
+
+# Full infographic pipeline (with Telegram delivery)
+python3 crypto_to_notebooklm.py --telegram
+```
+
+**Cron (8:00 AM IST, already installed):**
+```
+0 8 * * * cd /home/vreddy1/Desktop/Projects/scripts && python3 crypto_to_notebooklm.py --telegram >> logs/crypto_news_cron.log 2>&1
+```
+
+**Config (`.env`):**
+```
+EXA_API_KEY=...
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+```
+
+---
+
 ### 📈 PKScreener — NSE Automated Stock Scanner
 
 Automated NSE stock screening using [PKScreener](https://github.com/pkjmesra/PKScreener) with Telegram delivery.
@@ -308,6 +460,32 @@ python3 pkscreener_runner.py
 ```
 
 **Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
+
+## OpenCode `/pursue` Goal Plugin
+
+Location: `~/.config/opencode/plugins/opencode-goal/`
+
+Autonomous goal pursuit mode for OpenCode. Agent self-evaluates and iterates until verification condition is proven met.
+
+**Usage in OpenCode TUI:**
+```
+/pursue <objective with verification condition>
+```
+
+**Components:**
+| Component | Location |
+|-----------|----------|
+| Plugin (4 tools + 2 hooks) | `~/.config/opencode/plugins/opencode-goal/src/` |
+| Config (agent + command) | `~/.config/opencode/opencode.jsonc` |
+| State file | `~/.opencode/goals/state.json` |
+
+**Tools:** `goal_define`, `goal_checkpoint`, `goal_status`, `goal_complete`
+
+**Hooks:** `experimental.chat.system.transform` (injects evaluator prompt when goal active), `experimental.compaction.autocontinue` (re-enables agent loop while pursuing)
+
+**Agent:** Claude Sonnet 4, 100 steps, unrestricted perms
+
+See `~/.config/opencode/plugins/opencode-goal/src/index.js` for full implementation.
 
 ---
 *Maintained by Antigravity CLI (formerly Gemini CLI).*
