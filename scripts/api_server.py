@@ -42,9 +42,9 @@ DB_INTRA_OI  = _BASE / "intraday_oi.db"
 DB_ALPHA     = _BASE / "alphaedge.db"
 
 def _pixi_conn(db_path: Path) -> sqlite3.Connection:
-    """Open a read-only SQLite connection with Row factory."""
-    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True,
-                           check_same_thread=False)
+    """Open a SQLite connection with Row factory (not read-only so it can
+    recover hot journals from concurrent writers)."""
+    conn = sqlite3.connect(str(db_path), check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 

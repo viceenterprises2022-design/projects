@@ -48,6 +48,8 @@ def pad_colored(text, width, align='left'):
 def init_db():
     """Create table and delete data from previous days."""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA synchronous=NORMAL")
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS options_data
                  (timestamp TEXT, index_name TEXT, spot REAL, strike REAL, 
