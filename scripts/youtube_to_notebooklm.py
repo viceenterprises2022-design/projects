@@ -326,51 +326,100 @@ def _send_slack(video: dict, nb_id: str, report_path: Path, mm_path: Path) -> bo
         return False
 
     title = video["title"]
-    channel = video["channel_handle"]
+    channel_handle = video["channel_handle"]
     url = video["url"]
     nb_link = f"https://notebooklm.google.com/notebook/{nb_id}"
+    channel_display = channel_handle.lstrip("@")
 
-    parts = [
-        f"\U0001f3ac *New Video: {title}*",
-        f"\U0001f4fa {channel}",
-        f"\U0001f517 {url}",
-        f"\U0001f4d3 NotebookLM: {nb_link}",
+    fallback = f"\U0001f3ac New video from {channel_handle}"
+
+    from send_slack import send_to_slack
+
+    # ── Message 1: header + summary + mind-map + report ────────────
+    blocks: list[dict] = [
+        {
+            "type": "header",
+            "text": {"type": "plain_text", "text": f"\U0001f3ac {title}", "emoji": True},
+        },
+        {
+            "type": "section",
+            "fields": [
+                {"type": "mrkdwn", "text": f"*\U0001f4fa Channel*\n{channel_handle}"},
+                {"type": "mrkdwn", "text": f"*\U0001f4d3 NotebookLM*\n<{nb_link}|Open>"},
+            ],
+        },
+        {"type": "section", "text": {"type": "mrkdwn", "text": f"*\U0001f517 Link*\n{url}"}},
+        {"type": "divider"},
     ]
 
-    # Mind-map text tree
+    # Mind-map as text tree (cap at 25 lines)
     if mm_path and mm_path.exists():
         mm_data = json.loads(mm_path.read_text())
         tree_lines = mindmap_to_text(mm_data)
         if tree_lines:
-            parts.append("")
-            parts.append("\u2550" * 24)
-            parts.append("\U0001f5fa *Mind Map:*")
-            parts.append("\u2550" * 24)
-            parts.extend(tree_lines)
+            clipped = tree_lines[:25]
+            mm_text = "\n".join(clipped)
+            if len(tree_lines) > 25:
+                mm_text += f"\n… and {len(tree_lines) - 25} more"
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": f"*\U0001f5fa Mind Map*\n```\n{mm_text}\n```"},
+            })
+            blocks.append({"type": "divider"})
 
-    # Report content
+    # Report: include first ~2500 chars in msg 1
+    report_chunks: list[str] = []
     if report_path and report_path.exists():
-        report_text = report_path.read_text()
-        parts.append("")
-        parts.append("\u2550" * 24)
-        parts.append("\U0001f4cb *Briefing Report:*")
-        parts.append("\u2550" * 24)
-        parts.append(report_text)
+        raw = report_path.read_text().strip()
+        if raw:
+            MAX_FIRST = 2500
+            if len(raw) <= MAX_FIRST:
+                report_chunks = [raw]
+            else:
+                report_chunks = [raw[:MAX_FIRST]]
+                remaining = raw[MAX_FIRST:]
+                while remaining:
+                    report_chunks.append(remaining[:3000])
+                    remaining = remaining[3000:]
 
-    full = "\n".join(parts)
-    from send_slack import send_to_slack, chunk_text
+    if report_chunks:
+        blocks.append({
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": f"*\U0001f4cb Briefing Report*\n\n{report_chunks[0]}"},
+        })
 
     ok = True
-    for chunk in chunk_text(full, MAX_SLACK_CHARS):
+    res = send_to_slack(
+        SLACK_WEBHOOK,
+        fallback,
+        username=SLACK_USERNAME,
+        icon_emoji=SLACK_ICON,
+        blocks=blocks,
+    )
+    if not res.get("ok"):
+        ok = False
+        p(f"  Slack error (msg 1): {res.get('error')}")
+
+    # ── Messages 2+: report continuation chunks ──────────────────
+    for i, chunk in enumerate(report_chunks[1:], start=2):
+        cont_blocks: list[dict] = [
+            {
+                "type": "header",
+                "text": {"type": "plain_text", "text": f"\U0001f4cb Report (continued {i - 1}/{len(report_chunks) - 1})", "emoji": True},
+            },
+            {"type": "section", "text": {"type": "mrkdwn", "text": chunk}},
+        ]
         res = send_to_slack(
             SLACK_WEBHOOK,
-            chunk,
+            f"{fallback} — report continuation {i-1}",
             username=SLACK_USERNAME,
             icon_emoji=SLACK_ICON,
+            blocks=cont_blocks,
         )
         if not res.get("ok"):
             ok = False
-            p(f"  Slack error: {res.get('error')}")
+            p(f"  Slack error (msg {i}): {res.get('error')}")
+
     return ok
 
 
