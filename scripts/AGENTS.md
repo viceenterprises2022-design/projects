@@ -127,7 +127,7 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Handles cron dow ranges (`1-5`), `*`, and comma-separated values.
 - Added to `README.md` Utilities table.
 - Commit: `feat: add crontab-viz — crontab visualizer with IST conversion, next run, calendar grid`
-- **Multica:** (pending)
+- **Multica:** ALP-340 (done, assigned Vinod-AI-CEO)
 
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
