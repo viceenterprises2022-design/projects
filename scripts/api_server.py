@@ -368,7 +368,7 @@ def api_pixi_macro():
 
     import datetime
     return {
-        "recorded_at": datetime.datetime.utcnow().isoformat(),
+        "recorded_at": datetime.datetime.now(datetime.UTC).isoformat(),
         "vix":    _val("vix",   "vix",   "vix_chg"),
         "dxy":    _val("dxy",   "dxy",   "dxy_chg"),
         "crude":  _val("crude", "crude", "crude_chg"),
@@ -483,9 +483,10 @@ def _fetch_nse_quotes() -> dict:
             return {}
         data = r.json().get("data", {})
         result = {}
-        for sym, isin in NSE_STOCKS.items():
-            q = data.get(isin)
-            if not q:
+        # Response keys are NSE_EQ:SYMBOL e.g. NSE_EQ:RELIANCE
+        for resp_key, q in data.items():
+            sym = resp_key.split(":", 1)[-1]
+            if sym not in NSE_STOCKS:
                 continue
             ltp = q.get("last_price", 0)
             net_chg = q.get("net_change", 0)
@@ -524,7 +525,7 @@ def api_gainers_losers():
     return {
         "gainers": gainers,
         "losers": losers,
-        "updated_at": datetime.datetime.utcnow().isoformat(),
+        "updated_at": datetime.datetime.now(datetime.UTC).isoformat(),
     }
 
 

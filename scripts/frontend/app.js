@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function refreshAll() {
-  await Promise.allSettled([loadLatest(), loadPortfolio()]);
+  await Promise.allSettled([loadLatest(), loadPortfolio(), loadGainersLosers()]);
 }
 
 // ── Data Fetch ───────────────────────────────────────────────────────────────
@@ -142,6 +142,38 @@ function renderMacro(macro) {
       <div class="macro-chg ${cls}">${arr} ${Math.abs(chg).toFixed(2)}%</div>
     </div>`;
   }).join("");
+}
+
+// ── Gainers / Losers ───────────────────────────────────────────────────────────
+
+async function loadGainersLosers() {
+  try {
+    const res = await fetch(`${API_BASE}/api/gainers-losers`);
+    if (!res.ok) throw new Error(`/api/gainers-losers → ${res.status}`);
+    const data = await res.json();
+    renderGainersLosers(data);
+  } catch (err) {
+    console.error("Gainers/Losers fetch failed:", err);
+  }
+}
+
+function renderGainersLosers(data) {
+  const gList = document.getElementById("gainers-list");
+  const lList = document.getElementById("losers-list");
+  if (!gList || !lList) return;
+
+  gList.innerHTML = data.gainers.map(s => glItem(s, true)).join("");
+  lList.innerHTML = data.losers.map(s => glItem(s, false)).join("");
+}
+
+function glItem(s, isGainer) {
+  const cls = isGainer ? "up" : "dn";
+  const arrow = isGainer ? "▲" : "▼";
+  return `<div class="gl-item">
+    <div class="gl-sym">${s.symbol}</div>
+    <div class="gl-ltp">${fmtIN(s.ltp)}</div>
+    <div class="gl-chg ${cls}">${arrow} ${Math.abs(s.change_pct).toFixed(2)}%</div>
+  </div>`;
 }
 
 // ── Timestamp ────────────────────────────────────────────────────────────────
