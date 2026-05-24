@@ -122,6 +122,13 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Fixed `/api/latest` macro section: Crude, US30, Gold, Silver now fetched live from Yahoo Finance via `_get_macro_cached()` instead of stale DB. VIX/DXY use live Yahoo with DB fallback.
 - **Multica:** ALP-338 (done), ALP-339 (done, both assigned Vinod-AI-CEO)
 
+### 2026-05-24: Crontab Visualizer (`crontab-viz`)
+- Built `crontab-viz` — Python CLI that parses `crontab -l` with 3 views: schedule table (UTC→IST, next run), monthly calendar (green = cron days), weekly grid (which days per job).
+- Handles cron dow ranges (`1-5`), `*`, and comma-separated values.
+- Added to `README.md` Utilities table.
+- Commit: `feat: add crontab-viz — crontab visualizer with IST conversion, next run, calendar grid`
+- **Multica:** (pending)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

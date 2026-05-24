@@ -222,6 +222,7 @@ python3 youtube_to_notebooklm.py --list-channels
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
 | `patch_market.py` | Utility to apply specific logic patches to the market analysis scripts. |
 | `clawdi` | **Environment Sync**. Cross-agent sync for sessions, skills, and secrets (Clawdi Cloud). |
+| `crontab-viz` | **Crontab Visualizer**. Pretty-prints `crontab -l` with UTC→IST conversion, human-readable schedule, next run times, monthly calendar, and weekly grid. Run: `./crontab-viz` or alias `crons`. |
 
 ---
 

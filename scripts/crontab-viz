@@ -28,6 +28,12 @@ def matches(sch, dt):
             in_range(dom, dt.day) and in_range(mo, dt.month) and
             in_range(dow, dt.weekday() + 1))  # cron: 1=Mon..7=Sun
 
+def matches_date(sch, dt):
+    """check only date fields (ignore time) — for calendar view"""
+    _, _, dom, mo, dow = sch.split()
+    return (in_range(dom, dt.day) and in_range(mo, dt.month) and
+            in_range(dow, dt.weekday() + 1))
+
 def next_run(sch, after=None):
     after = after or datetime.now(IST)
     for d in range(365):
@@ -39,22 +45,33 @@ def next_run(sch, after=None):
                 if matches(sch, cand): return cand
     return None
 
-WEEKDAYS_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+# cron dow: 0|7=Sun, 1=Mon .. 6=Sat
+CRON_DOW = {0:'Sunday',1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday',7:'Sunday'}
+CRON_DOW_S = {0:'Sun',1:'Mon',2:'Tue',3:'Wed',4:'Thu',5:'Fri',6:'Sat',7:'Sun'}
+
+def _cron_dow(v):
+    """parse cron dow field value to list of day names"""
+    if v == '*': return []
+    out = []
+    for part in v.split(','):
+        if '-' in part:
+            a, b = part.split('-')
+            for i in range(int(a), int(b)+1):
+                out.append(CRON_DOW.get(i, ''))
+        else:
+            out.append(CRON_DOW.get(int(part), ''))
+    return out
 
 def human_schedule(sch):
     mi, h, dom, mo, dow = sch.split()
     parts = []
-    # frequency
     if dow != '*' and dom == '*' and mo == '*':
-        days = []
-        for wd in dow.split(','):
-            if '-' in wd:
-                a, b = wd.split('-')
-                days += [WEEKDAYS_FULL[int(i)-1] for i in range(int(a), int(b)+1)]
-            else:
-                days.append(WEEKDAYS_FULL[int(wd)-1] if wd.isdigit() else wd)
-        parts.append('Weekdays' if len(days)==5 and all(d in ['Monday','Tuesday','Wednesday','Thursday','Friday'] for d in days)
-                     else ','.join(d[:3] for d in days))
+        days = _cron_dow(dow)
+        abbrs = [d[:3] for d in days]
+        if set(days) == {'Monday','Tuesday','Wednesday','Thursday','Friday'}:
+            parts.append('Weekdays')
+        else:
+            parts.append(','.join(abbrs))
     elif dom != '*':
         parts.append(f"Day {dom}")
     elif mo != '*':
@@ -96,7 +113,7 @@ def calendar_view(entries, year, month):
     for sch, _ in entries:
         for d in range(1, last_day+1):
             dt = datetime(year, month, d, tzinfo=IST)
-            if matches(sch, dt):
+            if matches_date(sch, dt):
                 grid.setdefault(d, []).append(sch)
     w = CELL_W
     print(f"  {'':>3} {' '.join(f'{d:^{w}}' for d in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])}")
@@ -165,7 +182,6 @@ def main():
     print()
     print(f"  Weekly schedule (UTC)")
     print(f"  {'─'*72}")
-    days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
     for sch, cmd in entries:
         parts = sch.split()
         dow = parts[4]
@@ -173,8 +189,8 @@ def main():
         if dow == '*':
             dow_str = 'all days'
         else:
-            dow_str = ','.join(days[i-1] for d in dow.split(',')
-                          for i in [(int(d) if d.isdigit() else 7)])
+            days = _cron_dow(dow)
+            dow_str = ','.join(d[:3] for d in days)
         utc_str = f'{h.zfill(2) if h!="*" else "*"}:{mi.zfill(2) if mi!="*" else "*"}'
         day_part = dow_str[:18]
         print(f"  {day_part:<18} {utc_str:<8}  {desc(cmd)}")
