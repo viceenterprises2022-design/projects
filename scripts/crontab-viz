@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+"""pretty-print crontab: human-readable schedule, IST conversion, calendar grid"""
+import sys
+import subprocess
+from datetime import datetime, timedelta, timezone
+import calendar
+
+WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
+IST = timezone(timedelta(hours=5, minutes=30))
+
+def in_range(v, val):
+    """check if int val matches a cron field like *, 5, 1-5, 1,3,5"""
+    if v == '*': return True
+    parts = v.split(',')
+    for p in parts:
+        if '-' in p:
+            a, b = p.split('-')
+            if int(a) <= val <= int(b): return True
+        else:
+            if p == str(val): return True
+    return False
+
+def matches(sch, dt):
+    mi, h, dom, mo, dow = sch.split()
+    return (in_range(mi, dt.minute) and in_range(h, dt.hour) and
+            in_range(dom, dt.day) and in_range(mo, dt.month) and
+            in_range(dow, dt.weekday() + 1))  # cron: 1=Mon..7=Sun
+
+def next_run(sch, after=None):
+    after = after or datetime.now(IST)
+    for d in range(365):
+        base = after + timedelta(days=d)
+        for hh in range(24):
+            for mm in range(60):
+                cand = base.replace(hour=hh, minute=mm, second=0, microsecond=0)
+                if cand <= after: continue
+                if matches(sch, cand): return cand
+    return None
+
+WEEKDAYS_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+
+def human_schedule(sch):
+    mi, h, dom, mo, dow = sch.split()
+    parts = []
+    # frequency
+    if dow != '*' and dom == '*' and mo == '*':
+        days = []
+        for wd in dow.split(','):
+            if '-' in wd:
+                a, b = wd.split('-')
+                days += [WEEKDAYS_FULL[int(i)-1] for i in range(int(a), int(b)+1)]
+            else:
+                days.append(WEEKDAYS_FULL[int(wd)-1] if wd.isdigit() else wd)
+        parts.append('Weekdays' if len(days)==5 and all(d in ['Monday','Tuesday','Wednesday','Thursday','Friday'] for d in days)
+                     else ','.join(d[:3] for d in days))
+    elif dom != '*':
+        parts.append(f"Day {dom}")
+    elif mo != '*':
+        parts.append(f"Month {mo}")
+    if h == '*' and mi == '*':
+        parts.append('every min')
+    elif h == '*':
+        parts.append(f"min {mi}")
+    elif mi == '*':
+        parts.append(f"hour {h}")
+    else:
+        parts.append(f"{h.zfill(2)}:{mi.zfill(2)}")
+    return ' '.join(parts) if parts else '*'
+
+def parse_crontab(text):
+    comments = []
+    entries = []
+    for line in text.strip().splitlines():
+        line_stripped = line.strip()
+        if not line_stripped:
+            continue
+        if line_stripped.startswith('#'):
+            comments.append(line_stripped[1:].strip())
+            continue
+        parts = line_stripped.split()
+        if len(parts) < 6: continue
+        sch = ' '.join(parts[:5])
+        cmd = ' '.join(parts[5:])
+        entries.append((sch, cmd))
+    return entries, comments
+
+CELL_W = 11
+
+def calendar_view(entries, year, month):
+    cal = calendar.Calendar()
+    first = datetime(year, month, 1, tzinfo=IST)
+    last_day = calendar.monthrange(year, month)[1]
+    grid = {}
+    for sch, _ in entries:
+        for d in range(1, last_day+1):
+            dt = datetime(year, month, d, tzinfo=IST)
+            if matches(sch, dt):
+                grid.setdefault(d, []).append(sch)
+    w = CELL_W
+    print(f"  {'':>3} {' '.join(f'{d:^{w}}' for d in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])}")
+    for week in cal.monthdayscalendar(year, month):
+        parts = []
+        for d in week:
+            if d == 0:
+                parts.append(' '*w)
+            else:
+                label = str(d)
+                if d in grid:
+                    label = f"\033[92m{d:>2}\033[0m"
+                parts.append(f'{label:^{w}}')
+        print(f"  {'':>3} {' '.join(parts)}")
+    total = sum(len(v) for v in grid.values())
+    print(f"\n  \033[92mgreen\033[0m = {total} cron job(s) fire that day")
+
+def desc(cmd):
+    """short human label from command path"""
+    if 'telegram_to_notebooklm' in cmd: return 'Telegram→NLM PDF pipeline'
+    if 'youtube_to_notebooklm' in cmd: return 'YouTube→NLM pipeline'
+    if 'market_engine' in cmd:         return 'Market engine data'
+    if 'crypto_to_notebooklm' in cmd:  return 'Crypto news→NLM infographic'
+    if 'pkscreener_runner' in cmd:     return 'PKScreener NSE scan'
+    return cmd[:50]
+
+def ist_time(mi, h):
+    """convert HH:MM UTC to IST string"""
+    if h == '*' and mi == '*': return '*'
+    if h == '*' or mi == '*':  return f'{h}:{mi}'
+    total = int(h)*60 + int(mi) + 330  # UTC+5:30
+    return f'{total//60%24:02d}:{total%60:02d}'
+
+def main():
+    try:
+        raw = subprocess.run(['crontab','-l'], capture_output=True, text=True).stdout
+    except:
+        raw = ""
+    if not raw.strip():
+        print("  no crontab")
+        sys.exit(1)
+
+    entries, comments = parse_crontab(raw)
+
+    # ── header ──
+    print(f"  {'DESCRIPTION':<32} {'UTC':<14} {'IST':<10} {'NEXT RUN (IST)':<22} {'SCHEDULE'}")
+    print(f"  {'─'*32} {'─'*14} {'─'*10} {'─'*22} {'─'*30}")
+
+    for sch, cmd in entries:
+        parts = sch.split()
+        mi, h, dom, mo, dow = parts
+        human = human_schedule(sch)
+        nxt = next_run(sch)
+        nxt_str = nxt.strftime('%d %b %I:%M%p') if nxt else '—'
+        utc_str = f'{h.zfill(2) if h!="*" else "*"}:{mi.zfill(2) if mi!="*" else "*"}'
+        ist_str = ist_time(mi, h)
+        d = desc(cmd)
+        print(f"  {d:<32} {utc_str:<14} {ist_str:<10} {nxt_str:<22} {human}")
+
+    print()
+    now = datetime.now(IST)
+    print(f"  Calendar — {MONTHS[now.month-1]} {now.year}")
+    calendar_view(entries, now.year, now.month)
+
+    # ── weekly grid ──
+    print()
+    print(f"  Weekly schedule (UTC)")
+    print(f"  {'─'*72}")
+    days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+    for sch, cmd in entries:
+        parts = sch.split()
+        dow = parts[4]
+        mi, h = parts[0], parts[1]
+        if dow == '*':
+            dow_str = 'all days'
+        else:
+            dow_str = ','.join(days[i-1] for d in dow.split(',')
+                          for i in [(int(d) if d.isdigit() else 7)])
+        utc_str = f'{h.zfill(2) if h!="*" else "*"}:{mi.zfill(2) if mi!="*" else "*"}'
+        day_part = dow_str[:18]
+        print(f"  {day_part:<18} {utc_str:<8}  {desc(cmd)}")
+
+if __name__ == '__main__':
+    main()
