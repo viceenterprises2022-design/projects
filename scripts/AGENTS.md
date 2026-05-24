@@ -49,6 +49,8 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 
 **3. NotebookLM Daily Pipeline**
 - `telegram_to_notebooklm.py` → daily cron (4PM IST), fetches PDFs from Telegram channel `@btsreports`, uploads to dated NotebookLM notebook, generates briefing report + mind-map, saves to `notebooklm_output/`
+- `youtube_to_notebooklm.py` → daily cron (5PM IST), monitors YouTube channels (`youtube_channels.json`) for new videos ≤24h old, ingests each into NotebookLM, generates briefing report + mind-map, delivers to Slack via Block Kit, deletes notebook after successful delivery
+- `youtube_channels.json` → config file: array of YouTube channel @handles (`@DavidOndrej`, `@AkshatZayn`, `@TheNextNewThingAI`, `@LewisWJackson`)
 
 **4. Exa AI Event Search**
 - `exa_ai_search.py` / `exa_ai_agents.py` → Exa-powered search for upcoming AI events/workshops from OpenAI, Anthropic, Google AI, etc. Outputs `ai_events_results.json`
@@ -68,6 +70,7 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 - `metals_dashboard.py` → Gold/Silver dashboard
 - `fo_breakout_scanner.py` → F&O breakout scanner
 - `youtube_video_search.py` → YouTube keyword/channel search
+- `youtube_channels.json` → channel config for YouTube → NotebookLM cron pipeline
 
 ### Data Sources
 - **Upstox REST API** → JWT bearer token (`UPSTOX_TOKEN` env) for live quotes + option chain OI (Indian indices)
@@ -76,6 +79,7 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 - **Deribit** → Options chain for crypto
 - **Exa API** → AI event search
 - **Telegram** (Telethon) → PDF ingestion for NotebookLM pipeline
+- **YouTube Data API** → channel video search for YouTube → NotebookLM pipeline
 - **PKScreener** → NSE technical scans
 
 ### Running Services (systemd)
