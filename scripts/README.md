@@ -89,7 +89,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 |:--- |:--- |
 | `collector.py` | **Core Engine**. Fetches market data from Upstox/Yahoo, calculates 10-factor signals, and saves to DB. |
 | `alphaedge_db.py` | **Database Manager**. Handles SQLite schema and data persistence for `alphaedge.db`. |
-| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. |
+| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest` (signals + live macro via Yahoo Finance), `/api/gainers-losers` (NSE top 5 gainers/losers, 30s cache), `/api/pixi/*` (options chain). |
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
@@ -260,8 +260,8 @@ journalctl -u multica-daemon -f
 
 1. **Data Collector**: Runs signals (Trend, VIX, OI Skew, PCR, Max Pain) and writes to `alphaedge.db`.
 2. **Database**: SQLite storage for historical snapshots.
-3. **API Server**: Connects to DB and serves REST endpoints (`/api/latest`, `/api/history`).
-4. **Dashboard**: HTML/JS frontend in `frontend/` visualizing trends via Chart.js.
+3. **API Server**: Connects to DB and serves REST endpoints (`/api/latest`, `/api/history`, `/api/gainers-losers`, `/api/pixi/*`). Macro data (Crude, US30, Gold, Silver) fetched live from Yahoo Finance with 5-min cache.
+4. **Dashboard**: HTML/JS frontend in `frontend/` — main dashboard (`dashboard.html`) with portfolio, macro cards, gainers/losers, and Chart.js signal charts. PixiJS options chain viz at `/pixi`.
 
 ---
 

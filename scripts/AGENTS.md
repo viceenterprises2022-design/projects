@@ -113,6 +113,15 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Built `/logwork` command for automated multica issue creation
 - **Multica:** ALP-335 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-24: AlphaEdge Gainers/Losers + Live Macro Fix
+- `api_server.py` — added `GET /api/gainers-losers` endpoint: 46 NSE stocks, change% from `net_change/(ltp-net_change)`, 30s thread-safe cache. Response keys `NSE_EQ:SYMBOL`.
+- `dashboard.html` — added gainers/losers card row (`.gl-row`) at top of main layout.
+- `app.js` — added `loadGainersLosers()`, `renderGainersLosers()`, `glItem()`, polled every 30s.
+- `style.css` — added `.gl-row` 2-col grid, `.gl-item` rows with green/red change coloring.
+- Fixed stale `app.js` cache: killed stale uvicorn processes and restarted server manually + via systemd.
+- Fixed `/api/latest` macro section: Crude, US30, Gold, Silver now fetched live from Yahoo Finance via `_get_macro_cached()` instead of stale DB. VIX/DXY use live Yahoo with DB fallback.
+- **Multica:** ALP-338 (done), ALP-339 (done, both assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

@@ -117,13 +117,27 @@ def api_latest():
     # Surface recorded_at from first available symbol
     recorded_at = next(iter(data["symbols"].values()), {}).get("recorded_at")
 
+    live_macro = _get_macro_cached()
+    db_row = data.get("macro") or {}
+    def _merge(key):
+        if live_macro.get(key) and live_macro[key].get("ltp") is not None:
+            return live_macro[key]
+        return {"ltp": db_row.get(key), "chg": db_row.get(f"{key}_chg")}
     return {
         "recorded_at": recorded_at,
         "symbols": {
             sym: _format_metric_row(row)
             for sym, row in data["symbols"].items()
         },
-        "macro": _format_macro_row(data["macro"]),
+        "macro": {
+            "recorded_at": recorded_at,
+            "vix":   _merge("vix"),
+            "dxy":   _merge("dxy"),
+            "crude": _merge("crude"),
+            "us30":  _merge("us30"),
+            "gold":  _merge("gold"),
+            "silver":_merge("silver"),
+        },
     }
 
 

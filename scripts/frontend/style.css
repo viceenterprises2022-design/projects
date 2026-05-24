@@ -1029,7 +1029,7 @@ canvas { display: block; }
   .gl-row { grid-template-columns: 1fr; }
 }
 
-.gl-card { padding: 16px; }
+.gl-card { padding: 14px 16px; }
 
 .gl-header {
   font-size: 0.65rem;
