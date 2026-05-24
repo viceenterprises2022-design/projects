@@ -25,6 +25,7 @@ import time
 import threading
 import urllib.request
 from pathlib import Path
+import requests
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -401,6 +402,130 @@ def api_pixi_strike_history(
         return {"symbol": symbol, "strike": strike, "series": [dict(r) for r in rows]}
     finally:
         conn.close()
+
+
+# ── Gainers / Losers ───────────────────────────────────────────────────────────
+
+NSE_STOCKS = {
+    "RELIANCE":    "NSE_EQ|INE002A01018",
+    "HDFCBANK":    "NSE_EQ|INE040A01034",
+    "ICICIBANK":   "NSE_EQ|INE090A01021",
+    "INFY":        "NSE_EQ|INE009A01021",
+    "TCS":         "NSE_EQ|INE467B01029",
+    "ITC":         "NSE_EQ|INE154A01025",
+    "LT":          "NSE_EQ|INE018A01030",
+    "SBIN":        "NSE_EQ|INE062A01020",
+    "BHARTIARTL":  "NSE_EQ|INE397D01024",
+    "AXISBANK":    "NSE_EQ|INE238A01034",
+    "HINDUNILVR":  "NSE_EQ|INE030A01027",
+    "MARUTI":      "NSE_EQ|INE585B01010",
+    "TATAMOTORS":  "NSE_EQ|INE155A01022",
+    "TATASTEEL":   "NSE_EQ|INE081A01020",
+    "BAJFINANCE":  "NSE_EQ|INE296A01024",
+    "WIPRO":       "NSE_EQ|INE075A01022",
+    "TITAN":       "NSE_EQ|INE280A01028",
+    "ASIANPAINT":  "NSE_EQ|INE021A01026",
+    "NTPC":        "NSE_EQ|INE733E01010",
+    "KOTAKBANK":   "NSE_EQ|INE237A01028",
+    "POWERGRID":   "NSE_EQ|INE752E01010",
+    "ONGC":        "NSE_EQ|INE213A01029",
+    "SUNPHARMA":   "NSE_EQ|INE044A01036",
+    "HCLTECH":     "NSE_EQ|INE860A01027",
+    "TECHM":       "NSE_EQ|INE669A01022",
+    "ULTRACEMCO":  "NSE_EQ|INE481G01114",
+    "NESTLEIND":   "NSE_EQ|INE239A01024",
+    "HEROMOTOCO":  "NSE_EQ|INE158A01026",
+    "M&M":         "NSE_EQ|INE101A01026",
+    "JSWSTEEL":    "NSE_EQ|INE019C01026",
+    "INDUSINDBK":  "NSE_EQ|INE095A01012",
+    "CIPLA":       "NSE_EQ|INE059A01014",
+    "GRASIM":      "NSE_EQ|INE047A01021",
+    "HINDALCO":    "NSE_EQ|INE038A01020",
+    "APOLLOHOSP":  "NSE_EQ|INE437A01028",
+    "BPCL":        "NSE_EQ|INE029A01010",
+    "COALINDIA":   "NSE_EQ|INE522F01014",
+    "ADANIENT":    "NSE_EQ|INE423A01024",
+    "ADANIPORTS":  "NSE_EQ|INE742F01042",
+    "EICHERMOT":   "NSE_EQ|INE066A01013",
+    "VEDL":        "NSE_EQ|INE205A01025",
+    "DIVISLAB":    "NSE_EQ|INE361B01024",
+    "DRREDDY":     "NSE_EQ|INE089A01031",
+    "BAJAJFINSV":  "NSE_EQ|INE918I01026",
+    "BRITANNIA":   "NSE_EQ|INE216A01030",
+    "BAJAJ-AUTO":  "NSE_EQ|INE917I01010",
+    "MARICO":      "NSE_EQ|INE196A01026",
+    "TRENT":       "NSE_EQ|INE849A01020",
+    "BEL":         "NSE_EQ|INE263A01024",
+    "HAL":         "NSE_EQ|INE548A01028",
+    "ZOMATO":      "NSE_EQ|INE758T01015",
+    "IOC":         "NSE_EQ|INE242A01010",
+    "GAIL":        "NSE_EQ|INE129A01019",
+}
+
+NSE_QUOTE_CACHE: dict = {}
+NSE_QUOTE_CACHE_TS: float = 0.0
+NSE_QUOTE_LOCK = threading.Lock()
+NSE_QUOTE_TTL = 30  # seconds
+
+def _fetch_nse_quotes() -> dict:
+    token = os.environ.get("UPSTOX_TOKEN")
+    if not token:
+        return {}
+    keys = ",".join(NSE_STOCKS.values())
+    try:
+        r = requests.get(
+            "https://api.upstox.com/v2/market-quote/quotes",
+            params={"instrument_key": keys},
+            headers={"Authorization": f"Bearer {token}", "Accept": "application/json"},
+            timeout=10,
+        )
+        if r.status_code != 200:
+            return {}
+        data = r.json().get("data", {})
+        result = {}
+        for sym, isin in NSE_STOCKS.items():
+            q = data.get(isin)
+            if not q:
+                continue
+            ltp = q.get("last_price", 0)
+            net_chg = q.get("net_change", 0)
+            prev_close = ltp - net_chg
+            chg_pct = (net_chg / prev_close * 100) if prev_close else 0
+            result[sym] = {
+                "ltp": round(ltp, 2),
+                "change": round(net_chg, 2),
+                "change_pct": round(chg_pct, 2),
+            }
+        return result
+    except Exception:
+        return {}
+
+def _get_nse_quotes_cached() -> dict:
+    global NSE_QUOTE_CACHE, NSE_QUOTE_CACHE_TS
+    with NSE_QUOTE_LOCK:
+        now = time.time()
+        if now - NSE_QUOTE_CACHE_TS > NSE_QUOTE_TTL or not NSE_QUOTE_CACHE:
+            fresh = _fetch_nse_quotes()
+            if fresh:
+                NSE_QUOTE_CACHE = fresh
+                NSE_QUOTE_CACHE_TS = now
+        return dict(NSE_QUOTE_CACHE)
+
+@app.get("/api/gainers-losers")
+def api_gainers_losers():
+    quotes = _get_nse_quotes_cached()
+    if not quotes:
+        raise HTTPException(status_code=503, detail="No quotes available")
+    sorted_by_chg = sorted(quotes.items(), key=lambda x: x[1]["change_pct"], reverse=True)
+    gainers = [{"symbol": s, **d} for s, d in sorted_by_chg[:5]]
+    losers  = [{"symbol": s, **d} for s, d in sorted_by_chg[-5:]]
+    losers.reverse()
+    import datetime
+    return {
+        "gainers": gainers,
+        "losers": losers,
+        "updated_at": datetime.datetime.utcnow().isoformat(),
+    }
 
 
 # ── Formatters ────────────────────────────────────────────────────────────────
