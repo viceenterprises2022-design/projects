@@ -1,0 +1,72 @@
+{
+  "Physics": {
+    "status": "synced",
+    "notebook_id": "cbfa891c-b27d-4964-aaac-9c0b70c31605",
+    "file_count": 64,
+    "size_bytes": 132000,
+    "last_synced": "2026-05-25T13:48:00"
+  },
+  "Chemistry": {
+    "status": "synced",
+    "notebook_id": "6254dfa1-492d-47ce-ae5a-b5514b40b3a0",
+    "file_count": 48,
+    "size_bytes": 194839,
+    "last_synced": "2026-05-25T13:46:17"
+  },
+  "Mathematics": {
+    "status": "synced",
+    "notebook_id": "4ff46e15-9f5b-432c-b5e0-294f9ab952a2",
+    "file_count": 101,
+    "size_bytes": 201142,
+    "last_synced": "2026-05-25T13:46:26"
+  },
+  "English": {
+    "status": "synced",
+    "notebook_id": "6caabe66-c2fb-40ed-9541-ee3b2ad31781",
+    "file_count": 36,
+    "size_bytes": 133777,
+    "last_synced": "2026-05-25T13:46:34"
+  },
+  "Biology": {
+    "status": "synced",
+    "notebook_id": "3b31696f-6d24-4fcc-b760-ec53e759d765",
+    "file_count": 26,
+    "size_bytes": 87765,
+    "last_synced": "2026-05-25T13:46:43"
+  },
+  "History": {
+    "status": "synced",
+    "notebook_id": "517b8b88-d5e1-4d46-992f-66813122c884",
+    "file_count": 30,
+    "size_bytes": 137464,
+    "last_synced": "2026-05-25T13:46:51"
+  },
+  "Geography": {
+    "status": "synced",
+    "notebook_id": "55c0f9a4-4574-4ba4-901b-02b16f792544",
+    "file_count": 37,
+    "size_bytes": 123283,
+    "last_synced": "2026-05-25T13:47:00"
+  },
+  "Spanish": {
+    "status": "synced",
+    "notebook_id": "88217fbb-6d60-4f73-a37b-899e22572e63",
+    "file_count": 37,
+    "size_bytes": 696603,
+    "last_synced": "2026-05-25T13:47:09"
+  },
+  "Design": {
+    "status": "synced",
+    "notebook_id": "89a6860c-d297-4119-bbc3-ffbae13d90ea",
+    "file_count": 12,
+    "size_bytes": 26279,
+    "last_synced": "2026-05-25T13:47:17"
+  },
+  "Visual Arts": {
+    "status": "synced",
+    "notebook_id": "f2dde4ab-9c55-427e-9cf0-98c12d6cb136",
+    "file_count": 4,
+    "size_bytes": 220,
+    "last_synced": "2026-05-25T13:47:25"
+  }
+}
