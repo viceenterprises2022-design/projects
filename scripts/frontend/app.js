@@ -64,6 +64,7 @@ async function loadLatest() {
     const latest = await res.json();
     renderTimestamp(latest.recorded_at);
     latestMacroData = latest.macro;
+    latestMacroData._stale = latest.stale;
     updateTicker();
     renderMacro(latest.macro);
     const el = document.getElementById("error-banner");
@@ -257,6 +258,7 @@ function renderStrategyNifty200(data) {
 // ── Timestamp ────────────────────────────────────────────────────────────────
 
 function renderTimestamp(ts) {
+  if (document.getElementById("pixi-status")) return;
   const el = document.getElementById("last-updated");
   if (!el || !ts) return;
   const d = new Date(ts + "Z");

@@ -105,14 +105,6 @@ def serve_positions():
     return FileResponse(str(f))
 
 
-@app.get("/pixi", include_in_schema=False)
-def serve_pixi():
-    pixi = FRONTEND_DIR / "pixi_dashboard.html"
-    if not pixi.exists():
-        raise HTTPException(status_code=404, detail="pixi_dashboard.html not found")
-    return FileResponse(str(pixi))
-
-
 if FRONTEND_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
@@ -142,6 +134,7 @@ def api_latest():
 
     # Surface recorded_at from first available symbol
     recorded_at = next(iter(data["symbols"].values()), {}).get("recorded_at")
+    stale = _check_stale(recorded_at)
 
     live_macro = _get_macro_cached()
     db_row = data.get("macro") or {}
@@ -151,6 +144,7 @@ def api_latest():
         return {"ltp": db_row.get(key), "chg": db_row.get(f"{key}_chg")}
     return {
         "recorded_at": recorded_at,
+        "stale": stale,
         "symbols": {
             sym: _format_metric_row(row)
             for sym, row in data["symbols"].items()
@@ -242,9 +236,11 @@ def api_pixi_chain(
         ).fetchall()
 
         spot = rows[0]["spot"] if rows else None
+        stale = _check_stale(latest_ts.replace(" ", "T") if latest_ts else None)
         return {
             "symbol":    symbol,
             "timestamp": latest_ts,
+            "stale":      stale,
             "spot":      spot,
             "strikes":   [dict(r) for r in rows],
         }
@@ -295,9 +291,11 @@ def api_pixi_signal(
             indicators = _json.loads(d.get("indicators_json") or "{}")
         except Exception:
             pass
+        stale = _check_stale(d.get("recorded_at"))
         return {
             "symbol":      symbol,
             "recorded_at": d["recorded_at"],
+            "stale":       stale,
             "ltp":         d["ltp"],
             "signal":      d["signal"],
             "score":       d["score"],
@@ -571,9 +569,31 @@ def api_gainers_losers():
 
 @app.get("/api/strategies/nifty200-momentum")
 def api_nifty200_momentum():
-    if STRAT_REPORT.exists():
-        return _json.loads(STRAT_REPORT.read_text())
-    raise HTTPException(status_code=404, detail="Report not yet generated. Run: python3 strategies/nifty200_momentum.py")
+    if not STRAT_REPORT.exists():
+        raise HTTPException(status_code=404, detail="Report not yet generated. Run: python3 strategies/nifty200_momentum.py")
+    data = _json.loads(STRAT_REPORT.read_text())
+    file_mtime = STRAT_REPORT.stat().st_mtime
+    stale = (time.time() - file_mtime) > STALE_SECONDS
+    data["stale"] = stale
+    return data
+
+
+# ── Staleness Helper ──────────────────────────────────────────────────────────
+
+STALE_SECONDS = 300  # 5 minutes
+
+def _check_stale(recorded_at: str | None) -> bool:
+    """Return True if recorded_at is older than STALE_SECONDS."""
+    if not recorded_at:
+        return True
+    try:
+        from datetime import datetime, timezone
+        dt = datetime.fromisoformat(recorded_at)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return (datetime.now(timezone.utc) - dt).total_seconds() > STALE_SECONDS
+    except Exception:
+        return True
 
 
 # ── Formatters ────────────────────────────────────────────────────────────────

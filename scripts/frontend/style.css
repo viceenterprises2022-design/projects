@@ -131,9 +131,24 @@ header {
   animation: blink 2s ease-in-out infinite;
   margin-right: 6px;
 }
+.stale-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #f59e0b;
+  border-radius: 50%;
+  animation: stale-blink 1.2s ease-in-out infinite;
+  margin-right: 6px;
+}
+}
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.2; }
+}
+@keyframes stale-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  33% { opacity: 0.4; transform: scale(0.7); }
+  66% { opacity: 1; transform: scale(1.1); }
 }
 #last-updated {
   font-family: var(--mono);
@@ -1270,6 +1285,7 @@ canvas { display: block; }
 .sub-sep   { font-size: 0.6rem; color: var(--border); }
 .sub-tag   { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; padding: 1px 5px; border-radius: 3px; }
 .sub-tag.live { color: var(--primary); background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2); animation: pulse-tag 2s ease-in-out infinite; }
+.sub-tag.stale { color: #f59e0b; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); }
 @keyframes pulse-tag { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 .sub-refresh { font-size: 0.6rem; color: var(--muted); font-family: var(--mono); }
 .sub-btn {

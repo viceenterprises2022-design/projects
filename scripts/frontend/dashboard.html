@@ -114,7 +114,7 @@ body.pixi-light {
     <div class="sub-left">
       <span class="sub-label">Market Matrix</span>
       <span class="sub-sep">|</span>
-      <span class="sub-tag live">LIVE</span>
+      <span class="sub-tag live" id="sub-tag">LIVE</span>
       <span class="sub-sep">|</span>
       <span class="sub-refresh" id="sub-refresh">auto-refresh 30s</span>
     </div>
@@ -556,9 +556,14 @@ async function fetchPixiData(){
     ]);
     S={chain,oiTrend,signal,macro};rAnim=0;renderAll();
     const ts=chain?.timestamp??signal?.recorded_at??'';
-    document.getElementById('pixi-status').textContent=ts?`Live · ${ts.slice(11,16)}`:'Live';
+    const isStale = chain?.stale === true || signal?.stale === true;
+    document.getElementById('pixi-status').textContent= isStale ? '⚠ Stale data' : (ts ? `Live · ${ts.slice(11,16)}` : 'Live');
+    const tag=document.getElementById('sub-tag');
+    if(tag){tag.textContent=isStale?'STALE':'LIVE';tag.className=isStale?'sub-tag stale':'sub-tag live';}
     const el=document.getElementById('last-updated');
-    if(el&&ts){const d=new Date(ts+'Z');el.innerHTML=`<span class="live-dot"></span>Updated: ${d.toLocaleTimeString('en-IN',{hour12:false})} UTC`;}
+    if(el&&ts){const d=new Date(ts+'Z');el.innerHTML=isStale
+      ? `<span class="stale-dot"></span>Stale: ${d.toLocaleTimeString('en-IN',{hour12:false})} UTC`
+      : `<span class="live-dot"></span>Updated: ${d.toLocaleTimeString('en-IN',{hour12:false})} UTC`;}
   }catch(err){document.getElementById('pixi-status').textContent='⚠ '+err.message;}
 }
 function renderAll(){drawBg();renderOI();renderRadar();renderRiver();}
