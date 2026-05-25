@@ -31,13 +31,28 @@ let allocChartInstance  = null;
 
 // ── Bootstrap ────────────────────────────────────────────────────────────────
 
+function getPage() {
+  const p = window.location.pathname;
+  if (p === "/portfolio") return "portfolio";
+  if (p === "/holdings")  return "holdings";
+  if (p === "/positions") return "positions";
+  return "dashboard";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   refreshAll();
   setInterval(refreshAll, REFRESH_MS);
 });
 
 async function refreshAll() {
-  await Promise.allSettled([loadLatest(), loadPortfolio(), loadGainersLosers(), loadStrategyNifty200()]);
+  const page = getPage();
+  const jobs = [loadLatest()];
+  if (page === "dashboard") {
+    jobs.push(loadGainersLosers(), loadStrategyNifty200());
+  } else {
+    jobs.push(loadPortfolio());
+  }
+  await Promise.allSettled(jobs);
 }
 
 // ── Data Fetch ───────────────────────────────────────────────────────────────
@@ -65,14 +80,12 @@ async function loadPortfolio() {
     const data = await res.json();
     latestPortfolioData = data;
     updateTicker();
-    renderPortfolio(data);
+    renderSummaryCards(data);
+    renderBrokerCards(data);
+    renderPortfolioTables(data);
   } catch (err) {
     console.error("Failed to load portfolio:", err);
     showError("Portfolio P&L update failed: " + err.message);
-    const container = document.getElementById("portfolio-container");
-    if (container && !latestPortfolioData) {
-      container.innerHTML = `<div class="error-banner" style="display:block">⚠ ${err.message}</div>`;
-    }
   }
 }
 
