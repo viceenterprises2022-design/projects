@@ -2030,5 +2030,117 @@
         "name": "Practice Makes Perfect Spanish Verb Tenses Book.pdfPDF"
       }
     ]
+  },
+  "Design": {
+    "course_id": "272491078505041053",
+    "folders": [
+      {
+        "name": "3.Python Programming",
+        "id": "371410684912705047",
+        "files": [
+          {
+            "id": "371410718408416799",
+            "name": "2_Boolean Values.pdfPDF"
+          },
+          {
+            "id": "371410718408416798",
+            "name": "1_Input function.pdfPDF"
+          },
+          {
+            "id": "371410718408416797",
+            "name": "5_Control Structures-if-elif-else.pdfPDF"
+          },
+          {
+            "id": "371410718408416796",
+            "name": "4_Operators - Logical Operators.pdfPDF"
+          },
+          {
+            "id": "371410718408416795",
+            "name": "3_Operators - Comparison Operators.pdfPDF"
+          }
+        ]
+      },
+      {
+        "name": "E_Portfolio",
+        "id": "284142700343696635",
+        "files": []
+      },
+      {
+        "name": "Unit - 1 - Web Design",
+        "id": "147877897296774756",
+        "files": [
+          {
+            "id": "304857130404518633",
+            "name": "External CSS Notes.pdfPDF"
+          },
+          {
+            "id": "304855831197883102",
+            "name": "Internal CSS notes.pdfPDF"
+          },
+          {
+            "id": "304853169656142531",
+            "name": "List in HTML.pdfPDF"
+          },
+          {
+            "id": "304852079095159477",
+            "name": "Inline CSS SDL.docx"
+          },
+          {
+            "id": "286369297721295986",
+            "name": "How Internet works"
+          },
+          {
+            "id": "286369168687727721",
+            "name": "History of the Internet"
+          },
+          {
+            "id": "286368959161271366",
+            "name": "- YouTube"
+          },
+          {
+            "id": "286368268292293635",
+            "name": "How internet works"
+          },
+          {
+            "id": "284112650890227969",
+            "name": "cotEditor"
+          },
+          {
+            "id": "284112423487647981",
+            "name": "CotEditor_3.9.7.dmgUnknown File"
+          },
+          {
+            "id": "276522367503665742",
+            "name": "Lucky Fish"
+          },
+          {
+            "id": "165623807283935793",
+            "name": "inline css - Example.txtText File"
+          },
+          {
+            "id": "165622365852645801",
+            "name": "inline css.htmlUnknown File"
+          },
+          {
+            "id": "157971206358806246",
+            "name": "HTML Notes - Part 2.docx"
+          },
+          {
+            "id": "152945690580977298",
+            "name": "HTML Notes - Part 1.docx"
+          },
+          {
+            "id": "147878008487773802",
+            "name": "Unit 1 - Internet.pptx"
+          }
+        ]
+      }
+    ],
+    "root_files": []
+  },
+  "Assembly": {
+    "course_id": "275017952858840616",
+    "folders": [],
+    "root_files": []
   }
 }

@@ -7,12 +7,7 @@ CDP = "http://localhost:9222"
 OUT = Path("output/toddle_inventory")
 
 subjects = [
-    ("History", "272491081294253255"),
-    ("Geography", "272491078261771260"),
-    ("Spanish", "272491081755626771"),
-    ("Design", "272491078505041053"),
     ("Assembly", "275017952858840616"),
-    ("Visual Arts", "272491078370823228"),
 ]
 
 OUT.mkdir(parents=True, exist_ok=True)
@@ -121,7 +116,7 @@ with sync_playwright() as p:
         all_data[subj] = subject_data
         (OUT / "all_subjects_inventory.json").write_text(json.dumps(all_data, indent=2))
         print(f"  [saved: {subj}]")
-        if len(all_data) >= 12:  # Save every few to manage timeout
+        if len(all_data) >= 30:  # Save every few to manage timeout
             print("  [break for timeout safety]")
             break
 

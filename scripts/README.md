@@ -504,11 +504,13 @@ python3 pkscreener_runner.py
 30 12 * * 1-5   # 6:00 PM IST  — evening review
 ```
 
-**Lockfile**: `/tmp/pkscreener_runner.lock` — prevents overlapping cron runs via `fcntl.flock`. If a new cron fires while a previous run is in progress, it exits immediately. This prevents process accumulation that caused 28 parallel pkscreener processes consuming ~12GB RAM.
+**Lockfile**: `/tmp/pkscreener_runner.lock` — prevents overlapping cron runs via `fcntl.flock`. If a new cron fires while a previous run is in progress, it exits immediately.
+
+**Orphan guard**: `run_scan()` uses `start_new_session=True` to isolate subprocesses in their own process group and kills the entire group (`os.killpg`) with `SIGTERM` → `SIGKILL` escalation. This prevents worker subprocesses from surviving as orphans when a scan times out or crashes. A `kill_orphan_pkscreener()` call at startup `pkill -9`s any leftover processes from prior crashed runs, preventing the 85-process / 12GB pileup issue.
 
 **Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery with LTP & % change
 
-**Live LTP**: Each stock symbol is followed by its current price and change via Yahoo Finance batch quotes (e.g. `ADANIENT  ₹2,345.67 (+1.23%)`). Gracefully falls back to bare symbol if Yahoo is unreachable — no new dependencies or env vars required.
+**Live LTP**: Each stock symbol is followed by its current price and change via Yahoo Finance (e.g. `ADANIENT  ₹2,345.67 (+1.23%)`). Uses `v8/finance/chart` with parallel `ThreadPoolExecutor` (max 10 workers) — 30 stocks resolve in ~1-2s. Gracefully falls back to bare symbol if Yahoo is unreachable. No new dependencies or env vars required.
 
 ## OpenCode `/pursue` Goal Plugin
 

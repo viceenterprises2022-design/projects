@@ -7,6 +7,7 @@ Runs key scan strategies after market hours and sends results.
 import os
 import re
 import sys
+import signal
 import time
 import fcntl
 import subprocess
@@ -92,6 +93,8 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
     env["LINES"] = "50"
 
     output_bytes = b""
+    proc = None
+    master_fd = None
     try:
         master_fd, slave_fd = pty.openpty()
         proc = subprocess.Popen(
@@ -102,9 +105,9 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
             cwd=PKS_DIR,
             env=env,
             close_fds=True,
+            start_new_session=True,
         )
         os.close(slave_fd)
-        import time
         deadline = time.time() + TIMEOUT_SEC
         while time.time() < deadline:
             try:
@@ -115,7 +118,6 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
                         break
                     output_bytes += chunk
                 elif proc.poll() is not None:
-                    # Drain remaining
                     try:
                         while True:
                             chunk = os.read(master_fd, 8192)
@@ -127,13 +129,26 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
                     break
             except OSError:
                 break
-        os.close(master_fd)
-        proc.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        output_bytes = b"[TIMEOUT]"
     except Exception as e:
         output_bytes = f"[ERROR: {e}]".encode()
+    finally:
+        if master_fd is not None:
+            try:
+                os.close(master_fd)
+            except OSError:
+                pass
+        if proc and proc.poll() is None:
+            try:
+                os.killpg(proc.pid, signal.SIGTERM)
+                proc.wait(timeout=5)
+            except (subprocess.TimeoutExpired, ProcessLookupError):
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                    proc.wait(timeout=3)
+                except (subprocess.TimeoutExpired, ProcessLookupError):
+                    pass
+        elif proc:
+            proc.wait(timeout=5)
 
     output = output_bytes.decode("utf-8", errors="replace")
     clean = strip_markup(output)
@@ -239,10 +254,23 @@ def acquire_lock() -> bool:
         return False
 
 
+def kill_orphan_pkscreener():
+    """Kill any leftover pkscreener processes from previous crashed runs."""
+    try:
+        subprocess.run(
+            ["pkill", "-9", "-f", "pkscreenercli.py"],
+            capture_output=True, timeout=15,
+        )
+    except Exception:
+        pass
+
+
 def main():
     if not acquire_lock():
         print("[PKScreener Runner] Another instance is running — exiting.")
         return
+
+    kill_orphan_pkscreener()
 
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     now = datetime.datetime.now()
