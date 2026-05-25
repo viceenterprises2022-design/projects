@@ -198,12 +198,12 @@ function renderStrategyNifty200(data) {
   const container = document.getElementById("strat-row");
   if (!container) return;
 
-  const dt = data.updated_at ? new Date(data.updated_at + "Z").toLocaleString("en-IN", { hour12: false }) : "—";
+  const dt = data.updated_at ? new Date(data.updated_at).toLocaleString("en-IN", { hour12: false }) : "—";
 
   const sections = [
-    { title: "Bullish (52wH)", key: "bullish", cls: "bullish", empty: "No stocks qualify", cols: ["LTP", "52wH%", "RSI", "Strk"] },
-    { title: "Bearish (52wL)", key: "bearish", cls: "bearish", empty: "No stocks qualify", cols: ["LTP", "52wL%", "RSI", "Strk"] },
-    { title: "Streak (3+d)", key: "streak", cls: "streak", empty: "No streaks", cols: ["LTP", "52wH%", "RSI", "Days"] },
+    { title: "Bullish (52wH)", key: "bullish", cls: "bullish", empty: "No stocks qualify", cols: ["Sym", "LTP", "52wH%", "RSI", "Strk"] },
+    { title: "Bearish (52wL)", key: "bearish", cls: "bearish", empty: "No stocks qualify", cols: ["Sym", "LTP", "52wL%", "RSI", "Strk"] },
+    { title: "Streak (3+d)", key: "streak", cls: "streak", empty: "No streaks", cols: ["Sym", "LTP", "52wH%", "RSI", "Days"] },
   ];
 
   container.innerHTML = sections.map(s => {
@@ -215,6 +215,7 @@ function renderStrategyNifty200(data) {
       </div>
       <div class="strat-updated">${dt}</div>
       <div class="strat-list">
+        <div class="strat-item strat-hdr">${s.cols.map(c => `<div class="strat-val mono">${c}</div>`).join("")}</div>
         ${items.length ? items.slice(0, 8).map(r => {
           const pctKey = s.key === "bullish" ? "pct_from_52wh" : s.key === "bearish" ? "pct_from_52wl" : "pct_from_52wh";
           const pctVal = r[pctKey];
