@@ -15,6 +15,7 @@ Endpoints:
     GET /api/pixi/signal?symbol=NIFTY                — signal, score, all 10 factor values
     GET /api/pixi/macro                              — latest macro snapshot
     GET /api/pixi/strike-history?symbol=NIFTY&strike=23700  — per-minute OI for one strike
+    GET /api/strategies/nifty200-momentum                  — Nifty 200 scanner results
 """
 
 import os
@@ -40,6 +41,7 @@ import pnl_poller
 _BASE        = Path(__file__).parent
 DB_OPT_CLI   = _BASE / "intraday_options_cli.db"
 DB_INTRA_OI  = _BASE / "intraday_oi.db"
+STRAT_REPORT = _BASE / "strategies" / "nifty200_momentum_report.json"
 DB_ALPHA     = _BASE / "alphaedge.db"
 
 def _pixi_conn(db_path: Path) -> sqlite3.Connection:
@@ -541,6 +543,13 @@ def api_gainers_losers():
         "losers": losers,
         "updated_at": datetime.datetime.now(datetime.UTC).isoformat(),
     }
+
+
+@app.get("/api/strategies/nifty200-momentum")
+def api_nifty200_momentum():
+    if STRAT_REPORT.exists():
+        return _json.loads(STRAT_REPORT.read_text())
+    raise HTTPException(status_code=404, detail="Report not yet generated. Run: python3 strategies/nifty200_momentum.py")
 
 
 # ── Formatters ────────────────────────────────────────────────────────────────

@@ -9525,8 +9525,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1779613700.0565708,
-    "ast_hash": "be66b328dc8f954388b9deb85edbc69e",
+    "mtime": 1779713813.7548175,
+    "ast_hash": "837855106f935f2e682a80877737db42",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_trending.py": {
@@ -11825,8 +11825,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/app.js": {
-    "mtime": 1779612934.6739125,
-    "ast_hash": "3ef083cb540d6abe6ac4e4ddead50099",
+    "mtime": 1779713837.1888952,
+    "ast_hash": "1f5345213cff746da5701ad88a63a5a4",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/tests/test_indicators.py": {
@@ -33440,8 +33440,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1779681354.089703,
-    "ast_hash": "b4d4aeb9f49aa1cb2d4e24fdb65729b3",
+    "mtime": 1779713820.0858386,
+    "ast_hash": "69a8d7c21640dbeb238d666a161fb344",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
@@ -38752,6 +38752,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT 2_ Food and Drinks/H\u00e1bitos alimenticios.png.png": {
     "mtime": 1779696643.738156,
     "ast_hash": "43636f01ee81fd11e4401e0a74bb6f4f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/plans/nifty200-momentum-scanner.md": {
+    "mtime": 1779713560.456482,
+    "ast_hash": "099fa4d7249061e4779febcba1513c19",
     "semantic_hash": ""
   }
 }

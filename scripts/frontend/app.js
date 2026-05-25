@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function refreshAll() {
-  await Promise.allSettled([loadLatest(), loadPortfolio(), loadGainersLosers()]);
+  await Promise.allSettled([loadLatest(), loadPortfolio(), loadGainersLosers(), loadStrategyNifty200()]);
 }
 
 // ── Data Fetch ───────────────────────────────────────────────────────────────
@@ -174,6 +174,63 @@ function glItem(s, isGainer) {
     <div class="gl-ltp">${fmtIN(s.ltp)}</div>
     <div class="gl-chg ${cls}">${arrow} ${Math.abs(s.change_pct).toFixed(2)}%</div>
   </div>`;
+}
+
+// ── Strategy: Nifty 200 Momentum Scanner ────────────────────────────────────
+
+async function loadStrategyNifty200() {
+  try {
+    const res = await fetch(`${API_BASE}/api/strategies/nifty200-momentum`);
+    if (!res.ok) throw new Error(`/api/strategies/nifty200-momentum → ${res.status}`);
+    const data = await res.json();
+    renderStrategyNifty200(data);
+  } catch (err) {
+    console.error("Strategy fetch failed:", err);
+    const el = document.getElementById("strat-row");
+    if (el && !el.querySelector(".strat-card")) {
+      el.innerHTML = `<div class="card strat-card" style="grid-column:1/-1;padding:16px;text-align:center;color:var(--muted)">
+        ⚠ Strategy report not yet available. Run scanner first.</div>`;
+    }
+  }
+}
+
+function renderStrategyNifty200(data) {
+  const container = document.getElementById("strat-row");
+  if (!container) return;
+
+  const dt = data.updated_at ? new Date(data.updated_at + "Z").toLocaleString("en-IN", { hour12: false }) : "—";
+
+  const sections = [
+    { title: "Bullish (52wH)", key: "bullish", cls: "bullish", empty: "No stocks qualify", cols: ["LTP", "52wH%", "RSI", "Strk"] },
+    { title: "Bearish (52wL)", key: "bearish", cls: "bearish", empty: "No stocks qualify", cols: ["LTP", "52wL%", "RSI", "Strk"] },
+    { title: "Streak (3+d)", key: "streak", cls: "streak", empty: "No streaks", cols: ["LTP", "52wH%", "RSI", "Days"] },
+  ];
+
+  container.innerHTML = sections.map(s => {
+    const items = data[s.key] || [];
+    const color = s.cls === "bullish" ? "var(--green)" : s.cls === "bearish" ? "var(--red)" : "var(--yellow)";
+    return `<div class="card strat-card">
+      <div class="strat-header" style="border-bottom-color:${color}">${s.title}
+        <span class="strat-count" style="background:${color}">${items.length}</span>
+      </div>
+      <div class="strat-updated">${dt}</div>
+      <div class="strat-list">
+        ${items.length ? items.slice(0, 8).map(r => {
+          const pctKey = s.key === "bullish" ? "pct_from_52wh" : s.key === "bearish" ? "pct_from_52wl" : "pct_from_52wh";
+          const pctVal = r[pctKey];
+          const pctCls = s.key === "bullish" ? (pctVal >= -1 ? "up" : "flat") : s.key === "bearish" ? (pctVal <= 1 ? "dn" : "flat") : "flat";
+          const dayStr = s.key === "streak" ? `${r.consecutive_high_days}d` : r.consecutive_high_days ? `${r.consecutive_high_days}d` : "—";
+          return `<div class="strat-item">
+            <div class="strat-sym">${r.symbol}</div>
+            <div class="strat-val mono">${fmtIN(r.ltp)}</div>
+            <div class="strat-val ${pctCls} mono">${pctVal >= 0 ? "+" : ""}${pctVal.toFixed(1)}%</div>
+            <div class="strat-val mono">${r.rsi_14.toFixed(1)}</div>
+            <div class="strat-val mono">${dayStr}</div>
+          </div>`;
+        }).join("") : `<div class="strat-empty">${s.empty}</div>`}
+      </div>
+    </div>`;
+  }).join("");
 }
 
 // ── Timestamp ────────────────────────────────────────────────────────────────
