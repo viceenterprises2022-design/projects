@@ -76,10 +76,10 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
         PKS_SCRIPT,
         "-a", "Y",
         "-e",
-        "-p",
         "-o", options,
     ]
     env = os.environ.copy()
+    env["RUNNER"] = "1"
     env["PYTHONPATH"] = PKS_DIR
     env["PYTHONWARNINGS"] = "ignore"
     env["TF_CPP_MIN_LOG_LEVEL"] = "3"
