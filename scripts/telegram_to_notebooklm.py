@@ -143,24 +143,51 @@ def slack_send_chunks(text, title=None):
     return True
 
 
+SLACK_CHANNEL = os.environ.get("SLACK_CHANNEL", "#general")
+
+
 def slack_upload_file(file_path: Path, title: str = None):
     if not SLACK_TOKEN:
         p("  [SKIP] No SLACK_TOKEN set — cannot upload files")
         return False
     try:
+        fname = title or file_path.name
+        fsize = file_path.stat().st_size
+        headers = {"Authorization": f"Bearer {SLACK_TOKEN}", "Content-Type": "application/json"}
+
+        # Step 1: get upload URL
+        r1 = requests.post(
+            "https://slack.com/api/files.getUploadURLExternal",
+            headers=headers,
+            json={"filename": fname, "length": fsize, "alt_text": fname},
+            timeout=30,
+        )
+        d1 = r1.json()
+        if not d1.get("ok"):
+            p(f"  [WARN] getUploadURL failed: {d1.get('error', 'unknown')}")
+            return False
+        upload_url = d1["upload_url"]
+        file_id = d1["file_id"]
+
+        # Step 2: PUT file bytes to upload_url
         with open(file_path, "rb") as f:
-            resp = requests.post(
-                "https://slack.com/api/files.upload",
-                headers={"Authorization": f"Bearer {SLACK_TOKEN}"},
-                files={"file": f},
-                data={"channels": "#general", "title": title or file_path.name},
-                timeout=60,
-            )
-        data = resp.json()
-        if data.get("ok"):
-            p(f"  ✓ Uploaded {file_path.name}")
+            r2 = requests.put(upload_url, data=f, timeout=120)
+        if r2.status_code != 200:
+            p(f"  [WARN] file PUT failed: HTTP {r2.status_code}")
+            return False
+
+        # Step 3: complete upload
+        r3 = requests.post(
+            "https://slack.com/api/files.completeUploadExternal",
+            headers=headers,
+            json={"files": [{"id": file_id, "title": fname}], "channel_id": SLACK_CHANNEL},
+            timeout=30,
+        )
+        d3 = r3.json()
+        if d3.get("ok"):
+            p(f"  ✓ Uploaded {fname}")
             return True
-        p(f"  [WARN] Slack upload failed: {data.get('error', 'unknown')}")
+        p(f"  [WARN] completeUpload failed: {d3.get('error', 'unknown')}")
         return False
     except Exception as e:
         p(f"  [WARN] Slack upload exception: {e}")
