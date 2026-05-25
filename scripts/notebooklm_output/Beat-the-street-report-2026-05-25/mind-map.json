@@ -1,0 +1,181 @@
+{
+  "name": "The Great Consumption Shift",
+  "children": [
+    {
+      "name": "Wallet Share Shifts",
+      "children": [
+        {
+          "name": "Food Collapse",
+          "children": [
+            {
+              "name": "Rural Spend Drop (59% to 46%)"
+            },
+            {
+              "name": "Urban Spend Drop (48% to 39%)"
+            },
+            {
+              "name": "Cereals Replaced by Services"
+            }
+          ]
+        },
+        {
+          "name": "Growing Categories",
+          "children": [
+            {
+              "name": "Mobiles and Hearables"
+            },
+            {
+              "name": "Automobiles"
+            },
+            {
+              "name": "Rent and Education"
+            },
+            {
+              "name": "Beverages and Processed Food"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "New-Age Spends",
+      "children": [
+        {
+          "name": "Experience and Platform",
+          "children": [
+            {
+              "name": "OTT Paid Subscribers (+40%)"
+            },
+            {
+              "name": "Live Ticketed Events (+15% YoY)"
+            },
+            {
+              "name": "Fantasy Sports (Dream11)"
+            },
+            {
+              "name": "Quick Commerce (Blinkit)"
+            }
+          ]
+        },
+        {
+          "name": "Premiumization",
+          "children": [
+            {
+              "name": "Apple India Revenue (2x HUL FY26)"
+            },
+            {
+              "name": "Premium Phone Share (26%)"
+            },
+            {
+              "name": "Foreign Travel (+450% over 8 years)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Income and Savings Dynamics",
+      "children": [
+        {
+          "name": "Skewed Growth",
+          "children": [
+            {
+              "name": "Urban Wealthy (18% CAGR)"
+            },
+            {
+              "name": "Urban Mass (6% CAGR)"
+            },
+            {
+              "name": "Top 10% Discretionary Dominance"
+            }
+          ]
+        },
+        {
+          "name": "The EMI Trap",
+          "children": [
+            {
+              "name": "EMI Outpacing Salary Growth"
+            },
+            {
+              "name": "Household Net Savings Decline"
+            },
+            {
+              "name": "Triple Mobile Data Bills"
+            }
+          ]
+        },
+        {
+          "name": "Taxation Trends",
+          "children": [
+            {
+              "name": "Filers Rising, Payers Flat"
+            },
+            {
+              "name": "Average Tax per Payer 3x (FY13-23)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Speculation and Fraud",
+      "children": [
+        {
+          "name": "F&O Trading",
+          "children": [
+            {
+              "name": "Rs 2.87 Lakh Cr Lost (FY22-25)"
+            },
+            {
+              "name": "91% Individual Traders Lose Money"
+            },
+            {
+              "name": "Rising Young Participants (<30 yrs)"
+            }
+          ]
+        },
+        {
+          "name": "Digital Fraud",
+          "children": [
+            {
+              "name": "Cyber Fraud Losses (Rs 85 Lakh/day in Kerala)"
+            },
+            {
+              "name": "Investment and E-commerce Scams"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Commodity Context (Brent vs Copper)",
+      "children": [
+        {
+          "name": "Short Brent",
+          "children": [
+            {
+              "name": "Washington-Tehran De-escalation"
+            },
+            {
+              "name": "Strait of Hormuz Traffic Increase"
+            }
+          ]
+        },
+        {
+          "name": "Long Copper",
+          "children": [
+            {
+              "name": "Chinese Demand Strength"
+            },
+            {
+              "name": "Low LME Inventory"
+            },
+            {
+              "name": "Resource Nationalization Theme"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
