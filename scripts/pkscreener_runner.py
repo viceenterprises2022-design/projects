@@ -184,6 +184,34 @@ def extract_stocks(output: str) -> list[str]:
     return lines
 
 
+def fetch_nse_ltp_yahoo(symbols: list[str]) -> dict[str, dict]:
+    """Fetch LTP & change for NSE symbols via Yahoo Finance batch quote."""
+    if not symbols:
+        return {}
+    try:
+        tickers = ",".join(f"{s}.NS" for s in symbols)
+        r = requests.get(
+            "https://query1.finance.yahoo.com/v7/finance/quote",
+            params={"symbols": tickers},
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=10,
+        )
+        if r.status_code != 200:
+            return {}
+        result = {}
+        for q in r.json().get("quoteResponse", {}).get("result", []):
+            sym = q.get("symbol", "").replace(".NS", "")
+            ltp = q.get("regularMarketPrice")
+            prev = q.get("regularMarketPreviousClose")
+            if ltp is not None and prev and prev != 0:
+                chg = round(ltp - prev, 2)
+                chg_pct = round((chg / prev) * 100, 2)
+                result[sym] = {"ltp": round(ltp, 2), "change": chg, "change_pct": chg_pct}
+        return result
+    except Exception:
+        return {}
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 LOCK_FILE = "/tmp/pkscreener_runner.lock"
 
@@ -235,7 +263,13 @@ def main():
 
         if stocks:
             total_hits += len(stocks)
-            lines = "\n".join(stocks[:30])  # max 30 stocks per scan
+            display = stocks[:30]
+            ltp_data = fetch_nse_ltp_yahoo(display)
+            lines = "\n".join(
+                f"{s}  \u20b9{ltp_data[s]['ltp']:,.2f} ({ltp_data[s]['change_pct']:+.2f}%)"
+                if s in ltp_data else s
+                for s in display
+            )
             msg = f"<b>{label}</b> [{options}] — {len(stocks)} hits\n<pre>{lines}</pre>"
         else:
             msg = f"<b>{label}</b> [{options}] — no results"

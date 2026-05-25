@@ -9540,8 +9540,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_runner.py": {
-    "mtime": 1779687154.3241274,
-    "ast_hash": "d8d9d63ea9c62513802afda3c2508b2e",
+    "mtime": 1779693927.623149,
+    "ast_hash": "9c531d759ee759fa71ee9e5028ea9f44",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/exa_ai_agents.py": {
@@ -25630,8 +25630,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/README.md": {
-    "mtime": 1779687612.8776798,
-    "ast_hash": "75f4110af72e60fad4b5dc1ba6a3abce",
+    "mtime": 1779694002.4673972,
+    "ast_hash": "3a95d563f51d0fed893c3e7ca8c09a9d",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/btc-api-2.md": {
@@ -36205,8 +36205,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_1_2026-05-25.txt": {
-    "mtime": 1779686610.7142096,
-    "ast_hash": "71dd27846192d18e49f59a073fdf70f0",
+    "mtime": 1779693469.346372,
+    "ast_hash": "1b8a7da160751f8ff6a9b168128a7729",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_13_2026-05-25.txt": {
@@ -36432,6 +36432,376 @@
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260525_1230_X_1_1.txt": {
     "mtime": 1779692707.6531005,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_convert.py": {
+    "mtime": 1779693630.569163,
+    "ast_hash": "ba1e36ccf2a0f72a4c7cd5798655420c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_deep_inventory.py": {
+    "mtime": 1779692969.8029704,
+    "ast_hash": "ce0b43f89161158cdb123ded564f6afa",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_download.py": {
+    "mtime": 1779693319.3001304,
+    "ast_hash": "b927ffc8a005f1daf382655830b981c1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_physics_inventory.py": {
+    "mtime": 1779693183.6396801,
+    "ast_hash": "93b66c0936dbcd3319e567c1e6f5ef53",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/toddle_inventory/physics_inventory.json": {
+    "mtime": 1779693257.340112,
+    "ast_hash": "eb625420b906ca8165fe87b1e3ed75c7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260525_1230_X_1_44.txt": {
+    "mtime": 1779693321.083136,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260525_1230_X_12_1.txt": {
+    "mtime": 1779693627.4011526,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260525_1230_X_1_13.txt": {
+    "mtime": 1779693013.8721168,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Pressure and Pascal's law.docx.md": {
+    "mtime": 1779693636.188388,
+    "ast_hash": "63af394aca33b5f4b16da47675982d8b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision/PRACTICE WORKSHEET 3_ Grade 7_ Equation of motion- Questions.docx.md": {
+    "mtime": 1779693636.2209766,
+    "ast_hash": "281e50d78f87772289ef819516f632a2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision/PRACTICE WORKSHEET 2 _ Grade 7_ Energy Questions.docx.md": {
+    "mtime": 1779693636.2052205,
+    "ast_hash": "23701b3a7c5316de1cada0236ec10a08",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision/PRACTICE WORKSHEET 1_ Grade 7 on Work and Power_ Questions.docx.md": {
+    "mtime": 1779693636.1967556,
+    "ast_hash": "b36c02479c3b2b7eab603017c2693662",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision/PRACTICE WORKSHEET 4_ Grade 7_ Pressure Questions.docx.md": {
+    "mtime": 1779693636.238067,
+    "ast_hash": "996b42deaf142ac1f962e98f1075c4e9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/SDL -Lever and Types.docx.md": {
+    "mtime": 1779693637.434734,
+    "ast_hash": "1747d61fe818ddbb6e43c6bda1c00ace",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/SDL- What is Tension.docx.md": {
+    "mtime": 1779693637.454503,
+    "ast_hash": "0db4d5c69afd955416319158dcf55394",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/Energy Transformations.pptx.md": {
+    "mtime": 1779693637.4110646,
+    "ast_hash": "8744e57b76a4c97653dbe54f69b5d020",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/SDL-Levers_Simple_Machines_Simpler version.docx.md": {
+    "mtime": 1779693637.4781861,
+    "ast_hash": "c96fc9b0eaaf56211fb1fbed33ea97d2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/Types of Forces.docx.md": {
+    "mtime": 1779693637.5045738,
+    "ast_hash": "ae167c133065af637deb4b3e66808b55",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/What is Force.docx.md": {
+    "mtime": 1779693637.5161967,
+    "ast_hash": "34640c2050e2e49dbf88d81725fa19d5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/SDL-Types of forces.docx.md": {
+    "mtime": 1779693637.4857595,
+    "ast_hash": "9b69913531c238a5b57e4d2772311e01",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/G7_Phy_FA3 Answers.docx.md": {
+    "mtime": 1779693637.426441,
+    "ast_hash": "664304bed6cb4f2d68c169f1f9cc8220",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/SDL- FBD.docx.md": {
+    "mtime": 1779693637.4474006,
+    "ast_hash": "f13d469163496668c469a71c42c2006b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit-2_ Forces and Energy/SIMPLE MACHINES.docx.md": {
+    "mtime": 1779693637.4965503,
+    "ast_hash": "e1f7815e3987a9f8b620ab1740c5812e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Measurements Recap.pptx.md": {
+    "mtime": 1779693637.001935,
+    "ast_hash": "d33b82067cbb6ef6596fad83c40ff5a1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/FA1 MS - for Students.docx.md": {
+    "mtime": 1779693636.7547064,
+    "ast_hash": "b18bc38f7472a779fe2a42f472879136",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Instantaneous_Speed_and_Velocity_Grade7.docx.md": {
+    "mtime": 1779693636.9441564,
+    "ast_hash": "b05a1c79ff6db7557d8243c71fe53557",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Fundamental and Derived Quantities.docx.md": {
+    "mtime": 1779693636.7651455,
+    "ast_hash": "b2681116d1c6ce0c97e22f03caab6274",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Measuring Speed - sums from textbook.jpg.md": {
+    "mtime": 1779693637.0022163,
+    "ast_hash": "38539d7b6c777ee85bebb02869b7d1f9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Velocity Time Graph.docx.md": {
+    "mtime": 1779693637.152811,
+    "ast_hash": "21bee40ba8579c98a3c149fbb7ff3b4b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Equations_of_Motion_Grade7.docx.md": {
+    "mtime": 1779693636.7384973,
+    "ast_hash": "8f7feae49237eddaf78bf768858aeb52",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/area of objects.png.md": {
+    "mtime": 1779693637.1530929,
+    "ast_hash": "ebabe1e4812262bb5d6600bdba28746f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Conversions in Physics.docx.md": {
+    "mtime": 1779693636.6823926,
+    "ast_hash": "a6e35e4fcaeb379980d260fd7522b7f1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Significant_Figures_Rules.pptx.md": {
+    "mtime": 1779693637.0777862,
+    "ast_hash": "a3e2ae304f3c3114a8b712ad0cf8db7b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Drill and Practice.docx.md": {
+    "mtime": 1779693636.7181103,
+    "ast_hash": "d0dfaf02257c7827605508c5aa570f2a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Grade7_Physics_Measurement_Activities.docx.md": {
+    "mtime": 1779693636.9161842,
+    "ast_hash": "60d17aee25346c594366f041f60f5a8f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Distance Formula map.docx.md": {
+    "mtime": 1779693636.705508,
+    "ast_hash": "7bcd62e3806e95e4928f0a230a1caf63",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Speed_vs_Velocity_Grade7 Reading Material.docx.md": {
+    "mtime": 1779693637.1017237,
+    "ast_hash": "4527cdd8c232f96e620a331b0a732c61",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Area of irregular object.docx.md": {
+    "mtime": 1779693636.6379802,
+    "ast_hash": "2f6df610028ec09ea393023960e5dc60",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/G7_U1_Distance Displacement Speed and Velocity notes.pptx.md": {
+    "mtime": 1779693636.8850863,
+    "ast_hash": "05feaa7accec81fbb40b0bd6a865f1f7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Types of Errors and difference with Uncertainty.docx.md": {
+    "mtime": 1779693637.132185,
+    "ast_hash": "8229a0a6d512713495a275a16b23af84",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Scientific Method.pptx.md": {
+    "mtime": 1779693637.0640018,
+    "ast_hash": "4bd2accb9e4a1fbbcaba52f715ab0298",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/DTgraph Worked out example.docx.md": {
+    "mtime": 1779693636.6970427,
+    "ast_hash": "da993759e825a981ee533a9ea1d91b92",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 1- Measuring Motion/Area_of_Irregular_Shapes_Grade7.docx.md": {
+    "mtime": 1779693636.6611834,
+    "ast_hash": "c07de9901c96ccfea69191137f18446f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Support Class/IB_MYP_Forces_Energy_Assessment_Grade 7.docx.md": {
+    "mtime": 1779693636.6240425,
+    "ast_hash": "29a378df55a8fc005c00ef81ea39a486",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Support Class/GRADE 7- Worksheet 1-WPE - 20th April.docx.md": {
+    "mtime": 1779693636.5874975,
+    "ast_hash": "6d2d4407922b06b5ed1f779c404283e7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Support Class/Grade 7- Worksheet on Magnetism - Criteria D.docx.md": {
+    "mtime": 1779693636.5948648,
+    "ast_hash": "4feed9e614b3fc0adfb62564a45ea05b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Astrophysics/Questions_astrophysics.docx.md": {
+    "mtime": 1779693636.1411817,
+    "ast_hash": "c763508ac202700261b3f40cb3fa1b62",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Astrophysics/Types of satellites.docx.md": {
+    "mtime": 1779693636.1541657,
+    "ast_hash": "f510a5030a137c270d5b8276df965f7e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Astrophysics/Universe_and_Celestial_Bodies_Notes.docx.md": {
+    "mtime": 1779693636.178948,
+    "ast_hash": "9a9793997ad5f5f206addf8cdeab33d0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Astrophysics/Grade 7 WRITING TASK.md": {
+    "mtime": 1779693636.133764,
+    "ast_hash": "2b478037148219230bfcf74ffc27dfc8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/PRACTICE WORKSHEET 3_ Grade 7_ Equation of motion- Questions.docx.md": {
+    "mtime": 1779693636.444338,
+    "ast_hash": "281e50d78f87772289ef819516f632a2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Scalar and vector quantities, Distance and displacement, Instantaneous and Average Speed and velocity and Acceleration.d.md": {
+    "mtime": 1779693636.4691148,
+    "ast_hash": "f040138f195886ba4034d08367e452a2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Cr. B practice with answers.docx.md": {
+    "mtime": 1779693636.2493968,
+    "ast_hash": "004d515fbd484cf06474d1ad61f3345b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Unit conversions, Density, Average Speed.docx.md": {
+    "mtime": 1779693636.5066621,
+    "ast_hash": "9fcbe4a1d8c1e3c90d8ceea35d60195a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Criterion C practice worksheet- Slope of a motion graph.docx.md": {
+    "mtime": 1779693636.3153727,
+    "ast_hash": "4996bfb39dfa9373a32bd5117ae38323",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Cr. D practice question.docx.md": {
+    "mtime": 1779693636.2708018,
+    "ast_hash": "8d035c0020c46d43969e77d951aeb3c1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Graphical_Representation_of_Motion_Summary.docx.md": {
+    "mtime": 1779693636.4033225,
+    "ast_hash": "cebbf1013810be5804a558eaa5ddf54e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Drill and Practice Cr. A.docx.md": {
+    "mtime": 1779693636.3441823,
+    "ast_hash": "89e44dddf0f80a165caeb2022837a308",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Criteria B and C F=ma.docx.md": {
+    "mtime": 1779693636.293097,
+    "ast_hash": "98b600e2ff32cfdaad93ba19922ae649",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Unit Conversions, Significant Figures, Accuracy vs Precision, Area, Volume, and Density.docx.md": {
+    "mtime": 1779693636.4968026,
+    "ast_hash": "f2be87f00e07e52a46912332537cf0ef",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Cr. B practice.docx.md": {
+    "mtime": 1779693636.2616007,
+    "ast_hash": "14e2d79c28724c01b82ec874ebcee7be",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Pressure and Pascal's law.docx.md": {
+    "mtime": 1779693636.45689,
+    "ast_hash": "63af394aca33b5f4b16da47675982d8b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/FBDs.docx.md": {
+    "mtime": 1779693636.3770366,
+    "ast_hash": "25ba4e302341b2302eee93bd67816d44",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/PRACTICE WORKSHEET 2 _ Grade 7_ Energy Questions.docx.md": {
+    "mtime": 1779693636.431876,
+    "ast_hash": "23701b3a7c5316de1cada0236ec10a08",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Mechanical Adbvantage, Efficiency and Pressure.docx.md": {
+    "mtime": 1779693636.4105558,
+    "ast_hash": "44ee89a9b9ad51da876867184d38a7b5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Uniform acceleration, Average and Instateneous Veocity.docx.md": {
+    "mtime": 1779693636.4790835,
+    "ast_hash": "adefad712d9fe35aae008ca5283cb4fe",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/PRACTICE WORKSHEET 1_ Grade 7 on Work and Power_ Questions.docx.md": {
+    "mtime": 1779693636.4218986,
+    "ast_hash": "b36c02479c3b2b7eab603017c2693662",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Equations of Motion.docx.md": {
+    "mtime": 1779693636.3599074,
+    "ast_hash": "762d529b71ba5562a39c76455ecae4dd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/dt graphs.docx.md": {
+    "mtime": 1779693636.5728827,
+    "ast_hash": "5a3982a10187a845bdddf6618d28d078",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/Cr.D practice answer.docx.md": {
+    "mtime": 1779693636.2785573,
+    "ast_hash": "ee64d6d8b5a03cca0d640f7621b75cc0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Revision worksheets/DTgraph Worked out example.docx.md": {
+    "mtime": 1779693636.3318768,
+    "ast_hash": "da993759e825a981ee533a9ea1d91b92",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/physics/Unit 3_ Magnetism/Magnetism -SDL Material For Grade 7.pdfPDF.md": {
+    "mtime": 1779693637.3151855,
+    "ast_hash": "be4ed9ed5d18285a30ded809f84ce291",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/physics/Unit 1- Measuring Motion/Measuring Speed - sums from textbook.jpg.jpeg": {
+    "mtime": 1779693556.7339182,
+    "ast_hash": "095b7df86074b6037c301117006692f1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/physics/Unit 1- Measuring Motion/area of objects.png.png": {
+    "mtime": 1779693568.0619557,
+    "ast_hash": "eac81301afa38cdad1f35c1a14314d57",
     "semantic_hash": ""
   }
 }

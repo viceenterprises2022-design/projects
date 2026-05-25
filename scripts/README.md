@@ -506,7 +506,9 @@ python3 pkscreener_runner.py
 
 **Lockfile**: `/tmp/pkscreener_runner.lock` — prevents overlapping cron runs via `fcntl.flock`. If a new cron fires while a previous run is in progress, it exits immediately. This prevents process accumulation that caused 28 parallel pkscreener processes consuming ~12GB RAM.
 
-**Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
+**Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery with LTP & % change
+
+**Live LTP**: Each stock symbol is followed by its current price and change via Yahoo Finance batch quotes (e.g. `ADANIENT  ₹2,345.67 (+1.23%)`). Gracefully falls back to bare symbol if Yahoo is unreachable — no new dependencies or env vars required.
 
 ## OpenCode `/pursue` Goal Plugin
 
