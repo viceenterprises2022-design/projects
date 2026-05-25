@@ -70,6 +70,7 @@ for d in [OUTPUT_DIR, PDFS_DIR, DAILY_DIR]:
 
 NLM = os.path.join(os.path.dirname(__file__), "venv", "bin", "notebooklm")
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
+SLACK_TOKEN = os.environ.get("SLACK_TOKEN", "")
 SLACK_USERNAME = "Beat-the-Street"
 SLACK_ICON = ":newspaper:"
 
@@ -140,6 +141,30 @@ def slack_send_chunks(text, title=None):
         if not ok:
             return False
     return True
+
+
+def slack_upload_file(file_path: Path, title: str = None):
+    if not SLACK_TOKEN:
+        p("  [SKIP] No SLACK_TOKEN set — cannot upload files")
+        return False
+    try:
+        with open(file_path, "rb") as f:
+            resp = requests.post(
+                "https://slack.com/api/files.upload",
+                headers={"Authorization": f"Bearer {SLACK_TOKEN}"},
+                files={"file": f},
+                data={"channels": "#general", "title": title or file_path.name},
+                timeout=60,
+            )
+        data = resp.json()
+        if data.get("ok"):
+            p(f"  ✓ Uploaded {file_path.name}")
+            return True
+        p(f"  [WARN] Slack upload failed: {data.get('error', 'unknown')}")
+        return False
+    except Exception as e:
+        p(f"  [WARN] Slack upload exception: {e}")
+        return False
 
 
 # ── Step 1: Download new PDFs from Telegram ──────────────────────────────────
@@ -347,7 +372,7 @@ def format_file_for_slack(file_path: Path) -> list[dict]:
     base = file_path.stem
     emoji, label = FILE_LABELS.get(ext, ("📎", "File"))
 
-    if ext == ".json" and base == "mindmap":
+    if ext == ".json" and base == "mind-map":
         try:
             data = json.loads(file_path.read_text(encoding="utf-8"))
             tree = render_mindmap_tree(data)
@@ -398,7 +423,11 @@ def format_file_for_slack(file_path: Path) -> list[dict]:
             chunks.append({"title": f"{emoji} Full Report", "text": f"📄 *Full report saved locally* — too large for Slack ({len(full):,} bytes). Check `{file_path.name}`"})
         return chunks
 
-    # Binary files — just note them
+    # Image files — upload as file attachment
+    if ext in (".png", ".jpg", ".jpeg", ".gif"):
+        return [{"_upload": str(file_path), "title": f"{emoji} {label}", "text": ""}]
+
+    # Other binary files — just note them
     size = file_path.stat().st_size
     return [{"title": f"{emoji} {label}: {file_path.name}", "text": f"• Size: {size:,} bytes\n• Saved locally at `{file_path}`"}]
 
@@ -426,7 +455,10 @@ def send_artifacts_to_slack(nb_id: str, source_ids: list[str], pdf_paths: list[P
         p(f"  Sending {fp.name}...")
         payloads = format_file_for_slack(fp)
         for payload in payloads:
-            slack_send(payload["text"], payload.get("title"))
+            if "_upload" in payload:
+                slack_upload_file(Path(payload["_upload"]), payload.get("title"))
+            else:
+                slack_send(payload["text"], payload.get("title"))
 
     p("  ✓ Slack delivery complete")
 
