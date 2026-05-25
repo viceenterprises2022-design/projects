@@ -36353,5 +36353,10 @@
     "mtime": 1779690312.945054,
     "ast_hash": "10c6814c3534dd81011a492dc3b70728",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_auth.py": {
+    "mtime": 1779690985.088326,
+    "ast_hash": "5c48e6ef4df6a4512bfba6a2c6b7df37",
+    "semantic_hash": ""
   }
 }
