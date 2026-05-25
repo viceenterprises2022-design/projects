@@ -8,6 +8,7 @@ import os
 import re
 import sys
 import time
+import fcntl
 import subprocess
 import datetime
 import requests
@@ -184,7 +185,25 @@ def extract_stocks(output: str) -> list[str]:
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
+LOCK_FILE = "/tmp/pkscreener_runner.lock"
+
+
+def acquire_lock() -> bool:
+    try:
+        fd = open(LOCK_FILE, "w")
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        fd.write(str(os.getpid()))
+        fd.flush()
+        return True
+    except (IOError, OSError):
+        return False
+
+
 def main():
+    if not acquire_lock():
+        print("[PKScreener Runner] Another instance is running — exiting.")
+        return
+
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     now = datetime.datetime.now()
     date_str = now.strftime("%Y-%m-%d")

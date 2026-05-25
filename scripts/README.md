@@ -35,7 +35,7 @@
 │   │   └── pkscreener_runner.py
 │   │
 │   ├── 🖥️ Terminal Dashboards
-│   │   ├── options_cli.py             # Live option chain (5s polling)
+│   │   ├── options_cli.py             # Rich live option chain (5s, no flicker)
 │   │   ├── live_market_dashboard.py
 │   │   ├── alphaedge_pro.py
 │   │   ├── metals_dashboard.py
@@ -96,7 +96,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
 | `report_and_send.py` | Generates diagnostic reports and sends them to Telegram. |
-| `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) live terminal view. Shows Spot vs. Futures, human-readable OI (L/C), and ATM ± 300 strikes. **Lean, compressed layout (107 chars)** for small terminal windows. 5s polling, daily-reset SQLite. |
+| `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) Rich live terminal view. Shows Spot + Futures with OHLC (O/H/L/C) headers, strategy flags (OH/OL), human-readable OI (L/C), and ATM ± 300 strikes. **Lean, compressed layout (107 chars)** for small terminal windows. Zero-flicker rendering via `rich.live.Live` with alternate screen buffer. 5s polling, daily-reset SQLite. |
 
 ### 🤖 AI Search & Discovery
 *Tools for tracking AI agent launches, events, and research using Exa AI.*
