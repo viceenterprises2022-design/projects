@@ -38,10 +38,23 @@ from telethon.tl.types import DocumentAttributeFilename, MessageMediaDocument
 
 load_dotenv()
 
+# ── CLI args ────────────────────────────────────────────────────────────────
+def parse_args():
+    import argparse
+    ap = argparse.ArgumentParser(description="Telegram PDF → NotebookLM pipeline")
+    ap.add_argument("--channel", action="append", dest="extra_channels",
+                    help="Additional Telegram channel(s) to fetch from (can be repeated)")
+    return ap.parse_args()
+
+ARGS = parse_args()
+
 # ── Config ─────────────────────────────────────────────────────────────────
 API_ID    = int(os.environ["TELEGRAM_API_ID"])
 API_HASH  = os.environ["TELEGRAM_API_HASH"]
 CHANNELS  = [c.strip() for c in os.environ.get("TELEGRAM_CHANNELS", "").split(",") if c.strip()]
+if ARGS.extra_channels:
+    CHANNELS.extend(c.strip().lstrip("@") for c in ARGS.extra_channels)
+    CHANNELS = [f"@{c}" if not c.startswith("@") else c for c in CHANNELS]
 MSG_LIMIT = int(os.environ.get("TELEGRAM_MSG_LIMIT", "200"))
 PDF_LIMIT = int(os.environ.get("PDF_LIMIT", "20"))
 DAYS_BACK = float(os.environ.get("DAYS_BACK", "1"))
