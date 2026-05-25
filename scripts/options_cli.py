@@ -208,9 +208,11 @@ def main():
                 key = inst["key"]
                 step = inst["step"]
                 
-                spot = sf_quotes.get(key, {}).get("last_price")
+                spot_data = sf_quotes.get(key, {})
+                spot = spot_data.get("last_price")
                 if not spot: continue
-                fut = sf_quotes.get(inst["fut_key"], {}).get("last_price") or spot
+                fut_data = sf_quotes.get(inst["fut_key"], {})
+                fut = fut_data.get("last_price") or spot
                 
                 expiry = get_cached_expiry(key)
                 if not expiry: continue
@@ -236,7 +238,9 @@ def main():
                 all_index_data.append({
                     "inst": inst, "spot": spot, "fut": fut, "expiry": expiry,
                     "target_strikes": target_strikes, "chain_lookup": chain_lookup,
-                    "atm_strike": atm_strike
+                    "atm_strike": atm_strike,
+                    "spot_ohlc": spot_data.get("ohlc") or {},
+                    "fut_ohlc": fut_data.get("ohlc") or {}
                 })
 
             # 3. Batch Fetch OHLC for ALL options
@@ -245,7 +249,11 @@ def main():
             # 4. Display
             for idx in all_index_data:
                 name, spot, fut, expiry = idx["inst"]["name"], idx["spot"], idx["fut"], idx["expiry"]
-                print(f"\n>>> {name} | SPOT: {spot:8.2f} | FUT: {fut:8.2f} | Exp: {expiry}")
+                so = idx.get("spot_ohlc", {})
+                fo = idx.get("fut_ohlc", {})
+                so_str = f"O:{so.get('open',0):.2f} H:{so.get('high',0):.2f} L:{so.get('low',0):.2f} C:{so.get('close',0):.2f}"
+                fo_str = f"O:{fo.get('open',0):.2f} H:{fo.get('high',0):.2f} L:{fo.get('low',0):.2f} C:{fo.get('close',0):.2f}"
+                print(f"\n>>> {name} | SPOT: {spot:8.2f} {so_str} | FUT: {fut:8.2f} {fo_str} | Exp: {expiry}")
                 print("-" * 107)
                 print(f"   FLAGS|  OPEN  HIGH   LOW CLOSE| CE LTP| CE OI|STRIKE| PE OI| PE LTP|  OPEN  HIGH   LOW CLOSE|FLAGS")
                 print("-" * 107)
