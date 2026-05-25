@@ -5,7 +5,7 @@
  */
 
 const API_BASE   = "http://localhost:8765";
-const REFRESH_MS = 30_000;
+// REFRESH_MS declared in dashboard.html inline script — shared between PixiJS and widgets
 
 // Broker metadata: display name, logo letter, category label, accent color
 const BROKER_META = {
@@ -36,6 +36,7 @@ function getPage() {
   if (p === "/portfolio") return "portfolio";
   if (p === "/holdings")  return "holdings";
   if (p === "/positions") return "positions";
+  if (p === "/market")    return "market";
   return "dashboard";
 }
 
@@ -47,9 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
 async function refreshAll() {
   const page = getPage();
   const jobs = [loadLatest()];
-  if (page === "dashboard") {
+  if (page === "market") {
     jobs.push(loadGainersLosers(), loadStrategyNifty200());
-  } else {
+  } else if (page !== "dashboard") {
     jobs.push(loadPortfolio());
   }
   await Promise.allSettled(jobs);

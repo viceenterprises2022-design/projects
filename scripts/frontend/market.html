@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AEI · Market Scanner</title>
+<meta name="description" content="Gainers, Losers, and Nifty 200 Momentum Scanner.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;510;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container header-inner">
+    <div class="logo">
+      <div class="logo-mark">AE</div>
+      <div>
+        <div class="logo-name">AEI</div>
+        <nav class="nav-links">
+          <a href="/">Dashboard</a>
+          <a href="/market" class="active">Market</a>
+          <a href="/portfolio">Portfolio</a>
+          <a href="/holdings">Holdings</a>
+          <a href="/positions">Positions</a>
+        </nav>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <div id="last-updated" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted)">
+        <span class="live-dot"></span>Connecting…
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div id="error-banner" class="error-banner" style="display:none"></div>
+</div>
+
+<main>
+  <div class="widget-grid container" id="widget-grid">
+
+    <div class="widget" data-cols="6" id="widget-gainers">
+      <div class="w-header">
+        <span class="w-title">Top Gainers</span>
+        <span class="w-count" id="gainers-count">0</span>
+      </div>
+      <div class="w-body" id="gainers-list">
+        <div class="w-loading">Awaiting data…</div>
+      </div>
+    </div>
+
+    <div class="widget" data-cols="6" id="widget-losers">
+      <div class="w-header">
+        <span class="w-title">Top Losers</span>
+        <span class="w-count" id="losers-count">0</span>
+      </div>
+      <div class="w-body" id="losers-list">
+        <div class="w-loading">Awaiting data…</div>
+      </div>
+    </div>
+
+    <div class="widget" data-cols="12" id="widget-strategy">
+      <div class="w-header">
+        <span class="w-title">Nifty 200 Momentum</span>
+        <span class="w-meta">Scanner</span>
+      </div>
+      <div class="strat-row" id="strat-row">
+        <div class="w-loading">Loading…</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer style="border-top:1px solid var(--border);padding:20px 0;text-align:center;
+               font-family:var(--mono);font-size:0.7rem;color:var(--muted)">
+  <div class="container">
+    <span>⚠ For informational purposes only · Not financial advice</span>
+    <span style="margin:0 12px;color:var(--border)">|</span>
+    <span>AEI © 2026</span>
+    <span style="margin:0 12px;color:var(--border)">|</span>
+    <span>API: <a href="http://localhost:8765/docs" target="_blank"
+          style="color:var(--primary);text-decoration:none">localhost:8765/docs</a></span>
+  </div>
+</footer>
+
+<script src="/static/app.js?v=20260525"></script>
+</body>
+</html>

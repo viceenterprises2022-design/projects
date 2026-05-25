@@ -81,6 +81,14 @@ def serve_dashboard():
     return FileResponse(str(index))
 
 
+@app.get("/market", include_in_schema=False)
+def serve_market():
+    f = FRONTEND_DIR / "market.html"
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="market.html not found")
+    return FileResponse(str(f))
+
+
 @app.get("/portfolio", include_in_schema=False)
 def serve_portfolio():
     f = FRONTEND_DIR / "portfolio.html"
