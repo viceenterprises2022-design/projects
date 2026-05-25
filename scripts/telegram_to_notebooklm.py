@@ -273,15 +273,10 @@ GEN_ARTIFACTS = [
     ("mind-map",   {"args": ["generate", "mind-map"],
                      "ext": ".json", "wait_id": False, "desc": "Mind-map"}),
     ("infographic",{"args": ["generate", "infographic",
-                             "Visual summary of today's market intelligence briefing across all sources.",
-                             "--orientation", "landscape", "--detail", "detailed", "--style", "bento-grid"],
+                              "Visual summary of today's market intelligence briefing across all sources.",
+                              "--orientation", "landscape", "--detail", "detailed", "--style", "bento-grid"],
                      "ext": ".png", "wait_id": True, "desc": "Infographic"}),
-    ("quiz",       {"args": ["generate", "quiz"],
-                     "ext": ".json", "wait_id": True, "desc": "Quiz"}),
 ]
-
-AUDIO_ARTIFACT = ("audio", {"args": ["generate", "audio"],
-                             "ext": ".mp3", "wait_id": True, "desc": "Podcast"})
 
 
 def _gen_one(nb_id: str, kind: str, cfg: dict) -> Path | None:
@@ -326,10 +321,6 @@ def generate_and_download(nb_id: str) -> list[Path]:
         out = _gen_one(nb_id, kind, cfg)
         if out:
             generated.append(out)
-
-    out = _gen_one(nb_id, AUDIO_ARTIFACT[0], AUDIO_ARTIFACT[1])
-    if out:
-        generated.append(out)
 
     return generated
 
@@ -485,7 +476,7 @@ async def main():
     p("\n[4/7] Waiting for source processing...")
     wait_for_sources(nb_id, source_ids)
 
-    p("\n[5/7] Generating artifacts (report + mind-map + infographic + quiz + podcast)...")
+    p("\n[5/7] Generating artifacts (report + mind-map + infographic)...")
     generated = generate_and_download(nb_id)
 
     p(f"\n{'=' * 50}")
