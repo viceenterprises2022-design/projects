@@ -1089,5 +1089,946 @@
       }
     ],
     "root_files": []
+  },
+  "Biology": {
+    "course_id": "272491078391794767",
+    "folders": [
+      {
+        "name": "Respiratory system",
+        "id": "371059393032196020",
+        "files": [
+          {
+            "id": "381201550770550784",
+            "name": "Smoking.pdfPDF"
+          },
+          {
+            "id": "381201550745384959",
+            "name": "Bones Muscles and Joints.pdfPDF"
+          },
+          {
+            "id": "381201550745384958",
+            "name": "SDL- Respiration and Respirometer.docx"
+          },
+          {
+            "id": "380510130959133882",
+            "name": "SIMPLIFIED NOTES FA3.pdfPDF"
+          },
+          {
+            "id": "377909411588447565",
+            "name": "Lime water test.pdfPDF"
+          },
+          {
+            "id": "377909091479166265",
+            "name": "Imp Respiratory System[37]"
+          },
+          {
+            "id": "377908880354680012",
+            "name": "Oxygen debt- Worksheet.pdfPDF"
+          },
+          {
+            "id": "377908719582813373",
+            "name": "SDL- Respiration and Respirometer.pdfPDF"
+          }
+        ]
+      },
+      {
+        "name": "Transpiration",
+        "id": "346069572396357648",
+        "files": [
+          {
+            "id": "362702452669120847",
+            "name": "Transport_in_Plants_"
+          },
+          {
+            "id": "362702452669120846",
+            "name": "Osmosis_and_Diffusion__MB_[25].pdfPDF"
+          },
+          {
+            "id": "346069648472643608",
+            "name": "Transpiration"
+          }
+        ]
+      },
+      {
+        "name": "Photosynthesis",
+        "id": "345698998910297573",
+        "files": [
+          {
+            "id": "345699070783890925",
+            "name": "Investigating the rate of photosynthesis.pdfPDF"
+          },
+          {
+            "id": "345699070783890924",
+            "name": "Experiments for Photosynthesis"
+          }
+        ]
+      },
+      {
+        "name": "Human Digestive System",
+        "id": "325000731339897443",
+        "files": [
+          {
+            "id": "325006131380469056",
+            "name": "Digestion"
+          },
+          {
+            "id": "325003470736309138",
+            "name": "human_digestive_system_year_10__gz_"
+          },
+          {
+            "id": "325003470727920529",
+            "name": "Food Test"
+          },
+          {
+            "id": "325003470723726224",
+            "name": "05 Animal Nutrion Biology Notes IGCSE 2014"
+          }
+        ]
+      },
+      {
+        "name": "Drill and Practice",
+        "id": "298263062102785876",
+        "files": [
+          {
+            "id": "298263154415222618",
+            "name": "Grade 7 Drill and Practice"
+          }
+        ]
+      },
+      {
+        "name": "Unit 1- Monomers of Wellness",
+        "id": "277541762136912221",
+        "files": [
+          {
+            "id": "325000389583813184",
+            "name": "Deficiency Disease"
+          },
+          {
+            "id": "301420394374607817",
+            "name": "Adding Fluoride"
+          },
+          {
+            "id": "301419968329790408",
+            "name": "Tooth Structure"
+          },
+          {
+            "id": "299680672887446382",
+            "name": "BALANCED DIET NOTES.pdfPDF"
+          },
+          {
+            "id": "292386652091942129",
+            "name": "Food Test"
+          },
+          {
+            "id": "286989170201704201",
+            "name": "SDL Topic 2 - Nutrition and its impact on health.pdfPDF"
+          },
+          {
+            "id": "286312150690018839",
+            "name": "Deficiency disease.jpeg"
+          },
+          {
+            "id": "286312092821206549",
+            "name": "nutrient deficiency.jpeg"
+          },
+          {
+            "id": "286004978647145578",
+            "name": "Deficiency Diseases _ Conditions.pdfPDF"
+          },
+          {
+            "id": "279017491043292512",
+            "name": "Frayer Model - reference"
+          },
+          {
+            "id": "277542801237979745",
+            "name": "Biomolecules- PPT.pdfPDF"
+          },
+          {
+            "id": "277542801225396832",
+            "name": "SDL- Biomolecules.pdfPDF"
+          },
+          {
+            "id": "277542801225396831",
+            "name": "Concept and relevance on biomolecules.pdfPDF"
+          },
+          {
+            "id": "277541979099869556",
+            "name": "Biomolecules- PPT.pdfPDF"
+          }
+        ]
+      }
+    ],
+    "root_files": [
+      {
+        "id": "302618774689920486",
+        "name": "ROLE OF FLUORIDE.pdfPDF"
+      },
+      {
+        "id": "302244323691432887",
+        "name": "TOOTH DECAY NOTES.pdfPDF"
+      }
+    ]
+  },
+  "Visual Arts": {
+    "course_id": "272491078370823228",
+    "folders": [
+      {
+        "name": "UNIT 1",
+        "id": "295707383483708026",
+        "files": [
+          {
+            "id": "295708576041775921",
+            "name": "Gr 9 - 1.jpg"
+          },
+          {
+            "id": "295708544899068718",
+            "name": "GR9- 7.jpg"
+          },
+          {
+            "id": "295708531322106669",
+            "name": "GR 9 - 3.jpg"
+          },
+          {
+            "id": "295708480667497257",
+            "name": "GR 9 - 5.jpg"
+          }
+        ]
+      }
+    ],
+    "root_files": []
+  },
+  "History": {
+    "course_id": "272491081294253255",
+    "folders": [
+      {
+        "name": "Unit 2",
+        "id": "323236759339111020",
+        "files": [
+          {
+            "id": "372176584490199590",
+            "name": "Columbian Exchange: Global Homogenization"
+          },
+          {
+            "id": "372176044913961489",
+            "name": "Global Homogenization.pdfPDF"
+          },
+          {
+            "id": "372174148534905238",
+            "name": "Age of Exploration- Navigation Tools"
+          },
+          {
+            "id": "372174026879117713",
+            "name": "Compass to Caravel"
+          },
+          {
+            "id": "372171558153726252",
+            "name": "Enabling Technologies.pdfPDF"
+          },
+          {
+            "id": "346064797349025164",
+            "name": "Impact of Magnetic Compass in World History"
+          },
+          {
+            "id": "335184772391349066",
+            "name": "Gold, God & Glory- Video"
+          },
+          {
+            "id": "335184374070881034",
+            "name": "Gold, God, and Glory - The Age of Exploration.pdfPDF"
+          },
+          {
+            "id": "323238827932095228",
+            "name": "Early Explorers"
+          },
+          {
+            "id": "323238279069668049",
+            "name": "Silk Road"
+          },
+          {
+            "id": "323238163323654858",
+            "name": "SILKROAD.pdfPDF"
+          },
+          {
+            "id": "323238163319460553",
+            "name": "EarlyExplorers.pdfPDF"
+          }
+        ]
+      },
+      {
+        "name": "Unit 1",
+        "id": "284866534927609496",
+        "files": [
+          {
+            "id": "348944651081857910",
+            "name": "Event Card- Fall of Roman Empire.pdfPDF"
+          },
+          {
+            "id": "319654882569199035",
+            "name": "Tolerance and Equality in the Islamic Golden Age.pdfPDF"
+          },
+          {
+            "id": "319650510875499530",
+            "name": "SuleymantheMagnificent.pdfPDF"
+          },
+          {
+            "id": "319650101888916459",
+            "name": "Sulaiman the Magnificent"
+          },
+          {
+            "id": "319649844417371086",
+            "name": "Golden Age of Islam"
+          },
+          {
+            "id": "319649597746158478",
+            "name": "House of Wisdom"
+          },
+          {
+            "id": "319649435049106310",
+            "name": "TheHouseofWisdomBaghdadsCenterofLearning.pdfPDF"
+          },
+          {
+            "id": "305101609719923595",
+            "name": "The-Black-Death-Understanding-the-Pandemic-That-Changed-Medieval-Europe"
+          },
+          {
+            "id": "296831600493171395",
+            "name": "Impacts of the Crusades.pdfPDF"
+          },
+          {
+            "id": "296830350758351452",
+            "name": "People's & Prince's Crusades.pdfPDF"
+          },
+          {
+            "id": "296818304553683752",
+            "name": "Reasons for the peoples participation in Crusades.docx"
+          },
+          {
+            "id": "296818005797604100",
+            "name": "The Crusades"
+          },
+          {
+            "id": "296817790357179097",
+            "name": "Jerusalem and Abrahamic Faiths .docx"
+          },
+          {
+            "id": "286588832596460420",
+            "name": "Causes for the Fall of Roman Empire.docx"
+          },
+          {
+            "id": "286588658327323358",
+            "name": "Fall of Roman Empire"
+          },
+          {
+            "id": "286587607306043724",
+            "name": "Life in Medieval Village"
+          },
+          {
+            "id": "286586686866030688",
+            "name": "Roman Empire"
+          },
+          {
+            "id": "286585702282542970",
+            "name": "The-Medieval-World.pdfPDF"
+          },
+          {
+            "id": "286585511231995744",
+            "name": "Life in Middle Ages"
+          }
+        ]
+      },
+      {
+        "name": "Unit III: Ideas and Innovations (Renaissance, Scientific Revolution)",
+        "id": "231163105881732125",
+        "files": [
+          {
+            "id": "242021681219080889",
+            "name": "Copernical Revolution"
+          },
+          {
+            "id": "233425498150112233",
+            "name": "How did the de Medici contribute to the Renaissance - DailyHistory.org.pdfPDF"
+          },
+          {
+            "id": "231165082187445488",
+            "name": "Renaissance, Meaning, Characteristics, Causes, Impact.pdfPDF"
+          },
+          {
+            "id": "231163994822522033",
+            "name": "Causes of the Renaissance - Video Infographic"
+          },
+          {
+            "id": "231163399139079215",
+            "name": "Overview -Renaissance"
+          }
+        ]
+      },
+      {
+        "name": "Unit II - The Age of Exploration",
+        "id": "194694256588325250",
+        "files": [
+          {
+            "id": "229379825477981142",
+            "name": "MYP History_Age of explorations_NOTES.pdfPDF"
+          },
+          {
+            "id": "229378078164489074",
+            "name": "The Columbian Exchange"
+          },
+          {
+            "id": "209486983850998638",
+            "name": "legends of Vasco Da Gama"
+          },
+          {
+            "id": "194697282430534123",
+            "name": "The Silk Route"
+          },
+          {
+            "id": "194697087944851946",
+            "name": "The age of exploration"
+          },
+          {
+            "id": "194696812391662055",
+            "name": "The old and the new world"
+          },
+          {
+            "id": "194696233594487238",
+            "name": "Age of exploration"
+          },
+          {
+            "id": "194696037284282821",
+            "name": "Motives of Exploration"
+          },
+          {
+            "id": "194695871529583044",
+            "name": "Silk route"
+          }
+        ]
+      },
+      {
+        "name": "Unit I - Life in the Middle Ages",
+        "id": "151493587333388144",
+        "files": [
+          {
+            "id": "166727176115302851",
+            "name": "Untitled"
+          }
+        ]
+      },
+      {
+        "name": "Unit 3 - Ideas and Innovation",
+        "id": "109420514455325054",
+        "files": [
+          {
+            "id": "117401249174893554",
+            "name": "Descartes Doubt"
+          },
+          {
+            "id": "112332766552532784",
+            "name": "Printing Press - Invented, Gutenberg, Significance | HISTORY"
+          },
+          {
+            "id": "110171191959893036",
+            "name": "Renaissance Timeline.docx"
+          },
+          {
+            "id": "110171191959893035",
+            "name": "Timeline of events - Grade 7.docx"
+          },
+          {
+            "id": "109833316500253440",
+            "name": "Renaissance & Enlightenment.docx"
+          },
+          {
+            "id": "109832538683353738",
+            "name": "Painting Analysis Guide with examples.docx"
+          },
+          {
+            "id": "109822725853291950",
+            "name": "Renaissance Man.docx"
+          },
+          {
+            "id": "109821980009571718",
+            "name": "Role of Printing Press.docx"
+          },
+          {
+            "id": "109821980001183109",
+            "name": "Rene Descartes & Rationalism.docx"
+          },
+          {
+            "id": "109821980001183108",
+            "name": "School of Thoughts - Renaissance.docx"
+          },
+          {
+            "id": "109821979988600195",
+            "name": "The Last Supper - Painting Analysis.docx"
+          },
+          {
+            "id": "109420647083411845",
+            "name": "Causes of Renaissance.docx"
+          },
+          {
+            "id": "109420647083411844",
+            "name": "Background Story of Renaissance.docx"
+          }
+        ]
+      }
+    ],
+    "root_files": [
+      {
+        "id": "286625517623419567",
+        "name": "STEAM Task Graphic Organiser for Students.docx"
+      }
+    ]
+  },
+  "Geography": {
+    "course_id": "272491078261771260",
+    "folders": [
+      {
+        "name": "Revision WS",
+        "id": "384464621425240237",
+        "files": []
+      },
+      {
+        "name": "Unit 3: International Development",
+        "id": "362687204809619819",
+        "files": [
+          {
+            "id": "381898233816922418",
+            "name": "Fair trade"
+          },
+          {
+            "id": "380440196476409719",
+            "name": "Aid.pdfPDF"
+          },
+          {
+            "id": "378352838067207353",
+            "name": "free trade"
+          },
+          {
+            "id": "377710215333774816",
+            "name": "What is Free Trade G7.docx"
+          },
+          {
+            "id": "376493396241519203",
+            "name": "Case Study_Globalization.pdfPDF"
+          },
+          {
+            "id": "376119417630723693",
+            "name": "Factors Affecting Development.docx"
+          },
+          {
+            "id": "376118739369823772",
+            "name": "Poverty.docx"
+          },
+          {
+            "id": "376118679613574680",
+            "name": "Case Study_LEDC & MEDC.docx"
+          },
+          {
+            "id": "376118202578603459",
+            "name": "Indicators of Development.docx"
+          },
+          {
+            "id": "376118202578603458",
+            "name": "Major Differences growth and development .jpg"
+          },
+          {
+            "id": "374001448352070251",
+            "name": "Globalisation"
+          },
+          {
+            "id": "373278793953018693",
+            "name": "Globalization DLP.docx.pdfPDF"
+          },
+          {
+            "id": "372910560414630343",
+            "name": "Poverty"
+          },
+          {
+            "id": "371785019426974115",
+            "name": "Brandt Line"
+          },
+          {
+            "id": "371770810920182326",
+            "name": "What is HDI"
+          },
+          {
+            "id": "370329820497817104",
+            "name": "Slums of Asia.pdfPDF"
+          },
+          {
+            "id": "370329643158449654",
+            "name": "Collaborative Strategy - Slum"
+          },
+          {
+            "id": "370299583332457135",
+            "name": "Brandt Line .pdfPDF"
+          },
+          {
+            "id": "362695463511637168",
+            "name": "Why Do Some Countries Change Faster Than Others?.pdfPDF"
+          },
+          {
+            "id": "362689429095168641",
+            "name": "SDL - Growth and Development.pdfPDF"
+          },
+          {
+            "id": "362687639666669963",
+            "name": "CRA -"
+          }
+        ]
+      },
+      {
+        "name": "Unit 2: Resources",
+        "id": "317412111737262819",
+        "files": [
+          {
+            "id": "352542291052833671",
+            "name": "Linear and circular economy"
+          },
+          {
+            "id": "352540527796791444",
+            "name": "Linear and circular economy.pdfPDF"
+          },
+          {
+            "id": "346086643574350204",
+            "name": "Sustainable Developmen - Korean translation.docx"
+          },
+          {
+            "id": "346063362234356883",
+            "name": "sustainable development"
+          },
+          {
+            "id": "344944317271490165",
+            "name": "net zero"
+          },
+          {
+            "id": "337145303880809143",
+            "name": "data set.pdfPDF"
+          },
+          {
+            "id": "337144884366523046",
+            "name": "The Ripple Effect of Over-Consumption of Natural Resources.pdfPDF"
+          },
+          {
+            "id": "336269062730520345",
+            "name": "Deforestation"
+          },
+          {
+            "id": "336265132814472671",
+            "name": "Resource conservation - Korean.docx"
+          },
+          {
+            "id": "336254193394356489",
+            "name": "resource conservation"
+          },
+          {
+            "id": "336252452577841186",
+            "name": "Significance of Resource Conservation G7.pdfPDF"
+          },
+          {
+            "id": "325761104435321374",
+            "name": "Soil Conservation.pdfPDF"
+          },
+          {
+            "id": "325760773739616782",
+            "name": "Conservation of Resources_cra"
+          },
+          {
+            "id": "321034084535083121",
+            "name": "Soil as a resources.pdfPDF"
+          },
+          {
+            "id": "319561117644989639",
+            "name": "Soil.pdfPDF"
+          },
+          {
+            "id": "319561104802030789",
+            "name": "What is soil?.pdfPDF"
+          },
+          {
+            "id": "317412579083391740",
+            "name": "Renewable and non renewable.pdfPDF"
+          },
+          {
+            "id": "317412569633624826",
+            "name": "Amazon Resources- Unit 2.pdfPDF"
+          }
+        ]
+      },
+      {
+        "name": "Unit 1: Environmental Regions and Societies",
+        "id": "275105180847023013",
+        "files": [
+          {
+            "id": "350000848153182711",
+            "name": "Grade 7 Biomes \u2013 Important Terms & Definitions.pdfPDF"
+          },
+          {
+            "id": "325765784787852186",
+            "name": "Taiga_ecoregion.png"
+          },
+          {
+            "id": "325764741928688422",
+            "name": "map-rainforest.jpg"
+          },
+          {
+            "id": "325764646915119901",
+            "name": "800px-Map-Tundra.png"
+          },
+          {
+            "id": "304746555620035512",
+            "name": "PPT"
+          },
+          {
+            "id": "304728390936658623",
+            "name": "Threats and conservation - Grasslands"
+          },
+          {
+            "id": "304728134979256994",
+            "name": "Grasslands"
+          },
+          {
+            "id": "302617137132975180",
+            "name": "Drill and practice 1 Grade 7"
+          },
+          {
+            "id": "300979247298745909",
+            "name": "Temperate Grassland.pdfPDF"
+          },
+          {
+            "id": "300979197420082740",
+            "name": "Tropical Grasslands.pdfPDF"
+          }
+        ]
+      }
+    ],
+    "root_files": [
+      {
+        "id": "350413948597669583",
+        "name": "OPVL.zipZip"
+      },
+      {
+        "id": "313047078135768944",
+        "name": "Process Journal Grade 7"
+      },
+      {
+        "id": "313046679668500300",
+        "name": "Research Article Template.docx"
+      }
+    ]
+  },
+  "Spanish": {
+    "course_id": "272491081755626771",
+    "folders": [
+      {
+        "name": "Unit 4- Holidays and Entertainment",
+        "id": "368498763616069024",
+        "files": [
+          {
+            "id": "381496849388900579",
+            "name": "Adverbios.jpg"
+          },
+          {
+            "id": "381496718409175258",
+            "name": "Adjetivos.webp"
+          },
+          {
+            "id": "376113749192447150",
+            "name": "playa-vocabulario.png"
+          },
+          {
+            "id": "376050571964161963",
+            "name": "El senderismo.jpg"
+          },
+          {
+            "id": "374343533437498713",
+            "name": "HOBBIES / AFICIONES | Aprende Espa\u00f1ol | Arche-ELE"
+          },
+          {
+            "id": "372900495251061801",
+            "name": "Spanish - English-Spanish Dictionary - WordReference.com"
+          },
+          {
+            "id": "372800786608006186",
+            "name": "Tiempo libre- aficiones.jpg"
+          },
+          {
+            "id": "372800160708797432",
+            "name": "Actividades de tiempos libre.jpg"
+          },
+          {
+            "id": "368498830733321839",
+            "name": "Travel Vocabulary.png"
+          }
+        ]
+      },
+      {
+        "name": "MI CASA",
+        "id": "344983643304860352",
+        "files": [
+          {
+            "id": "344987550869462253",
+            "name": "Mi casa - .docx"
+          },
+          {
+            "id": "344984649711328077",
+            "name": "las-habitaciones-vocab-sheet.pptx"
+          },
+          {
+            "id": "344984390163602202",
+            "name": "Scaffoled-Writing-Worksheet-"
+          },
+          {
+            "id": "344983794140420819",
+            "name": "sample-chapter-elemental--ch03"
+          }
+        ]
+      },
+      {
+        "name": "la foto",
+        "id": "320308225285136957",
+        "files": [
+          {
+            "id": "320308264640291392",
+            "name": "picture.docx"
+          }
+        ]
+      },
+      {
+        "name": "UNIT 2: Food and Drinks",
+        "id": "309427085548565463",
+        "files": [
+          {
+            "id": "322145468769474931",
+            "name": "ordering food in spanish"
+          },
+          {
+            "id": "310893701683583179",
+            "name": "Las comidas del d\u00eda_TEXTO.pdfPDF"
+          },
+          {
+            "id": "309438800738761946",
+            "name": "Alimentaci\u00f3n y nutrici\u00f3n.jpg"
+          },
+          {
+            "id": "309431548254468270",
+            "name": "H\u00e1bitos alimenticios.png"
+          },
+          {
+            "id": "309431548254468269",
+            "name": "Pir\u00e1mide alimenticio_ACTIVIDAD.png"
+          },
+          {
+            "id": "309431117457504383",
+            "name": "VOCABULARIO - Comida, bebida y otras palabras pertinentes.pdfPDF"
+          },
+          {
+            "id": "309431117457504382",
+            "name": "Adjetivos para describir la comida.jpeg"
+          }
+        ]
+      },
+      {
+        "name": "UNIT1: My Identity",
+        "id": "279719161725288748",
+        "files": [
+          {
+            "id": "297850503210047732",
+            "name": "VOCABULARIO_Identidades.png"
+          },
+          {
+            "id": "297850503210047731",
+            "name": "FICHA_ Escritura de un correo electr\u00f3nico.pdfPDF"
+          },
+          {
+            "id": "293195527334507630",
+            "name": "ESTRUCTURA_Correo electronico.png"
+          },
+          {
+            "id": "293195438176187498",
+            "name": "Texto_ A QUI\u00c9N CONSIDERAS FAMILIA.pdfPDF"
+          },
+          {
+            "id": "293195318202315871",
+            "name": "TEXTO_Familias diferentes.pdfPDF"
+          },
+          {
+            "id": "292770641860465458",
+            "name": "Describiendo personas en espa\u00f1ol_TEXTO.pdfPDF"
+          },
+          {
+            "id": "290356774589020356",
+            "name": "TEXTO_Estudiantes de diferentes nacionalidades.png"
+          },
+          {
+            "id": "287688702275194703",
+            "name": "Nacionalidades_VOCABULARIO.png"
+          },
+          {
+            "id": "287686641915629126",
+            "name": "Los comparativos.pdfPDF"
+          },
+          {
+            "id": "287686511351139895",
+            "name": "VOCABULARIO_La ropa.png"
+          },
+          {
+            "id": "287684265284570342",
+            "name": "La ropa y la apariencia f\u00edsica_TEXTO.pdfPDF"
+          },
+          {
+            "id": "282635525788118157",
+            "name": "COMPRENSI\u00d3N LECTORA_Identidad.pdfPDF"
+          },
+          {
+            "id": "282635493655555205",
+            "name": "Identificar a personas_ACTIVIDAD.pdfPDF"
+          },
+          {
+            "id": "279721684251018346",
+            "name": "Vocabulario - Descriptores.pdfPDF"
+          },
+          {
+            "id": "279721684251018345",
+            "name": "Que ropa llevan - Actividad.pdfPDF"
+          },
+          {
+            "id": "279721684246824040",
+            "name": "Personality adjectives.jpeg"
+          }
+        ]
+      }
+    ],
+    "root_files": [
+      {
+        "id": "356590828413623175",
+        "name": "Ir+a+infinitivo.jpg"
+      },
+      {
+        "id": "355123264609167847",
+        "name": "Presente de Indicativo conjugation.jpg"
+      },
+      {
+        "id": "347889937191896292",
+        "name": "la-hora-time-in-spanish.gif"
+      },
+      {
+        "id": "322144256363960413",
+        "name": "ordering food in spanish"
+      },
+      {
+        "id": "318686900737118905",
+        "name": "LA COMIDA - PARA VER"
+      },
+      {
+        "id": "317062830950026016",
+        "name": "la comida sana"
+      },
+      {
+        "id": "279721502713152565",
+        "name": "Practice Makes Perfect Spanish Verb Tenses Book.pdfPDF"
+      }
+    ]
   }
 }

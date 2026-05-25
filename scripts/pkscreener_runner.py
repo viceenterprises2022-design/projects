@@ -14,6 +14,7 @@ import datetime
 import requests
 import pickle
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ── Config ────────────────────────────────────────────────────────────────────
 VENV_PYTHON = "/home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python"
@@ -185,31 +186,42 @@ def extract_stocks(output: str) -> list[str]:
 
 
 def fetch_nse_ltp_yahoo(symbols: list[str]) -> dict[str, dict]:
-    """Fetch LTP & change for NSE symbols via Yahoo Finance batch quote."""
+    """Fetch LTP & change for NSE symbols via Yahoo Finance (parallel v8/chart)."""
     if not symbols:
         return {}
-    try:
-        tickers = ",".join(f"{s}.NS" for s in symbols)
-        r = requests.get(
-            "https://query1.finance.yahoo.com/v7/finance/quote",
-            params={"symbols": tickers},
-            headers={"User-Agent": "Mozilla/5.0"},
-            timeout=10,
-        )
-        if r.status_code != 200:
-            return {}
-        result = {}
-        for q in r.json().get("quoteResponse", {}).get("result", []):
-            sym = q.get("symbol", "").replace(".NS", "")
-            ltp = q.get("regularMarketPrice")
-            prev = q.get("regularMarketPreviousClose")
-            if ltp is not None and prev and prev != 0:
-                chg = round(ltp - prev, 2)
+
+    def _fetch(sym: str):
+        try:
+            r = requests.get(
+                f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}.NS",
+                params={"range": "1d", "interval": "1h"},
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=10,
+            )
+            if r.status_code != 200:
+                return sym, None
+            meta = r.json().get("chart", {}).get("result", [{}])[0].get("meta", {})
+            price = meta.get("regularMarketPrice")
+            prev = meta.get("previousClose")
+            if price is not None and prev and prev != 0:
+                chg = round(price - prev, 2)
                 chg_pct = round((chg / prev) * 100, 2)
-                result[sym] = {"ltp": round(ltp, 2), "change": chg, "change_pct": chg_pct}
-        return result
+                return sym, {"ltp": round(price, 2), "change": chg, "change_pct": chg_pct}
+            return sym, None
+        except Exception:
+            return sym, None
+
+    result = {}
+    try:
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            futures = {pool.submit(_fetch, s): s for s in symbols}
+            for f in as_completed(futures):
+                sym, data = f.result()
+                if data:
+                    result[sym] = data
     except Exception:
-        return {}
+        pass
+    return result
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
