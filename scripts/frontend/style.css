@@ -1145,6 +1145,18 @@ canvas { display: block; }
   font-size: 0.75rem;
 }
 .strat-item:hover { background: rgba(255,255,255,0.02); }
+.strat-hdr {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  padding: 4px 8px 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+  pointer-events: none;
+}
+.strat-hdr .strat-val:first-child { text-align: left; }
 
 .strat-sym {
   font-size: 0.8rem;
