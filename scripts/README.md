@@ -90,6 +90,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 |:--- |:--- |
 | `collector.py` | **Core Engine**. Fetches market data from Upstox/Yahoo, calculates 10-factor signals, and saves to DB. |
 | `alphaedge_db.py` | **Database Manager**. Handles SQLite schema and data persistence for `alphaedge.db`. |
+| `alert_dashboard_alive.py` | **Dashboard Uptime Monitor**. Cron-friendly uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min. Silent when healthy; alerts Slack on 2+ consecutive failures plus recovery. State tracked in `/tmp/alert_dashboard_state.json`. |
 | `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest` (signals + live macro via Yahoo Finance), `/api/gainers-losers` (NSE top 5 gainers/losers, 30s cache), `/api/pixi/*` (options chain). |
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
@@ -235,6 +236,7 @@ python3 youtube_to_notebooklm.py --list-channels
 |:--- |:--- |
 | `send_slack.py` | Generic utility to send text or file content to any Slack webhook. |
 | `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. |
+| `alert_dashboard_alive.py` | Dashboard uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min, alerts Slack on outage. |
 | `send_telegram.py` | Generic utility to send messages via Telegram Bot API. |
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
 | `patch_market.py` | Utility to apply specific logic patches to the market analysis scripts. |
@@ -270,6 +272,11 @@ sudo systemctl restart multica-daemon
 # Logs
 journalctl -u alphaedge-api -f
 journalctl -u multica-daemon -f
+```
+
+**Cron (every 5 min, already installed):**
+```
+*/5 * * * * cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 venv/bin/python alert_dashboard_alive.py >> logs/alert_dashboard.log 2>&1
 ```
 
 ---
