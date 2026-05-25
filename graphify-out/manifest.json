@@ -9525,7 +9525,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1779716087.9213386,
+    "mtime": 1779716351.86121,
     "ast_hash": "a9a8821007ac254fb79eea3a15013c87",
     "semantic_hash": ""
   },
@@ -11825,7 +11825,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/app.js": {
-    "mtime": 1779716213.4637532,
+    "mtime": 1779716351.8622103,
     "ast_hash": "fceb09b084128601b5a150fe5932bcee",
     "semantic_hash": ""
   },
@@ -33440,8 +33440,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1779716060.1352468,
-    "ast_hash": "a9eca9ca9b6cb1dcc524c29fbb721fff",
+    "mtime": 1779716853.4148664,
+    "ast_hash": "b0d123eab9d96439a9194e9b589ccec3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
@@ -38767,6 +38767,21 @@
   "/home/vreddy1/Desktop/Projects/scripts/strategies/nifty200_momentum.py": {
     "mtime": 1779714128.7428603,
     "ast_hash": "7be97034b58dc5591b69a09f0fa0c2d5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
+    "mtime": 1779716043.7441926,
+    "ast_hash": "5c20d5f88a59019255c3d48984acc96c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/frontend/portfolio.html": {
+    "mtime": 1779716004.0790617,
+    "ast_hash": "b89b85f17711ca07f4ba415fde2af5a6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
+    "mtime": 1779716013.4690926,
+    "ast_hash": "57685620501f4667e6c5082a0512a294",
     "semantic_hash": ""
   }
 }
