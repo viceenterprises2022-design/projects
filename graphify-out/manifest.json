@@ -9540,7 +9540,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_runner.py": {
-    "mtime": 1779695296.4746914,
+    "mtime": 1779695497.1843574,
     "ast_hash": "7223cbe29a462f4eb8446a18594988e4",
     "semantic_hash": ""
   },
@@ -25630,7 +25630,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/README.md": {
-    "mtime": 1779695374.1999493,
+    "mtime": 1779695497.1823573,
     "ast_hash": "f0d0a880052c9e265e00a5a8349f14d3",
     "semantic_hash": ""
   },
@@ -36805,7 +36805,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/toddle_all_inventory.py": {
-    "mtime": 1779695053.6178854,
+    "mtime": 1779695497.1843574,
     "ast_hash": "45aea201ce0d23e6ddd06d5b9b117a5f",
     "semantic_hash": ""
   },
@@ -36815,7 +36815,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/toddle_inventory/all_subjects_inventory.json": {
-    "mtime": 1779695087.247046,
+    "mtime": 1779695497.1843574,
     "ast_hash": "44fce47df29065a3b8f4e2c16b888689",
     "semantic_hash": ""
   },
@@ -36857,6 +36857,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260525_1257_X_1_44.txt": {
     "mtime": 1779694957.967568,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_bulk_download.py": {
+    "mtime": 1779695131.257143,
+    "ast_hash": "510b29285a01a8c147d960c0bfc9a307",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Chemistry/Unit 3_ The Periodic Table/Build an Atom.html": {
+    "mtime": 1779695244.7665198,
+    "ast_hash": "4773dc19550f2a65c0338f63a235e11c",
     "semantic_hash": ""
   }
 }
