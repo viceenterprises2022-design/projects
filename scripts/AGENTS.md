@@ -129,6 +129,13 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Commit: `feat: add crontab-viz — crontab visualizer with IST conversion, next run, calendar grid`
 - **Multica:** ALP-340 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-25: PKScreener Memory Leak Fix
+- Diagnosed root cause: 28 orphaned pkscreener processes from PTY subprocess leaks + overlapping cron runs consuming ~12GB RAM, maxing 4GB swap, causing GNOME OOM kills.
+- Killed all 28 runaway `pkscreenercli.py` processes → freed ~9GB instantly.
+- Added `fcntl.flock` lockfile (`/tmp/pkscreener_runner.lock`) to `pkscreener_runner.py` — any overlapping cron run exits immediately instead of piling on more processes.
+- Updated README with lockfile documentation.
+- **Multica:** ALP-359 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

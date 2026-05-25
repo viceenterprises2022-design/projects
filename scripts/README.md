@@ -504,6 +504,8 @@ python3 pkscreener_runner.py
 30 12 * * 1-5   # 6:00 PM IST  — evening review
 ```
 
+**Lockfile**: `/tmp/pkscreener_runner.lock` — prevents overlapping cron runs via `fcntl.flock`. If a new cron fires while a previous run is in progress, it exits immediately. This prevents process accumulation that caused 28 parallel pkscreener processes consuming ~12GB RAM.
+
 **Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
 
 ## OpenCode `/pursue` Goal Plugin
