@@ -36340,8 +36340,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/toddle_notebooklm_sync.py": {
-    "mtime": 1779689621.787718,
-    "ast_hash": "9aa9f4d9ce39eefe0133cc4f48ff2680",
+    "mtime": 1779697142.967783,
+    "ast_hash": "0464e3731b908a0796217c075d0f89a6",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/toddle_config.py": {
@@ -36815,7 +36815,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/toddle_inventory/all_subjects_inventory.json": {
-    "mtime": 1779695497.1843574,
+    "mtime": 1779697366.9693918,
     "ast_hash": "44fce47df29065a3b8f4e2c16b888689",
     "semantic_hash": ""
   },
@@ -36907,6 +36907,1851 @@
   "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Geography/Unit 1_ Environmental Regions and Societies/map-rainforest.jpg.jpeg": {
     "mtime": 1779696553.8338633,
     "ast_hash": "71b436b2b99aebfb9e5db6be1bf3f81e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_bulk_convert.py": {
+    "mtime": 1779696807.293689,
+    "ast_hash": "e63127f8d6b2477206a97a7745e10f6a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/sync_state.json": {
+    "mtime": 1779697154.4758203,
+    "ast_hash": "1677ad54dc14ce85f23531a4c0a2b0e4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/toddle_upload_all.py": {
+    "mtime": 1779696928.472084,
+    "ast_hash": "9f4e77457b101c167f10f22bf861ff80",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Design/Unit - 1 - Web Design/inline css - Example.txtText File.txt": {
+    "mtime": 1779696768.268562,
+    "ast_hash": "87d0fd769f30233236120f17572ee327",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Design/Unit - 1 - Web Design/inline css.htmlUnknown File.html": {
+    "mtime": 1779696770.5165694,
+    "ast_hash": "87d0fd769f30233236120f17572ee327",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography_merged.md": {
+    "mtime": 1779697011.7580597,
+    "ast_hash": "26fb730c5343cd1cb97572ca56b90f63",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design_merged.md": {
+    "mtime": 1779697029.0975766,
+    "ast_hash": "e7b967b71732f44dd3c7065e81fb030b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry_merged.md": {
+    "mtime": 1779696969.2462168,
+    "ast_hash": "41f7e3967f751b39331e93751f25ffb7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics_merged.md": {
+    "mtime": 1779696977.8738933,
+    "ast_hash": "c3c9f3bee57eb8921b8ed08a4ff4387d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish_merged.md": {
+    "mtime": 1779697020.0223823,
+    "ast_hash": "5c663c47815cc64896460de462749390",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History_merged.md": {
+    "mtime": 1779697003.169649,
+    "ast_hash": "5cfd387d383a42e797131f12b6dae08f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Visual Arts_merged.md": {
+    "mtime": 1779697037.2967925,
+    "ast_hash": "373f805d6b56e152f30c9d3aff638bbf",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology_merged.md": {
+    "mtime": 1779696994.7036386,
+    "ast_hash": "be3cba209d86973b4c90d5b0e86c889c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English_merged.md": {
+    "mtime": 1779696986.614773,
+    "ast_hash": "58c020f641a81df12ff93f7443d5b10b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Fahrenheit451/Drill&Practice_F451.docx.md": {
+    "mtime": 1779696839.9877956,
+    "ast_hash": "6828d2c57ed6f8997f5327d86d6f0313",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision 1_historical fiction_poem and background.docx.md": {
+    "mtime": 1779696844.7549367,
+    "ast_hash": "1c4b416906a683e89a90cee65015f786",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision1_print ads_elements of an ad.docx.md": {
+    "mtime": 1779696844.8221276,
+    "ast_hash": "8eb64214c6e36f71c5021abaab053547",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision1_F451_summary.docx.md": {
+    "mtime": 1779696844.7907827,
+    "ast_hash": "aead8d84c21da3f41ee6d185371baf80",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision1_F451_questions.docx.md": {
+    "mtime": 1779696844.7786255,
+    "ast_hash": "988f183a7a958d21b03f60c9af901158",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision 1_historical fiction_practice questions.docx.md": {
+    "mtime": 1779696844.7664216,
+    "ast_hash": "8d5f81e74d8857ef149b9c1d7901505d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision1_print ads practice task.docx.md": {
+    "mtime": 1779696844.8088114,
+    "ast_hash": "08a8f7199318779b4fcbff2f00f40229",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision1_Print ads analysis_explainer.docx.md": {
+    "mtime": 1779696844.7998462,
+    "ast_hash": "44ca88cf62ff7ba2d20f274e6134e0b6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Revision/Revision 1_historical fiction_annotated poem.docx.md": {
+    "mtime": 1779696844.742198,
+    "ast_hash": "59c22e195376ca58ff08cc73911a303a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Print advertisements/Introduction to Unit 1 - Identity in making.pdfPDF.md": {
+    "mtime": 1779696844.3030574,
+    "ast_hash": "69173d0866268389b04d9ac2ae695402",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Print advertisements/Analysis of Advertisements \u2013 Practise set.pptx.md": {
+    "mtime": 1779696843.7724607,
+    "ast_hash": "7d85ee161e2b0a1b194aa185c84c8c41",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Print advertisements/Introduction to advertisements.pdfPDF.md": {
+    "mtime": 1779696844.702688,
+    "ast_hash": "71436ff846a3f989c95e2e652ac088cb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Persuasive speech/Persuasive Techniques.md": {
+    "mtime": 1779696841.5766842,
+    "ast_hash": "1d843c32b28199bcd8adcc6292acefc9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Persuasive speech/Speech writing_03.02.2026.pdfPDF.md": {
+    "mtime": 1779696843.5650039,
+    "ast_hash": "3c6f29495fe4730afc5c9e8aeba5a673",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Persuasive speech/Hook.jpeg.md": {
+    "mtime": 1779696841.2685509,
+    "ast_hash": "be78e2f14c1564c5382dc850daaeaa5c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Persuasive speech/Rhetorical triangle.pdfPDF.md": {
+    "mtime": 1779696843.4495676,
+    "ast_hash": "91be7bac4c0c0b35f1738a5b6d3a75f6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Persuasive speech/Malala Yousafzai.md": {
+    "mtime": 1779696841.57369,
+    "ast_hash": "8f86e322e3d3aa13609b5683793addff",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Persuasive speech/Writing_a_speech.md": {
+    "mtime": 1779696843.7566292,
+    "ast_hash": "80ba2bb7d308d3c61125a712585e346e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Persuasive speech/Literary Devices in Speech Analysis.md": {
+    "mtime": 1779696841.2760725,
+    "ast_hash": "f51c3b83d3438cff8ec84d9dc8f53dbe",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Themes.md": {
+    "mtime": 1779696841.2259445,
+    "ast_hash": "2d1af751440743f4974f27808841e4e3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Structure, Style and Literary Devices.md": {
+    "mtime": 1779696840.8385096,
+    "ast_hash": "6f55f059dfba63efe62e6f4b9ad987f0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Brief note about the American civil war .docx.md": {
+    "mtime": 1779696840.8023758,
+    "ast_hash": "63eb43dce4d95aaeb35f6c9de5f5f6ed",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Practice worksheet_living space.docx.md": {
+    "mtime": 1779696840.8309717,
+    "ast_hash": "ca4731cf52a8a5ebdac673f01369f2f1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/The Migrant - A.L. Hendricks.md": {
+    "mtime": 1779696840.9009466,
+    "ast_hash": "6a2242f6a2cff051ef3cded6f3f4d9ac",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Background_Drummer boy.docx.md": {
+    "mtime": 1779696840.7856412,
+    "ast_hash": "56772617fd1f5c24fa216d46ed4a012e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Poem_Living space.docx.md": {
+    "mtime": 1779696840.8197985,
+    "ast_hash": "d2b1df04671aabeb02ee00fe3e1c775a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Themigrant_toneandmood.pptx.md": {
+    "mtime": 1779696841.2395504,
+    "ast_hash": "5a7ce75fae5e6efddfb7d19431c1f0e6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/living space_analysis.docx.md": {
+    "mtime": 1779696841.268221,
+    "ast_hash": "b89fc1915813173069d4f83df45a93a3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/The drummer boy of Shiloh_story.pdfPDF.md": {
+    "mtime": 1779696841.2201524,
+    "ast_hash": "fbd740a1ac1d45aad463761d836993c8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Historical fiction/Historical fiction.docx.md": {
+    "mtime": 1779696840.8098912,
+    "ast_hash": "7c5540ad0729e690c9c87cb95eb65927",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Grammar/demonstratives.pdfPDF.md": {
+    "mtime": 1779696840.7797983,
+    "ast_hash": "42d97d7250da56d2198b7953a25e3d52",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Grammar/demonstratives.md": {
+    "mtime": 1779696840.5357413,
+    "ast_hash": "82ef8526e229888ead4a5a1951df1836",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Grammar/Adverbs1_19.01.2026.pdfPDF.md": {
+    "mtime": 1779696840.3190744,
+    "ast_hash": "81600c08830dd916112470b9f36a4d74",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Grammar/Adverbs2_27.01.2026.docx.md": {
+    "mtime": 1779696840.354797,
+    "ast_hash": "6231e2fde1e206df7e70b7593d35859a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Counter-argument/Counter-argument.docx.md": {
+    "mtime": 1779696839.968987,
+    "ast_hash": "94f31cd1bbc2bec65e240fe33d3037c3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/English/Counter-argument/G7 worksheet_18_10.10.2025B.docx.md": {
+    "mtime": 1779696839.9811013,
+    "ast_hash": "9c15fcfbf41422799cc5581408e419c1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/STEAM Task Graphic Organiser for Students.docx.md": {
+    "mtime": 1779696850.1924243,
+    "ast_hash": "26ee13662e128bd6fcdb4a6473f42063",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 2/SILKROAD.pdfPDF.md": {
+    "mtime": 1779696854.3389668,
+    "ast_hash": "3509fe573efeba7112239d1b78dd6208",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 2/Enabling Technologies.pdfPDF.md": {
+    "mtime": 1779696853.6410685,
+    "ast_hash": "5161086436877bebebccd6e163f1ac53",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 2/Gold, God, and Glory - The Age of Exploration.pdfPDF.md": {
+    "mtime": 1779696853.9646747,
+    "ast_hash": "fbc667e7983f3a610009a81b1fc18a02",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 2/EarlyExplorers.pdfPDF.md": {
+    "mtime": 1779696853.1587386,
+    "ast_hash": "1f6f8760a73228121044cea83d0da484",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Renaissance Man.docx.md": {
+    "mtime": 1779696854.3786325,
+    "ast_hash": "ee498d712586b86d17f7ab0343439b4e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Background Story of Renaissance.docx.md": {
+    "mtime": 1779696854.3488338,
+    "ast_hash": "c4c5779ddfefcef9f7ed98cfa796dc75",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/The Last Supper - Painting Analysis.docx.md": {
+    "mtime": 1779696854.42399,
+    "ast_hash": "8117a0622f8dffa14d1e5c4c6d688fe9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Timeline of events - Grade 7.docx.md": {
+    "mtime": 1779696854.4278426,
+    "ast_hash": "d780defb5e8c3be2619b2910dc7de5ab",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Causes of Renaissance.docx.md": {
+    "mtime": 1779696854.355072,
+    "ast_hash": "f9078b64904bef8c876f57633c26decd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Painting Analysis Guide with examples.docx.md": {
+    "mtime": 1779696854.3675745,
+    "ast_hash": "4e1b8853c828cf9a478a8782bdcb79e4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Renaissance & Enlightenment.docx.md": {
+    "mtime": 1779696854.3715618,
+    "ast_hash": "15b601f7843fc8e9abad660560221f66",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Role of Printing Press.docx.md": {
+    "mtime": 1779696854.4099014,
+    "ast_hash": "6f568312e6e179d4671ec92f92472dd8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Rene Descartes & Rationalism.docx.md": {
+    "mtime": 1779696854.3990204,
+    "ast_hash": "fedd7b39d37285cb692980e0b5f0b55f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/Renaissance Timeline.docx.md": {
+    "mtime": 1779696854.3921866,
+    "ast_hash": "cda07047ab3802e7fbb45950916bbf2e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 3 - Ideas and Innovation/School of Thoughts - Renaissance.docx.md": {
+    "mtime": 1779696854.4161348,
+    "ast_hash": "53675c21a0f59b24a24a36b0a0035590",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/Event Card- Fall of Roman Empire.pdfPDF.md": {
+    "mtime": 1779696850.3914285,
+    "ast_hash": "47099629fd1ecbf44598099f863367b6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/Reasons for the peoples participation in Crusades.docx.md": {
+    "mtime": 1779696851.0302079,
+    "ast_hash": "f990f0e92dd65a7c604503ef188d4655",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/TheHouseofWisdomBaghdadsCenterofLearning.pdfPDF.md": {
+    "mtime": 1779696852.6276126,
+    "ast_hash": "3726e63af52d97473f70aa02bae2f3e3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/Causes for the Fall of Roman Empire.docx.md": {
+    "mtime": 1779696850.205666,
+    "ast_hash": "53761cc4381ce227b6fc75e97561b030",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/People's & Prince's Crusades.pdfPDF.md": {
+    "mtime": 1779696851.0249593,
+    "ast_hash": "57065864e7fce0c485a9262afff7683a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/Impacts of the Crusades.pdfPDF.md": {
+    "mtime": 1779696850.5861657,
+    "ast_hash": "9949d5b63b80a3fd8831bfbc81fb8bc3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/The-Medieval-World.pdfPDF.md": {
+    "mtime": 1779696852.2654529,
+    "ast_hash": "c17b3ae3a1dafa4c71cb638cf89277b9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/SuleymantheMagnificent.pdfPDF.md": {
+    "mtime": 1779696851.5569732,
+    "ast_hash": "5069d2b056176642bf900ac6882e949e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/Tolerance and Equality in the Islamic Golden Age.pdfPDF.md": {
+    "mtime": 1779696852.987134,
+    "ast_hash": "56f9805b9e58cadf3e4fad746f7f0bc0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/Jerusalem and Abrahamic Faiths .docx.md": {
+    "mtime": 1779696850.6028266,
+    "ast_hash": "96e8fdd9f91705959c7db169a35f2221",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit 1/The-Black-Death-Understanding-the-Pandemic-That-Changed-Medieval-Europe.md": {
+    "mtime": 1779696851.980458,
+    "ast_hash": "b41e572415403154937f50d8c2e2a8d3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit III_ Ideas and Innovations (Renaissance, Scientific Revolution)/Renaissance, Meaning, Characteristics, Causes, Impact.pdfPDF.md": {
+    "mtime": 1779696856.4974465,
+    "ast_hash": "5514d9d3535a9574d4f891cf502e7fd2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit III_ Ideas and Innovations (Renaissance, Scientific Revolution)/How did the de Medici contribute to the Renaissance - DailyHistory.org.pdfPDF.md": {
+    "mtime": 1779696855.3869197,
+    "ast_hash": "79041285cd51c7e22128dd8747c9bbf5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/History/Unit II - The Age of Exploration/MYP History_Age of explorations_NOTES.pdfPDF.md": {
+    "mtime": 1779696854.930678,
+    "ast_hash": "e49ed754a3e1f7b55e9f829131079eab",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/STEM-AND-LEAF-DIAGRAMS.pdfPDF.md": {
+    "mtime": 1779696832.6459892,
+    "ast_hash": "915634db90c41b0bb42d18c6ad4ecc97",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Algebra - Factorisation Revision.md": {
+    "mtime": 1779696826.0749505,
+    "ast_hash": "5e551826d414c9d9e17aa47b831081eb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Co ordinates.pdfPDF.md": {
+    "mtime": 1779696826.783854,
+    "ast_hash": "9d977a296f5d8fdeb38455804c030ab0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/SA2 Math Practicesheet1 Stem and Leaf plot.md": {
+    "mtime": 1779696832.2829833,
+    "ast_hash": "d5388d59a173875e4fbcd1f2d944c770",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Graphs.pdfPDF.md": {
+    "mtime": 1779696831.647189,
+    "ast_hash": "2f22bf22b92f9b5ce66fdb5903ca472d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Polygons.md": {
+    "mtime": 1779696831.8638308,
+    "ast_hash": "c24ebd9030588a484e5332f6aeb6171e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Area 2d shapes.pdfPDF.md": {
+    "mtime": 1779696826.1553903,
+    "ast_hash": "ff577a345d278cffe9631b7af4fc2f70",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/CRI D & C.md": {
+    "mtime": 1779696826.6805758,
+    "ast_hash": "f4e9c1d8f32660c41859e38fefd11803",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/area practicesheet.pdfPDF.md": {
+    "mtime": 1779696832.6953096,
+    "ast_hash": "f6a9b7797019a823136cb71dcdf18596",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/G_7MATH FYE.md": {
+    "mtime": 1779696827.5947645,
+    "ast_hash": "595af8b8e115404e83eb22b3337ff404",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/FYE integrated Math Revision.pdfPDF.md": {
+    "mtime": 1779696826.8995788,
+    "ast_hash": "80ee7c261281340ed6bae07e5dd02074",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Quadrilateral angle ws.pdfPDF.md": {
+    "mtime": 1779696832.1939993,
+    "ast_hash": "5fffd63080185e6b2d460163084ed125",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/G_7 two way table.md": {
+    "mtime": 1779696827.0316634,
+    "ast_hash": "8591fefdb86be8f9ced44235cc3151fa",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/3 D Shapes SA and Volume.pdfPDF.md": {
+    "mtime": 1779696825.8174655,
+    "ast_hash": "2f5bfb4379eed0e62c5482880104b4e4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Indices practice sheet.pdfPDF.md": {
+    "mtime": 1779696831.7517688,
+    "ast_hash": "f2836bbd61eb87ed30c3ea0d7e9970ac",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/ALgebra Math Worksheet.pdfPDF.md": {
+    "mtime": 1779696826.0035355,
+    "ast_hash": "d6a4f7fe2899c0b4dd17f462801a924d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Area of compound shapes.pdfPDF.md": {
+    "mtime": 1779696826.2037508,
+    "ast_hash": "1e92a273e277d6ab28df53bf791116aa",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/Probability.md": {
+    "mtime": 1779696832.1097054,
+    "ast_hash": "6abf419568c5fda09fa7c40438e0fd1d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/February FA resources/FA Drill and Practice Math Worksheet.pdfPDF.md": {
+    "mtime": 1779696832.8145406,
+    "ast_hash": "449a239bd28accf2f96586c335e43acf",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/February FA resources/laws-of-indices-code-breaker.pdfPDF.md": {
+    "mtime": 1779696833.0921295,
+    "ast_hash": "b04b909f59da7f00b33a00bbd10f0ab7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/February FA resources/G_7 Math Indices practicesheet.pdfPDF.md": {
+    "mtime": 1779696832.9097736,
+    "ast_hash": "29c2a108180e592d50f7da8d36a9313e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/February FA resources/Notes _Laws of Indices .pptx.md": {
+    "mtime": 1779696832.9224863,
+    "ast_hash": "f6e03b027c4f9dbb7f0acf5ff55d44f7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE_Timetable_Schedule/Syllabus Focus Grade 7.md": {
+    "mtime": 1779696838.0414681,
+    "ast_hash": "e9a445937a27f03089837ba41115e1b7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE_Timetable_Schedule/G7 HYE timetable.pdfPDF.md": {
+    "mtime": 1779696836.7475204,
+    "ast_hash": "78e3b1e3bdfd6377fb6ca4f6c75e971b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Criteria Resource Booklet/Criteria B Examples_Resource Book.docx.md": {
+    "mtime": 1779696825.2764776,
+    "ast_hash": "a90ac667d9978f9409ca3c08ac8cdcd4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Criteria Resource Booklet/G7 Criteria D Resource Booklet.pdfPDF.md": {
+    "mtime": 1779696825.618602,
+    "ast_hash": "4393df10f9688dd63c00f8e534705a37",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/4. ACER/ACER Practice_1.docx.md": {
+    "mtime": 1779696825.2701554,
+    "ast_hash": "72ffe503695a7dea1c387b2ec3bc5a73",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FA3/Math G_7 FA3 Cri B&C.pdfPDF.md": {
+    "mtime": 1779696825.7649755,
+    "ast_hash": "1dfa7da61404a5a17e6c626b8871b616",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit3_Spatial Reasoning/Quadrilaterals_and_Their_Properties.pdfPDF.md": {
+    "mtime": 1779696839.954824,
+    "ast_hash": "0f5ccd91f77345a291b4a1d77773f46a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit3_Spatial Reasoning/Quadrilateral angle ws.pdfPDF.md": {
+    "mtime": 1779696839.8747447,
+    "ast_hash": "5fffd63080185e6b2d460163084ed125",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/FA3_Revision WS.docx.md": {
+    "mtime": 1779696824.42896,
+    "ast_hash": "c01df7ec30bdd0bfff694e7f32ad87ad",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/WS_HW_sequences-pdf.pdfPDF.md": {
+    "mtime": 1779696824.9816813,
+    "ast_hash": "a6a0444f7140d569899aca45b79c30a5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/FA1_Revision WS.docx.md": {
+    "mtime": 1779696824.3749049,
+    "ast_hash": "ebb846ece53d398ac6a96c82e05765ed",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/FA2_Revision WS.docx.md": {
+    "mtime": 1779696824.417822,
+    "ast_hash": "afd7211ad9d9785bc620017f756f7973",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/WS_HW_21 NOV.pdfPDF.md": {
+    "mtime": 1779696824.7158937,
+    "ast_hash": "3074fe64d47cf40ecbbf100d64525b0a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/Drill and Practice_Numbers_Ans Key.docx.md": {
+    "mtime": 1779696824.3660853,
+    "ast_hash": "e12accdbdf8ffca7dda18df26acc3c48",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/WS_Patterns_3.pdfPDF.md": {
+    "mtime": 1779696825.2606626,
+    "ast_hash": "127d8874de8a0518977a61fa03efb6c2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/Drill and Practice_Numbers.docx.md": {
+    "mtime": 1779696824.3610013,
+    "ast_hash": "9961a202d1480c961263b0fa05a4b689",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/FA1_Revision WS_Ans Key.docx.md": {
+    "mtime": 1779696824.3850095,
+    "ast_hash": "3346727717181159b4c49ecb223e0ab5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/FA3_Revision WS_Ans Key.pdfPDF.md": {
+    "mtime": 1779696824.4485586,
+    "ast_hash": "7d44f7c14f5afa49c644089a17ef9788",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/1. Schedule_To complete.docx.md": {
+    "mtime": 1779696824.3536463,
+    "ast_hash": "922dea377d481b140bc366b680b6d14f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/FA2 Revision WS_Ans key.pdfPDF.md": {
+    "mtime": 1779696824.4086692,
+    "ast_hash": "c5c0eb75f304381090fe4711de8816a3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Sequences.pdfPDF.md": {
+    "mtime": 1779696838.8276167,
+    "ast_hash": "86159db0cae40b2350ff02ad99087d3d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/forming-expressions.pdfPDF.md": {
+    "mtime": 1779696839.5886567,
+    "ast_hash": "1ef3901ebe0776f285b6bb7f5f6459e2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Binomials, Monomials.pdfPDF.md": {
+    "mtime": 1779696838.4660313,
+    "ast_hash": "a50e64fd059e1af01b9d58e11bc6d88d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Patterns-answers.pdfPDF.md": {
+    "mtime": 1779696838.537645,
+    "ast_hash": "17c94367106732ea2b3234fa22a58c55",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/ADDING & SUBTRACTING ALGEBRAIC FRACTIONS.pdfPDF.md": {
+    "mtime": 1779696838.0557494,
+    "ast_hash": "c791893beb808b7fa750d90f9bf08057",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Worksheet- Algebra.pdfPDF.md": {
+    "mtime": 1779696839.0959356,
+    "ast_hash": "7b35b9d0c36549c2bd8f9d100631e13c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Fractional Indices.docx.md": {
+    "mtime": 1779696838.4717069,
+    "ast_hash": "005bfc34abce48740c47df3e317298c1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Worksheet_Forming-Solving-Equations-115-pdf.pdfPDF.md": {
+    "mtime": 1779696839.3131874,
+    "ast_hash": "0921fea54af1bf096b1f75f005bda433",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Worksheet equations-pdf.pdfPDF.md": {
+    "mtime": 1779696838.9728627,
+    "ast_hash": "31c24791ee59e96a2f254759d313ac72",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/sequences-patterns-pdf.pdfPDF.md": {
+    "mtime": 1779696839.7771995,
+    "ast_hash": "60e05d5768e1b1e58affc7bbb28a0c9d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Grade 7 Revision 2.docx.md": {
+    "mtime": 1779696833.7721994,
+    "ast_hash": "c1dd4f620564fd95c36e5a974ea30e9d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week11 _Grade 7_Indices & Time.docx.md": {
+    "mtime": 1779696836.0438864,
+    "ast_hash": "b71e46d1d9c3bee7d50c3c85fe1921d4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 16_Grade 7_Mixed.docx.md": {
+    "mtime": 1779696835.9360132,
+    "ast_hash": "6ac7f32a50ee0460d31b59e1f3c681b4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/G7 Criteria D practice HYE math.pdfPDF.md": {
+    "mtime": 1779696833.7546363,
+    "ast_hash": "d8585b3632c1da114564b9e5081b0dd4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/WS_Patterns_4_HYE Revision.pdfPDF.md": {
+    "mtime": 1779696834.144575,
+    "ast_hash": "04beca43962779c57646fcb87ec38f70",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week3_Grade7_Multipliers.docx.md": {
+    "mtime": 1779696836.1874547,
+    "ast_hash": "48af9e27d2b1bcf079668846a5022a70",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 15_Anskey_Grade7_Sequences and Patterns.docx.md": {
+    "mtime": 1779696835.921619,
+    "ast_hash": "b2d42b709cf7ca04aef857c0a2f95cc9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 12_ 27 Oct to 31 Oct_Gr 7_Indices.docx.md": {
+    "mtime": 1779696835.8834567,
+    "ast_hash": "645b5062b31afb0c6650ca8216bfbd07",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week6_Answer Key_Numbers.docx.md": {
+    "mtime": 1779696836.438398,
+    "ast_hash": "8aad2efe42e83cfb5562bca3148e1251",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 14_Grade7_AnswerKey_10 Nov-14 Nov_Algebra.docx.md": {
+    "mtime": 1779696835.9121518,
+    "ast_hash": "aa172fdc072bce051cc8d95693174894",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week6_Grade 7_Numbers.docx.md": {
+    "mtime": 1779696836.4906118,
+    "ast_hash": "a645bfb875470270de2ba76b9be3aef7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week8_Answerkey_Grade7_Revision.docx.md": {
+    "mtime": 1779696836.5160148,
+    "ast_hash": "f4141ed1ae884dcba3c624efe6b2b1ae",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/WS_Ratio_Answerkey.pdfPDF.md": {
+    "mtime": 1779696835.8436365,
+    "ast_hash": "f9858168956e93130ec4bac91a164909",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week5_Grade 7_Application on Percentages.docx.md": {
+    "mtime": 1779696836.40138,
+    "ast_hash": "8b59028509112367706e9ddc5d21da3f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week5_Answer Key_Application of Percentages.docx.md": {
+    "mtime": 1779696836.3667066,
+    "ast_hash": "1d78c4b0a5fdf6d81592a217d47a082e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week14_Grade7_AnswerKey_10 Nov-14 Nov_Algebra.pdfPDF.md": {
+    "mtime": 1779696836.116415,
+    "ast_hash": "65c49fadb3a12359ff6e205c18d68fdb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 3_Answer Key_Grade 7_Multipliers.pdfPDF.md": {
+    "mtime": 1779696835.9569638,
+    "ast_hash": "1670e3f9875f0dcef3569dc45a6ab0a9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week11_Answerkey_Grade7_Indices-Time.docx.md": {
+    "mtime": 1779696836.0689292,
+    "ast_hash": "b94b4ec6a5d571c94f275aaf5bd225a8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week4_Answer Key _Percentage Word Problems.docx.md": {
+    "mtime": 1779696836.358829,
+    "ast_hash": "b868e0fb176f34cdc923fd386e2ecb9a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/WORKSHEET FOR 7 AND 8 dec.docx.md": {
+    "mtime": 1779696833.9247758,
+    "ast_hash": "2f0628954b143d498f0956c33b1ad2c1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week10_Answerkey_Grade7_Indices_Ratio_Proportion.docx.md": {
+    "mtime": 1779696836.0234184,
+    "ast_hash": "3ad2970331fccad9d4b8456df5d0033a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week9_Grade 7_Ratios.docx.md": {
+    "mtime": 1779696836.5995374,
+    "ast_hash": "3c80e0b32d928fd5e11571eb3cff0e4e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week_13_Grade7_AnswerKey_Algebra.docx.md": {
+    "mtime": 1779696836.6111832,
+    "ast_hash": "15813ba6b1d45b9ba0e0332ed889260a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 4_Grade 7_Percentages Word Problems.docx.md": {
+    "mtime": 1779696835.9936833,
+    "ast_hash": "83e1fa08ea5b954fe3673de51294ad1f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/WS_Percentages.pdfPDF.md": {
+    "mtime": 1779696834.5137,
+    "ast_hash": "d5c773027bcc42935f711446336f2a67",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/WS_Percentages_Answerkey.pdfPDF.md": {
+    "mtime": 1779696834.5388372,
+    "ast_hash": "5cd7cd6e099c86e310348e0c706bde7d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week15 _Grade 7_Sequences and Patterns.docx.md": {
+    "mtime": 1779696836.1336784,
+    "ast_hash": "d394086b49f141d4e0c890262141b5c3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/SIMPLIFY ALGEBRA GRADE 7.pdfPDF.md": {
+    "mtime": 1779696833.920555,
+    "ast_hash": "06772cd72b5d2b8df1d9491a13e90f01",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week3_Grade7_Multipliers.pdfPDF.md": {
+    "mtime": 1779696836.3479965,
+    "ast_hash": "f4edb4446f1a8996f418f7671f3591c7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 17_Grade 7_Mixed.docx.md": {
+    "mtime": 1779696835.9510672,
+    "ast_hash": "a70f8e8ed5e8af07de89c97594541ac0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week9_Answerkey_Grade7_Ratios.docx.md": {
+    "mtime": 1779696836.5747845,
+    "ast_hash": "08b59ef925beb6ec1ccce2826cc0a306",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 12_ Answer Key_27Oct - 31Oct_Gr 7_Indices.docx.md": {
+    "mtime": 1779696835.8971918,
+    "ast_hash": "ffb3c701ccdb0775a5b0b8dc742e0149",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week8_Grade 7_Revision.docx.md": {
+    "mtime": 1779696836.5521986,
+    "ast_hash": "98eba4a78afe2149726c2948d3c4c24f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/WS_Ratio.pdfPDF.md": {
+    "mtime": 1779696834.6949654,
+    "ast_hash": "592c9ef476de03bd20e95791e733163d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week _13_Grade 7_Algebra.docx.md": {
+    "mtime": 1779696836.0124,
+    "ast_hash": "804a99a5f3e19c9743f80c2fc9d7981f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week 10 _Grade 7_Indices_Ratio_Proportion.docx.md": {
+    "mtime": 1779696835.8634882,
+    "ast_hash": "7ef77d06ae18f99531c177a5117ebd53",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week14_Grade 7_10 Nov - 14 Nov_Algebra.docx.md": {
+    "mtime": 1779696836.089307,
+    "ast_hash": "f6ee893356b6f40657584c8ca7081df0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/G7 Criteria D Resource Booklet.pdfPDF.md": {
+    "mtime": 1779696833.4461658,
+    "ast_hash": "4393df10f9688dd63c00f8e534705a37",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/FA3_Revision WS.docx.md": {
+    "mtime": 1779696823.2966883,
+    "ast_hash": "c01df7ec30bdd0bfff694e7f32ad87ad",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/FA1_Revision WS.docx.md": {
+    "mtime": 1779696823.2204933,
+    "ast_hash": "ebb846ece53d398ac6a96c82e05765ed",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/FA2_Revision WS.docx.md": {
+    "mtime": 1779696823.2389555,
+    "ast_hash": "afd7211ad9d9785bc620017f756f7973",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/MYP 2 \u00a02D Shapes Answerkey .pdfPDF.md": {
+    "mtime": 1779696824.2568398,
+    "ast_hash": "2c635515cbf6b977a300545c5a48f4a7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/FA2_Revision WS_Ans Key.pdfPDF.md": {
+    "mtime": 1779696823.284135,
+    "ast_hash": "f65ce1c651076c043abb2c6cefb8ff3d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/FA1_Revision WS_Ans Key.docx.md": {
+    "mtime": 1779696823.2298906,
+    "ast_hash": "3346727717181159b4c49ecb223e0ab5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/FA3_Revision WS_Ans Key.pdfPDF.md": {
+    "mtime": 1779696823.3290975,
+    "ast_hash": "7d44f7c14f5afa49c644089a17ef9788",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/2. FA_Answer Keys/FA_3_Answer Key_Gr7.pdfPDF.md": {
+    "mtime": 1779696824.3472168,
+    "ast_hash": "c77d30d85e4dbb8db233a2f34ff3754f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/2. FA_Answer Keys/FA1_Answer Key_G7.pdfPDF.md": {
+    "mtime": 1779696824.269565,
+    "ast_hash": "63ee42d00023cc6f5c6fa70e8721788f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/2. FA_Answer Keys/FA2_Answer Key_G7.pdfPDF.md": {
+    "mtime": 1779696824.2947822,
+    "ast_hash": "77e6577455101daccbd6ecf63e3d4ec2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/2. FA_Answer Keys/FA4_AnswerKey_G7.pdfPDF.md": {
+    "mtime": 1779696824.325749,
+    "ast_hash": "d54acda9f34cf03954790323c4fa220c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/TOOTH DECAY NOTES.pdfPDF.md": {
+    "mtime": 1779696848.975354,
+    "ast_hash": "7d7e7d2fd15f197bd62ffe6780b0c079",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/ROLE OF FLUORIDE.pdfPDF.md": {
+    "mtime": 1779696847.1528778,
+    "ast_hash": "2b16b6c5620aca7c6271a336895ef9b1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Drill and Practice/Grade 7 Drill and Practice.md": {
+    "mtime": 1779696844.8669112,
+    "ast_hash": "9f492746c79d7ccfcbdf5cfe9ed24664",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/Lime water test.pdfPDF.md": {
+    "mtime": 1779696847.7049828,
+    "ast_hash": "c7c16eb922abd9c907b78e22701394a5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/SIMPLIFIED NOTES FA3.pdfPDF.md": {
+    "mtime": 1779696848.477786,
+    "ast_hash": "51d05115ea01326d51a0cd6b5a18b53d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/Oxygen debt- Worksheet.pdfPDF.md": {
+    "mtime": 1779696847.872402,
+    "ast_hash": "a4a56e54104fd40f4f070293e80fad5d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/Bones Muscles and Joints.pdfPDF.md": {
+    "mtime": 1779696847.257517,
+    "ast_hash": "1a5acf26f03147c851f35dcfa6c3d40b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/SDL- Respiration and Respirometer.pdfPDF.md": {
+    "mtime": 1779696847.893624,
+    "ast_hash": "47e64514b5812690b2ab0516734fa98d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/Imp Respiratory System[37].md": {
+    "mtime": 1779696847.598065,
+    "ast_hash": "3b2053c5023cfbabcdda6136b6c9d37b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/SDL- Respiration and Respirometer.docx.md": {
+    "mtime": 1779696847.8836977,
+    "ast_hash": "e67f916a79bfca5ff616f2c209f90506",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Respiratory system/Smoking.pdfPDF.md": {
+    "mtime": 1779696848.7171156,
+    "ast_hash": "8190e114406e353bddf81e7a913292fe",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/Concept and relevance on biomolecules.pdfPDF.md": {
+    "mtime": 1779696849.9167829,
+    "ast_hash": "36d8288b64079128429d8809f4ec398a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/Deficiency disease.jpeg.md": {
+    "mtime": 1779696850.0525906,
+    "ast_hash": "e1168769ea554acf3e5f3e7bc97c0f76",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/Biomolecules- PPT.pdfPDF.md": {
+    "mtime": 1779696849.859062,
+    "ast_hash": "44b9b2f62e1efcdd1c60289c791a16a6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/SDL- Biomolecules.pdfPDF.md": {
+    "mtime": 1779696850.1854835,
+    "ast_hash": "353a0ac46c70a3127bd2f2c75137212e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/BALANCED DIET NOTES.pdfPDF.md": {
+    "mtime": 1779696849.7651827,
+    "ast_hash": "9ede008c94b9375879a9c58de6b1dd2b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/Deficiency Diseases _ Conditions.pdfPDF.md": {
+    "mtime": 1779696850.052402,
+    "ast_hash": "3d1c7e7d66b87f5997012f6a88be234e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/nutrient deficiency.jpeg.md": {
+    "mtime": 1779696850.1857023,
+    "ast_hash": "687b4a3f56d6c849956f5c52e722f253",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Unit 1- Monomers of Wellness/SDL Topic 2 - Nutrition and its impact on health.pdfPDF.md": {
+    "mtime": 1779696850.123741,
+    "ast_hash": "9c5ea4856c4cc44c70ea143ff8cc9138",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Transpiration/Osmosis_and_Diffusion__MB_[25].pdfPDF.md": {
+    "mtime": 1779696849.0939822,
+    "ast_hash": "0478b0e61263ffb86261041eb4ea11b9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Transpiration/Transport_in_Plants_.md": {
+    "mtime": 1779696849.3829474,
+    "ast_hash": "32a9b7dc9227c2e883eecbc579a701df",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Human Digestive System/human_digestive_system_year_10__gz_.md": {
+    "mtime": 1779696846.5717924,
+    "ast_hash": "307d703ecef4368683a92abc31389592",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Human Digestive System/05 Animal Nutrion Biology Notes IGCSE 2014.md": {
+    "mtime": 1779696845.6124241,
+    "ast_hash": "2c6c569f6e378098934c984e1414fd62",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Human Digestive System/Food Test.md": {
+    "mtime": 1779696845.9610286,
+    "ast_hash": "2ba1a1b00098f480eb1c8d45af20844c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Photosynthesis/Investigating the rate of photosynthesis.pdfPDF.md": {
+    "mtime": 1779696846.8453314,
+    "ast_hash": "8498848ffa449cef10c73e84d9e7a055",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Biology/Photosynthesis/Experiments for Photosynthesis.md": {
+    "mtime": 1779696846.744894,
+    "ast_hash": "9ebe90fec271de61ee881774ebd5ecf3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Visual Arts/UNIT 1/GR 9 - 3.jpg.md": {
+    "mtime": 1779696903.5709062,
+    "ast_hash": "1062dfdf66f092a03f8ff5007e88f836",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Visual Arts/UNIT 1/Gr 9 - 1.jpg.md": {
+    "mtime": 1779696903.5714538,
+    "ast_hash": "a1f9d9d7b3bad41d21830349994ea9b2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Visual Arts/UNIT 1/GR9- 7.jpg.md": {
+    "mtime": 1779696903.5712934,
+    "ast_hash": "6bf711d1018af11419d1e8bbe385a713",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Visual Arts/UNIT 1/GR 9 - 5.jpg.md": {
+    "mtime": 1779696903.5710967,
+    "ast_hash": "a51f5d8c22fe665988ab45e8e1794ce2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Presente de Indicativo conjugation.jpg.md": {
+    "mtime": 1779696901.603835,
+    "ast_hash": "e68e323d9c8f12c1c4b5a84edec6d872",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Practice Makes Perfect Spanish Verb Tenses Book.pdfPDF.md": {
+    "mtime": 1779696901.6029963,
+    "ast_hash": "5dadf5ca4d059973d3940b7e7eb9285b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Ir+a+infinitivo.jpg.md": {
+    "mtime": 1779696861.0568697,
+    "ast_hash": "1d70afa2840ee63f1a3dc61d1791f0db",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/la-hora-time-in-spanish.gif.md": {
+    "mtime": 1779696902.6633866,
+    "ast_hash": "5bc0bb43c003dca6d577bfcb5bf69a96",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/MI CASA/Scaffoled-Writing-Worksheet-.md": {
+    "mtime": 1779696861.0841854,
+    "ast_hash": "0a8052fb8bd533093fe48722e408feb8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/MI CASA/las-habitaciones-vocab-sheet.pptx.md": {
+    "mtime": 1779696861.0956461,
+    "ast_hash": "e05c879af884bed7c2e037aecea00f6d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/MI CASA/Mi casa - .docx.md": {
+    "mtime": 1779696861.0637634,
+    "ast_hash": "fa349012a0b257e6a6309113cd3df613",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/MI CASA/sample-chapter-elemental--ch03.md": {
+    "mtime": 1779696868.1425433,
+    "ast_hash": "126006eb69ea29c1b4a6167f829cb530",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Nacionalidades_VOCABULARIO.png.md": {
+    "mtime": 1779696902.152904,
+    "ast_hash": "606279d7aeb0830093f6184d17a6a472",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/VOCABULARIO_Identidades.png.md": {
+    "mtime": 1779696902.6472528,
+    "ast_hash": "53fb9b39809154235d87c130af988789",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Identificar a personas_ACTIVIDAD.pdfPDF.md": {
+    "mtime": 1779696902.0046742,
+    "ast_hash": "72091c2d3d992a8b156ddea0513c7ec9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/FICHA_ Escritura de un correo electr\u00f3nico.pdfPDF.md": {
+    "mtime": 1779696901.8695273,
+    "ast_hash": "0b29cfc04c0041821f2f4efa4ece5295",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Describiendo personas en espa\u00f1ol_TEXTO.pdfPDF.md": {
+    "mtime": 1779696901.7300236,
+    "ast_hash": "6df4ca52b692a8a7fce670b4f3d74a0a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Texto_ A QUI\u00c9N CONSIDERAS FAMILIA.pdfPDF.md": {
+    "mtime": 1779696902.6470265,
+    "ast_hash": "b1c80379ed4408c4ddb6bec041532bad",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/La ropa y la apariencia f\u00edsica_TEXTO.pdfPDF.md": {
+    "mtime": 1779696902.1458673,
+    "ast_hash": "49af777e2d6c99887d24e4b0afcdea3d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/TEXTO_Familias diferentes.pdfPDF.md": {
+    "mtime": 1779696902.3251405,
+    "ast_hash": "5dcfd0c03cf9d939c318c25d88df14a6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Que ropa llevan - Actividad.pdfPDF.md": {
+    "mtime": 1779696902.2075644,
+    "ast_hash": "b5931b400035b92266d01ef7eaee4e6c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/ESTRUCTURA_Correo electronico.png.md": {
+    "mtime": 1779696901.7302003,
+    "ast_hash": "b187f0dbaca47cd3510ee033e23ba888",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Vocabulario - Descriptores.pdfPDF.md": {
+    "mtime": 1779696902.6535056,
+    "ast_hash": "c064cb46f0a67f302697000fb80e7cbf",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Los comparativos.pdfPDF.md": {
+    "mtime": 1779696902.1527023,
+    "ast_hash": "c7b5f01e3109873b80c74f163acb2224",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/TEXTO_Estudiantes de diferentes nacionalidades.png.md": {
+    "mtime": 1779696902.20777,
+    "ast_hash": "64a622983f65fa91bd1fa72437a6bac4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/COMPRENSI\u00d3N LECTORA_Identidad.pdfPDF.md": {
+    "mtime": 1779696901.6161687,
+    "ast_hash": "8e246b0909c8186e2f92b9bab00f541d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/VOCABULARIO_La ropa.png.md": {
+    "mtime": 1779696902.6474142,
+    "ast_hash": "d96cae3a04facb179e2f9ffa5a3d9bec",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT1_ My Identity/Personality adjectives.jpeg.md": {
+    "mtime": 1779696902.1531017,
+    "ast_hash": "0cff472d71bb9b6fb7ffeb953912a71d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Unit 4- Holidays and Entertainment/Travel Vocabulary.png.md": {
+    "mtime": 1779696902.6543431,
+    "ast_hash": "60487374c0833894ce9ad0e76a1225f2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Unit 4- Holidays and Entertainment/playa-vocabulario.png.md": {
+    "mtime": 1779696902.654481,
+    "ast_hash": "d27bfd1095ea31349cf196a9f84f573e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Unit 4- Holidays and Entertainment/El senderismo.jpg.md": {
+    "mtime": 1779696902.654043,
+    "ast_hash": "a80c96bb0aa12f0fa79fbb88b210bb2c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Unit 4- Holidays and Entertainment/Actividades de tiempos libre.jpg.md": {
+    "mtime": 1779696902.6537225,
+    "ast_hash": "20c8282bb0dbf6f6b6b18c6b744fbb95",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Unit 4- Holidays and Entertainment/Adverbios.jpg.md": {
+    "mtime": 1779696902.6538873,
+    "ast_hash": "cbb3a3189c4b211911f38fd03d815308",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/Unit 4- Holidays and Entertainment/Tiempo libre- aficiones.jpg.md": {
+    "mtime": 1779696902.654185,
+    "ast_hash": "24ad36f1d1ac726009dcf55dad825808",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/la foto/picture.docx.md": {
+    "mtime": 1779696902.6631298,
+    "ast_hash": "f1c827e1dbcd662ca5d3a6bac7e718ac",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT 2_ Food and Drinks/Adjetivos para describir la comida.jpeg.md": {
+    "mtime": 1779696901.6040223,
+    "ast_hash": "9bab258508c78d1f87b3f7a144f6e7c5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT 2_ Food and Drinks/H\u00e1bitos alimenticios.png.md": {
+    "mtime": 1779696901.6043105,
+    "ast_hash": "de79c330cafa1ab3fa04e0bb6c08d933",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT 2_ Food and Drinks/VOCABULARIO - Comida, bebida y otras palabras pertinentes.pdfPDF.md": {
+    "mtime": 1779696901.613169,
+    "ast_hash": "253c770baedfba9ccdd9092be2f15104",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT 2_ Food and Drinks/Pir\u00e1mide alimenticio_ACTIVIDAD.png.md": {
+    "mtime": 1779696901.6077318,
+    "ast_hash": "3aa273f44884bf2025259671590d068c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT 2_ Food and Drinks/Las comidas del d\u00eda_TEXTO.pdfPDF.md": {
+    "mtime": 1779696901.607554,
+    "ast_hash": "e42f8a2af342117dd61304e4ef834f87",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish/UNIT 2_ Food and Drinks/Alimentaci\u00f3n y nutrici\u00f3n.jpg.md": {
+    "mtime": 1779696901.6041608,
+    "ast_hash": "fd4d592a9e39f024709bffbde231c47b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Process Journal Grade 7.md": {
+    "mtime": 1779696856.6321857,
+    "ast_hash": "6f0b305cedac465a313b2ce629d3074b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Research Article Template.docx.md": {
+    "mtime": 1779696856.6377242,
+    "ast_hash": "07f581dc03068f3e918ee0e895586975",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Case Study_Globalization.pdfPDF.md": {
+    "mtime": 1779696860.099824,
+    "ast_hash": "4d9fe80f383914a503884d78c64c4c0d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Indicators of Development.docx.md": {
+    "mtime": 1779696860.3820126,
+    "ast_hash": "5ff2ffe63518b74923f5bfca2d921cab",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/CRA -.md": {
+    "mtime": 1779696859.9894779,
+    "ast_hash": "317d114bc478a7d2f961dbbc585b325d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Brandt Line .pdfPDF.md": {
+    "mtime": 1779696859.9888608,
+    "ast_hash": "baa9d63873f17143d1a9940de8e01d99",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/SDL - Growth and Development.pdfPDF.md": {
+    "mtime": 1779696860.583364,
+    "ast_hash": "380763ed7129dfa93a10af561ba4ccf3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/What is Free Trade G7.docx.md": {
+    "mtime": 1779696860.9347064,
+    "ast_hash": "8cc83889c32b0acecf4c1309bce3a2d5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Poverty.docx.md": {
+    "mtime": 1779696860.4056013,
+    "ast_hash": "f2205af65b88dcb1e834663f179ee4e7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Why Do Some Countries Change Faster Than Others?.pdfPDF.md": {
+    "mtime": 1779696861.055867,
+    "ast_hash": "ebdeddfc6c50c34842d53fc4f2b1cca7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Factors Affecting Development.docx.md": {
+    "mtime": 1779696860.1231756,
+    "ast_hash": "4d18b73f1a36276f82990792d054455e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Globalization DLP.docx.pdfPDF.md": {
+    "mtime": 1779696860.3671186,
+    "ast_hash": "e5fd30f4a888f6b5a41f6f2202fe7a82",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Major Differences growth and development .jpg.md": {
+    "mtime": 1779696860.3822937,
+    "ast_hash": "bdd30a16860d1c508f06e32af8ad6b68",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Slums of Asia.pdfPDF.md": {
+    "mtime": 1779696860.922688,
+    "ast_hash": "c01df925eb71868cb4d874a99002eca9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Case Study_LEDC & MEDC.docx.md": {
+    "mtime": 1779696860.111351,
+    "ast_hash": "ae5f590cb541102e12fa89220ef71896",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 3_ International Development/Aid.pdfPDF.md": {
+    "mtime": 1779696859.8296955,
+    "ast_hash": "c150f062eff0ca03cc3d45929fd304eb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 1_ Environmental Regions and Societies/800px-Map-Tundra.png.md": {
+    "mtime": 1779696856.6379163,
+    "ast_hash": "2b855448ff089e0d9de23ead3bf7a704",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 1_ Environmental Regions and Societies/Drill and practice 1 Grade 7.md": {
+    "mtime": 1779696856.6749802,
+    "ast_hash": "86a4fd9024ab3f754e9ece427fe2b78b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 1_ Environmental Regions and Societies/map-rainforest.jpg.md": {
+    "mtime": 1779696857.2597575,
+    "ast_hash": "7d9103c7381adfbb9b72257408a64462",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 1_ Environmental Regions and Societies/Temperate Grassland.pdfPDF.md": {
+    "mtime": 1779696857.1126397,
+    "ast_hash": "7f83c3448e39b1bf30816bebe09a3dd1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 1_ Environmental Regions and Societies/Taiga_ecoregion.png.md": {
+    "mtime": 1779696857.0093837,
+    "ast_hash": "0d5c02da8f6795a1f38aae196b6a106e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 1_ Environmental Regions and Societies/Grade 7 Biomes \u2013 Important Terms & Definitions.pdfPDF.md": {
+    "mtime": 1779696857.0091667,
+    "ast_hash": "6c0cd028b7a78f2884edbf8431899b02",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 1_ Environmental Regions and Societies/Tropical Grasslands.pdfPDF.md": {
+    "mtime": 1779696857.2594733,
+    "ast_hash": "8854aa1ccc6349df37f0c52e4740c2b3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/The Ripple Effect of Over-Consumption of Natural Resources.pdfPDF.md": {
+    "mtime": 1779696859.3728588,
+    "ast_hash": "bde495e67b0cde558b5240a505d74ed5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Soil Conservation.pdfPDF.md": {
+    "mtime": 1779696858.4565156,
+    "ast_hash": "8b75622ed8770726a48bae96fd71a150",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Soil.pdfPDF.md": {
+    "mtime": 1779696859.2329006,
+    "ast_hash": "75efa5842df600ce81341f6dcae48474",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Conservation of Resources_cra.md": {
+    "mtime": 1779696857.4524636,
+    "ast_hash": "0dd354f41dc1b95808fc261b29649e7c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/data set.pdfPDF.md": {
+    "mtime": 1779696859.7051077,
+    "ast_hash": "4f2f134d04be3148ecf4f06c2b9176e0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Sustainable Developmen - Korean translation.docx.md": {
+    "mtime": 1779696859.2556517,
+    "ast_hash": "a1958f4e498b381bb3e30d2286a5a790",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Deforestation.md": {
+    "mtime": 1779696857.575761,
+    "ast_hash": "e71bb3fe16ded738879ebfbe38e5007e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/What is soil?.pdfPDF.md": {
+    "mtime": 1779696859.6010485,
+    "ast_hash": "55ac215957d171aa5917399fbc1e91a3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Linear and circular economy.pdfPDF.md": {
+    "mtime": 1779696857.8288538,
+    "ast_hash": "4d2a03ab11441c15181c6a7e4271be22",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Significance of Resource Conservation G7.pdfPDF.md": {
+    "mtime": 1779696858.3364089,
+    "ast_hash": "c8adafae9d5266ad97f9c120a2557211",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Soil as a resources.pdfPDF.md": {
+    "mtime": 1779696858.6290815,
+    "ast_hash": "ae65a332deeb6e1a7492571ef3872c30",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Resource conservation - Korean.docx.md": {
+    "mtime": 1779696858.1417034,
+    "ast_hash": "9c6b15905e1cc0c4d741c8492eb5b8e2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Amazon Resources- Unit 2.pdfPDF.md": {
+    "mtime": 1779696857.4475465,
+    "ast_hash": "5552df6663d2dcf8b4970accf5479f60",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Geography/Unit 2_ Resources/Renewable and non renewable.pdfPDF.md": {
+    "mtime": 1779696858.0861926,
+    "ast_hash": "46fbe9f1d17d23a3cfb0ae86dc36dbc5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 3_ The Periodic Table/SDL_TM2.docx.md": {
+    "mtime": 1779696820.2267313,
+    "ast_hash": "5e9bc40918e0add7da7b4fbd67a4e10f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 3_ The Periodic Table/Group I properties & trends basics.pdfPDF.md": {
+    "mtime": 1779696819.9643643,
+    "ast_hash": "dadead88d6bac582b9875a47a9d04970",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 3_ The Periodic Table/History of the periodic Table.pdfPDF.md": {
+    "mtime": 1779696820.1899612,
+    "ast_hash": "91eb9f9c1c07c5b64c04e180a4f528d8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 3_ The Periodic Table/Group 7 halogens.md": {
+    "mtime": 1779696819.9007208,
+    "ast_hash": "c5e51973964b6371f31bd2bc0c2b61c0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 3_ The Periodic Table/relationship between an element's position and its electronic arrangement.docx.md": {
+    "mtime": 1779696820.2611325,
+    "ast_hash": "f5c1bcebfc5499ff22e80523c333364c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 3_ The Periodic Table/G7_Case Study_Transition elements.docx.md": {
+    "mtime": 1779696819.7711592,
+    "ast_hash": "61680537cff9bb1b109313e82d5537c5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 3_ The Periodic Table/Teacher's Explanation Criteria-D Drill and Practice.docx.md": {
+    "mtime": 1779696820.2396698,
+    "ast_hash": "93d21d1f26a7abb83a54fc460ce9996c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/SA+Project/Grade 7 U3 Chemistry SA+Project T2 2026.docx.md": {
+    "mtime": 1779696817.39506,
+    "ast_hash": "6e1cc7757b3f1bd1887e8c045541b60a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/HYE QP & MS/G7 HYE_Chem_QP_2025.pdfPDF.md": {
+    "mtime": 1779696815.2267685,
+    "ast_hash": "7bd8d6ad669a39070696d3464d53e71b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/HYE QP & MS/G7_HYE_Chemistry_MS_2025.pdfPDF.md": {
+    "mtime": 1779696815.803752,
+    "ast_hash": "04b30dea686f38282532e829f98d693d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Law of Conservation of Matter.docx.md": {
+    "mtime": 1779696820.470074,
+    "ast_hash": "1d53ca64dbb48dfd98cddf446b9f58cd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Grade 7_DP_Cri A.pdfPDF.md": {
+    "mtime": 1779696820.4412138,
+    "ast_hash": "b655e8a9bd5bcf2ac23efa9f3eebb97f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Writing Chemical Formulae and Naming of Compounds.pdfPDF.md": {
+    "mtime": 1779696823.2038517,
+    "ast_hash": "1a9dae1c525459ea7909bf3413bed69d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Formulae of ionic and covalent compounds.docx.md": {
+    "mtime": 1779696820.3137317,
+    "ast_hash": "674b3ab638e39add1f5007f2741d3ff7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Valency and Polyatomic Ions.docx.md": {
+    "mtime": 1779696822.3650212,
+    "ast_hash": "de7e83e8a2214c8f483ae65748dd2700",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Formula writing worksheet.docx.md": {
+    "mtime": 1779696820.2787313,
+    "ast_hash": "888491c307a2ff7ea015001fdb1c0a93",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/G7_Reaction Type_lab_protocol.docx.md": {
+    "mtime": 1779696820.329851,
+    "ast_hash": "35e8d7353e1ee7b1a97fc4e40b6801b2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/STUDY NOTES REACTIVITY OF METALS VALENCY AND BALANCING EQUATION .pdfPDF.md": {
+    "mtime": 1779696822.1828983,
+    "ast_hash": "0adf52a32a2d5b196c658bb9133344e0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Worksheet Formula Writting.pdfPDF.md": {
+    "mtime": 1779696822.7593656,
+    "ast_hash": "196c714fc4416641f982ad17e83c3ab4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Types of chemical reactions.pdfPDF.md": {
+    "mtime": 1779696822.347047,
+    "ast_hash": "a174286ded803400eb96aa55453eec35",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Reactions of alkali metals and halogens and Balancing Equation rules.docx.md": {
+    "mtime": 1779696820.5000072,
+    "ast_hash": "6a0a81118b4b4b1c97c536c09b0d8dda",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 4 Chemical Reactions/Balancing-Chemical-Equations-With-Polyatomic-Ions-Worksheet.pdfPDF.md": {
+    "mtime": 1779696820.2693977,
+    "ast_hash": "5673de96c43dbe027e579b3e536f5940",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Simplified Notes/CHEMISTRY UNIT 2.docx.md": {
+    "mtime": 1779696817.5054555,
+    "ast_hash": "81960d85f16428acef52aa6ac900a28d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Simplified Notes/CHEMISTRY UNIT 1.docx.md": {
+    "mtime": 1779696817.4392085,
+    "ast_hash": "1dc855f6fb0b015790a7767dcdfc41ee",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Simplified Notes/CHEMISTRY UNIT 3.docx.md": {
+    "mtime": 1779696817.617835,
+    "ast_hash": "219d1cfd52e8e1c4b2b0688f696cd528",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Simplified Notes/CHEMISTRY UNIT 4.docx.md": {
+    "mtime": 1779696817.7437768,
+    "ast_hash": "0f9eebcef736047e91247b62c9214818",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/FA/G7-Chem-MS FA2 Cri A & B understanding of Matter .pdfPDF.md": {
+    "mtime": 1779696812.7947576,
+    "ast_hash": "6a06bb2e0f4030f7f6bda0fb3b003c9e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/FA/G7-Chem-FA-A & B understanding of matter.docx.md": {
+    "mtime": 1779696812.5153208,
+    "ast_hash": "4d076a46c808db7fe028b5db635e011d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/FA/G-7 Chemistry FA -1 Markscheme.md": {
+    "mtime": 1779696812.2001545,
+    "ast_hash": "3882739f7d09a7081d389ae2169b1d0d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/G-7 Chemistry Booklet/Grade 7 Chem Booklet .pdfPDF.md": {
+    "mtime": 1779696813.1497555,
+    "ast_hash": "9ed560d8f7c358d0b07ba461547940f5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/G-7 Chemistry Worksheet 1.md": {
+    "mtime": 1779696816.3531604,
+    "ast_hash": "47339f7d8330a7b24191b019f731c84b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/G 7 Mixture,Colloids and suspension worksheet 6.md": {
+    "mtime": 1779696816.1897373,
+    "ast_hash": "3fe7c91c50d2e4dee2aef4ba5a497cd6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/G-7 Chemistry Worksheet 2.md": {
+    "mtime": 1779696816.5498486,
+    "ast_hash": "ac74b378bf39304ccd4625d75e9fb73e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/G-7 Chemistry worksheet no. 4.md": {
+    "mtime": 1779696816.8266547,
+    "ast_hash": "66b4d3437f731a9059f2fb73db0a68e1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/Criteria B - Atom, elements, compounds \u2013 symbols and formulae - P2.pdfPDF.md": {
+    "mtime": 1779696816.0396357,
+    "ast_hash": "70041f8adad7a433662f48fd8219c36d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/G-7 Chemistry Worksheet 3.md": {
+    "mtime": 1779696816.6897197,
+    "ast_hash": "346ba7f4898c8a35872a270a4d3b04a1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/Criterion B & C Task.docx.md": {
+    "mtime": 1779696816.0780458,
+    "ast_hash": "e68062c7b24bfe455530da6ca5b74318",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/Criterion D.docx.md": {
+    "mtime": 1779696816.0931177,
+    "ast_hash": "181057d91e2de968112652f5cfa1dcf9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/G7 Chem Worksheet 7.md": {
+    "mtime": 1779696817.3187218,
+    "ast_hash": "cc3d87f0188cac0e36918c8cf5fd4a64",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/PRACTICE WORKSHEET/G-7 Chemistry worksheet no. 5.pdfPDF.md": {
+    "mtime": 1779696817.0657694,
+    "ast_hash": "512fd532a3719bfb0f68bcf83e97da52",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/rsc cshc-atoms.pdfPDF.md": {
+    "mtime": 1779696819.7537825,
+    "ast_hash": "6995ad77c9228c9ff61bc53f58a9eb98",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/Grade 7_WS_8_Ambiguous particles.docx.md": {
+    "mtime": 1779696818.1111221,
+    "ast_hash": "a273b91929512aa21cbbba37966e6067",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/Isotopes and their uses.docx.md": {
+    "mtime": 1779696818.1327245,
+    "ast_hash": "e715a90cffce4481e6027f1aa2fc5534",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/Thomson model.docx.md": {
+    "mtime": 1779696818.1608527,
+    "ast_hash": "a4074445526295aa231acef6957d77ef",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/Atomic structure plum pudding.pdfPDF.md": {
+    "mtime": 1779696818.0819902,
+    "ast_hash": "5b34ef4da00dca5aa8d395e25f77347b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/Grade 7_WS_1_Ambiguous particles.docx.md": {
+    "mtime": 1779696818.0926745,
+    "ast_hash": "adcdcb08f8d158326d6b48adb836e17f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/Nucleide Notation Calculating no.of p,n and e-table solutions.docx.md": {
+    "mtime": 1779696818.1469576,
+    "ast_hash": "c10c305758e628d2340221d7f4b13025",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Chemistry/Unit 2 Ambiguous particles/Unit 2 Ambiguous Particles Notes.pdfPDF.md": {
+    "mtime": 1779696818.582726,
+    "ast_hash": "7f9ec7a12bf6ab4e1463c8badb45fa9f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/3.Python Programming/1_Input function.pdfPDF.md": {
+    "mtime": 1779696902.7219155,
+    "ast_hash": "66a55cedad5fc210586dac189b961c0b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/3.Python Programming/4_Operators - Logical Operators.pdfPDF.md": {
+    "mtime": 1779696902.8901887,
+    "ast_hash": "366f1af5418d89407a73621367d78182",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/3.Python Programming/3_Operators - Comparison Operators.pdfPDF.md": {
+    "mtime": 1779696902.8150003,
+    "ast_hash": "24e02c60fd5ef505a83fba0f608b2ee0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/3.Python Programming/5_Control Structures-if-elif-else.pdfPDF.md": {
+    "mtime": 1779696902.9606638,
+    "ast_hash": "89c1c904d1ceaaa6d889e8382b8d18e9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/3.Python Programming/2_Boolean Values.pdfPDF.md": {
+    "mtime": 1779696902.7587693,
+    "ast_hash": "4b3d5c914a9ffccee3fdbe580c1cde48",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/Unit - 1 - Web Design/HTML Notes - Part 1.docx.md": {
+    "mtime": 1779696903.111123,
+    "ast_hash": "e101362fc149856a9e1968571ba21fdc",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/Unit - 1 - Web Design/Unit 1 - Internet.pptx.md": {
+    "mtime": 1779696903.5700028,
+    "ast_hash": "a6cc91fb85c91392beb92a16c7f855fe",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/Unit - 1 - Web Design/Internal CSS notes.pdfPDF.md": {
+    "mtime": 1779696903.4169664,
+    "ast_hash": "3c172f4af878ecf3ba458952375bcf31",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/Unit - 1 - Web Design/External CSS Notes.pdfPDF.md": {
+    "mtime": 1779696903.0949583,
+    "ast_hash": "03f2cebf4daff00db6e1dccbcc90ddf1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/Unit - 1 - Web Design/List in HTML.pdfPDF.md": {
+    "mtime": 1779696903.5511844,
+    "ast_hash": "383cce191d238d6a1d310a0e798bc7ee",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/Unit - 1 - Web Design/Inline CSS SDL.docx.md": {
+    "mtime": 1779696903.1633298,
+    "ast_hash": "374eff81c4b8e44947138934e0ff6f50",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/text/Design/Unit - 1 - Web Design/HTML Notes - Part 2.docx.md": {
+    "mtime": 1779696903.1476588,
+    "ast_hash": "75916560af5838de66b13338fe80c984",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Visual Arts/UNIT 1/Gr 9 - 1.jpg.jpeg": {
+    "mtime": 1779696787.1736236,
+    "ast_hash": "f70d41fb2c3357f58dec1d5cc8335781",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Visual Arts/UNIT 1/GR9- 7.jpg.jpeg": {
+    "mtime": 1779696789.3346307,
+    "ast_hash": "b641d2f69b3d43efececd5959cf8c6ad",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Visual Arts/UNIT 1/GR 9 - 5.jpg.jpeg": {
+    "mtime": 1779696793.6676447,
+    "ast_hash": "181ad10b101b2cd60ee5b294e20fe724",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Visual Arts/UNIT 1/GR 9 - 3.jpg.jpeg": {
+    "mtime": 1779696791.5006378,
+    "ast_hash": "74a1694b6e76b03fa19af7057572f2c4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/la-hora-time-in-spanish.gif.gif": {
+    "mtime": 1779696710.578374,
+    "ast_hash": "336bc56551768971fbd137899901cc2b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Ir+a+infinitivo.jpg.jpeg": {
+    "mtime": 1779696706.1003594,
+    "ast_hash": "57a91f93b50873c5bae03c09e83ed429",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Presente de Indicativo conjugation.jpg.jpeg": {
+    "mtime": 1779696708.3613667,
+    "ast_hash": "ef4e27f202fb9416afa77b03bacb5dff",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT1_ My Identity/TEXTO_Estudiantes de diferentes nacionalidades.png.png": {
+    "mtime": 1779696675.4342594,
+    "ast_hash": "0fee53b9a4bc14307d96b14dcc3f38b9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT1_ My Identity/ESTRUCTURA_Correo electronico.png.png": {
+    "mtime": 1779696665.9932287,
+    "ast_hash": "cfe6c4ae259bd58176b6f03ff65a5f79",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT1_ My Identity/VOCABULARIO_Identidades.png.png": {
+    "mtime": 1779696661.3872137,
+    "ast_hash": "59adada3070b8f100812b5c10ad0f059",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT1_ My Identity/Personality adjectives.jpeg.jpeg": {
+    "mtime": 1779696695.7873259,
+    "ast_hash": "aa6f196803db0480d412062bc269e9ee",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT1_ My Identity/Nacionalidades_VOCABULARIO.png.png": {
+    "mtime": 1779696677.747267,
+    "ast_hash": "a9e8afbcfb8645b3f0ca95b276164842",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT1_ My Identity/VOCABULARIO_La ropa.png.png": {
+    "mtime": 1779696682.2722816,
+    "ast_hash": "6a8e71b7395a494adf3eac625f2e0a44",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Unit 4- Holidays and Entertainment/Adverbios.jpg.jpeg": {
+    "mtime": 1779696590.4589827,
+    "ast_hash": "92d3523495c8f8d32cfaeb7f928d45f2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Unit 4- Holidays and Entertainment/playa-vocabulario.png.png": {
+    "mtime": 1779696594.901997,
+    "ast_hash": "f006b26eba4c8adf33eee899beedd449",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Unit 4- Holidays and Entertainment/Adjetivos.webp.webp": {
+    "mtime": 1779696592.6869898,
+    "ast_hash": "2c85c87b5151fba9d9202a0bbdb1e71e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Unit 4- Holidays and Entertainment/Travel Vocabulary.png.png": {
+    "mtime": 1779696605.01403,
+    "ast_hash": "12359c28133082a78831cb3fd6110f66",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Unit 4- Holidays and Entertainment/El senderismo.jpg.jpeg": {
+    "mtime": 1779696597.1460044,
+    "ast_hash": "089d5518a88f2d7802be7f6a7e792f11",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Unit 4- Holidays and Entertainment/Tiempo libre- aficiones.jpg.jpeg": {
+    "mtime": 1779696600.5150154,
+    "ast_hash": "963bce50cc10d8ab5e681678bd1046dc",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/Unit 4- Holidays and Entertainment/Actividades de tiempos libre.jpg.jpeg": {
+    "mtime": 1779696602.7980227,
+    "ast_hash": "6b167998b37a7df762863df586a973a6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT 2_ Food and Drinks/Adjetivos para describir la comida.jpeg.jpeg": {
+    "mtime": 1779696650.439178,
+    "ast_hash": "44ed48c326250ef9192d309fe5f6a4b3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT 2_ Food and Drinks/Pir\u00e1mide alimenticio_ACTIVIDAD.png.png": {
+    "mtime": 1779696645.9731634,
+    "ast_hash": "f78cc41cdb615e758763f3a73647ae48",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT 2_ Food and Drinks/Alimentaci\u00f3n y nutrici\u00f3n.jpg.jpeg": {
+    "mtime": 1779696641.500149,
+    "ast_hash": "bb4970408a910a753527cb7d04df8857",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/output/downloads/Spanish/UNIT 2_ Food and Drinks/H\u00e1bitos alimenticios.png.png": {
+    "mtime": 1779696643.738156,
+    "ast_hash": "43636f01ee81fd11e4401e0a74bb6f4f",
     "semantic_hash": ""
   }
 }
