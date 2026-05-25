@@ -185,6 +185,11 @@ function renderGainersLosers(data) {
 
   gList.innerHTML = data.gainers.map(s => glItem(s, true)).join("");
   lList.innerHTML = data.losers.map(s => glItem(s, false)).join("");
+
+  const gCount = document.getElementById("gainers-count");
+  const lCount = document.getElementById("losers-count");
+  if (gCount) gCount.textContent = data.gainers.length;
+  if (lCount) lCount.textContent = data.losers.length;
 }
 
 function glItem(s, isGainer) {
