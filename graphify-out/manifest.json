@@ -9525,7 +9525,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1779718878.1396377,
+    "mtime": 1779718935.3378296,
     "ast_hash": "86a9989c6631ef8e79111aecda060228",
     "semantic_hash": ""
   },
@@ -11825,7 +11825,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/app.js": {
-    "mtime": 1779718844.3705244,
+    "mtime": 1779718935.3388295,
     "ast_hash": "6ca12995f2630c6ee5ce228703482af3",
     "semantic_hash": ""
   },
@@ -33440,7 +33440,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1779718857.656569,
+    "mtime": 1779718935.3388295,
     "ast_hash": "f05c13c603ad9dc75f7d1e0f8af980bc",
     "semantic_hash": ""
   },
@@ -38782,6 +38782,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
     "mtime": 1779716013.4690926,
     "ast_hash": "57685620501f4667e6c5082a0512a294",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/frontend/market.html": {
+    "mtime": 1779718867.8356032,
+    "ast_hash": "dee7ad3201e1d8db9797c652d8f18034",
     "semantic_hash": ""
   }
 }
