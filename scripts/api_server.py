@@ -81,6 +81,30 @@ def serve_dashboard():
     return FileResponse(str(index))
 
 
+@app.get("/portfolio", include_in_schema=False)
+def serve_portfolio():
+    f = FRONTEND_DIR / "portfolio.html"
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="portfolio.html not found")
+    return FileResponse(str(f))
+
+
+@app.get("/holdings", include_in_schema=False)
+def serve_holdings():
+    f = FRONTEND_DIR / "holdings.html"
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="holdings.html not found")
+    return FileResponse(str(f))
+
+
+@app.get("/positions", include_in_schema=False)
+def serve_positions():
+    f = FRONTEND_DIR / "positions.html"
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="positions.html not found")
+    return FileResponse(str(f))
+
+
 @app.get("/pixi", include_in_schema=False)
 def serve_pixi():
     pixi = FRONTEND_DIR / "pixi_dashboard.html"

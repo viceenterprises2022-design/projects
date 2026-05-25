@@ -3,93 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AEI (AlphaEdge Intelligence)</title>
-<meta name="description" content="Aggregated real-time portfolio metrics across Upstox, Dhan, and TradeSmart.">
+<title>AEI — Atlas Market Matrix</title>
+<meta name="description" content="AlphaEdge Intelligence — Market Matrix dashboard. Live macro, gainers/losers, momentum scans.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;510;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────────────────────────────── -->
+<!-- ── Header ───────────────────────────────────────────────────────────── -->
 <header>
-  <div class="container header-inner">
+  <div class="header-inner">
     <div class="logo">
-      <div class="logo-mark">D</div>
+      <div class="logo-mark">AE</div>
       <div>
-        <div class="logo-name">AEI (AlphaEdge Intelligence)</div>
+        <div class="logo-name">AlphaEdge Intelligence</div>
+        <nav class="nav-links">
+          <a href="/" class="active">Dashboard</a>
+          <a href="/portfolio">Portfolio</a>
+          <a href="/holdings">Holdings</a>
+          <a href="/positions">Positions</a>
+        </nav>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:16px">
-      <div id="last-updated" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted)">
+    <div class="header-right">
+      <div class="watchlist-pill" id="watchlist-pill">
+        <span class="wl-label">Watchlist</span>
+        <span class="wl-name">Nifty 200</span>
+        <span class="wl-arrow">▾</span>
+      </div>
+      <div id="last-updated">
         <span class="live-dot"></span>Connecting…
       </div>
     </div>
   </div>
+  <!-- Watchlist dropdown -->
+  <div class="wl-dropdown" id="wl-dropdown" style="display:none">
+    <div class="wl-dropdown-item active">Nifty 200</div>
+    <div class="wl-dropdown-item">Nifty 50</div>
+    <div class="wl-dropdown-item">Bank Nifty</div>
+  </div>
 </header>
 
-<!-- ── Ticker ───────────────────────────────────────────────────────────────── -->
-<div class="ticker-bar">
-  <div class="ticker-track" id="ticker">
-    <!-- populated by app.js -->
+<!-- ── Sub-bar ────────────────────────────────────────────────────────────── -->
+<div class="sub-bar">
+  <div class="sub-bar-inner">
+    <div class="sub-left">
+      <span class="sub-label">Market Scanner</span>
+      <span class="sub-sep">|</span>
+      <span class="sub-tag live">LIVE</span>
+      <span class="sub-sep">|</span>
+      <span class="sub-refresh" id="sub-refresh">auto-refresh 30s</span>
+    </div>
+    <div class="sub-right">
+      <button class="sub-btn" onclick="location.reload()" title="Refresh all widgets">↻ Refresh</button>
+      <span class="sub-sep">|</span>
+      <span class="sub-count" id="sub-count">0 stocks</span>
+    </div>
   </div>
 </div>
 
-<!-- ── Error Banner ─────────────────────────────────────────────────────────── -->
+<!-- ── Error Banner ──────────────────────────────────────────────────────── -->
 <div class="container">
   <div id="error-banner" class="error-banner" style="display:none"></div>
 </div>
 
-<!-- ── Main ─────────────────────────────────────────────────────────────────── -->
+<!-- ── Main: Widget Grid ─────────────────────────────────────────────────── -->
 <main>
-  <div class="container" style="margin-bottom:24px">
-    <!-- Macro Row (top) -->
-    <div class="macro-row" id="macro-row">
-      <!-- populated by app.js -->
-    </div>
-  </div>
+  <div class="widget-grid container" id="widget-grid">
 
-  <div class="container" style="margin-bottom:24px">
-    <!-- Gainers / Losers Row -->
-    <div class="gl-row" id="gl-row">
-      <div class="card gl-card">
-        <div class="gl-header">Top Gainers</div>
-        <div class="gl-list" id="gainers-list"><div class="gl-empty">Awaiting data…</div></div>
+    <!-- Widget 1: Macro Snapshot (12 cols) -->
+    <div class="widget" data-cols="12" id="widget-macro">
+      <div class="w-header">
+        <span class="w-title">Macro Snapshot</span>
+        <span class="w-meta">Live</span>
       </div>
-      <div class="card gl-card">
-        <div class="gl-header">Top Losers</div>
-        <div class="gl-list" id="losers-list"><div class="gl-empty">Awaiting data…</div></div>
+      <div class="w-body" id="macro-row">
+        <div class="w-loading">Loading macro data…</div>
       </div>
     </div>
-  </div>
 
-  <div class="container" style="margin-bottom:24px">
-    <!-- Strategy: Nifty 200 Momentum Scanner -->
-    <div class="strat-row" id="strat-row">
-      <div class="loading"><div class="spinner"></div><span>Loading strategy data...</span></div>
+    <!-- Widget 2: Top Gainers (6 cols) -->
+    <div class="widget" data-cols="6" id="widget-gainers">
+      <div class="w-header">
+        <span class="w-title">Top Gainers</span>
+        <span class="w-count" id="gainers-count">0</span>
+      </div>
+      <div class="w-body" id="gainers-list">
+        <div class="w-loading">Awaiting data…</div>
+      </div>
     </div>
-  </div>
 
-  <div class="container" id="portfolio-container">
-    <div class="loading"><div class="spinner"></div><span>Loading Portfolio...</span></div>
+    <!-- Widget 3: Top Losers (6 cols) -->
+    <div class="widget" data-cols="6" id="widget-losers">
+      <div class="w-header">
+        <span class="w-title">Top Losers</span>
+        <span class="w-count" id="losers-count">0</span>
+      </div>
+      <div class="w-body" id="losers-list">
+        <div class="w-loading">Awaiting data…</div>
+      </div>
+    </div>
+
+    <!-- Widget 4: Bullish Momentum (4 cols) -->
+    <div class="widget" data-cols="4" id="widget-bullish">
+      <div class="w-header">
+        <span class="w-title signal-bull">▲ Bullish Momentum</span>
+        <span class="w-meta">Nifty 200</span>
+      </div>
+      <div class="w-body" id="bullish-list">
+        <div class="w-loading">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Widget 5: Bearish Momentum (4 cols) -->
+    <div class="widget" data-cols="4" id="widget-bearish">
+      <div class="w-header">
+        <span class="w-title signal-bear">▼ Bearish Momentum</span>
+        <span class="w-meta">Nifty 200</span>
+      </div>
+      <div class="w-body" id="bearish-list">
+        <div class="w-loading">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Widget 6: Highest Streak (4 cols) -->
+    <div class="widget" data-cols="4" id="widget-streak">
+      <div class="w-header">
+        <span class="w-title signal-streak">⚡ Highest Streak</span>
+        <span class="w-meta">Consecutive closes</span>
+      </div>
+      <div class="w-body" id="streak-list">
+        <div class="w-loading">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Widget 7: Market Summary (12 cols) -->
+    <div class="widget" data-cols="12" id="widget-summary">
+      <div class="w-header">
+        <span class="w-title">Market Summary</span>
+        <span class="w-meta" id="summary-ts">—</span>
+      </div>
+      <div class="w-body">
+        <div class="summary-grid" id="summary-grid">
+          <div class="w-loading">Loading…</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </main>
 
-<!-- ── Footer ───────────────────────────────────────────────────────────────── -->
-<footer style="border-top:1px solid var(--border);padding:20px 0;text-align:center;
-               font-family:var(--mono);font-size:0.7rem;color:var(--muted)">
-  <div class="container">
-    <span>⚠ For informational purposes only · Not financial advice</span>
-    <span style="margin:0 12px;color:var(--border)">|</span>
-    <span>DVR Portfolio © 2026 · Data: Upstox + Dhan + TradeSmart</span>
-    <span style="margin:0 12px;color:var(--border)">|</span>
-    <span>API: <a href="http://localhost:8765/docs" target="_blank"
-          style="color:var(--primary);text-decoration:none">localhost:8765/docs</a></span>
+<!-- ── Footer ────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container footer-inner">
+    <span>⚠ Not financial advice · For informational purposes only</span>
+    <span>AEI © 2026 · Data: Upstox + NSE</span>
+    <span>API: <a href="http://localhost:8765/docs">docs</a></span>
   </div>
 </footer>
 
