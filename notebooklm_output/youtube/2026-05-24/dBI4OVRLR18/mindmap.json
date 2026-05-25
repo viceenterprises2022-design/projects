@@ -1,0 +1,73 @@
+{
+  "name": "GBrain AI Memory System",
+  "children": [
+    {
+      "name": "Core Problem",
+      "children": [
+        {
+          "name": "AI Agent Forgetfulness"
+        },
+        {
+          "name": "Information Overload for Agents"
+        }
+      ]
+    },
+    {
+      "name": "Key Features",
+      "children": [
+        {
+          "name": "Custom Pages",
+          "children": [
+            {
+              "name": "Investor Pitch Tracking"
+            },
+            {
+              "name": "Customer Support Management"
+            }
+          ]
+        },
+        {
+          "name": "Relationship Summaries"
+        }
+      ]
+    },
+    {
+      "name": "System Structure",
+      "children": [
+        {
+          "name": "Above the Bar",
+          "children": [
+            {
+              "name": "Relationship Summary"
+            }
+          ]
+        },
+        {
+          "name": "Below the Bar",
+          "children": [
+            {
+              "name": "Transaction History"
+            },
+            {
+              "name": "Real-time Activity Tracking"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Technical Benefits",
+      "children": [
+        {
+          "name": "Dynamic Summary Updates"
+        },
+        {
+          "name": "Selective Document Reading"
+        },
+        {
+          "name": "Organized Memory Architecture"
+        }
+      ]
+    }
+  ]
+}

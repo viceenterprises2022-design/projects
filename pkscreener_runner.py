@@ -7,9 +7,12 @@ Runs key scan strategies after market hours and sends results.
 import os
 import re
 import sys
+import time
+import fcntl
 import subprocess
 import datetime
 import requests
+import pickle
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -20,6 +23,7 @@ LOG_DIR = Path("/home/vreddy1/Desktop/Projects/scripts/pkscreener_output")
 TOKEN = "8770565112:AAGy9q-BMWsgvU4RQUQDyeNXa282Vme9uG4"
 CHAT_ID = "7246234100"
 TIMEOUT_SEC = 300  # per scan
+PICKLE_PATH = os.path.join(PKS_DIR, "results", "Data", "last_screened_results.pkl")
 
 # ── Scan Strategies ──────────────────────────────────────────────────────────
 # Format: (label, options_string)
@@ -76,10 +80,10 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
         PKS_SCRIPT,
         "-a", "Y",
         "-e",
-        "-p",
         "-o", options,
     ]
     env = os.environ.copy()
+    env["RUNNER"] = "1"
     env["PYTHONPATH"] = PKS_DIR
     env["PYTHONWARNINGS"] = "ignore"
     env["TF_CPP_MIN_LOG_LEVEL"] = "3"
@@ -136,6 +140,39 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
     return clean
 
 
+PICKLE_RE = re.compile(r"Last [Ss]creened|lastScreened|loaded from|Found.*?Stocks")  # heuristic: pickle contains result from THIS scan if file is new
+
+
+def _pickle_mtime() -> float:
+    try:
+        return os.path.getmtime(PICKLE_PATH)
+    except OSError:
+        return 0.0
+
+
+def read_stocks_from_pickle() -> list[str]:
+    """Read stock symbols from last_screened_results.pkl written by pkscreener."""
+    try:
+        out = subprocess.check_output(
+            [VENV_PYTHON, "-c", """
+import sys
+sys.path.insert(0, %r)
+import pandas as pd
+try:
+    df = pd.read_pickle(%r)
+    print("\\n".join(str(s).strip() for s in df.index))
+except Exception:
+    pass
+""" % (PKS_DIR, PICKLE_PATH)],
+            timeout=15,
+            stderr=subprocess.DEVNULL,
+        )
+        out_decoded = out.decode("utf-8").strip()
+        return [s for s in out_decoded.splitlines() if s.strip() and s != "None"]
+    except Exception:
+        return []
+
+
 def extract_stocks(output: str) -> list[str]:
     """Extract stock symbols from PKScreener tabular output."""
     lines = []
@@ -148,7 +185,25 @@ def extract_stocks(output: str) -> list[str]:
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
+LOCK_FILE = "/tmp/pkscreener_runner.lock"
+
+
+def acquire_lock() -> bool:
+    try:
+        fd = open(LOCK_FILE, "w")
+        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        fd.write(str(os.getpid()))
+        fd.flush()
+        return True
+    except (IOError, OSError):
+        return False
+
+
 def main():
+    if not acquire_lock():
+        print("[PKScreener Runner] Another instance is running — exiting.")
+        return
+
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     now = datetime.datetime.now()
     date_str = now.strftime("%Y-%m-%d")
@@ -165,8 +220,18 @@ def main():
     for label, options in SCANS:
         print(f"  Running: {label} ({options}) ...")
         log_file = LOG_DIR / f"{run_ts}_{options.replace(':', '_')}.txt"
+
+        # Record pickle mtime before scan, then run
+        before = _pickle_mtime()
         output = run_scan(label, options, log_file)
-        stocks = extract_stocks(output)
+        after = _pickle_mtime()
+
+        # Read stocks from pickle if it was updated
+        stocks = []
+        if after > before:
+            stocks = read_stocks_from_pickle()
+        if not stocks:
+            stocks = extract_stocks(output)
 
         if stocks:
             total_hits += len(stocks)

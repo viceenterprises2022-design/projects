@@ -22,8 +22,11 @@ def build_payload(
     username: Optional[str] = None,
     channel: Optional[str] = None,
     icon_emoji: Optional[str] = None,
+    blocks: Optional[list[dict]] = None,
 ) -> dict[str, Any]:
     payload: dict[str, Any] = {"text": text}
+    if blocks:
+        payload["blocks"] = blocks
     if username:
         payload["username"] = username
     if channel:
@@ -40,9 +43,10 @@ def send_to_slack(
     username: Optional[str] = None,
     channel: Optional[str] = None,
     icon_emoji: Optional[str] = None,
+    blocks: Optional[list[dict]] = None,
     timeout: float = 15.0,
 ) -> dict[str, Any]:
-    payload = build_payload(text, username=username, channel=channel, icon_emoji=icon_emoji)
+    payload = build_payload(text, username=username, channel=channel, icon_emoji=icon_emoji, blocks=blocks)
     try:
         response = requests.post(webhook_url, json=payload, timeout=timeout)
         response.raise_for_status()

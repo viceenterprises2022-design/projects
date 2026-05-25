@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Communication Style
 
-Always use **caveman ultra** mode (`/caveman ultra`). Never revert unless user says "stop caveman" or "normal mode".
+Always use **caveman ultra** mode (`/caveman ultra`), always enable **wozcode** and **rtk** at the start of every session. Never revert unless user says "stop caveman" or "normal mode".
+
 
 ---
 
@@ -12,6 +13,7 @@ Always use **caveman ultra** mode (`/caveman ultra`). Never revert unless user s
 1. **AlphaEdge Market Intelligence** — 10-factor signal engine for Indian indices (NIFTY, SENSEX, BANKNIFTY)
 2. **AlphaEdge Crypto Diagnostic 2.0** — High-density async dashboard for BTC, ETH, SOL
 3. **Exa AI Event Search** — upcoming online AI events/classes finder via Exa API
+4. **Crypto Daily News** (`crypto_news_search.py` + `crypto_to_notebooklm.py`) — 8-category crypto briefing via Exa, AI summaries, NotebookLM infographic → Telegram at 8AM IST daily
 
 ---
 
@@ -104,6 +106,22 @@ python3 -m pip install exa-py rich --break-system-packages
 
 ---
 
+## Crypto Daily News (`crypto_news_search.py` + `crypto_to_notebooklm.py`)
+
+Fetches crypto news across 8 topics (BTC, ETH, SOL, RWA, Stablecoins, Onchain, Growth, Price & Predictions) via Exa neural search. Uses Exa's AI summary feature to generate 1-sentence article summaries. `crypto_to_notebooklm.py` wraps the search → generates NotebookLM bento-grid infographic → sends to Telegram at 8:00 AM IST daily via cron.
+
+```bash
+python3 crypto_news_search.py --report --num 10          # Terminal report
+python3 crypto_to_notebooklm.py --telegram               # Full pipeline: search → infographic → Telegram
+```
+
+Cron entry (already installed):
+```
+0 8 * * * cd /home/vreddy1/Desktop/Projects/scripts && python3 crypto_to_notebooklm.py --telegram >> logs/crypto_news_cron.log 2>&1
+```
+
+---
+
 ## Key File Index
 
 | File | Role |
@@ -114,6 +132,8 @@ python3 -m pip install exa-py rich --break-system-packages
 | `market_analysis_v3.py` | Legacy monolith — generates self-contained HTML |
 | `report_and_send.py` | Wraps v3, captures output, sends to Telegram |
 | `exa_ai_search.py` | Exa API upcoming AI event search |
+| `crypto_news_search.py` | Exa API crypto daily news with AI summaries |
+| `crypto_to_notebooklm.py` | Crypto news → NotebookLM infographic → Telegram delivery |
 | `intraday_oi.db` | SQLite for intraday OI snapshots (written by v3 background thread) |
 | `alphaedge.db` | SQLite for 3-tier architecture metrics |
 | `git-autosync.sh` | Auto-commit + push to origin/main |

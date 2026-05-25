@@ -26,15 +26,16 @@
 │   │   └── ai_news_reporter.py         # Posts to Slack
 │   │
 │   ├── 📰 NotebookLM Pipeline
-│   │   ├── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → report/mindmap
+│   │   ├── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → all artifacts → Slack
 │   │   ├── youtube_to_notebooklm.py   # YouTube channel monitor → NotebookLM → Slack
-│   │   └── youtube_channels.json       # Config: YouTube channel @handles
+│   │   ├── youtube_channels.json       # Config: YouTube channel @handles
+│   │   └── cron_watchdog.py            # Cron failure monitor → Slack alerts
 │   │
 │   ├── 📊 PKScreener NSE Scanner
 │   │   └── pkscreener_runner.py
 │   │
 │   ├── 🖥️ Terminal Dashboards
-│   │   ├── options_cli.py             # Live option chain (5s polling)
+│   │   ├── options_cli.py             # Rich live option chain (5s, no flicker)
 │   │   ├── live_market_dashboard.py
 │   │   ├── alphaedge_pro.py
 │   │   ├── metals_dashboard.py
@@ -89,12 +90,13 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 |:--- |:--- |
 | `collector.py` | **Core Engine**. Fetches market data from Upstox/Yahoo, calculates 10-factor signals, and saves to DB. |
 | `alphaedge_db.py` | **Database Manager**. Handles SQLite schema and data persistence for `alphaedge.db`. |
+| `alert_dashboard_alive.py` | **Dashboard Uptime Monitor**. Cron-friendly uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min. Silent when healthy; alerts Slack on 2+ consecutive failures plus recovery. State tracked in `/tmp/alert_dashboard_state.json`. |
 | `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest` (signals + live macro via Yahoo Finance), `/api/gainers-losers` (NSE top 5 gainers/losers, 30s cache), `/api/pixi/*` (options chain). |
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
 | `report_and_send.py` | Generates diagnostic reports and sends them to Telegram. |
-| `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) live terminal view. Shows Spot vs. Futures, human-readable OI (L/C), and ATM ± 300 strikes. **Lean, compressed layout (107 chars)** for small terminal windows. 5s polling, daily-reset SQLite. |
+| `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) Rich live terminal view. Shows Spot + Futures with OHLC (O/H/L/C) headers, strategy flags (OH/OL), human-readable OI (L/C), and ATM ± 300 strikes. **Lean, compressed layout (107 chars)** for small terminal windows. Zero-flicker rendering via `rich.live.Live` with alternate screen buffer. 5s polling, daily-reset SQLite. |
 
 ### 🤖 AI Search & Discovery
 *Tools for tracking AI agent launches, events, and research using Exa AI.*
@@ -114,11 +116,12 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `crypto_dashboard.py` | **Unified Crypto Depth Map**. Simultaneous BTC, ETH, and SOL dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls) with 10-level depth. Displays Buy vs Sell breakdown to identify Support/Resistance. Features a live poll countdown and 15s parallel updates. |
 
 ### 📰 Beat the Street — NotebookLM Daily Pipeline
-*Automated daily pipeline: fetches PDFs from Telegram, uploads to NotebookLM, generates briefing-doc report and mind-map.*
+*Automated daily pipeline: fetches PDFs from Telegram, uploads to NotebookLM, generates all artifact types, delivers to Slack, then cleans up.*
 
 | Script | Description |
 |:--- |:--- |
-| `telegram_to_notebooklm.py` | **Daily Pipeline**. Fetches PDFs from `@btsreports` posted in the last 24h, uploads to a dated NotebookLM notebook (`Beat-the-street-report-YYYY-MM-DD`), generates briefing-doc report + mind-map, saves to `notebooklm_output/Beat-the-street-report-YYYY-MM-DD/`. Runs daily at **4PM IST** via cron. |
+| `telegram_to_notebooklm.py` | **Daily Pipeline** (7 steps). Fetches PDFs from `@btsreports` (last 24h) → creates dated NotebookLM notebook → uploads sources → generates 5 artifacts (report, mind-map, infographic, quiz, podcast) → sends all to Slack via `format_file_for_slack()` → deletes notebook. Saves to `notebooklm_output/Beat-the-street-report-YYYY-MM-DD/`. Runs at **4PM IST** via cron. |
+| `cron_watchdog.py` | **Cron Failure Monitor**. Parses cron logs via byte-offset tracking, detects tracebacks/ERROR/CRITICAL, alerts Slack. Runs at `:15` hourly. |
 
 **Setup:**
 ```bash
@@ -148,15 +151,28 @@ PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py
 **Cron (already installed):**
 ```
 30 10 * * *  cd /path/to/scripts && PYTHONUNBUFFERED=1 venv/bin/python telegram_to_notebooklm.py >> notebooklm_output/cron.log 2>&1
+15 * * * *    cd /path/to/scripts && PYTHONUNBUFFERED=1 venv/bin/python cron_watchdog.py 2>&1
 ```
+
+**Pipeline steps:**
+1. Fetch PDFs from Telegram channel (last 24h)
+2. Create NotebookLM notebook (`Beat-the-street-report-YYYY-MM-DD`)
+3. Upload PDFs as notebook sources
+4. Generate 5 artifacts: report (`.md`), mind-map (`.json`), infographic (`.png`), quiz (`.json`), podcast (`.mp3`)
+5. Save artifacts to `notebooklm_output/` per-date directory
+6. Send all artifacts to Slack (generic: `.md` = summary+full, `.json` = tree or raw, `.csv`, binary files noted)
+7. Delete NotebookLM notebook from cloud
 
 **Output:**
 ```
 notebooklm_output/
 ├── pdfs/                                    # cached PDFs
 ├── Beat-the-street-report-YYYY-MM-DD/
-│   ├── report.md                            # briefing-doc
-│   └── mindmap.json                         # mind-map
+│   ├── report.md                            # briefing-doc (full text)
+│   ├── mindmap.json                         # mind-map (nested tree JSON)
+│   ├── infographic.png                      # visual infographic
+│   ├── quiz.json                            # quiz questions
+│   └── podcast.mp3                          # audio podcast
 └── cron.log                                 # daily run log
 ```
 
@@ -167,6 +183,7 @@ TELEGRAM_API_HASH=...
 TELEGRAM_CHANNELS=@btsreports
 DAYS_BACK=1
 PDF_LIMIT=20
+SLACK_WEBHOOK_URL=...
 ```
 
 ---
@@ -218,6 +235,8 @@ python3 youtube_to_notebooklm.py --list-channels
 | Script | Description |
 |:--- |:--- |
 | `send_slack.py` | Generic utility to send text or file content to any Slack webhook. |
+| `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. |
+| `alert_dashboard_alive.py` | Dashboard uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min, alerts Slack on outage. |
 | `send_telegram.py` | Generic utility to send messages via Telegram Bot API. |
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
 | `patch_market.py` | Utility to apply specific logic patches to the market analysis scripts. |
@@ -253,6 +272,11 @@ sudo systemctl restart multica-daemon
 # Logs
 journalctl -u alphaedge-api -f
 journalctl -u multica-daemon -f
+```
+
+**Cron (every 5 min, already installed):**
+```
+*/5 * * * * cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 venv/bin/python alert_dashboard_alive.py >> logs/alert_dashboard.log 2>&1
 ```
 
 ---
@@ -381,8 +405,29 @@ To repair the database without losing your stored data (avoiding database deleti
 
 ---
 
-### ⚠️ Migration Note: Gemini CLI to Antigravity CLI
-Gemini CLI is being sunset on June 18, 2026. This project has been migrated to support the new Go-based **Antigravity CLI**. Legacy `.gemini` configurations are deprecated; please use the new `.agent` configurations. System-level extensions must be manually ported to the Antigravity Plugin format.
+### 🤖 Antigravity CLI — AI Agent IDE
+*VS Code-based agent CLI with `chat` mode (ask/edit/agent). Replaces Gemini CLI.*
+
+**Version:** v2.0.6 (Electron, `/usr/share/antigravity/`)
+**Binary:** `/usr/bin/antigravity` → launcher → `antigravity` (ELF, 197MB)
+
+**Usage:**
+```bash
+antigravity --version
+antigravity chat "prompt"                        # agent mode
+antigravity chat --mode ask "question"           # Q&A mode
+antigravity chat --mode edit "change this"       # edit mode
+```
+
+**Upgrade:**
+Download latest tar.gz, extract, then:
+```bash
+sudo cp extracted/Antigravity-x64/antigravity /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/*.so /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/*.pak /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/*.bin /usr/share/antigravity/
+sudo cp extracted/Antigravity-x64/icudtl.dat /usr/share/antigravity/
+```
 
 ---
 
@@ -458,6 +503,8 @@ python3 pkscreener_runner.py
 5  10 * * 1-5   # 3:35 PM IST  — close-of-day scan
 30 12 * * 1-5   # 6:00 PM IST  — evening review
 ```
+
+**Lockfile**: `/tmp/pkscreener_runner.lock` — prevents overlapping cron runs via `fcntl.flock`. If a new cron fires while a previous run is in progress, it exits immediately. This prevents process accumulation that caused 28 parallel pkscreener processes consuming ~12GB RAM.
 
 **Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
 

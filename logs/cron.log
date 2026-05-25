@@ -414,3 +414,7 @@
 2026-05-11 01:30:07,813 [INFO] Sending to Telegram @dvr_market_snippet...
 2026-05-11 01:30:11,994 [INFO]   ✓ Market snapshot photo sent
 2026-05-11 01:30:13,668 [INFO] Done — 11/11 instruments in report. Failed fetches: none
+Traceback (most recent call last):
+  File "/home/vreddy1/Desktop/Projects/scripts/market_engine.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'

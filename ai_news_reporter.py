@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import os
+from dotenv import load_dotenv
+load_dotenv()
 import json
 import argparse
 from datetime import datetime, timedelta, timezone
@@ -10,7 +12,7 @@ from exa_py import Exa
 
 # Slack settings
 NEW_SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL") # REPLACED SECRET
-EXA_API_KEY = os.environ.get("EXA_API_KEY", "b8556e11-bed3-4241-bb0e-27fcc3d09972")
+EXA_API_KEY = os.environ.get("EXA_API_KEY")
 
 MAX_SLACK_TEXT_CHARS = 3500
 

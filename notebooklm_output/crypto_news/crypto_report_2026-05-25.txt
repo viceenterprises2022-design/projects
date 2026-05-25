@@ -1,0 +1,80 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Fetching crypto news — 8 topics × 10 results, last 3d                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+  Searching: BTC
+  Searching: ETH
+  Searching: SOL
+  Searching: RWA
+  Searching: Stablecoins
+  Searching: Onchain
+  Searching: Growth
+  Searching: Price & Predictions
+📡 *Crypto Daily Brief*
+_25 May 2026 • 02:30 UTC_
+
+━━━ ₿ BTC ━━━
+• *Bitcoin New Lows 'Extremely' Unlikely as Long-Term Holder Supply Nears Record | CoinMarketCap*
+  ↳ Long-term Bitcoin holders have pushed their supply to 16.3 million BTC near a record, signaling strong accumulation and making new lows unlikely, backed by bullish on-chain signals and cautious miner behavior.
+• *BTC Price Prediction: $73K Support Test Before $88K Rally Attempt - Blockchain.News*
+  ↳ Bitcoin appears set for a near-term test of the $73k support with potential upside toward the $88k resistance, while indicators show bearish momentum and a fragile recovery path requiring reclaiming the 20-day moving average to shift the trend.
+• *Bitcoin's Battle at the $76,000 Threshold: A Market Analysis - CryptoRobotics*
+  ↳ Bitcoin’s struggle to close above $76,000 hinges on a delicate mix of derivative activity, open interest, market sentiment, and institutional inflows, with a sustained move beyond the level needed to re-ignite a bullish trend amid caution and potenti…
+
+━━━ ⟠ ETH ━━━
+• *Ethereum Glamsterdam Upgrade Hits ATH Transactions With Lowest Fees*
+  ↳ The Ethereum Glamsterdam upgrade dramatically boosted L1 throughput to all-time highs while cutting gas fees by about 78%, reviving DeFi activity and enabling microtransactions and new AI/DeFi use cases without sacrificing backward compatibility.
+• *Grayscale's Zach Pandl highlights Ethereum's dominance in onchain finance metrics*
+  ↳ Grayscale Research led by Zach Pandl finds Ethereum dominates onchain finance, accounting for over 50% of stablecoin balances, about 65% of DeFi value locked, and nearly 80% of tokenized US Treasuries, with Layer 2s driving growth but adding friction…
+• *Ethereum is still a good long-term buy, according data: Analyst — TradingView News*
+  ↳ Ethereum remains a strong long-term buy according to analysts, with robust on-chain activity, substantial DeFi and stablecoin liquidity, rising staking participation, and historically favorable accumulation zones suggesting potential multi-year upsid…
+
+━━━ ◎ SOL ━━━
+• *Solana Q1 Performance Defies Market Slump With Record Transactions and Rising App Revenue - Blockonomi*
+  ↳ Solana’s Q1 2025 performance defied the broader crypto slump with record on-chain activity, rising app revenue (notably from launchpads), growing real-world assets, and increasing payments and DePIN interest, despite a dip in token prices.
+• *BlackRock's Spot-Solana ETF Crosses $8bn AUM Within First Six Weeks Of Trading | The Platinum Capital*
+  ↳ BlackRock’s iShares Spot Solana ETF (ISOL) surpassed $8 billion in AUM within six weeks of launch, underscoring strong institutional demand for regulated Solana exposure and signaling a sustained growth trajectory for spot-Solana ETFs alongside Bitco…
+• *Solana's Alpenglow goes live for testing, finality drops to 150ms - The Industry Spread*
+  ↳ Solana’s Alpenglow upgrade goes live on a test cluster, delivering sub-second finality (about 150ms) and a major re-pricing of validator economics and MEV through off-chain voting (Votor) and faster block propagation (Rotor), with mainnet activation …
+
+━━━ 🏛 RWA ━━━
+• *DTCC, NYSE, and Nasdaq Are All Tokenizing: $1.9B in Freed Capital, $225M in New Revenue, and a July Launch*
+  ↳  DTCC, Nasdaq, and NYSE are moving from tokenization concept to production rails, forecasting $1.9B in freed capital and $225M in new revenue by 2026 through tokenized collateral and real-world asset tokenization, with October 2026 as the broad launc…
+• *BlackRock Tokenized Treasury Filings 2026: The RWA Boom Goes Institutional*
+  ↳ BlackRock is moving beyond experiments to formal, SEC-reviewed tokenized cash equivalents by filing two on-chain Treasury‑ and RWA‑based products, aiming to re-engineer how institutions hold cash and manage short-term liquidity on blockchain.
+• *Tokenized Asset Market Tops $34 Billion as Treasurys Lead 10x Surge*
+  ↳ The tokenized asset market has surged to over $34 billion, led by tokenized U.S. Treasuries and expanded institutional adoption across blockchain infrastructure, with diversification into commodities, asset-backed credit, and other asset classes amid…
+
+━━━ 💵 Stablecoins ━━━
+• *How Stablecoins Became Part of America’s Dollar Strategy - Bloomberg*
+  ↳ The Bloomberg article argues that instead of a US central bank digital currency, Washington is advancing private digital dollars via the GENIUS Act to regulate payment stablecoins, using them to strengthen the dollar’s global dominance and influence …
+• *Stablecoin supply tops $300 billion but growth stalls; only USDT expands*
+  ↳ Total stablecoin supply surpassed $300 billion, but growth is stalling with USDT the only major increaser (over $5B in a month) while USDC, USDe, and PYUSD decline, keeping overall net growth at about $0.9B (0.3%).
+• *Stablecoins are quietly becoming the internet's money*
+  ↳ Stablecoins are quietly upgrading the global payments infrastructure by being integrated into mainstream financial rails (e.g., Visa, PayPal) and replacing traditional settlement methods, making dollar transfers faster, cheaper, and more persistent a…
+
+━━━ ⛓ Onchain ━━━
+• *Ondo Finance TVL Surpasses $4 Billion Amid Record Institutional Demand*
+  ↳ Ondo Finance’s TVL surpassed $4 billion with record institutional demand for tokenized U.S. Treasuries and equities, driven by rapid growth on its Global Markets platform and expanding tokenized asset market dominance.
+• *Chainlink’s CCIP stack drives $110b in value secured, overtaking DeFi oracles*
+  ↳ Chainlink’s CCIP stack drives a new all-time high of over $110 billion in Total Value Secured, powered largely by cross-chain tokens ($60B) and DeFi data feeds ($50B), as cross-chain migrations accelerate after a major security incident and instituti…
+• *Tokenized ETF Market Surpasses $1.4B TVL as Onchain Equity Adoption Accelerates - Blockonomi*
+  ↳ The article reports that the tokenized ETF market has surged to over $1.4B TVL with $400M+ daily on-chain settlement, led by Ondo Finance and xStocksFi, as regulated infrastructure and DeFi integrations drive rapid adoption and projections of multi‑b…
+
+━━━ 📈 Growth ━━━
+• *Strategy Watch #4*
+  ↳ Strategy Watch #4 provides a high-signal, impartial analysis of institutional fund flows in digital assets for April, noting defensive positioning with BTC and ETH outflows easing, surging stablecoin inflows, continued positive ETF/DAT flows for BTC …
+• *Bank of America Raises Bitcoin ETF Allocation to 37 Million Dollars as Q1 2026 Filing Reveals Institutional Crypto Shift*
+  ↳ Bank of America more than tripled its stake in BlackRock’s iShares Bitcoin Trust to about $37 million in Q1 2026, boosting total crypto ETF exposure to roughly $53 million across several funds while showing a cautious, diversification-first approach …
+• *Bitcoin ETFs Reach $103B: BlackRock Holds 3.8% of Supply*
+  ↳ U.S. Bitcoin ETFs hold $103.78B in net assets (as of May 1, 2026), with BlackRock IBIT owning 806,700 BTC (about 3.8% of supply) and ETFs absorbing roughly 4,500–5,000 BTC daily, ten times the ~450 BTC mined daily post-2024 halving.
+
+━━━ 🔮 Price & Predictions ━━━
+• *Cryptocurrency News May 24, 2026: Bitcoin, Ethereum, ETFs, Stablecoins and Regulation*
+  ↳ Bitcoin remains the market’s primary barometer as ETFs, regulatory signals, macro factors, and demand for Ethereum and major altcoins shape a cautious path for digital assets toward potential recovery.
+• *NordFX Forex and Cryptocurrency Forecast May 25–29, 2026*
+  ↳ A concise, one-sentence summary: The May 25–29 forecast highlights a short trading week driven by potential Fed hawkishness and OPEC/Oil sensitivities, with key risks from Q1 GDP second estimate and PCE inflation, euro/dollar dynamics near critical t…
+• *Bitcoin vs. Ethereum: Price Predictions for 2026*
+  ↳ Bitcoin vs Ethereum in 2026 is poised for divergent paths: Bitcoin faces a potential parabolic but more predictable upward trend driven by post-halving supply dynamics and steady demand, while Ethereum benefits from net supply shrinking and deflation…
+
+
+Done. 80 unique stories.

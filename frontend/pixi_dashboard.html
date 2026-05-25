@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DVR Portfolio · Options Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body {
+      width:100%; height:100%; overflow:hidden;
+      font-family:'JetBrains Mono','Courier New',monospace;
+      background: var(--body-bg);
+      transition: background 0.3s;
+    }
+
+    /* ── CSS Custom Properties — LIGHT (default) ── */
+    :root {
+      --body-bg:      #eef2f7;
+      --hdr-bg:       rgba(240,245,252,0.97);
+      --hdr-border:   rgba(0,0,0,0.08);
+      --brand-sep:    rgba(0,0,0,0.18);
+      --sym-color:    #475569;
+      --sym-border:   rgba(0,0,0,0.12);
+      --sym-hover:    #1e293b;
+      --sym-hov-bdr:  rgba(0,0,0,0.22);
+      --status-color: #64748b;
+      --tip-bg:       rgba(255,255,255,0.98);
+      --tip-border:   rgba(0,0,0,0.1);
+      --tip-color:    #0f172a;
+      --tip-shadow:   0 12px 40px rgba(0,0,0,0.18);
+      --sp-bg:        rgba(255,255,255,0.99);
+      --sp-border:    rgba(0,0,0,0.1);
+      --sp-title:     #0f172a;
+      --sp-close-c:   #64748b;
+      --sp-close-b:   rgba(0,0,0,0.12);
+      --sp-sep:       rgba(0,0,0,0.06);
+      --toggle-bg:    rgba(0,0,0,0.06);
+      --toggle-bdr:   rgba(0,0,0,0.12);
+      --toggle-color: #475569;
+    }
+    body.dark {
+      --body-bg:      #000914;
+      --hdr-bg:       rgba(0,9,20,0.97);
+      --hdr-border:   rgba(255,255,255,0.07);
+      --brand-sep:    rgba(255,255,255,0.14);
+      --sym-color:    #64748b;
+      --sym-border:   rgba(255,255,255,0.1);
+      --sym-hover:    #94a3b8;
+      --sym-hov-bdr:  rgba(255,255,255,0.22);
+      --status-color: #475569;
+      --tip-bg:       rgba(4,12,25,0.97);
+      --tip-border:   rgba(255,255,255,0.09);
+      --tip-color:    #e2e8f0;
+      --tip-shadow:   0 12px 40px rgba(0,0,0,0.65);
+      --sp-bg:        rgba(4,12,25,0.98);
+      --sp-border:    rgba(255,255,255,0.1);
+      --sp-title:     #e2e8f0;
+      --sp-close-c:   #64748b;
+      --sp-close-b:   rgba(255,255,255,0.1);
+      --sp-sep:       rgba(255,255,255,0.06);
+      --toggle-bg:    rgba(255,255,255,0.05);
+      --toggle-bdr:   rgba(255,255,255,0.1);
+      --toggle-color: #94a3b8;
+    }
+
+    /* ── Header ── */
+    #hdr {
+      position:fixed; top:0; left:0; right:0; height:52px; z-index:100;
+      background: var(--hdr-bg);
+      border-bottom: 1px solid var(--hdr-border);
+      display:flex; align-items:center; justify-content:space-between; padding:0 22px;
+      backdrop-filter:blur(14px); transition: background 0.3s, border-color 0.3s;
+    }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand-name { font-size:.85rem; font-weight:700; color:#10B981; letter-spacing:-.02em; }
+    .brand-sep  { color: var(--brand-sep); font-size:1rem; }
+    .brand-sub  { font-size:.65rem; color: var(--status-color); letter-spacing:.07em; }
+    .sym-group  { display:flex; gap:7px; }
+    .sym-btn {
+      background:transparent; border:1px solid var(--sym-border);
+      color: var(--sym-color);
+      padding:4px 15px; border-radius:5px; cursor:pointer; font-size:.72rem;
+      font-family:inherit; letter-spacing:.06em; transition:all .15s;
+    }
+    .sym-btn:hover  { border-color: var(--sym-hov-bdr); color: var(--sym-hover); }
+    .sym-btn.active { background:rgba(16,185,129,.13); border-color:rgba(16,185,129,.4); color:#10B981; }
+
+    /* ── Theme Toggle ── */
+    #theme-btn {
+      background: var(--toggle-bg); border: 1px solid var(--toggle-bdr);
+      color: var(--toggle-color); border-radius:6px;
+      width:34px; height:34px; cursor:pointer; font-size:1rem;
+      display:flex; align-items:center; justify-content:center;
+      transition:all .2s; flex-shrink:0;
+    }
+    #theme-btn:hover { border-color:rgba(16,185,129,0.4); color:#10B981; }
+
+    #status { display:flex; align-items:center; gap:8px; font-size:.65rem; color: var(--status-color); }
+    .hdr-right { display:flex; align-items:center; gap:12px; }
+    .dot { width:6px; height:6px; border-radius:50%; background:#10B981; animation:pulse 1.6s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+    /* ── Canvas wrap ── */
+    #wrap { position:fixed; top:52px; left:0; right:0; bottom:0; }
+    canvas { display:block; }
+
+    /* ── Hover Tooltip ── */
+    #tip {
+      position:fixed; pointer-events:none; z-index:300; display:none;
+      background: var(--tip-bg); border:1px solid var(--tip-border);
+      border-radius:9px; padding:11px 15px; line-height:1.9;
+      font-size:.72rem; color: var(--tip-color);
+      box-shadow: var(--tip-shadow);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    /* ── Strike drill-down panel ── */
+    #spanel {
+      display:none; position:fixed; z-index:400;
+      background: var(--sp-bg); border:1px solid var(--sp-border);
+      border-radius:13px; box-shadow:0 24px 72px rgba(0,0,0,.3);
+      width:440px; overflow:hidden;
+      transition: background 0.2s;
+    }
+    #sp-hdr {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:11px 16px; border-bottom:1px solid var(--sp-sep);
+    }
+    #sp-title { font-size:.78rem; color: var(--sp-title); font-weight:700; }
+    #sp-close {
+      background:none; border:1px solid var(--sp-close-b); color: var(--sp-close-c);
+      border-radius:5px; width:26px; height:26px; cursor:pointer; font-size:.8rem;
+      display:flex; align-items:center; justify-content:center; transition:all .15s;
+    }
+    #sp-close:hover { color:#ef4444; border-color:rgba(239,68,68,.3); }
+    #sp-canvas { display:block; }
+  </style>
+</head>
+<body><!-- light by default, no .dark class -->
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<div id="hdr">
+  <div class="brand">
+    <span class="brand-name">DVR Portfolio</span>
+    <span class="brand-sep">·</span>
+    <span class="brand-sub">OPTIONS INTELLIGENCE</span>
+  </div>
+  <div class="sym-group">
+    <button class="sym-btn active" id="btn-NIFTY"     onclick="switchSym('NIFTY')">NIFTY</button>
+    <button class="sym-btn"        id="btn-SENSEX"    onclick="switchSym('SENSEX')">SENSEX</button>
+    <button class="sym-btn"        id="btn-BANKNIFTY" onclick="switchSym('BANKNIFTY')">BANKNIFTY</button>
+  </div>
+  <div class="hdr-right">
+    <button id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark">☀️</button>
+    <div id="status"><span class="dot"></span><span id="st">Connecting…</span></div>
+  </div>
+</div>
+
+<!-- ── PixiJS Canvas ── -->
+<div id="wrap"><canvas id="c"></canvas></div>
+
+<!-- ── Tooltip ── -->
+<div id="tip"></div>
+
+<!-- ── Strike Drill-down ── -->
+<div id="spanel">
+  <div id="sp-hdr">
+    <span id="sp-title">Strike Detail</span>
+    <button id="sp-close" onclick="closeStrike()">✕</button>
+  </div>
+  <canvas id="sp-canvas" width="438" height="220"></canvas>
+</div>
+
+<script>
+'use strict';
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  DVR Portfolio · Options Intelligence  –  PixiJS 7          ║
+// ║  Light / Dark themes · enlarged axis & panel fonts          ║
+// ╚══════════════════════════════════════════════════════════════╝
+
+const API        = 'http://localhost:8765';
+const HDR        = 52;
+const REFRESH_MS = 30_000;
+const MONO       = "'JetBrains Mono','Courier New',monospace";
+
+// ════════════════════════════════════════════════════════════════
+//  THEME SYSTEM
+// ════════════════════════════════════════════════════════════════
+const THEMES = {
+  light: {
+    bg:     0xeef2f7,   panel:  0xffffff,   border: 0xc8d6e8,
+    text:   0x0f172a,   muted:  0x546e8a,   dim:    0x94a3b8,
+    grid:   0xd8e4f0,   atm:    0xdbeafe,
+    call:   0xdc2626,   put:    0x059669,
+    spot:   0x0369a1,   pain:   0xca8a04,
+    bull:   0x059669,   bear:   0xdc2626,   neut:   0xca8a04,
+    oiBg:   0xf5f8fc,   riverBg:0xf0f4f9,
+    strikeIsBright: true,
+  },
+  dark: {
+    bg:     0x000914,   panel:  0x050d1c,   border: 0x1a2742,
+    text:   0xe2e8f0,   muted:  0x64748b,   dim:    0x334155,
+    grid:   0x1a2742,   atm:    0x0c2040,
+    call:   0xef4444,   put:    0x10b981,
+    spot:   0x38bdf8,   pain:   0xf59e0b,
+    bull:   0x10b981,   bear:   0xef4444,   neut:   0xf59e0b,
+    oiBg:   0x030b17,   riverBg:0x040c1c,
+    strikeIsBright: false,
+  },
+};
+
+// C is mutable — Object.assign(C, THEMES.xxx) swaps palette
+const C = Object.assign({}, THEMES.light);
+let currentTheme = 'light';
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  applyTheme(currentTheme);
+}
+
+function applyTheme(name) {
+  Object.assign(C, THEMES[name]);
+  currentTheme = name;
+
+  // HTML layer
+  document.body.classList.toggle('dark', name === 'dark');
+  document.getElementById('theme-btn').textContent = name === 'dark' ? '☀️' : '🌙';
+
+  // PixiJS renderer bg
+  app.renderer.backgroundColor = C.bg;
+
+  // Update persistent macro orb text styles
+  macroTitle.style.fill = C.muted;
+  macroOrbs.forEach(orb => {
+    orb.nTs.fill = C.muted;
+    orb.vTs.fill = C.text;
+    // cTs.fill is set per-frame based on direction — no update needed
+  });
+
+  // Re-render all static scenes
+  renderAll();
+}
+
+// ── State ─────────────────────────────────────────────────────────
+let sym   = 'NIFTY';
+let S     = { chain:null, oiTrend:null, signal:null, macro:null };
+let rAnim = 0;
+
+// ── Layout ────────────────────────────────────────────────────────
+const W      = window.innerWidth;
+const H      = window.innerHeight - HDR;
+const leftW  = Math.floor(W * 0.185);
+const rightW = Math.floor(W * 0.185);
+const oiW    = W - leftW - rightW;
+const mainH  = Math.floor(H * 0.67);
+const riverH = H - mainH;
+
+// ── PixiJS App ────────────────────────────────────────────────────
+const canvas = document.getElementById('c');
+canvas.width  = W; canvas.height = H;
+const app = new PIXI.Application({
+  view: canvas, width: W, height: H,
+  backgroundColor: C.bg, antialias: true,
+  resolution: Math.min(window.devicePixelRatio || 1, 2),
+  autoDensity: true,
+});
+const stage = app.stage;
+
+// ── Layers ────────────────────────────────────────────────────────
+const bgG    = new PIXI.Graphics(); stage.addChild(bgG);
+
+const macroL = new PIXI.Container(); macroL.position.set(0, 0);        stage.addChild(macroL);
+const macroG = new PIXI.Graphics(); macroL.addChild(macroG);
+
+const oiL    = new PIXI.Container(); oiL.position.set(leftW, 0);       stage.addChild(oiL);
+const oiG    = new PIXI.Graphics(); oiL.addChild(oiG);
+const oiHits = new PIXI.Container(); oiL.addChild(oiHits);
+const oiLbls = new PIXI.Container(); oiL.addChild(oiLbls);
+
+const radarL   = new PIXI.Container(); radarL.position.set(W - rightW, 0); stage.addChild(radarL);
+const radarG   = new PIXI.Graphics(); radarL.addChild(radarG);
+const radarLbl = new PIXI.Container(); radarL.addChild(radarLbl);
+
+const riverL   = new PIXI.Container(); riverL.position.set(0, mainH);    stage.addChild(riverL);
+const riverG   = new PIXI.Graphics(); riverL.addChild(riverG);
+const riverLbl = new PIXI.Container(); riverL.addChild(riverLbl);
+
+// ── Persistent Macro Orb Objects ─────────────────────────────────
+const MACRO_DEFS = [
+  { key:'vix',   label:'INDIA VIX', pre:'',  dec:1 },
+  { key:'gold',  label:'GOLD',      pre:'$', dec:1 },
+  { key:'crude', label:'CRUDE OIL', pre:'$', dec:2 },
+  { key:'dxy',   label:'DXY',       pre:'',  dec:3 },
+  { key:'us30',  label:'US30',      pre:'',  dec:0 },
+  { key:'silver',label:'SILVER',    pre:'$', dec:2 },
+];
+const orbState = MACRO_DEFS.map((_, i) => ({
+  phase: (i / MACRO_DEFS.length) * Math.PI * 2,
+  speed: 0.36 + i * 0.09,
+}));
+
+// Create persistent text objects (updated each frame / on theme change)
+const macroTitle = lbl(macroL, 'MACRO', 14, 10, 11, C.muted, 0, 3);
+const macroOrbs  = MACRO_DEFS.map(d => {
+  const g   = new PIXI.Graphics();
+  const nTs = new PIXI.TextStyle({ fontSize:10,  fill:C.muted, fontFamily:MONO, letterSpacing:1 });
+  const vTs = new PIXI.TextStyle({ fontSize:14,  fill:C.text,  fontFamily:MONO, fontWeight:'700' });
+  const cTs = new PIXI.TextStyle({ fontSize:10,  fill:C.muted, fontFamily:MONO });
+  const nT  = new PIXI.Text(d.label, nTs);
+  const vT  = new PIXI.Text('—', vTs);
+  const cT  = new PIXI.Text('', cTs);
+  macroL.addChild(g, nT, vT, cT);
+  return { g, nT, vT, cT, nTs, vTs, cTs };
+});
+
+// ── Helper: create & add a text label ────────────────────────────
+function lbl(container, str, x, y, sz=11, fill=C.text, bold=0, ls=0) {
+  const t = new PIXI.Text(String(str), new PIXI.TextStyle({
+    fontSize: sz, fill, fontFamily: MONO,
+    fontWeight: bold ? '700' : '400',
+    letterSpacing: ls,
+  }));
+  t.position.set(x, y);
+  container.addChild(t);
+  return t;
+}
+
+// ── Tooltip DOM ───────────────────────────────────────────────────
+const tipEl = document.getElementById('tip');
+function showTip(sx, sy, lines) {
+  tipEl.innerHTML = lines.join('<br>');
+  tipEl.style.left = `${sx + leftW + 14}px`;
+  tipEl.style.top  = `${sy + HDR + 8}px`;
+  tipEl.style.display = 'block';
+}
+function hideTip() { tipEl.style.display = 'none'; }
+
+// ── Format Helpers ────────────────────────────────────────────────
+const fmtOI = v => {
+  if (!v) return '0';
+  if (v >= 10000000) return (v/10000000).toFixed(2)+' Cr';
+  if (v >= 100000)   return (v/100000).toFixed(1)+' L';
+  return Math.round(v).toLocaleString();
+};
+const fmtMacro = (d, v) => {
+  if (v == null) return '—';
+  if (d.key === 'us30') return Math.round(v).toLocaleString();
+  return v.toFixed(d.dec);
+};
+const sigColor   = s => s === 'BUY' ? C.bull : s === 'SELL' ? C.bear : C.neut;
+const scoreColor = s => s > 0 ? C.bull : s < 0 ? C.bear : C.muted;
+
+// ── Dashed Line ───────────────────────────────────────────────────
+function dashLine(g, x1, y1, x2, y2, dash=8, gap=4) {
+  const dx=x2-x1, dy=y2-y1, len=Math.sqrt(dx*dx+dy*dy);
+  if (!len) return;
+  const ux=dx/len, uy=dy/len;
+  let d=0, draw=true;
+  g.moveTo(x1, y1);
+  while (d < len) {
+    const seg = Math.min(draw ? dash : gap, len - d);
+    d += seg;
+    draw ? g.lineTo(x1+ux*d, y1+uy*d) : g.moveTo(x1+ux*d, y1+uy*d);
+    draw = !draw;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  PANEL BACKGROUNDS
+// ════════════════════════════════════════════════════════════════
+function drawBg() {
+  bgG.clear();
+  bgG.beginFill(C.panel,   0.80); bgG.drawRect(0,      0,      leftW,  mainH);  bgG.endFill();
+  bgG.beginFill(C.oiBg,    0.90); bgG.drawRect(leftW,  0,      oiW,    mainH);  bgG.endFill();
+  bgG.beginFill(C.panel,   0.80); bgG.drawRect(W-rightW,0,     rightW, mainH);  bgG.endFill();
+  bgG.beginFill(C.riverBg, 0.90); bgG.drawRect(0,      mainH,  W,      riverH); bgG.endFill();
+  bgG.lineStyle(1, C.border, 0.7);
+  bgG.moveTo(leftW,    0); bgG.lineTo(leftW,    mainH);
+  bgG.moveTo(W-rightW, 0); bgG.lineTo(W-rightW, mainH);
+  bgG.moveTo(0,     mainH); bgG.lineTo(W,        mainH);
+  bgG.lineStyle(0);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  SCENE 1 — OI WALL
+// ════════════════════════════════════════════════════════════════
+function renderOI() {
+  oiG.clear(); oiLbls.removeChildren(); oiHits.removeChildren();
+
+  const chain = S.chain;
+  if (!chain?.strikes?.length) {
+    lbl(oiLbls, 'No chain data — run collector.py', oiW/2-140, mainH/2, 13, C.muted);
+    return;
+  }
+
+  const strikes = [...chain.strikes].reverse(); // highest → lowest
+  const n   = strikes.length;
+  const padT = 42, padB = 14;
+  const rowH = Math.floor((mainH - padT - padB) / n);
+  const cx   = oiW / 2;
+
+  const spot = chain.spot ?? S.signal?.ltp;
+  let atm = null;
+  if (spot) {
+    let md = Infinity;
+    strikes.forEach(s => { const d=Math.abs(s.strike-spot); if(d<md){md=d;atm=s.strike;} });
+  }
+
+  const maxOI  = Math.max(...strikes.map(s => Math.max(s.ce_oi||0, s.pe_oi||0))) || 1;
+  const barMax = cx - 62;
+
+  // Header
+  lbl(oiLbls, 'OI  WALL', 14,   10, 11, C.muted, 0, 2);
+  lbl(oiLbls, sym,        92,   10, 11, C.text, 1);
+  if (chain.timestamp) lbl(oiLbls, chain.timestamp.slice(11,16), oiW-56, 10, 10, C.muted);
+  lbl(oiLbls, '◀  PE OI', cx-90, 10, 10, C.put);
+  lbl(oiLbls, 'CE OI  ▶', cx+12, 10, 10, C.call);
+
+  const sVals = strikes.map(s => s.strike);
+  function strikeToY(price) {
+    if (price >= sVals[0])   return padT + rowH/2;
+    if (price <= sVals[n-1]) return padT + (n-0.5)*rowH;
+    for (let i=0; i<n-1; i++) {
+      const hi=sVals[i], lo=sVals[i+1];
+      if (price <= hi && price >= lo) {
+        const t = (hi - price) / (hi - lo);
+        return padT + (i + t) * rowH + rowH/2;
+      }
+    }
+    return padT + n*rowH/2;
+  }
+
+  strikes.forEach((s, i) => {
+    const ry    = padT + i * rowH;
+    const isATM = s.strike === atm;
+
+    if (isATM) {
+      oiG.beginFill(C.atm, C.strikeIsBright ? 0.6 : 0.5);
+      oiG.drawRect(0, ry, oiW, rowH); oiG.endFill();
+    }
+    oiG.lineStyle(0.5, C.grid, C.strikeIsBright ? 0.5 : 0.22);
+    oiG.moveTo(0, ry); oiG.lineTo(oiW, ry);
+
+    const peW = (s.pe_oi||0) / maxOI * barMax;
+    const ceW = (s.ce_oi||0) / maxOI * barMax;
+
+    oiG.lineStyle(0);
+    oiG.beginFill(C.put,  0.45); oiG.drawRect(cx-peW, ry+2, peW, rowH-4); oiG.endFill();
+    oiG.lineStyle(1.5, C.put,  0.6); oiG.moveTo(cx-peW, ry+3); oiG.lineTo(cx-peW, ry+rowH-3);
+
+    oiG.lineStyle(0);
+    oiG.beginFill(C.call, 0.45); oiG.drawRect(cx,     ry+2, ceW, rowH-4); oiG.endFill();
+    oiG.lineStyle(1.5, C.call, 0.6); oiG.moveTo(cx+ceW, ry+3); oiG.lineTo(cx+ceW, ry+rowH-3);
+
+    // Strike label — bigger font
+    const sz  = Math.max(Math.min(rowH - 2, 13), 10);
+    const fc  = isATM ? (C.strikeIsBright ? 0x0f172a : 0xffffff) : C.dim;
+    lbl(oiLbls, s.strike.toFixed(0), cx-24, ry + rowH/2 - sz/2 - 1, sz, fc, isATM ? 1 : 0);
+
+    // OI value labels — bigger, always visible if room
+    if (rowH > 18) {
+      lbl(oiLbls, fmtOI(s.pe_oi), cx - peW - 44, ry + rowH/2 - 6, 10, C.put);
+      lbl(oiLbls, fmtOI(s.ce_oi), cx + ceW + 6,  ry + rowH/2 - 6, 10, C.call);
+    }
+
+    // Hit area
+    const hit = new PIXI.Graphics();
+    hit.beginFill(0x000000, 0.001); hit.drawRect(0, ry, oiW, rowH); hit.endFill();
+    hit.interactive = true; hit.cursor = 'crosshair'; hit._sd = s;
+    hit.on('pointermove', e => {
+      const sd  = e.currentTarget._sd;
+      const pcr = sd.ce_oi > 0 ? (sd.pe_oi/sd.ce_oi).toFixed(2) : '—';
+      showTip(e.global.x - leftW, e.global.y, [
+        `<b style="color:${C.strikeIsBright?'#0f172a':'#fff'}">Strike: ${sd.strike}</b>`,
+        `<span style="color:#10b981">PE OI:</span> ${fmtOI(sd.pe_oi)}&nbsp;&nbsp;<span style="color:#64748b">₹${(sd.pe_ltp||0).toFixed(2)}</span>`,
+        `<span style="color:#ef4444">CE OI:</span> ${fmtOI(sd.ce_oi)}&nbsp;&nbsp;<span style="color:#64748b">₹${(sd.ce_ltp||0).toFixed(2)}</span>`,
+        `<span style="color:#64748b">PCR: ${pcr}</span>`,
+      ]);
+    });
+    hit.on('pointerout',  hideTip);
+    hit.on('pointerdown', e => { hideTip(); openStrike(e.currentTarget._sd, e.global.x + leftW, e.global.y + HDR); });
+    oiHits.addChild(hit);
+  });
+
+  // Spot line (glow)
+  if (spot) {
+    const sy = strikeToY(spot);
+    oiG.lineStyle(0);
+    oiG.beginFill(C.spot, 0.06); oiG.drawRect(0, sy-6, oiW, 12); oiG.endFill();
+    oiG.lineStyle(6, C.spot, 0.08); oiG.moveTo(0,sy); oiG.lineTo(oiW,sy);
+    oiG.lineStyle(2, C.spot, 0.5);  oiG.moveTo(0,sy); oiG.lineTo(oiW,sy);
+    oiG.lineStyle(1, C.spot, 1.0);  oiG.moveTo(0,sy); oiG.lineTo(oiW,sy);
+    oiG.lineStyle(0);
+    oiG.beginFill(C.spot, 0.2); oiG.drawRoundedRect(cx-52, sy-17, 104, 16, 3); oiG.endFill();
+    lbl(oiLbls, `▶ SPOT  ${spot?.toFixed(1)}`, cx-48, sy-16, 11, C.spot, 1);
+  }
+
+  // Max pain (dashed)
+  const mp = S.signal?.max_pain;
+  if (mp) {
+    const my = strikeToY(mp);
+    oiG.lineStyle(1.5, C.pain, 0.85); dashLine(oiG, 0, my, oiW, my);
+    lbl(oiLbls, `MAX PAIN  ${mp.toFixed(0)}`, 8, my + 5, 10, C.pain);
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+//  SCENE 2 — MACRO ORBS (animated each frame)
+// ════════════════════════════════════════════════════════════════
+const cellW = leftW / 2;
+const cellH = (mainH - 36) / 3;
+
+function animateMacro() {
+  const t = performance.now() * 0.001;
+  MACRO_DEFS.forEach((def, i) => {
+    const orb  = macroOrbs[i];
+    const col  = i % 2, row = Math.floor(i / 2);
+    const bx   = cellW * col + cellW / 2;
+    const by   = 36 + cellH * row + cellH / 2;
+    const fy   = Math.sin(t * orbState[i].speed + orbState[i].phase) * 5.5;
+    const cy   = by + fy;
+
+    const d    = S.macro?.[def.key];
+    const chg  = d?.chg ?? 0;
+    const val  = d?.value ?? null;
+    const clr  = chg > 0.0001 ? C.bull : chg < -0.0001 ? C.bear : 0x94a3b8;
+    const r    = 26 + Math.min(Math.abs(chg * 120), 12);
+
+    orb.g.clear();
+    orb.g.beginFill(clr, currentTheme === 'light' ? 0.08 : 0.06); orb.g.drawCircle(bx, cy, r+16); orb.g.endFill();
+    orb.g.beginFill(clr, currentTheme === 'light' ? 0.22 : 0.20); orb.g.drawCircle(bx, cy, r);    orb.g.endFill();
+    orb.g.lineStyle(1.5, clr, 0.6); orb.g.drawCircle(bx, cy, r); orb.g.lineStyle(0);
+
+    // Name label — bigger font (10px, set in nTs)
+    orb.nT.position.set(bx - orb.nT.width/2, cy - r - 20);
+
+    // Value label — bigger font (14px, set in vTs)
+    const vs = val != null ? `${def.pre}${fmtMacro(def, val)}` : '—';
+    if (orb.vT.text !== vs) orb.vT.text = vs;
+    orb.vT.position.set(bx - orb.vT.width/2, cy - 9);
+
+    // Change label — bigger font (10px, set in cTs)
+    const cs = chg != null ? `${chg>=0?'+':''}${(chg*100).toFixed(2)}%` : '';
+    if (orb.cT.text !== cs) orb.cT.text = cs;
+    orb.cTs.fill = clr;
+    orb.cT.position.set(bx - orb.cT.width/2, cy + 7);
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+//  SCENE 3 — SIGNAL RADAR (animated entrance)
+// ════════════════════════════════════════════════════════════════
+const SPOKES = [
+  { k:'trend',      lb:'TREND'  }, { k:'dow',        lb:'DOW'    },
+  { k:'india_vix',  lb:'VIX'    }, { k:'oi',         lb:'O.I.'   },
+  { k:'vwap',       lb:'VWAP'   }, { k:'supertrend', lb:'SUPERT' },
+  { k:'rsi',        lb:'RSI'    }, { k:'dxy',        lb:'DXY'    },
+  { k:'crude',      lb:'CRUDE'  }, { k:'pcr',        lb:'PCR'    },
+];
+
+function renderRadar() {
+  radarG.clear(); radarLbl.removeChildren();
+
+  const sig = S.signal;
+  if (!sig) return;
+
+  const panW = rightW, panH = mainH;
+  const cx   = panW / 2, cy = panH / 2 + 8;
+  const maxR = Math.min(panW, panH) * 0.29;
+  const n    = SPOKES.length;
+  const fac  = sig.factors_detail || {};
+
+  lbl(radarLbl, 'SIGNAL RADAR', 10, 10, 11, C.muted, 0, 2);
+
+  [0.33, 0.66, 1.0].forEach(r => {
+    radarG.lineStyle(0.5, C.grid, 0.45); radarG.drawCircle(cx, cy, maxR * r);
+  });
+  lbl(radarLbl, '+1', cx + maxR*0.63, cy - 6, 9, C.bull);
+  lbl(radarLbl, ' 0', cx + maxR*0.30, cy - 6, 9, C.dim);
+  lbl(radarLbl, '-1', cx + 4,          cy - 6, 9, C.bear);
+
+  const pts = [];
+  SPOKES.forEach(({ k, lb }, i) => {
+    const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+    radarG.lineStyle(0.5, C.grid, 0.28);
+    radarG.moveTo(cx, cy); radarG.lineTo(cx + Math.cos(ang)*maxR, cy + Math.sin(ang)*maxR);
+
+    const lx = cx + Math.cos(ang) * (maxR + 18);
+    const ly = cy + Math.sin(ang) * (maxR + 18);
+    const sc = fac[k] ?? 0;
+    lbl(radarLbl, lb, lx - 14, ly - 6, 10, scoreColor(sc));  // was 7.5
+
+    const norm = (sc + 1) / 2;
+    const vr   = maxR * (0.1 + norm * 0.9) * rAnim;
+    const vx   = cx + Math.cos(ang) * vr;
+    const vy   = cy + Math.sin(ang) * vr;
+    pts.push(vx, vy);
+
+    radarG.lineStyle(0);
+    radarG.beginFill(scoreColor(sc), 0.85); radarG.drawCircle(vx, vy, 4); radarG.endFill();
+  });
+
+  const sc = sigColor(sig.signal);
+  radarG.lineStyle(0);
+  radarG.beginFill(sc, 0.12); radarG.drawPolygon(pts); radarG.endFill();
+  radarG.lineStyle(1.5, sc, 0.75); radarG.drawPolygon(pts);
+
+  radarG.lineStyle(2, sc, 0.65); radarG.beginFill(sc, 0.13); radarG.drawCircle(cx, cy, 34); radarG.endFill();
+  const sigTxt = sig.signal || 'N/A';
+  lbl(radarLbl, sigTxt, cx - sigTxt.length * 4.2, cy - 11, 14, sc, 1);  // was 12
+  lbl(radarLbl, `${sig.score??'?'}/${sig.factors??'?'}`, cx - 10, cy + 6, 10, C.muted);  // was 8
+
+  const iy = panH - 76;
+  [
+    ['PCR',      sig.pcr?.toFixed(2)      ?? '—'],
+    ['MAX PAIN', sig.max_pain?.toFixed(0) ?? '—'],
+    ['EXPIRY',   sig.expiry               ?? '—'],
+  ].forEach(([k, v], i) => {
+    lbl(radarLbl, k, 10,        iy + i*22, 10, C.muted, 0, 1);  // was 7.5
+    lbl(radarLbl, v, panW - 64, iy + i*22, 10, C.text);          // was 7.5
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+//  SCENE 4 — PCR TREND RIVER
+// ════════════════════════════════════════════════════════════════
+function renderRiver() {
+  riverG.clear(); riverLbl.removeChildren();
+
+  const series = S.oiTrend?.series;
+  if (!series?.length) return;
+
+  const panW = W;
+  const panH = riverH;
+  const PL=68, PR=24, PT=30, PB=28;   // wider left margin for bigger Y-labels
+  const cW = panW - PL - PR;
+  const cH = panH - PT - PB;
+  const n  = series.length;
+
+  const pts = series.map(d => ({
+    ts:  d.timestamp,
+    pcr: d.call_oi > 0 ? d.put_oi / d.call_oi : 1,
+    ltp: d.ltp,
+  }));
+  const pcrArr = pts.map(p => p.pcr);
+  const ltpArr = pts.map(p => p.ltp);
+  const pMin   = Math.min(...pcrArr) * 0.96;
+  const pMax   = Math.max(...pcrArr) * 1.04;
+  const lMin   = Math.min(...ltpArr);
+  const lMax   = Math.max(...ltpArr);
+  const pRange = pMax - pMin || 0.01;
+  const lRange = lMax - lMin || 1;
+
+  const toX  = i => PL + (i / (n - 1 || 1)) * cW;
+  const toYp = v => PT + cH - ((v - pMin) / pRange) * cH;
+  const toYl = v => PT + cH - ((v - lMin) / lRange) * cH;
+
+  // Panel title
+  lbl(riverLbl, 'INTRADAY  PCR  TREND', PL + 6, 8, 11, C.muted, 0, 2);  // was 9
+
+  // Y-axis grid + labels — bigger font
+  for (let t = 0; t <= 4; t++) {
+    const v = pMin + (t / 4) * pRange;
+    const y = toYp(v);
+    riverG.lineStyle(0.4, C.grid, C.strikeIsBright ? 0.6 : 0.3);
+    riverG.moveTo(PL, y); riverG.lineTo(panW - PR, y);
+    lbl(riverLbl, v.toFixed(2), 4, y - 7, 11, C.muted);  // was 7.5 → 11
+  }
+
+  // PCR = 1.0 neutral line
+  if (1.0 >= pMin && 1.0 <= pMax) {
+    const ny = toYp(1.0);
+    riverG.lineStyle(1.2, C.dim, 0.5); dashLine(riverG, PL, ny, panW-PR, ny);
+    lbl(riverLbl, 'PCR 1.0', panW - PR - 56, ny - 14, 10, C.dim);  // was 7
+  }
+
+  // X-axis time labels — bigger font, fewer labels to avoid overlap
+  const step = Math.max(1, Math.floor(n / 8));
+  pts.forEach((p, i) => {
+    if (i % step === 0) {
+      const x = toX(i);
+      riverG.lineStyle(0.3, C.grid, C.strikeIsBright ? 0.4 : 0.18);
+      riverG.moveTo(x, PT); riverG.lineTo(x, PT + cH);
+      lbl(riverLbl, p.ts.slice(11,16), x - 16, PT + cH + 7, 10, C.muted);  // was 6.5 → 10
+    }
+  });
+
+  const lastPCR = pcrArr[n - 1];
+  const areaClr = lastPCR >= 1.0 ? C.bull : C.bear;
+
+  // Area fill
+  const areaPoly = [PL, PT + cH];
+  pts.forEach((p, i) => { areaPoly.push(toX(i), toYp(p.pcr)); });
+  areaPoly.push(toX(n-1), PT + cH);
+  riverG.lineStyle(0);
+  riverG.beginFill(areaClr, 0.09); riverG.drawPolygon(areaPoly); riverG.endFill();
+
+  // PCR line
+  riverG.lineStyle(2.5, areaClr, 0.9);
+  pts.forEach((p, i) => { i===0 ? riverG.moveTo(toX(i),toYp(p.pcr)) : riverG.lineTo(toX(i),toYp(p.pcr)); });
+
+  // LTP line
+  riverG.lineStyle(1.5, C.pain, 0.65);
+  pts.forEach((p, i) => { i===0 ? riverG.moveTo(toX(i),toYl(p.ltp)) : riverG.lineTo(toX(i),toYl(p.ltp)); });
+
+  // Live dots
+  const ex  = toX(n-1);
+  const epy = toYp(lastPCR);
+  const ely = toYl(ltpArr[n-1]);
+  riverG.lineStyle(0);
+  riverG.beginFill(areaClr, 0.22); riverG.drawCircle(ex, epy, 10); riverG.endFill();
+  riverG.beginFill(areaClr, 1);    riverG.drawCircle(ex, epy, 4.5); riverG.endFill();
+  riverG.beginFill(C.pain,  1);    riverG.drawCircle(ex, ely, 3.5); riverG.endFill();
+
+  // Live labels — bigger
+  lbl(riverLbl, `PCR  ${lastPCR.toFixed(2)}`,    panW-PR-68, epy-16, 11, areaClr, 1);  // was 9
+  lbl(riverLbl, `LTP  ${ltpArr[n-1].toFixed(0)}`, panW-PR-68, ely+4,  10, C.pain);      // was 8
+
+  // Legend
+  lbl(riverLbl, '── PCR', PL+4, PT+cH-32, 10, areaClr);  // was 8
+  lbl(riverLbl, '── LTP', PL+4, PT+cH-18, 10, C.pain);   // was 8
+}
+
+// ════════════════════════════════════════════════════════════════
+//  STRIKE DRILL-DOWN  (Canvas 2D — theme-aware)
+// ════════════════════════════════════════════════════════════════
+const spanel   = document.getElementById('spanel');
+const spCanvas = document.getElementById('sp-canvas');
+const spCtx    = spCanvas.getContext('2d');
+
+function spBg()   { return currentTheme === 'light' ? '#ffffff' : '#030b17'; }
+function spText() { return currentTheme === 'light' ? '#475569' : '#475569'; }
+function spGrid() { return currentTheme === 'light' ? '#e2e8f0' : '#1a2742'; }
+
+async function openStrike(sd, domX, domY) {
+  const px = Math.min(domX + 10, window.innerWidth  - 450);
+  const py = Math.min(domY + 10, window.innerHeight - 240);
+  spanel.style.left    = px + 'px';
+  spanel.style.top     = py + 'px';
+  spanel.style.display = 'block';
+  document.getElementById('sp-title').textContent = `${sym}  ·  Strike  ${sd.strike}`;
+  drawStrikeLoading(sd);
+  try {
+    const res  = await fetch(`${API}/api/pixi/strike-history?symbol=${sym}&strike=${sd.strike}`);
+    const data = await res.json();
+    if (data.series?.length > 1) drawStrikeChart(data.series);
+  } catch (e) { console.error('[Strike]', e); }
+}
+
+function drawStrikeLoading(sd) {
+  const W2=438, H2=220;
+  spCtx.fillStyle = spBg(); spCtx.fillRect(0,0,W2,H2);
+  spCtx.font = '11px JetBrains Mono'; spCtx.fillStyle = spText();
+  spCtx.fillText('Loading intraday OI…', 14, 28);
+  spCtx.fillStyle = '#10b981';
+  spCtx.fillText(`PE OI: ${fmtOI(sd.pe_oi)}   LTP: ₹${(sd.pe_ltp||0).toFixed(2)}`, 14, 56);
+  spCtx.fillStyle = '#ef4444';
+  spCtx.fillText(`CE OI: ${fmtOI(sd.ce_oi)}   LTP: ₹${(sd.ce_ltp||0).toFixed(2)}`, 14, 76);
+}
+
+function drawStrikeChart(series) {
+  const W2=438, H2=220;
+  const PL=50, PR=12, PT=22, PB=22;
+  const cW=W2-PL-PR, cH=H2-PT-PB;
+  const n=series.length;
+  spCtx.clearRect(0,0,W2,H2);
+  spCtx.fillStyle = spBg(); spCtx.fillRect(0,0,W2,H2);
+
+  const maxOI = Math.max(...series.map(d=>Math.max(d.ce_oi||0, d.pe_oi||0))) || 1;
+  const toX   = i => PL + (i/(n-1||1))*cW;
+  const toY   = v => PT + cH - (v/maxOI)*cH;
+
+  // Grid + Y labels
+  spCtx.strokeStyle = spGrid(); spCtx.lineWidth = 0.6;
+  for (let t=0; t<=3; t++) {
+    const y = PT + (t/3)*cH;
+    spCtx.beginPath(); spCtx.moveTo(PL,y); spCtx.lineTo(W2-PR,y); spCtx.stroke();
+    spCtx.fillStyle = spText(); spCtx.font = '10px JetBrains Mono';
+    spCtx.fillText(fmtOI(maxOI - (t/3)*maxOI), 2, y+4);  // was 7px → 10px
+  }
+
+  // PE OI area + line
+  spCtx.beginPath(); spCtx.fillStyle='rgba(16,185,129,0.08)';
+  series.forEach((d,i) => { i===0?spCtx.moveTo(toX(i),toY(d.pe_oi||0)):spCtx.lineTo(toX(i),toY(d.pe_oi||0)); });
+  spCtx.lineTo(toX(n-1),PT+cH); spCtx.lineTo(PL,PT+cH); spCtx.closePath(); spCtx.fill();
+  spCtx.beginPath(); spCtx.strokeStyle='#10b981'; spCtx.lineWidth=1.8;
+  series.forEach((d,i) => { i===0?spCtx.moveTo(toX(i),toY(d.pe_oi||0)):spCtx.lineTo(toX(i),toY(d.pe_oi||0)); });
+  spCtx.stroke();
+
+  // CE OI area + line
+  spCtx.beginPath(); spCtx.fillStyle='rgba(239,68,68,0.08)';
+  series.forEach((d,i) => { i===0?spCtx.moveTo(toX(i),toY(d.ce_oi||0)):spCtx.lineTo(toX(i),toY(d.ce_oi||0)); });
+  spCtx.lineTo(toX(n-1),PT+cH); spCtx.lineTo(PL,PT+cH); spCtx.closePath(); spCtx.fill();
+  spCtx.beginPath(); spCtx.strokeStyle='#ef4444'; spCtx.lineWidth=1.8;
+  series.forEach((d,i) => { i===0?spCtx.moveTo(toX(i),toY(d.ce_oi||0)):spCtx.lineTo(toX(i),toY(d.ce_oi||0)); });
+  spCtx.stroke();
+
+  // Legend + X-axis time labels — bigger font
+  spCtx.font='10px JetBrains Mono';  // was 8px
+  spCtx.fillStyle='#10b981'; spCtx.fillText('── PE OI', PL+4, PT+14);
+  spCtx.fillStyle='#ef4444'; spCtx.fillText('── CE OI', PL+80, PT+14);
+  spCtx.fillStyle = spText();
+  const step = Math.max(1, Math.floor(n/6));
+  series.forEach((d,i) => {
+    if (i%step===0) spCtx.fillText(d.timestamp.slice(11,16), toX(i)-14, H2-6);  // was 7px implicit
+  });
+}
+
+function closeStrike() { spanel.style.display = 'none'; }
+
+// ════════════════════════════════════════════════════════════════
+//  DATA FETCHING
+// ════════════════════════════════════════════════════════════════
+async function fetchAll() {
+  document.getElementById('st').textContent = 'Fetching…';
+  try {
+    const [chain, oiTrend, signal, macro] = await Promise.all([
+      fetch(`${API}/api/pixi/chain?symbol=${sym}`).then(r=>r.json()),
+      fetch(`${API}/api/pixi/oi-trend?symbol=${sym}`).then(r=>r.json()),
+      fetch(`${API}/api/pixi/signal?symbol=${sym}`).then(r=>r.json()),
+      fetch(`${API}/api/pixi/macro`).then(r=>r.json()),
+    ]);
+    S = { chain, oiTrend, signal, macro };
+    rAnim = 0;
+    renderAll();
+    const ts = chain?.timestamp ?? signal?.recorded_at ?? '';
+    document.getElementById('st').textContent = ts ? `Live · ${ts.slice(11,16)}` : 'Live';
+  } catch (err) {
+    document.getElementById('st').textContent = '⚠ ' + err.message;
+    console.error('[DVR Pixi]', err);
+  }
+}
+
+function renderAll() {
+  drawBg(); renderOI(); renderRadar(); renderRiver();
+}
+
+// ════════════════════════════════════════════════════════════════
+//  ANIMATION TICKER
+// ════════════════════════════════════════════════════════════════
+app.ticker.add(() => {
+  if (rAnim < 1) { rAnim = Math.min(1, rAnim + 0.022); renderRadar(); }
+  animateMacro();
+});
+
+// ════════════════════════════════════════════════════════════════
+//  SYMBOL SWITCHER + KEYBOARD
+// ════════════════════════════════════════════════════════════════
+function switchSym(s) {
+  sym = s;
+  document.querySelectorAll('.sym-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + s)?.classList.add('active');
+  closeStrike(); fetchAll();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeStrike();
+  if (e.key === '1') switchSym('NIFTY');
+  if (e.key === '2') switchSym('SENSEX');
+  if (e.key === '3') switchSym('BANKNIFTY');
+  if (e.key === 'r' || e.key === 'R') fetchAll();
+  if (e.key === 't' || e.key === 'T') toggleTheme();
+});
+
+// ════════════════════════════════════════════════════════════════
+//  BOOTSTRAP — light theme by default
+// ════════════════════════════════════════════════════════════════
+// body has no .dark class → light CSS vars active
+// C already initialized to THEMES.light above
+drawBg();
+fetchAll();
+setInterval(fetchAll, REFRESH_MS);
+</script>
+</body>
+</html>

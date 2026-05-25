@@ -3,10 +3,11 @@ import requests
 import datetime
 import time
 import sqlite3
-import os
 import sys
 import re
 from pathlib import Path
+from rich.live import Live
+from rich.text import Text
 
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
@@ -48,6 +49,8 @@ def pad_colored(text, width, align='left'):
 def init_db():
     """Create table and delete data from previous days."""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA synchronous=NORMAL")
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS options_data
                  (timestamp TEXT, index_name TEXT, spot REAL, strike REAL, 
@@ -145,7 +148,7 @@ def format_oi(n):
         return f"{n/100000:5.2f}L"
     return f"{n:6.0f}"
 
-def print_row(strike, ce_data, pe_data, is_atm=False):
+def format_row(strike, ce_data, pe_data, is_atm=False):
     marker = ">> " if is_atm else "   "
     G, R, W = "\033[92m", "\033[91m", "\033[0m" # Green, Red, Reset
     
@@ -174,7 +177,7 @@ def print_row(strike, ce_data, pe_data, is_atm=False):
     # CE Side | Strike | PE Side
     cf_col = pad_colored(cf, 5, 'left')
     pf_col = pad_colored(pf, 5, 'left')
-    print(f"{marker}{cf_col}|{co} {ch} {cl} {cc}|{cltp}|{coi}|{strike:6.0f}|{poi}|{pltp}|{po} {ph} {pl} {pc}|{pf_col}")
+    return f"{marker}{cf_col}|{co} {ch} {cl} {cc}|{cltp}|{coi}|{strike:6.0f}|{poi}|{pltp}|{po} {ph} {pl} {pc}|{pf_col}"
 
 # ── Main Loop ─────────────────────────────────────────────────────────────────
 
@@ -182,91 +185,102 @@ def main():
     conn = init_db()
 
     try:
-        while True:
-            os.system('clear' if os.name == 'posix' else 'cls')
-            ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
-            print("=" * 107)
-            print(f" LIVE MULTI-INDEX OPTIONS DASHBOARD | {ts}")
-            print("=" * 107)
+        with Live(refresh_per_second=4, screen=True) as live:
+            while True:
+                ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            # 1. Batch Fetch Spot & Fut for all indices
-            sf_keys = []
-            for inst in INSTRUMENTS.values():
-                sf_keys.append(inst["key"])
-                sf_keys.append(inst["fut_key"])
-            sf_quotes = fetch_quotes(sf_keys)
+                # 1. Batch Fetch Spot & Fut for all indices
+                sf_keys = []
+                for inst in INSTRUMENTS.values():
+                    sf_keys.append(inst["key"])
+                    sf_keys.append(inst["fut_key"])
+                sf_quotes = fetch_quotes(sf_keys)
 
-            # 2. Gather index data and collect all option keys
-            all_index_data = []
-            all_option_keys = []
+                # 2. Gather index data and collect all option keys
+                all_index_data = []
+                all_option_keys = []
 
-            for _, inst in INSTRUMENTS.items():
-                name = inst["name"]
-                key = inst["key"]
-                step = inst["step"]
-                
-                spot = sf_quotes.get(key, {}).get("last_price")
-                if not spot: continue
-                fut = sf_quotes.get(inst["fut_key"], {}).get("last_price") or spot
-                
-                expiry = get_cached_expiry(key)
-                if not expiry: continue
-                
-                chain = fetch_option_chain(key, expiry)
-                if not chain: continue
-
-                display_step = 100 if name == "NIFTY" else step
-                atm_strike = round(spot / display_step) * display_step
-                target_strikes = [atm_strike + (offset * (display_step // step) * step) for offset in [-3, -2, -1, 0, 1, 2, 3]]
-                if name == "NIFTY":
-                    target_strikes = [s for s in target_strikes if s % 100 == 0]
-                    if len(target_strikes) < 7: target_strikes = [atm_strike + (i * 100) for i in range(-3, 4)]
-
-                chain_lookup = {row.get("strike_price"): row for row in chain if isinstance(row, dict)}
-                for strike in target_strikes:
-                    row = chain_lookup.get(strike, {})
-                    ckey = (row.get("call_options") or {}).get("instrument_key")
-                    pkey = (row.get("put_options") or {}).get("instrument_key")
-                    if ckey: all_option_keys.append(ckey)
-                    if pkey: all_option_keys.append(pkey)
-
-                all_index_data.append({
-                    "inst": inst, "spot": spot, "fut": fut, "expiry": expiry,
-                    "target_strikes": target_strikes, "chain_lookup": chain_lookup,
-                    "atm_strike": atm_strike
-                })
-
-            # 3. Batch Fetch OHLC for ALL options
-            option_quotes = fetch_quotes(all_option_keys)
-
-            # 4. Display
-            for idx in all_index_data:
-                name, spot, fut, expiry = idx["inst"]["name"], idx["spot"], idx["fut"], idx["expiry"]
-                print(f"\n>>> {name} | SPOT: {spot:8.2f} | FUT: {fut:8.2f} | Exp: {expiry}")
-                print("-" * 107)
-                print(f"   FLAGS|  OPEN  HIGH   LOW CLOSE| CE LTP| CE OI|STRIKE| PE OI| PE LTP|  OPEN  HIGH   LOW CLOSE|FLAGS")
-                print("-" * 107)
-
-                snapshot_rows = []
-                for strike in idx["target_strikes"]:
-                    row = idx["chain_lookup"].get(strike, {})
-                    c_opt, p_opt = row.get("call_options") or {}, row.get("put_options") or {}
-                    c_full, p_full = option_quotes.get(c_opt.get("instrument_key"), {}), option_quotes.get(p_opt.get("instrument_key"), {})
+                for _, inst in INSTRUMENTS.items():
+                    name = inst["name"]
+                    key = inst["key"]
+                    step = inst["step"]
                     
-                    ce_data = {"ltp": c_full.get("last_price") or (c_opt.get("market_data") or {}).get("ltp", 0),
-                               "oi":  (c_opt.get("market_data") or {}).get("oi", 0), "ohlc": c_full.get("ohlc")}
-                    pe_data = {"ltp": p_full.get("last_price") or (p_opt.get("market_data") or {}).get("ltp", 0),
-                               "oi":  (p_opt.get("market_data") or {}).get("oi", 0), "ohlc": p_full.get("ohlc")}
+                    spot_data = sf_quotes.get(key, {})
+                    spot = spot_data.get("last_price")
+                    if not spot: continue
+                    fut_data = sf_quotes.get(inst["fut_key"], {})
+                    fut = fut_data.get("last_price") or spot
+                    
+                    expiry = get_cached_expiry(key)
+                    if not expiry: continue
+                    
+                    chain = fetch_option_chain(key, expiry)
+                    if not chain: continue
 
-                    snapshot_rows.append({"strike": strike, "ce_ltp": ce_data['ltp'], "ce_oi": ce_data['oi'], "pe_ltp": pe_data['ltp'], "pe_oi": pe_data['oi']})
-                    print_row(strike, ce_data, pe_data, strike == idx["atm_strike"])
+                    display_step = 100 if name == "NIFTY" else step
+                    atm_strike = round(spot / display_step) * display_step
+                    target_strikes = [atm_strike + (offset * (display_step // step) * step) for offset in [-3, -2, -1, 0, 1, 2, 3]]
+                    if name == "NIFTY":
+                        target_strikes = [s for s in target_strikes if s % 100 == 0]
+                        if len(target_strikes) < 7: target_strikes = [atm_strike + (i * 100) for i in range(-3, 4)]
 
-                save_to_db(conn, ts, name, spot, snapshot_rows)
+                    chain_lookup = {row.get("strike_price"): row for row in chain if isinstance(row, dict)}
+                    for strike in target_strikes:
+                        row = chain_lookup.get(strike, {})
+                        ckey = (row.get("call_options") or {}).get("instrument_key")
+                        pkey = (row.get("put_options") or {}).get("instrument_key")
+                        if ckey: all_option_keys.append(ckey)
+                        if pkey: all_option_keys.append(pkey)
 
-            print("\n" + "=" * 107)
-            print("Polling every 5s (Batch Mode). Press Ctrl+C to exit.")
-            time.sleep(5)
+                    all_index_data.append({
+                        "inst": inst, "spot": spot, "fut": fut, "expiry": expiry,
+                        "target_strikes": target_strikes, "chain_lookup": chain_lookup,
+                        "atm_strike": atm_strike,
+                        "spot_ohlc": spot_data.get("ohlc") or {},
+                        "fut_ohlc": fut_data.get("ohlc") or {}
+                    })
+
+                # 3. Batch Fetch OHLC for ALL options
+                option_quotes = fetch_quotes(all_option_keys)
+
+                # 4. Build display
+                lines = []
+                lines.append("=" * 107)
+                lines.append(f" LIVE MULTI-INDEX OPTIONS DASHBOARD | {ts}")
+                lines.append("=" * 107)
+
+                for idx in all_index_data:
+                    name, spot, fut, expiry = idx["inst"]["name"], idx["spot"], idx["fut"], idx["expiry"]
+                    so = idx.get("spot_ohlc", {})
+                    fo = idx.get("fut_ohlc", {})
+                    so_str = f"O:{so.get('open',0):.2f} H:{so.get('high',0):.2f} L:{so.get('low',0):.2f} C:{so.get('close',0):.2f}"
+                    fo_str = f"O:{fo.get('open',0):.2f} H:{fo.get('high',0):.2f} L:{fo.get('low',0):.2f} C:{fo.get('close',0):.2f}"
+                    lines.append(f"\n>>> {name} | SPOT: {spot:8.2f} {so_str} | FUT: {fut:8.2f} {fo_str} | Exp: {expiry}")
+                    lines.append("-" * 107)
+                    lines.append("   FLAGS|  OPEN  HIGH   LOW CLOSE| CE LTP| CE OI|STRIKE| PE OI| PE LTP|  OPEN  HIGH   LOW CLOSE|FLAGS")
+                    lines.append("-" * 107)
+
+                    snapshot_rows = []
+                    for strike in idx["target_strikes"]:
+                        row = idx["chain_lookup"].get(strike, {})
+                        c_opt, p_opt = row.get("call_options") or {}, row.get("put_options") or {}
+                        c_full, p_full = option_quotes.get(c_opt.get("instrument_key"), {}), option_quotes.get(p_opt.get("instrument_key"), {})
+                        
+                        ce_data = {"ltp": c_full.get("last_price") or (c_opt.get("market_data") or {}).get("ltp", 0),
+                                   "oi":  (c_opt.get("market_data") or {}).get("oi", 0), "ohlc": c_full.get("ohlc")}
+                        pe_data = {"ltp": p_full.get("last_price") or (p_opt.get("market_data") or {}).get("ltp", 0),
+                                   "oi":  (p_opt.get("market_data") or {}).get("oi", 0), "ohlc": p_full.get("ohlc")}
+
+                        snapshot_rows.append({"strike": strike, "ce_ltp": ce_data['ltp'], "ce_oi": ce_data['oi'], "pe_ltp": pe_data['ltp'], "pe_oi": pe_data['oi']})
+                        lines.append(format_row(strike, ce_data, pe_data, strike == idx["atm_strike"]))
+
+                    save_to_db(conn, ts, name, spot, snapshot_rows)
+
+                lines.append("")
+                lines.append("=" * 107)
+                lines.append("Polling every 5s (Batch Mode). Press Ctrl+C to exit.")
+                live.update(Text.from_ansi("\n".join(lines)))
+                time.sleep(5)
 
     except KeyboardInterrupt:
         print("\nExiting. Closing database connection...")

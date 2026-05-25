@@ -35,7 +35,7 @@ def matches_date(sch, dt):
             in_range(dow, dt.weekday() + 1))
 
 def next_run(sch, after=None):
-    after = after or datetime.now(IST)
+    after = after or datetime.now(timezone.utc)
     for d in range(365):
         base = after + timedelta(days=d)
         for hh in range(24):
@@ -167,7 +167,7 @@ def main():
         mi, h, dom, mo, dow = parts
         human = human_schedule(sch)
         nxt = next_run(sch)
-        nxt_str = nxt.strftime('%d %b %I:%M%p') if nxt else '—'
+        nxt_str = nxt.astimezone(IST).strftime('%d %b %I:%M%p') if nxt else '—'
         utc_str = f'{h.zfill(2) if h!="*" else "*"}:{mi.zfill(2) if mi!="*" else "*"}'
         ist_str = ist_time(mi, h)
         d = desc(cmd)

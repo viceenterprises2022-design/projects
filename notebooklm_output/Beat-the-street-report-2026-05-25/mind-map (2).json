@@ -1,0 +1,156 @@
+{
+  "name": "Wealth Insight May 2026",
+  "children": [
+    {
+      "name": "Market Outlook",
+      "children": [
+        {
+          "name": "Current Sentiment",
+          "children": [
+            {
+              "name": "Geopolitical Relief"
+            },
+            {
+              "name": "Comfort is Expensive"
+            },
+            {
+              "name": "Consensus Premium"
+            }
+          ]
+        },
+        {
+          "name": "Market Valuation",
+          "children": [
+            {
+              "name": "Sensex P/E 21.5"
+            },
+            {
+              "name": "Nifty Correction 15%"
+            },
+            {
+              "name": "Small-cap Dip 20-35%"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sector Analysis: Pharma",
+      "children": [
+        {
+          "name": "Industry Nature",
+          "children": [
+            {
+              "name": "Revenue Resilience"
+            },
+            {
+              "name": "Biology-Driven Demand"
+            }
+          ]
+        },
+        {
+          "name": "Business Models",
+          "children": [
+            {
+              "name": "Branded Generics"
+            },
+            {
+              "name": "APIs"
+            },
+            {
+              "name": "CDMO Services"
+            },
+            {
+              "name": "Biosimilars"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Stock Stories",
+      "children": [
+        {
+          "name": "Titan",
+          "children": [
+            {
+              "name": "Jewellery Dominance"
+            },
+            {
+              "name": "Tanishq Brand Trust"
+            },
+            {
+              "name": "Franchise Model"
+            }
+          ]
+        },
+        {
+          "name": "IGI",
+          "children": [
+            {
+              "name": "Certification Fees"
+            },
+            {
+              "name": "Lab-Grown Risks"
+            },
+            {
+              "name": "Asset-Light Model"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Real Assets vs Financial",
+      "children": [
+        {
+          "name": "Gold",
+          "children": [
+            {
+              "name": "Monetary Relevance"
+            },
+            {
+              "name": "Paper Asset Hedge"
+            }
+          ]
+        },
+        {
+          "name": "Macro Shifts",
+          "children": [
+            {
+              "name": "US System Evolution"
+            },
+            {
+              "name": "High Government Debt"
+            },
+            {
+              "name": "Inflation Impact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Market Reporter News",
+      "children": [
+        {
+          "name": "Corporate Moves",
+          "children": [
+            {
+              "name": "Infosys Healthcare Push"
+            },
+            {
+              "name": "BHEL NTPC Order"
+            },
+            {
+              "name": "Wipro Olam Deal"
+            },
+            {
+              "name": "Adani Odisha Investment"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

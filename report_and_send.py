@@ -47,7 +47,7 @@ def run():
         try:
             result = ma.run_analysis(sym)
             if result:
-                ma.print_diagnostic_report(*result)
+                ma.display_dashboard(*result)
                 content = "".join(capturing_console.output)
                 capturing_console.output = []
                 

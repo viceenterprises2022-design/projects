@@ -1,0 +1,56 @@
+{
+  "name": "Claude's New Financial Service Tools",
+  "children": [
+    {
+      "name": "Core Components",
+      "children": [
+        {
+          "name": "Excel Add-on"
+        },
+        {
+          "name": "Real-time Data Connectors"
+        },
+        {
+          "name": "Market Analytics"
+        },
+        {
+          "name": "Claude Code Plugin"
+        }
+      ]
+    },
+    {
+      "name": "Pre-built Agent Skills",
+      "children": [
+        {
+          "name": "Cash Flow Models"
+        },
+        {
+          "name": "Initiating Coverage Reports"
+        },
+        {
+          "name": "Trading Agent Generation"
+        },
+        {
+          "name": "Support Investment Decisions"
+        }
+      ]
+    },
+    {
+      "name": "Installation and Access",
+      "children": [
+        {
+          "name": "Claude Desktop App"
+        },
+        {
+          "name": "Three-click Setup"
+        },
+        {
+          "name": "Slash Commands"
+        },
+        {
+          "name": "Sub-agents"
+        }
+      ]
+    }
+  ]
+}

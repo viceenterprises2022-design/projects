@@ -32,17 +32,29 @@ class MarketEngine:
         Returns:
             tuple: (spot_data, futures_data) or (None, None) on error.
         """
-        url_spot = f"https://api.binance.com/api/v3/klines?symbol={symbol}USDT&interval=1d&limit=100"
-        url_fut = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}USDT&interval=1d&limit=1"
+        spot_symbol = symbol
+        if symbol == "XAU":
+            spot_symbol = "PAXG"
+        
+        url_spot = f"https://api.binance.com/api/v3/klines?symbol={spot_symbol}USDT&interval=1d&limit=100"
+        url_fut = f"https://fapi.binance.com/fapi/v1/klines?symbol={symbol}USDT&interval=1d&limit=100"
+        
+        async def safe_get(url):
+            try:
+                async with session.get(url) as r:
+                    if r.status == 200:
+                        return await r.json()
+                    return None
+            except Exception:
+                return None
+
         try:
-            async with session.get(url_spot) as r1, session.get(url_fut) as r2:
-                try:
-                    return await asyncio.gather(r1.json(), r2.json())
-                except (ValueError, aiohttp.ContentTypeError) as e:
-                    print(f"JSON error for {symbol}: {e}")
-                    return None, None
-        except aiohttp.ClientError as e:
-            print(f"Network error for {symbol}: {e}")
+            spot, fut = await asyncio.gather(safe_get(url_spot), safe_get(url_fut))
+            # Fallback for XAG which has no spot on Binance
+            if not spot and fut:
+                spot = fut # Use futures as spot proxy for technicals if spot is missing
+            return spot, fut
+        except Exception as e:
             return None, None
 
     async def fetch_deribit_options(self, session, currency):
@@ -52,7 +64,6 @@ class MarketEngine:
             async with session.get(url) as r:
                 return await r.json()
         except Exception as e:
-            print(f"Deribit error for {currency}: {e}")
             return None
 
     async def fetch_binance_depth(self, session, symbol):
@@ -62,7 +73,15 @@ class MarketEngine:
             async with session.get(url) as r:
                 return await r.json()
         except Exception as e:
-            print(f"Binance Depth error for {symbol}: {e}")
+            return None
+
+    async def fetch_binance_futures_depth(self, session, symbol):
+        """Fetches order book depth for whale wall detection from Futures."""
+        url = f"https://fapi.binance.com/fapi/v1/depth?symbol={symbol}USDT&limit=1000"
+        try:
+            async with session.get(url) as r:
+                return await r.json()
+        except Exception as e:
             return None
 
     async def fetch_macro_data(self):
@@ -76,6 +95,7 @@ class MarketEngine:
             "VIX": "^VIX",
             "US30": "^DJI",
             "GOLD": "GC=F",
+            "SILVER": "SI=F",
             "OIL": "CL=F"
         }
         
@@ -104,7 +124,6 @@ class MarketEngine:
             self.last_macro_update = now
             return results
         except Exception as e:
-            print(f"Macro fetch error: {e}")
             return self.macro_cache
 
     async def fetch_all_data(self):
@@ -112,24 +131,63 @@ class MarketEngine:
         async with aiohttp.ClientSession() as session:
             binance_tasks = [self.fetch_binance(session, s) for s in self.symbols]
             option_tasks = [self.fetch_deribit_options(session, s) for s in self.symbols]
-            depth_tasks = [self.fetch_binance_depth(session, s) for s in self.symbols]
             
-            binance_results = await asyncio.gather(*binance_tasks)
-            option_results = await asyncio.gather(*option_tasks)
-            depth_results = await asyncio.gather(*depth_tasks)
-            macro_results = await self.fetch_macro_data()
+            depth_tasks = []
+            for s in self.symbols:
+                if s in ["XAU", "XAG"]:
+                    depth_tasks.append(self.fetch_binance_futures_depth(session, s))
+                else:
+                    depth_tasks.append(self.fetch_binance_depth(session, s))
+            
+            # Gather everything at once to ensure all coroutines are awaited
+            # even if one of them fails.
+            results = await asyncio.gather(
+                asyncio.gather(*binance_tasks),
+                asyncio.gather(*option_tasks),
+                asyncio.gather(*depth_tasks),
+                self.fetch_macro_data(),
+                return_exceptions=True
+            )
+            
+            # Unpack results, handling potential exceptions
+            binance_results = results[0] if not isinstance(results[0], Exception) else [ (None, None) for _ in self.symbols ]
+            option_results = results[1] if not isinstance(results[1], Exception) else [ None for _ in self.symbols ]
+            depth_results = results[2] if not isinstance(results[2], Exception) else [ None for _ in self.symbols ]
+            macro_results = results[3] if not isinstance(results[3], Exception) else {}
             
             processed = {}
             for i, symbol in enumerate(self.symbols):
                 processed[symbol] = {
-                    "binance": binance_results[i],
-                    "options": self.process_options(option_results[i]),
-                    "depth": self.process_depth(depth_results[i], binance_results[i]),
-                    "macro_corr": self.calculate_macro_correlations(symbol, binance_results[i], macro_results)
+                    "binance": binance_results[i] if i < len(binance_results) else (None, None),
+                    "options": self.process_options(option_results[i] if i < len(option_results) else None),
+                    "depth": self.process_depth(depth_results[i] if i < len(depth_results) else None, binance_results[i] if i < len(binance_results) else (None, None)),
+                    "liq_map": self.generate_liquidation_map(depth_results[i] if i < len(depth_results) else None, symbol),
+                    "macro_corr": self.calculate_macro_correlations(symbol, binance_results[i] if i < len(binance_results) else (None, None), macro_results)
                 }
             
             processed["macro"] = macro_results
             return processed
+
+    def generate_liquidation_map(self, depth_data, symbol):
+        """Bins depth data for visual map."""
+        if not depth_data: return []
+        # Metals need smaller bins than BTC
+        bin_size = 1.0 if symbol == "XAU" else (0.1 if symbol == "XAG" else 1.0)
+        from collections import defaultdict
+        bins = defaultdict(lambda: {"buy": 0.0, "sell": 0.0})
+        for side in ["bids", "asks"]:
+            key = "buy" if side == "bids" else "sell"
+            for price_str, qty_str in depth_data.get(side, []):
+                p, q = float(price_str), float(qty_str)
+                bin_p = round(p / bin_size) * bin_size
+                bins[bin_p][key] += (p * q)
+        flattened = []
+        for p, v in bins.items():
+            total = v["buy"] + v["sell"]
+            flattened.append((p, v["buy"], v["sell"], total))
+        # Get top 15 by total volume
+        top_vols = sorted(flattened, key=lambda x: x[3], reverse=True)[:15]
+        return sorted(top_vols, key=lambda x: x[0], reverse=True)
 
     def process_options(self, data):
         """Calculates Max Pain, Max OI, PCR, and Skew from Deribit data."""
@@ -171,11 +229,11 @@ class MarketEngine:
         }
 
     def process_depth(self, depth, binance_data):
-        """Detects Whale Walls (> $1M within 1% of price) and calculates book skew."""
+        """Detects Whale Walls (> $500k within 1% of price) and calculates book skew."""
         if not depth or not binance_data or not binance_data[1]:
             return None
         
-        ltp = float(binance_data[1][0][4]) # Current close from 1m kline
+        ltp = float(binance_data[1][0][4]) # Current close from futures kline
         
         bids = depth.get('bids', [])
         asks = depth.get('asks', [])
@@ -186,7 +244,7 @@ class MarketEngine:
         total_bid_val = 0
         total_ask_val = 0
         
-        threshold = 1000000 # $1M USD
+        threshold = 500000 # $500k USD
         
         for price, qty in bids:
             p, q = float(price), float(qty)
