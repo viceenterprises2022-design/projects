@@ -136,6 +136,13 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Updated README with lockfile documentation.
 - **Multica:** ALP-359 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-26: PKScreener Dependency Incompatibility & Locking Fix
+- Diagnosed root cause: `pandas-ta-classic` package was missing from `pkscreener_venv` which crashed all scans requesting SuperTrend.
+- Installed `pandas-ta-classic==0.3.78` and downgraded `numpy` back to `1.26.4` to fix strict C-extension dependencies of other pre-compiled packages (`scipy`, `pkbrokers`, `advanced_ta`).
+- Fixed flock file descriptor lock release bug in `pkscreener_runner.py` by persisting `_lock_fd` in global scope, preventing immediate garbage collection lock releases.
+- Cleaned up concurrent orphan processes and verified successful execution of all scans (173 total hits delivered to Telegram).
+- **Multica:** ALP-360 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints
