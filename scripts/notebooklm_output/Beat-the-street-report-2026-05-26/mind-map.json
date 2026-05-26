@@ -1,0 +1,119 @@
+{
+  "name": "Market Technical and Research Reports May 2026",
+  "children": [
+    {
+      "name": "Commodity Analysis",
+      "children": [
+        {
+          "name": "Gold",
+          "children": [
+            {
+              "name": "Bullish outlook"
+            },
+            {
+              "name": "Buy at 158500"
+            },
+            {
+              "name": "Stop loss 157500"
+            },
+            {
+              "name": "Target 160000-161500"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Company Research",
+      "children": [
+        {
+          "name": "Fineotex Chemicals Ltd",
+          "children": [
+            {
+              "name": "Rating: Accumulate"
+            },
+            {
+              "name": "Target Price: 36"
+            },
+            {
+              "name": "Upside: 12%"
+            },
+            {
+              "name": "Q4 Revenue growth: 162%"
+            },
+            {
+              "name": "Key Driver: CrudeChem (CCT) Acquisition"
+            },
+            {
+              "name": "Sector: Oilfield & Textile Chemicals"
+            }
+          ]
+        },
+        {
+          "name": "Torrent Pharma",
+          "children": [
+            {
+              "name": "Rating: Neutral"
+            },
+            {
+              "name": "Target Price: 4400"
+            },
+            {
+              "name": "Growth Driver: JB Chemicals (JBCP) Integration"
+            },
+            {
+              "name": "Product focus: Semaglutide"
+            },
+            {
+              "name": "Key Markets: India, Brazil, Germany, US"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Derivatives & Rollover",
+      "children": [
+        {
+          "name": "Expiry Highlights",
+          "children": [
+            {
+              "name": "Nifty May Rollover: 59.84%"
+            },
+            {
+              "name": "Banknifty Rollover: 63.62%"
+            },
+            {
+              "name": "Market wide: 82.45%"
+            }
+          ]
+        },
+        {
+          "name": "Sector Performance",
+          "children": [
+            {
+              "name": "Strong: Realty, Power, Oil & Gas"
+            },
+            {
+              "name": "Weak: Technology, Infrastructure, Automobile"
+            }
+          ]
+        },
+        {
+          "name": "Top Stock Rollovers",
+          "children": [
+            {
+              "name": "Bajaj Finance: 96.44%"
+            },
+            {
+              "name": "TI India: 96.03%"
+            },
+            {
+              "name": "HDFC Bank: 93.82%"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
