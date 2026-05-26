@@ -241,14 +241,16 @@ def fetch_nse_ltp_yahoo(symbols: list[str]) -> dict[str, dict]:
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 LOCK_FILE = "/tmp/pkscreener_runner.lock"
+_lock_fd = None
 
 
 def acquire_lock() -> bool:
+    global _lock_fd
     try:
-        fd = open(LOCK_FILE, "w")
-        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        fd.write(str(os.getpid()))
-        fd.flush()
+        _lock_fd = open(LOCK_FILE, "w")
+        fcntl.flock(_lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        _lock_fd.write(str(os.getpid()))
+        _lock_fd.flush()
         return True
     except (IOError, OSError):
         return False
