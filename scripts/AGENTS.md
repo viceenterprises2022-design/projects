@@ -141,7 +141,15 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Installed `pandas-ta-classic==0.3.78` and downgraded `numpy` back to `1.26.4` to fix strict C-extension dependencies of other pre-compiled packages (`scipy`, `pkbrokers`, `advanced_ta`).
 - Fixed flock file descriptor lock release bug in `pkscreener_runner.py` by persisting `_lock_fd` in global scope, preventing immediate garbage collection lock releases.
 - Cleaned up concurrent orphan processes and verified successful execution of all scans (173 total hits delivered to Telegram).
-- **Multica:** ALP-360 (done, assigned Vinod-AI-CEO)
+### 2026-05-26: Fullscreen Responsive Layout & Live Collectors Setup
+- `dashboard.html` & `style.css` — Made main dashboard fully viewport-responsive and fullscreen using vertical flexbox layout and zero vertical/horizontal scrollbars, expanding the PixiJS Options Matrix canvas to its maximum fidelity.
+- `api_server.py` — Added missing `/pixi` GET endpoint to serve `pixi_dashboard.html`, resolving consecutive `404` errors in the uptime monitor (`alert_dashboard_alive.py`). Triggered uvicorn reload cleanly.
+- `oi_collector_daemon.py` — Created standalone wrapper script that leverages `market_analysis_v3.py`'s background collection thread in the main execution line, perfect for running as a headless daemon.
+- `start_collectors.sh` — Created a unified bash script to cleanly kill stale processes and launch all 3 collectors in the background using `nohup` (alphaedge.db collector, options chain collector, and intraday PCR trend collector).
+- `~/.config/systemd/user/` — Provisioned 3 systemd user services (`alphaedge-collector`, `alphaedge-options-collector`, `alphaedge-oi-collector`) for seamless, robust daemon management.
+- `dashboard.html` & `app.js` — Changed last-updated refresh clocks across all pages and subpages to explicitly format to `Asia/Kolkata` (IST) timezone and unified stale logic (blinking orange warning when cache is >5 mins old).
+- `crontab` — Added Nifty 200 Momentum Strategy scan runs (8:30 AM & 6:30 PM IST) and updated `strategies/nifty200_momentum.py` with dotenv loading. Verified successful live refresh of momentum report JSON.
+- **Multica:** ALP-367 (done, assigned Vinod-AI-CEO)
 
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
