@@ -1,13 +1,16 @@
 import csv, io, json, os, sqlite3, time, datetime
 import requests
 from pathlib import Path
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).parent
+load_dotenv(BASE_DIR.parent / ".env")
 
 LOOKBACK_DAYS = 365
 API_THROTTLE = 0.2
 NIFTY200_URL = "https://archives.nseindia.com/content/indices/ind_nifty200list.csv"
 UPSTOX_TOKEN = os.environ.get("UPSTOX_TOKEN")
 UH = {"Authorization": f"Bearer {UPSTOX_TOKEN}", "Accept": "application/json"}
-BASE_DIR = Path(__file__).parent
 DB_PATH = BASE_DIR / "strategies.db"
 REPORT_PATH = BASE_DIR / "nifty200_momentum_report.json"
 

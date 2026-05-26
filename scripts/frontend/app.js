@@ -268,7 +268,8 @@ function renderTimestamp(ts) {
   const el = document.getElementById("last-updated");
   if (!el || !ts) return;
   const d = new Date(ts + "Z");
-  el.innerHTML = `<span class="live-dot"></span>Updated: ${d.toLocaleTimeString("en-IN", { hour12: false })} UTC`;
+  const timeStr = d.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false });
+  el.innerHTML = `<span class="live-dot"></span>Updated: ${timeStr} IST`;
 }
 
 // ── Portfolio Render ─────────────────────────────────────────────────────────

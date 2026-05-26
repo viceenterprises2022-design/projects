@@ -548,9 +548,13 @@ async function fetchPixiData(){
     const tag=document.getElementById('sub-tag');
     if(tag){tag.textContent=isStale?'STALE':'LIVE';tag.className=isStale?'sub-tag stale':'sub-tag live';}
     const el=document.getElementById('last-updated');
-    if(el&&ts){const d=new Date(ts+'Z');el.innerHTML=isStale
-      ? `<span class="stale-dot"></span>Stale: ${d.toLocaleTimeString('en-IN',{hour12:false})} UTC`
-      : `<span class="live-dot"></span>Updated: ${d.toLocaleTimeString('en-IN',{hour12:false})} UTC`;}
+    if(el&&ts){
+      const d=new Date(ts+'Z');
+      const timeStr=d.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:false});
+      el.innerHTML=isStale
+        ? `<span class="stale-dot"></span>Stale: ${timeStr} IST`
+        : `<span class="live-dot"></span>Updated: ${timeStr} IST`;
+    }
   }catch(err){document.getElementById('pixi-status').textContent='⚠ '+err.message;}
 }
 function renderAll(){drawBg();renderOI();renderRadar();renderRiver();}
