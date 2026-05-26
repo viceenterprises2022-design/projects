@@ -113,6 +113,14 @@ def serve_positions():
     return FileResponse(str(f))
 
 
+@app.get("/pixi", include_in_schema=False)
+def serve_pixi():
+    f = FRONTEND_DIR / "pixi_dashboard.html"
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="pixi_dashboard.html not found")
+    return FileResponse(str(f))
+
+
 if FRONTEND_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
