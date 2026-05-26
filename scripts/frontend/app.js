@@ -63,7 +63,7 @@ async function loadLatest() {
     const res    = await fetch(`${API_BASE}/api/latest`);
     if (!res.ok) throw new Error(`/api/latest → ${res.status}`);
     const latest = await res.json();
-    renderTimestamp(latest.recorded_at);
+    renderTimestamp(latest.recorded_at, latest.stale);
     latestMacroData = latest.macro;
     latestMacroData._stale = latest.stale;
     updateTicker();
@@ -263,13 +263,17 @@ function renderStrategyNifty200(data) {
 
 // ── Timestamp ────────────────────────────────────────────────────────────────
 
-function renderTimestamp(ts) {
+function renderTimestamp(ts, isStale) {
   if (document.getElementById("pixi-status")) return;
   const el = document.getElementById("last-updated");
   if (!el || !ts) return;
   const d = new Date(ts + "Z");
   const timeStr = d.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false });
-  el.innerHTML = `<span class="live-dot"></span>Updated: ${timeStr} IST`;
+  if (isStale) {
+    el.innerHTML = `<span class="stale-dot"></span>Stale: ${timeStr} IST`;
+  } else {
+    el.innerHTML = `<span class="live-dot"></span>Updated: ${timeStr} IST`;
+  }
 }
 
 // ── Portfolio Render ─────────────────────────────────────────────────────────

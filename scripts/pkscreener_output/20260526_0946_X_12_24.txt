@@ -1,0 +1,186 @@
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.4.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+Traceback (most recent call last):  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1565, in <module>
+    pkscreenercli()
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/PKDevTools/classes/FunctionTimeouts.py", line 129, in wrapper
+    return func(*args, **kwargs)  # Run the main function
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1515, in pkscreenercli
+    runApplicationForScreening()
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1197, in runApplicationForScreening
+    from pkscreener.globals import closeWorkersAndExit
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/globals.py", line 74, in <module>
+    import pkscreener.classes.ScreeningStatistics as ScreeningStatistics
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/ScreeningStatistics.py", line 45, in <module>
+    import advanced_ta as ata
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/__init__.py", line 3, in <module>
+    from .LorentzianClassification.Classifier import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/Classifier.py", line 6, in <module>
+    from . import MLExtensions as ml
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/MLExtensions.py", line 7, in <module>
+    from sklearn.preprocessing import MinMaxScaler
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/__init__.py", line 87, in <module>
+    from .base import clone
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/base.py", line 19, in <module>
+    from .utils import _IS_32BIT
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/utils/__init__.py", line 16, in <module>
+    from scipy.sparse import issparse
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/__init__.py", line 295, in <module>
+    from ._csr import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/_csr.py", line 11, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+Traceback (most recent call last):
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/numpy/core/_multiarray_umath.py", line 46, in __getattr__
+    raise ImportError(msg)
+ImportError: 
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.4.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+Traceback (most recent call last):
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1515, in pkscreenercli
+    runApplicationForScreening()
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1197, in runApplicationForScreening
+    from pkscreener.globals import closeWorkersAndExit
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/globals.py", line 74, in <module>
+    import pkscreener.classes.ScreeningStatistics as ScreeningStatistics
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/ScreeningStatistics.py", line 45, in <module>
+    import advanced_ta as ata
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/__init__.py", line 3, in <module>
+    from .LorentzianClassification.Classifier import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/Classifier.py", line 6, in <module>
+    from . import MLExtensions as ml
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/MLExtensions.py", line 7, in <module>
+    from sklearn.preprocessing import MinMaxScaler
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/__init__.py", line 87, in <module>
+    from .base import clone
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/base.py", line 19, in <module>
+    from .utils import _IS_32BIT
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/utils/__init__.py", line 16, in <module>
+    from scipy.sparse import issparse
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/__init__.py", line 295, in <module>
+    from ._csr import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/_csr.py", line 11, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+ImportError: numpy.core.multiarray failed to import
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.4.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+Traceback (most recent call last):  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1363, in <lambda>
+    atexit.register(lambda: _exit_gracefully(configManager, argParser))
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1103, in _exit_gracefully
+    from pkscreener.classes.PKScanRunner import PKScanRunner
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/PKScanRunner.py", line 45, in <module>
+    from pkscreener.classes.StockScreener import StockScreener
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/StockScreener.py", line 44, in <module>
+    import pkscreener.classes.ScreeningStatistics as ScreeningStatistics
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/ScreeningStatistics.py", line 45, in <module>
+    import advanced_ta as ata
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/__init__.py", line 3, in <module>
+    from .LorentzianClassification.Classifier import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/Classifier.py", line 6, in <module>
+    from . import MLExtensions as ml
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/MLExtensions.py", line 7, in <module>
+    from sklearn.preprocessing import MinMaxScaler
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/__init__.py", line 87, in <module>
+    from .base import clone
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/base.py", line 19, in <module>
+    from .utils import _IS_32BIT
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/utils/__init__.py", line 16, in <module>
+    from scipy.sparse import issparse
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/__init__.py", line 295, in <module>
+    from ._csr import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/_csr.py", line 11, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+Traceback (most recent call last):
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/numpy/core/_multiarray_umath.py", line 46, in __getattr__
+    raise ImportError(msg)
+ImportError: 
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.4.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.4.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+Traceback (most recent call last):  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1363, in <lambda>
+    atexit.register(lambda: _exit_gracefully(configManager, argParser))
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1108, in _exit_gracefully
+    from pkscreener.globals import resetConfigToDefault
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/globals.py", line 74, in <module>
+    import pkscreener.classes.ScreeningStatistics as ScreeningStatistics
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/ScreeningStatistics.py", line 45, in <module>
+    import advanced_ta as ata
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/__init__.py", line 3, in <module>
+    from .LorentzianClassification.Classifier import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/Classifier.py", line 6, in <module>
+    from . import MLExtensions as ml
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/MLExtensions.py", line 7, in <module>
+    from sklearn.preprocessing import MinMaxScaler
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/__init__.py", line 87, in <module>
+    from .base import clone
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/base.py", line 19, in <module>
+    from .utils import _IS_32BIT
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/utils/__init__.py", line 16, in <module>
+    from scipy.sparse import issparse
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/__init__.py", line 295, in <module>
+    from ._csr import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/_csr.py", line 11, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+Traceback (most recent call last):
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/numpy/core/_multiarray_umath.py", line 46, in __getattr__
+    raise ImportError(msg)
+ImportError: 
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.4.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+Exception ignored in atexit callback: <function pkscreenercli.<locals>.<lambda> at 0x7ef7916a0220>
+Traceback (most recent call last):
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1363, in <lambda>
+    atexit.register(lambda: _exit_gracefully(configManager, argParser))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/pkscreenercli.py", line 1108, in _exit_gracefully
+    from pkscreener.globals import resetConfigToDefault
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/globals.py", line 74, in <module>
+    import pkscreener.classes.ScreeningStatistics as ScreeningStatistics
+  File "/home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/ScreeningStatistics.py", line 45, in <module>
+    import advanced_ta as ata
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/__init__.py", line 3, in <module>
+    from .LorentzianClassification.Classifier import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/Classifier.py", line 6, in <module>
+    from . import MLExtensions as ml
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/advanced_ta/LorentzianClassification/MLExtensions.py", line 7, in <module>
+    from sklearn.preprocessing import MinMaxScaler
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/__init__.py", line 87, in <module>
+    from .base import clone
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/base.py", line 19, in <module>
+    from .utils import _IS_32BIT
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/sklearn/utils/__init__.py", line 16, in <module>
+    from scipy.sparse import issparse
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/__init__.py", line 295, in <module>
+    from ._csr import *
+  File "/home/vreddy1/Desktop/Projects/pkscreener_venv/lib/python3.12/site-packages/scipy/sparse/_csr.py", line 11, in <module>
+    from ._sparsetools import (csr_tocsc, csr_tobsr, csr_count_blocks,
+ImportError: numpy.core.multiarray failed to import

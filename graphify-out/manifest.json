@@ -11825,8 +11825,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/app.js": {
-    "mtime": 1779718935.3388295,
-    "ast_hash": "6ca12995f2630c6ee5ce228703482af3",
+    "mtime": 1779768804.8324215,
+    "ast_hash": "ea6763d97f11a69f2a7ce35d8ab6b87b",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/tests/test_indicators.py": {
@@ -33440,8 +33440,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1779761347.50574,
-    "ast_hash": "520b49535b776960a0922d29bbcdf2d7",
+    "mtime": 1779768580.4907162,
+    "ast_hash": "f395abaad4dfb83d62ce641fe79bfd75",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
@@ -38760,13 +38760,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/strategies/nifty200_momentum_report.json": {
-    "mtime": 1779714193.419866,
-    "ast_hash": "90da8b99d7eb29c76ddb7449c967c4e3",
+    "mtime": 1779768624.215128,
+    "ast_hash": "7a8d8a4c460b12fa65313fc86d5af2d6",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/strategies/nifty200_momentum.py": {
-    "mtime": 1779714128.7428603,
-    "ast_hash": "7be97034b58dc5591b69a09f0fa0c2d5",
+    "mtime": 1779768558.154646,
+    "ast_hash": "eb1429187dfabba75248a1163ccfca7d",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
@@ -38852,6 +38852,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/oi_collector_daemon.py": {
     "mtime": 1779767995.7448778,
     "ast_hash": "5ff3f223e5f832510cbecd612e88239b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/start_collectors.sh": {
+    "mtime": 1779768197.7925131,
+    "ast_hash": "633b1163cd34103caba70755e7480710",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.antigravitycli/0e4f52ef-7066-41ff-83cf-5841255860ef.json": {
+    "mtime": 1779768703.8811042,
+    "ast_hash": "20bd686391a5e6bed74ebf9fd99e2bf9",
     "semantic_hash": ""
   }
 }
