@@ -1,0 +1,80 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Fetching crypto news — 8 topics × 10 results, last 3d                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+  Searching: BTC
+  Searching: ETH
+  Searching: SOL
+  Searching: RWA
+  Searching: Stablecoins
+  Searching: Onchain
+  Searching: Growth
+  Searching: Price & Predictions
+📡 *Crypto Daily Brief*
+_26 May 2026 • 02:31 UTC_
+
+━━━ ₿ BTC ━━━
+• *Oldest Bitcoin Holders Now Moving Coins at Record Rates: What’s Happening? – NBTC News*
+  ↳ Oldest Bitcoin holders (10+ years) are moving coins at record-high levels due to quantum-migration-driven security concerns and aging supply, even as overall balances remain near all-time highs.
+• *Bitcoin LTH Supply Climbs Back To August 2025 Levels As 316K BTC Move Into Strong Hands - BitRss - Crypto World News*
+  ↳ Bitcoin long-term holder (LTH) supply has risen to 15.26 million BTC, gaining ~316k BTC in the last 30 days and signaling increased coins aging into long-term hands as Bitcoin hovers around $80k.
+• *Bitcoin Breaks $76,000: What's Driving The Latest Surge?*
+  ↳ Bitcoin breaks above $76,000 on the Binance USDT market amid renewed optimism, but with thin liquidity and no guarantee of sustainability, as analysts cite macro factors, potential ETF catalysts, and shifting on-chain activity while cautioning agains…
+
+━━━ ⟠ ETH ━━━
+• *Ethereum Mainnet Monthly Transaction Count Hits Record High as Fees Fall*
+  ↳ Ethereum mainnet hit a record monthly transaction count while average fees fell to a new low, signaling higher on-chain activity with cheaper transactions and suggesting continued relevance of the base layer alongside Layer 2 growth.
+• *Ethereum Hits Record Monthly Transaction Volume | Phemex News*
+  ↳ Ethereum’s mainnet hit its highest-ever monthly transaction volume driven by surge in dApp activity, while Layer 1 transaction fees remain at historic lows, signaling strong network activity alongside effective scaling.
+• *Ethereum Glamsterdam Upgrade Hits ATH Transactions With Lowest Fees*
+  ↳ The Ethereum Glamsterdam upgrade dramatically increased Layer 1 throughput to record levels while cutting gas fees by about 78%, reviving DeFi activity and enabling cheaper microtransactions and broader on-chain use cases.
+
+━━━ ◎ SOL ━━━
+• *Report: Solana Activity Hits Record High Despite SOL's 33% Q1 Drop*
+  ↳ Solana posted record daily transaction activity and near-flat application revenue in Q1 2026 despite a 33% drop in SOL, with real-world asset value rising to $2.01B and notable gains in certain platforms like Bags, Pump.fun, and Axiom, while DeFi TVL…
+• *Solana Price Forecast: SOL consolidates amid growing RWA ecosystem, mild ETF inflows*
+  ↳ Solana (SOL) remains bearish near the 50-day EMA at $87.35 despite steady institutional inflows and a growing real-world assets (RWA) ecosystem above $2.5 billion, with potential resistance around $92–$98 and support near $83.50.
+• *Solana (SOL) Price: Morgan Stanley Refiles ETF as SOL Holds Key Support Levels - CoinCentral*
+  ↳ Summary: Morgan Stanley files a spot Solana ETF (MSOL) with the SEC, while SOL hovers around $82–$84 support and must reclaim $87–$90 to signal a short-term reversal, with longer-term targets and liquidity levels noted by analysts.
+
+━━━ 🏛 RWA ━━━
+• *Tokenized real world assets triple to $34 billion as Treasuries and Ethereum lead*
+  ↳ The on-chain market for tokenized real-world assets has surged to about $34 billion by mid-2026, led by Ethereum-dominated tokenized Treasuries and growing segments like tokenized bonds, stocks, commodities, and private credit, with institutional pla…
+• *Tokenized Asset Market Tops $34 Billion as Treasurys Lead 10x Surge*
+  ↳ The tokenized asset market has surpassed $34 billion, led by U.S. Treasury–backed products and expanding institutional blockchain adoption, with broader diversification beyond Treasuries into commodities, asset-backed credit, and other asset classes.
+• *DTCC, NYSE, and Nasdaq Are All Tokenizing: $1.9B in Freed Capital, $225M in New Revenue, and a July Launch*
+  ↳ DTCC, Nasdaq, and NYSE are building production-grade tokenization rails for real-world assets, projecting $1.9B of freed capital and $225M in new revenue by year three, with October 2026 as a key launch milestone.
+
+━━━ 💵 Stablecoins ━━━
+• *FDIC Board Advances Proposed Bank Secrecy Act Rule for Stablecoin Issuers*
+  ↳ The FDIC board advanced a proposed rule to require anti-money laundering, sanctions compliance, reporting, and enforcement mechanisms for FDIC-supervised payment stablecoin issuers under the GENIUS Act framework.
+• *Stablecoin supply tops $300 billion but growth stalls; only USDT expands*
+  ↳ Stablecoins total supply tops $300B, but growth is stalled with USDT the only issuer increasing supply, while USDC, USDe, and PYUSD together fell, implying USDT is crowding out new supply and GENIUS-compliant rivals face tougher competition.
+• *The Stablecoin Compliance Ceiling Just Got Drawn · Major Matters · Major Matters*
+  ↳ FDIC’s proposed rule extends BSA and OFAC sanctions compliance to FDIC-supervised stablecoin issuers, increasing onboarding friction and compliance overhead, which narrows consumer advantages of stablecoins over cards while preserving B2B/MC cross-bo…
+
+━━━ ⛓ Onchain ━━━
+• *Tokenized Asset Market Tops $34 Billion as Treasurys Lead 10x Surge*
+  ↳ The tokenized asset market surpassed $34 billion, driven by U.S. Treasury products and expanding institutional adoption, with broader diversification into commodities, asset-backed credit, and other asset classes as regulated stablecoin rules and the…
+• *Tokenized ETF Market Surpasses $1.4B TVL as Onchain Equity Adoption Accelerates - Blockonomi*
+  ↳ The article reports that the tokenized ETF market has surged to over $1.4B TVL with $400M+ daily on-chain settlement, led by Ondo Finance and xStocksFi, and projects potential growth to $10B+ TVL by late 2026 and 50–100x growth long-term if a modest …
+• *Solstice Tops $400M TVL as NYSE-Listed Bullish Joins Its Institutional Allocator Base | The New York Ledger*
+  ↳ Solstice Finance announced a capital allocation from NYSE-listed Bullish to its eUSX yield strategy, pushing total value locked past $400 million and signaling growing institutional adoption of Solana-based on-chain yield.
+
+━━━ 📈 Growth ━━━
+• *ETF Flows, Treasuries and Bitcoin Price Support*
+  ↳ Spot ETF flows and corporate treasuries are now the main sources of durable Bitcoin demand, shaping a more persistent price support by absorbing supply and potentially reducing volatility, but their stabilizing power depends on broad, diversified own…
+• *Bank of America Raises Bitcoin ETF Allocation to 37 Million Dollars as Q1 2026 Filing Reveals Institutional Crypto Shift*
+  ↳ Bank of America boosted its exposure to BlackRock’s iShares Bitcoin Trust to about $37 million in Q1 2026 (roughly 972,590 shares), with total crypto ETF exposure around $53 million across multiple funds, signaling a measured, institution-wide shift …
+• *Tokenization Growth Accelerates as Institutions Expand RWA Infrastructure - Blockonomi*
+  ↳ Tokenization of real-world assets is rapidly expanding into a regulated financial infrastructure, led by U.S. Treasuries, commodities, and equities, with major institutional players like BlackRock, Ondo Finance, and Centrifuge driving growth and DTCC…
+
+━━━ 🔮 Price & Predictions ━━━
+• *Bitcoin vs. Ethereum: Price Predictions for 2026*
+  ↳ Bitcoin vs Ethereum 2026: Bitcoin offers a more predictable, lower-volatility thesis with potential upside to around $120k–$200k driven by halving dynamics and institutional demand, while Ethereum faces higher upside tied to continued issuance shrink…
+• *NordFX Forex and Cryptocurrency Forecast May 25–29, 2026*
+  ↳ May 25–29, 2026 forecast: A four-day week with Memorial Day holiday faces Dollar strength from hawkish Fed signals and a looming PCE/GDP data cliff, while Brent oil and precious metals react to potential Iran–Hormuz developments, ECB rate expectation…
+• *Bitcoin’s Fed cut trade flips as bond market turns into the risk - BitRss - Crypto World News*
+  ↳ Bitcoin’s outlook has shifted from a rate-cut tailwind to a higher-for-longer regime as rising Treasury yields and bond-market expectations for Fed tightening weigh on BTC and crypto risk appetite.
+
+
+Done. 80 unique stories.
