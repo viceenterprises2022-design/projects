@@ -33440,8 +33440,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1779718935.3388295,
-    "ast_hash": "f05c13c603ad9dc75f7d1e0f8af980bc",
+    "mtime": 1779761050.7608194,
+    "ast_hash": "520b49535b776960a0922d29bbcdf2d7",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
@@ -38832,6 +38832,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260526_0355_X_12_23.txt": {
     "mtime": 1779750025.0357049,
     "ast_hash": "8428ac50b87af33256d7a63255792042",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.antigravitycli/a414896b-8437-4a76-828c-dc7304c9a063.json": {
+    "mtime": 1779760957.9035313,
+    "ast_hash": "89dc4e19f9e0dc48bf0ebbc1085cd87f",
     "semantic_hash": ""
   }
 }

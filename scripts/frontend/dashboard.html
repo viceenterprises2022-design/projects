@@ -45,11 +45,59 @@ body.pixi-light {
   --pix-bear:    #dc2626;
   --pix-neut:    #ca8a04;
 }
-#pixi-section {
-  position: relative; width:100%; height:58vh; overflow:hidden; background:var(--pix-bg);
-  border-bottom:1px solid var(--border);
+html, body.fullscreen-dash {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
-#pixi-section canvas { display:block; width:100%; height:100%; }
+body.fullscreen-dash {
+  display: flex;
+  flex-direction: column;
+  background: var(--pix-bg);
+}
+body.fullscreen-dash header {
+  flex-shrink: 0;
+}
+body.fullscreen-dash .sub-bar {
+  flex-shrink: 0;
+}
+body.fullscreen-dash .header-inner {
+  padding: 0 24px;
+}
+body.fullscreen-dash .sub-bar-inner {
+  max-width: none;
+  padding: 0 24px;
+}
+body.fullscreen-dash #pixi-section {
+  flex: 1 1 auto;
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: var(--pix-bg);
+  border-bottom: 1px solid var(--border);
+}
+body.fullscreen-dash #pixi-section canvas { display:block; width:100%; height:100%; }
+body.fullscreen-dash footer {
+  flex-shrink: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+body.fullscreen-dash .footer-inner {
+  padding: 0 24px;
+  max-width: none;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+}
 #pixi-tip {
   position:fixed; pointer-events:none; z-index:300; display:none;
   background:rgba(4,12,25,0.97); border:1px solid rgba(255,255,255,0.09);
@@ -77,7 +125,7 @@ body.pixi-light {
 #sp-canvas { display:block; }
 </style>
 </head>
-<body>
+<body class="fullscreen-dash">
 
 <!-- ── Header ────────────────────────────────── -->
 <header>
