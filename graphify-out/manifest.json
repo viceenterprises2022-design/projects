@@ -25615,8 +25615,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1779771382.7145998,
-    "ast_hash": "44c741df65bcc3f54bce03d3242040bb",
+    "mtime": 1779796707.0373805,
+    "ast_hash": "d10d593455c9f592efed057ade4a9489",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_report.txt": {
@@ -39042,6 +39042,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260526_1230_X_12_23.txt": {
     "mtime": 1779780925.9920774,
     "ast_hash": "fbd5b70adefbc7b74cfadcdfb426b247",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/logwork": {
+    "mtime": 1779796734.6974776,
+    "ast_hash": "12f61cd09c5ba208c426ffd6a4af0370",
     "semantic_hash": ""
   }
 }
