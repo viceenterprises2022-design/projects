@@ -1,0 +1,139 @@
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠸  Downloading fresh instruments and their data from Data Providers...
+⠼  Downloading fresh instruments and their data from Data Providers...
+⠋ 
+⠙ 
+⠴  Downloading fresh instruments and their data from Data Providers...
+⠹ 
+⠦  Downloading fresh instruments and their data from Data Providers...
+⠸ 
+⠧  Downloading fresh instruments and their data from Data Providers...
+⠼ 
+⠇  Downloading fresh instruments and their data from Data Providers...
+⠴ 
+⠏  Downloading fresh instruments and their data from Data Providers...
+⠦ 
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠧ 
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠇ 
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠏ 
+⠸  Downloading fresh instruments and their data from Data Providers...
+⠋ 
+⠼  Downloading fresh instruments and their data from Data Providers...
+⠙ 
+⠴  Downloading fresh instruments and their data from Data Providers...
+⠹ 
+⠦  Downloading fresh instruments and their data from Data Providers...
+⠸ 
+⠧  Downloading fresh instruments and their data from Data Providers...
+⠼ 
+⠇  Downloading fresh instruments and their data from Data Providers...
+⠴ 
+⠏  Downloading fresh instruments and their data from Data Providers...
+⠦ 
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠧ 
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠇ 
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠏ 
+⠸  Downloading fresh instruments and their data from Data Providers...
+⠋ 
+⠼  Downloading fresh instruments and their data from Data Providers...
+⠙ 
+⠴  Downloading fresh instruments and their data from Data Providers...
+⠹ 
+⠦  Downloading fresh instruments and their data from Data Providers...
+⠸ 
+⠧  Downloading fresh instruments and their data from Data Providers...
+⠼ 
+⠇  Downloading fresh instruments and their data from Data Providers...
+⠴ 
+⠏  Downloading fresh instruments and their data from Data Providers...
+|                                        | ▁▃▅ 0/25  in 0s (0.0/s, eta: -)
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠙  Downloading fresh instruments and their data from Data Providers...|█▌                                      | ▂▄▆ 1/25  in 0s (10.0/s, eta: 2s)
+⠹  Downloading fresh instruments and their data from Data Providers...
+|█▌                                      | ▃▅▇ 1/25  in 0s (5.5/s, eta: 2s)
+⠸  Downloading fresh instruments and their data from Data Providers...|████▊                                   | ▄▆█ 3/25  in 0s (10.5/s, eta: 2s)
+⠼  Downloading fresh instruments and their data from Data Providers...|██████▍                                 | ▅▇▇ 4/25  in 0s (10.9/s, eta: 2s)
+⠴  Downloading fresh instruments and their data from Data Providers...
+|██████▍                                 | ▆█▆ 4/25  in 0s (8.9/s, eta: 2s)
+⠦  Downloading fresh instruments and their data from Data Providers...|████████                                | ▇▇▅ 5/25  in 1s (9.4/s, eta: 2s)
+⠧  Downloading fresh instruments and their data from Data Providers...|█████████▌                              | █▆▄ 6/25  in 1s (9.7/s, eta: 2s)
+⠇  Downloading fresh instruments and their data from Data Providers...|███████████▏                            | ▇▅▃ 8/25  in 1s (11.4/s, eta: 2s)
+⠏  Downloading fresh instruments and their data from Data Providers...|████████████▊                           | ▆▄▂ 8/25  in 1s (10.2/s, eta: 2s)
+⠋  Downloading fresh instruments and their data from Data Providers...|██████████████▍                         | ▅▃▁ 9/25  in 1s (10.4/s, eta: 2s)
+⠙  Downloading fresh instruments and their data from Data Providers...|████████████████                        | ▄▂▂ 10/25  in 1s (10.6/s, eta: 2s)
+⠹  Downloading fresh instruments and their data from Data Providers...|█████████████████▌                      | ▃▁▃ 11/25  in 1s (10.7/s, eta: 1s)
+⠸  Downloading fresh instruments and their data from Data Providers...|███████████████████▏                    | ▂▂▄ 12/25  in 1s (10.8/s, eta: 1s)
+⠼  Downloading fresh instruments and their data from Data Providers...|████████████████████▊                   | ▁▃▅ 13/25  in 1s (10.9/s, eta: 1s)
+⠴  Downloading fresh instruments and their data from Data Providers...|██████████████████████▍                 | ▂▄▆ 15/25  in 1s (11.8/s, eta: 1s)
+⠦  Downloading fresh instruments and their data from Data Providers...|██████████████████████▍                 | ▃▅▇ 15/25  in 1s (11.1/s, eta: 1s)
+⠧  Downloading fresh instruments and their data from Data Providers...|████████████████████████                | ▄▆█ 15/25  in 1s (10.5/s, eta: 1s)
+⠇  Downloading fresh instruments and their data from Data Providers...|█████████████████████████▌              | ▅▇▇ 16/25  in 2s (10.6/s, eta: 1s)
+⠏  Downloading fresh instruments and their data from Data Providers...|███████████████████████████▏            | ▆█▆ 17/25  in 2s (10.7/s, eta: 1s)
+⠋  Downloading fresh instruments and their data from Data Providers...|████████████████████████████▊           | ▇▇▅ 18/25  in 2s (10.7/s, eta: 1s)
+⠙  Downloading fresh instruments and their data from Data Providers...|██████████████████████████████▍         | █▆▄ 19/25  in 2s (10.8/s, eta: 1s)
+⠹  Downloading fresh instruments and their data from Data Providers...|████████████████████████████████        | ▇▅▃ 20/25  in 2s (10.9/s, eta: 1s)
+⠸  Downloading fresh instruments and their data from Data Providers...|█████████████████████████████████▌      | ▆▄▂ 21/25  in 2s (10.9/s, eta: 0s)
+⠼  Downloading fresh instruments and their data from Data Providers...|███████████████████████████████████▏    | ▅▃▁ 22/25  in 2s (11.0/s, eta: 0s)
+⠴  Downloading fresh instruments and their data from Data Providers...|████████████████████████████████████▊   | ▄▂▂ 23/25  in 2s (11.1/s, eta: 0s)
+⠦  Downloading fresh instruments and their data from Data Providers...|████████████████████████████████████▊   | ▃▁▃ 23/25  in 2s (10.6/s, eta: 0s)
+⠧  Downloading fresh instruments and their data from Data Providers...|██████████████████████████████████████▍ | ▂▂▄ 24/25  in 2s (10.7/s, eta: 0s)
+⠇  Downloading fresh instruments and their data from Data Providers...
+|████████████████████████████████████████| 25/25  in 2.3s (10.76/s)
+⠏  Downloading fresh instruments and their data from Data Providers...
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠸  Downloading fresh instruments and their data from Data Providers...
+|▶▶▶▶▶▶▶▶▶▶▶▶▶                           | ▁▃▅ 0 in 0s (0.0/s)
+|████████████████████████████████████████| 0 in 0.1s (0.00/s)
+⠋  Creating multiple processes for faster processing...
+⠙  Creating multiple processes for faster processing...
+|                                        | ▁▃▅ 0/47  in 0s (0.0/s, eta: -)
+|                                        | ▂▄▆ 0/47  in 0s (0.0/s, eta: -)
+|                                        | ▃▅▇ 0/47  in 0s (0.0/s, eta: -)
+|                                        | ▄▆█ 0/47  in 0s (0.0/s, eta: -)
+|███▍                                    | ▅▇▇ 4/47  in 0s (9.9/s, eta: 4s) Found 0 Stocks
+|█████                                   | ▆█▆ 6/47  in 0s (12.3/s, eta: 4s) Found 0 Stocks
+|█████                                   | ▇▇▅ 6/47  in 1s (10.6/s, eta: 4s) Found 0 Stocks
+|█████                                   | █▆▄ 6/47  in 1s (9.3/s, eta: 4s) Found 0 Stocks
+|█████                                   | ▇▅▃ 6/47  in 1s (8.2/s, eta: 4s) Found 0 Stocks
+|███████▋                                | ▆▄▂ 9/47  in 1s (10.9/s, eta: 4s) Found 0 Stocks
+|████████▌                               | ▅▃▁ 10/47  in 1s (11.0/s, eta: 4s) Found 0 Stocks
+|█████████▎                              | ▄▂▂ 11/47  in 1s (11.2/s, eta: 3s) Found 1 Stocks
+|██████████▏                             | ▃▁▃ 12/47  in 1s (11.2/s, eta: 3s) Found 1 Stocks
+|███████████                             | ▂▂▄ 13/47  in 1s (11.3/s, eta: 3s) Found 1 Stocks
+|████████████▊                           | ▁▃▅ 15/47  in 1s (12.2/s, eta: 3s) Found 2 Stocks
+|█████████████▌                          | ▂▄▆ 16/47  in 1s (12.2/s, eta: 3s) Found 2 Stocks
+|██████████████▍                         | ▃▅▇ 17/47  in 1s (12.3/s, eta: 3s) Found 2 Stocks
+|█████████████████                       | ▄▆█ 20/47  in 1s (13.7/s, eta: 2s) Found 3 Stocks
+|█████████████████▊                      | ▅▇▇ 21/47  in 2s (13.6/s, eta: 2s) Found 3 Stocks
+|█████████████████▊                      | ▆█▆ 21/47  in 2s (13.0/s, eta: 2s) Found 3 Stocks
+|██████████████████▋                     | ▇▇▅ 22/47  in 2s (13.0/s, eta: 2s) Found 3 Stocks
+|█████████████████████▎                  | █▆▄ 25/47  in 2s (14.1/s, eta: 2s) Found 4 Stocks
+|██████████████████████▏                 | ▇▅▃ 26/47  in 2s (14.0/s, eta: 2s) Found 4 Stocks
+|██████████████████████▏                 | ▆▄▂ 26/47  in 2s (13.5/s, eta: 2s) Found 4 Stocks
+|███████████████████████▊                | ▅▃▁ 28/47  in 2s (14.0/s, eta: 2s) Found 5 Stocks
+|██████████████████████████▍             | ▄▂▂ 31/47  in 2s (14.9/s, eta: 1s) Found 5 Stocks
+|██████████████████████████▍             | ▃▁▃ 31/47  in 2s (14.3/s, eta: 1s) Found 5 Stocks
+|███████████████████████████▏            | ▂▂▄ 32/47  in 2s (14.3/s, eta: 1s) Found 5 Stocks
+|████████████████████████████            | ▁▃▅ 33/47  in 2s (14.3/s, eta: 1s) Found 6 Stocks
+|████████████████████████████            | ▂▄▆ 33/47  in 2s (13.8/s, eta: 1s) Found 6 Stocks
+|████████████████████████████▉           | ▃▅▇ 34/47  in 2s (13.8/s, eta: 1s) Found 6 Stocks
+|██████████████████████████████▋         | ▄▆█ 36/47  in 3s (14.2/s, eta: 1s) Found 6 Stocks
+|███████████████████████████████▍        | ▅▇▇ 37/47  in 3s (14.1/s, eta: 1s) Found 7 Stocks
+|█████████████████████████████████▏      | ▆█▆ 39/47  in 3s (14.5/s, eta: 1s) Found 7 Stocks
+|██████████████████████████████████      | ▇▇▅ 40/47  in 3s (14.5/s, eta: 1s) Found 7 Stocks
+|██████████████████████████████████▉     | █▆▄ 41/47  in 3s (14.4/s, eta: 0s) Found 7 Stocks
+|██████████████████████████████████▉     | ▇▅▃ 41/47  in 3s (14.1/s, eta: 0s) Found 7 Stocks
+|███████████████████████████████████████▏| ▆▄▂ 46/47  in 3s (15.4/s, eta: 0s) Found 8 Stocks
+|████████████████████████████████████████| 47/47  in 3.1s (15.35/s)
+⠋ 
+⠙ 
