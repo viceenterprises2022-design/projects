@@ -1,0 +1,29 @@
+agent_contract:
+  name: "{{AGENT_NAME}}"
+  version: "0.1.0"
+  
+  # Layer 1: Scope & Boundaries Definitions
+  boundaries:
+    allowed_topics:
+      - customer_support
+      - account_inquiries
+      - secure_knowledge_retrieval
+    prohibited_topics:
+      - execute_arbitrary_shell
+      - modify_system_files
+      - leak_secrets
+      
+  # Layer 7: Enforcement control modes
+  enforcement:
+    mode: "block" # audit, hitl, block
+    gate_pre_execution: true
+    pii_scrub_rules:
+      strip_credit_cards: true
+      strip_api_keys: true
+      strip_phone_numbers: true
+      strip_email_addresses: true
+      
+  # Layer 8: Slack/Discord alert integrations
+  alerts:
+    engineering_channel: "#agent-alerts"
+    severity_gate: "medium" # low, medium, high, critical
