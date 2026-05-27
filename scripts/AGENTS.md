@@ -151,6 +151,10 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - `crontab` — Added Nifty 200 Momentum Strategy scan runs (8:30 AM & 6:30 PM IST) and updated `strategies/nifty200_momentum.py` with dotenv loading. Verified successful live refresh of momentum report JSON.
 - **Multica:** ALP-367 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-27: PKScreener Cron Timings Synchronization
+- `crontab` — Adjusted PKScreener scan timings to trigger at 9:25 AM IST (3:55 UTC), 12:30 PM IST (7:00 UTC), and 3:35 PM IST (10:05 UTC) on weekdays to match active market hours.
+- **Multica:** ALP-370 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

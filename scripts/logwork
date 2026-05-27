@@ -38,9 +38,13 @@ def main():
     else:
         print("[LogWork] Warning: Could not reach Multica workspace. Continuing without deduplication.")
 
-    # 2. Find all entries for today (2026-05-26) under Session Memory
-    today_str = "2026-05-26"
-    # Find all matches for "### 2026-05-26: Title" and capture content until next h3/###
+    # 2. Find all entries for today under Session Memory
+    if len(sys.argv) > 1:
+        today_str = sys.argv[1]
+    else:
+        today_str = datetime.date.today().strftime("%Y-%m-%d")
+        
+    # Find all matches for "### YYYY-MM-DD: Title" and capture content until next h3/###
     pattern = rf"### ({today_str}): ([^\n]+)\n(.*?)(?=\n###|\Z)"
     matches = re.findall(pattern, content, re.DOTALL)
     
