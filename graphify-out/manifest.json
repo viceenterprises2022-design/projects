@@ -39910,8 +39910,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/scratch/run_defi_protocol_economics_screen.py": {
-    "mtime": 1779984096.0917237,
+    "mtime": 1779984295.3434012,
     "ast_hash": "6ca8408ca0562adeef3017c9391b66e2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/defi_protocol_economics_screen_output.json": {
+    "mtime": 1779984158.090209,
+    "ast_hash": "46f429076ef747634d4ccb9847dad5e0",
     "semantic_hash": ""
   }
 }
