@@ -1,0 +1,27 @@
+agent_contract:
+  name: "Coinmarketcap Agent"
+  version: "0.1.0"
+  
+  boundaries:
+    allowed_topics:
+      - btc_price
+      - crypto_market_overview
+      - find_skill
+      - execute_skill
+    prohibited_topics:
+      - execute_arbitrary_shell
+      - modify_system_files
+      - leak_secrets
+      
+  enforcement:
+    mode: "block"
+    gate_pre_execution: true
+    pii_scrub_rules:
+      strip_credit_cards: true
+      strip_api_keys: true
+      strip_phone_numbers: true
+      strip_email_addresses: true
+      
+  alerts:
+    engineering_channel: "#agent-alerts"
+    severity_gate: "medium"
