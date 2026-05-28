@@ -160,7 +160,9 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **Coinmarketcap Agent Scaffold**: Scaffolded and customized a new secure crypto agent in `scratch/coinmarketcap-agent/` with Plan-Act-Observe graphs and 8-layer safety controls, passing all unit tests.
 - **Multica Daemon Upgrade**: Upgraded local `multica` CLI to `0.3.11`, stopped the active `0.3.5` daemon, and verified that systemd restarted it cleanly under the new `0.3.11` version with all 9 agent runtimes online.
 - **CoinMarketCap Perpetual, Macro, and Daily Overview Integration**: Integrated `perp_contract_analysis`, `btc_cross_asset_correlation`, and `daily_market_overview` MCP tools into crypto dashboards. Created `scratch/run_perp_analysis.py`, `scratch/run_cross_asset_analysis.py`, and `scratch/run_market_overview_analysis.py` to orchestrate automatic find/execution cycles over the streamable HTTP hub, saving aggregated evidence packs. Enhanced `crypto_dashboard.py` with a side-by-side dual column layout displaying both perpetual insights and cross-asset macro correlations simultaneously, and added integrated indicators in `crypto_market_dashboard_v2.py` BTC panel.
+- **CoinMarketCap ETF Demand Integration**: Integrated `btc_etf_institutional_demand` MCP tool into crypto dashboards. Created `scratch/run_etf_demand_analysis.py` to fetch, evaluate, and cache institutional flow metrics. Enhanced `crypto_dashboard.py` with a third vertical column splitting Daily Sentinel Stance and ETF Demand panels, and merged a fourth state-row (`ETF DEMAND`) into `crypto_market_dashboard_v2.py` top banner.
 - **Multica:** ALP-372 (done, assigned Vinod-AI-CEO)
+
 
 
 

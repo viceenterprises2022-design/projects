@@ -81,6 +81,19 @@ def render_macro(macro_data, correlations) -> Panel:
             cmc_table.add_row("CMC REGIME", f"[red]{regime[:15]}[/]")
             cmc_table.add_row("RISK BIAS", f"[{bias_color}]{bias[:18]}[/]")
             cmc_table.add_row("CMC STANCE", f"[bold white]{stance[:18]}[/]")
+            
+            # Load ETF demand context
+            etf_path = "scratch/etf_demand_analysis_output.json"
+            if os.path.exists(etf_path):
+                try:
+                    with open(etf_path, "r") as f_etf:
+                        raw_etf = json.load(f_etf)
+                    text_etf = raw_etf["content"][0]["text"]
+                    etf_data = json.loads(text_etf)["result"]["data"]
+                    etf_bias = etf_data.get("decision_report", {}).get("action_guidance", {}).get("bias", "N/A").upper()
+                    cmc_table.add_row("ETF DEMAND", f"[bold yellow]{etf_bias[:15]}[/]")
+                except:
+                    pass
             has_cmc = True
         except:
             pass
