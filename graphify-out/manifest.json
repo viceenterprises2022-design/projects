@@ -9525,8 +9525,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1779768023.5189652,
-    "ast_hash": "17abacdec30e6cb9366ae161d09b6431",
+    "mtime": 1779940116.4181476,
+    "ast_hash": "fad684cd7d22d42e47f36d2c3081feae",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_trending.py": {
@@ -9540,8 +9540,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_runner.py": {
-    "mtime": 1779770329.7996147,
-    "ast_hash": "79b7e9cdf76f81dc7ebcece7102fddc3",
+    "mtime": 1779940116.4209483,
+    "ast_hash": "d277a273e1fc2cc5f46cace3018fe7dd",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/exa_ai_agents.py": {
@@ -9590,8 +9590,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/send_slack.py": {
-    "mtime": 1779598959.778283,
-    "ast_hash": "81985927693739a4223c3c9e7dddcf45",
+    "mtime": 1779940116.4143004,
+    "ast_hash": "2e6ddd0d5b383e9d1a3199b3a267ef15",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/run_analysis_headless.py": {
@@ -35960,8 +35960,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/cron_watchdog.py": {
-    "mtime": 1779629434.6905973,
-    "ast_hash": "d1545bfa59962e9259a195a4cabad52a",
+    "mtime": 1779940116.4090066,
+    "ast_hash": "bc7286799eedb2a20efb68b019c1d3c5",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/Beat-the-street-report-2026-05-24/mindmap.json": {
@@ -36950,8 +36950,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics_merged.md": {
-    "mtime": 1779696977.8738933,
-    "ast_hash": "c3c9f3bee57eb8921b8ed08a4ff4387d",
+    "mtime": 1779940146.3007572,
+    "ast_hash": "c85dfeba0c29c7948873aee3ae44c5bc",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Spanish_merged.md": {
@@ -37345,8 +37345,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/CRI D & C.md": {
-    "mtime": 1779696826.6805758,
-    "ast_hash": "f4e9c1d8f32660c41859e38fefd11803",
+    "mtime": 1779940146.3103275,
+    "ast_hash": "41d17793bb921a4424b8c13b7f4ca495",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/area practicesheet.pdfPDF.md": {
@@ -37355,8 +37355,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/G_7MATH FYE.md": {
-    "mtime": 1779696827.5947645,
-    "ast_hash": "595af8b8e115404e83eb22b3337ff404",
+    "mtime": 1779940146.3105774,
+    "ast_hash": "344257928e452a9cfcd7b8e7da5903b3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/FYE/FYE integrated Math Revision.pdfPDF.md": {
@@ -37480,8 +37480,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/WS_HW_21 NOV.pdfPDF.md": {
-    "mtime": 1779696824.7158937,
-    "ast_hash": "3074fe64d47cf40ecbbf100d64525b0a",
+    "mtime": 1779940146.3119552,
+    "ast_hash": "54a14b003e82f116c910599bc1f591ca",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/Drill and Practice_Numbers_Ans Key.docx.md": {
@@ -37490,8 +37490,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/WS_Patterns_3.pdfPDF.md": {
-    "mtime": 1779696825.2606626,
-    "ast_hash": "127d8874de8a0518977a61fa03efb6c2",
+    "mtime": 1779940146.3121357,
+    "ast_hash": "45e3b1c00820f3f9d2f60f5606e470d7",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/3. Drill and Practice/Drill and Practice_Numbers.docx.md": {
@@ -37555,8 +37555,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Worksheet_Forming-Solving-Equations-115-pdf.pdfPDF.md": {
-    "mtime": 1779696839.3131874,
-    "ast_hash": "0921fea54af1bf096b1f75f005bda433",
+    "mtime": 1779940146.3126662,
+    "ast_hash": "04c020ffc1e10c9ec0d9346895d24eb1",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/Unit 2 - Abstract Reasoning/Worksheet equations-pdf.pdfPDF.md": {
@@ -37585,8 +37585,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/G7 Criteria D practice HYE math.pdfPDF.md": {
-    "mtime": 1779696833.7546363,
-    "ast_hash": "d8585b3632c1da114564b9e5081b0dd4",
+    "mtime": 1779940146.313036,
+    "ast_hash": "d32e9eec28797641115ddf9175f32de6",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/WS_Patterns_4_HYE Revision.pdfPDF.md": {
@@ -37705,8 +37705,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/SIMPLIFY ALGEBRA GRADE 7.pdfPDF.md": {
-    "mtime": 1779696833.920555,
-    "ast_hash": "06772cd72b5d2b8df1d9491a13e90f01",
+    "mtime": 1779940146.3138752,
+    "ast_hash": "467b1c18920d175b05e14ed870f96413",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/HYE Revision/Week3_Grade7_Multipliers.pdfPDF.md": {
@@ -37775,8 +37775,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/MYP 2 \u00a02D Shapes Answerkey .pdfPDF.md": {
-    "mtime": 1779696824.2568398,
-    "ast_hash": "2c635515cbf6b977a300545c5a48f4a7",
+    "mtime": 1779940146.3144248,
+    "ast_hash": "80275ba7d480a3d2623b302e449bbd5a",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/output/text/Mathematics/1. FA_Revision/FA2_Revision WS_Ans Key.pdfPDF.md": {
