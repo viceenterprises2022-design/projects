@@ -169,6 +169,11 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **Dashboard UI Optimization**: Enhanced `crypto_dashboard.py` by splitting column 3 into a three-way vertical layout (Daily Sentinel, ETF Demand, and Macro News) with symmetrical height constraints. Added real-time bias status tracking `MACRO NEWS` to `crypto_market_dashboard_v2.py`.
 - **Multica:** ALP-373 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-28: Coinmarketcap Macro Liquidity Monitor Integration
+- **CoinMarketCap Macro Liquidity Integration**: Integrated `macro_liquidity_monitor` MCP tool into crypto dashboards. Created `scratch/run_liquidity_monitor_analysis.py` to fetch, evaluate, and cache carry-trade stress and net USD liquidity metrics.
+- **Dashboard UI Optimization**: Enhanced `crypto_dashboard.py` overview column to support a four-way vertical split (Daily Sentinel, ETF Demand, Macro News, and Macro Liquidity) at a perfectly balanced panel height of 11. Integrated real-time carry-trade stress tracking `LIQUIDITY` into `crypto_market_dashboard_v2.py`.
+- **Multica:** ALP-374 (done, assigned Vinod-AI-CEO)
+
 
 
 

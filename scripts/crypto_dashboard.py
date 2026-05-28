@@ -259,6 +259,28 @@ def load_macro_news_report():
     except:
         return None
 
+def load_macro_liquidity_report():
+    import os
+    path = "scratch/liquidity_monitor_analysis_output.json"
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r") as f:
+            raw = json.load(f)
+        text = raw["content"][0]["text"]
+        res_outer = json.loads(text)
+        if "result" in res_outer and "output" in res_outer["result"]:
+            output_str = res_outer["result"]["output"]
+            res_inner = json.loads(output_str)
+            if "result" in res_inner and "data" in res_inner["result"]:
+                return res_inner["result"]["data"]
+        res_data = res_outer["result"]["data"]
+        if "data" in res_data:
+            return res_data["data"]
+        return res_data
+    except:
+        return None
+
 def create_cmc_panel(data):
     if not data:
         return Panel(
@@ -363,7 +385,7 @@ def create_overview_panel(data):
             Text("\nNo Overview Data found.\nRun:\n'python3 scratch/run_market_overview_analysis.py'", justify="center", style="bold yellow"),
             title="[bold yellow]CoinMarketCap Daily Overview[/]",
             border_style="yellow",
-            height=15
+            height=11
         )
     
     rep = data.get("decision_report", {})
@@ -382,7 +404,7 @@ def create_overview_panel(data):
     table.add_row("MARKET REGIME", f"[red]{regime[:20]}[/]")
     table.add_row("RISK BIAS", f"[{bias_color}]{bias[:20]}[/]")
     table.add_row("STANCE", f"[bold white]{action.get('bias', 'N/A').upper()[:20]}[/]")
-    table.add_row("SUMMARY", Text(conclusion[:150] + "...", style="dim italic", overflow="fold"))
+    table.add_row("SUMMARY", Text(conclusion[:120] + "...", style="dim italic", overflow="fold"))
     
     return Panel(
         table,
@@ -390,7 +412,7 @@ def create_overview_panel(data):
         border_style="green",
         subtitle="[bold]Powered by CoinMarketCap MCP[/]",
         subtitle_align="right",
-        height=15
+        height=11
     )
 
 def create_etf_panel(data):
@@ -399,7 +421,7 @@ def create_etf_panel(data):
             Text("\nNo ETF Demand Data found.\nRun:\n'python3 scratch/run_etf_demand_analysis.py'", justify="center", style="bold yellow"),
             title="[bold yellow]CoinMarketCap ETF Demand[/]",
             border_style="yellow",
-            height=15
+            height=11
         )
     
     rep = data.get("decision_report", {})
@@ -413,7 +435,7 @@ def create_etf_panel(data):
     bias = action.get("bias", "wait_for_confirmation").upper()
     table.add_row("ETF BIAS", f"[yellow]{bias}[/]")
     table.add_row("CONFIRMATION", f"[dim]{', '.join(action.get('confirmation_needed', []))[:48]}[/]")
-    table.add_row("SUMMARY", Text(conclusion[:150] + "...", style="dim italic", overflow="fold"))
+    table.add_row("SUMMARY", Text(conclusion[:120] + "...", style="dim italic", overflow="fold"))
     
     return Panel(
         table,
@@ -421,7 +443,7 @@ def create_etf_panel(data):
         border_style="green",
         subtitle="[bold]Powered by CoinMarketCap MCP[/]",
         subtitle_align="right",
-        height=15
+        height=11
     )
 
 def create_macro_news_panel(data):
@@ -430,7 +452,7 @@ def create_macro_news_panel(data):
             Text("\nNo Macro News Data found.\nRun:\n'python3 scratch/run_macro_news_analysis.py'", justify="center", style="bold yellow"),
             title="[bold yellow]CoinMarketCap Macro News[/]",
             border_style="yellow",
-            height=15
+            height=11
         )
     
     rep = data.get("decision_report", {})
@@ -444,7 +466,7 @@ def create_macro_news_panel(data):
     bias = action.get("bias", "context_only").upper()
     table.add_row("NEWS BIAS", f"[yellow]{bias}[/]")
     table.add_row("REF ACTION", f"[dim]{action.get('reference_action', 'N/A')[:48]}[/]")
-    table.add_row("SUMMARY", Text(conclusion[:150] + "...", style="dim italic", overflow="fold"))
+    table.add_row("SUMMARY", Text(conclusion[:120] + "...", style="dim italic", overflow="fold"))
     
     return Panel(
         table,
@@ -452,7 +474,45 @@ def create_macro_news_panel(data):
         border_style="green",
         subtitle="[bold]Powered by CoinMarketCap MCP[/]",
         subtitle_align="right",
-        height=15
+        height=11
+    )
+
+def create_liquidity_panel(data):
+    if not data:
+        return Panel(
+            Text("\nNo Liquidity Data found.\nRun:\n'python3 scratch/run_liquidity_monitor_analysis.py'", justify="center", style="bold yellow"),
+            title="[bold yellow]CoinMarketCap Macro Liquidity[/]",
+            border_style="yellow",
+            height=11
+        )
+    
+    rep = data.get("report", {})
+    action = data.get("action_guidance", {})
+    
+    table = Table(show_header=False, box=None, expand=True, padding=(0,1))
+    table.add_column("Key", style="bold cyan", width=18)
+    table.add_column("Val", style="white")
+    
+    risk = rep.get("risk_level", "N/A").upper()
+    risk_color = "green" if "low" in risk.lower() else "red" if "high" in risk.lower() else "yellow"
+    
+    carry = rep.get("carry_trade_risk", "N/A").upper()
+    carry_color = "green" if "low" in carry.lower() or "stable" in carry.lower() else "red" if "high" in carry.lower() or "deteriorating" in carry.lower() else "yellow"
+    
+    table.add_row("LIQUIDITY RISK", f"[{risk_color}]{risk}[/]")
+    table.add_row("CARRY RISK", f"[{carry_color}]{carry}[/]")
+    table.add_row("REF ACTION", f"[dim]{action.get('reference_action', 'N/A')[:48]}[/]")
+    
+    summary = rep.get("risk_level_note", "")
+    table.add_row("NOTE", Text(summary[:120] + "...", style="dim italic", overflow="fold"))
+    
+    return Panel(
+        table,
+        title=f"[bold green]CMC Liquidity — {risk} Regime[/]",
+        border_style="green",
+        subtitle="[bold]Powered by CoinMarketCap MCP[/]",
+        subtitle_align="right",
+        height=11
     )
 
 def create_asset_panel(asset, data, depth_data):
@@ -470,7 +530,7 @@ def create_asset_panel(asset, data, depth_data):
     
     return Panel(content_layout, title=header, title_align="left", height=15)
 
-def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector, cmc_news):
+def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector, cmc_news, cmc_liq):
     timestamp = datetime.now().strftime("%H:%M:%S")
     root = Layout()
     root.split_column(
@@ -499,7 +559,8 @@ def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview
     root["overview"].split_column(
         Layout(name="sentiment", ratio=1),
         Layout(name="etf", ratio=1),
-        Layout(name="news", ratio=1)
+        Layout(name="news", ratio=1),
+        Layout(name="liquidity", ratio=1)
     )
     
     root["cmc"]["perp"].update(create_cmc_panel(cmc_perp))
@@ -508,6 +569,7 @@ def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview
     root["overview"]["sentiment"].update(create_overview_panel(cmc_overview))
     root["overview"]["etf"].update(create_etf_panel(cmc_etf))
     root["overview"]["news"].update(create_macro_news_panel(cmc_news))
+    root["overview"]["liquidity"].update(create_liquidity_panel(cmc_liq))
     return root
 
 def main():
@@ -532,8 +594,9 @@ def main():
         cmc_etf = load_etf_demand_report()
         cmc_sector = load_sector_report()
         cmc_news = load_macro_news_report()
+        cmc_liq = load_macro_liquidity_report()
         countdown = POLL_INTERVAL
-        with Live(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector, cmc_news), refresh_per_second=1, screen=True) as live:
+        with Live(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector, cmc_news, cmc_liq), refresh_per_second=1, screen=True) as live:
             while True:
                 time.sleep(1)
                 countdown -= 1
@@ -545,8 +608,9 @@ def main():
                     cmc_etf = load_etf_demand_report()
                     cmc_sector = load_sector_report()
                     cmc_news = load_macro_news_report()
+                    cmc_liq = load_macro_liquidity_report()
                     countdown = POLL_INTERVAL
-                live.update(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector, cmc_news))
+                live.update(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector, cmc_news, cmc_liq))
     except KeyboardInterrupt:
         sys.exit(0)
 

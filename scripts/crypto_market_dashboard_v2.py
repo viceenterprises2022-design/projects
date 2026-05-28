@@ -14,7 +14,7 @@ def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=9),
+        Layout(name="macro", size=10),
         Layout(name="body")
     )
     layout["body"].split_row(
@@ -105,6 +105,28 @@ def render_macro(macro_data, correlations) -> Panel:
                     news_data = json.loads(text_news)["result"]["data"]
                     news_bias = news_data.get("decision_report", {}).get("action_guidance", {}).get("bias", "N/A").upper()
                     cmc_table.add_row("MACRO NEWS", f"[bold yellow]{news_bias[:15]}[/]")
+                except:
+                    pass
+
+            # Load Macro Liquidity context
+            liq_path = "scratch/liquidity_monitor_analysis_output.json"
+            if os.path.exists(liq_path):
+                try:
+                    with open(liq_path, "r") as f_liq:
+                        raw_liq = json.load(f_liq)
+                    text_liq = raw_liq["content"][0]["text"]
+                    res_outer = json.loads(text_liq)
+                    if "result" in res_outer and "output" in res_outer["result"]:
+                        output_str = res_outer["result"]["output"]
+                        res_inner = json.loads(output_str)
+                        if "result" in res_inner and "data" in res_inner["result"]:
+                            liq_data = res_inner["result"]["data"]
+                    else:
+                        liq_data = res_outer["result"]["data"]
+                    
+                    risk = liq_data.get("report", {}).get("risk_level", "N/A").upper()
+                    risk_color = "green" if "low" in risk.lower() else "red" if "high" in risk.lower() else "yellow"
+                    cmc_table.add_row("LIQUIDITY", f"[{risk_color}]{risk[:15]}[/]")
                 except:
                     pass
             has_cmc = True
