@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Any, Optional
 
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
 
 MAX_SLACK_TEXT_CHARS = 3500

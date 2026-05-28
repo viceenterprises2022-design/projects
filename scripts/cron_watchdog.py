@@ -18,6 +18,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
+
 STATE_FILE = Path.home() / ".opencode" / "cron_watchdog_state.json"
 LOG_DIR = Path.home() / "Desktop" / "Projects" / "scripts" / "logs"
 SCRIPTS_DIR = LOG_DIR.parent

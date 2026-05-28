@@ -17,6 +17,9 @@ import pickle
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # ── Config ────────────────────────────────────────────────────────────────────
 VENV_PYTHON = "/home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python"
 PKS_DIR = "/home/vreddy1/Desktop/Projects/pkscreener"
