@@ -1,6 +1,5 @@
 import sys
 import os
-import requests
 import html
 
 # Add current directory to path
@@ -8,15 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import the original script
 import market_analysis_v3 as ma
-
-def send_to_telegram(token, chat_id, text):
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML"}
-    try:
-        response = requests.post(url, json=payload)
-        return response.json()
-    except Exception as e:
-        return {"ok": False, "error": str(e)}
+import send_telegram_msg as tg
 
 def format_report(sym, q, fq, oi, a_res):
     ltp = q['ltp']
@@ -31,7 +22,7 @@ def format_report(sym, q, fq, oi, a_res):
     for key, data in a_res['indicators'].items():
         label = data['label']
         detail = data['detail']
-        # Clean labels and details of potential Rich tags if any (though a_res shouldn't have them)
+        # Clean labels and details of potential Rich tags if any
         report += f"• {key.upper().replace('_', ' ')}: {label}\n  <i>{detail}</i>\n"
     
     if oi:
@@ -43,8 +34,6 @@ def format_report(sym, q, fq, oi, a_res):
 
 def run():
     ma.init_db()
-    TOKEN = "8770565112:AAGy9q-BMWsgvU4RQUQDyeNXa282Vme9uG4"
-    CHAT_ID = "7246234100"
 
     print("ALPHAEDGE MARKET INTELLIGENCE REPORT")
     
@@ -57,7 +46,7 @@ def run():
                 _, q, fq, oi, a_res = result
                 report_text = format_report(sym, q, fq, oi, a_res)
                 
-                res = send_to_telegram(TOKEN, CHAT_ID, report_text)
+                res = tg.send_text(report_text)
                 print(f"Sent {sym} report: {res.get('ok')}")
         except Exception as e:
             print(f"Error analyzing {sym}: {e}")

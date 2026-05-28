@@ -104,7 +104,8 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
-| `report_and_send.py` | Generates diagnostic reports and sends them to Telegram. |
+| `report_and_send.py` | **Clean Text Reporter**. Generates 10-factor analysis reports as clean HTML text (no terminal boxes) and sends to Telegram via `send_telegram_msg.py`. |
+| `send_telegram_msg.py` | **Telegram Utility**. Dedicated script to send text messages or files to the pre-configured bot. Used by `report_and_send.py` and other automated tasks. |
 | `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) Rich live terminal view. Shows Spot + Futures with OHLC (O/H/L/C) headers, strategy flags (OH/OL), human-readable OI (L/C), and ATM ± 300 strikes. **Lean, compressed layout (107 chars)** for small terminal windows. Zero-flicker rendering via `rich.live.Live` with alternate screen buffer. 5s polling, daily-reset SQLite. |
 
 ### 🤖 AI Search & Discovery
