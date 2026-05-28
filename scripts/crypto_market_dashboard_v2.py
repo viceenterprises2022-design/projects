@@ -14,7 +14,7 @@ def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=10),
+        Layout(name="macro", size=11),
         Layout(name="body")
     )
     layout["body"].split_row(
@@ -127,6 +127,27 @@ def render_macro(macro_data, correlations) -> Panel:
                     risk = liq_data.get("report", {}).get("risk_level", "N/A").upper()
                     risk_color = "green" if "low" in risk.lower() else "red" if "high" in risk.lower() else "yellow"
                     cmc_table.add_row("LIQUIDITY", f"[{risk_color}]{risk[:15]}[/]")
+                except:
+                    pass
+
+            # Load Top-Down Macro Overview context
+            overview_path = "scratch/crypto_macro_overview_output.json"
+            if os.path.exists(overview_path):
+                try:
+                    with open(overview_path, "r") as f_overview:
+                        raw_overview = json.load(f_overview)
+                    text_overview = raw_overview["content"][0]["text"]
+                    res_outer = json.loads(text_overview)
+                    if "result" in res_outer and "data" in res_outer["result"]:
+                        overview_data = res_outer["result"]["data"]
+                        if "data" in overview_data:
+                            overview_data = overview_data["data"]
+                    else:
+                        overview_data = res_outer["result"]["data"]
+                    
+                    bias = overview_data.get("action_guidance", {}).get("bias", "N/A").upper()
+                    bias_color = "red" if "bear" in bias.lower() or "defensive" in bias.lower() or "tightening" in bias.lower() else "green" if "bull" in bias.lower() or "easing" in bias.lower() else "yellow"
+                    cmc_table.add_row("TOP-DOWN BIAS", f"[{bias_color}]{bias[:15]}[/]")
                 except:
                     pass
             has_cmc = True

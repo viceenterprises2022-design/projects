@@ -197,11 +197,28 @@ def load_cross_asset_report():
 
 def load_market_overview_report():
     import os
-    path = "scratch/market_overview_analysis_output.json"
-    if not os.path.exists(path):
+    # Primary: Synthesized Top-Down Macro Overview
+    path_primary = "scratch/crypto_macro_overview_output.json"
+    if os.path.exists(path_primary):
+        try:
+            with open(path_primary, "r") as f:
+                raw = json.load(f)
+            text = raw["content"][0]["text"]
+            res_outer = json.loads(text)
+            if "result" in res_outer and "data" in res_outer["result"]:
+                res_inner = res_outer["result"]["data"]
+                if "data" in res_inner:
+                    return res_inner["data"]
+                return res_inner
+        except:
+            pass
+            
+    # Fallback: Daily Market Overview
+    path_fallback = "scratch/market_overview_analysis_output.json"
+    if not os.path.exists(path_fallback):
         return None
     try:
-        with open(path, "r") as f:
+        with open(path_fallback, "r") as f:
             raw = json.load(f)
         text = raw["content"][0]["text"]
         res_data = json.loads(text)["result"]["data"]
@@ -389,7 +406,7 @@ def create_overview_panel(data):
         )
     
     rep = data.get("decision_report", {})
-    assessment = data.get("trader_assessment", {})
+    assessment = data.get("trader_assessment", {}) or {}
     action = data.get("action_guidance", {})
     conclusion = rep.get("conclusion", "")
     
@@ -397,9 +414,9 @@ def create_overview_panel(data):
     table.add_column("Key", style="bold cyan", width=16)
     table.add_column("Val", style="white")
     
-    regime = assessment.get("market_regime", "N/A").upper()
-    bias = assessment.get("risk_bias", "N/A").upper()
-    bias_color = "red" if "bear" in bias.lower() or "defensive" in bias.lower() else "green" if "bull" in bias.lower() else "yellow"
+    regime = assessment.get("market_regime", data.get("status", "N/A")).upper()
+    bias = assessment.get("risk_bias", data.get("confidence", "N/A")).upper()
+    bias_color = "red" if "bear" in bias.lower() or "defensive" in bias.lower() or "low" in bias.lower() else "green" if "bull" in bias.lower() or "high" in bias.lower() else "yellow"
     
     table.add_row("MARKET REGIME", f"[red]{regime[:20]}[/]")
     table.add_row("RISK BIAS", f"[{bias_color}]{bias[:20]}[/]")
