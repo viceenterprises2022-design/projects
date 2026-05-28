@@ -114,6 +114,31 @@ def render_ticker(symbol: str, data, engine) -> Panel:
         if not depth['bids'] and not depth['asks']:
             table.add_row("WALLS", "[dim]None[/]")
 
+    # CMC Perpetual Intelligence (BTC specific)
+    if symbol == "BTC":
+        import os
+        import json
+        path = "scratch/perp_analysis_output.json"
+        if os.path.exists(path):
+            try:
+                with open(path, "r") as f:
+                    raw = json.load(f)
+                text = raw["content"][0]["text"]
+                cmc_data = json.loads(text)["result"]["data"]
+                rep = cmc_data.get("decision_report", {})
+                action = rep.get("action_guidance", {})
+                
+                bias = action.get("bias", "neutral").upper()
+                bias_color = "green" if bias == "BULLISH" else "red" if bias == "BEARISH" else "yellow"
+                
+                table.add_row("", "") # Spacer
+                table.add_row("[bold cyan]CMC PERP INTEL[/]", "")
+                table.add_row("CMC BIAS", f"[{bias_color}]{bias}[/]")
+                table.add_row("CMC SETUP", f"[white]{action.get('preferred_setup', 'N/A')[:18]}[/]")
+                table.add_row("CMC RISK", f"[yellow]{action.get('risk_note', 'N/A')[:18]}[/]")
+            except:
+                pass
+
     return Panel(table, title=summary, border_style="cyan")
 
 async def update_data(engine, layout, state):

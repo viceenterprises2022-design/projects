@@ -20,7 +20,8 @@ from rich.table import Table
 from rich.text import Text
 
 POLL_INTERVAL = 15
-console = Console(width=105)
+console = Console(width=140)
+
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 
@@ -163,6 +164,68 @@ def make_liquidation_map_table(liq_map):
         table.add_row(f"${buy/1e6:,.1f}M", f"{price:,.0f}", f"${sell/1e6:,.1f}M")
     return table
 
+def load_cmc_report():
+    import os
+    path = "scratch/perp_analysis_output.json"
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r") as f:
+            raw = json.load(f)
+        text = raw["content"][0]["text"]
+        data = json.loads(text)
+        return data["result"]["data"]
+    except:
+        return None
+
+def create_cmc_panel(data):
+    if not data:
+        return Panel(
+            Text("\n\nNo CMC Intelligence Data found.\n\nRun:\n'python3 scratch/run_perp_analysis.py'\nto generate data.", justify="center", style="bold yellow"),
+            title="[bold yellow]CoinMarketCap Intelligence[/]",
+            border_style="yellow",
+            height=45
+        )
+    
+    rep = data.get("decision_report", {})
+    action = rep.get("action_guidance", {})
+    conclusion = rep.get("conclusion", "")
+    
+    table = Table(show_header=False, box=None, expand=True, padding=(0,1))
+    table.add_column("Key", style="bold cyan", width=18)
+    table.add_column("Val", style="white")
+    
+    bias = action.get("bias", "neutral").upper()
+    bias_style = "green" if bias == "BULLISH" else "red" if bias == "BEARISH" else "yellow"
+    
+    table.add_row("CMC BIAS", f"[{bias_style}]{bias}[/]")
+    table.add_row("PREFERRED SETUP", f"[bold white]{action.get('preferred_setup', 'N/A')}[/]")
+    table.add_row("CONFIRMATION", f"[dim]{', '.join(action.get('confirmation_needed', []))}[/]")
+    table.add_row("RISK NOTE", f"[yellow]{action.get('risk_note', 'N/A')}[/]")
+    
+    table.add_row("", "") # Spacer
+    table.add_row("[bold magenta]INTELLIGENCE READOUT[/]", "")
+    table.add_row("SUMMARY", Text(conclusion, style="dim italic", overflow="fold"))
+    
+    sections = rep.get("analysis_sections", [])
+    for sec in sections:
+        sec_title = sec.get("title", "")
+        sec_bullets = sec.get("bullets", [])
+        if sec_bullets:
+            table.add_row("", "") # Spacer
+            table.add_row(f"[bold cyan]{sec_title.upper()}[/]", "")
+            for bullet in sec_bullets:
+                table.add_row(" •", Text(bullet, style="white dim", overflow="fold"))
+                
+    return Panel(
+        table,
+        title=f"[bold green]CMC Perpetual Intelligence — {rep.get('title', 'Perp Analysis')}[/]",
+        border_style="green",
+        subtitle="[bold]Powered by CoinMarketCap MCP[/]",
+        subtitle_align="right",
+        height=45
+    )
+
 def create_asset_panel(asset, data, depth_data):
     spot = data[0].get("underlying_price", 0) if data else 0
     pcr, mp = calculate_pcr(data), calculate_max_pain(data)
@@ -178,12 +241,17 @@ def create_asset_panel(asset, data, depth_data):
     
     return Panel(content_layout, title=header, title_align="left", height=15)
 
-def render_full_dashboard(all_data, countdown):
+def render_full_dashboard(all_data, countdown, cmc_data):
     timestamp = datetime.now().strftime("%H:%M:%S")
     root = Layout()
     root.split_column(
         Layout(Text(f"CRYPTO DEPTH MAP | {timestamp} | NEXT POLL: {countdown}s", justify="center", style="bold reverse"), size=1),
-        Layout(name="assets")
+        Layout(name="main")
+    )
+    
+    root["main"].split_row(
+        Layout(name="assets", ratio=1),
+        Layout(name="cmc", ratio=1)
     )
     
     root["assets"].split_column(
@@ -191,6 +259,8 @@ def render_full_dashboard(all_data, countdown):
         Layout(create_asset_panel("ETH", all_data["ETH"]["options"], all_data["ETH"]["depth"])),
         Layout(create_asset_panel("SOL", all_data["SOL"]["options"], all_data["SOL"]["depth"]))
     )
+    
+    root["cmc"].update(create_cmc_panel(cmc_data))
     return root
 
 def main():
@@ -209,17 +279,20 @@ def main():
 
     try:
         last_data = fetch_all()
+        cmc_data = load_cmc_report()
         countdown = POLL_INTERVAL
-        with Live(render_full_dashboard(last_data, countdown), refresh_per_second=1, screen=True) as live:
+        with Live(render_full_dashboard(last_data, countdown, cmc_data), refresh_per_second=1, screen=True) as live:
             while True:
                 time.sleep(1)
                 countdown -= 1
                 if countdown <= 0:
                     last_data = fetch_all()
+                    cmc_data = load_cmc_report()
                     countdown = POLL_INTERVAL
-                live.update(render_full_dashboard(last_data, countdown))
+                live.update(render_full_dashboard(last_data, countdown, cmc_data))
     except KeyboardInterrupt:
         sys.exit(0)
 
 if __name__ == "__main__":
     main()
+
