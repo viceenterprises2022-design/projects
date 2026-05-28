@@ -158,7 +158,9 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 ### 2026-05-28: Coinmarketcap MCP Integration & Agent Scaffolding
 - **CMC Skill Hub Integration**: Merged remote `cmc-skill-hub` Streamable HTTP server configuration with API key headers into `~/.claude/.mcp.json` and `~/.cursor/mcp.json`.
 - **Coinmarketcap Agent Scaffold**: Scaffolded and customized a new secure crypto agent in `scratch/coinmarketcap-agent/` with Plan-Act-Observe graphs and 8-layer safety controls, passing all unit tests.
+- **Multica Daemon Upgrade**: Upgraded local `multica` CLI to `0.3.11`, stopped the active `0.3.5` daemon, and verified that systemd restarted it cleanly under the new `0.3.11` version with all 9 agent runtimes online.
 - **Multica:** ALP-372 (done, assigned Vinod-AI-CEO)
+
 
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
