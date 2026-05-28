@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"result\":{\"type\":\"evidence_pack\",\"skill_id\":\"macro_liquidity_monitor\",\"timestamp\":\"2026-05-28T16:23:19.150648+00:00\",\"data\":{\"status\":\"ok\",\"confidence\":\"high\",\"missing_or_stale_inputs\":[],\"decision_report\":{\"title\":\"Macro Liquidity Monitor\",\"brand_line\":\"Powered By CoinMarketCap\",\"conclusion\":\"Macro liquidity conditions currently read as supportive-to-stable rather than stressed. The core panel shows Low Risk, carry-trade risk is safe, and there is no sign of a synchronized funding or carry unwind in the latest snapshot.\",\"analysis\":\"The main read is anchored to the six required core inputs, all of which are available in the current run. Net liquidity is 5932325.13, up 0.72% week over week, which supports a stable liquidity backdrop rather than a tightening shock. Overnight funding rate is 3.63, while USD/JPY proxy is 159.2 with a weekly change of 0.32%; together with carry-trade risk marked safe, this does not indicate fresh carry-unwind stress. Optional context is also supportive: volatility proxy is 16.29 and Japan short-rate proxy is 0.727. No stress flags were triggered, and the discussion layer did not surface new high-value developments that would overturn the core indicator read. Overall, the evidence favors a neutral-to-constructive macro liquidity regime, while still treating this as research context rather than an execution signal.\"},\"action_guidance\":{\"bias\":\"neutral\",\"reference_action\":\"Use the result as macro-risk context and keep leverage changes tied to broader evidence, not to this skill alone.\",\"risk_note\":\"Carry proxies do not show a synchronized unwind signal.\",\"confirmation_needed\":[\"Optional supporting inputs are present; keep using this output as context rather than as a trade trigger.\"]}}},\"executionMeta\":{\"executionTimeMs\":\"23680\"}}"
+    }
+  ],
+  "isError": false
+}
