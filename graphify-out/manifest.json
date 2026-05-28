@@ -9479,11 +9479,6 @@
     "ast_hash": "bd460fa87089ec777676e623ce63eb31",
     "semantic_hash": ""
   },
-  "/home/vreddy1/Desktop/Projects/scripts/crypto_market_dashboard_v2.py": {
-    "mtime": 1779983407.2794206,
-    "ast_hash": "8628f7a50682f9f91e45bf1a9c4aad85",
-    "semantic_hash": ""
-  },
   "/home/vreddy1/Desktop/Projects/scripts/test_exception.py": {
     "mtime": 1778594601.4369903,
     "ast_hash": "40bcb40457ca7008bdb17590fbc50809",
@@ -9657,11 +9652,6 @@
   "/home/vreddy1/Desktop/Projects/scripts/live_market_dashboard.py": {
     "mtime": 1779291253.6161325,
     "ast_hash": "d51d298ddf6a486ee0e5637e6ff06e86",
-    "semantic_hash": ""
-  },
-  "/home/vreddy1/Desktop/Projects/scripts/crypto_dashboard.py": {
-    "mtime": 1779983402.6834054,
-    "ast_hash": "9b7b185b1454c4cbfdbf5b0fd2229088",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/crypto_to_notebooklm.py": {
@@ -39997,6 +39987,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/scratch/parse_cached_files.py": {
     "mtime": 1779986344.8878016,
     "ast_hash": "1ab09efeb4c2bacb0d0a74be11b5770c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/crypto_market_dashboard_v2.py": {
+    "mtime": 1779983407.2794206,
+    "ast_hash": "8628f7a50682f9f91e45bf1a9c4aad85",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/crypto_dashboard.py": {
+    "mtime": 1779983402.6834054,
+    "ast_hash": "9b7b185b1454c4cbfdbf5b0fd2229088",
     "semantic_hash": ""
   }
 }
