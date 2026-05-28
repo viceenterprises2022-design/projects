@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AlphaEdge · Market Intelligence · 28 May 2026, 23:35</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
+<style>
+/* ── RESET & ROOT ── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#03030a;
+  --glass:rgba(255,255,255,0.035);
+  --glass2:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --tx:#e8eaf6;
+  --tx2:#8890b8;
+  --tx3:#50547a;
+  --buy:#00e5b0;
+  --sell:#ff3d5a;
+  --neutral:#ffb020;
+  --buy-glow:rgba(0,229,176,0.15);
+  --sell-glow:rgba(255,61,90,0.15);
+  --neu-glow:rgba(255,176,32,0.15);
+  --sans:'Clash Display',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+  --r:14px;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--tx);
+  font-family:var(--sans);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── PIXI CANVAS ── */
+#pixi-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;opacity:0.6;
+}
+
+/* ── LAYOUT ── */
+#app{position:relative;z-index:1}
+
+/* ── HEADER ── */
+.header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px;
+  background:rgba(3,3,10,0.85);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:14px}
+.logo-mark{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#6366f1,#00e5b0);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;color:#fff;
+  box-shadow:0 0 24px rgba(99,102,241,0.4);
+  position:relative;overflow:hidden;
+}
+.logo-mark::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.15));
+}
+.logo-text{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+.logo-sub{font-size:10px;color:var(--tx2);font-family:var(--mono);margin-top:2px;letter-spacing:0.5px}
+.header-right{text-align:right}
+.header-ts{font-family:var(--mono);font-size:11px;color:var(--tx2)}
+.pulse-dot{
+  display:inline-block;width:7px;height:7px;
+  background:var(--buy);border-radius:50%;margin-right:6px;
+  animation:pulse-anim 2s infinite;
+  box-shadow:0 0 6px var(--buy);
+}
+@keyframes pulse-anim{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.3;transform:scale(0.6)}
+}
+
+/* ── TICKER BAR ── */
+.ticker-bar{
+  background:rgba(255,255,255,0.02);
+  border-bottom:1px solid var(--border);
+  overflow:hidden;height:44px;display:flex;align-items:center;
+}
+.ticker-track{
+  display:flex;gap:0;
+  animation:ticker 30s linear infinite;
+  white-space:nowrap;
+}
+.ticker-track:hover{animation-play-state:paused}
+.t-item{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:0 28px;border-right:1px solid var(--border);
+  height:44px;
+}
+.t-name{font-size:10px;color:var(--tx3);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase}
+.t-val{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--tx)}
+.t-chg{font-family:var(--mono);font-size:11px;font-weight:500}
+.up{color:var(--buy)}
+.dn{color:var(--sell)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── MAIN GRID ── */
+.main{
+  padding:28px 24px 60px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  max-width:1520px;margin:0 auto;
+}
+@media(max-width:1100px){.main{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.main{grid-template-columns:1fr;padding:16px 12px 40px}}
+
+/* ── CARD ── */
+.card{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  backdrop-filter:blur(20px);
+  transition:transform 0.3s cubic-bezier(.34,1.56,.64,1),
+             border-color 0.3s,box-shadow 0.3s;
+  animation:cardIn 0.6s cubic-bezier(.34,1.56,.64,1) both;
+}
+.card:nth-child(1){animation-delay:0.1s}
+.card:nth-child(2){animation-delay:0.2s}
+.card:nth-child(3){animation-delay:0.3s}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(40px) scale(0.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.card:hover{
+  transform:translateY(-4px) scale(1.01);
+  border-color:var(--border2);
+}
+
+/* ── CARD HEADER ── */
+.card-head{
+  padding:22px 24px 16px;
+  position:relative;
+  background:var(--glass2);
+  border-bottom:1px solid var(--border);
+}
+.card-head::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--sig-color);
+  box-shadow:0 0 20px var(--sig-color);
+}
+.sym-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.sym-name{font-size:26px;font-weight:700;letter-spacing:-1px;color:#fff}
+.sig-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 16px;border-radius:100px;
+  font-size:12px;font-weight:600;letter-spacing:0.5px;
+  background:var(--sig-color);color:#000;
+  box-shadow:0 0 20px var(--sig-glow);
+  animation:badgePop 0.5s cubic-bezier(.34,1.56,.64,1) 0.4s both;
+}
+@keyframes badgePop{
+  from{opacity:0;transform:scale(0.7)}
+  to{opacity:1;transform:scale(1)}
+}
+.sig-icon{font-size:10px}
+.price-row{display:flex;align-items:baseline;gap:10px}
+.ltp{font-family:var(--mono);font-size:28px;font-weight:500;letter-spacing:-1px}
+.change{font-family:var(--mono);font-size:13px;font-weight:400}
+.ohlc{
+  display:flex;gap:14px;margin-top:8px;
+  font-family:var(--mono);font-size:10px;color:var(--tx3);
+}
+.ohlc span{display:flex;flex-direction:column;gap:2px}
+.ohlc .ol{font-size:8px;text-transform:uppercase;letter-spacing:0.5px}
+.ohlc .ov{color:var(--tx2);font-size:11px}
+
+/* ── SPARKLINE ── */
+.sparkline-wrap{margin:0 24px 16px;height:50px;position:relative}
+canvas.spark{width:100%;height:50px;border-radius:8px}
+
+/* ── GAUGE ── */
+.gauge-section{
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px 24px;border-bottom:1px solid var(--border);
+}
+.gauge-wrap{position:relative;width:140px;height:75px;margin-bottom:8px}
+.gauge-svg{width:140px;height:75px}
+.gauge-score{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  text-align:center;
+}
+.gauge-num{font-family:var(--mono);font-size:22px;font-weight:500;line-height:1}
+.gauge-lbl{font-size:9px;color:var(--tx3);font-family:var(--mono);letter-spacing:0.5px;margin-top:2px}
+
+/* ── INDICATORS ── */
+.ind-list{padding:0 0 8px}
+.ind-row{
+  display:grid;
+  grid-template-columns:32px 1fr auto;
+  align-items:center;
+  gap:10px;
+  padding:10px 24px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  transition:background 0.15s;
+  animation:rowIn 0.4s ease both;
+}
+.ind-row:hover{background:rgba(255,255,255,0.03)}
+.ind-row:last-child{border-bottom:none}
+.ind-num{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:600;font-family:var(--mono);
+  letter-spacing:0;color:#000;flex-shrink:0;
+}
+.ind-body{min-width:0}
+.ind-name{font-size:11px;font-weight:600;color:var(--tx);letter-spacing:0.2px;margin-bottom:2px}
+.ind-label{font-size:10px;color:var(--tx2);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ind-detail{font-size:9px;color:var(--tx3);font-family:var(--mono);white-space:nowrap}
+.ind-pip{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+@keyframes rowIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── FOOTER ── */
+.footer{
+  text-align:center;
+  padding:24px;
+  border-top:1px solid var(--border);
+  font-family:var(--mono);font-size:10px;color:var(--tx3);
+  line-height:2;
+  background:rgba(255,255,255,0.01);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+</style>
+</head>
+<body>
+
+<canvas id="pixi-canvas"></canvas>
+
+<div id="app">
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark">α</div>
+    <div>
+      <div class="logo-text">AlphaEdge</div>
+      <div class="logo-sub">FINANCIAL INTELLIGENCE · PINAKA.AI</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-ts"><span class="pulse-dot"></span>28 May 2026, 23:35 IST</div>
+    <div class="header-ts" style="margin-top:3px;color:var(--tx3)">9-FACTOR SIGNAL ENGINE</div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- MAIN -->
+<main class="main" id="cards-container"></main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>⚠ For informational purposes only &nbsp;·&nbsp; Not financial advice &nbsp;·&nbsp; Always conduct your own due diligence</div>
+  <div>AlphaEdge © 2026 &nbsp;·&nbsp; Data: Upstox API + Yahoo Finance &nbsp;·&nbsp; Signals regenerate on each run</div>
+</footer>
+
+</div><!-- #app -->
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────────
+const SYM_DATA    = {"NIFTY": {"ltp": 23907.15, "open": 23880.35, "high": 23983.2, "low": 23858.25, "change_pct": 0.0, "signal": "BUY", "signal_color": "#00e5b0", "score": 4, "factors": 9, "indicators": [{"key": "trend", "name": "Trend", "abbr": "T", "label": "STRONG UPTREND", "detail": "EMA20=24,027 | EMA50=23,914 | EMA200=23,795", "score": 2}, {"key": "dow_jones", "name": "Dow Jones", "abbr": "D", "label": "FLAT (+0.01%)", "detail": "DJIA Fut: 50,697", "score": 0}, {"key": "india_vix", "name": "India VIX", "abbr": "V", "label": "NORMAL (14.98) \u2014 Stable", "detail": "Chg: +0.00%", "score": 1}, {"key": "oi", "name": "Open Interest", "abbr": "OI", "label": "MILDLY BEARISH \u2014 PCR 0.85", "detail": "Call:1145.7L | Put:978.5L | 2026-06-02", "score": -1}, {"key": "vwap", "name": "VWAP", "abbr": "VW", "label": "N/A", "detail": "No volume", "score": 0}, {"key": "supertrend", "name": "Supertrend", "abbr": "ST", "label": "BULLISH (Sup\u224823,695)", "detail": "ATR(10) \u00d7 3", "score": 1}, {"key": "rsi", "name": "RSI (14)", "abbr": "RS", "label": "BULLISH ZONE (72.5)", "detail": "RSI(14) Daily", "score": 1}, {"key": "dxy", "name": "USD Index", "abbr": "$", "label": "STABLE (-0.00%)", "detail": "DXY: 98.988", "score": 0}, {"key": "crude", "name": "Crude Oil", "abbr": "C", "label": "STABLE (-0.03%)", "detail": "WTI: $88.83", "score": 0}], "candles": [[24385.2, 24400.95, 24102.8, 24196.75], [24163.8, 24280.9, 24145.8, 24231.3], [23589.6, 23907.4, 23555.6, 23842.65], [23880.55, 24074.05, 23856.35, 24050.6], [23909.05, 23990.75, 23682.8, 23775.1], [23855.15, 24025.15, 23828.5, 23997.35], [22838.7, 23153.85, 22719.3, 23123.65], [22780.3, 22998.35, 22542.95, 22968.25], [22383.4, 22782.3, 22182.55, 22713.1], [22899.0, 22941.3, 22618.6, 22679.4], [22549.65, 22714.1, 22283.85, 22331.4], [23173.55, 23186.1, 22804.55, 22819.6], [23064.4, 23465.35, 23063.2, 23306.45], [22878.45, 23057.3, 22624.2, 22912.4], [22824.35, 22851.7, 22471.25, 22512.65], [23110.15, 23345.15, 23067.6, 23114.5], [23197.75, 23378.7, 22930.35, 23002.15], [23632.9, 23862.25, 23618.45, 23777.8], [23493.2, 23656.8, 23346.6, 23581.15], [23116.1, 23502.0, 22955.25, 23408.8], [23462.5, 23492.4, 23112.0, 23151.1], [23674.85, 23833.15, 23556.3, 23639.15], [24231.85, 24299.0, 23834.3, 23866.85], [24280.8, 24303.8, 24079.95, 24261.6], [23868.05, 24078.15, 23697.8, 24028.05], [24656.4, 24700.8, 24415.75, 24450.45], [24615.95, 24854.2, 24529.4, 24765.9], [24388.8, 24602.45, 24305.4, 24480.5], [24659.25, 24989.35, 24603.5, 24865.7], [25459.85, 25476.4, 25141.3, 25178.65]]}, "SENSEX": {"ltp": 75867.8, "open": 75939.86, "high": 76224.68, "low": 75748.21, "change_pct": 0.0, "signal": "BUY", "signal_color": "#00e5b0", "score": 5, "factors": 8, "indicators": [{"key": "trend", "name": "Trend", "abbr": "T", "label": "STRONG UPTREND", "detail": "EMA20=77,498 | EMA50=76,873 | EMA200=76,432", "score": 2}, {"key": "dow_jones", "name": "Dow Jones", "abbr": "D", "label": "FLAT (+0.01%)", "detail": "DJIA Fut: 50,697", "score": 0}, {"key": "india_vix", "name": "India VIX", "abbr": "V", "label": "NORMAL (14.98) \u2014 Stable", "detail": "Chg: +0.00%", "score": 1}, {"key": "oi", "name": "Open Interest", "abbr": "OI", "label": "N/A", "detail": "Market closed / index", "score": 0}, {"key": "vwap", "name": "VWAP", "abbr": "VW", "label": "N/A", "detail": "No volume", "score": 0}, {"key": "supertrend", "name": "Supertrend", "abbr": "ST", "label": "BULLISH (Sup\u224876,238)", "detail": "ATR(10) \u00d7 3", "score": 1}, {"key": "rsi", "name": "RSI (14)", "abbr": "RS", "label": "BULLISH ZONE (72.9)", "detail": "RSI(14) Daily", "score": 1}, {"key": "dxy", "name": "USD Index", "abbr": "$", "label": "STABLE (-0.00%)", "detail": "DXY: 98.988", "score": 0}, {"key": "crude", "name": "Crude Oil", "abbr": "C", "label": "STABLE (-0.03%)", "detail": "WTI: $88.83", "score": 0}], "candles": [[78677.56, 78730.32, 77674.93, 77988.68], [77981.1, 78270.42, 77849.52, 78111.24], [75937.16, 77063.41, 75868.32, 76847.57], [77121.01, 77622.5, 76851.16, 77550.25], [77319.33, 77429.33, 76347.9, 76631.65], [77290.63, 77635.54, 77042.15, 77562.9], [73734.36, 74686.32, 73282.41, 74616.58], [73477.53, 74207.46, 72728.66, 74106.85], [72262.05, 73568.54, 71545.81, 73319.55], [73762.43, 73964.58, 72971.68, 73134.32], [72565.22, 73165.32, 71774.13, 71947.55], [74883.79, 74904.91, 73534.41, 73583.22], [74652.01, 75849.76, 74550.47, 75273.45], [74212.47, 74489.39, 73084.46, 74068.45], [73732.58, 73732.58, 72558.44, 72696.39], [74559.38, 75286.39, 74385.04, 74532.96], [74750.92, 75354.18, 73950.95, 74207.24], [76367.55, 77000.22, 76187.92, 76704.13], [75826.68, 76304.26, 75324.73, 76070.84], [74415.79, 75805.27, 73949.76, 75502.85], [75444.22, 75576.2, 74454.6, 74563.92], [76369.65, 76681.71, 75871.18, 76034.42], [78238.91, 78324.37, 76759.26, 76863.71], [78375.73, 78526.25, 77745.47, 78205.98], [77056.75, 77711.35, 76424.55, 77566.16], [79658.99, 79753.03, 78812.18, 78918.9], [79530.48, 80303.83, 79201.69, 80015.9], [78528.82, 79527.41, 78443.2, 79116.19], [78543.73, 80632.55, 78543.73, 80238.85], [82220.48, 82246.17, 81159.15, 81287.19]]}, "BANKNIFTY": {"ltp": 54853.85, "open": 54992.95, "high": 55221.7, "low": 54738.6, "change_pct": 0.0, "signal": "NEUTRAL", "signal_color": "#ffb020", "score": 3, "factors": 9, "indicators": [{"key": "trend", "name": "Trend", "abbr": "T", "label": "STRONG UPTREND", "detail": "EMA20=56,432 | EMA50=55,516 | EMA200=54,989", "score": 2}, {"key": "dow_jones", "name": "Dow Jones", "abbr": "D", "label": "FLAT (+0.01%)", "detail": "DJIA Fut: 50,697", "score": 0}, {"key": "india_vix", "name": "India VIX", "abbr": "V", "label": "NORMAL (14.98) \u2014 Stable", "detail": "Chg: +0.00%", "score": 1}, {"key": "oi", "name": "Open Interest", "abbr": "OI", "label": "NEUTRAL \u2014 PCR 0.98", "detail": "Call:105.3L | Put:103.2L | 2026-06-30", "score": 0}, {"key": "vwap", "name": "VWAP", "abbr": "VW", "label": "N/A", "detail": "No volume", "score": 0}, {"key": "supertrend", "name": "Supertrend", "abbr": "ST", "label": "BULLISH (Sup\u224856,140)", "detail": "ATR(10) \u00d7 3", "score": 1}, {"key": "rsi", "name": "RSI (14)", "abbr": "RS", "label": "OVERBOUGHT (78.0)", "detail": "RSI(14) Daily", "score": -1}, {"key": "dxy", "name": "USD Index", "abbr": "$", "label": "STABLE (-0.00%)", "detail": "DXY: 98.988", "score": 0}, {"key": "crude", "name": "Crude Oil", "abbr": "C", "label": "STABLE (-0.03%)", "detail": "WTI: $88.83", "score": 0}], "candles": [[56657.25, 56834.25, 55898.25, 56086.4], [56343.45, 56786.25, 56109.2, 56301.95], [54646.0, 55752.65, 54356.2, 55605.05], [55182.25, 55978.5, 55145.25, 55912.75], [55505.95, 55583.1, 54626.85, 54821.7], [54904.45, 55778.25, 54797.5, 55703.9], [52258.7, 52778.2, 51868.45, 52716.25], [51747.6, 52704.55, 51111.1, 52609.1], [50625.65, 51731.95, 49954.85, 51548.75], [51433.9, 52025.85, 51133.55, 51448.65], [51527.9, 51624.5, 50105.25, 50275.35], [53244.25, 53292.5, 52211.2, 52274.6], [53024.75, 54146.15, 53024.75, 53708.1], [52384.8, 52949.15, 51827.5, 52605.65], [52576.1, 52665.3, 51323.6, 51437.75], [53548.2, 54382.45, 53297.55, 53427.05], [53474.55, 54150.3, 53240.6, 53451.0], [54927.05, 55554.15, 54689.1, 55326.05], [54649.1, 54996.0, 54113.15, 54876.0], [53721.5, 54664.15, 53258.15, 54413.4], [54592.05, 54713.75, 53675.7, 53757.85], [55008.2, 55636.95, 54760.55, 55100.95], [56790.4, 56938.4, 55631.95, 55735.75], [56583.85, 57097.05, 56387.2, 56950.8], [56121.4, 56274.15, 55270.6, 56019.8], [58629.6, 58807.15, 57696.4, 57783.25], [59008.25, 59274.35, 58506.4, 59055.85], [58447.15, 59058.4, 58393.55, 58755.25], [59204.3, 60177.5, 59148.0, 59839.65], [61057.45, 61086.45, 60438.95, 60529.0]]}};
+const GLOBAL_DATA = {"VIX": {"ltp": 14.98, "chg": 0.0}, "DXY": {"ltp": 98.98799896240234, "chg": -0.0010096583454890545}, "CRUDE": {"ltp": 88.83000183105469, "chg": -0.03375959834663827}, "US30": {"ltp": 50697.0, "chg": 0.007890635787978616}, "GOLD": {"ltp": 4538.10009765625, "chg": -0.039644149126962916}, "SILVER": {"ltp": 76.18499755859375, "chg": -0.07870048636200122}};
+
+// ── PIXI PARTICLE BACKGROUND ────────────────────────────────────────────────────
+(async () => {
+  try {
+    const canvas = document.getElementById('pixi-canvas');
+    const app = new PIXI.Application({
+      view: canvas,
+      width: window.innerWidth,
+      height: window.innerHeight,
+      backgroundColor: 0x03030a,
+      resolution: Math.min(window.devicePixelRatio || 1, 2),
+      autoDensity: true,
+      antialias: true,
+    });
+
+    const particles = [];
+    const N = 80;
+    const container = new PIXI.Container();
+    app.stage.addChild(container);
+
+    // Color palette
+    const COLS = [0x6366f1, 0x00e5b0, 0xff3d5a, 0xffb020, 0x818cf8];
+
+    for (let i = 0; i < N; i++) {
+      const g = new PIXI.Graphics();
+      const r = Math.random() * 2 + 0.5;
+      const col = COLS[Math.floor(Math.random() * COLS.length)];
+      g.beginFill(col, 0.7);
+      g.drawCircle(0, 0, r);
+      g.endFill();
+      g.x = Math.random() * app.screen.width;
+      g.y = Math.random() * app.screen.height;
+      const speed = Math.random() * 0.4 + 0.1;
+      const angle = Math.random() * Math.PI * 2;
+      particles.push({ g, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed,
+                        r, life: Math.random(), lifeSpeed: Math.random()*0.005+0.002 });
+      container.addChild(g);
+    }
+
+    // Connection lines container
+    const linesCont = new PIXI.Graphics();
+    app.stage.addChildAt(linesCont, 0);
+
+    app.ticker.add(() => {
+      linesCont.clear();
+      const W = app.screen.width, H = app.screen.height;
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x = (p.g.x += p.vx);
+        p.y = (p.g.y += p.vy);
+        p.life += p.lifeSpeed;
+        p.g.alpha = (Math.sin(p.life) * 0.5 + 0.5) * 0.8 + 0.1;
+        if (p.g.x < -10) p.g.x = W + 10;
+        if (p.g.x > W + 10) p.g.x = -10;
+        if (p.g.y < -10) p.g.y = H + 10;
+        if (p.g.y > H + 10) p.g.y = -10;
+
+        for (let j = i+1; j < particles.length; j++) {
+          const q = particles[j];
+          const dx = p.g.x - q.g.x, dy = p.g.y - q.g.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120) {
+            const alpha = (1 - dist/120) * 0.15;
+            linesCont.lineStyle(0.5, 0x6366f1, alpha);
+            linesCont.moveTo(p.g.x, p.g.y);
+            linesCont.lineTo(q.g.x, q.g.y);
+          }
+        }
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      app.renderer.resize(window.innerWidth, window.innerHeight);
+    });
+  } catch(e) {
+    console.warn('PixiJS init failed:', e);
+  }
+})();
+
+// ── TICKER ──────────────────────────────────────────────────────────────────────
+function buildTicker() {
+  const items = [
+    ['NIFTY',    SYM_DATA.NIFTY.ltp,    SYM_DATA.NIFTY.change_pct,    2, ''],
+    ['SENSEX',   SYM_DATA.SENSEX.ltp,   SYM_DATA.SENSEX.change_pct,   2, ''],
+    ['BANKNIFTY',SYM_DATA.BANKNIFTY.ltp,SYM_DATA.BANKNIFTY.change_pct,2, ''],
+    ['VIX',  GLOBAL_DATA.VIX.ltp,   GLOBAL_DATA.VIX.chg,   2, ''],
+    ['DXY',  GLOBAL_DATA.DXY.ltp,   GLOBAL_DATA.DXY.chg,   3, ''],
+    ['CRUDE',GLOBAL_DATA.CRUDE.ltp,  GLOBAL_DATA.CRUDE.chg, 2, '$'],
+    ['US30', GLOBAL_DATA.US30.ltp,   GLOBAL_DATA.US30.chg,  0, ''],
+    ['GOLD', GLOBAL_DATA.GOLD.ltp,   GLOBAL_DATA.GOLD.chg,  1, '$'],
+    ['SILVER',GLOBAL_DATA.SILVER.ltp,GLOBAL_DATA.SILVER.chg,2, '$'],
+  ];
+  const html = [...items, ...items].map(([n,v,c,d,pre]) => {
+    const cv = parseFloat(c)||0;
+    const cls = cv>=0 ? 'up' : 'dn';
+    const arr = cv>=0 ? '▲' : '▼';
+    const val = typeof v === 'number' ? (pre+v.toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d})) : v;
+    return `<div class="t-item">
+      <span class="t-name">${n}</span>
+      <span class="t-val">${val}</span>
+      <span class="t-chg ${cls}">${arr} ${Math.abs(cv).toFixed(2)}%</span>
+    </div>`;
+  }).join('');
+  document.getElementById('ticker').innerHTML = html;
+}
+
+// ── SPARKLINE ───────────────────────────────────────────────────────────────────
+function drawSparkline(canvas, candles, sigColor) {
+  if (!candles || candles.length < 2) return;
+  const closes = candles.map(c => c[3]);
+  const W = canvas.offsetWidth || 300, H = 50;
+  canvas.width = W * (window.devicePixelRatio||1);
+  canvas.height = H * (window.devicePixelRatio||1);
+  const ctx = canvas.getContext('2d');
+  ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+  const mn = Math.min(...closes), mx = Math.max(...closes);
+  const rng = mx - mn || 1;
+  const xStep = W / (closes.length - 1);
+  const pts = closes.map((v,i) => [i*xStep, H - ((v-mn)/rng)*(H-8) - 4]);
+  
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0, sigColor + '40');
+  grad.addColorStop(1, sigColor + '00');
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0], H);
+  pts.forEach(([x,y]) => ctx.lineTo(x,y));
+  ctx.lineTo(pts[pts.length-1][0], H);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  pts.forEach(([x,y],i) => i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y));
+  ctx.strokeStyle = sigColor;
+  ctx.lineWidth = 1.5;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Last dot
+  const [lx,ly] = pts[pts.length-1];
+  ctx.beginPath();
+  ctx.arc(lx,ly,3,0,Math.PI*2);
+  ctx.fillStyle = sigColor;
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(lx,ly,6,0,Math.PI*2);
+  ctx.fillStyle = sigColor+'30';
+  ctx.fill();
+}
+
+// ── GAUGE ────────────────────────────────────────────────────────────────────────
+function drawGauge(svgEl, score, factors, sigColor) {
+  const pct = Math.max(0, Math.min(1, (score/Math.max(factors,1) + 1) / 2));
+  const R = 56, cx = 70, cy = 68;
+  const startAngle = Math.PI, endAngle = Math.PI * 2;
+  const angle = startAngle + pct * Math.PI;
+
+  function polarToXY(ang, r) {
+    return [cx + r*Math.cos(ang), cy + r*Math.sin(ang)];
+  }
+
+  const trackPath = `M ${cx-R} ${cy} A ${R} ${R} 0 0 1 ${cx+R} ${cy}`;
+  const [ex,ey] = polarToXY(angle, R);
+  const largeArc = pct > 0.5 ? 1 : 0;
+  const fillPath = `M ${cx-R} ${cy} A ${R} ${R} 0 ${largeArc} 1 ${ex} ${ey}`;
+
+  svgEl.innerHTML = `
+    <defs>
+      <linearGradient id="ggrad-${Math.random().toString(36).slice(2)}" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="${score<0?'#ff3d5a':'#ffb020'}"/>
+        <stop offset="100%" stop-color="${sigColor}"/>
+      </linearGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <path d="${trackPath}" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8" stroke-linecap="round"/>
+    <path d="${fillPath}" fill="none" stroke="${sigColor}" stroke-width="8" stroke-linecap="round"
+          filter="url(#glow)" style="transition:stroke-dashoffset 1s ease"/>
+    <circle cx="${ex}" cy="${ey}" r="5" fill="${sigColor}" filter="url(#glow)"/>
+    <text x="${cx}" y="${cy-10}" text-anchor="middle" fill="rgba(255,255,255,0.3)"
+          font-family="DM Mono,monospace" font-size="8">BEARISH ◄ ► BULLISH</text>
+  `;
+}
+
+// ── CARDS ────────────────────────────────────────────────────────────────────────
+function sigGlow(sc) {
+  if(sc==="BUY") return "rgba(0,229,176,0.3)";
+  if(sc==="SELL") return "rgba(255,61,90,0.3)";
+  return "rgba(255,176,32,0.3)";
+}
+function sigIcon(sc) {
+  return sc==="BUY" ? "▲" : sc==="SELL" ? "▼" : "◆";
+}
+function fmtNum(v,d=2,pre='') {
+  if(typeof v!=='number') return '—';
+  return pre + v.toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d});
+}
+function scoreColor(s) {
+  if(s>0) return "#00e5b0"; if(s<0) return "#ff3d5a"; return "#ffb020";
+}
+
+function buildCards() {
+  const container = document.getElementById('cards-container');
+  const syms = ['NIFTY','SENSEX','BANKNIFTY'];
+
+  syms.forEach((sym, si) => {
+    const d = SYM_DATA[sym];
+    const sc = d.signal_color;
+    const glow = sigGlow(d.signal);
+    const chg = d.change_pct;
+    const chgCls = chg>=0 ? 'up' : 'dn';
+    const chgArr = chg>=0 ? '▲' : '▼';
+    const q = d;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.cssText = `--sig-color:${sc};--sig-glow:${glow};box-shadow:0 0 60px ${glow},0 20px 60px rgba(0,0,0,0.4)`;
+
+    const indRows = d.indicators.map((ind, ii) => {
+      const ic = scoreColor(ind.score);
+      return `<div class="ind-row" style="animation-delay:${0.05*ii + 0.5}s">
+        <div class="ind-num" style="background:${ic}22;color:${ic};border:1px solid ${ic}44">
+          ${ii+1}
+        </div>
+        <div class="ind-body">
+          <div class="ind-name">${ind.name}</div>
+          <div class="ind-label">${ind.label}</div>
+          <div class="ind-detail">${ind.detail}</div>
+        </div>
+        <div class="ind-pip" style="background:${ic};box-shadow:0 0 6px ${ic}"></div>
+      </div>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="sym-row">
+          <div class="sym-name">${sym}</div>
+          <div class="sig-badge">${sigIcon(d.signal)} ${d.signal}</div>
+        </div>
+        <div class="price-row">
+          <div class="ltp" style="color:${chg>=0?'var(--buy)':'var(--sell)'}">${fmtNum(d.ltp,2)}</div>
+          <div class="change ${chgCls}">${chgArr} ${Math.abs(chg).toFixed(2)}%</div>
+        </div>
+        <div class="ohlc">
+          <span><span class="ol">OPEN</span><span class="ov">${fmtNum(q.open,2)}</span></span>
+          <span><span class="ol">HIGH</span><span class="ov" style="color:var(--buy)">${fmtNum(q.high,2)}</span></span>
+          <span><span class="ol">LOW</span><span class="ov" style="color:var(--sell)">${fmtNum(q.low,2)}</span></span>
+        </div>
+      </div>
+
+      <div class="sparkline-wrap">
+        <canvas class="spark" id="spark-${sym}"></canvas>
+      </div>
+
+      <div class="gauge-section">
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" id="gauge-${sym}" viewBox="0 0 140 75"></svg>
+          <div class="gauge-score">
+            <div class="gauge-num" style="color:${sc}">${d.score>0?'+':''}${d.score}</div>
+            <div class="gauge-lbl">${d.score>0?'BULLISH':d.score<0?'BEARISH':'NEUTRAL'} / ${d.factors} SIGNALS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ind-list">${indRows}</div>
+    `;
+
+    container.appendChild(card);
+
+    // Draw after DOM insertion
+    requestAnimationFrame(() => {
+      const sparkCanvas = document.getElementById(`spark-${sym}`);
+      if (sparkCanvas) drawSparkline(sparkCanvas, d.candles, sc);
+      const gaugeSvg = document.getElementById(`gauge-${sym}`);
+      if (gaugeSvg) drawGauge(gaugeSvg, d.score, d.factors, sc);
+    });
+  });
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  buildTicker();
+  buildCards();
+});
+</script>
+</body>
+</html>
