@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"result\":{},\"error\":{\"code\":\"INVALID_ARGUMENT\",\"message\":\"Parameter validation failed: Schema validation failed: property 'preview' is not defined in the schema and the schema does not allow additional properties\"}}"
+    }
+  ],
+  "isError": false
+}

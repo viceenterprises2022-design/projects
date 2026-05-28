@@ -35,7 +35,7 @@ async def act_node(state: Dict[str, Any]) -> Dict[str, Any]:
             "arguments": {"query": query},
             "result": str(skills)
         })
-        output = f"Coinmarketcap MCP query complete. Found skills: {[s['unique_name'] for s in skills]}"
+        output = f"Coinmarketcap MCP query complete. Found skills: {[s.get('uniqueName', s.get('unique_name', '')) for s in skills]}"
     else:
         output = f"General crypto prompt processed. Output: Completed request '{query}' safely."
         
