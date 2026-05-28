@@ -227,13 +227,29 @@ def load_etf_demand_report():
     except:
         return None
 
+def load_sector_report():
+    import os
+    path = "scratch/sector_analysis_output.json"
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r") as f:
+            raw = json.load(f)
+        text = raw["content"][0]["text"]
+        res_data = json.loads(text)["result"]["data"]
+        if "data" in res_data:
+            return res_data["data"]
+        return res_data
+    except:
+        return None
+
 def create_cmc_panel(data):
     if not data:
         return Panel(
-            Text("\nNo CMC Perp Data found.\nRun:\n'python3 scratch/run_perp_analysis.py'", justify="center", style="bold yellow"),
+            Text("\nNo CMC Perp Data found.\nRun 'python3 scratch/run_perp_analysis.py'", justify="center", style="bold yellow"),
             title="[bold yellow]CoinMarketCap Perpetual Intelligence[/]",
             border_style="yellow",
-            height=23
+            height=15
         )
     
     rep = data.get("decision_report", {})
@@ -250,11 +266,7 @@ def create_cmc_panel(data):
     table.add_row("CMC BIAS", f"[{bias_style}]{bias}[/]")
     table.add_row("PREFERRED SETUP", f"[bold white]{action.get('preferred_setup', 'N/A')}[/]")
     table.add_row("CONFIRMATION", f"[dim]{', '.join(action.get('confirmation_needed', []))[:48]}[/]")
-    table.add_row("RISK NOTE", f"[yellow]{action.get('risk_note', 'N/A')[:48]}[/]")
-    
-    table.add_row("", "") # Spacer
-    table.add_row("[bold magenta]INTELLIGENCE READOUT[/]", "")
-    table.add_row("SUMMARY", Text(conclusion[:350] + "...", style="dim italic", overflow="fold"))
+    table.add_row("SUMMARY", Text(conclusion[:150] + "...", style="dim italic", overflow="fold"))
     
     return Panel(
         table,
@@ -262,16 +274,16 @@ def create_cmc_panel(data):
         border_style="green",
         subtitle="[bold]Powered by CoinMarketCap MCP[/]",
         subtitle_align="right",
-        height=23
+        height=15
     )
 
 def create_cross_asset_panel(data):
     if not data:
         return Panel(
-            Text("\nNo Cross-Asset Data found.\nRun:\n'python3 scratch/run_cross_asset_analysis.py'", justify="center", style="bold yellow"),
+            Text("\nNo Cross-Asset Data found.\nRun 'python3 scratch/run_cross_asset_analysis.py'", justify="center", style="bold yellow"),
             title="[bold yellow]CoinMarketCap Macro Correlation[/]",
             border_style="yellow",
-            height=22
+            height=15
         )
     
     rep = data.get("decision_report", {})
@@ -285,17 +297,48 @@ def create_cross_asset_panel(data):
     bias = action.get("bias", "use_as_context").upper()
     table.add_row("MACRO BIAS", f"[yellow]{bias}[/]")
     table.add_row("REF ACTION", f"[dim]{action.get('reference_action', 'N/A')[:48]}[/]")
-    table.add_row("WATCHPOINT", f"[yellow]{action.get('next_watchpoint', 'N/A')[:48]}[/]")
-    
-    table.add_row("", "") # Spacer
-    table.add_row("[bold magenta]MACRO REGIME ANALYSIS[/]", "")
-    table.add_row("SUMMARY", Text(conclusion[:350] + "...", style="dim italic", overflow="fold"))
+    table.add_row("SUMMARY", Text(conclusion[:150] + "...", style="dim italic", overflow="fold"))
     
     return Panel(
         table,
         title=f"[bold magenta]CMC Macro — {rep.get('title', 'Cross-Asset')[:32]}[/]",
         border_style="magenta",
-        height=22
+        height=15
+    )
+
+def create_sector_panel(data):
+    if not data:
+        return Panel(
+            Text("\nNo Sector Data found.\nRun 'python3 scratch/run_sector_analysis.py'", justify="center", style="bold yellow"),
+            title="[bold yellow]CoinMarketCap Sector Analysis[/]",
+            border_style="yellow",
+            height=15
+        )
+    
+    rep = data.get("report", {})
+    identity = rep.get("token_identity", {})
+    action = data.get("action_guidance", {})
+    
+    table = Table(show_header=False, box=None, expand=True, padding=(0,1))
+    table.add_column("Key", style="bold cyan", width=18)
+    table.add_column("Val", style="white")
+    
+    table.add_row("TOKEN / RANK", f"{identity.get('symbol', 'RENDER')} (Rank #{identity.get('cmc_rank', 'N/A')})")
+    table.add_row("PRIMARY SECTOR", f"[bold white]{rep.get('primary_sector', 'N/A')[:24]}[/]")
+    
+    mom = rep.get("sector_momentum", "N/A").upper()
+    mom_color = "red" if "decline" in mom.lower() or "bear" in mom.lower() else "green" if "bull" in mom.lower() else "yellow"
+    table.add_row("MOMENTUM", f"[{mom_color}]{mom}[/]")
+    table.add_row("ROTATION", f"[bold yellow]{rep.get('rotation_signal', 'N/A').upper()}[/]")
+    table.add_row("STANCE", f"[bold white]{action.get('bias', 'N/A').upper()}[/]")
+    
+    return Panel(
+        table,
+        title=f"[bold cyan]CMC Sector — {identity.get('symbol', 'RENDER')} Rotation[/]",
+        border_style="cyan",
+        subtitle="[bold]Powered by CoinMarketCap MCP[/]",
+        subtitle_align="right",
+        height=15
     )
 
 def create_overview_panel(data):
@@ -388,7 +431,7 @@ def create_asset_panel(asset, data, depth_data):
     
     return Panel(content_layout, title=header, title_align="left", height=15)
 
-def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf):
+def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector):
     timestamp = datetime.now().strftime("%H:%M:%S")
     root = Layout()
     root.split_column(
@@ -410,7 +453,8 @@ def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview
     
     root["cmc"].split_column(
         Layout(name="perp", ratio=1),
-        Layout(name="macro", ratio=1)
+        Layout(name="macro", ratio=1),
+        Layout(name="sector", ratio=1)
     )
     
     root["overview"].split_column(
@@ -420,6 +464,7 @@ def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview
     
     root["cmc"]["perp"].update(create_cmc_panel(cmc_perp))
     root["cmc"]["macro"].update(create_cross_asset_panel(cmc_macro))
+    root["cmc"]["sector"].update(create_sector_panel(cmc_sector))
     root["overview"]["sentiment"].update(create_overview_panel(cmc_overview))
     root["overview"]["etf"].update(create_etf_panel(cmc_etf))
     return root
@@ -444,8 +489,9 @@ def main():
         cmc_macro = load_cross_asset_report()
         cmc_overview = load_market_overview_report()
         cmc_etf = load_etf_demand_report()
+        cmc_sector = load_sector_report()
         countdown = POLL_INTERVAL
-        with Live(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf), refresh_per_second=1, screen=True) as live:
+        with Live(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector), refresh_per_second=1, screen=True) as live:
             while True:
                 time.sleep(1)
                 countdown -= 1
@@ -455,8 +501,9 @@ def main():
                     cmc_macro = load_cross_asset_report()
                     cmc_overview = load_market_overview_report()
                     cmc_etf = load_etf_demand_report()
+                    cmc_sector = load_sector_report()
                     countdown = POLL_INTERVAL
-                live.update(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf))
+                live.update(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview, cmc_etf, cmc_sector))
     except KeyboardInterrupt:
         sys.exit(0)
 

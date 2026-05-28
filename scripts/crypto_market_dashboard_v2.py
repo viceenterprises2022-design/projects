@@ -219,6 +219,35 @@ def render_ticker(symbol: str, data, engine) -> Panel:
             except:
                 pass
 
+    # CMC Sector Rotation (SOL/Altcoin specific)
+    if symbol == "SOL":
+        import os
+        import json
+        path = "scratch/sector_analysis_output.json"
+        if os.path.exists(path):
+            try:
+                with open(path, "r") as f:
+                    raw = json.load(f)
+                text = raw["content"][0]["text"]
+                res_data = json.loads(text)["result"]["data"]
+                if "data" in res_data:
+                    cmc_data = res_data["data"]
+                else:
+                    cmc_data = res_data
+                rep = cmc_data.get("report", {})
+                action = cmc_data.get("action_guidance", {})
+                identity = rep.get("token_identity", {})
+                
+                table.add_row("", "") # Spacer
+                table.add_row("[bold cyan]CMC SECTOR ROT[/]", "")
+                table.add_row("PRIMARY SEC", f"[white]{rep.get('primary_sector', 'N/A')[:18]}[/]")
+                mom = rep.get("sector_momentum", "N/A").upper()
+                mom_color = "red" if "decline" in mom.lower() or "bear" in mom.lower() else "green" if "bull" in mom.lower() else "yellow"
+                table.add_row("MOMENTUM", f"[{mom_color}]{mom}[/]")
+                table.add_row("ROT SIGNAL", f"[red]{rep.get('rotation_signal', 'N/A').upper()[:18]}[/]")
+            except:
+                pass
+
     return Panel(table, title=summary, border_style="cyan")
 
 async def update_data(engine, layout, state):
