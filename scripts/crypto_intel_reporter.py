@@ -95,7 +95,7 @@ DAILY_SKILLS = [
     {"name": "perp_contract_analysis", "params": {"symbol": "BTC", "timeframe": "4h", "lookback_days": 14, "exchange_list": "Binance,OKX,Bybit"}, "label": "BTC Perp Analysis"},
     {"name": "btc_etf_institutional_demand", "params": {"preview": True}, "label": "BTC ETF Demand"},
     {"name": "btc_cross_asset_correlation", "params": {"preview": True}, "label": "Cross-Asset Correlation"},
-    {"name": "macro_news_aggregator", "params": {"preview": True, "lookback_hours": 72, "live_fetch": True}, "label": "Macro News"},
+    {"name": "macro_news_aggregator", "params": {"preview": True, "lookback_hours": 72, "live_fetch": False}, "label": "Macro News"},
     {"name": "crypto_macro_overview", "params": {"preview": True}, "label": "Crypto Macro Overview"},
 ]
 
