@@ -290,169 +290,218 @@ def fmt_crypto_macro(data, dr):
 # ─── Weekly Formatting ───
 
 def fmt_sector_rotation(data, dr):
-    analysis = dr.get("analysis", "")
-    conclusion = dr.get("conclusion", "")
-    lines = ["<b>📈 Sector Rotation</b>"]
-    subject = dr.get("primary_subject", dr.get("symbol", "?"))
-    lines.append(f"Asset: <b>{subject}</b>")
+    lines = ["<b>📈 Sector Rotation — RENDER (DePIN)</b>"]
+    ms = dr.get("market_snapshot", {})
+    if ms:
+        lines.append(f"Price: <b>${ms.get('price','-')}</b> | MCap: {fval(ms.get('market_cap',0),'money')}")
+        chg_24 = ms.get('change_24h', '')
+        chg_7d = ms.get('change_7d', '')
+        chg_30d = ms.get('change_30d', '')
+        lines.append(f"24h: {chg_24}% | 7d: {chg_7d}% | 30d: {chg_30d}%")
+    sec_snap = dr.get("sector_snapshot", {})
+    if sec_snap:
+        avg_chg = sec_snap.get("avg_price_change", "")
+        count = sec_snap.get("count", sec_snap.get("tokens", ""))
+        lines.append(f"Sector ({sec_snap.get('matched_category','?')}): avg {avg_chg}% ({count} tokens)")
     signal = dr.get("rotation_signal", data.get("rotation_signal", ""))
     if signal:
         lines.append(f"Signal: <b>{signal}</b>")
-    momentum = dr.get("sector_momentum", data.get("sector_momentum", ""))
-    if momentum:
-        lines.append(f"Momentum: {momentum}")
-    lines.append("")
-    if conclusion:
-        lines.append(conclusion[:250])
+    s_mom = dr.get("sector_momentum", "")
+    if s_mom:
+        lines.append(f"Momentum: <b>{s_mom}</b>")
+    extremes = dr.get("sector_extremes", {})
+    if extremes:
+        lines.append(f"Best: {extremes.get('best','-')} | Worst: {extremes.get('worst','-')}")
+    summary = data.get("summary", "")
+    if summary:
+        lines.append("")
+        lines.append(summary[:250])
     return "\n".join(lines)
 
 def fmt_altcoin_scanner(data, dr):
-    analysis = dr.get("analysis", "")
-    conclusion = dr.get("conclusion", "")
+    analysis = dr.get("analysis", data.get("analysis", ""))
+    conclusion = dr.get("conclusion", data.get("summary", ""))
     lines = ["<b>🪙 Altcoin Perp Scanner</b>"]
-    candidates = data.get("candidates", dr.get("candidates", []))
-    if candidates:
-        lines.append(f"Total candidates: <b>{len(candidates)}</b>")
-        for c in candidates[:3]:
-            if isinstance(c, dict):
-                name = c.get("symbol", c.get("name", "?"))
-                score = c.get("score", c.get("rank", ""))
-                bias = c.get("bias", c.get("signal", ""))
-                lines.append(f"• {name} — Score: {score} | Bias: {bias}")
+    top_setup = re.search(r"#\d[:\s]*([\w]+)", analysis)
+    if top_setup:
+        rank_info = re.findall(r"#(\d)[\s:]*([\w]+)[^.]*?(?:anomaly[:\s]*([\d.]+))?", analysis)
+        for rank, sym, anomaly in rank_info[:5]:
+            lines.append(f"• #{rank} <b>{sym}</b>" + (f" — anomalia: {anomaly}" if anomaly else ""))
+    else:
+        m_queue = re.findall(r"(?:review|priority)\s*(?:queue|candidate)[^:]*:[:\s]*([\w, ]+)", analysis, re.I)
+        if m_queue:
+            symbols = [s.strip() for s in m_queue[0].split(",")]
+            lines.append(f"Queue: {', '.join(symbols[:5])}")
+    funding_str = re.search(r"funding.*?([-\d.]+%)", analysis)
+    if funding_str:
+        lines.append(f"Funding: {funding_str.group(1)}")
+    lines.append("")
     if conclusion:
-        lines.append("")
-        lines.append(conclusion[:250])
+        lines.append(conclusion[:300])
     return "\n".join(lines)
 
 def fmt_macro_financial(data, dr):
-    analysis = dr.get("analysis", "")
-    conclusion = dr.get("conclusion", "")
+    analysis = dr.get("analysis", data.get("analysis", ""))
+    conclusion = dr.get("conclusion", data.get("summary", ""))
     lines = ["<b>🏛️ Macro Financial Conditions</b>"]
-    fci = dr.get("financial_conditions_index", dr.get("current", dr.get("value", "")))
-    if fci:
-        lines.append(f"FCI: <b>{fci}</b>")
-    metrics_hit = set()
-    for metric, label in [("2y_yield", "2Y Yield"), ("10y_yield", "10Y Yield"),
-                          ("cpi", "CPI"), ("unemployment", "Unemployment"),
-                          ("federal_funds_rate", "Fed Funds")]:
-        for lookup in [dr, data]:
-            if isinstance(lookup, dict) and metric in lookup:
-                metrics_hit.add(label)
-                lines.append(f"{label}: {lookup[metric]}")
-                break
-    if len(metrics_hit) < 3:
-        for metric, label in [("2y", "2y yield"), ("10y", "10y yield"), ("cpi", "cpi"),
-                              ("unemployment", "unemployment"), ("fed", "fed fund"),
-                              ("federal", "federal funds")]:
-            m = re.search(rf"{label}[^:]*?([\d.]+%)?", analysis, re.I)
-            if m:
-                lines.append(f"{label.title()}: {m.group(1).strip()}")
-                break
+    metrics_found = {}
+    patterns = [
+        ("NFCI", r"NFCI[^0-9.-]*?([-\d.]+)"),
+        ("2s10s", r"(?:2s10s|2Y.*10Y|2Y/10Y)[^-\d]*?([-\d.]+%?)"),
+        ("10Y Real", r"10[Yy].*real[^0-9.]*?([\d.]+%)"),
+        ("CPI", r"CPI[^0-9.]*?([\d.]+%)"),
+        ("Core CPI", r"(?:core\s+)?CPI[^0-9.]*?([\d.]+%)"),
+        ("Unemployment", r"(?:unemployment|U/E)[^0-9.]*?([\d.]+%)"),
+        ("Fed Funds", r"(?:fed\s+funds|federal\s+funds)[^0-9.]*?([\d.]+%)"),
+        ("Front-End Δ", r"(?:front.end|front\s+end)[^0-9.]*?([-\d.]+%?)"),
+    ]
+    for label, pat in patterns:
+        m = re.search(pat, analysis, re.I)
+        if m:
+            metrics_found[label] = m.group(1)
+    for k, v in metrics_found.items():
+        is_red = ("-0" in v.replace("bps","") if k in ("2s10s",) else False)
+        lines.append(f"{k}: <b>{v}</b>" + (" ⚠️ inverted" if k == "2s10s" and "-" in v else ""))
     lines.append("")
     if conclusion:
         lines.append(conclusion[:250])
     return "\n".join(lines)
 
 def fmt_liquidity(data, dr):
-    analysis = dr.get("analysis", "")
-    conclusion = dr.get("conclusion", "")
     lines = ["<b>💧 Liquidity Risk Regime</b>"]
-    for metric in ["fed_balance_sheet", "rrp", "tga", "net_liquidity"]:
-        for lookup in [dr, data]:
-            if isinstance(lookup, dict) and metric in lookup:
-                v = lookup[metric]
-                label = metric.replace("_", " ").title()
-                if isinstance(v, (int, float)):
-                    lines.append(f"{label}: <b>${v:,.0f}</b>")
-                elif isinstance(v, str):
-                    lines.append(f"{label}: <b>{v}</b>")
-                break
-    if len(lines) < 3:
-        for pattern, label in [("RRP", "RRP"), ("TGA", "TGA"), ("Fed Balance", "Fed Balance"),
-                               ("Net Liquidity", "Net Liq")]:
-            m = re.search(rf"{pattern}[^.]*?(\$[\d,]+(?:\.\d+)?[BMK]?|[-\d.]+[BMK]?)", analysis, re.I)
-            if m:
-                lines.append(f"{label}: {m.group(1)}")
-    trend = dr.get("liquidity_trend", data.get("trend", dr.get("trend", "")))
-    if trend:
-        lines.append(f"Trend: <b>{trend}</b>")
-    lines.append("")
-    if conclusion:
-        lines.append(conclusion[:250])
+    rprt = dr if "indicator_snapshot" in dr else data.get("report", dr)
+    rprt = rprt if "indicator_snapshot" in rprt else dr
+    ind_snap = rprt.get("indicator_snapshot", data.get("indicator_snapshot", {}))
+    lines.append(f"Risk Level: <b>{rprt.get('risk_level','-')}</b>")
+    lines.append(f"Carry Risk: <b>{rprt.get('carry_trade_risk','-')}</b>")
+    if ind_snap:
+        net_liq = ind_snap.get("net_liquidity", ind_snap.get("net_liquidity_usd", ""))
+        if net_liq:
+            nl = net_liq.replace("$", "")
+            lines.append(f"Net Liquidity: <b>${float(nl):.2f}T</b>" if nl and nl.replace(".","").isdigit() else f"net Liquidity: {net_liq}")
+        wo_w = ind_snap.get("weekly_change_pct", "")
+        if wo_w:
+            lines.append(f"Weekly Δ: {wo_w}%")
+        on_fund = ind_snap.get("overnight_funding_rate", "")
+        if on_fund:
+            lines.append(f"ON Funding: {on_fund}")
+        usdjpy = ind_snap.get("usd_jpy", "")
+        if usdjpy:
+            lines.append(f"USD/JPY: {usdjpy}")
+    summary = data.get("summary", "")
+    if summary:
+        lines.append("")
+        lines.append(summary[:300])
+    elif dr.get("conclusion", ""):
+        lines.append("")
+        lines.append(dr["conclusion"][:300])
     return "\n".join(lines)
 
 def fmt_holder_distribution(data, dr):
+    rprt = dr if "holder_count" in dr else data.get("report", dr)
+    rprt = rprt if "holder_count" in rprt else dr
     lines = ["<b>👥 Holder Distribution (AAVE)</b>"]
-    lines.append(f"Holders: {dr.get('holder_count', '-')}")
-    lines.append(f"State: {dr.get('distribution_state', '-')}")
-    tm = dr.get("trend_metrics", {})
+    lines.append(f"State: <b>{rprt.get('distribution_state','-')}</b>")
+    lines.append(f"Holders: <b>{rprt.get('holder_count',0):,}</b>")
+    tm = rprt.get("trend_metrics", {})
     if tm:
-        lines.append(f"Growth: {tm.get('holder_growth_pct', '-')}%")
-    snap = dr.get("latest_snapshot", {})
+        hg = tm.get("holder_growth_pct")
+        if hg is not None: lines.append(f"Holder Growth: {hg}%")
+        t50 = tm.get("top_50_balance_growth_pct")
+        if t50 is not None: lines.append(f"Top 50 Growth: {t50}%")
+        t100 = tm.get("top_100_balance_growth_pct")
+        if t100 is not None: lines.append(f"Top 100 Growth: {t100}%")
+    snap = rprt.get("latest_snapshot", {})
     if snap:
-        lines.append(f"Top 10 Share: {snap.get('top_10_holder_share_pct', '-')}%")
-        lines.append(f"Top 50 Share: {snap.get('top_50_balance', '-')}%")
-    conclusion = dr.get("conclusion", data.get("summary", ""))
-    if conclusion:
+        top10 = snap.get("top_10_holder_share_pct")
+        if top10 is not None: lines.append(f"Top 10 Share: <b>{top10:.2f}%</b>")
+        t50b = snap.get("top_50_balance")
+        if t50b is not None: lines.append(f"Top 50 Balance: {t50b*100:.2f}%")
+        t100b = snap.get("top_100_balance")
+        if t100b is not None: lines.append(f"Top 100 Balance: {t100b*100:.2f}%")
+    summary = data.get("summary", "")
+    if summary:
         lines.append("")
-        lines.append(conclusion[:250])
+        lines.append(summary[:250])
     return "\n".join(lines)
 
 def fmt_protocol_revenue(data, dr):
+    rprt = dr if "current_tvl_usd" in dr else data.get("report", dr)
+    rprt = rprt if "current_tvl_usd" in rprt else dr
     lines = ["<b>⚡ Uniswap Revenue/TVL</b>"]
-    lines.append(f"Divergence: <b>{dr.get('divergence_state','-')}</b>")
-    tvl = dr.get("current_tvl_usd", dr.get("tvl", ""))
+    lines.append(f"State: <b>{rprt.get('divergence_state','-')}</b>")
+    tvl = rprt.get("current_tvl_usd", 0)
     if tvl:
-        lines.append(f"TVL: {fval(tvl, 'money') if isinstance(tvl,(int,float)) else tvl}")
-    tvl_chg = dr.get("tvl_change_pct_recent_window", "")
+        lines.append(f"TVL: <b>{fval(tvl, 'money')}</b>")
+    tvl_chg = rprt.get("tvl_change_pct_recent_window", rprt.get("tvl_change_pct", ""))
     if tvl_chg:
-        lines.append(f"TVL Δ: {tvl_chg}%")
-    lines.append(f"Revenue (30d): {fval(dr.get('revenue_30d_usd',0),'money')}")
-    lines.append(f"Fees (30d): {fval(dr.get('fees_30d_usd',0),'money')}")
-    conclusion = dr.get("conclusion", "")
-    if conclusion:
+        lines.append(f"TVL Δ (30d): {tvl_chg}%")
+    rev_30d = rprt.get("revenue_30d_usd", 0)
+    lines.append(f"Revenue (30d): <b>{fval(rev_30d, 'money')}</b>")
+    rev_7d = rprt.get("revenue_7d_usd", 0)
+    if rev_7d: lines.append(f"Revenue (7d): {fval(rev_7d, 'money')}")
+    fees_30d = rprt.get("fees_30d_usd", 0)
+    lines.append(f"Fees (30d): <b>{fval(fees_30d, 'money')}</b>")
+    rrr = rprt.get("revenue_run_rate_ratio", "")
+    if rrr: lines.append(f"Rev Run Rate Ratio: {rrr}")
+    summary = data.get("summary", "")
+    if summary:
         lines.append("")
-        lines.append(conclusion[:250])
+        lines.append(summary[:250])
     return "\n".join(lines)
 
 def fmt_defi_screen(data, dr):
+    rprt = dr if "top_protocols" in dr else data.get("report", dr)
+    rprt = rprt if "top_protocols" in rprt else dr
     lines = ["<b>🔗 DeFi Protocol Screen</b>"]
-    protocols = data.get("protocols", dr.get("protocols", []))
-    if protocols:
-        for p in protocols[:4]:
-            if isinstance(p, dict):
-                name = p.get("name", p.get("protocol", "?"))
-                tvl = fval(p.get("tvl", p.get("current_tvl_usd", 0)), "money")
-                rev = fval(p.get("revenue_30d", p.get("revenue_30d_usd", 0)), "money")
-                eff = p.get("revenue_efficiency", p.get("rev_tvl_bps", ""))
-                lines.append(f"• <b>{name}</b>: TVL {tvl} | Rev {rev} | Eff: {eff}")
-    conclusion = dr.get("conclusion", data.get("summary", ""))
-    if conclusion:
+    lines.append(f"Screened: <b>{rprt.get('screened_count','?')}</b> | Cash-flowing: <b>{rprt.get('cash_flowing_count','?')}</b>")
+    tops = rprt.get("top_protocols", [])
+    for p in tops[:3]:
+        name = p.get("name", "?")
+        cat = p.get("category", "")
+        tvl = fval(p.get("tvl_usd", 0), "money")
+        rev = fval(p.get("revenue_30d_usd", 0), "money")
+        fees = fval(p.get("fees_30d_usd", 0), "money")
+        eff = p.get("revenue_to_tvl_bps_30d", "")
+        lines.append(f"• <b>{name}</b> ({cat}) — TVL {tvl} | Rev {rev} | Fees {fees} | Eff: {eff}bps")
+    summary = data.get("summary", "")
+    if summary:
         lines.append("")
-        lines.append(conclusion[:250])
+        lines.append(summary[:250])
     return "\n".join(lines)
 
 def fmt_oracle_expansion(data, dr):
+    rprt = dr if "expansion_state" in dr else data.get("report", dr)
+    rprt = rprt if "expansion_state" in rprt else dr
     lines = ["<b>⛓️ Oracle Chain Expansion</b>"]
-    lines.append("Chain: <b>Ethereum</b>")
-    sec_val = dr.get("current_value", dr.get("oracle_secured_value", data.get("current_value", "")))
-    if sec_val:
-        label = "Secured Value"
-        if isinstance(sec_val, (int, float)):
-            lines.append(f"{label}: {fval(sec_val, 'money')}")
-        else:
-            lines.append(f"{label}: {sec_val}")
-    growth = dr.get("growth_pct", data.get("growth_pct", ""))
-    if growth:
-        lines.append(f"Growth: {growth}%")
-    else:
-        g90 = dr.get("90d_growth", data.get("90d_growth", ""))
-        if g90:
-            lines.append(f"90d Δ: {g90}%")
-    conclusion = dr.get("conclusion", data.get("summary", ""))
-    if conclusion:
+    lines.append(f"Chain: <b>Ethereum</b> | State: <b>{rprt.get('expansion_state','-')}</b>")
+    sv = rprt.get("latest_secured_value", rprt.get("oracle_secured_value", 0))
+    if sv: lines.append(f"Secured Value: <b>{fval(sv, 'money')}</b>")
+    gp = rprt.get("growth_pct", "")
+    if gp: lines.append(f"Growth (90 obs): <b>{gp}%</b>")
+    sp = rprt.get("chain_share_pct", "")
+    sdel = rprt.get("share_delta_pct", "")
+    if sp:
+        sd = f" (Δ{sdel}% vs prior)" if sdel else ""
+        lines.append(f"Chain Share: {sp}%{sd}")
+    rank = rprt.get("chain_rank", "")
+    if rank: lines.append(f"Rank: #{rank}")
+    chains = rprt.get("leading_chain_snapshot", [])
+    if chains:
+        parts = []
+        for c in chains:
+            if isinstance(c, dict):
+                parts.append(f"{c.get('chain',c.get('name','?'))}: {fval(c.get('secured_value',c.get('value',0)),'money')}")
+            elif isinstance(c, str) and ":" in c:
+                parts.append(c)
+            elif isinstance(c, str):
+                parts.append(c)
+        if parts:
+            lines.append(f"Leading chains: {', '.join(parts[:5])}")
+    summary = data.get("summary", "")
+    if summary:
         lines.append("")
-        lines.append(conclusion[:250])
+        lines.append(summary[:250])
     return "\n".join(lines)
 
 # ─── Report Builder ───

@@ -174,6 +174,15 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **Dashboard UI Optimization**: Enhanced `crypto_dashboard.py` overview column to support a four-way vertical split (Daily Sentinel, ETF Demand, Macro News, and Macro Liquidity) at a perfectly balanced panel height of 11. Integrated real-time carry-trade stress tracking `LIQUIDITY` into `crypto_market_dashboard_v2.py`.
 - **Multica:** ALP-374 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-28: Crypto Intelligence Reporter (CMC Skill Hub)
+- **Script created**: `crypto_intel_reporter.py` — standalone script that executes 14 CMC Skill Hub skills (6 daily + 8 weekly) via SSE/MCP streaming and sends formatted Telegram reports.
+- **Architecture**: `call_mcp()` does raw SSE streaming to `mcp.coinmarketcap.com/skill-hub/stream`, `parse_output()` extracts `decision_report`/`report` dicts from nested `content[0].text.result.output` structure.
+- **Daily (6 skills)**: Market Overview, BTC Perp Analysis, BTC ETF Demand, Cross-Asset Correlation, Macro News, Crypto Macro Overview. All use `decision_report.analysis` text with regex extraction. Report: 3033 chars, 1 Telegram message.
+- **Weekly (8 skills)**: Sector Rotation (RENDER), Altcoin Perp Scanner, Macro Financial Conditions, Liquidity Risk Regime, Holder Distribution (AAVE), Protocol Revenue/TVL (Uniswap), DeFi Protocol Screen, Oracle Chain Expansion (Ethereum). Some use `decision_report`, others use `report` dict. Report: 2005 chars (2x improvement after formatter rewrite), 1 Telegram message.
+- **Key data structures discovered**: Weekly skills output structured `report` dicts with `market_snapshot`, `indicator_snapshot`, `trend_metrics`, `latest_snapshot`, `top_protocols`, `leading_chain_snapshot` — not `decision_report` like daily skills.
+- **Existing scripts audited**: `crypto_news_search.py` (NotebookLM infographic → Telegram), `ai_news_reporter.py` (Slack), `exa_ai_search.py` (JSON only) — all independent pipelines, no integration needed.
+- **Multica:** ALP-375 (done, assigned Vinod-AI-CEO)
+
 
 
 
