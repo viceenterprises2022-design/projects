@@ -39948,5 +39948,15 @@
     "mtime": 1779985055.947032,
     "ast_hash": "f33dd1dcf4300eab5bb6554a08385920",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/macro_financial_conditions_output.json": {
+    "mtime": 1779985655.1008267,
+    "ast_hash": "8946a9fcbc0efc21648ee8087723ea1b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/run_macro_financial_conditions.py": {
+    "mtime": 1779985622.9586768,
+    "ast_hash": "dfbdd0dbdb954ccbe3d08f3ed74d798d",
+    "semantic_hash": ""
   }
 }

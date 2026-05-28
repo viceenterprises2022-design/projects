@@ -71,9 +71,16 @@ def main():
     target_skill = None
     for cand in candidates:
         name = cand.get("uniqueName", "")
-        if "financial" in name.lower() or "conditions" in name.lower() or "macro" in name.lower():
+        if name.lower() == "macro_financial_conditions":
             target_skill = cand
             break
+            
+    if not target_skill:
+        for cand in candidates:
+            name = cand.get("uniqueName", "")
+            if "financial" in name.lower() or "conditions" in name.lower():
+                target_skill = cand
+                break
             
     if not target_skill:
         print("\n[FAILURE] Skill 'macro_financial_conditions' not found in CMC Skill Hub.")
