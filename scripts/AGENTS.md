@@ -155,6 +155,11 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - `crontab` — Adjusted PKScreener scan timings to trigger at 9:25 AM IST (3:55 UTC), 12:30 PM IST (7:00 UTC), and 3:35 PM IST (10:05 UTC) on weekdays to match active market hours.
 - **Multica:** ALP-370 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-28: Coinmarketcap MCP Integration & Agent Scaffolding
+- **CMC Skill Hub Integration**: Merged remote `cmc-skill-hub` Streamable HTTP server configuration with API key headers into `~/.claude/.mcp.json` and `~/.cursor/mcp.json`.
+- **Coinmarketcap Agent Scaffold**: Scaffolded and customized a new secure crypto agent in `scratch/coinmarketcap-agent/` with Plan-Act-Observe graphs and 8-layer safety controls, passing all unit tests.
+- **Multica:** ALP-372 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

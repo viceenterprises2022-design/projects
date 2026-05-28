@@ -25,10 +25,15 @@
 │   │   ├── exa_ai_agents.py
 │   │   └── ai_news_reporter.py         # Posts to Slack
 │   │
-│   ├── 📰 NotebookLM Pipeline
+│   ├── 📰 NotebookLM Pipelines
 │   │   ├── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → all artifacts → Slack
 │   │   ├── youtube_to_notebooklm.py   # YouTube channel monitor → NotebookLM → Slack
 │   │   ├── youtube_channels.json       # Config: YouTube channel @handles
+│   │   ├── toddle_notebooklm_sync.py   # Orchestrator: Toddle school notes → NotebookLM
+│   │   ├── toddle_all_inventory.py     # Inventory all Toddle subject files
+│   │   ├── toddle_bulk_download.py     # Download new/changed Toddle files
+│   │   ├── toddle_bulk_convert.py      # Convert Toddle files to markdown
+│   │   ├── sync_state.json             # Toddle sync state (per-subject timestamps)
 │   │   └── cron_watchdog.py            # Cron failure monitor → Slack alerts
 │   │
 │   ├── 📊 PKScreener NSE Scanner
@@ -41,10 +46,14 @@
 │   │   ├── metals_dashboard.py
 │   │   └── fo_breakout_scanner.py
 │   │
+│   ├── 📂 Strategies
+│   │   └── nifty200_momentum.py        # Nifty 200 momentum scanner (results via /api/strategies/)
+│   │
 │   ├── 🔧 Utilities
 │   │   ├── send_slack.py / debug_telegram.py
-│   │   ├── pnl_poller.py / probe_pcr_pain.py
-│   │   ├── patch_market*.py
+│   │   ├── pnl_poller.py               # Multi-broker P&L aggregator (live + mock fallback)
+│   │   ├── scaffold_agent.py           # Production AI agent scaffolder from templates/
+│   │   ├── probe_pcr_pain.py / patch_market*.py
 │   │   ├── report_and_summary.py / run_and_send_v2.py
 │   │   └── youtube_video_search.py
 │   │
@@ -91,7 +100,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `collector.py` | **Core Engine**. Fetches market data from Upstox/Yahoo, calculates 10-factor signals, and saves to DB. |
 | `alphaedge_db.py` | **Database Manager**. Handles SQLite schema and data persistence for `alphaedge.db`. |
 | `alert_dashboard_alive.py` | **Dashboard Uptime Monitor**. Cron-friendly uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min. Silent when healthy; alerts Slack on 2+ consecutive failures plus recovery. State tracked in `/tmp/alert_dashboard_state.json`. |
-| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest` (signals + live macro via Yahoo Finance), `/api/gainers-losers` (NSE top 5 gainers/losers, 30s cache), `/api/pixi/*` (options chain). |
+| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest`, `/api/history`, `/api/gainers-losers` (30s cache), `/api/portfolio/pnl` (multi-broker via `pnl_poller.py`), `/api/pixi/*` (options chain), `/api/strategies/nifty200-momentum`. |
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
@@ -188,6 +197,25 @@ SLACK_WEBHOOK_URL=...
 
 ---
 
+### 🎓 Toddle → NotebookLM
+*Daily sync of school subject notes from Toddle LMS to NotebookLM study guides.*
+
+| Script | Description |
+|:--- |:--- |
+| `toddle_notebooklm_sync.py` | **Orchestrator** (4 phases). Inventory → Download → Convert → Upload to NotebookLM + generate study guides. State tracked in `sync_state.json`. Skips subjects with no changes since last sync. |
+| `toddle_all_inventory.py` | Inventories all subject files from Toddle LMS. |
+| `toddle_bulk_download.py` | Downloads new/changed Toddle files. |
+| `toddle_bulk_convert.py` | Converts files to markdown in `output/text/<subject>/`. |
+
+**Subjects tracked:** Physics, Chemistry, Mathematics, English, Biology, History, Geography, Spanish, Design, Visual Arts
+
+```bash
+venv/bin/python toddle_notebooklm_sync.py
+venv/bin/python toddle_notebooklm_sync.py --skip-inventory --skip-download  # convert + upload only
+```
+
+---
+
 ### 🤖 YouTube → NotebookLM
 *Monitors YouTube channels for new videos, ingests each into NotebookLM, and delivers reports to Slack via Block Kit.*
 
@@ -223,6 +251,37 @@ python3 youtube_to_notebooklm.py --list-channels
 
 ---
 
+### 💼 Portfolio P&L Dashboard
+*Multi-broker portfolio aggregator with live/mock fallback.*
+
+| Script | Description |
+|:--- |:--- |
+| `pnl_poller.py` | **P&L Aggregator**. Polls Upstox, Dhan, TradeSmart (Noren OMS), Fyers, Hyperliquid, Exness, and Binance APIs. Falls back to a dynamic mock (sinusoidal fluctuation) per broker when credentials are missing or return 401/403. Exposed at `GET /api/portfolio/pnl`. The endpoint never fails — always returns data. |
+
+---
+
+### 📂 Strategies
+*Market scanning strategies with REST API exposure.*
+
+| Script | Description |
+|:--- |:--- |
+| `strategies/nifty200_momentum.py` | **Nifty 200 Momentum Scanner**. Runs at 3:00 AM and 1:00 PM IST on weekdays. Results exposed at `GET /api/strategies/nifty200-momentum`. |
+
+---
+
+### 🛠️ Agent Scaffolder
+
+| Script | Description |
+|:--- |:--- |
+| `scaffold_agent.py` | **Production Agent Scaffolder**. Copies `templates/production-agent/` to a new directory, substitutes `{{AGENT_NAME}}` placeholders in all files, and initialises a git repo. |
+
+```bash
+python3 scaffold_agent.py --name "Market Assistant"
+python3 scaffold_agent.py --name "My Bot" --dest /path/to/dest
+```
+
+---
+
 ### 📊 Live Market Dashboards
 *Async real-time dashboards requiring venv python.*
 
@@ -235,7 +294,7 @@ python3 youtube_to_notebooklm.py --list-channels
 | Script | Description |
 |:--- |:--- |
 | `send_slack.py` | Generic utility to send text or file content to any Slack webhook. |
-| `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. |
+| `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. State in `~/.opencode/cron_watchdog_state.json`. |
 | `alert_dashboard_alive.py` | Dashboard uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min, alerts Slack on outage. |
 | `send_telegram.py` | Generic utility to send messages via Telegram Bot API. |
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
@@ -285,16 +344,24 @@ journalctl -u multica-daemon -f
 
 1. **Data Collector**: Runs signals (Trend, VIX, OI Skew, PCR, Max Pain) and writes to `alphaedge.db`.
 2. **Database**: SQLite storage for historical snapshots.
-3. **API Server**: Connects to DB and serves REST endpoints (`/api/latest`, `/api/history`, `/api/gainers-losers`, `/api/pixi/*`). Macro data (Crude, US30, Gold, Silver) fetched live from Yahoo Finance with 5-min cache.
+3. **API Server**: Connects to DB; serves `/api/latest`, `/api/history`, `/api/gainers-losers`, `/api/pixi/*`, `/api/portfolio/pnl` (multi-broker via `pnl_poller.py`), `/api/strategies/nifty200-momentum`. Macro data from Yahoo Finance with 5-min cache.
 4. **Dashboard**: HTML/JS frontend in `frontend/` — main dashboard (`dashboard.html`) with portfolio, macro cards, gainers/losers, and Chart.js signal charts. PixiJS options chain viz at `/pixi`.
+5. **P&L Poller** (`pnl_poller.py`): Aggregates 7 brokers (Upstox, Dhan, TradeSmart, Fyers, Hyperliquid, Exness, Binance). Live API → mock fallback per broker. Never errors.
 
 ---
 
 ## 🛠️ Setup
 
-### Python Environment
+### Python Environments
 
-System Python 3.14 blocks global pip installs. Use the project venv:
+Two separate venvs — use the correct one:
+
+| Venv | Path | Used by |
+|------|------|---------|
+| Main | `venv/` (project root) | api_server, collector, telegram/youtube/toddle pipelines, watchdog, alert_dashboard |
+| PKScreener | `/home/vreddy1/Desktop/Projects/pkscreener_venv` | `pkscreener_runner.py` only |
+
+System Python 3.13/3.14 blocks global installs. Use venv or `--break-system-packages`:
 
 ```bash
 python3 -m venv venv
