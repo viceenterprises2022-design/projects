@@ -39918,5 +39918,15 @@
     "mtime": 1779984158.090209,
     "ast_hash": "46f429076ef747634d4ccb9847dad5e0",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/assess_oracle_chain_expansion_trend_output.json": {
+    "mtime": 1779984572.3038626,
+    "ast_hash": "e9561a2ea029dd29c8cb4147f84435f3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/run_assess_oracle_chain_expansion_trend.py": {
+    "mtime": 1779984555.6412861,
+    "ast_hash": "16800f4c1e62fe41f0586f27727e9a07",
+    "semantic_hash": ""
   }
 }
