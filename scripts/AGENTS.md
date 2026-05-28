@@ -159,8 +159,9 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **CMC Skill Hub Integration**: Merged remote `cmc-skill-hub` Streamable HTTP server configuration with API key headers into `~/.claude/.mcp.json` and `~/.cursor/mcp.json`.
 - **Coinmarketcap Agent Scaffold**: Scaffolded and customized a new secure crypto agent in `scratch/coinmarketcap-agent/` with Plan-Act-Observe graphs and 8-layer safety controls, passing all unit tests.
 - **Multica Daemon Upgrade**: Upgraded local `multica` CLI to `0.3.11`, stopped the active `0.3.5` daemon, and verified that systemd restarted it cleanly under the new `0.3.11` version with all 9 agent runtimes online.
-- **CoinMarketCap Perpetual Intelligence Integration**: Integrated `perp_contract_analysis` MCP tool into crypto dashboards. Created `scratch/run_perp_analysis.py` to orchestrate automatic find/execution cycles over the streamable HTTP hub, saving aggregated evidence packs. Enhanced `crypto_dashboard.py` with a side-by-side dual column rendering this intelligence, and added key metrics indicators in `crypto_market_dashboard_v2.py` BTC panel.
+- **CoinMarketCap Perpetual & Macro Intelligence Integration**: Integrated both `perp_contract_analysis` and `btc_cross_asset_correlation` MCP tools into crypto dashboards. Created `scratch/run_perp_analysis.py` and `scratch/run_cross_asset_analysis.py` to orchestrate automatic find/execution cycles over the streamable HTTP hub, saving aggregated evidence packs. Enhanced `crypto_dashboard.py` with a side-by-side dual column layout displaying both perpetual insights and cross-asset macro correlations simultaneously, and added integrated indicators in `crypto_market_dashboard_v2.py` BTC panel.
 - **Multica:** ALP-372 (done, assigned Vinod-AI-CEO)
+
 
 
 

@@ -114,14 +114,16 @@ def render_ticker(symbol: str, data, engine) -> Panel:
         if not depth['bids'] and not depth['asks']:
             table.add_row("WALLS", "[dim]None[/]")
 
-    # CMC Perpetual Intelligence (BTC specific)
+    # CMC Perpetual & Macro Intelligence (BTC specific)
     if symbol == "BTC":
         import os
         import json
-        path = "scratch/perp_analysis_output.json"
-        if os.path.exists(path):
+        
+        # 1. Perp Intel
+        perp_path = "scratch/perp_analysis_output.json"
+        if os.path.exists(perp_path):
             try:
-                with open(path, "r") as f:
+                with open(perp_path, "r") as f:
                     raw = json.load(f)
                 text = raw["content"][0]["text"]
                 cmc_data = json.loads(text)["result"]["data"]
@@ -135,7 +137,28 @@ def render_ticker(symbol: str, data, engine) -> Panel:
                 table.add_row("[bold cyan]CMC PERP INTEL[/]", "")
                 table.add_row("CMC BIAS", f"[{bias_color}]{bias}[/]")
                 table.add_row("CMC SETUP", f"[white]{action.get('preferred_setup', 'N/A')[:18]}[/]")
-                table.add_row("CMC RISK", f"[yellow]{action.get('risk_note', 'N/A')[:18]}[/]")
+            except:
+                pass
+                
+        # 2. Macro Corr
+        macro_path = "scratch/cross_asset_analysis_output.json"
+        if os.path.exists(macro_path):
+            try:
+                with open(macro_path, "r") as f:
+                    raw = json.load(f)
+                text = raw["content"][0]["text"]
+                res_data = json.loads(text)["result"]["data"]
+                if "data" in res_data:
+                    cmc_macro = res_data["data"]
+                else:
+                    cmc_macro = res_data
+                rep = cmc_macro.get("decision_report", {})
+                action = rep.get("action_guidance", {})
+                
+                table.add_row("", "") # Spacer
+                table.add_row("[bold magenta]CMC MACRO CORR[/]", "")
+                table.add_row("MACRO BIAS", f"[yellow]{action.get('bias', 'neutral').upper()}[/]")
+                table.add_row("REGIME", f"[white]{rep.get('title', 'N/A')[:18]}[/]")
             except:
                 pass
 

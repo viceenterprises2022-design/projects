@@ -178,13 +178,29 @@ def load_cmc_report():
     except:
         return None
 
+def load_cross_asset_report():
+    import os
+    path = "scratch/cross_asset_analysis_output.json"
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r") as f:
+            raw = json.load(f)
+        text = raw["content"][0]["text"]
+        res_data = json.loads(text)["result"]["data"]
+        if "data" in res_data:
+            return res_data["data"]
+        return res_data
+    except:
+        return None
+
 def create_cmc_panel(data):
     if not data:
         return Panel(
-            Text("\n\nNo CMC Intelligence Data found.\n\nRun:\n'python3 scratch/run_perp_analysis.py'\nto generate data.", justify="center", style="bold yellow"),
-            title="[bold yellow]CoinMarketCap Intelligence[/]",
+            Text("\nNo CMC Perp Data found.\nRun:\n'python3 scratch/run_perp_analysis.py'", justify="center", style="bold yellow"),
+            title="[bold yellow]CoinMarketCap Perpetual Intelligence[/]",
             border_style="yellow",
-            height=45
+            height=23
         )
     
     rep = data.get("decision_report", {})
@@ -200,30 +216,53 @@ def create_cmc_panel(data):
     
     table.add_row("CMC BIAS", f"[{bias_style}]{bias}[/]")
     table.add_row("PREFERRED SETUP", f"[bold white]{action.get('preferred_setup', 'N/A')}[/]")
-    table.add_row("CONFIRMATION", f"[dim]{', '.join(action.get('confirmation_needed', []))}[/]")
-    table.add_row("RISK NOTE", f"[yellow]{action.get('risk_note', 'N/A')}[/]")
+    table.add_row("CONFIRMATION", f"[dim]{', '.join(action.get('confirmation_needed', []))[:48]}[/]")
+    table.add_row("RISK NOTE", f"[yellow]{action.get('risk_note', 'N/A')[:48]}[/]")
     
     table.add_row("", "") # Spacer
     table.add_row("[bold magenta]INTELLIGENCE READOUT[/]", "")
-    table.add_row("SUMMARY", Text(conclusion, style="dim italic", overflow="fold"))
+    table.add_row("SUMMARY", Text(conclusion[:350] + "...", style="dim italic", overflow="fold"))
     
-    sections = rep.get("analysis_sections", [])
-    for sec in sections:
-        sec_title = sec.get("title", "")
-        sec_bullets = sec.get("bullets", [])
-        if sec_bullets:
-            table.add_row("", "") # Spacer
-            table.add_row(f"[bold cyan]{sec_title.upper()}[/]", "")
-            for bullet in sec_bullets:
-                table.add_row(" •", Text(bullet, style="white dim", overflow="fold"))
-                
     return Panel(
         table,
-        title=f"[bold green]CMC Perpetual Intelligence — {rep.get('title', 'Perp Analysis')}[/]",
+        title=f"[bold green]CMC Perp — {rep.get('title', 'Perp Analysis')[:32]}[/]",
         border_style="green",
         subtitle="[bold]Powered by CoinMarketCap MCP[/]",
         subtitle_align="right",
-        height=45
+        height=23
+    )
+
+def create_cross_asset_panel(data):
+    if not data:
+        return Panel(
+            Text("\nNo Cross-Asset Data found.\nRun:\n'python3 scratch/run_cross_asset_analysis.py'", justify="center", style="bold yellow"),
+            title="[bold yellow]CoinMarketCap Macro Correlation[/]",
+            border_style="yellow",
+            height=22
+        )
+    
+    rep = data.get("decision_report", {})
+    action = rep.get("action_guidance", {})
+    conclusion = rep.get("conclusion", "")
+    
+    table = Table(show_header=False, box=None, expand=True, padding=(0,1))
+    table.add_column("Key", style="bold cyan", width=18)
+    table.add_column("Val", style="white")
+    
+    bias = action.get("bias", "use_as_context").upper()
+    table.add_row("MACRO BIAS", f"[yellow]{bias}[/]")
+    table.add_row("REF ACTION", f"[dim]{action.get('reference_action', 'N/A')[:48]}[/]")
+    table.add_row("WATCHPOINT", f"[yellow]{action.get('next_watchpoint', 'N/A')[:48]}[/]")
+    
+    table.add_row("", "") # Spacer
+    table.add_row("[bold magenta]MACRO REGIME ANALYSIS[/]", "")
+    table.add_row("SUMMARY", Text(conclusion[:350] + "...", style="dim italic", overflow="fold"))
+    
+    return Panel(
+        table,
+        title=f"[bold magenta]CMC Macro — {rep.get('title', 'Cross-Asset')[:32]}[/]",
+        border_style="magenta",
+        height=22
     )
 
 def create_asset_panel(asset, data, depth_data):
@@ -241,7 +280,7 @@ def create_asset_panel(asset, data, depth_data):
     
     return Panel(content_layout, title=header, title_align="left", height=15)
 
-def render_full_dashboard(all_data, countdown, cmc_data):
+def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro):
     timestamp = datetime.now().strftime("%H:%M:%S")
     root = Layout()
     root.split_column(
@@ -260,7 +299,13 @@ def render_full_dashboard(all_data, countdown, cmc_data):
         Layout(create_asset_panel("SOL", all_data["SOL"]["options"], all_data["SOL"]["depth"]))
     )
     
-    root["cmc"].update(create_cmc_panel(cmc_data))
+    root["cmc"].split_column(
+        Layout(name="perp", ratio=1),
+        Layout(name="macro", ratio=1)
+    )
+    
+    root["cmc"]["perp"].update(create_cmc_panel(cmc_perp))
+    root["cmc"]["macro"].update(create_cross_asset_panel(cmc_macro))
     return root
 
 def main():
@@ -279,20 +324,23 @@ def main():
 
     try:
         last_data = fetch_all()
-        cmc_data = load_cmc_report()
+        cmc_perp = load_cmc_report()
+        cmc_macro = load_cross_asset_report()
         countdown = POLL_INTERVAL
-        with Live(render_full_dashboard(last_data, countdown, cmc_data), refresh_per_second=1, screen=True) as live:
+        with Live(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro), refresh_per_second=1, screen=True) as live:
             while True:
                 time.sleep(1)
                 countdown -= 1
                 if countdown <= 0:
                     last_data = fetch_all()
-                    cmc_data = load_cmc_report()
+                    cmc_perp = load_cmc_report()
+                    cmc_macro = load_cross_asset_report()
                     countdown = POLL_INTERVAL
-                live.update(render_full_dashboard(last_data, countdown, cmc_data))
+                live.update(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro))
     except KeyboardInterrupt:
         sys.exit(0)
 
 if __name__ == "__main__":
     main()
+
 
