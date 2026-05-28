@@ -9505,7 +9505,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/report_and_send.py": {
-    "mtime": 1779975636.8116064,
+    "mtime": 1779975846.2460933,
     "ast_hash": "8e3d94296df6b8314a78435bcfcb0369",
     "semantic_hash": ""
   },
@@ -25630,7 +25630,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/README.md": {
-    "mtime": 1779975748.794891,
+    "mtime": 1779975846.2460933,
     "ast_hash": "3984eb92f30495a572ed44f2ba78cb99",
     "semantic_hash": ""
   },
@@ -39812,6 +39812,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/scratch/execute_cmc_mcp.py": {
     "mtime": 1779970265.2997048,
     "ast_hash": "a3a1d9f7391b4e5ad190b042b4c7d784",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/send_telegram_msg.py": {
+    "mtime": 1779975626.0305784,
+    "ast_hash": "181152a394e583f56dda371e37057ce3",
     "semantic_hash": ""
   }
 }
