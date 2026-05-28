@@ -14,7 +14,7 @@ def make_layout() -> Layout:
     layout = Layout()
     layout.split_column(
         Layout(name="header", size=3),
-        Layout(name="macro", size=8),
+        Layout(name="macro", size=9),
         Layout(name="body")
     )
     layout["body"].split_row(
@@ -92,6 +92,19 @@ def render_macro(macro_data, correlations) -> Panel:
                     etf_data = json.loads(text_etf)["result"]["data"]
                     etf_bias = etf_data.get("decision_report", {}).get("action_guidance", {}).get("bias", "N/A").upper()
                     cmc_table.add_row("ETF DEMAND", f"[bold yellow]{etf_bias[:15]}[/]")
+                except:
+                    pass
+
+            # Load Macro News context
+            news_path = "scratch/macro_news_analysis_output.json"
+            if os.path.exists(news_path):
+                try:
+                    with open(news_path, "r") as f_news:
+                        raw_news = json.load(f_news)
+                    text_news = raw_news["content"][0]["text"]
+                    news_data = json.loads(text_news)["result"]["data"]
+                    news_bias = news_data.get("decision_report", {}).get("action_guidance", {}).get("bias", "N/A").upper()
+                    cmc_table.add_row("MACRO NEWS", f"[bold yellow]{news_bias[:15]}[/]")
                 except:
                     pass
             has_cmc = True

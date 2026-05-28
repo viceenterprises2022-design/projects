@@ -164,6 +164,11 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **CoinMarketCap Sector Analysis Integration**: Integrated `altcoin_sector_analysis` MCP tool into crypto dashboards. Created `scratch/run_sector_analysis.py` to fetch, evaluate, and cache relative sector rotation metrics (tested with RENDER). Enhanced `crypto_dashboard.py` by splitting the middle column three-ways to symmetrically display Perp Analysis, Cross-Asset correlations, and Sector rotation. Injected live sector rotation indicators into the SOL panel of `crypto_market_dashboard_v2.py`.
 - **Multica:** ALP-372 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-28: Coinmarketcap Macro News Aggregator Integration
+- **CoinMarketCap Macro News Integration**: Integrated `macro_news_aggregator` MCP tool into crypto dashboards. Created `scratch/run_macro_news_analysis.py` to fetch, clean, and cache macro catalysts and news bias.
+- **Dashboard UI Optimization**: Enhanced `crypto_dashboard.py` by splitting column 3 into a three-way vertical layout (Daily Sentinel, ETF Demand, and Macro News) with symmetrical height constraints. Added real-time bias status tracking `MACRO NEWS` to `crypto_market_dashboard_v2.py`.
+- **Multica:** ALP-373 (done, assigned Vinod-AI-CEO)
+
 
 
 
