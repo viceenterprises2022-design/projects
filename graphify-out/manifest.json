@@ -25590,8 +25590,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/CLAUDE.md": {
-    "mtime": 1779555383.145905,
-    "ast_hash": "8d7cb67182e3ecb1811c4a4051abdafe",
+    "mtime": 1779970170.4443672,
+    "ast_hash": "5efc906273a3859f8c8128fa9096527c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/crypto_daily_report.txt": {
@@ -39752,6 +39752,61 @@
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260528_1005_X_12_13.txt": {
     "mtime": 1779945329.6260169,
     "ast_hash": "2e30208791063e29584904c76ed2babf",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/app/config.py": {
+    "mtime": 1779970118.5601826,
+    "ast_hash": "64fed39043fffc7494003f460e67b330",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/app/models.py": {
+    "mtime": 1779970122.316196,
+    "ast_hash": "bb53265a2dd1f6f035d143c788efef08",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/app/main.py": {
+    "mtime": 1779970145.673279,
+    "ast_hash": "5f605ea31b8000a98bff067789cffb8c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/security/adrian_init.py": {
+    "mtime": 1779970130.6632257,
+    "ast_hash": "88d7daf9d555bb3f5b903072e0144119",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/tests/test_agent.py": {
+    "mtime": 1779970149.591293,
+    "ast_hash": "de3c50a9e8f580c4af4ae9d90cf95acc",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/tests/test_security.py": {
+    "mtime": 1779970153.1303055,
+    "ast_hash": "57f24f58ef01b8e68da11d3a8776a403",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/agent/graph.py": {
+    "mtime": 1779970142.0952663,
+    "ast_hash": "411bcd02dbc0490f66170d329432f739",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/agent/nodes.py": {
+    "mtime": 1779970138.8472548,
+    "ast_hash": "4e42ddc470e48ff79d65c152da7e9e8f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/agent/tools/crypto_lookup.py": {
+    "mtime": 1779970133.9552374,
+    "ast_hash": "b29d2f5690b24c477a99fb84b357dcc4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/README.md": {
+    "mtime": 1779970114.1311667,
+    "ast_hash": "8e22773e94e8ccb57876412e34dc2634",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/coinmarketcap-agent/security/contract.yaml": {
+    "mtime": 1779970125.7432082,
+    "ast_hash": "8078102ef445c5f7e7d4563e580d59fd",
     "semantic_hash": ""
   }
 }
