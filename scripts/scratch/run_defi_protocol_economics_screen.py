@@ -94,31 +94,31 @@ def main():
     # Construct parameters from input schema
     user_params = {
         "request_class": "protocol_economics_screen",
-        "min_tvl_usd": 100000000,
+        "min_tvl_usd": 100000000.0,
         "limit": 3,
         "protocols": [
             {
                 "name": "Aave",
                 "category": "Lending",
-                "tvl_usd": 12000000000,
-                "fees_30d_usd": 5600000,
-                "revenue_30d_usd": 2300000,
+                "tvl_usd": 12000000000.0,
+                "fees_30d_usd": 5600000.0,
+                "revenue_30d_usd": 2300000.0,
                 "chains": ["Ethereum", "Arbitrum", "Optimism"]
             },
             {
                 "name": "Uniswap",
                 "category": "Dexes",
-                "tvl_usd": 6100000000,
-                "fees_30d_usd": 95000000,
-                "revenue_30d_usd": 12000000,
+                "tvl_usd": 6100000000.0,
+                "fees_30d_usd": 95000000.0,
+                "revenue_30d_usd": 12000000.0,
                 "chains": ["Ethereum", "Base"]
             },
             {
                 "name": "Lido",
                 "category": "Liquid Staking",
-                "tvl_usd": 33000000000,
-                "fees_30d_usd": 76000000,
-                "revenue_30d_usd": 7600000,
+                "tvl_usd": 33000000000.0,
+                "fees_30d_usd": 76000000.0,
+                "revenue_30d_usd": 7600000.0,
                 "chains": ["Ethereum"]
             }
         ]

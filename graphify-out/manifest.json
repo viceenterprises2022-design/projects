@@ -39903,5 +39903,15 @@
     "mtime": 1779983627.7031553,
     "ast_hash": "9b3c979e09cb0b94e28793e54dea4b4c",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/altcoin_scanner_perp_output.json": {
+    "mtime": 1779983745.6858144,
+    "ast_hash": "c5e4dd27b9952e57948cc55c21d1a01e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/run_defi_protocol_economics_screen.py": {
+    "mtime": 1779984096.0917237,
+    "ast_hash": "6ca8408ca0562adeef3017c9391b66e2",
+    "semantic_hash": ""
   }
 }
