@@ -39928,5 +39928,15 @@
     "mtime": 1779984555.6412861,
     "ast_hash": "16800f4c1e62fe41f0586f27727e9a07",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/run_detect_holder_distribution_trend.py": {
+    "mtime": 1779984789.5730815,
+    "ast_hash": "758aba39a1635b1236dd28f9f9c151d9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/detect_holder_distribution_trend_output.json": {
+    "mtime": 1779984809.5601497,
+    "ast_hash": "78a975d08bf924616f49fdbe468c691f",
+    "semantic_hash": ""
   }
 }
