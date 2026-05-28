@@ -39898,5 +39898,10 @@
     "mtime": 1779983276.570985,
     "ast_hash": "9ecc12e7ea69ac0a14a5d3702b815a10",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/run_altcoin_scanner_perp.py": {
+    "mtime": 1779983627.7031553,
+    "ast_hash": "9b3c979e09cb0b94e28793e54dea4b4c",
+    "semantic_hash": ""
   }
 }
