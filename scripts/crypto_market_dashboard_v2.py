@@ -33,26 +33,70 @@ def render_header(refresh_in: int, macro_data: dict = None) -> Panel:
     )
 
 def render_macro(macro_data, correlations) -> Panel:
-    table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE, expand=True, padding=(0, 1))
-    table.add_column("IDX", justify="left", width=5)
-    table.add_column("PRICE", justify="right")
-    table.add_column("CHG", justify="right")
-    table.add_column("CORR", justify="right")
+    import os
+    import json
     
-    if not macro_data:
-        table.add_row("...", "---", "---", "---")
-    else:
-        for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
-            if key in macro_data:
-                mdata = macro_data[key]
-                val = f"{mdata['current']:,.1f}"
-                chg = mdata.get('change', 0)
-                chg_color = "green" if chg >= 0 else "red"
-                corr = correlations.get(key, 0)
-                corr_color = "green" if corr > 0.5 else "red" if corr < -0.5 else "white"
-                table.add_row(key, val, f"[{chg_color}]{chg:+.2f}%[/]", f"[{corr_color}]{corr:+.2f}[/]")
+    # 1. Standard Macro Table
+    macro_table = Table(show_header=True, header_style="bold magenta", box=box.SIMPLE, expand=True, padding=(0, 1))
+    macro_table.add_column("IDX", justify="left", width=6)
+    macro_table.add_column("PRICE", justify="right")
+    macro_table.add_column("CHG", justify="right")
+    macro_table.add_column("CORR", justify="right")
+    
+    for key in ["DXY", "VIX", "US30", "GOLD", "OIL"]:
+        if macro_data and key in macro_data:
+            mdata = macro_data[key]
+            val = f"{mdata['current']:,.1f}"
+            chg = mdata.get('change', 0)
+            chg_color = "green" if chg >= 0 else "red"
+            corr = correlations.get(key, 0) if correlations else 0
+            corr_color = "green" if corr > 0.5 else "red" if corr < -0.5 else "white"
+            macro_table.add_row(key, val, f"[{chg_color}]{chg:+.2f}%[/]", f"[{corr_color}]{corr:+.2f}[/]")
+        else:
+            macro_table.add_row(key, "---", "---", "---")
+                
+    # 2. CMC Daily Sentiment Stance Table
+    cmc_table = Table(show_header=False, box=None, expand=True, padding=(0,1))
+    cmc_table.add_column("Label", style="bold cyan", width=14)
+    cmc_table.add_column("Value", style="white")
+    
+    cmc_path = "scratch/market_overview_analysis_output.json"
+    has_cmc = False
+    if os.path.exists(cmc_path):
+        try:
+            with open(cmc_path, "r") as f:
+                raw = json.load(f)
+            text = raw["content"][0]["text"]
+            cmc_data = json.loads(text)["result"]["data"]
+            rep = cmc_data.get("decision_report", {})
+            assessment = cmc_data.get("trader_assessment", {})
+            action = cmc_data.get("action_guidance", {})
             
-    return Panel(table, title="[bold]Macro & Corr[/]", border_style="magenta")
+            regime = assessment.get("market_regime", "N/A").upper()
+            bias = assessment.get("risk_bias", "N/A").upper()
+            stance = action.get("bias", "N/A").upper()
+            
+            bias_color = "red" if "bear" in bias.lower() or "defensive" in bias.lower() else "green" if "bull" in bias.lower() else "yellow"
+            
+            cmc_table.add_row("CMC REGIME", f"[red]{regime[:15]}[/]")
+            cmc_table.add_row("RISK BIAS", f"[{bias_color}]{bias[:18]}[/]")
+            cmc_table.add_row("CMC STANCE", f"[bold white]{stance[:18]}[/]")
+            has_cmc = True
+        except:
+            pass
+            
+    if not has_cmc:
+        cmc_table.add_row("CMC SENTINEL", "[dim]No Overview Data[/]")
+        cmc_table.add_row("STATUS", "[dim]Run overview script[/]")
+        cmc_table.add_row("STANCE", "[dim]To display here[/]")
+        
+    # Combine side-by-side using an outer Table
+    outer_table = Table.grid(expand=True)
+    outer_table.add_column("Left", ratio=1)
+    outer_table.add_column("Right", ratio=1)
+    outer_table.add_row(macro_table, cmc_table)
+    
+    return Panel(outer_table, title="[bold]Macro Correlation & CMC Global Sentiment[/]", border_style="magenta")
 
 def render_ticker(symbol: str, data, engine) -> Panel:
     if not data or not data.get('binance'):

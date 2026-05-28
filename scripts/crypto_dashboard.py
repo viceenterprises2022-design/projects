@@ -20,7 +20,8 @@ from rich.table import Table
 from rich.text import Text
 
 POLL_INTERVAL = 15
-console = Console(width=140)
+console = Console(width=190)
+
 
 
 # ── Logging ──────────────────────────────────────────────────────────────────
@@ -194,6 +195,22 @@ def load_cross_asset_report():
     except:
         return None
 
+def load_market_overview_report():
+    import os
+    path = "scratch/market_overview_analysis_output.json"
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r") as f:
+            raw = json.load(f)
+        text = raw["content"][0]["text"]
+        res_data = json.loads(text)["result"]["data"]
+        if "data" in res_data:
+            return res_data["data"]
+        return res_data
+    except:
+        return None
+
 def create_cmc_panel(data):
     if not data:
         return Panel(
@@ -265,6 +282,64 @@ def create_cross_asset_panel(data):
         height=22
     )
 
+def create_overview_panel(data):
+    if not data:
+        return Panel(
+            Text("\nNo Overview Data found.\nRun:\n'python3 scratch/run_market_overview_analysis.py'", justify="center", style="bold yellow"),
+            title="[bold yellow]CoinMarketCap Daily Overview[/]",
+            border_style="yellow",
+            height=45
+        )
+    
+    rep = data.get("decision_report", {})
+    assessment = data.get("trader_assessment", {})
+    action = data.get("action_guidance", {})
+    conclusion = rep.get("conclusion", "")
+    
+    table = Table(show_header=False, box=None, expand=True, padding=(0,1))
+    table.add_column("Key", style="bold cyan", width=16)
+    table.add_column("Val", style="white")
+    
+    regime = assessment.get("market_regime", "N/A").upper()
+    bias = assessment.get("risk_bias", "N/A").upper()
+    bias_color = "red" if "bear" in bias.lower() or "defensive" in bias.lower() else "green" if "bull" in bias.lower() else "yellow"
+    
+    table.add_row("MARKET REGIME", f"[red]{regime[:20]}[/]")
+    table.add_row("RISK BIAS", f"[{bias_color}]{bias[:20]}[/]")
+    table.add_row("STANCE", f"[bold white]{action.get('bias', 'N/A').upper()[:20]}[/]")
+    table.add_row("REF ACTION", f"[dim]{action.get('reference_action', 'N/A')[:48]}[/]")
+    
+    table.add_row("", "") # Spacer
+    table.add_row("[bold magenta]SENTINEL OVERVIEW[/]", "")
+    table.add_row("SUMMARY", Text(conclusion[:320] + "...", style="dim italic", overflow="fold"))
+    
+    insights = data.get("data_insights", [])
+    if insights:
+        table.add_row("", "") # Spacer
+        table.add_row("[bold cyan]DATA INSIGHTS[/]", "")
+        for ins in insights[:2]:
+            topic = ins.get("topic", "insight").upper()
+            detail = ins.get("insight", "")
+            table.add_row(f" • {topic}", Text(detail[:50] + "...", style="white dim", overflow="fold"))
+            
+    watchlist = data.get("watchlist", [])
+    if watchlist:
+        table.add_row("", "") # Spacer
+        table.add_row("[bold green]SENTINEL WATCHLIST[/]", "")
+        for item in watchlist[:2]:
+            sym = item.get("symbol", "")
+            score = item.get("score", 0)
+            table.add_row(f" • {sym}", f"[bold white]{score}[/]")
+
+    return Panel(
+        table,
+        title=f"[bold green]CMC Sentinel — {rep.get('title', 'Market Overview')[:28]}[/]",
+        border_style="green",
+        subtitle="[bold]Powered by CoinMarketCap MCP[/]",
+        subtitle_align="right",
+        height=45
+    )
+
 def create_asset_panel(asset, data, depth_data):
     spot = data[0].get("underlying_price", 0) if data else 0
     pcr, mp = calculate_pcr(data), calculate_max_pain(data)
@@ -280,7 +355,7 @@ def create_asset_panel(asset, data, depth_data):
     
     return Panel(content_layout, title=header, title_align="left", height=15)
 
-def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro):
+def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro, cmc_overview):
     timestamp = datetime.now().strftime("%H:%M:%S")
     root = Layout()
     root.split_column(
@@ -290,7 +365,8 @@ def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro):
     
     root["main"].split_row(
         Layout(name="assets", ratio=1),
-        Layout(name="cmc", ratio=1)
+        Layout(name="cmc", ratio=1),
+        Layout(name="overview", ratio=1)
     )
     
     root["assets"].split_column(
@@ -306,6 +382,7 @@ def render_full_dashboard(all_data, countdown, cmc_perp, cmc_macro):
     
     root["cmc"]["perp"].update(create_cmc_panel(cmc_perp))
     root["cmc"]["macro"].update(create_cross_asset_panel(cmc_macro))
+    root["overview"].update(create_overview_panel(cmc_overview))
     return root
 
 def main():
@@ -326,8 +403,9 @@ def main():
         last_data = fetch_all()
         cmc_perp = load_cmc_report()
         cmc_macro = load_cross_asset_report()
+        cmc_overview = load_market_overview_report()
         countdown = POLL_INTERVAL
-        with Live(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro), refresh_per_second=1, screen=True) as live:
+        with Live(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview), refresh_per_second=1, screen=True) as live:
             while True:
                 time.sleep(1)
                 countdown -= 1
@@ -335,8 +413,9 @@ def main():
                     last_data = fetch_all()
                     cmc_perp = load_cmc_report()
                     cmc_macro = load_cross_asset_report()
+                    cmc_overview = load_market_overview_report()
                     countdown = POLL_INTERVAL
-                live.update(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro))
+                live.update(render_full_dashboard(last_data, countdown, cmc_perp, cmc_macro, cmc_overview))
     except KeyboardInterrupt:
         sys.exit(0)
 

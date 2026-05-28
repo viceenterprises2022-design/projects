@@ -9480,8 +9480,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/crypto_market_dashboard_v2.py": {
-    "mtime": 1779981360.2503276,
-    "ast_hash": "1a880c522cb9ab99743431a287bdab44",
+    "mtime": 1779981835.8182776,
+    "ast_hash": "acb5d834de31ff642be26a9c6551c8b7",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/test_exception.py": {
@@ -9660,8 +9660,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/crypto_dashboard.py": {
-    "mtime": 1779981352.6253123,
-    "ast_hash": "7bcad49ca49c4e10b6d13ffc07f66052",
+    "mtime": 1779981827.7812614,
+    "ast_hash": "dbebec04ac854513fa30fc6d94a66bfe",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/crypto_to_notebooklm.py": {
@@ -25615,8 +25615,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1779981372.6483524,
-    "ast_hash": "27f08967985c4f387d532c524e00a78f",
+    "mtime": 1779981872.4623508,
+    "ast_hash": "a3e63c21b973e74102761772fd467349",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_report.txt": {
@@ -39832,6 +39832,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/scratch/run_cross_asset_analysis.py": {
     "mtime": 1779980762.076133,
     "ast_hash": "ee1d8ee932d6f44eaca65d64eda70a07",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cross_asset_analysis_output.json": {
+    "mtime": 1779981338.8256848,
+    "ast_hash": "c911bd1819944620b99fba2d95dba746",
     "semantic_hash": ""
   }
 }
