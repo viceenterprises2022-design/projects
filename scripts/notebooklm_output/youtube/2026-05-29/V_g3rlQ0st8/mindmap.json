@@ -1,0 +1,142 @@
+{
+  "name": "AI News and Opus 4.8 Launch",
+  "children": [
+    {
+      "name": "Opus 4.8 Release",
+      "children": [
+        {
+          "name": "Improvements",
+          "children": [
+            {
+              "name": "Better than Opus 4.7"
+            },
+            {
+              "name": "Beats GPT-5.5"
+            },
+            {
+              "name": "1 million token context"
+            }
+          ]
+        },
+        {
+          "name": "Capabilities",
+          "children": [
+            {
+              "name": "Slide generation"
+            },
+            {
+              "name": "Natural brand voice"
+            },
+            {
+              "name": "Senior engineer coding"
+            },
+            {
+              "name": "Lower refusal rate"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Google Gemini Spark",
+      "children": [
+        {
+          "name": "Features",
+          "children": [
+            {
+              "name": "Agentic cloud workflow"
+            },
+            {
+              "name": "Workspace integration"
+            },
+            {
+              "name": "Web scraping"
+            },
+            {
+              "name": "Daily briefs"
+            }
+          ]
+        },
+        {
+          "name": "Limitations",
+          "children": [
+            {
+              "name": "Limited native connectors"
+            },
+            {
+              "name": "Requires Ultra subscription"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "OpenAI Ads",
+      "children": [
+        {
+          "name": "Targeting",
+          "children": [
+            {
+              "name": "SMB focus"
+            },
+            {
+              "name": "Reach and Click objectives"
+            },
+            {
+              "name": "CPM or CPC pricing"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Coding Tools",
+      "children": [
+        {
+          "name": "Grok Build",
+          "children": [
+            {
+              "name": "Agentic coding agent"
+            },
+            {
+              "name": "High rate limits"
+            },
+            {
+              "name": "Sub-agent stability issues"
+            }
+          ]
+        },
+        {
+          "name": "Cursor Composer 2.5",
+          "children": [
+            {
+              "name": "Cost efficient"
+            },
+            {
+              "name": "High performance ratio"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Agentic Trading",
+      "children": [
+        {
+          "name": "Robin Hood",
+          "children": [
+            {
+              "name": "Agent credit cards"
+            },
+            {
+              "name": "Automated trading access"
+            },
+            {
+              "name": "Early adopter advantage"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
