@@ -183,6 +183,10 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **Existing scripts audited**: `crypto_news_search.py` (NotebookLM infographic → Telegram), `ai_news_reporter.py` (Slack), `exa_ai_search.py` (JSON only) — all independent pipelines, no integration needed.
 - **Multica:** ALP-375 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-29: send_slack.py Block Kit Rewrite
+- `send_slack.py` — rewrote from flat text to full Slack Block Kit support. Added Block Kit builders (`build_header`, `build_section`, `build_fields`, `build_context`, `build_divider`, `build_code_section`, `compose_blocks`), color coding system with `--color` CLI flag (good/warning/danger/info), `--header` and `--field KEY=VALUE` (repeatable) flags, `send_payload()` for raw payload sending, `chunk_blocks()` for splitting large block arrays into 50-block messages, auto-upgrade to Block Kit when structural flags present. Pure `--text` stays backward compatible. Verified backward compat with `youtube_to_notebooklm.py` and `cron_watchdog.py` callers.
+- **Multica:** ALP-416 (done, assigned Vinod-AI-CEO)
+
 
 
 

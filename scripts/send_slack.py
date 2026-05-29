@@ -236,7 +236,7 @@ def main() -> int:
         fields = parse_fields(args.field)
         blocks = compose_blocks(
             header=args.header,
-            body=message if not args.header and not args.field else message if not args.header else None,
+            body=message or None,
             fields=fields if fields else None,
         )
         hex_color = resolve_color(args.color) if args.color else None
