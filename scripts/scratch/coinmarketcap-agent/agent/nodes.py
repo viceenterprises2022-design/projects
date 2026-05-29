@@ -2,22 +2,23 @@ import re
 from typing import Dict, Any
 
 
+_HISTORICAL_PATTERNS = re.compile(
+    r"\b(?:history|historical|past|last.*day|last.*week|last.*month|all time|ath)",
+    re.IGNORECASE,
+)
 _PRICE_PATTERNS = re.compile(
-    r"\b(price|quote|worth|how much|rate|value|cost|trading at)\b", re.IGNORECASE
+    r"\b(price|quote|worth|how much|rate|value|cost|trading at|ltp)\b", re.IGNORECASE
 )
 _TA_PATTERNS = re.compile(
     r"\b(ta|technical|rsi|macd|moving average|ema|sma|fibonacci|pivot|support|resistance|trend|indicator)\b",
     re.IGNORECASE,
 )
 _ONCHAIN_PATTERNS = re.compile(
-    r"\b(onchain|on-chain|holder|circulat|supply|tx fee|transaction fee|active address|whale)\b",
+    r"\b(onchain|on-chain|holder|circulat|supply|tx fee|transaction fee|active|whale)\b",
     re.IGNORECASE,
 )
 _NEWS_PATTERNS = re.compile(
-    r"\b(news|headline|latest|breaking|update on)\b", re.IGNORECASE
-)
-_SEARCH_PATTERNS = re.compile(
-    r"\b(search|find|look up|lookup|discover|tell me about|what is)\b", re.IGNORECASE
+    r"\b(news|headline|breaking|update on)\b", re.IGNORECASE
 )
 _GLOBAL_PATTERNS = re.compile(
     r"\b(global|market cap|total cap|dominance|fear|greed|overview|market state)\b",
@@ -30,14 +31,14 @@ _LEVERAGE_PATTERNS = re.compile(
 _TRENDING_PATTERNS = re.compile(
     r"\b(trending|narrative|hot|meme|sector|rotation)\b", re.IGNORECASE
 )
-_HISTORICAL_PATTERNS = re.compile(
-    r"\b(history|historical|past|last.*day|last.*week|last.*month|all time|ath)\b",
-    re.IGNORECASE,
+_SEARCH_PATTERNS = re.compile(
+    r"\b(search|find|look.?up|discover|tell me about)\b", re.IGNORECASE
 )
 
 
 def _classify_intent(query: str) -> str:
     q = query.lower()
+
     if _HISTORICAL_PATTERNS.search(q) and _PRICE_PATTERNS.search(q):
         return "historical"
     if _TA_PATTERNS.search(q):
@@ -46,8 +47,6 @@ def _classify_intent(query: str) -> str:
         return "onchain"
     if _NEWS_PATTERNS.search(q):
         return "news"
-    if _SEARCH_PATTERNS.search(q):
-        return "search"
     if _GLOBAL_PATTERNS.search(q):
         return "global_metrics"
     if _ETF_PATTERNS.search(q):
@@ -58,6 +57,10 @@ def _classify_intent(query: str) -> str:
         return "trending"
     if _PRICE_PATTERNS.search(q):
         return "price_quote"
+    if _SEARCH_PATTERNS.search(q):
+        return "search"
+    if _HISTORICAL_PATTERNS.search(q):
+        return "historical"
     if "semantic" in q or "meaning" in q:
         return "semantic"
     if "skill" in q or "mcp" in q or "hub" in q:
@@ -86,9 +89,9 @@ async def act_node(state: Dict[str, Any]) -> Dict[str, Any]:
         tools_executed.append({
             "tool_name": "find_skill",
             "arguments": {"query": query},
-            "result": str(skills),
+            "result": str([s.get("uniqueName", "") for s in (skills or [])]),
         })
-        output = f"Found skills: {[s.get('uniqueName', '') for s in skills]}"
+        output = f"Found skills: {[s.get('uniqueName', '') for s in (skills or [])]}"
     else:
         from agent.tools.cmc_mcp_tools import dispatch_cmc_mcp_tool
         tool_name, tool_args, formatted = await dispatch_cmc_mcp_tool(intent, query)
