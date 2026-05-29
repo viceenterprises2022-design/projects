@@ -1,6 +1,6 @@
 agent_contract:
   name: "Coinmarketcap Agent"
-  version: "0.1.0"
+  version: "0.2.0"
   
   boundaries:
     allowed_topics:
@@ -8,6 +8,16 @@ agent_contract:
       - crypto_market_overview
       - find_skill
       - execute_skill
+      - price_quote
+      - ta_analysis
+      - onchain_metrics
+      - crypto_news
+      - global_metrics
+      - etf_flows
+      - leverage_stats
+      - trending_narratives
+      - historical_quotes
+      - semantic_search
     prohibited_topics:
       - execute_arbitrary_shell
       - modify_system_files
