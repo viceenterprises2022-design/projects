@@ -1,0 +1,298 @@
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠸  Downloading fresh instruments and their data from Data Providers...
+⠼  Downloading fresh instruments and their data from Data Providers...
+⠴  Downloading fresh instruments and their data from Data Providers...
+⠦  Downloading fresh instruments and their data from Data Providers...
+⠧  Downloading fresh instruments and their data from Data Providers...
+⠇  Downloading fresh instruments and their data from Data Providers...
+⠏  Downloading fresh instruments and their data from Data Providers...
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠋  Loading data from local cache...
+⠙  Loading data from local cache...
+⠹  Loading data from local cache...
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠸  Loading data from local cache...
+⠸  Downloading fresh instruments and their data from Data Providers...
+⠼  Downloading fresh instruments and their data from Data Providers...
+⠼  Loading data from local cache...
+⠴  Loading data from local cache...
+⠴  Downloading fresh instruments and their data from Data Providers...
+⠦  Downloading fresh instruments and their data from Data Providers...
+⠦  Loading data from local cache...
+⠧  Downloading fresh instruments and their data from Data Providers...
+⠧  Loading data from local cache...
+⠇  Downloading fresh instruments and their data from Data Providers...
+⠇  Loading data from local cache...
+⠏  Downloading fresh instruments and their data from Data Providers...
+⠏  Loading data from local cache...
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠋  Loading data from local cache...
+⠙  Loading data from local cache...
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠹  Loading data from local cache...
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠸  Loading data from local cache...
+⠼  Loading data from local cache...
+⠸  Downloading fresh instruments and their data from Data Providers...
+⠋ 
+⠙ 
+⠴  Loading data from local cache...
+⠹ 
+⠼  Downloading fresh instruments and their data from Data Providers...
+⠦  Loading data from local cache...
+⠴  Downloading fresh instruments and their data from Data Providers...
+⠸ 
+⠧  Loading data from local cache...
+⠦  Downloading fresh instruments and their data from Data Providers...
+⠇  Loading data from local cache...
+⠼ 
+⠧  Downloading fresh instruments and their data from Data Providers...
+⠏  Loading data from local cache...
+⠴ 
+⠇  Downloading fresh instruments and their data from Data Providers...
+⠋  Loading data from local cache...
+⠏  Downloading fresh instruments and their data from Data Providers...
+⠦ 
+⠙  Loading data from local cache...
+⠧ 
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠹  Loading data from local cache...
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠇ 
+⠸  Loading data from local cache...
+⠹  Downloading fresh instruments and their data from Data Providers...
+⠼  Loading data from local cache...
+⠏ 
+⠸  Downloading fresh instruments and their data from Data Providers...
+⠴  Loading data from local cache...
+⠼  Downloading fresh instruments and their data from Data Providers...
+⠦  Loading data from local cache...
+⠴  Downloading fresh instruments and their data from Data Providers...
+⠧  Loading data from local cache...
+⠦  Downloading fresh instruments and their data from Data Providers...
+⠧  Downloading fresh instruments and their data from Data Providers...
+⠇  Loading data from local cache...
+⠏  Loading data from local cache...
+⠇  Downloading fresh instruments and their data from Data Providers...
+⠋  Loading data from local cache...
+⠏  Downloading fresh instruments and their data from Data Providers...
+⠙  Loading data from local cache...
+⠋  Downloading fresh instruments and their data from Data Providers...
+⠹  Loading data from local cache...
+⠙  Downloading fresh instruments and their data from Data Providers...
+⠹  Downloading fresh instruments and their data from Data Providers...
+|▶▶▶▶▶▶▶▶▶▶▶▶▶                           | ▁▃▅ 0 in 0s (0.0/s)
+|████████████████████████████████████████| 0 in 0.1s (0.00/s)
+⠋  Creating multiple processes for faster processing...
+⠙  Creating multiple processes for faster processing...
+⠹  Creating multiple processes for faster processing...
+|                                        | ▁▃▅ 0/2030  in 0s (0.0/s, eta: -)
+|▏                                       | ▂▄▆ 12/2030  in 0s (117.9/s, eta: 17s) Found 0 Stocks
+|▍                                       | ▃▅▇ 22/2030  in 0s (149.3/s, eta: 15s) Found 0 Stocks
+|▋                                       | ▄▆█ 32/2030  in 0s (167.6/s, eta: 14s) Found 0 Stocks
+|▊                                       | ▅▇▇ 41/2030  in 0s (175.5/s, eta: 12s) Found 0 Stocks
+|▉                                       | ▆█▆ 50/2030  in 0s (181.1/s, eta: 12s) Found 0 Stocks
+|█                                       | ▇▇▅ 54/2030  in 0s (169.7/s, eta: 12s) Found 0 Stocks
+|█▎                                      | █▆▄ 66/2030  in 0s (182.9/s, eta: 11s) Found 0 Stocks
+|█▌                                      | ▇▅▃ 82/2030  in 0s (203.5/s, eta: 10s) Found 0 Stocks
+|█▋                                      | ▆▄▂ 84/2030  in 0s (189.1/s, eta: 10s) Found 0 Stocks
+|█▉                                      | ▅▃▁ 98/2030  in 0s (201.7/s, eta: 10s) Found 0 Stocks
+|██                                      | ▄▂▂ 103/2030  in 1s (195.3/s, eta: 10s) Found 0 Stocks
+|██▏                                     | ▃▁▃ 108/2030  in 1s (189.8/s, eta: 10s) Found 0 Stocks
+|██▎                                     | ▂▂▄ 119/2030  in 1s (194.9/s, eta: 10s) Found 0 Stocks
+|██▌                                     | ▁▃▅ 130/2030  in 1s (199.3/s, eta: 10s) Found 0 Stocks
+|██▌                                     | ▂▄▆ 133/2030  in 1s (191.7/s, eta: 10s) Found 0 Stocks
+|██▉                                     | ▃▅▇ 147/2030  in 1s (199.9/s, eta: 10s) Found 0 Stocks
+|███▍                                    | ▄▆█ 175/2030  in 1s (225.3/s, eta: 9s) Found 0 Stocks
+|███▋                                    | ▅▇▇ 185/2030  in 1s (226.3/s, eta: 9s) Found 0 Stocks
+|███▊                                    | ▆█▆ 195/2030  in 1s (227.3/s, eta: 8s) Found 0 Stocks
+|████                                    | ▇▇▅ 206/2030  in 1s (229.3/s, eta: 8s) Found 0 Stocks
+|████▏                                   | █▆▄ 214/2030  in 1s (227.9/s, eta: 8s) Found 0 Stocks
+|████▍                                   | ▇▅▃ 224/2030  in 1s (228.7/s, eta: 8s) Found 0 Stocks
+|████▌                                   | ▆▄▂ 231/2030  in 1s (226.3/s, eta: 8s) Found 0 Stocks
+|████▋                                   | ▅▃▁ 237/2030  in 1s (223.3/s, eta: 8s) Found 0 Stocks
+|█████                                   | ▄▂▂ 255/2030  in 1s (229.2/s, eta: 8s) Found 0 Stocks
+|█████                                   | ▃▁▃ 255/2030  in 1s (221.1/s, eta: 8s) Found 0 Stocks
+|█████▍                                  | ▂▂▄ 277/2030  in 1s (231.0/s, eta: 8s) Found 0 Stocks
+|█████▋                                  | ▁▃▅ 287/2030  in 1s (231.1/s, eta: 8s) Found 0 Stocks
+|█████▊                                  | ▂▄▆ 294/2030  in 1s (229.3/s, eta: 8s) Found 0 Stocks
+|█████▉                                  | ▃▅▇ 299/2030  in 1s (226.1/s, eta: 8s) Found 0 Stocks
+|██████                                  | ▄▆█ 308/2030  in 1s (225.6/s, eta: 8s) Found 0 Stocks
+|██████▏                                 | ▅▇▇ 315/2030  in 1s (224.0/s, eta: 8s) Found 0 Stocks
+|██████▌                                 | ▆█▆ 330/2030  in 1s (228.1/s, eta: 8s) Found 0 Stocks
+|██████▊                                 | ▇▇▅ 346/2030  in 1s (232.6/s, eta: 7s) Found 0 Stocks
+|██████▉                                 | █▆▄ 355/2030  in 2s (232.4/s, eta: 7s) Found 0 Stocks
+|███████▏                                | ▇▅▃ 362/2030  in 2s (230.9/s, eta: 7s) Found 0 Stocks
+|███████▎                                | ▆▄▂ 373/2030  in 2s (231.9/s, eta: 7s) Found 0 Stocks
+|███████▌                                | ▅▃▁ 381/2030  in 2s (231.1/s, eta: 7s) Found 0 Stocks
+|███████▋                                | ▄▂▂ 390/2030  in 2s (230.9/s, eta: 7s) Found 0 Stocks
+|███████▊                                | ▃▁▃ 397/2030  in 2s (229.5/s, eta: 7s) Found 0 Stocks
+|███████▊                                | ▂▂▄ 397/2030  in 2s (224.3/s, eta: 7s) Found 0 Stocks
+|████████                                | ▁▃▅ 412/2030  in 2s (227.5/s, eta: 7s) Found 0 Stocks
+|████████▏                               | ▂▄▆ 415/2030  in 2s (224.1/s, eta: 7s) Found 0 Stocks
+|████████▍                               | ▃▅▇ 428/2030  in 2s (226.2/s, eta: 7s) Found 0 Stocks
+|████████▌                               | ▄▆█ 434/2030  in 2s (224.5/s, eta: 7s) Found 0 Stocks
+|████████▌                               | ▅▇▇ 435/2030  in 2s (220.4/s, eta: 7s) Found 0 Stocks
+|████████▋                               | ▆█▆ 439/2030  in 2s (217.9/s, eta: 7s) Found 0 Stocks
+|████████▋                               | ▇▇▅ 439/2030  in 2s (213.6/s, eta: 7s) Found 0 Stocks
+|█████████▎                              | █▆▄ 470/2030  in 2s (224.2/s, eta: 7s) Found 0 Stocks
+|█████████▎                              | ▇▅▃ 471/2030  in 2s (220.4/s, eta: 7s) Found 0 Stocks
+|█████████▍                              | ▆▄▂ 476/2030  in 2s (218.5/s, eta: 7s) Found 0 Stocks
+|█████████▌                              | ▅▃▁ 484/2030  in 2s (218.1/s, eta: 7s) Found 0 Stocks
+|██████████                              | ▄▂▂ 511/2030  in 2s (226.1/s, eta: 7s) Found 0 Stocks
+|██████████▋                             | ▃▁▃ 541/2030  in 2s (235.2/s, eta: 7s) Found 0 Stocks
+|██████████▊                             | ▂▂▄ 551/2030  in 2s (235.4/s, eta: 6s) Found 0 Stocks
+|███████████                             | ▁▃▅ 561/2030  in 2s (235.6/s, eta: 6s) Found 0 Stocks
+|███████████▎                            | ▂▄▆ 575/2030  in 2s (237.5/s, eta: 6s) Found 0 Stocks
+|███████████▍                            | ▃▅▇ 582/2030  in 2s (236.4/s, eta: 6s) Found 0 Stocks
+|███████████▋                            | ▄▆█ 593/2030  in 3s (236.9/s, eta: 6s) Found 0 Stocks
+|███████████▉                            | ▅▇▇ 606/2030  in 3s (238.3/s, eta: 6s) Found 0 Stocks
+|████████████                            | ▆█▆ 614/2030  in 3s (237.7/s, eta: 6s) Found 0 Stocks
+|████████████▎                           | ▇▇▅ 626/2030  in 3s (238.6/s, eta: 6s) Found 0 Stocks
+|████████████▍                           | █▆▄ 632/2030  in 3s (237.2/s, eta: 6s) Found 0 Stocks
+|████████████▌                           | ▇▅▃ 637/2030  in 3s (235.6/s, eta: 6s) Found 0 Stocks
+|████████████▉                           | ▆▄▂ 655/2030  in 3s (238.7/s, eta: 6s) Found 0 Stocks
+|█████████████▏                          | ▅▃▁ 667/2030  in 3s (239.5/s, eta: 6s) Found 0 Stocks
+|█████████████▎                          | ▄▂▂ 675/2030  in 3s (238.9/s, eta: 6s) Found 0 Stocks
+|█████████████▌                          | ▃▁▃ 687/2030  in 3s (239.8/s, eta: 6s) Found 0 Stocks
+|█████████████▋                          | ▂▂▄ 697/2030  in 3s (239.9/s, eta: 6s) Found 0 Stocks
+|█████████████▉                          | ▁▃▅ 705/2030  in 3s (239.3/s, eta: 6s) Found 0 Stocks
+|██████████████                          | ▂▄▆ 716/2030  in 3s (239.8/s, eta: 6s) Found 0 Stocks
+|██████████████▎                         | ▃▅▇ 727/2030  in 3s (240.2/s, eta: 5s) Found 0 Stocks
+|██████████████▌                         | ▄▆█ 738/2030  in 3s (240.7/s, eta: 5s) Found 0 Stocks
+|██████████████▋                         | ▅▇▇ 746/2030  in 3s (240.1/s, eta: 5s) Found 0 Stocks
+|██████████████▉                         | ▆█▆ 757/2030  in 3s (240.5/s, eta: 5s) Found 0 Stocks
+|███████████████                         | ▇▇▅ 766/2030  in 3s (240.3/s, eta: 5s) Found 0 Stocks
+|███████████████▎                        | █▆▄ 775/2030  in 3s (240.1/s, eta: 5s) Found 0 Stocks
+|███████████████▌                        | ▇▅▃ 787/2030  in 3s (240.8/s, eta: 5s) Found 0 Stocks
+|███████████████▋                        | ▆▄▂ 797/2030  in 3s (240.9/s, eta: 5s) Found 0 Stocks
+|███████████████▉                        | ▅▃▁ 810/2030  in 3s (241.9/s, eta: 5s) Found 0 Stocks
+|████████████████▏                       | ▄▂▂ 820/2030  in 3s (242.0/s, eta: 5s) Found 0 Stocks
+|████████████████▎                       | ▃▁▃ 828/2030  in 3s (241.5/s, eta: 5s) Found 0 Stocks
+|████████████████▌                       | ▂▂▄ 839/2030  in 3s (241.9/s, eta: 5s) Found 0 Stocks
+|████████████████▋                       | ▁▃▅ 850/2030  in 4s (242.2/s, eta: 5s) Found 0 Stocks
+|████████████████▉                       | ▂▄▆ 858/2030  in 4s (241.7/s, eta: 5s) Found 0 Stocks
+|█████████████████                       | ▃▅▇ 869/2030  in 4s (242.1/s, eta: 5s) Found 0 Stocks
+|█████████████████▎                      | ▄▆█ 881/2030  in 4s (242.7/s, eta: 5s) Found 0 Stocks
+|█████████████████▌                      | ▅▇▇ 890/2030  in 4s (242.5/s, eta: 5s) Found 0 Stocks
+|█████████████████▋                      | ▆█▆ 898/2030  in 4s (242.0/s, eta: 5s) Found 0 Stocks
+|█████████████████▊                      | ▇▇▅ 906/2030  in 4s (241.6/s, eta: 5s) Found 0 Stocks
+|██████████████████                      | █▆▄ 918/2030  in 4s (242.2/s, eta: 5s) Found 0 Stocks
+|██████████████████▎                     | ▇▅▃ 929/2030  in 4s (242.5/s, eta: 5s) Found 0 Stocks
+|██████████████████▌                     | ▆▄▂ 942/2030  in 4s (243.4/s, eta: 5s) Found 0 Stocks
+|██████████████████▊                     | ▅▃▁ 953/2030  in 4s (243.7/s, eta: 4s) Found 0 Stocks
+|███████████████████                     | ▄▂▂ 965/2030  in 4s (244.2/s, eta: 4s) Found 0 Stocks
+|███████████████████▏                    | ▃▁▃ 973/2030  in 4s (243.8/s, eta: 4s) Found 0 Stocks
+|███████████████████▎                    | ▂▂▄ 981/2030  in 4s (243.4/s, eta: 4s) Found 0 Stocks
+|███████████████████▋                    | ▁▃▅ 996/2030  in 4s (244.6/s, eta: 4s) Found 0 Stocks
+|███████████████████▊                    | ▂▄▆ 1005/2030  in 4s (244.4/s, eta: 4s) Found 0 Stocks
+|███████████████████▉                    | ▃▅▇ 1012/2030  in 4s (243.7/s, eta: 4s) Found 0 Stocks
+|████████████████████                    | ▄▆█ 1020/2030  in 4s (243.3/s, eta: 4s) Found 0 Stocks
+|████████████████████▏                   | ▅▇▇ 1027/2030  in 4s (242.6/s, eta: 4s) Found 0 Stocks
+|████████████████████▍                   | ▆█▆ 1039/2030  in 4s (243.1/s, eta: 4s) Found 0 Stocks
+|████████████████████▌                   | ▇▇▅ 1046/2030  in 4s (242.5/s, eta: 4s) Found 0 Stocks
+|████████████████████▊                   | █▆▄ 1054/2030  in 4s (242.0/s, eta: 4s) Found 0 Stocks
+|████████████████████▉                   | ▇▅▃ 1062/2030  in 4s (241.4/s, eta: 4s) Found 0 Stocks
+|█████████████████████                   | ▆▄▂ 1072/2030  in 4s (241.5/s, eta: 4s) Found 0 Stocks
+|█████████████████████▎                  | ▅▃▁ 1080/2030  in 4s (241.1/s, eta: 4s) Found 0 Stocks
+|█████████████████████▍                  | ▄▂▂ 1086/2030  in 5s (240.3/s, eta: 4s) Found 0 Stocks
+|█████████████████████▌                  | ▃▁▃ 1092/2030  in 5s (239.5/s, eta: 4s) Found 0 Stocks
+|█████████████████████▋                  | ▂▂▄ 1100/2030  in 5s (239.1/s, eta: 4s) Found 0 Stocks
+|█████████████████████▊                  | ▁▃▅ 1104/2030  in 5s (237.9/s, eta: 4s) Found 0 Stocks
+|█████████████████████▉                  | ▂▄▆ 1114/2030  in 5s (238.0/s, eta: 4s) Found 0 Stocks
+|██████████████████████▏                 | ▃▅▇ 1123/2030  in 5s (237.9/s, eta: 4s) Found 0 Stocks
+|██████████████████████▎                 | ▄▆█ 1135/2030  in 5s (238.4/s, eta: 4s) Found 0 Stocks
+|██████████████████████▍                 | ▅▇▇ 1139/2030  in 5s (237.2/s, eta: 4s) Found 0 Stocks
+|██████████████████████▍                 | ▆█▆ 1141/2030  in 5s (235.7/s, eta: 4s) Found 0 Stocks
+|██████████████████████▊                 | ▇▇▅ 1156/2030  in 5s (236.8/s, eta: 4s) Found 0 Stocks
+|███████████████████████▎                | █▆▄ 1181/2030  in 5s (239.9/s, eta: 4s) Found 0 Stocks
+|███████████████████████▍                | ▇▅▃ 1189/2030  in 5s (239.5/s, eta: 4s) Found 0 Stocks
+|███████████████████████▋                | ▆▄▂ 1203/2030  in 5s (240.4/s, eta: 4s) Found 0 Stocks
+|███████████████████████▊                | ▅▃▁ 1210/2030  in 5s (239.8/s, eta: 3s) Found 0 Stocks
+|████████████████████████                | ▄▂▂ 1218/2030  in 5s (239.5/s, eta: 3s) Found 0 Stocks
+|████████████████████████                | ▃▁▃ 1219/2030  in 5s (237.8/s, eta: 3s) Found 0 Stocks
+|████████████████████████▎               | ▂▂▄ 1231/2030  in 5s (238.3/s, eta: 3s) Found 0 Stocks
+|████████████████████████▌               | ▁▃▅ 1246/2030  in 5s (239.3/s, eta: 3s) Found 0 Stocks
+|████████████████████████▊               | ▂▄▆ 1261/2030  in 5s (240.3/s, eta: 3s) Found 0 Stocks
+|████████████████████████▉               | ▃▅▇ 1267/2030  in 5s (239.7/s, eta: 3s) Found 0 Stocks
+|█████████████████████████▏              | ▄▆█ 1280/2030  in 5s (240.3/s, eta: 3s) Found 0 Stocks
+|█████████████████████████▍              | ▅▇▇ 1294/2030  in 5s (241.1/s, eta: 3s) Found 0 Stocks
+|█████████████████████████▋              | ▆█▆ 1302/2030  in 5s (240.8/s, eta: 3s) Found 0 Stocks
+|██████████████████████████              | ▇▇▅ 1321/2030  in 5s (242.4/s, eta: 3s) Found 0 Stocks
+|██████████████████████████▏             | █▆▄ 1331/2030  in 5s (242.5/s, eta: 3s) Found 0 Stocks
+|██████████████████████████▎             | ▇▅▃ 1335/2030  in 6s (241.5/s, eta: 3s) Found 0 Stocks
+|██████████████████████████▎             | ▆▄▂ 1336/2030  in 6s (239.9/s, eta: 3s) Found 0 Stocks
+|██████████████████████████▌             | ▅▃▁ 1346/2030  in 6s (240.0/s, eta: 3s) Found 0 Stocks
+|██████████████████████████▋             | ▄▂▂ 1353/2030  in 6s (239.5/s, eta: 3s) Found 0 Stocks
+|██████████████████████████▉             | ▃▁▃ 1369/2030  in 6s (240.6/s, eta: 3s) Found 0 Stocks
+|███████████████████████████▎            | ▂▂▄ 1387/2030  in 6s (242.0/s, eta: 3s) Found 0 Stocks
+|███████████████████████████▋            | ▁▃▅ 1402/2030  in 6s (242.9/s, eta: 3s) Found 0 Stocks
+|███████████████████████████▋            | ▂▄▆ 1402/2030  in 6s (241.3/s, eta: 3s) Found 0 Stocks
+|███████████████████████████▋            | ▃▅▇ 1402/2030  in 6s (239.6/s, eta: 3s) Found 0 Stocks
+|███████████████████████████▊            | ▄▆█ 1413/2030  in 6s (239.8/s, eta: 3s) Found 0 Stocks
+|████████████████████████████            | ▅▇▇ 1423/2030  in 6s (239.9/s, eta: 3s) Found 0 Stocks
+|████████████████████████████▍           | ▆█▆ 1445/2030  in 6s (242.0/s, eta: 2s) Found 0 Stocks
+|████████████████████████████▋           | ▇▇▅ 1456/2030  in 6s (242.2/s, eta: 2s) Found 0 Stocks
+|████████████████████████████▉           | █▆▄ 1469/2030  in 6s (242.7/s, eta: 2s) Found 0 Stocks
+|█████████████████████████████▎          | ▇▅▃ 1490/2030  in 6s (244.6/s, eta: 2s) Found 0 Stocks
+|█████████████████████████████▋          | ▆▄▂ 1504/2030  in 6s (245.2/s, eta: 2s) Found 0 Stocks
+|█████████████████████████████▊          | ▅▃▁ 1515/2030  in 6s (245.4/s, eta: 2s) Found 0 Stocks
+|█████████████████████████████▉          | ▄▂▂ 1518/2030  in 6s (244.2/s, eta: 2s) Found 0 Stocks
+|██████████████████████████████▏         | ▃▁▃ 1531/2030  in 6s (244.7/s, eta: 2s) Found 0 Stocks
+|██████████████████████████████▏         | ▂▂▄ 1532/2030  in 6s (243.3/s, eta: 2s) Found 0 Stocks
+|██████████████████████████████▍         | ▁▃▅ 1543/2030  in 6s (243.5/s, eta: 2s) Found 0 Stocks
+|██████████████████████████████▊         | ▂▄▆ 1565/2030  in 6s (245.4/s, eta: 2s) Found 0 Stocks
+|███████████████████████████████         | ▃▅▇ 1578/2030  in 6s (245.9/s, eta: 2s) Found 0 Stocks
+|███████████████████████████████▎        | ▄▆█ 1588/2030  in 6s (245.9/s, eta: 2s) Found 0 Stocks
+|███████████████████████████████▌        | ▅▇▇ 1599/2030  in 6s (246.1/s, eta: 2s) Found 0 Stocks
+|███████████████████████████████▌        | ▆█▆ 1604/2030  in 7s (245.4/s, eta: 2s) Found 0 Stocks
+|███████████████████████████████▉        | ▇▇▅ 1618/2030  in 7s (246.0/s, eta: 2s) Found 0 Stocks
+|████████████████████████████████▏       | █▆▄ 1632/2030  in 7s (246.6/s, eta: 2s) Found 0 Stocks
+|████████████████████████████████▏       | ▇▅▃ 1635/2030  in 7s (245.6/s, eta: 2s) Found 0 Stocks
+|████████████████████████████████▍       | ▆▄▂ 1647/2030  in 7s (245.8/s, eta: 2s) Found 0 Stocks
+|████████████████████████████████▌       | ▅▃▁ 1655/2030  in 7s (245.5/s, eta: 2s) Found 0 Stocks
+|████████████████████████████████▋       | ▄▂▂ 1660/2030  in 7s (244.8/s, eta: 2s) Found 0 Stocks
+|████████████████████████████████▉       | ▃▁▃ 1669/2030  in 7s (244.7/s, eta: 2s) Found 0 Stocks
+|████████████████████████████████▉       | ▂▂▄ 1671/2030  in 7s (243.5/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████▏      | ▁▃▅ 1684/2030  in 7s (244.0/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████▌      | ▂▄▆ 1701/2030  in 7s (245.0/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████▋      | ▃▅▇ 1710/2030  in 7s (244.9/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████▊      | ▄▆█ 1717/2030  in 7s (244.5/s, eta: 1s) Found 0 Stocks
+|██████████████████████████████████      | ▅▇▇ 1728/2030  in 7s (244.7/s, eta: 1s) Found 0 Stocks
+|██████████████████████████████████▏     | ▆█▆ 1733/2030  in 7s (244.0/s, eta: 1s) Found 0 Stocks
+|██████████████████████████████████▎     | ▇▇▅ 1743/2030  in 7s (244.0/s, eta: 1s) Found 0 Stocks
+|██████████████████████████████████▌     | █▆▄ 1752/2030  in 7s (243.9/s, eta: 1s) Found 0 Stocks
+|██████████████████████████████████▌     | ▇▅▃ 1756/2030  in 7s (243.1/s, eta: 1s) Found 0 Stocks
+|██████████████████████████████████▋     | ▆▄▂ 1762/2030  in 7s (242.6/s, eta: 1s) Found 0 Stocks
+|██████████████████████████████████▋     | ▅▃▁ 1763/2030  in 7s (241.4/s, eta: 1s) Found 0 Stocks
+|███████████████████████████████████▎    | ▄▂▂ 1794/2030  in 7s (244.3/s, eta: 1s) Found 0 Stocks
+|███████████████████████████████████▌    | ▃▁▃ 1803/2030  in 7s (243.7/s, eta: 1s) Found 0 Stocks
+|███████████████████████████████████▋    | ▂▂▄ 1814/2030  in 7s (243.9/s, eta: 1s) Found 0 Stocks
+|███████████████████████████████████▊    | ▁▃▅ 1818/2030  in 7s (243.1/s, eta: 1s) Found 0 Stocks
+|████████████████████████████████████    | ▂▄▆ 1828/2030  in 8s (243.2/s, eta: 1s) Found 0 Stocks
+|████████████████████████████████████    | ▃▅▇ 1832/2030  in 8s (242.4/s, eta: 1s) Found 0 Stocks
+|████████████████████████████████████▎   | ▄▆█ 1840/2030  in 8s (242.2/s, eta: 1s) Found 0 Stocks
+|████████████████████████████████████▋   | ▅▇▇ 1863/2030  in 8s (243.9/s, eta: 1s) Found 0 Stocks
+|████████████████████████████████████▉   | ▆█▆ 1876/2030  in 8s (244.3/s, eta: 1s) Found 0 Stocks
+|████████████████████████████████████▉   | ▇▇▅ 1876/2030  in 8s (243.0/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████████   | █▆▄ 1884/2030  in 8s (242.8/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████████▎  | ▇▅▃ 1896/2030  in 8s (243.1/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████████▋  | ▆▄▂ 1914/2030  in 8s (244.2/s, eta: 1s) Found 0 Stocks
+|█████████████████████████████████████▉  | ▅▃▁ 1924/2030  in 8s (244.2/s, eta: 0s) Found 0 Stocks
+|██████████████████████████████████████▏ | ▄▂▂ 1937/2030  in 8s (244.6/s, eta: 0s) Found 0 Stocks
+|██████████████████████████████████████▎ | ▃▁▃ 1943/2030  in 8s (244.1/s, eta: 0s) Found 0 Stocks
+|██████████████████████████████████████▍ | ▂▂▄ 1949/2030  in 8s (243.6/s, eta: 0s) Found 0 Stocks
+|██████████████████████████████████████▋ | ▁▃▅ 1963/2030  in 8s (244.2/s, eta: 0s) Found 0 Stocks
+|██████████████████████████████████████▊ | ▂▄▆ 1969/2030  in 8s (243.7/s, eta: 0s) Found 0 Stocks
+|██████████████████████████████████████▉ | ▃▅▇ 1975/2030  in 8s (243.2/s, eta: 0s) Found 0 Stocks
+|███████████████████████████████████████▏| ▄▆█ 1988/2030  in 8s (243.6/s, eta: 0s) Found 0 Stocks
+|███████████████████████████████████████▎| ▅▇▇ 1997/2030  in 8s (243.5/s, eta: 0s) Found 0 Stocks
+|███████████████████████████████████████▌| ▆█▆ 2005/2030  in 8s (243.3/s, eta: 0s) Found 0 Stocks
+|███████████████████████████████████████▋| ▇▇▅ 2011/2030  in 8s (242.8/s, eta: 0s) Found 0 Stocks
+|███████████████████████████████████████▉| █▆▄ 2027/2030  in 8s (243.6/s, eta: 0s) Found 0 Stocks
+|████████████████████████████████████████| 2030/2030  in 8.4s (242.76/s)
+⠋ 
+⠙ 
