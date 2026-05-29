@@ -40213,5 +40213,15 @@
     "mtime": 1780029328.888784,
     "ast_hash": "b9cdf0dae91eb6c28ced5442a6de1b5e",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/arxiv/output/mindmap.json": {
+    "mtime": 1780030907.768459,
+    "ast_hash": "e887565a284829b833ef1b7b09b06e07",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/arxiv/output/briefing-report.md": {
+    "mtime": 1780030920.3248205,
+    "ast_hash": "6b98e881dd2269f48a16be38b0cf866d",
+    "semantic_hash": ""
   }
 }
