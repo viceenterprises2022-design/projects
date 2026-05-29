@@ -1,0 +1,74 @@
+{
+  "name": "Unlocking X With Hermes Agents",
+  "children": [
+    {
+      "name": "Grok and Hermes Integration",
+      "children": [
+        {
+          "name": "Elon Musk's Strategy"
+        },
+        {
+          "name": "Capitalizing on Hermes Hype"
+        },
+        {
+          "name": "Shift from OpenClaude to Hermes"
+        }
+      ]
+    },
+    {
+      "name": "Hermes Advantages",
+      "children": [
+        {
+          "name": "Reliability"
+        },
+        {
+          "name": "Less Finicky"
+        },
+        {
+          "name": "Fewer Breakages"
+        }
+      ]
+    },
+    {
+      "name": "X Data Accessibility",
+      "children": [
+        {
+          "name": "Historical Barriers",
+          "children": [
+            {
+              "name": "Anti-scraping measures"
+            },
+            {
+              "name": "Anti-bot measures"
+            }
+          ]
+        },
+        {
+          "name": "New Opportunities",
+          "children": [
+            {
+              "name": "Built-in compatibility"
+            },
+            {
+              "name": "Easier information scraping"
+            },
+            {
+              "name": "Trending topics analysis"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Use Case: Marketing",
+      "children": [
+        {
+          "name": "Boring Marketer example"
+        },
+        {
+          "name": "AI for marketing trends"
+        }
+      ]
+    }
+  ]
+}
