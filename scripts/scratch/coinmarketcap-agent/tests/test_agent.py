@@ -10,10 +10,16 @@ from agent.tools.cmc_mcp_tools import extract_symbol
 _has_cmc = None
 
 
+_CMC_API_KEY = os.environ.get("X_CMC_MCP_API_KEY") or os.environ.get("CMC_API_KEY")
+
+
 def _check_cmc() -> bool:
     global _has_cmc
     if _has_cmc is not None:
         return _has_cmc
+    if not _CMC_API_KEY:
+        _has_cmc = False
+        return False
     try:
         httpx.get(
             "https://mcp.coinmarketcap.com/mcp",
