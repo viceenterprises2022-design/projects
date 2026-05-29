@@ -1,0 +1,166 @@
+{
+  "name": "Locally Coherent, Globally Incoherent LLM Agents",
+  "children": [
+    {
+      "name": "Core Problem",
+      "children": [
+        {
+          "name": "Compositional Incoherence"
+        },
+        {
+          "name": "Probability Axiom Violations"
+        },
+        {
+          "name": "Local Coherence Failure"
+        },
+        {
+          "name": "Dutch-book Exposure"
+        }
+      ]
+    },
+    {
+      "name": "Key Metric: ε⋆",
+      "children": [
+        {
+          "name": "Compositional Residual"
+        },
+        {
+          "name": "L2 Distance to Coherent Polytope"
+        },
+        {
+          "name": "Runtime Certificate"
+        },
+        {
+          "name": "Distribution-free Guarantee"
+        }
+      ]
+    },
+    {
+      "name": "Theoretical Framework",
+      "children": [
+        {
+          "name": "Product-structure Dichotomy",
+          "children": [
+            {
+              "name": "Theorem 3.3"
+            },
+            {
+              "name": "Cartesian Product Factorization"
+            },
+            {
+              "name": "Non-commutation Characterization"
+            }
+          ]
+        },
+        {
+          "name": "Magnitude Prediction",
+          "children": [
+            {
+              "name": "Rayleigh-quotient Form"
+            },
+            {
+              "name": "Specialist Panel Covariance"
+            },
+            {
+              "name": "Corollary 3.9"
+            }
+          ]
+        },
+        {
+          "name": "Exposure Bound (FTAP)"
+        }
+      ]
+    },
+    {
+      "name": "Solutions and Repairs",
+      "children": [
+        {
+          "name": "Hierarchical JCD",
+          "children": [
+            {
+              "name": "Boyle–Dykstra Projection"
+            },
+            {
+              "name": "Convex-analytic Repair"
+            },
+            {
+              "name": "Deterministic Convergence"
+            }
+          ]
+        },
+        {
+          "name": "Sequential Monitoring",
+          "children": [
+            {
+              "name": "Anytime-valid e-process"
+            },
+            {
+              "name": "Ville’s Inequality"
+            },
+            {
+              "name": "Coherence Testing"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Empirical Results",
+      "children": [
+        {
+          "name": "Benchmarks",
+          "children": [
+            {
+              "name": "Paleka (Logical Relations)"
+            },
+            {
+              "name": "Polymarket (Partitions)"
+            }
+          ]
+        },
+        {
+          "name": "Performance",
+          "children": [
+            {
+              "name": "Brier Improvement"
+            },
+            {
+              "name": "Log-payoff Gain"
+            },
+            {
+              "name": "Regret Reduction"
+            }
+          ]
+        },
+        {
+          "name": "Mitigation Failures",
+          "children": [
+            {
+              "name": "Retrieval Grounding"
+            },
+            {
+              "name": "Partition-aware Prompting"
+            },
+            {
+              "name": "Aggregator-LLM"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Deployment Modes",
+      "children": [
+        {
+          "name": "Monitor Mode"
+        },
+        {
+          "name": "Repair Mode"
+        },
+        {
+          "name": "Abstain-or-escalate Mode"
+        }
+      ]
+    }
+  ]
+}
