@@ -1,0 +1,151 @@
+{
+  "name": "Unsloth Studio & Fine-Tuning",
+  "children": [
+    {
+      "name": "Benefits of Fine-Tuning",
+      "children": [
+        {
+          "name": "Outperform larger models"
+        },
+        {
+          "name": "Create uncensored models"
+        },
+        {
+          "name": "Reduce API costs to zero"
+        },
+        {
+          "name": "Build a business moat"
+        },
+        {
+          "name": "Local and offline operation"
+        }
+      ]
+    },
+    {
+      "name": "Unsloth Studio Setup",
+      "children": [
+        {
+          "name": "Open source tool"
+        },
+        {
+          "name": "One-liner terminal installation"
+        },
+        {
+          "name": "Localhost 8888 access"
+        },
+        {
+          "name": "Built-in chat interface"
+        }
+      ]
+    },
+    {
+      "name": "AI Models",
+      "children": [
+        {
+          "name": "Hugging Face Versions",
+          "children": [
+            {
+              "name": "Llama (Meta)"
+            },
+            {
+              "name": "Qwen (Alibaba)"
+            },
+            {
+              "name": "Gemma (Google)"
+            }
+          ]
+        },
+        {
+          "name": "Model Formats",
+          "children": [
+            {
+              "name": "Safe Tensors (Required for training)"
+            },
+            {
+              "name": "GGUF (Compressed for inference)"
+            }
+          ]
+        },
+        {
+          "name": "Dynamic 2.0 Quantization"
+        }
+      ]
+    },
+    {
+      "name": "Fine-Tuning Process (Train Tab)",
+      "children": [
+        {
+          "name": "Select local or Hugging Face model"
+        },
+        {
+          "name": "Choose method (Cuda optimized)"
+        },
+        {
+          "name": "Hyperparameters (Batch size, context length, steps)"
+        },
+        {
+          "name": "Monitor training loss"
+        }
+      ]
+    },
+    {
+      "name": "Data Sets",
+      "children": [
+        {
+          "name": "Data Types",
+          "children": [
+            {
+              "name": "Single-turn (Q&A)"
+            },
+            {
+              "name": "Multi-turn (Conversational)"
+            },
+            {
+              "name": "Domain expert (Niche data)"
+            },
+            {
+              "name": "Reasoning (Chain of thought)"
+            }
+          ]
+        },
+        {
+          "name": "Public sources (Hugging Face Finance Alpaca)"
+        }
+      ]
+    },
+    {
+      "name": "Recipes (Custom Data Generation)",
+      "children": [
+        {
+          "name": "PDF Document QA"
+        },
+        {
+          "name": "Distillation from powerful models (Sonnet, Gemini, DeepSeek)"
+        },
+        {
+          "name": "Open Router API integration"
+        },
+        {
+          "name": "Chunking long documents"
+        }
+      ]
+    },
+    {
+      "name": "Hardware Considerations",
+      "children": [
+        {
+          "name": "RAM/VRAM requirements (32GB+ for 27B)"
+        },
+        {
+          "name": "Apple M-Silicon (MLX bugs)"
+        },
+        {
+          "name": "Nvidia GPUs"
+        },
+        {
+          "name": "Cloud options (A100/H100)"
+        }
+      ]
+    }
+  ]
+}
