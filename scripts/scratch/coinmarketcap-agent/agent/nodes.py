@@ -31,6 +31,14 @@ _LEVERAGE_PATTERNS = re.compile(
 _TRENDING_PATTERNS = re.compile(
     r"\b(trending|narrative|hot|meme|sector|rotation)\b", re.IGNORECASE
 )
+_MARKET_REPORT_PATTERNS = re.compile(
+    r"\b(market report|daily brief|morning brief|market overview|market summary)",
+    re.IGNORECASE,
+)
+_DEEP_DIVE_PATTERNS = re.compile(
+    r"\b(deep dive|deep-dive|fundamental analys|full research|should I (buy|sell)|do a full)",
+    re.IGNORECASE,
+)
 _SEARCH_PATTERNS = re.compile(
     r"\b(search|find|look.?up|discover|tell me about)\b", re.IGNORECASE
 )
@@ -41,6 +49,10 @@ def _classify_intent(query: str) -> str:
 
     if _HISTORICAL_PATTERNS.search(q) and _PRICE_PATTERNS.search(q):
         return "historical"
+    if _MARKET_REPORT_PATTERNS.search(q):
+        return "market_report"
+    if _DEEP_DIVE_PATTERNS.search(q):
+        return "deep_dive"
     if _TA_PATTERNS.search(q):
         return "ta_analysis"
     if _ONCHAIN_PATTERNS.search(q):
@@ -83,7 +95,23 @@ async def act_node(state: Dict[str, Any]) -> Dict[str, Any]:
     tools_executed = list(state.get("tools_executed", []))
     trace.append(f"Act: resolving intent={intent}")
 
-    if intent == "skill_hub":
+    if intent == "market_report":
+        from agent.orchestrators import run_market_report
+        output = await run_market_report(query)
+        tools_executed.append({
+            "tool_name": "market_report",
+            "arguments": {"sub_tools": "global,leverage,etf,trending,news,BTC_TA,ETH_TA"},
+            "result": output[:300],
+        })
+    elif intent == "deep_dive":
+        from agent.orchestrators import run_crypto_research
+        output = await run_crypto_research(query)
+        tools_executed.append({
+            "tool_name": "crypto_research",
+            "arguments": {"sub_tools": "quotes,TA,onchain,history,news"},
+            "result": output[:300],
+        })
+    elif intent == "skill_hub":
         from agent.tools.crypto_lookup import find_skill
         skills = await find_skill(query)
         tools_executed.append({

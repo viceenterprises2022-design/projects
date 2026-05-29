@@ -1,8 +1,29 @@
 import unittest
 import asyncio
+import os
+import httpx
 from agent.graph import run_agent_graph
 from agent.nodes import _classify_intent
 from agent.tools.cmc_mcp_tools import extract_symbol
+
+
+_has_cmc = None
+
+
+def _check_cmc() -> bool:
+    global _has_cmc
+    if _has_cmc is not None:
+        return _has_cmc
+    try:
+        httpx.get(
+            "https://mcp.coinmarketcap.com/mcp",
+            headers={"Content-Type": "application/json"},
+            timeout=3,
+        )
+        _has_cmc = True
+    except Exception:
+        _has_cmc = False
+    return _has_cmc
 
 
 class TestIntentClassifier(unittest.TestCase):
@@ -25,8 +46,19 @@ class TestIntentClassifier(unittest.TestCase):
         self.assertEqual(_classify_intent("breaking BTC headlines"), "news")
 
     def test_global_intent(self):
-        self.assertEqual(_classify_intent("market overview"), "global_metrics")
         self.assertEqual(_classify_intent("BTC dominance and fear greed"), "global_metrics")
+
+    def test_market_report_intent(self):
+        self.assertEqual(_classify_intent("market overview"), "market_report")
+        self.assertEqual(_classify_intent("daily brief"), "market_report")
+        self.assertEqual(_classify_intent("morning brief crypto"), "market_report")
+        self.assertEqual(_classify_intent("market summary"), "market_report")
+
+    def test_deep_dive_intent(self):
+        self.assertEqual(_classify_intent("deep dive on ETH"), "deep_dive")
+        self.assertEqual(_classify_intent("fundamental analysis of BTC"), "deep_dive")
+        self.assertEqual(_classify_intent("full research SOL"), "deep_dive")
+        self.assertEqual(_classify_intent("should I buy ETH"), "deep_dive")
 
     def test_etf_intent(self):
         self.assertEqual(_classify_intent("BTC etf flows today"), "etf_flows")
@@ -50,6 +82,8 @@ class TestIntentClassifier(unittest.TestCase):
 
     def test_general_fallback(self):
         self.assertEqual(_classify_intent("hello"), "general")
+        self.assertEqual(_classify_intent("buy me lunch"), "general")
+        self.assertEqual(_classify_intent("analyze this picture"), "general")
 
 
 class TestSymbolExtractor(unittest.TestCase):
@@ -67,35 +101,33 @@ class TestSymbolExtractor(unittest.TestCase):
 
 
 class TestAgentGraph(unittest.TestCase):
-    def test_price_quote_query(self):
+
+    def _run(self, sid, query):
         loop = asyncio.new_event_loop()
-        res = loop.run_until_complete(
-            run_agent_graph("session-1", "What is BTC price?", {})
-        )
+        try:
+            return loop.run_until_complete(run_agent_graph(sid, query, {}))
+        finally:
+            loop.close()
+
+    @unittest.skipIf(not _check_cmc(), "requires live CMC MCP connection")
+    def test_price_quote_query(self):
+        res = self._run("session-1", "What is BTC price?")
         self.assertIn("tools_executed", res)
         self.assertGreater(len(res["tools_executed"]), 0)
         tools = [t["tool_name"] for t in res["tools_executed"]]
         self.assertIn("get_crypto_quotes_latest", tools)
-        loop.close()
 
+    @unittest.skipIf(not _check_cmc(), "requires live CMC MCP connection")
     def test_ta_analysis_query(self):
-        loop = asyncio.new_event_loop()
-        res = loop.run_until_complete(
-            run_agent_graph("session-2", "BTC RSI MACD analysis", {})
-        )
+        res = self._run("session-2", "BTC RSI MACD analysis")
         self.assertIn("tools_executed", res)
         tools = [t["tool_name"] for t in res["tools_executed"]]
         self.assertIn("get_crypto_technical_analysis", tools)
-        loop.close()
 
     def test_general_query(self):
-        loop = asyncio.new_event_loop()
-        res = loop.run_until_complete(
-            run_agent_graph("session-3", "hello", {})
-        )
+        res = self._run("session-3", "hello")
         self.assertIn("tools_executed", res)
         self.assertEqual(len(res["tools_executed"]), 0)
-        loop.close()
 
 
 if __name__ == "__main__":
