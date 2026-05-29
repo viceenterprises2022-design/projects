@@ -187,8 +187,26 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - `send_slack.py` — rewrote from flat text to full Slack Block Kit support. Added Block Kit builders (`build_header`, `build_section`, `build_fields`, `build_context`, `build_divider`, `build_code_section`, `compose_blocks`), color coding system with `--color` CLI flag (good/warning/danger/info), `--header` and `--field KEY=VALUE` (repeatable) flags, `send_payload()` for raw payload sending, `chunk_blocks()` for splitting large block arrays into 50-block messages, auto-upgrade to Block Kit when structural flags present. Pure `--text` stays backward compatible. Verified backward compat with `youtube_to_notebooklm.py` and `cron_watchdog.py` callers.
 - **Multica:** ALP-416 (done, assigned Vinod-AI-CEO)
 
-
-
+### 2026-05-29: Daily Arxiv → NotebookLM → Slack Pipeline
+- Built daily pipeline: pick arxiv paper → download PDF → rename to title → upload to NotebookLM → generate mind map + briefing report → restructure into formatted report → send to Slack via Block Kit → delete notebook.
+- Workflow steps (repeat daily):
+  1. Pick paper on arxiv (e.g., `arxiv.org/abs/2605.30335`)
+  2. Download PDF: `wget -O arxiv/<id>.pdf <arxiv_pdf_url>`
+  3. Rename PDF to paper title (spaces → hyphens) for readability
+  4. Create NotebookLM notebook: `notebooklm notebooks new --title "<title>"`
+  5. Add PDF source: `notebooklm sources add --notebook <id> --file arxiv/<title>.pdf`
+  6. Wait for processing: `notebooklm sources wait <source_id>`
+  7. Generate mind map: `notebooklm artifacts create ...mindmap`
+  8. Generate briefing report: `notebooklm artifacts create ...briefing-report` + `artifact wait`
+  9. Download artifacts to `arxiv/output/`
+  10. Restructure report into clean formatted markdown (concept map, sections, tables, quotes)
+  11. Send to Slack: `send_slack.py --file arxiv/output/restructured-report.md --header "<title>" --color info --username "Arxiv Daily"`
+  12. Delete notebook: `notebooklm notebooks delete <id>`
+- `notebooklm-py` CLI at `~/.local/bin/notebooklm`; auth via saved cookies.
+- Slack webhook via `SLACK_WEBHOOK_URL` in `.env`.
+- Cumulative runtime: ~5 minutes.
+- Relevant paths: `arxiv/<id>.pdf`, `arxiv/output/briefing-report.md`, `arxiv/output/mindmap.json`, `arxiv/output/restructured-report.md`
+- **Multica:** ALP-418 (done, assigned Vinod-AI-CEO)
 
 
 
