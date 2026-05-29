@@ -7,16 +7,7 @@ CDP = "http://localhost:9222"
 OUT = Path("output/toddle_inventory")
 
 subjects = [
-    ("Chemistry", "272491078261771262"),
-    ("Mathematics", "272491078446320765"),
-    ("English", "272491078215633905"),
-    ("Biology", "272491078391794767"),
-    ("History", "272491078920818849"),
-    ("Geography", "272491078975894096"),
-    ("Spanish", "272620157786304607"),
-    ("Design", "272491078815653780"),
-    ("Assembly", "272491078890115225"),
-    ("Visual Arts", "272491078744215539"),
+    ("Assembly", "275017952858840616"),
 ]
 
 OUT.mkdir(parents=True, exist_ok=True)
@@ -25,8 +16,15 @@ with sync_playwright() as p:
     b = p.chromium.connect_over_cdp(CDP)
     page = b.contexts[0].pages[0]
     all_data = {}
+    existing = OUT / "all_subjects_inventory.json"
+    if existing.exists():
+        all_data = json.loads(existing.read_text())
+        print(f"Loaded existing: {len(all_data)} subjects already saved")
 
     for subj, cid in subjects:
+        if subj in all_data:
+            print(f"\nSKIP {subj} (already saved)")
+            continue
         print(f"\n{'-'*50}\n{subj}")
         page.goto(f"https://web.toddleapp.com/platform/3777/courses/{cid}/student-drive")
         page.wait_for_load_state("networkidle")
@@ -116,9 +114,15 @@ with sync_playwright() as p:
 
         print(f"  Root files: {len(subject_data['root_files'])}")
         all_data[subj] = subject_data
+        (OUT / "all_subjects_inventory.json").write_text(json.dumps(all_data, indent=2))
+        print(f"  [saved: {subj}]")
+        if len(all_data) >= 30:  # Save every few to manage timeout
+            print("  [break for timeout safety]")
+            break
 
     path = OUT / "all_subjects_inventory.json"
     path.write_text(json.dumps(all_data, indent=2))
+    print(f"  [saved interim: {len(all_data)} subjects]")
 
     total_files = 0
     for subj, data in all_data.items():

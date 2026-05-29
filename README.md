@@ -25,10 +25,15 @@
 │   │   ├── exa_ai_agents.py
 │   │   └── ai_news_reporter.py         # Posts to Slack
 │   │
-│   ├── 📰 NotebookLM Pipeline
+│   ├── 📰 NotebookLM Pipelines
 │   │   ├── telegram_to_notebooklm.py   # Telegram PDF → NotebookLM → all artifacts → Slack
 │   │   ├── youtube_to_notebooklm.py   # YouTube channel monitor → NotebookLM → Slack
 │   │   ├── youtube_channels.json       # Config: YouTube channel @handles
+│   │   ├── toddle_notebooklm_sync.py   # Orchestrator: Toddle school notes → NotebookLM
+│   │   ├── toddle_all_inventory.py     # Inventory all Toddle subject files
+│   │   ├── toddle_bulk_download.py     # Download new/changed Toddle files
+│   │   ├── toddle_bulk_convert.py      # Convert Toddle files to markdown
+│   │   ├── sync_state.json             # Toddle sync state (per-subject timestamps)
 │   │   └── cron_watchdog.py            # Cron failure monitor → Slack alerts
 │   │
 │   ├── 📊 PKScreener NSE Scanner
@@ -41,10 +46,14 @@
 │   │   ├── metals_dashboard.py
 │   │   └── fo_breakout_scanner.py
 │   │
+│   ├── 📂 Strategies
+│   │   └── nifty200_momentum.py        # Nifty 200 momentum scanner (results via /api/strategies/)
+│   │
 │   ├── 🔧 Utilities
 │   │   ├── send_slack.py / debug_telegram.py
-│   │   ├── pnl_poller.py / probe_pcr_pain.py
-│   │   ├── patch_market*.py
+│   │   ├── pnl_poller.py               # Multi-broker P&L aggregator (live + mock fallback)
+│   │   ├── scaffold_agent.py           # Production AI agent scaffolder from templates/
+│   │   ├── probe_pcr_pain.py / patch_market*.py
 │   │   ├── report_and_summary.py / run_and_send_v2.py
 │   │   └── youtube_video_search.py
 │   │
@@ -91,11 +100,12 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `collector.py` | **Core Engine**. Fetches market data from Upstox/Yahoo, calculates 10-factor signals, and saves to DB. |
 | `alphaedge_db.py` | **Database Manager**. Handles SQLite schema and data persistence for `alphaedge.db`. |
 | `alert_dashboard_alive.py` | **Dashboard Uptime Monitor**. Cron-friendly uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min. Silent when healthy; alerts Slack on 2+ consecutive failures plus recovery. State tracked in `/tmp/alert_dashboard_state.json`. |
-| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest` (signals + live macro via Yahoo Finance), `/api/gainers-losers` (NSE top 5 gainers/losers, 30s cache), `/api/pixi/*` (options chain). |
+| `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest`, `/api/history`, `/api/gainers-losers` (30s cache), `/api/portfolio/pnl` (multi-broker via `pnl_poller.py`), `/api/pixi/*` (options chain), `/api/strategies/nifty200-momentum`. |
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
 | `run_analysis_headless.py` | CLI tool to run analysis and output results to console only. |
-| `report_and_send.py` | Generates diagnostic reports and sends them to Telegram. |
+| `report_and_send.py` | **Clean Text Reporter**. Generates 10-factor analysis reports as clean HTML text (no terminal boxes) and sends to Telegram via `send_telegram_msg.py`. |
+| `send_telegram_msg.py` | **Telegram Utility**. Dedicated script to send text messages or files to the pre-configured bot. Used by `report_and_send.py` and other automated tasks. |
 | `options_cli.py` | **Advanced Options Dashboard**. Multi-index (Nifty, Sensex, BankNifty) Rich live terminal view. Shows Spot + Futures with OHLC (O/H/L/C) headers, strategy flags (OH/OL), human-readable OI (L/C), and ATM ± 300 strikes. **Lean, compressed layout (107 chars)** for small terminal windows. Zero-flicker rendering via `rich.live.Live` with alternate screen buffer. 5s polling, daily-reset SQLite. |
 
 ### 🤖 AI Search & Discovery
@@ -109,11 +119,12 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `exa_ai_search.py` | Searches for upcoming online AI workshops, webinars, and classes. |
 
 ### 🪙 Crypto Intelligence
-*Real-time predictive mapping for Crypto markets (BTC, ETH, SOL).*
+*Real-time predictive mapping and automated reporting for Crypto markets.*
 
 | Script | Description |
 |:--- |:--- |
 | `crypto_dashboard.py` | **Unified Crypto Depth Map**. Simultaneous BTC, ETH, and SOL dashboard. Shows real-time Options Chain (Deribit) and Liquidation Map (Binance Order Book Walls) with 10-level depth. Displays Buy vs Sell breakdown to identify Support/Resistance. Features a live poll countdown and 15s parallel updates. |
+| `crypto_intel_reporter.py` | **Crypto Intelligence Reporter**. Executes 14 CoinMarketCap Skill Hub skills (6 daily, 8 weekly) via raw SSE/MCP streaming, formats structured analysis, and sends rich Telegram reports. |
 
 ### 📰 Beat the Street — NotebookLM Daily Pipeline
 *Automated daily pipeline: fetches PDFs from Telegram, uploads to NotebookLM, generates all artifact types, delivers to Slack, then cleans up.*
@@ -188,6 +199,25 @@ SLACK_WEBHOOK_URL=...
 
 ---
 
+### 🎓 Toddle → NotebookLM
+*Daily sync of school subject notes from Toddle LMS to NotebookLM study guides.*
+
+| Script | Description |
+|:--- |:--- |
+| `toddle_notebooklm_sync.py` | **Orchestrator** (4 phases). Inventory → Download → Convert → Upload to NotebookLM + generate study guides. State tracked in `sync_state.json`. Skips subjects with no changes since last sync. |
+| `toddle_all_inventory.py` | Inventories all subject files from Toddle LMS. |
+| `toddle_bulk_download.py` | Downloads new/changed Toddle files. |
+| `toddle_bulk_convert.py` | Converts files to markdown in `output/text/<subject>/`. |
+
+**Subjects tracked:** Physics, Chemistry, Mathematics, English, Biology, History, Geography, Spanish, Design, Visual Arts
+
+```bash
+venv/bin/python toddle_notebooklm_sync.py
+venv/bin/python toddle_notebooklm_sync.py --skip-inventory --skip-download  # convert + upload only
+```
+
+---
+
 ### 🤖 YouTube → NotebookLM
 *Monitors YouTube channels for new videos, ingests each into NotebookLM, and delivers reports to Slack via Block Kit.*
 
@@ -223,6 +253,37 @@ python3 youtube_to_notebooklm.py --list-channels
 
 ---
 
+### 💼 Portfolio P&L Dashboard
+*Multi-broker portfolio aggregator with live/mock fallback.*
+
+| Script | Description |
+|:--- |:--- |
+| `pnl_poller.py` | **P&L Aggregator**. Polls Upstox, Dhan, TradeSmart (Noren OMS), Fyers, Hyperliquid, Exness, and Binance APIs. Falls back to a dynamic mock (sinusoidal fluctuation) per broker when credentials are missing or return 401/403. Exposed at `GET /api/portfolio/pnl`. The endpoint never fails — always returns data. |
+
+---
+
+### 📂 Strategies
+*Market scanning strategies with REST API exposure.*
+
+| Script | Description |
+|:--- |:--- |
+| `strategies/nifty200_momentum.py` | **Nifty 200 Momentum Scanner**. Runs at 3:00 AM and 1:00 PM IST on weekdays. Results exposed at `GET /api/strategies/nifty200-momentum`. |
+
+---
+
+### 🛠️ Agent Scaffolder
+
+| Script | Description |
+|:--- |:--- |
+| `scaffold_agent.py` | **Production Agent Scaffolder**. Copies `templates/production-agent/` to a new directory, substitutes `{{AGENT_NAME}}` placeholders in all files, and initialises a git repo. |
+
+```bash
+python3 scaffold_agent.py --name "Market Assistant"
+python3 scaffold_agent.py --name "My Bot" --dest /path/to/dest
+```
+
+---
+
 ### 📊 Live Market Dashboards
 *Async real-time dashboards requiring venv python.*
 
@@ -235,7 +296,7 @@ python3 youtube_to_notebooklm.py --list-channels
 | Script | Description |
 |:--- |:--- |
 | `send_slack.py` | Generic utility to send text or file content to any Slack webhook. |
-| `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. |
+| `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. State in `~/.opencode/cron_watchdog_state.json`. |
 | `alert_dashboard_alive.py` | Dashboard uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min, alerts Slack on outage. |
 | `send_telegram.py` | Generic utility to send messages via Telegram Bot API. |
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
@@ -285,16 +346,24 @@ journalctl -u multica-daemon -f
 
 1. **Data Collector**: Runs signals (Trend, VIX, OI Skew, PCR, Max Pain) and writes to `alphaedge.db`.
 2. **Database**: SQLite storage for historical snapshots.
-3. **API Server**: Connects to DB and serves REST endpoints (`/api/latest`, `/api/history`, `/api/gainers-losers`, `/api/pixi/*`). Macro data (Crude, US30, Gold, Silver) fetched live from Yahoo Finance with 5-min cache.
+3. **API Server**: Connects to DB; serves `/api/latest`, `/api/history`, `/api/gainers-losers`, `/api/pixi/*`, `/api/portfolio/pnl` (multi-broker via `pnl_poller.py`), `/api/strategies/nifty200-momentum`. Macro data from Yahoo Finance with 5-min cache.
 4. **Dashboard**: HTML/JS frontend in `frontend/` — main dashboard (`dashboard.html`) with portfolio, macro cards, gainers/losers, and Chart.js signal charts. PixiJS options chain viz at `/pixi`.
+5. **P&L Poller** (`pnl_poller.py`): Aggregates 7 brokers (Upstox, Dhan, TradeSmart, Fyers, Hyperliquid, Exness, Binance). Live API → mock fallback per broker. Never errors.
 
 ---
 
 ## 🛠️ Setup
 
-### Python Environment
+### Python Environments
 
-System Python 3.14 blocks global pip installs. Use the project venv:
+Two separate venvs — use the correct one:
+
+| Venv | Path | Used by |
+|------|------|---------|
+| Main | `venv/` (project root) | api_server, collector, telegram/youtube/toddle pipelines, watchdog, alert_dashboard |
+| PKScreener | `/home/vreddy1/Desktop/Projects/pkscreener_venv` | `pkscreener_runner.py` only |
+
+System Python 3.13/3.14 blocks global installs. Use venv or `--break-system-packages`:
 
 ```bash
 python3 -m venv venv
@@ -504,9 +573,13 @@ python3 pkscreener_runner.py
 30 12 * * 1-5   # 6:00 PM IST  — evening review
 ```
 
-**Lockfile**: `/tmp/pkscreener_runner.lock` — prevents overlapping cron runs via `fcntl.flock`. If a new cron fires while a previous run is in progress, it exits immediately. This prevents process accumulation that caused 28 parallel pkscreener processes consuming ~12GB RAM.
+**Lockfile**: `/tmp/pkscreener_runner.lock` — prevents overlapping cron runs via `fcntl.flock`. If a new cron fires while a previous run is in progress, it exits immediately.
 
-**Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery
+**Orphan guard**: `run_scan()` uses `start_new_session=True` to isolate subprocesses in their own process group and kills the entire group (`os.killpg`) with `SIGTERM` → `SIGKILL` escalation. This prevents worker subprocesses from surviving as orphans when a scan times out or crashes. A `kill_orphan_pkscreener()` call at startup `pkill -9`s any leftover processes from prior crashed runs, preventing the 85-process / 12GB pileup issue.
+
+**Output**: `pkscreener_output/` — per-scan `.txt` logs + Telegram delivery with LTP & % change
+
+**Live LTP**: Each stock symbol is followed by its current price and change via Yahoo Finance (e.g. `ADANIENT  ₹2,345.67 (+1.23%)`). Uses `v8/finance/chart` with parallel `ThreadPoolExecutor` (max 10 workers) — 30 stocks resolve in ~1-2s. Gracefully falls back to bare symbol if Yahoo is unreachable. No new dependencies or env vars required.
 
 ## OpenCode `/pursue` Goal Plugin
 

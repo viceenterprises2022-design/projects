@@ -3,89 +3,602 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DVR Portfolio</title>
-<meta name="description" content="Aggregated real-time portfolio metrics across Upstox, Dhan, and TradeSmart.">
+<title>AEI — Atlas Market Matrix</title>
+<meta name="description" content="AlphaEdge Intelligence — Market Matrix dashboard. Live OI Wall, Macro Orbs, Signal Radar, Gainers/Losers, Momentum Scans.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;510;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-
 <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
 
-<!-- ── Header ──────────────────────────────────────────────────────────────── -->
+<!-- PixiJS theme CSS variables (light default, dark override) -->
+<style>
+:root {
+  --pix-bg:      #000914;
+  --pix-panel:   #050d1c;
+  --pix-border:  #1a2742;
+  --pix-text:    #e2e8f0;
+  --pix-muted:   #64748b;
+  --pix-dim:     #334155;
+  --pix-call:    #ef4444;
+  --pix-put:     #10b981;
+  --pix-spot:    #38bdf8;
+  --pix-pain:    #f59e0b;
+  --pix-bull:    #10b981;
+  --pix-bear:    #ef4444;
+  --pix-neut:    #f59e0b;
+}
+body.pixi-light {
+  --pix-bg:      #eef2f7;
+  --pix-panel:   #ffffff;
+  --pix-border:  #c8d6e8;
+  --pix-text:    #0f172a;
+  --pix-muted:   #546e8a;
+  --pix-dim:     #94a3b8;
+  --pix-call:    #dc2626;
+  --pix-put:     #059669;
+  --pix-spot:    #0369a1;
+  --pix-pain:    #ca8a04;
+  --pix-bull:    #059669;
+  --pix-bear:    #dc2626;
+  --pix-neut:    #ca8a04;
+}
+html, body.fullscreen-dash {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+body.fullscreen-dash {
+  display: flex;
+  flex-direction: column;
+  background: var(--pix-bg);
+}
+body.fullscreen-dash header {
+  flex-shrink: 0;
+}
+body.fullscreen-dash .sub-bar {
+  flex-shrink: 0;
+}
+body.fullscreen-dash .header-inner {
+  padding: 0 24px;
+}
+body.fullscreen-dash .sub-bar-inner {
+  max-width: none;
+  padding: 0 24px;
+}
+body.fullscreen-dash #pixi-section {
+  flex: 1 1 auto;
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  background: var(--pix-bg);
+  border-bottom: 1px solid var(--border);
+}
+body.fullscreen-dash #pixi-section canvas { display:block; width:100%; height:100%; }
+body.fullscreen-dash footer {
+  flex-shrink: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+body.fullscreen-dash .footer-inner {
+  padding: 0 24px;
+  max-width: none;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+#pixi-tip {
+  position:fixed; pointer-events:none; z-index:300; display:none;
+  background:rgba(4,12,25,0.97); border:1px solid rgba(255,255,255,0.09);
+  border-radius:9px; padding:11px 15px; line-height:1.9;
+  font-size:.72rem; color:#e2e8f0; box-shadow:0 12px 40px rgba(0,0,0,.65);
+  font-family:'JetBrains Mono',monospace;
+}
+#pixi-spanel {
+  display:none; position:fixed; z-index:400;
+  background:rgba(4,12,25,0.98); border:1px solid rgba(255,255,255,0.1);
+  border-radius:13px; box-shadow:0 24px 72px rgba(0,0,0,.3);
+  width:440px; overflow:hidden;
+}
+#sp-hdr {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:11px 16px; border-bottom:1px solid rgba(255,255,255,0.06);
+}
+#sp-title { font-size:.78rem; color:#e2e8f0; font-weight:700; font-family:'JetBrains Mono',monospace; }
+#sp-close {
+  background:none; border:1px solid rgba(255,255,255,0.1); color:#64748b;
+  border-radius:5px; width:26px; height:26px; cursor:pointer; font-size:.8rem;
+  display:flex; align-items:center; justify-content:center; transition:all .15s;
+}
+#sp-close:hover { color:#ef4444; border-color:rgba(239,68,68,.3); }
+#sp-canvas { display:block; }
+</style>
+</head>
+<body class="fullscreen-dash">
+
+<!-- ── Header ────────────────────────────────── -->
 <header>
-  <div class="container header-inner">
+  <div class="header-inner">
     <div class="logo">
-      <div class="logo-mark">D</div>
+      <div class="logo-mark">AE</div>
       <div>
-        <div class="logo-name">DVR Portfolio</div>
+        <div class="logo-name">AlphaEdge Intelligence</div>
+        <nav class="nav-links">
+          <a href="/" class="active">Dashboard</a>
+          <a href="/market">Market</a>
+          <a href="/portfolio">Portfolio</a>
+          <a href="/holdings">Holdings</a>
+          <a href="/positions">Positions</a>
+        </nav>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:16px">
-      <div id="last-updated" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted)">
+    <div class="sym-group">
+      <button class="sym-btn active" id="btn-NIFTY" onclick="switchSym('NIFTY')">NIFTY</button>
+      <button class="sym-btn" id="btn-SENSEX" onclick="switchSym('SENSEX')">SENSEX</button>
+      <button class="sym-btn" id="btn-BANKNIFTY" onclick="switchSym('BANKNIFTY')">BANKNIFTY</button>
+    </div>
+    <div class="header-right">
+      <button id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;width:34px;height:34px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;">🌙</button>
+      <div id="last-updated">
         <span class="live-dot"></span>Connecting…
       </div>
     </div>
   </div>
 </header>
 
-<!-- ── Ticker ───────────────────────────────────────────────────────────────── -->
-<div class="ticker-bar">
-  <div class="ticker-track" id="ticker">
-    <!-- populated by app.js -->
+<!-- ── Sub-bar ────────────────────────────────── -->
+<div class="sub-bar">
+  <div class="sub-bar-inner">
+    <div class="sub-left">
+      <span class="sub-label">Market Matrix</span>
+      <span class="sub-sep">|</span>
+      <span class="sub-tag live" id="sub-tag">LIVE</span>
+      <span class="sub-sep">|</span>
+      <span class="sub-refresh" id="sub-refresh">auto-refresh 30s</span>
+    </div>
+    <div class="sub-right">
+      <button class="sub-btn" onclick="location.reload()">↻ Refresh</button>
+      <span class="sub-sep">|</span>
+      <span id="pixi-status" style="font-size:0.65rem;color:var(--muted);font-family:var(--mono)">Connecting…</span>
+    </div>
   </div>
 </div>
 
-<!-- ── Error Banner ─────────────────────────────────────────────────────────── -->
+<!-- ── Error Banner ──────────────────────────── -->
 <div class="container">
   <div id="error-banner" class="error-banner" style="display:none"></div>
 </div>
 
-<!-- ── Main ─────────────────────────────────────────────────────────────────── -->
-<main>
-  <div class="container" style="margin-bottom:24px">
-    <!-- Macro Row (top) -->
-    <div class="macro-row" id="macro-row">
-      <!-- populated by app.js -->
-    </div>
-  </div>
+<!-- ════════════════════════════════════════════ -->
+<!--  PIXIJS CANVAS SECTION (hero)              -->
+<!-- ════════════════════════════════════════════ -->
+<div id="pixi-section">
+  <canvas id="pixi-canvas"></canvas>
+</div>
 
-  <div class="container" style="margin-bottom:24px">
-    <!-- Gainers / Losers Row -->
-    <div class="gl-row" id="gl-row">
-      <div class="card gl-card">
-        <div class="gl-header">Top Gainers</div>
-        <div class="gl-list" id="gainers-list"><div class="gl-empty">Awaiting data…</div></div>
-      </div>
-      <div class="card gl-card">
-        <div class="gl-header">Top Losers</div>
-        <div class="gl-list" id="losers-list"><div class="gl-empty">Awaiting data…</div></div>
-      </div>
-    </div>
-  </div>
+<!-- Pixi tooltip -->
+<div id="pixi-tip"></div>
 
-  <div class="container" id="portfolio-container">
-    <div class="loading"><div class="spinner"></div><span>Loading Portfolio...</span></div>
+<!-- Strike drill-down panel -->
+<div id="pixi-spanel">
+  <div id="sp-hdr">
+    <span id="sp-title">Strike Detail</span>
+    <button id="sp-close" onclick="closeStrike()">✕</button>
   </div>
-</main>
+  <canvas id="sp-canvas" width="438" height="220"></canvas>
+</div>
 
-<!-- ── Footer ───────────────────────────────────────────────────────────────── -->
-<footer style="border-top:1px solid var(--border);padding:20px 0;text-align:center;
-               font-family:var(--mono);font-size:0.7rem;color:var(--muted)">
-  <div class="container">
-    <span>⚠ For informational purposes only · Not financial advice</span>
-    <span style="margin:0 12px;color:var(--border)">|</span>
-    <span>DVR Portfolio © 2026 · Data: Upstox + Dhan + TradeSmart</span>
-    <span style="margin:0 12px;color:var(--border)">|</span>
-    <span>API: <a href="http://localhost:8765/docs" target="_blank"
-          style="color:var(--primary);text-decoration:none">localhost:8765/docs</a></span>
+
+
+<!-- ── Footer ────────────────────────────────── -->
+<footer>
+  <div class="container footer-inner">
+    <span>⚠ Not financial advice · For informational purposes only</span>
+    <span>AEI © 2026 · Data: Upstox + NSE</span>
+    <span>API: <a href="http://localhost:8765/docs">docs</a></span>
   </div>
 </footer>
 
+<!-- ════════════════════════════════════════════ -->
+<!--  PIXIJS APP (embedded)                     -->
+<!-- ════════════════════════════════════════════ -->
+<script>
+'use strict';
+const API        = 'http://localhost:8765';
+const HDR_TOTAL  = 56 + 32;
+const REFRESH_MS = 30_000;
+const MONO       = "'JetBrains Mono','Courier New',monospace";
+let currentTheme = 'dark';
+let sym   = 'NIFTY';
+let S     = { chain:null, oiTrend:null, signal:null, macro:null };
+let rAnim = 0;
+
+const THEMES = {
+  light: {
+    bg:0xeef2f7, panel:0xffffff, border:0xc8d6e8, text:0x0f172a,
+    muted:0x546e8a, dim:0x94a3b8, grid:0xd8e4f0, atm:0xdbeafe,
+    call:0xdc2626, put:0x059669, spot:0x0369a1, pain:0xca8a04,
+    bull:0x059669, bear:0xdc2626, neut:0xca8a04,
+    oiBg:0xf5f8fc, riverBg:0xf0f4f9, strikeIsBright:true,
+  },
+  dark: {
+    bg:0x000914, panel:0x050d1c, border:0x1a2742, text:0xe2e8f0,
+    muted:0x64748b, dim:0x334155, grid:0x1a2742, atm:0x0c2040,
+    call:0xef4444, put:0x10b981, spot:0x38bdf8, pain:0xf59e0b,
+    bull:0x10b981, bear:0xef4444, neut:0xf59e0b,
+    oiBg:0x030b17, riverBg:0x040c1c, strikeIsBright:false,
+  },
+};
+const C = Object.assign({}, THEMES.dark);
+
+function applyTheme(name) {
+  Object.assign(C, THEMES[name]);
+  currentTheme = name;
+  document.body.classList.toggle('pixi-light', name === 'light');
+  document.getElementById('theme-btn').textContent = name === 'dark' ? '🌙' : '☀️';
+  if (app) app.renderer.backgroundColor = C.bg;
+  macroTitle.style.fill = C.muted;
+  macroOrbs.forEach(orb => { orb.nTs.fill = C.muted; orb.vTs.fill = C.text; });
+  renderAll();
+}
+
+function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
+
+// ── Canvas sizing ───
+function getCanvasSize() {
+  const section = document.getElementById('pixi-section');
+  const rect = section.getBoundingClientRect();
+  return { W: Math.floor(rect.width), H: Math.floor(rect.height) };
+}
+
+let W, H, leftW, rightW, oiW, mainH, riverH;
+function computeLayout() {
+  const size = getCanvasSize();
+  W = size.W; H = size.H;
+  leftW  = Math.floor(W * 0.18);
+  rightW = Math.floor(W * 0.18);
+  oiW    = W - leftW - rightW;
+  mainH  = Math.floor(H * 0.7);
+  riverH = H - mainH;
+}
+
+// ── PixiJS App ───
+const canvas = document.getElementById('pixi-canvas');
+computeLayout();
+canvas.width  = W; canvas.height = H;
+const app = new PIXI.Application({
+  view: canvas, width: W, height: H,
+  backgroundColor: C.bg, antialias: true,
+  resolution: Math.min(window.devicePixelRatio || 1, 2),
+  autoDensity: true,
+});
+const stage = app.stage;
+
+const bgG    = new PIXI.Graphics(); stage.addChild(bgG);
+const macroL = new PIXI.Container(); macroL.position.set(0,0);        stage.addChild(macroL);
+const macroG = new PIXI.Graphics(); macroL.addChild(macroG);
+const oiL    = new PIXI.Container(); oiL.position.set(leftW,0);       stage.addChild(oiL);
+const oiG    = new PIXI.Graphics(); oiL.addChild(oiG);
+const oiHits = new PIXI.Container(); oiL.addChild(oiHits);
+const oiLbls = new PIXI.Container(); oiL.addChild(oiLbls);
+const radarL   = new PIXI.Container(); radarL.position.set(W-rightW,0); stage.addChild(radarL);
+const radarG   = new PIXI.Graphics(); radarL.addChild(radarG);
+const radarLbl = new PIXI.Container(); radarL.addChild(radarLbl);
+const riverL   = new PIXI.Container(); riverL.position.set(0,mainH);    stage.addChild(riverL);
+const riverG   = new PIXI.Graphics(); riverL.addChild(riverG);
+const riverLbl = new PIXI.Container(); riverL.addChild(riverLbl);
+
+// ── Helpers ───
+function lbl(container, str, x, y, sz=11, fill=C.text, bold=0, ls=0) {
+  const t = new PIXI.Text(String(str), new PIXI.TextStyle({
+    fontSize:sz, fill, fontFamily:MONO, fontWeight:bold?'700':'400', letterSpacing:ls,
+  }));
+  t.position.set(x,y); container.addChild(t); return t;
+}
+const fmtOI = v => {
+  if (!v) return '0';
+  if (v>=10000000) return (v/10000000).toFixed(2)+' Cr';
+  if (v>=100000) return (v/100000).toFixed(1)+' L';
+  return Math.round(v).toLocaleString();
+};
+const fmtMacro = (d,v) => {
+  if (v==null) return '—';
+  if (d.key==='us30') return Math.round(v).toLocaleString();
+  return v.toFixed(d.dec);
+};
+const sigColor   = s => s==='BUY'?C.bull:s==='SELL'?C.bear:C.neut;
+const scoreColor = s => s>0?C.bull:s<0?C.bear:C.muted;
+function dashLine(g,x1,y1,x2,y2,dash=8,gap=4) {
+  const dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
+  if(!len) return;
+  const ux=dx/len,uy=dy/len;
+  let d=0,draw=true; g.moveTo(x1,y1);
+  while(d<len){const seg=Math.min(draw?dash:gap,len-d);d+=seg;draw?g.lineTo(x1+ux*d,y1+uy*d):g.moveTo(x1+ux*d,y1+uy*d);draw=!draw;}
+}
+
+// ── Tooltip ───
+const tipEl = document.getElementById('pixi-tip');
+function showTip(sx,sy,lines){tipEl.innerHTML=lines.join('<br>');tipEl.style.left=sx+leftW+14+'px';tipEl.style.top=sy+HDR_TOTAL+8+'px';tipEl.style.display='block';}
+function hideTip(){tipEl.style.display='none';}
+
+// ── Panel backgrounds ───
+function drawBg() {
+  bgG.clear();
+  bgG.beginFill(C.panel,0.80); bgG.drawRect(0,0,leftW,mainH); bgG.endFill();
+  bgG.beginFill(C.oiBg,0.90); bgG.drawRect(leftW,0,oiW,mainH); bgG.endFill();
+  bgG.beginFill(C.panel,0.80); bgG.drawRect(W-rightW,0,rightW,mainH); bgG.endFill();
+  bgG.beginFill(C.riverBg,0.90); bgG.drawRect(0,mainH,W,riverH); bgG.endFill();
+  bgG.lineStyle(1,C.border,0.7);
+  bgG.moveTo(leftW,0); bgG.lineTo(leftW,mainH);
+  bgG.moveTo(W-rightW,0); bgG.lineTo(W-rightW,mainH);
+  bgG.moveTo(0,mainH); bgG.lineTo(W,mainH);
+  bgG.lineStyle(0);
+}
+
+// ═══ SCENE 1 — OI WALL ═══
+const MACRO_DEFS = [
+  { key:'vix',label:'INDIA VIX',pre:'',dec:1 },
+  { key:'gold',label:'GOLD',pre:'$',dec:1 },
+  { key:'crude',label:'CRUDE OIL',pre:'$',dec:2 },
+  { key:'dxy',label:'DXY',pre:'',dec:3 },
+  { key:'us30',label:'US30',pre:'',dec:0 },
+  { key:'silver',label:'SILVER',pre:'$',dec:2 },
+];
+const orbState = MACRO_DEFS.map((_,i)=>({phase:(i/MACRO_DEFS.length)*Math.PI*2,speed:0.36+i*0.09}));
+const macroTitle = lbl(macroL,'MACRO',14,10,11,C.muted,0,3);
+const macroOrbs = MACRO_DEFS.map(d=>{
+  const g=new PIXI.Graphics();
+  const nTs=new PIXI.TextStyle({fontSize:10,fill:C.muted,fontFamily:MONO,letterSpacing:1});
+  const vTs=new PIXI.TextStyle({fontSize:14,fill:C.text,fontFamily:MONO,fontWeight:'700'});
+  const cTs=new PIXI.TextStyle({fontSize:10,fill:C.muted,fontFamily:MONO});
+  const nT=new PIXI.Text(d.label,nTs);
+  const vT=new PIXI.Text('—',vTs);
+  const cT=new PIXI.Text('',cTs);
+  macroL.addChild(g,nT,vT,cT);
+  return {g,nT,vT,cT,nTs,vTs,cTs};
+});
+const cellW = leftW/2;
+const cellH = (mainH-36)/3;
+
+function animateMacro() {
+  const t=performance.now()*0.001;
+  MACRO_DEFS.forEach((def,i)=>{
+    const orb=macroOrbs[i],col=i%2,row=Math.floor(i/2);
+    const bx=cellW*col+cellW/2,by=36+cellH*row+cellH/2;
+    const fy=Math.sin(t*orbState[i].speed+orbState[i].phase)*5.5;
+    const cy=by+fy;
+    const d=S.macro?.[def.key],chg=d?.chg??0,val=d?.value??null;
+    const clr=chg>0.0001?C.bull:chg<-0.0001?C.bear:0x94a3b8;
+    const r=26+Math.min(Math.abs(chg*120),12);
+    orb.g.clear();
+    orb.g.beginFill(clr,0.06); orb.g.drawCircle(bx,cy,r+16); orb.g.endFill();
+    orb.g.beginFill(clr,0.20); orb.g.drawCircle(bx,cy,r); orb.g.endFill();
+    orb.g.lineStyle(1.5,clr,0.6); orb.g.drawCircle(bx,cy,r); orb.g.lineStyle(0);
+    orb.nT.position.set(bx-orb.nT.width/2,cy-r-20);
+    const vs=val!=null?`${def.pre}${fmtMacro(def,val)}`:'—';
+    if(orb.vT.text!==vs) orb.vT.text=vs;
+    orb.vT.position.set(bx-orb.vT.width/2,cy-9);
+    const cs=chg!=null?`${chg>=0?'+':''}${(chg*100).toFixed(2)}%`:'';
+    if(orb.cT.text!==cs) orb.cT.text=cs;
+    orb.cTs.fill=clr; orb.cT.position.set(bx-orb.cT.width/2,cy+7);
+  });
+}
+
+function renderOI() {
+  oiG.clear(); oiLbls.removeChildren(); oiHits.removeChildren();
+  const chain=S.chain;
+  if(!chain?.strikes?.length){lbl(oiLbls,'No chain data',oiW/2-80,mainH/2,13,C.muted);return;}
+  const strikes=[...chain.strikes].reverse();
+  const n=strikes.length,padT=38,padB=10;
+  const rowH=Math.floor((mainH-padT-padB)/n);
+  const cx=oiW/2;
+  const spot=chain.spot??S.signal?.ltp;
+  let atm=null;
+  if(spot){let md=Infinity;strikes.forEach(s=>{const d=Math.abs(s.strike-spot);if(d<md){md=d;atm=s.strike;}});}
+  const maxOI=Math.max(...strikes.map(s=>Math.max(s.ce_oi||0,s.pe_oi||0)))||1;
+  const barMax=cx-56;
+  lbl(oiLbls,'OI WALL',14,8,11,C.muted,0,2);
+  lbl(oiLbls,sym,88,8,11,C.text,1);
+  if(chain.timestamp) lbl(oiLbls,chain.timestamp.slice(11,16),oiW-56,8,10,C.muted);
+  lbl(oiLbls,'◀ PE OI',cx-90,8,10,C.put);
+  lbl(oiLbls,'CE OI ▶',cx+12,8,10,C.call);
+  const sVals=strikes.map(s=>s.strike);
+  function strikeToY(price){
+    if(price>=sVals[0]) return padT+rowH/2;
+    if(price<=sVals[n-1]) return padT+(n-0.5)*rowH;
+    for(let i=0;i<n-1;i++){const hi=sVals[i],lo=sVals[i+1];if(price<=hi&&price>=lo){const t=(hi-price)/(hi-lo);return padT+(i+t)*rowH+rowH/2;}}
+    return padT+n*rowH/2;
+  }
+  strikes.forEach((s,i)=>{
+    const ry=padT+i*rowH,isATM=s.strike===atm;
+    if(isATM){oiG.beginFill(C.atm,C.strikeIsBright?0.6:0.5);oiG.drawRect(0,ry,oiW,rowH);oiG.endFill();}
+    oiG.lineStyle(0.5,C.grid,C.strikeIsBright?0.5:0.22);oiG.moveTo(0,ry);oiG.lineTo(oiW,ry);
+    const peW=(s.pe_oi||0)/maxOI*barMax,ceW=(s.ce_oi||0)/maxOI*barMax;
+    oiG.lineStyle(0);oiG.beginFill(C.put,0.45);oiG.drawRect(cx-peW,ry+2,peW,rowH-4);oiG.endFill();
+    oiG.lineStyle(1.5,C.put,0.6);oiG.moveTo(cx-peW,ry+3);oiG.lineTo(cx-peW,ry+rowH-3);
+    oiG.lineStyle(0);oiG.beginFill(C.call,0.45);oiG.drawRect(cx,ry+2,ceW,rowH-4);oiG.endFill();
+    oiG.lineStyle(1.5,C.call,0.6);oiG.moveTo(cx+ceW,ry+3);oiG.lineTo(cx+ceW,ry+rowH-3);
+    const sz=Math.max(Math.min(rowH-2,13),10);
+    const fc=isATM?(C.strikeIsBright?0x0f172a:0xffffff):C.dim;
+    lbl(oiLbls,s.strike.toFixed(0),cx-24,ry+rowH/2-sz/2-1,sz,fc,isATM?1:0);
+    if(rowH>18){lbl(oiLbls,fmtOI(s.pe_oi),cx-peW-44,ry+rowH/2-6,10,C.put);lbl(oiLbls,fmtOI(s.ce_oi),cx+ceW+6,ry+rowH/2-6,10,C.call);}
+    const hit=new PIXI.Graphics();hit.beginFill(0,0.001);hit.drawRect(0,ry,oiW,rowH);hit.endFill();
+    hit.interactive=true;hit.cursor='crosshair';hit._sd=s;
+    hit.on('pointermove',e=>{const sd=e.currentTarget._sd;const pcr=sd.ce_oi>0?(sd.pe_oi/sd.ce_oi).toFixed(2):'—';showTip(e.global.x-leftW,e.global.y,['<b>Strike: '+sd.strike+'</b>','<span style="color:#10b981">PE OI:</span> '+fmtOI(sd.pe_oi)+' ₹'+(sd.pe_ltp||0).toFixed(2),'<span style="color:#ef4444">CE OI:</span> '+fmtOI(sd.ce_oi)+' ₹'+(sd.ce_ltp||0).toFixed(2),'<span style="color:#64748b">PCR: '+pcr+'</span>']);});
+    hit.on('pointerout',hideTip);hit.on('pointerdown',e=>{hideTip();openStrike(e.currentTarget._sd,e.global.x+leftW,e.global.y+HDR_TOTAL);});
+    oiHits.addChild(hit);
+  });
+  if(spot){const sy=strikeToY(spot);oiG.lineStyle(0);oiG.beginFill(C.spot,0.06);oiG.drawRect(0,sy-6,oiW,12);oiG.endFill();oiG.lineStyle(6,C.spot,0.08);oiG.moveTo(0,sy);oiG.lineTo(oiW,sy);oiG.lineStyle(2,C.spot,0.5);oiG.moveTo(0,sy);oiG.lineTo(oiW,sy);oiG.lineStyle(1,C.spot,1);oiG.moveTo(0,sy);oiG.lineTo(oiW,sy);oiG.lineStyle(0);oiG.beginFill(C.spot,0.2);oiG.drawRoundedRect(cx-52,sy-17,104,16,3);oiG.endFill();lbl(oiLbls,'▶ SPOT '+spot?.toFixed(1),cx-48,sy-16,11,C.spot,1);}
+  const mp=S.signal?.max_pain;
+  if(mp){const my=strikeToY(mp);oiG.lineStyle(1.5,C.pain,0.85);dashLine(oiG,0,my,oiW,my);lbl(oiLbls,'MAX PAIN '+mp.toFixed(0),8,my+5,10,C.pain);}
+}
+
+// ═══ SCENE 2 — SIGNAL RADAR ═══
+const SPOKES=[
+  {k:'trend',lb:'TREND'},{k:'dow',lb:'DOW'},{k:'india_vix',lb:'VIX'},{k:'oi',lb:'O.I.'},{k:'vwap',lb:'VWAP'},
+  {k:'supertrend',lb:'SUPERT'},{k:'rsi',lb:'RSI'},{k:'dxy',lb:'DXY'},{k:'crude',lb:'CRUDE'},{k:'pcr',lb:'PCR'},
+];
+function renderRadar(){
+  radarG.clear();radarLbl.removeChildren();
+  const sig=S.signal;if(!sig)return;
+  const panW=rightW,panH=mainH,cx=panW/2,cy=panH/2+8,maxR=Math.min(panW,panH)*0.29,n=SPOKES.length,fac=sig.factors_detail||{};
+  lbl(radarLbl,'SIGNAL RADAR',10,10,11,C.muted,0,2);
+  [0.33,0.66,1].forEach(r=>{radarG.lineStyle(0.5,C.grid,0.45);radarG.drawCircle(cx,cy,maxR*r);});
+  lbl(radarLbl,'+1',cx+maxR*0.63,cy-6,9,C.bull);lbl(radarLbl,' 0',cx+maxR*0.30,cy-6,9,C.dim);lbl(radarLbl,'-1',cx+4,cy-6,9,C.bear);
+  const pts=[];
+  SPOKES.forEach(({k,lb},i)=>{
+    const ang=(i/n)*Math.PI*2-Math.PI/2;
+    radarG.lineStyle(0.5,C.grid,0.28);radarG.moveTo(cx,cy);radarG.lineTo(cx+Math.cos(ang)*maxR,cy+Math.sin(ang)*maxR);
+    const lx=cx+Math.cos(ang)*(maxR+18),ly=cy+Math.sin(ang)*(maxR+18),sc=fac[k]??0;
+    lbl(radarLbl,lb,lx-14,ly-6,10,scoreColor(sc));
+    const norm=(sc+1)/2,vr=maxR*(0.1+norm*0.9)*rAnim;
+    const vx=cx+Math.cos(ang)*vr,vy=cy+Math.sin(ang)*vr;pts.push(vx,vy);
+    radarG.lineStyle(0);radarG.beginFill(scoreColor(sc),0.85);radarG.drawCircle(vx,vy,4);radarG.endFill();
+  });
+  const sc=sigColor(sig.signal);radarG.lineStyle(0);radarG.beginFill(sc,0.12);radarG.drawPolygon(pts);radarG.endFill();radarG.lineStyle(1.5,sc,0.75);radarG.drawPolygon(pts);
+  radarG.lineStyle(2,sc,0.65);radarG.beginFill(sc,0.13);radarG.drawCircle(cx,cy,34);radarG.endFill();
+  const sigTxt=sig.signal||'N/A';lbl(radarLbl,sigTxt,cx-sigTxt.length*4.2,cy-11,14,sc,1);lbl(radarLbl,`${sig.score??'?'}/${sig.factors??'?'}`,cx-10,cy+6,10,C.muted);
+  const iy=panH-76;[
+    ['PCR',sig.pcr?.toFixed(2)??'—'],
+    ['MAX PAIN',sig.max_pain?.toFixed(0)??'—'],
+    ['EXPIRY',sig.expiry??'—'],
+  ].forEach(([k,v],i)=>{lbl(radarLbl,k,10,iy+i*22,10,C.muted,0,1);lbl(radarLbl,v,panW-64,iy+i*22,10,C.text);});
+}
+
+// ═══ SCENE 3 — PCR RIVER ═══
+function renderRiver(){
+  riverG.clear();riverLbl.removeChildren();
+  const series=S.oiTrend?.series;if(!series?.length)return;
+  const panW=W,panH=riverH,PL=68,PR=24,PT=28,PB=24,cW=panW-PL-PR,cH=panH-PT-PB,n=series.length;
+  const pts=series.map(d=>({ts:d.timestamp,pcr:d.call_oi>0?d.put_oi/d.call_oi:1,ltp:d.ltp}));
+  const pcrArr=pts.map(p=>p.pcr),ltpArr=pts.map(p=>p.ltp);
+  const pMin=Math.min(...pcrArr)*0.96,pMax=Math.max(...pcrArr)*1.04,lMin=Math.min(...ltpArr),lMax=Math.max(...ltpArr);
+  const pRange=pMax-pMin||0.01,lRange=lMax-lMin||1;
+  const toX=i=>PL+(i/(n-1||1))*cW,toYp=v=>PT+cH-((v-pMin)/pRange)*cH,toYl=v=>PT+cH-((v-lMin)/lRange)*cH;
+  lbl(riverLbl,'INTRADAY PCR TREND',PL+6,6,11,C.muted,0,2);
+  for(let t=0;t<=4;t++){const v=pMin+(t/4)*pRange,y=toYp(v);riverG.lineStyle(0.4,C.grid,0.3);riverG.moveTo(PL,y);riverG.lineTo(panW-PR,y);lbl(riverLbl,v.toFixed(2),4,y-7,11,C.muted);}
+  if(1.0>=pMin&&1.0<=pMax){const ny=toYp(1.0);riverG.lineStyle(1.2,C.dim,0.5);dashLine(riverG,PL,ny,panW-PR,ny);lbl(riverLbl,'PCR 1.0',panW-PR-56,ny-14,10,C.dim);}
+  const step=Math.max(1,Math.floor(n/8));
+  pts.forEach((p,i)=>{if(i%step===0){const x=toX(i);riverG.lineStyle(0.3,C.grid,0.18);riverG.moveTo(x,PT);riverG.lineTo(x,PT+cH);lbl(riverLbl,p.ts.slice(11,16),x-16,PT+cH+7,10,C.muted);}});
+  const lastPCR=pcrArr[n-1],areaClr=lastPCR>=1?C.bull:C.bear;
+  const areaPoly=[PL,PT+cH];pts.forEach((p,i)=>{areaPoly.push(toX(i),toYp(p.pcr));});areaPoly.push(toX(n-1),PT+cH);
+  riverG.lineStyle(0);riverG.beginFill(areaClr,0.09);riverG.drawPolygon(areaPoly);riverG.endFill();
+  riverG.lineStyle(2.5,areaClr,0.9);pts.forEach((p,i)=>{i===0?riverG.moveTo(toX(i),toYp(p.pcr)):riverG.lineTo(toX(i),toYp(p.pcr));});
+  riverG.lineStyle(1.5,C.pain,0.65);pts.forEach((p,i)=>{i===0?riverG.moveTo(toX(i),toYl(p.ltp)):riverG.lineTo(toX(i),toYl(p.ltp));});
+  const ex=toX(n-1),epy=toYp(lastPCR),ely=toYl(ltpArr[n-1]);
+  riverG.lineStyle(0);riverG.beginFill(areaClr,0.22);riverG.drawCircle(ex,epy,10);riverG.endFill();riverG.beginFill(areaClr,1);riverG.drawCircle(ex,epy,4.5);riverG.endFill();riverG.beginFill(C.pain,1);riverG.drawCircle(ex,ely,3.5);riverG.endFill();
+  lbl(riverLbl,'PCR '+lastPCR.toFixed(2),panW-PR-68,epy-16,11,areaClr,1);lbl(riverLbl,'LTP '+ltpArr[n-1].toFixed(0),panW-PR-68,ely+4,10,C.pain);
+  lbl(riverLbl,'── PCR',PL+4,PT+cH-32,10,areaClr);lbl(riverLbl,'── LTP',PL+4,PT+cH-18,10,C.pain);
+}
+
+// ═══ STRIKE DRILL-DOWN ═══
+const spanel=document.getElementById('pixi-spanel'),spCanvas=document.getElementById('sp-canvas'),spCtx=spCanvas.getContext('2d');
+function spBg(){return currentTheme==='light'?'#ffffff':'#030b17';}
+function spText(){return currentTheme==='light'?'#475569':'#475569';}
+function spGrid(){return currentTheme==='light'?'#e2e8f0':'#1a2742';}
+async function openStrike(sd,domX,domY){
+  const px=Math.min(domX+10,window.innerWidth-450),py=Math.min(domY+10,window.innerHeight-240);
+  spanel.style.left=px+'px';spanel.style.top=py+'px';spanel.style.display='block';
+  document.getElementById('sp-title').textContent=`${sym} · Strike ${sd.strike}`;
+  drawStrikeLoading(sd);
+  try{const res=await fetch(`${API}/api/pixi/strike-history?symbol=${sym}&strike=${sd.strike}`);const data=await res.json();if(data.series?.length>1)drawStrikeChart(data.series);}catch(e){}
+}
+function drawStrikeLoading(sd){const W2=438,H2=220;spCtx.fillStyle=spBg();spCtx.fillRect(0,0,W2,H2);spCtx.font='11px JetBrains Mono';spCtx.fillStyle=spText();spCtx.fillText('Loading intraday OI…',14,28);spCtx.fillStyle='#10b981';spCtx.fillText(`PE OI: ${fmtOI(sd.pe_oi)} LTP: ₹${(sd.pe_ltp||0).toFixed(2)}`,14,56);spCtx.fillStyle='#ef4444';spCtx.fillText(`CE OI: ${fmtOI(sd.ce_oi)} LTP: ₹${(sd.ce_ltp||0).toFixed(2)}`,14,76);}
+function drawStrikeChart(series){
+  const W2=438,H2=220,PL=50,PR=12,PT=22,PB=22,cW=W2-PL-PR,cH=H2-PT-PB,n=series.length;
+  spCtx.clearRect(0,0,W2,H2);spCtx.fillStyle=spBg();spCtx.fillRect(0,0,W2,H2);
+  const maxOI=Math.max(...series.map(d=>Math.max(d.ce_oi||0,d.pe_oi||0)))||1;
+  const toX=i=>PL+(i/(n-1||1))*cW,toY=v=>PT+cH-(v/maxOI)*cH;
+  spCtx.strokeStyle=spGrid();spCtx.lineWidth=0.6;
+  for(let t=0;t<=3;t++){const y=PT+(t/3)*cH;spCtx.beginPath();spCtx.moveTo(PL,y);spCtx.lineTo(W2-PR,y);spCtx.stroke();spCtx.fillStyle=spText();spCtx.font='10px JetBrains Mono';spCtx.fillText(fmtOI(maxOI-(t/3)*maxOI),2,y+4);}
+  spCtx.beginPath();spCtx.fillStyle='rgba(16,185,129,0.08)';series.forEach((d,i)=>{i===0?spCtx.moveTo(toX(i),toY(d.pe_oi||0)):spCtx.lineTo(toX(i),toY(d.pe_oi||0));});spCtx.lineTo(toX(n-1),PT+cH);spCtx.lineTo(PL,PT+cH);spCtx.closePath();spCtx.fill();
+  spCtx.beginPath();spCtx.strokeStyle='#10b981';spCtx.lineWidth=1.8;series.forEach((d,i)=>{i===0?spCtx.moveTo(toX(i),toY(d.pe_oi||0)):spCtx.lineTo(toX(i),toY(d.pe_oi||0));});spCtx.stroke();
+  spCtx.beginPath();spCtx.fillStyle='rgba(239,68,68,0.08)';series.forEach((d,i)=>{i===0?spCtx.moveTo(toX(i),toY(d.ce_oi||0)):spCtx.lineTo(toX(i),toY(d.ce_oi||0));});spCtx.lineTo(toX(n-1),PT+cH);spCtx.lineTo(PL,PT+cH);spCtx.closePath();spCtx.fill();
+  spCtx.beginPath();spCtx.strokeStyle='#ef4444';spCtx.lineWidth=1.8;series.forEach((d,i)=>{i===0?spCtx.moveTo(toX(i),toY(d.ce_oi||0)):spCtx.lineTo(toX(i),toY(d.ce_oi||0));});spCtx.stroke();
+  spCtx.font='10px JetBrains Mono';spCtx.fillStyle='#10b981';spCtx.fillText('── PE OI',PL+4,PT+14);spCtx.fillStyle='#ef4444';spCtx.fillText('── CE OI',PL+80,PT+14);spCtx.fillStyle=spText();
+  const step=Math.max(1,Math.floor(n/6));series.forEach((d,i)=>{if(i%step===0)spCtx.fillText(d.timestamp.slice(11,16),toX(i)-14,H2-6);});
+}
+function closeStrike(){spanel.style.display='none';}
+
+// ═══ DATA FETCH ═══
+async function fetchPixiData(){
+  document.getElementById('pixi-status').textContent='Fetching…';
+  try{
+    const[chain,oiTrend,signal,macro]=await Promise.all([
+      fetch(`${API}/api/pixi/chain?symbol=${sym}`).then(r=>r.json()),
+      fetch(`${API}/api/pixi/oi-trend?symbol=${sym}`).then(r=>r.json()),
+      fetch(`${API}/api/pixi/signal?symbol=${sym}`).then(r=>r.json()),
+      fetch(`${API}/api/pixi/macro`).then(r=>r.json()),
+    ]);
+    S={chain,oiTrend,signal,macro};rAnim=0;renderAll();
+    const ts=chain?.timestamp??signal?.recorded_at??'';
+    const isStale = chain?.stale === true || signal?.stale === true;
+    document.getElementById('pixi-status').textContent= isStale ? '⚠ Stale data' : (ts ? `Live · ${ts.slice(11,16)}` : 'Live');
+    const tag=document.getElementById('sub-tag');
+    if(tag){tag.textContent=isStale?'STALE':'LIVE';tag.className=isStale?'sub-tag stale':'sub-tag live';}
+    const el=document.getElementById('last-updated');
+    if(el&&ts){
+      const d=new Date(ts+'Z');
+      const timeStr=d.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:false});
+      el.innerHTML=isStale
+        ? `<span class="stale-dot"></span>Stale: ${timeStr} IST`
+        : `<span class="live-dot"></span>Updated: ${timeStr} IST`;
+    }
+  }catch(err){document.getElementById('pixi-status').textContent='⚠ '+err.message;}
+}
+function renderAll(){drawBg();renderOI();renderRadar();renderRiver();}
+
+// ═══ ANIMATION ═══
+app.ticker.add(()=>{if(rAnim<1){rAnim=Math.min(1,rAnim+0.022);renderRadar();}animateMacro();});
+
+// ═══ SYMBOL SWITCHER ═══
+window.switchSym=function(s){
+  sym=s;
+  document.querySelectorAll('.sym-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+s)?.classList.add('active');
+  closeStrike();fetchPixiData();
+};
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeStrike();
+  if(e.key==='1') switchSym('NIFTY');
+  if(e.key==='2') switchSym('SENSEX');
+  if(e.key==='3') switchSym('BANKNIFTY');
+  if(e.key==='r'||e.key==='R') fetchPixiData();
+  if(e.key==='t'||e.key==='T') toggleTheme();
+});
+
+// ═══ RESIZE ═══
+window.addEventListener('resize',()=>{
+  computeLayout();
+  canvas.width=W;canvas.height=H;
+  app.renderer.resize(W,H);
+  oiL.position.set(leftW,0);
+  radarL.position.set(W-rightW,0);
+  riverL.position.set(0,mainH);
+  renderAll();
+});
+
+// ═══ BOOTSTRAP ═══
+drawBg();
+fetchPixiData();
+setInterval(fetchPixiData, REFRESH_MS);
+</script>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  APP.JS (HTML widgets renderer)            -->
+<!-- ════════════════════════════════════════════ -->
 <script src="/static/app.js?v=20260525"></script>
 </body>
 </html>

@@ -136,6 +136,59 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Updated README with lockfile documentation.
 - **Multica:** ALP-359 (done, assigned Vinod-AI-CEO)
 
+### 2026-05-26: PKScreener Dependency Incompatibility & Locking Fix
+- Diagnosed root cause: `pandas-ta-classic` package was missing from `pkscreener_venv` which crashed all scans requesting SuperTrend.
+- Installed `pandas-ta-classic==0.3.78` and downgraded `numpy` back to `1.26.4` to fix strict C-extension dependencies of other pre-compiled packages (`scipy`, `pkbrokers`, `advanced_ta`).
+- Fixed flock file descriptor lock release bug in `pkscreener_runner.py` by persisting `_lock_fd` in global scope, preventing immediate garbage collection lock releases.
+- Cleaned up concurrent orphan processes and verified successful execution of all scans (173 total hits delivered to Telegram).
+### 2026-05-26: Fullscreen Responsive Layout & Live Collectors Setup
+- `dashboard.html` & `style.css` — Made main dashboard fully viewport-responsive and fullscreen using vertical flexbox layout and zero vertical/horizontal scrollbars, expanding the PixiJS Options Matrix canvas to its maximum fidelity.
+- `api_server.py` — Added missing `/pixi` GET endpoint to serve `pixi_dashboard.html`, resolving consecutive `404` errors in the uptime monitor (`alert_dashboard_alive.py`). Triggered uvicorn reload cleanly.
+- `oi_collector_daemon.py` — Created standalone wrapper script that leverages `market_analysis_v3.py`'s background collection thread in the main execution line, perfect for running as a headless daemon.
+- `start_collectors.sh` — Created a unified bash script to cleanly kill stale processes and launch all 3 collectors in the background using `nohup` (alphaedge.db collector, options chain collector, and intraday PCR trend collector).
+- `~/.config/systemd/user/` — Provisioned 3 systemd user services (`alphaedge-collector`, `alphaedge-options-collector`, `alphaedge-oi-collector`) for seamless, robust daemon management.
+- `dashboard.html` & `app.js` — Changed last-updated refresh clocks across all pages and subpages to explicitly format to `Asia/Kolkata` (IST) timezone and unified stale logic (blinking orange warning when cache is >5 mins old).
+- `crontab` — Added Nifty 200 Momentum Strategy scan runs (8:30 AM & 6:30 PM IST) and updated `strategies/nifty200_momentum.py` with dotenv loading. Verified successful live refresh of momentum report JSON.
+- **Multica:** ALP-367 (done, assigned Vinod-AI-CEO)
+
+### 2026-05-27: PKScreener Cron Timings Synchronization
+- `crontab` — Adjusted PKScreener scan timings to trigger at 9:25 AM IST (3:55 UTC), 12:30 PM IST (7:00 UTC), and 3:35 PM IST (10:05 UTC) on weekdays to match active market hours.
+- **Multica:** ALP-370 (done, assigned Vinod-AI-CEO)
+
+### 2026-05-28: Coinmarketcap MCP Integration & Agent Scaffolding
+- **CMC Skill Hub Integration**: Merged remote `cmc-skill-hub` Streamable HTTP server configuration with API key headers into `~/.claude/.mcp.json` and `~/.cursor/mcp.json`.
+- **Coinmarketcap Agent Scaffold**: Scaffolded and customized a new secure crypto agent in `scratch/coinmarketcap-agent/` with Plan-Act-Observe graphs and 8-layer safety controls, passing all unit tests.
+- **Multica Daemon Upgrade**: Upgraded local `multica` CLI to `0.3.11`, stopped the active `0.3.5` daemon, and verified that systemd restarted it cleanly under the new `0.3.11` version with all 9 agent runtimes online.
+- **CoinMarketCap Perpetual, Macro, and Daily Overview Integration**: Integrated `perp_contract_analysis`, `btc_cross_asset_correlation`, and `daily_market_overview` MCP tools into crypto dashboards. Created `scratch/run_perp_analysis.py`, `scratch/run_cross_asset_analysis.py`, and `scratch/run_market_overview_analysis.py` to orchestrate automatic find/execution cycles over the streamable HTTP hub, saving aggregated evidence packs. Enhanced `crypto_dashboard.py` with a side-by-side dual column layout displaying both perpetual insights and cross-asset macro correlations simultaneously, and added integrated indicators in `crypto_market_dashboard_v2.py` BTC panel.
+- **CoinMarketCap ETF Demand Integration**: Integrated `btc_etf_institutional_demand` MCP tool into crypto dashboards. Created `scratch/run_etf_demand_analysis.py` to fetch, evaluate, and cache institutional flow metrics. Enhanced `crypto_dashboard.py` with a third vertical column splitting Daily Sentinel Stance and ETF Demand panels, and merged a fourth state-row (`ETF DEMAND`) into `crypto_market_dashboard_v2.py` top banner.
+- **CoinMarketCap Sector Analysis Integration**: Integrated `altcoin_sector_analysis` MCP tool into crypto dashboards. Created `scratch/run_sector_analysis.py` to fetch, evaluate, and cache relative sector rotation metrics (tested with RENDER). Enhanced `crypto_dashboard.py` by splitting the middle column three-ways to symmetrically display Perp Analysis, Cross-Asset correlations, and Sector rotation. Injected live sector rotation indicators into the SOL panel of `crypto_market_dashboard_v2.py`.
+- **Multica:** ALP-372 (done, assigned Vinod-AI-CEO)
+
+### 2026-05-28: Coinmarketcap Macro News Aggregator Integration
+- **CoinMarketCap Macro News Integration**: Integrated `macro_news_aggregator` MCP tool into crypto dashboards. Created `scratch/run_macro_news_analysis.py` to fetch, clean, and cache macro catalysts and news bias.
+- **Dashboard UI Optimization**: Enhanced `crypto_dashboard.py` by splitting column 3 into a three-way vertical layout (Daily Sentinel, ETF Demand, and Macro News) with symmetrical height constraints. Added real-time bias status tracking `MACRO NEWS` to `crypto_market_dashboard_v2.py`.
+- **Multica:** ALP-373 (done, assigned Vinod-AI-CEO)
+
+### 2026-05-28: Coinmarketcap Macro Liquidity Monitor Integration
+- **CoinMarketCap Macro Liquidity Integration**: Integrated `macro_liquidity_monitor` MCP tool into crypto dashboards. Created `scratch/run_liquidity_monitor_analysis.py` to fetch, evaluate, and cache carry-trade stress and net USD liquidity metrics.
+- **Dashboard UI Optimization**: Enhanced `crypto_dashboard.py` overview column to support a four-way vertical split (Daily Sentinel, ETF Demand, Macro News, and Macro Liquidity) at a perfectly balanced panel height of 11. Integrated real-time carry-trade stress tracking `LIQUIDITY` into `crypto_market_dashboard_v2.py`.
+- **Multica:** ALP-374 (done, assigned Vinod-AI-CEO)
+
+### 2026-05-28: Crypto Intelligence Reporter (CMC Skill Hub)
+- **Script created**: `crypto_intel_reporter.py` — standalone script that executes 14 CMC Skill Hub skills (6 daily + 8 weekly) via SSE/MCP streaming and sends formatted Telegram reports.
+- **Architecture**: `call_mcp()` does raw SSE streaming to `mcp.coinmarketcap.com/skill-hub/stream`, `parse_output()` extracts `decision_report`/`report` dicts from nested `content[0].text.result.output` structure.
+- **Daily (6 skills)**: Market Overview, BTC Perp Analysis, BTC ETF Demand, Cross-Asset Correlation, Macro News, Crypto Macro Overview. All use `decision_report.analysis` text with regex extraction. Report: 3033 chars, 1 Telegram message.
+- **Weekly (8 skills)**: Sector Rotation (RENDER), Altcoin Perp Scanner, Macro Financial Conditions, Liquidity Risk Regime, Holder Distribution (AAVE), Protocol Revenue/TVL (Uniswap), DeFi Protocol Screen, Oracle Chain Expansion (Ethereum). Some use `decision_report`, others use `report` dict. Report: 2005 chars (2x improvement after formatter rewrite), 1 Telegram message.
+- **Key data structures discovered**: Weekly skills output structured `report` dicts with `market_snapshot`, `indicator_snapshot`, `trend_metrics`, `latest_snapshot`, `top_protocols`, `leading_chain_snapshot` — not `decision_report` like daily skills.
+- **Existing scripts audited**: `crypto_news_search.py` (NotebookLM infographic → Telegram), `ai_news_reporter.py` (Slack), `exa_ai_search.py` (JSON only) — all independent pipelines, no integration needed.
+- **Multica:** ALP-375 (done, assigned Vinod-AI-CEO)
+
+
+
+
+
+
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

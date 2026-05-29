@@ -18,6 +18,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -358,15 +359,14 @@ def _send_slack(video: dict, nb_id: str, report_path: Path, mm_path: Path) -> bo
         {"type": "divider"},
     ]
 
-    # Mind-map as text tree (cap at 25 lines)
+    # Mind-map as text tree (cap at 2800 chars for Slack block limit)
     if mm_path and mm_path.exists():
         mm_data = json.loads(mm_path.read_text())
         tree_lines = mindmap_to_text(mm_data)
         if tree_lines:
-            clipped = tree_lines[:25]
-            mm_text = "\n".join(clipped)
-            if len(tree_lines) > 25:
-                mm_text += f"\n… and {len(tree_lines) - 25} more"
+            mm_text = "\n".join(tree_lines)
+            if len(mm_text) > 2800:
+                mm_text = mm_text[:2800] + "\n… (truncated)"
             blocks.append({
                 "type": "section",
                 "text": {"type": "mrkdwn", "text": f"*\U0001f5fa Mind Map*\n```\n{mm_text}\n```"},
@@ -443,11 +443,20 @@ def _delete_notebook(nb_id: str) -> bool:
         return False
 
     p(f"  Cleaning up notebook {nb_id[:16]}...")
-    result = nlm("delete", "-n", nb_id, capture=True)
-    if result.returncode == 0:
-        p(f"  Deleted \u2713")
-        return True
-    p(f"  WARN: could not delete notebook {nb_id} (exit {result.returncode})")
+    for attempt in range(3):
+        result = nlm("delete", "-n", nb_id, "-y", capture=True)
+        if result.returncode != 0:
+            p(f"  WARN: delete exit {result.returncode}: {result.stderr.strip()[:200]}")
+            continue
+        p(f"  Delete command OK, verifying...")
+        time.sleep(2)
+        list_result = nlm("list", capture=True)
+        if nb_id not in list_result.stdout:
+            p(f"  Deleted \u2713 (confirmed via list)")
+            return True
+        p(f"  Notebook still visible, retrying ({attempt+1}/3)...")
+        time.sleep(3)
+    p(f"  WARN: could not confirm deletion of {nb_id} after 3 attempts")
     return False
 
 

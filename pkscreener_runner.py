@@ -7,6 +7,7 @@ Runs key scan strategies after market hours and sends results.
 import os
 import re
 import sys
+import signal
 import time
 import fcntl
 import subprocess
@@ -14,6 +15,10 @@ import datetime
 import requests
 import pickle
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # ── Config ────────────────────────────────────────────────────────────────────
 VENV_PYTHON = "/home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python"
@@ -91,6 +96,8 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
     env["LINES"] = "50"
 
     output_bytes = b""
+    proc = None
+    master_fd = None
     try:
         master_fd, slave_fd = pty.openpty()
         proc = subprocess.Popen(
@@ -101,9 +108,9 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
             cwd=PKS_DIR,
             env=env,
             close_fds=True,
+            start_new_session=True,
         )
         os.close(slave_fd)
-        import time
         deadline = time.time() + TIMEOUT_SEC
         while time.time() < deadline:
             try:
@@ -114,7 +121,6 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
                         break
                     output_bytes += chunk
                 elif proc.poll() is not None:
-                    # Drain remaining
                     try:
                         while True:
                             chunk = os.read(master_fd, 8192)
@@ -126,13 +132,26 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
                     break
             except OSError:
                 break
-        os.close(master_fd)
-        proc.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        output_bytes = b"[TIMEOUT]"
     except Exception as e:
         output_bytes = f"[ERROR: {e}]".encode()
+    finally:
+        if master_fd is not None:
+            try:
+                os.close(master_fd)
+            except OSError:
+                pass
+        if proc and proc.poll() is None:
+            try:
+                os.killpg(proc.pid, signal.SIGTERM)
+                proc.wait(timeout=5)
+            except (subprocess.TimeoutExpired, ProcessLookupError):
+                try:
+                    os.killpg(proc.pid, signal.SIGKILL)
+                    proc.wait(timeout=3)
+                except (subprocess.TimeoutExpired, ProcessLookupError):
+                    pass
+        elif proc:
+            proc.wait(timeout=5)
 
     output = output_bytes.decode("utf-8", errors="replace")
     clean = strip_markup(output)
@@ -184,25 +203,79 @@ def extract_stocks(output: str) -> list[str]:
     return lines
 
 
+def fetch_nse_ltp_yahoo(symbols: list[str]) -> dict[str, dict]:
+    """Fetch LTP & change for NSE symbols via Yahoo Finance (parallel v8/chart)."""
+    if not symbols:
+        return {}
+
+    def _fetch(sym: str):
+        try:
+            r = requests.get(
+                f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}.NS",
+                params={"range": "1d", "interval": "1h"},
+                headers={"User-Agent": "Mozilla/5.0"},
+                timeout=10,
+            )
+            if r.status_code != 200:
+                return sym, None
+            meta = r.json().get("chart", {}).get("result", [{}])[0].get("meta", {})
+            price = meta.get("regularMarketPrice")
+            prev = meta.get("previousClose")
+            if price is not None and prev and prev != 0:
+                chg = round(price - prev, 2)
+                chg_pct = round((chg / prev) * 100, 2)
+                return sym, {"ltp": round(price, 2), "change": chg, "change_pct": chg_pct}
+            return sym, None
+        except Exception:
+            return sym, None
+
+    result = {}
+    try:
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            futures = {pool.submit(_fetch, s): s for s in symbols}
+            for f in as_completed(futures):
+                sym, data = f.result()
+                if data:
+                    result[sym] = data
+    except Exception:
+        pass
+    return result
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 LOCK_FILE = "/tmp/pkscreener_runner.lock"
+_lock_fd = None
 
 
 def acquire_lock() -> bool:
+    global _lock_fd
     try:
-        fd = open(LOCK_FILE, "w")
-        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        fd.write(str(os.getpid()))
-        fd.flush()
+        _lock_fd = open(LOCK_FILE, "w")
+        fcntl.flock(_lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        _lock_fd.write(str(os.getpid()))
+        _lock_fd.flush()
         return True
     except (IOError, OSError):
         return False
+
+
+def kill_orphan_pkscreener():
+    """Kill any leftover pkscreener processes from previous crashed runs."""
+    try:
+        subprocess.run(
+            ["pkill", "-9", "-f", "pkscreenercli.py"],
+            capture_output=True, timeout=15,
+        )
+    except Exception:
+        pass
 
 
 def main():
     if not acquire_lock():
         print("[PKScreener Runner] Another instance is running — exiting.")
         return
+
+    kill_orphan_pkscreener()
 
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     now = datetime.datetime.now()
@@ -235,7 +308,13 @@ def main():
 
         if stocks:
             total_hits += len(stocks)
-            lines = "\n".join(stocks[:30])  # max 30 stocks per scan
+            display = stocks[:30]
+            ltp_data = fetch_nse_ltp_yahoo(display)
+            lines = "\n".join(
+                f"{s}  \u20b9{ltp_data[s]['ltp']:,.2f} ({ltp_data[s]['change_pct']:+.2f}%)"
+                if s in ltp_data else s
+                for s in display
+            )
             msg = f"<b>{label}</b> [{options}] — {len(stocks)} hits\n<pre>{lines}</pre>"
         else:
             msg = f"<b>{label}</b> [{options}] — no results"
