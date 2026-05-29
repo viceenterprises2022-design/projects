@@ -1,0 +1,79 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Fetching crypto news — 8 topics × 10 results, last 3d                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+  Searching: BTC
+  Searching: ETH
+  Searching: SOL
+  Searching: RWA
+  Searching: Stablecoins
+  Searching: Onchain
+  Searching: Growth
+  Searching: Price & Predictions
+📡 *Crypto Daily Brief*
+_29 May 2026 • 02:30 UTC_
+
+━━━ ₿ BTC ━━━
+• *BTC Compressed at $76K Ahead of $6.6B Expiry | Bytewit*
+  ↳ Bitcoin is trading near $76K with a $6.6B Deribit options expiry on May 29 compressing volatility between $75K and $80K, supported by over 15% of BTC supply with cost basis in $74K–$83K, and a potential breakout after expiry depending on whether pric…
+• *Stalling at the Threshold*
+  ↳ Bitcoin is consolidating in the $75k–$78k range with a top-heavy holder structure near the True Market Mean, modest net positive capital flow, muted spot demand and ETF inflows, and broadly compressing volatility suggesting caution about sustained up…
+• *Analysts Flag $79K Resistance After $766M Bitcoin Liquidation Wipes May Gains*
+  ↳ Bitfinex says Bitcoin faces strong resistance near $79,000 after a $766 million liquidation wiped out longs, with upside momentum fragility and a likely sideways-to-down path absent fresh institutional demand.
+
+━━━ ⟠ ETH ━━━
+• *Ethereum Staking Record Meets On-Chain Collapse: Analyst Explains What’s Holding ETH Price*
+  ↳ A CryptoOnchain analysis finds a paradox: ETH is at a price weak point with record high staking (32.18% of supply) and near-zero organic activity, yet sustained by offshore derivatives and elevated funding rates, implying a fragile price foundation d…
+• *The $250k Whisper: Why Ethereum’s Structural Shifts Are More Critical Than the Price Action · Talos*
+  ↳ Ethereum’s fundamental shift is driven by major network upgrades and capital reallocation—scaling and privacy-focused forks (Glamsterdam and Hegota) aim to reduce fees and increase throughput, while on-chain activity migrates toward Layer 2 and insti…
+• *Ethereum Price Holds Near $2,100 As ETF Outflows Offset Oil Relief For Risk Assets*
+  ↳ Ethereum steadies around $2,100 as weak spot ETH ETF flows offset oil-driven risk relief, with a sustained move above $2,140 needed to rebuild momentum and a break below $2,050 targeting $2,000.
+
+━━━ ◎ SOL ━━━
+• *Solana On-Chain Activity Hits Record Highs, Yet SOL Drops 33%: Why Is the Token Falling Despite Ecosystem Growth? | Gate Blog*
+  ↳ Solana’s on-chain activity hit record highs in Q1 2026 driven by high-frequency, low-value transactions, but SOL’s price fell 33% due to net sell pressure from vesting releases and FTX asset liquidations, plus macro headwinds, meaning growth in activ…
+• *Solana Price Outlook: ETF Inflows, Firedancer Upgrade and SOL Momentum | IG International*
+  ↳ Solana’s price outlook remains supported by ETF inflows, the Firedancer upgrade boosting scalability and enterprise interest, while price momentum is capped by resistance near $100 amid macro headwinds and softer retail activity.
+• *Solana (SOL) news: DEX Orca launches new marketplace for tokenized real-world assets*
+  ↳ Orca on Solana launches permissioned pools to trade regulator-approved tokenized real-world assets, starting with Streamex’s gold-linked security GLDY and requiring KYC/eligibility checks onchain.
+
+━━━ 🏛 RWA ━━━
+• *Tokenized RWA Market Hits $51 Billion as Private Credit Leads - FinanceFeeds*
+  ↳ The tokenized real-world asset (RWA) market has grown to $51 billion, led by private credit, which now accounts for about 44% of the market and is driving growth beyond tokenized Treasuries and other assets, though measurement inconsistencies remain …
+• *2026 Virtual Assets And RWA Tokenisation: The Chinese Mainland’s End But A Hong Kong’s Regulated Start? - Conventus Law*
+• *Why Tokenized RWA Yields Will Dominate the Next Crypto Downturn | CoinMarketCap*
+  ↳ Tokenized real-world assets (RWAs) shift DeFi yields from crypto-leverage to yield tied to real economic activity, with RWA tokens—especially tokenized credit—forming a more bear-proof, durable yield source that could dominate during crypto downturns…
+
+━━━ 💵 Stablecoins ━━━
+• *At $322 billion, the stablecoin market value exceeds the FX reserves of 95 nations*
+  ↳ The article reports that the total market value of stablecoins has reached a record $322 billion, surpassing the official FX reserves of 95 countries, illustrating rapid capital movement to digital rails while warning regulators about potential risks…
+• *2026 Stablecoin Landscape Reshaped: The Three-Way Competition Among USDT, USDC, and PYUSD | Gate Blog*
+  ↳ The article argues that by 2026 the stablecoin market has become a three-player, multidimensional competition among USDT, USDC, and PYUSD, centered on regulatory compliance, liquidity depth, and real-world use cases, with USDT leading in scale, USDC …
+• *Stablecoins just hit a record $322 billion - and the bank-run warnings are getting louder*
+  ↳ The article argues that a record $322 billion stablecoin market is pushing banks to deploy tokenized-deposit networks to defend deposits and payment relationships, but the resulting fragmented, closed ecosystems risk creating digital islands and a re…
+
+━━━ ⛓ Onchain ━━━
+• *Hyperliquid TVL Climbs to $5.329 Billion on May 27, Highest Since October Downturn | Gate News*
+  ↳ Hyperliquid’s total value locked (TVL) rose to $5.329 billion on May 27, the highest since the October downturn, with open interest at $9.647 billion and 24-hour trading volume of $7 billion.
+• *Ondo Finance Tokenized Stock TVL Surpasses $1.17 Billion, Setting New All-Time High*
+  ↳ Ondo Finance’s tokenized stock TVL surged to a new all-time high of over $1.17 billion, up 42.3% in a month and 11% in a week, signaling growing demand for on-chain tokenized real-world assets and advancing DeFi’s maturity in handling regulated, comp…
+• *On‑Chain Activity Rotates Into Tokenized Stocks, Pushing TVL Beyond $1.6B - Crypto Economy*
+  ↳ Tokenized stocks and real-world asset (RWA) markets saw a liquidity shift in 2026, with TVL surpassing $1.6B and RWA volumes surpassing $821.8B, as traders rotate from traditional crypto into tokenized equities and derivatives amid AI-driven equity g…
+
+━━━ 📈 Growth ━━━
+• *JPMorgan projects Bitcoin and crypto inflows to exceed $130B this year*
+  ↳ JPMorgan’s crypto teamForecasts 2026 Bitcoin and digital-asset inflows will exceed $130B (2025’s level) with a shift toward institutional participation, aided by expected regulatory clarity like the Clarity Act, though timelines and market dynamics (…
+• *Bitcoin gauge tracking selling pressure moves into 'high-risk' zone as BTC ETF demand slumps*
+  ↳ U.S. spot Bitcoin ETF demand has shifted from net buying to net selling in May, pushing Swissblock’s Risk Index into high-risk territory and signaling thinner absorption of selling pressure as ETF flows decline, even as some bullish technical signals…
+• *ARK Invest's Cathie Wood says institutions buy Bitcoin dip as weak holders exit*
+  ↳ ARK Invest CEO Cathie Wood argues that a structural shift in Bitcoin ownership is underway, with institutions and ETF holders buying dips while short-term holders exit, leading to a shrinking float and a long-term price upside; ARK’s data shows convi…
+
+━━━ 🔮 Price & Predictions ━━━
+• *Top 3 Price Prediction: Bitcoin, Ethereum, Ripple – BTC turns cautious, ETH weakens, XRP bears gain control*
+  ↳ Bitcoin, Ethereum, and Ripple are under renewed selling pressure with BTC and ETH trading below key EMAs and downside risk persisting, while XRP remains bearish near-term as selling pressure keeps prices below major EMA and resistance levels.
+• *My Probability-Weighted Crypto Forecast for the Rest of 2026 and Into 2027 | by Zane Merritt | Coinmonks | May, 2026 | Medium*
+  ↳ The article argues for probability-weighted, macro-anchored BTC forecasts into late 2026 and 2027, presenting a base case around $90k–$110k (YE26) and $130k–$160k (YE27) with a 92k YE26/135k YE27 EV, shaped by geopolitical/oil/CPI/Fed policy, and emp…
+• *Bitcoin Price Analysis 2026: Current Trends Revealed - Airdrop Alert*
+  ↳ Bitcoin price is stuck in a $74K–$78K range in 2026, with the next catalyst likely geopolitical (Iran-related) and ETF flows; a deal easing tensions could push BTC toward $80K–$83K, while a collapse could drag it back to or below $74K.
+
+
+Done. 76 unique stories.
