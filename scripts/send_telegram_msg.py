@@ -1,10 +1,14 @@
-import requests
 import os
 import sys
+import argparse
 
-# Credentials from report_and_send.py
-TOKEN = "8770565112:AAGy9q-BMWsgvU4RQUQDyeNXa282Vme9uG4"
-CHAT_ID = "7246234100"
+import requests
+
+TOKEN = os.environ.get(
+    "TELEGRAM_BOT_TOKEN",
+    "8770565112:AAGy9q-BMWsgvU4RQUQDyeNXa282Vme9uG4",
+)
+CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "7246234100")
 
 def send_text(text, parse_mode="HTML"):
     """Send a text message to the pre-configured Telegram chat."""
@@ -39,10 +43,24 @@ def send_file(file_path, caption=None):
         return {"ok": False, "error": str(e)}
 
 if __name__ == "__main__":
-    # If run directly from CLI, treat arguments as message
-    if len(sys.argv) > 1:
-        msg = " ".join(sys.argv[1:])
-        res = send_text(msg)
-        print(f"Sent: {res.get('ok')}")
-    else:
-        print("Usage: python3 send_telegram_msg.py 'your message here'")
+    parser = argparse.ArgumentParser(description="Send a Telegram message")
+    parser.add_argument("--message", "-m", type=str, help="Message text to send")
+    parser.add_argument("--token", type=str, help="Bot token override")
+    parser.add_argument("--chat-id", type=str, help="Chat ID override")
+    parser.add_argument(
+        "rest", nargs=argparse.REMAINDER, help="Message text (fallback)"
+    )
+    args = parser.parse_args()
+
+    msg = args.message or (" ".join(args.rest) if args.rest else None)
+    if not msg:
+        parser.print_help()
+        sys.exit(1)
+
+    if args.token:
+        TOKEN = args.token
+    if args.chat_id:
+        CHAT_ID = args.chat_id
+
+    res = send_text(msg)
+    print(f"Sent: {res.get('ok')}")
