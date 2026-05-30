@@ -40343,5 +40343,10 @@
     "mtime": 1780108389.643459,
     "ast_hash": "00c8ea3e1a6117d1fca0a5e34edd3f81",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/specs/scripts_reverse_spec.md": {
+    "mtime": 1780115445.3025012,
+    "ast_hash": "d9ef896ac295d10acc18046e89c2cef7",
+    "semantic_hash": ""
   }
 }
