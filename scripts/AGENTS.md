@@ -208,8 +208,13 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Relevant paths: `arxiv/<id>.pdf`, `arxiv/output/briefing-report.md`, `arxiv/output/mindmap.json`, `arxiv/output/restructured-report.md`
 - **Multica:** ALP-418 (done, assigned Vinod-AI-CEO)
 
-
-
+### 2026-06-01: Cron Environment & YouTube Pipeline Fix
+- Diagnosed cron path and environment limitations causing `notebooklm` tool failures (`FileNotFoundError`).
+- Configured robust crontab structure with explicit `SHELL=/bin/bash`, `PATH`, and `HOME` environment variables.
+- Modified `youtube_to_notebooklm.py` and `telegram_to_notebooklm.py` path settings to explicitly target `/home/vreddy1/.local/bin/notebooklm`.
+- Upgraded the crontab entries to cleanly invoke the project virtual environment Python (`/home/vreddy1/Desktop/Projects/scripts/venv/bin/python`) instead of the global `python3`.
+- Commented out the `telegram_to_notebooklm.py` pipeline cron as requested, focusing only on the YouTube pipeline.
+- **Multica:** ALP-437 (done, assigned Vinod-AI-CEO)
 
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
