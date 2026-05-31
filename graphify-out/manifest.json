@@ -9485,8 +9485,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/ai_events_results.json": {
-    "mtime": 1780112146.0735428,
-    "ast_hash": "42adda64ed040e9b0943753fa2a70fa8",
+    "mtime": 1780198394.739475,
+    "ast_hash": "b4c82df4f147be023884bd93158f7e3e",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/git-autosync.sh": {
@@ -40352,6 +40352,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/daily_insight_20260531.md": {
     "mtime": 1780190852.3788874,
     "ast_hash": "a6aabd57581529af6ed7119cbbc8215b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-05-31.txt": {
+    "mtime": 1780194640.7161908,
+    "ast_hash": "792d9c4e141bf7bb755c668870c8a1cc",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_daily_2026-05-31.png": {
+    "mtime": 1780194784.112119,
+    "ast_hash": "62ad89658d0ffaf48888859527457af4",
     "semantic_hash": ""
   }
 }
