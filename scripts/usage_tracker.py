@@ -364,13 +364,13 @@ def start_daemon():
     init_db()
     pid = os.fork()
     if pid > 0:
-        PID_PATH.write_text(str(pid))
         print(f"Daemon started (pid {pid})")
         sys.exit(0)
     os.setsid()
     pid2 = os.fork()
     if pid2 > 0:
         sys.exit(0)
+    PID_PATH.write_text(str(os.getpid()))
     _run_daemon()
 
 

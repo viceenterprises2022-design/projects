@@ -40368,5 +40368,10 @@
     "mtime": 1780255229.3740833,
     "ast_hash": "f421286db765478f12dfb3fa15c8f0ff",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/usage_tracker.py": {
+    "mtime": 1780255972.5395048,
+    "ast_hash": "f638836ff7cc5b6985c053b582e7e5c4",
+    "semantic_hash": ""
   }
 }
