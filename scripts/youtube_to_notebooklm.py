@@ -105,7 +105,7 @@ STATE_FILE = CONFIG_DIR / "youtube_to_notebooklm_state.json"
 OUTPUT_BASE = CONFIG_DIR / "notebooklm_output" / "youtube"
 
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL")
-NLM_CMD = "notebooklm"
+NLM_CMD = os.path.join(str(CONFIG_DIR), "venv", "bin", "notebooklm")
 MAX_SLACK_CHARS = 3500
 
 # Non-None values only if slack is configured
