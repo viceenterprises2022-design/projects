@@ -216,6 +216,14 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Commented out the `telegram_to_notebooklm.py` pipeline cron as requested, focusing only on the YouTube pipeline.
 - **Multica:** ALP-437 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-01: OMP Quota Fix & Clawdi Cloud Integration
+- Diagnosed oh-my-pi (omp) 429 quota error under the free Google Gemini tier and bypassed it.
+- Switched default model in ~/.omp/agent/config.yml to google-gemini-cli/gemini-2.5-flash which uses working, high-tier Cloud Code Assist credentials.
+- Set up Clawdi Cloud on the machine: installed clawdi CLI globally via Bun, registered Claude Code, Codex, and Hermes agents, and enabled healthy background sync daemons.
+- Scanned 45 local sessions and successfully synchronized all session history with Clawdi Cloud (pushed 9 new sessions).
+- Verified setup with clawdi doctor, passing all checks for all installed agents.
+- **Multica:** ALP-438 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints
