@@ -576,8 +576,10 @@ def print_trending_oi(sym):
 def get_futures_key(sym, next_month=False):
     now = datetime.datetime.now()
     if next_month:
-        if now.month == 12: now = now.replace(year=now.year+1, month=1)
-        else: now = now.replace(month=now.month+1)
+        m = now.month + 1
+        y = now.year
+        if m > 12: m = 1; y += 1
+        now = datetime.datetime(y, m, 1)
     year, mon = now.strftime("%y"), now.strftime("%b").upper()
     if sym == "SENSEX": return f"BSE_FO|SENSEX{year}{mon}FUT"
     return f"NSE_FO|{sym}{year}{mon}FUT"

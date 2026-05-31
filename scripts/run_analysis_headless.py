@@ -42,7 +42,7 @@ def run_headless():
             # result = (sym, q, oi_raw, res, final_signal, final_score)
             result = ma.run_analysis(sym)
             if result:
-                ma.print_diagnostic_report(*result)
+                ma.display_dashboard(*result)
                 # Store the captured output for this symbol
                 results.append("".join(capturing_console.output))
                 capturing_console.output = [] # Reset for next
