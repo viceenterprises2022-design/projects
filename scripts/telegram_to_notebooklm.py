@@ -68,7 +68,7 @@ DAILY_DIR  = OUTPUT_DIR / f"Beat-the-street-report-{TODAY}"
 for d in [OUTPUT_DIR, PDFS_DIR, DAILY_DIR]:
     d.mkdir(exist_ok=True)
 
-NLM = os.path.join(os.path.dirname(__file__), "venv", "bin", "notebooklm")
+NLM = "/home/vreddy1/.local/bin/notebooklm"
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
 SLACK_TOKEN = os.environ.get("SLACK_TOKEN", "")
 SLACK_USERNAME = "Beat-the-Street"
