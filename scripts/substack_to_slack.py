@@ -81,6 +81,16 @@ def save_state(state):
     with open(STATE_FILE, 'w') as f:
         json.dump(serializable_state, f, indent=4)
 
+def match_filters(text: str, filters: list[str]) -> bool:
+    """Checks if the text contains any of the keywords in the filters (case-insensitive)."""
+    if not filters:
+        return True  # No filters defined, so all text matches
+    text_lower = text.lower()
+    for f in filters:
+        if f.lower() in text_lower:
+            return True
+    return False
+
 def fetch_new_posts(channel_url, last_pubdate):
     """Fetches new RSS entries and converts pubdate to datetime objects."""
     p(f"Fetching RSS feed for {channel_url}")
@@ -347,6 +357,9 @@ def main():
             post_title = post['title']
             post_link = post['link']
             post_pubdate = post['published']
+
+            # Apply filters
+            # Filters are not yet implemented in this rewrite; will add in next step.
 
             p(f"  -> Processing post: '{post_title}' (Published: {post_pubdate})")
             
