@@ -220,6 +220,7 @@ def main() -> int:
     parser.add_argument("--header", help="Header block text (appears bold at top).")
     parser.add_argument("--color", choices=list(COLOR_MAP), help="Sidebar color bar. Values: good, warning, danger, info")
     parser.add_argument("--field", action="append", default=[], metavar="KEY=VALUE", help="Key-value field (repeatable).")
+    parser.add_argument("--blocks", help="JSON string of Block Kit blocks (bypasses header/field/text construction).")
     parser.add_argument("--username", default=os.getenv("SLACK_USERNAME"))
     parser.add_argument("--channel", default=os.getenv("SLACK_CHANNEL"))
     parser.add_argument("--icon-emoji", default=os.getenv("SLACK_ICON_EMOJI"))
@@ -230,20 +231,28 @@ def main() -> int:
         raise SystemExit("Missing Slack webhook. Set SLACK_WEBHOOK_URL or pass --webhook-url.")
 
     message = read_message(args).strip()
-    use_blocks = bool(args.header or args.field or args.color)
+    use_blocks = bool(args.header or args.field or args.color or args.blocks)
 
     if use_blocks:
-        fields = parse_fields(args.field)
-        blocks = compose_blocks(
-            header=args.header,
-            body=message or None,
-            fields=fields if fields else None,
-        )
+        blocks = []
+        if args.blocks: # User provided raw blocks
+            try:
+                blocks = json.loads(args.blocks)
+            except json.JSONDecodeError as e:
+                raise SystemExit(f"Error parsing --blocks JSON: {e}")
+        else: # Construct blocks from other arguments
+            fields = parse_fields(args.field)
+            blocks = compose_blocks(
+                header=args.header,
+                body=message or None,
+                fields=fields if fields else None,
+            )
+
         hex_color = resolve_color(args.color) if args.color else None
         payloads_data = []
         for blk_chunk in chunk_blocks(blocks):
             p = build_payload(
-                text=message[:300] if len(message) > 300 else message,
+                text=message[:300] if len(message) > 300 else message, # Fallback text for notifications
                 username=args.username,
                 channel=args.channel,
                 icon_emoji=args.icon_emoji,
