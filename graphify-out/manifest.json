@@ -40380,8 +40380,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack_state.json": {
-    "mtime": 1780291213.5571597,
-    "ast_hash": "220d8a0f992ab8ada6962b54440b88b4",
+    "mtime": 1780291287.858019,
+    "ast_hash": "0b572f67fe8682f92784d1eaa8db2780",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack.py": {
@@ -40527,6 +40527,41 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_2a85a62d-16c0-4c80-9048-4c8d89cca270.md": {
     "mtime": 1780289944.0304692,
     "ast_hash": "94d251b3610cbfb296f9b781441b9010",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_3db34235-faaa-4ab1-b148-41cff9bc7f9f.md": {
+    "mtime": 1780291141.134701,
+    "ast_hash": "1ef3475345624fa4e0041d34cc5194bd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_4dc9655c-14d4-4763-9665-b0a092b28b58.md": {
+    "mtime": 1780291103.7501624,
+    "ast_hash": "4259c467c4896c855cb99df60ad22f61",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_fc8de10d-1e18-4911-80d6-1481e814053b.md": {
+    "mtime": 1780291247.9730713,
+    "ast_hash": "c8281c78739a0fae26276c57a9c3f8f6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_c75ffa4e-ee78-4e1c-ac6f-9c035f6e3e59.md": {
+    "mtime": 1780291179.947726,
+    "ast_hash": "4178dd4643783a7130a05c56a808e6d4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_821b9e0a-d08b-428a-8e27-0573fff335b2.md": {
+    "mtime": 1780291209.6756105,
+    "ast_hash": "622f3c6cb410e9466374cc63e8391aff",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_d91daf72-8104-4b55-aa09-ce2438ca3cc3.md": {
+    "mtime": 1780291075.168092,
+    "ast_hash": "98bcd919505157b2db731efc0a075a36",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_b44fdb2a-8ae3-4446-9d31-5554db2c2608.md": {
+    "mtime": 1780291037.5351782,
+    "ast_hash": "02a5801a336dc7a272546960ac9d1393",
     "semantic_hash": ""
   }
 }
