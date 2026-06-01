@@ -224,7 +224,7 @@ def process_with_notebooklm(title, content_text):
 
         # 6. Download the briefing report artifact
         report_output_path = Path(OUTPUT_DIR) / f"briefing_report_{artifact_id}.md"
-        nlm("download", artifact_id, "--output", str(report_output_path))
+        nlm("download", "report", "--artifact", artifact_id, "--output", str(report_output_path))
         p(f"Downloaded briefing report to {report_output_path}")
 
         # 7. Parse the downloaded report to extract the summary
@@ -259,8 +259,8 @@ def process_with_notebooklm(title, content_text):
             p(f"Deleted temporary file: {temp_file_path}")
         if notebook_id:
             try:
-                # NLM delete command only expects the UUID with --notebook flag
-                nlm("delete", "--notebook", notebook_id)
+                # NLM delete command only expects the UUID with --notebook flag and --yes for confirmation
+                nlm("delete", "--yes", "--notebook", notebook_id)
                 p(f"Deleted NotebookLM notebook: {notebook_id}")
             except Exception as e:
                 p(f"Error deleting NotebookLM notebook {notebook_id}: {e}")
