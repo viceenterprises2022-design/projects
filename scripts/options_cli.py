@@ -11,9 +11,9 @@ from rich.live import Live
 from rich.text import Text
 
 try:
-    import dhan_client
+    import fyers_client
 except ImportError:
-    dhan_client = None
+    fyers_client = None
 
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
@@ -99,10 +99,10 @@ def fetch_quote(key):
         q = list(d["data"].values())[0]
         return q.get("last_price", 0)
         
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        ltp = dhan_client.fetch_dhan_ltp(sym)
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        ltp = fyers_client.fetch_fyers_ltp(sym)
         if ltp is not None:
             return float(ltp)
     return None
@@ -116,12 +116,12 @@ def fetch_expiries(key):
         elif raw and isinstance(raw[0], dict):
             return sorted([x.get("expiry","") for x in raw if x.get("expiry")])
             
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        dhan_exp = dhan_client.fetch_dhan_expiries(sym)
-        if dhan_exp:
-            return dhan_exp
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        fyers_exp = fyers_client.fetch_fyers_expiries(sym)
+        if fyers_exp:
+            return fyers_exp
     return []
 
 def fetch_option_chain(key, expiry):
@@ -129,12 +129,12 @@ def fetch_option_chain(key, expiry):
     if d.get("status") == "success":
         return d.get("data", [])
         
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        dhan_chain = dhan_client.fetch_dhan_option_chain(sym, expiry)
-        if dhan_chain:
-            return dhan_chain
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        fyers_chain = fyers_client.fetch_fyers_option_chain(sym, expiry)
+        if fyers_chain:
+            return fyers_chain
     return []
 
 EXPIRY_CACHE = {} # {instrument_key: (expiry_date, timestamp)}

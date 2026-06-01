@@ -12,9 +12,9 @@ Output: alphaedge_<timestamp>.html  (auto-opens in browser)
 import requests, datetime, os, webbrowser, time, json, sqlite3, threading, sys
 
 try:
-    import dhan_client
+    import fyers_client
 except ImportError:
-    dhan_client = None
+    fyers_client = None
 
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
@@ -122,16 +122,16 @@ def fetch_quote(key):
                 "low":ohlc.get("low",0),"close":prev,"volume":q.get("volume",0),
                 "change":chg,"change_pct":chg/prev*100}
     
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        print(f"    [Dhan Fallback] Fetching Quote/LTP for {sym}...")
-        dhan_ohlc = dhan_client.fetch_dhan_ohlc(sym)
-        if dhan_ohlc:
-            prev = dhan_ohlc.get("close", 0) or 1
-            ltp = dhan_ohlc.get("last_price", 0); chg = ltp - prev
-            return {"ltp": ltp, "open": dhan_ohlc.get("open", 0), "high": dhan_ohlc.get("high", 0),
-                    "low": dhan_ohlc.get("low", 0), "close": prev, "volume": 0,
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        print(f"    [Fyers Fallback] Fetching Quote/LTP for {sym}...")
+        fyers_ohlc = fyers_client.fetch_fyers_ohlc(sym)
+        if fyers_ohlc:
+            prev = fyers_ohlc.get("close", 0) or 1
+            ltp = fyers_ohlc.get("last_price", 0); chg = ltp - prev
+            return {"ltp": ltp, "open": fyers_ohlc.get("open", 0), "high": fyers_ohlc.get("high", 0),
+                    "low": fyers_ohlc.get("low", 0), "close": prev, "volume": 0,
                     "change": chg, "change_pct": chg / prev * 100}
     return None
 
@@ -145,13 +145,13 @@ def fetch_candles(key, days=90):
         return [[c[0],float(c[1]),float(c[2]),float(c[3]),float(c[4]),
                  float(c[5]) if len(c)>5 else 0] for c in raw]
                  
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        print(f"    [Dhan Fallback] Fetching daily historical candles for {sym}...")
-        dhan_c = dhan_client.fetch_dhan_candles(sym, days=days)
-        if dhan_c:
-            return dhan_c
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        print(f"    [Fyers Fallback] Fetching daily historical candles for {sym}...")
+        fyers_c = fyers_client.fetch_fyers_candles(sym, days=days)
+        if fyers_c:
+            return fyers_c
     return []
 
 def fetch_expiries(key):
@@ -164,13 +164,13 @@ def fetch_expiries(key):
         elif raw and isinstance(raw[0], dict):
             return sorted([x.get("expiry","") for x in raw if x.get("expiry")])
             
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        print(f"    [Dhan Fallback] Fetching expiry list for {sym}...")
-        dhan_exp = dhan_client.fetch_dhan_expiries(sym)
-        if dhan_exp:
-            return dhan_exp
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        print(f"    [Fyers Fallback] Fetching expiry list for {sym}...")
+        fyers_exp = fyers_client.fetch_fyers_expiries(sym)
+        if fyers_exp:
+            return fyers_exp
     return []
 
 def fetch_option_chain(key, expiry):
@@ -180,13 +180,13 @@ def fetch_option_chain(key, expiry):
     if d.get("status") == "success":
         return d.get("data", [])
         
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        print(f"    [Dhan Fallback] Fetching option chain for {sym}...")
-        dhan_chain = dhan_client.fetch_dhan_option_chain(sym, expiry)
-        if dhan_chain:
-            return dhan_chain
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        print(f"    [Fyers Fallback] Fetching option chain for {sym}...")
+        fyers_chain = fyers_client.fetch_fyers_option_chain(sym, expiry)
+        if fyers_chain:
+            return fyers_chain
     return []
 
 def build_oi_data(symbol, spot):

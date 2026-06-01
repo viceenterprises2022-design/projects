@@ -16,9 +16,9 @@ from rich import box
 from rich.rule import Rule
 
 try:
-    import dhan_client
+    import fyers_client
 except ImportError:
-    dhan_client = None
+    fyers_client = None
 
 # ── Load Credentials ──────────────────────────────────────────────────────────
 upstox_token = None
@@ -85,12 +85,12 @@ async def fetch_expiries(session, key):
         elif raw and isinstance(raw[0], dict):
             return sorted([x.get("expiry", "") for x in raw if x.get("expiry")])
             
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        dhan_exp = await asyncio.to_thread(dhan_client.fetch_dhan_expiries, sym)
-        if dhan_exp:
-            return dhan_exp
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        fyers_exp = await asyncio.to_thread(fyers_client.fetch_fyers_expiries, sym)
+        if fyers_exp:
+            return fyers_exp
     return []
 
 async def fetch_option_chain(session, key, expiry):
@@ -102,12 +102,12 @@ async def fetch_option_chain(session, key, expiry):
     if isinstance(res, dict) and res.get("status") == "success":
         return res.get("data", [])
         
-    # Fallback to Dhan
+    # Fallback to Fyers
     sym = get_symbol_from_key(key)
-    if sym and dhan_client and dhan_client.is_dhan_configured():
-        dhan_chain = await asyncio.to_thread(dhan_client.fetch_dhan_option_chain, sym, expiry)
-        if dhan_chain:
-            return dhan_chain
+    if sym and fyers_client and fyers_client.is_fyers_configured():
+        fyers_chain = await asyncio.to_thread(fyers_client.fetch_fyers_option_chain, sym, expiry)
+        if fyers_chain:
+            return fyers_chain
     return []
 
 # ── Build-Up Logic ────────────────────────────────────────────────────────────

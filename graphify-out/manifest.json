@@ -9475,8 +9475,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/collector.py": {
-    "mtime": 1780287901.3679426,
-    "ast_hash": "b5d04e0e61a6147b6a5398b44d8f542a",
+    "mtime": 1780288803.3189316,
+    "ast_hash": "530e5a05b1477692320cc107798f77ff",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/test_exception.py": {
@@ -9495,8 +9495,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py": {
-    "mtime": 1780287901.3709426,
-    "ast_hash": "bab2aaa4f866b038795e47212efee9ed",
+    "mtime": 1780288815.0729704,
+    "ast_hash": "58ecf6582c64d9371b502cfa8072e429",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/report_and_send.py": {
@@ -9515,8 +9515,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/options_cli.py": {
-    "mtime": 1780287901.3709426,
-    "ast_hash": "30384ee664bde6df77f2e94755c79e7b",
+    "mtime": 1780288826.4890082,
+    "ast_hash": "74191d00cdfce468c230d8e09cb2304c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
@@ -9555,8 +9555,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/fo_breakout_scanner.py": {
-    "mtime": 1780287901.3690054,
-    "ast_hash": "fcda748976cb08edabc0e411d9225633",
+    "mtime": 1780288836.9230428,
+    "ast_hash": "c394342b0e2916346b31b7122eac1aa7",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/ai_news_reporter.py": {
@@ -40385,8 +40385,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack.py": {
-    "mtime": 1780287487.8005686,
-    "ast_hash": "0998bf27c7f588386bc52b3e9c70ac70",
+    "mtime": 1780288774.821837,
+    "ast_hash": "b54bd0ce84b0274714e7ed8152ac507c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_channels.json": {
@@ -40452,11 +40452,6 @@
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_44_2026-06-01.txt": {
     "mtime": 1780287417.146334,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
-    "semantic_hash": ""
-  },
-  "/home/vreddy1/Desktop/Projects/scripts/dhan_client.py": {
-    "mtime": 1780287573.8988547,
-    "ast_hash": "3aba0b37c015c87749bd07ad1c0f1012",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260601_0925_X_12_23.txt": {

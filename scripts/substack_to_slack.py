@@ -224,7 +224,7 @@ def process_with_notebooklm(title, content_text):
 
         # 7. Download the briefing report artifact
         report_output_path = Path(OUTPUT_DIR) / f"briefing_report_{artifact_id}.md"
-        nlm("download", "report", "--artifact", artifact_id, str(report_output_path))
+        nlm("download", "report", "--notebook", notebook_id, "--artifact", artifact_id, str(report_output_path))
         p(f"Downloaded briefing report to {report_output_path}")
 
         # 8. Parse the downloaded report to extract the summary
