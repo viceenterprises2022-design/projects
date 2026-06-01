@@ -40370,8 +40370,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/usage_tracker.py": {
-    "mtime": 1780278025.4732864,
-    "ast_hash": "6348192178f8c249aa08ea9169ce4ae4",
+    "mtime": 1780281014.9634962,
+    "ast_hash": "347c71340445f1230aa9d1f31ed06cec",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-01.txt": {
+    "mtime": 1780281040.5393622,
+    "ast_hash": "e2e4ee2637cb2cac0f6f0c880457a91c",
     "semantic_hash": ""
   }
 }
