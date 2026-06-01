@@ -25605,7 +25605,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1780283617.6264236,
+    "mtime": 1780283790.2280157,
     "ast_hash": "de42c1f1ebf3148ce2a161e7f6685cbe",
     "semantic_hash": ""
   },
@@ -40370,7 +40370,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/usage_tracker.py": {
-    "mtime": 1780283752.1948853,
+    "mtime": 1780283790.241016,
     "ast_hash": "0a67d7513952a04224e24c1e08c71eaf",
     "semantic_hash": ""
   },
@@ -40382,6 +40382,21 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_daily_2026-06-01.png": {
     "mtime": 1780281205.245149,
     "ast_hash": "ce15584becc5251e7d2454bec275b6f6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack_state.json": {
+    "mtime": 1780284156.84722,
+    "ast_hash": "803dcb34408670c3636d219ec8e83304",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack.py": {
+    "mtime": 1780284139.4702075,
+    "ast_hash": "f04f50359787cbb9a18098fbecf860f6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/substack_channels.json": {
+    "mtime": 1780284022.146808,
+    "ast_hash": "7683684024ce7c9526b6fa1e9b2ef608",
     "semantic_hash": ""
   }
 }

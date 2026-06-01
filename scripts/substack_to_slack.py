@@ -69,11 +69,15 @@ def save_state(state):
         serializable_state[channel_url] = data.copy()
         if 'last_processed_pubdate' in data and data['last_processed_pubdate'] is not None:
             serializable_state[channel_url]['last_processed_pubdate'] = data['last_processed_pubdate'].isoformat()
+    
     with open(STATE_FILE, 'w') as f:
         json.dump(serializable_state, f, indent=4)
 
+def fetch_new_posts(channel_url, last_pubdate):
+    """Fetches new RSS entries and converts pubdate to datetime objects."""
     p(f"Fetching RSS feed for {channel_url}")
-    feed = feedparser.parse(channel_url)
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'} # Mimic a browser
+    feed = feedparser.parse(channel_url, request_headers=headers)
     new_posts = []
     for entry in feed.entries:
         try:
@@ -105,33 +109,39 @@ def get_article_content(url):
     p(f"Fetching article content from: {url}")
     try:
         response = requests.get(url, timeout=30)
-        response.raise_for_status() # Raise an HTTPError for bad responses (4xx or 5xx)
+        response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Attempt to find the main article content. Common patterns:
-        # <article>, <main>, <div> with specific IDs/classes
-        article_tag = soup.find('article') or soup.find('main') or soup.find('div', class_='body prose')
+        content_source = None
 
-        if not article_tag:
+        # Prioritized selectors
+        if not content_source:
+            content_source = soup.find('div', {'data-component': 'ArticleBody'})
+        if not content_source:
+            content_source = soup.find('div', class_='duet--article--body-page')
+        if not content_source:
+            content_source = soup.find('article')
+        if not content_source:
+            content_source = soup.find('main')
+        if not content_source:
+            content_source = soup.find('div', class_='body prose')
+
+        if not content_source:
             # Fallback for Substack specific structure or common article containers
-            article_tag = soup.find('div', class_='available-content') or \
-                          soup.find('div', class_='markup') or \
-                          soup.find('div', class_=lambda x: x and ('post-content' in x or 'entry-content' in x))
-            
-        if not article_tag:
-            p(f"Warning: Could not find a primary article tag for {url}. Attempting a more general search.")
-            # If still no luck, try to get all <p> tags within the main body
-            paragraphs = soup.find_all('p')
-            content_text = '\n'.join([p.get_text() for p in paragraphs if p.get_text().strip()])
-            return content_text.strip()
+            content_source = soup.find('div', class_='available-content') or \
+                             soup.find('div', class_='markup') or \
+                             soup.find('div', class_=lambda x: x and ('post-content' in x or 'entry-content' in x))
 
-
-        # Remove script and style elements
-        for script_or_style in article_tag(['script', 'style', 'noscript', 'aside', 'footer', 'nav', '.caption']):
+        if not content_source:
+            p(f"Warning: Could not find a specific primary content area for {url}. Extracting all paragraph text from body.")
+            content_source = soup
+        
+        # Remove script, style, and other unwanted elements from the content source
+        for script_or_style in content_source(['script', 'style', 'noscript', 'aside', 'footer', 'nav', '.caption']):
             script_or_style.decompose()
 
         # Get text and clean up
-        content_text = article_tag.get_text(separator='\n', strip=True)
+        content_text = content_source.get_text(separator='\n', strip=True)
         
         # Further cleanup: remove multiple newlines, excessive whitespace
         content_text = os.linesep.join([s for s in content_text.splitlines() if s.strip()])
@@ -141,9 +151,84 @@ def get_article_content(url):
     except requests.exceptions.RequestException as e:
         p(f"Error fetching article content from {url}: {e}")
         return None
+def process_with_notebooklm(title, content_text):
+    """
+    Creates a NotebookLM notebook, uploads content, generates a briefing report,
+    downloads it, extracts summary, and cleans up.
+    """
+    p(f"Processing '{title}' with NotebookLM...")
+    notebook_id = None
+    temp_file_path = None
+    try:
+        # 1. Create a temporary text file with content_text
+        temp_file_name = f"substack_{int(time.time())}.txt"
+        temp_file_path = Path(OUTPUT_DIR) / temp_file_name
+        temp_file_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(temp_file_path, 'w') as f:
+            f.write(content_text)
+        p(f"Created temporary content file: {temp_file_path}")
+
+        # 2. Create a new NotebookLM notebook
+        notebook_id = nlm("create", title).strip()
+        p(f"Created NotebookLM notebook: {title} (ID: {notebook_id})")
+
+        # 3. Add the temporary file as a source
+        source_id = nlm("source", "add", "--notebook", notebook_id, "--file", str(temp_file_path)).strip()
+        p(f"Added source '{temp_file_name}' (ID: {source_id}) to notebook {notebook_id}")
+
+        # 4. Wait for NotebookLM source processing to complete
+        nlm("source", "wait", source_id)
+        p(f"NotebookLM source processing completed for {source_id}")
+
+        # 5. Generate a "briefing-report" artifact
+        artifact_id = nlm("artifact", "generate", "report", "--notebook", notebook_id).strip()
+        p(f"Generating briefing report artifact (ID: {artifact_id})...")
+
+        # Wait for artifact generation to complete
+        nlm("artifact", "wait", artifact_id)
+        p(f"Briefing report artifact generation completed for {artifact_id}")
+
+        # 6. Download the briefing report artifact
+        report_output_path = Path(OUTPUT_DIR) / f"briefing_report_{artifact_id}.md"
+        nlm("artifact", "download", artifact_id, "--output", str(report_output_path))
+        p(f"Downloaded briefing report to {report_output_path}")
+
+        # 7. Parse the downloaded report to extract the summary
+        summary = "Summary not found."
+        if report_output_path.exists():
+            with open(report_output_path, 'r') as f:
+                report_content = f.read()
+                # Assuming the summary is in the first section or clearly marked
+                # This might need refinement based on actual NLM briefing report format
+                summary_start = report_content.find("## Briefing Report")
+                if summary_start != -1:
+                    summary_content = report_content[summary_start + len("## Briefing Report"):].strip()
+                    first_section_end = summary_content.find("\n## ") # Find next section header
+                    if first_section_end != -1:
+                        summary = summary_content[:first_section_end].strip()
+                    else:
+                        summary = summary_content.strip()
+                elif report_content.strip():
+                    summary = report_content.strip() # Fallback if specific header not found
+        else:
+            p(f"Warning: Briefing report not found at {report_output_path}")
+
+        return summary
+
     except Exception as e:
-        p(f"Error parsing article content from {url}: {e}")
+        p(f"Error during NotebookLM processing for '{title}': {e}")
         return None
+    finally:
+        # 8. Clean up temporary files and NotebookLM notebook
+        if temp_file_path and temp_file_path.exists():
+            os.remove(temp_file_path)
+            p(f"Deleted temporary file: {temp_file_path}")
+        if notebook_id:
+            try:
+                nlm("delete", notebook_id)
+                p(f"Deleted NotebookLM notebook: {notebook_id}")
+            except Exception as e:
+                p(f"Error deleting NotebookLM notebook {notebook_id}: {e}")
 
 def process_with_notebooklm(title, content_text):
     """
