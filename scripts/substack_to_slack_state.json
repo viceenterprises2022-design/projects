@@ -1,0 +1,18 @@
+{
+    "https://<your-substack-name>.substack.com/feed": {
+        "last_processed_pubdate": null,
+        "channel_name": "my_favorite_substack"
+    },
+    "https://<another-substack-name>.substack.com/feed": {
+        "last_processed_pubdate": null,
+        "channel_name": "another_substack"
+    },
+    "https://gregbrockman.substack.com/feed": {
+        "last_processed_pubdate": null,
+        "channel_name": "ai_explanations"
+    },
+    "https://gregbrockman.com/rss/": {
+        "last_processed_pubdate": null,
+        "channel_name": "ai_explanations"
+    }
+}

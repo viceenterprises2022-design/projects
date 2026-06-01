@@ -51,6 +51,7 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 - `telegram_to_notebooklm.py` → daily cron (4PM IST), fetches PDFs from Telegram channel `@btsreports`, uploads to dated NotebookLM notebook, generates briefing report + mind-map, saves to `notebooklm_output/`
 - `youtube_to_notebooklm.py` → daily cron (5PM IST), monitors YouTube channels (`youtube_channels.json`) for new videos ≤24h old, ingests each into NotebookLM, generates briefing report + mind-map, delivers to Slack via Block Kit, deletes notebook after successful delivery
 - `youtube_channels.json` → config file: array of YouTube channel @handles (`@DavidOndrej`, `@AkshatZayn`, `@TheNextNewThingAI`, `@LewisWJackson`)
+- `substack_to_slack.py` → daily cron, fetches new posts from configured Substack RSS feeds (`substack_channels.json`), extracts full article content, summarizes with NotebookLM, and delivers Block Kit reports to Slack. State maintained in `substack_to_slack_state.json`.
 
 **4. Exa AI Event Search**
 - `exa_ai_search.py` / `exa_ai_agents.py` → Exa-powered search for upcoming AI events/workshops from OpenAI, Anthropic, Google AI, etc. Outputs `ai_events_results.json`

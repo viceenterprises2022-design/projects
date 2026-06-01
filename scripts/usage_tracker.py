@@ -2,8 +2,9 @@
 """usage_tracker.py — Track window/app activity + agent/daemon/systemd uptime.
 
 Usage:
-  usage-tracker start              Start daemon
+  usage-tracker start              Start daemon (forking)
   usage-tracker stop               Stop daemon
+  usage-tracker run                Run daemon in foreground (for systemd)
   usage-tracker status             Show daemon status + live window + agents
   usage-tracker report             Today's report
   usage-tracker report --period week
@@ -690,6 +691,8 @@ def main():
     sub.add_parser("stop", help="Stop daemon")
     sub.add_parser("status", help="Show daemon status")
 
+    sub.add_parser("run", help="Run daemon in foreground (for systemd)")
+
     report_parser = sub.add_parser("report", help="Show usage report")
     report_parser.add_argument("--period", choices=["day", "week"], default="day")
     report_parser.add_argument("--app", type=str, help="Filter by app name")
@@ -706,6 +709,9 @@ def main():
         stop_daemon()
     elif args.command == "status":
         cmd_status()
+    elif args.command == "run":
+        init_db()
+        _run_daemon()
     elif args.command == "report":
         init_db()
         cmd_report(args)

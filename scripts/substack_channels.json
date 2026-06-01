@@ -1,0 +1,10 @@
+{
+    "ai_explanations": {
+        "feed_url": "https://gregbrockman.com/rss/",
+        "display_name": "Greg Brockman's AI Explanations"
+    },
+    "another_substack": {
+        "feed_url": "https://<another-substack-name>.substack.com/feed",
+        "display_name": "Another Interesting Read"
+    }
+}
