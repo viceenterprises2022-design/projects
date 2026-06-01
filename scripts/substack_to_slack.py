@@ -337,6 +337,7 @@ def main():
     for channel_name, channel_config in channels.items():
         feed_url = channel_config['feed_url']
         display_name = channel_config.get('display_name', channel_name)
+        filters = channel_config.get('filters', []) # Get filters for the channel
         
         # Initialize state for this channel if not present
         if feed_url not in state:
@@ -359,7 +360,9 @@ def main():
             post_pubdate = post['published']
 
             # Apply filters
-            # Filters are not yet implemented in this rewrite; will add in next step.
+            if not match_filters(post_title, filters):
+                p(f"  -> Skipping post '{post_title}' due to filters.")
+                continue
 
             p(f"  -> Processing post: '{post_title}' (Published: {post_pubdate})")
             
