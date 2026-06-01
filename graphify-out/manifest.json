@@ -40380,7 +40380,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack_state.json": {
-    "mtime": 1780291287.858019,
+    "mtime": 1780291632.3902357,
     "ast_hash": "0b572f67fe8682f92784d1eaa8db2780",
     "semantic_hash": ""
   },
@@ -40562,6 +40562,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_b44fdb2a-8ae3-4446-9d31-5554db2c2608.md": {
     "mtime": 1780291037.5351782,
     "ast_hash": "02a5801a336dc7a272546960ac9d1393",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_17419ab3-d477-4cde-8332-f9521229b22e.md": {
+    "mtime": 1780291284.5366948,
+    "ast_hash": "397d51949582b2146adf4c98dfbe1710",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/substack_1780291288.txt": {
+    "mtime": 1780291288.7749577,
+    "ast_hash": "2db08a3bb05fb5e774bdc533d9939847",
     "semantic_hash": ""
   }
 }
