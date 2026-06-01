@@ -28,11 +28,15 @@ def main():
     existing_titles = set()
     if res.returncode == 0:
         try:
-            issues = json.loads(res.stdout)
-            if isinstance(issues, list):
-                for issue in issues:
-                    if isinstance(issue, dict) and "title" in issue:
-                        existing_titles.add(issue["title"].strip().lower())
+            data = json.loads(res.stdout)
+            issues_list = []
+            if isinstance(data, list):
+                issues_list = data
+            elif isinstance(data, dict) and "issues" in data:
+                issues_list = data["issues"]
+            for issue in issues_list:
+                if isinstance(issue, dict) and "title" in issue:
+                    existing_titles.add(issue["title"].strip().lower())
         except Exception as e:
             print(f"[LogWork] Warning: Failed to parse existing issue list ({e}). Continuing without deduplication.")
     else:
