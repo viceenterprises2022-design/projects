@@ -5,9 +5,15 @@ import time
 import sqlite3
 import sys
 import re
+import os
 from pathlib import Path
 from rich.live import Live
 from rich.text import Text
+
+try:
+    import dhan_client
+except ImportError:
+    dhan_client = None
 
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
@@ -81,11 +87,24 @@ def upstox_get(url, params):
         pass
     return {}
 
+def get_symbol_from_key(key):
+    for inst in INSTRUMENTS.values():
+        if inst["key"] == key:
+            return inst["name"]
+    return None
+
 def fetch_quote(key):
     d = upstox_get("https://api.upstox.com/v2/market-quote/quotes", {"instrument_key": key})
     if d.get("status") == "success" and d.get("data"):
         q = list(d["data"].values())[0]
         return q.get("last_price", 0)
+        
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        ltp = dhan_client.fetch_dhan_ltp(sym)
+        if ltp is not None:
+            return float(ltp)
     return None
 
 def fetch_expiries(key):
@@ -96,12 +115,26 @@ def fetch_expiries(key):
             return sorted(raw)
         elif raw and isinstance(raw[0], dict):
             return sorted([x.get("expiry","") for x in raw if x.get("expiry")])
+            
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        dhan_exp = dhan_client.fetch_dhan_expiries(sym)
+        if dhan_exp:
+            return dhan_exp
     return []
 
 def fetch_option_chain(key, expiry):
     d = upstox_get("https://api.upstox.com/v2/option/chain", {"instrument_key": key, "expiry_date": expiry})
     if d.get("status") == "success":
         return d.get("data", [])
+        
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        dhan_chain = dhan_client.fetch_dhan_option_chain(sym, expiry)
+        if dhan_chain:
+            return dhan_chain
     return []
 
 EXPIRY_CACHE = {} # {instrument_key: (expiry_date, timestamp)}

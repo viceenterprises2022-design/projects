@@ -15,6 +15,11 @@ from rich.text import Text
 from rich import box
 from rich.rule import Rule
 
+try:
+    import dhan_client
+except ImportError:
+    dhan_client = None
+
 # ── Load Credentials ──────────────────────────────────────────────────────────
 upstox_token = None
 env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
@@ -58,6 +63,17 @@ async def safe_get(session, url, params=None):
     except Exception as e:
         return {"error": str(e)}
 
+def get_symbol_from_key(key):
+    for name, val in INDICES.items():
+        if val == key:
+            if "NIFTY 50" in name:
+                return "NIFTY"
+            elif "BANK" in name:
+                return "BANKNIFTY"
+            elif "SENSEX" in name:
+                return "SENSEX"
+    return None
+
 # ── Upstox Option Chain Fetchers ──────────────────────────────────────────────
 async def fetch_expiries(session, key):
     url = "https://api.upstox.com/v2/option/contract"
@@ -68,6 +84,13 @@ async def fetch_expiries(session, key):
             return sorted(raw)
         elif raw and isinstance(raw[0], dict):
             return sorted([x.get("expiry", "") for x in raw if x.get("expiry")])
+            
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        dhan_exp = await asyncio.to_thread(dhan_client.fetch_dhan_expiries, sym)
+        if dhan_exp:
+            return dhan_exp
     return []
 
 async def fetch_option_chain(session, key, expiry):
@@ -78,6 +101,13 @@ async def fetch_option_chain(session, key, expiry):
     })
     if isinstance(res, dict) and res.get("status") == "success":
         return res.get("data", [])
+        
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        dhan_chain = await asyncio.to_thread(dhan_client.fetch_dhan_option_chain, sym, expiry)
+        if dhan_chain:
+            return dhan_chain
     return []
 
 # ── Build-Up Logic ────────────────────────────────────────────────────────────

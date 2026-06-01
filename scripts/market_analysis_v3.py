@@ -10,6 +10,12 @@ Usage:  python market_analysis_v3.py
 Output: alphaedge_<timestamp>.html  (auto-opens in browser)
 """
 import requests, datetime, os, webbrowser, time, json, sqlite3, threading, sys
+
+try:
+    import dhan_client
+except ImportError:
+    dhan_client = None
+
 # ── Config ────────────────────────────────────────────────────────────────────
 UPSTOX_TOKEN = "eyJ0eXAiOiJKV1QiLCJrZXlfaWQiOiJza192MS4wIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJGVzY0MDYiLCJqdGkiOiI2OWVjZDE1NTU0ZTdlMzBhNmY0NTZkODYiLCJpc011bHRpQ2xpZW50IjpmYWxzZSwiaXNQbHVzUGxhbiI6dHJ1ZSwiaXNFeHRlbmRlZCI6dHJ1ZSwiaWF0IjoxNzc3MTI3NzY1LCJpc3MiOiJ1ZGFwaS1nYXRld2F5LXNlcnZpY2UiLCJleHAiOjE4MDg2OTA0MDB9.lxl6fYYoKH1_2AItX-XN40eNsYhbAzbjnwbvyopgSUo"
 UH = {"Authorization": f"Bearer {UPSTOX_TOKEN}", "Accept": "application/json"}
@@ -97,6 +103,15 @@ def upstox_get(url, params):
         pass
     return {}
 
+def get_symbol_from_key(key):
+    for sym, val in INSTRUMENTS.items():
+        if val == key:
+            return sym
+    for sym, val in OI_INSTRUMENTS.items():
+        if val == key:
+            return sym
+    return None
+
 def fetch_quote(key):
     d = upstox_get("https://api.upstox.com/v2/market-quote/quotes", {"instrument_key": key})
     if d.get("status") == "success" and d.get("data"):
@@ -106,6 +121,18 @@ def fetch_quote(key):
         return {"ltp":ltp,"open":ohlc.get("open",0),"high":ohlc.get("high",0),
                 "low":ohlc.get("low",0),"close":prev,"volume":q.get("volume",0),
                 "change":chg,"change_pct":chg/prev*100}
+    
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        print(f"    [Dhan Fallback] Fetching Quote/LTP for {sym}...")
+        dhan_ohlc = dhan_client.fetch_dhan_ohlc(sym)
+        if dhan_ohlc:
+            prev = dhan_ohlc.get("close", 0) or 1
+            ltp = dhan_ohlc.get("last_price", 0); chg = ltp - prev
+            return {"ltp": ltp, "open": dhan_ohlc.get("open", 0), "high": dhan_ohlc.get("high", 0),
+                    "low": dhan_ohlc.get("low", 0), "close": prev, "volume": 0,
+                    "change": chg, "change_pct": chg / prev * 100}
     return None
 
 def fetch_candles(key, days=90):
@@ -117,6 +144,14 @@ def fetch_candles(key, days=90):
         raw = d.get("data", {}).get("candles", [])
         return [[c[0],float(c[1]),float(c[2]),float(c[3]),float(c[4]),
                  float(c[5]) if len(c)>5 else 0] for c in raw]
+                 
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        print(f"    [Dhan Fallback] Fetching daily historical candles for {sym}...")
+        dhan_c = dhan_client.fetch_dhan_candles(sym, days=days)
+        if dhan_c:
+            return dhan_c
     return []
 
 def fetch_expiries(key):
@@ -128,6 +163,14 @@ def fetch_expiries(key):
             return sorted(raw)
         elif raw and isinstance(raw[0], dict):
             return sorted([x.get("expiry","") for x in raw if x.get("expiry")])
+            
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        print(f"    [Dhan Fallback] Fetching expiry list for {sym}...")
+        dhan_exp = dhan_client.fetch_dhan_expiries(sym)
+        if dhan_exp:
+            return dhan_exp
     return []
 
 def fetch_option_chain(key, expiry):
@@ -136,6 +179,14 @@ def fetch_option_chain(key, expiry):
                    {"instrument_key": key, "expiry_date": expiry})
     if d.get("status") == "success":
         return d.get("data", [])
+        
+    # Fallback to Dhan
+    sym = get_symbol_from_key(key)
+    if sym and dhan_client and dhan_client.is_dhan_configured():
+        print(f"    [Dhan Fallback] Fetching option chain for {sym}...")
+        dhan_chain = dhan_client.fetch_dhan_option_chain(sym, expiry)
+        if dhan_chain:
+            return dhan_chain
     return []
 
 def build_oi_data(symbol, spot):
