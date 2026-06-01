@@ -346,6 +346,8 @@ python3 scaffold_agent.py --name "My Bot" --dest /path/to/dest
 
 ## ⚙️ Systemd Services
 
+### 🖥️ System-Level Services (Requires sudo)
+
 | Service | Description | Port |
 |:--- |:--- |:--- |
 | `alphaedge-api.service` | AlphaEdge Market Intelligence API (FastAPI + uvicorn) | `:8765` |
@@ -365,10 +367,34 @@ journalctl -u alphaedge-api -f
 journalctl -u multica-daemon -f
 ```
 
-**Cron (every 5 min, already installed):**
+### 👤 User-Level Services (AlphaEdge Collectors, No sudo required)
+
+These services manage persistent, real-time index quotes, option chains, and intraday PCR data.
+
+| Service | Script / Daemon | Description |
+|:--- |:--- |:--- |
+| `alphaedge-collector.service` | `collector.py --loop --interval 1` | Main signal engine (Trend, VIX, etc.) writing to `alphaedge.db`. |
+| `alphaedge-options-collector.service` | `options_cli.py` | Live 5-second Options Matrix builder for `intraday_options_cli.db`. |
+| `alphaedge-oi-collector.service` | `oi_collector_daemon.py` | Intraday PCR/OI trend collector writing to `intraday_oi.db`. |
+
+```bash
+# Enable to start automatically on system boot
+systemctl --user enable alphaedge-collector alphaedge-options-collector alphaedge-oi-collector
+
+# Start or Restart
+systemctl --user restart alphaedge-collector alphaedge-options-collector alphaedge-oi-collector
+
+# Check status
+systemctl --user status alphaedge-collector alphaedge-options-collector alphaedge-oi-collector
+
+# Live Logs
+journalctl --user -u alphaedge-collector -f
+journalctl --user -u alphaedge-options-collector -f
+journalctl --user -u alphaedge-oi-collector -f
 ```
-*/5 * * * * cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 venv/bin/python alert_dashboard_alive.py >> logs/alert_dashboard.log 2>&1
-```
+
+> [!TIP]
+> You can also run the local backup shell script `bash start_collectors.sh` which cleanly restarts all of them in a completely disowned background environment.
 
 ---
 

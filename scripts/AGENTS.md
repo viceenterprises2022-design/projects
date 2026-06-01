@@ -233,6 +233,13 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Documented pipeline in `README.md`.
 - **Multica:** ALP-452 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-01: Upstox Exclusive Feed & Systemd Daemons Integration
+- Updated `fyers_client.py`'s `is_fyers_configured()` to unconditionally return `False`, globally disabling Fyers fallback and forcing all active scripts to fetch quotes/options exclusively from Upstox.
+- Transitioned background collector loops (`collector.py`, `options_cli.py`, `oi_collector_daemon.py`) to persistent, user-level systemd services (`alphaedge-collector`, `alphaedge-options-collector`, `alphaedge-oi-collector`) for enterprise-grade uptime, auto-restart capability, and user-space isolation.
+- Modified `start_collectors.sh` background launch script to support shell `disown` to prevent background hangups on terminal exits.
+- Updated `README.md` to document systemd user-level daemon commands, journal logs, and start scripts.
+- **Multica:** ALP-459 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints
