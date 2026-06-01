@@ -17,15 +17,15 @@ sleep 1
 echo "=== Starting data collectors in background ==="
 
 # 1. Start alphaedge.db collector (1-min interval)
-nohup "$CDIR/venv/bin/python" collector.py --loop --interval 1 > logs/collector_background.log 2>&1 &
+nohup "$CDIR/venv/bin/python" collector.py --loop --interval 1 > logs/collector_background.log 2>&1 & disown
 echo "✓ Started collector.py (alphaedge.db) in background"
 
 # 2. Start options chain collector (5-sec polling)
-nohup "$CDIR/venv/bin/python" options_cli.py > logs/options_background.log 2>&1 &
+nohup "$CDIR/venv/bin/python" options_cli.py > logs/options_background.log 2>&1 & disown
 echo "✓ Started options_cli.py (intraday_options_cli.db) in background"
 
 # 3. Start intraday PCR trend collector (1-min interval)
-nohup "$CDIR/venv/bin/python" oi_collector_daemon.py > logs/oi_background.log 2>&1 &
+nohup "$CDIR/venv/bin/python" oi_collector_daemon.py > logs/oi_background.log 2>&1 & disown
 echo "✓ Started oi_collector_daemon.py (intraday_oi.db) in background"
 
 echo "=== All collectors initialized ==="
