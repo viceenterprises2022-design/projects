@@ -361,7 +361,8 @@ def start_daemon():
     if is_daemon_running():
         print("Daemon already running")
         return
-    init_db()
+    conn = init_db()
+    conn.close()
     pid = os.fork()
     if pid > 0:
         print(f"Daemon started (pid {pid})")
@@ -405,25 +406,13 @@ def _run_daemon():
     while running:
         now = int(time.time())
         try:
-            with open("/tmp/usage_dbg.txt", "a") as _dbg:
-                _dbg.write(f"[{now}] iter start\n")
-                _dbg.flush()
+            # Window tracking
+            window = get_active_window()
+            app = window[0] if window else "Unknown"
+            title = window[1] if window else ""
 
-                # Window tracking
-                _dbg.write(f"[{now}] calling get_active_window...\n")
-                _dbg.flush()
-                window = get_active_window()
-                _dbg.write(f"[{now}] window={window}\n")
-                _dbg.flush()
-                app = window[0] if window else "Unknown"
-                title = window[1] if window else ""
-
-                # Idle detection
-                _dbg.write(f"[{now}] calling get_idle_seconds...\n")
-                _dbg.flush()
-                idle = get_idle_seconds()
-                _dbg.write(f"[{now}] idle={idle}\n")
-                _dbg.flush()
+            # Idle detection
+            idle = get_idle_seconds()
             if idle > 300:
                 idle_accumulated += DAEMON_INTERVAL
                 if current_event_id is not None:
@@ -472,18 +461,12 @@ def _run_daemon():
                 conn.commit()
 
             # Start new event
-            with open("/tmp/usage_dbg.txt", "a") as _dbg:
-                _dbg.write(f"[{now}] INSERTING... app={app!r} title={title!r} now={now}\n")
-                _dbg.flush()
             cur = conn.execute(
                 "INSERT INTO window_events (app, title, started_at) VALUES (?, ?, ?)",
                 (app, title, now)
             )
             current_event_id = cur.lastrowid
             conn.commit()
-            with open("/tmp/usage_dbg.txt", "a") as _dbg:
-                _dbg.write(f"[{now}] INSERTED id={current_event_id}\n")
-                _dbg.flush()
 
             # Process scan (every 30s)
             if now - last_process_scan >= PROCESS_SCAN_INTERVAL:
