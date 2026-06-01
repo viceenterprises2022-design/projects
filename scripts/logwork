@@ -22,7 +22,7 @@ def main():
         
     # 1. Fetch current issues from Multica to deduplicate by title
     print("[LogWork] Fetching existing issues from Multica...")
-    list_cmd = ["/usr/local/bin/multica", "issue", "list", "--output", "json"]
+    list_cmd = ["/usr/local/bin/multica", "issue", "list", "--output", "json", "--limit", "1000"]
     res = subprocess.run(list_cmd, capture_output=True, text=True)
     
     existing_titles = set()

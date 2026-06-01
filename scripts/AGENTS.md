@@ -215,7 +215,7 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Modified `youtube_to_notebooklm.py` and `telegram_to_notebooklm.py` path settings to explicitly target `/home/vreddy1/.local/bin/notebooklm`.
 - Upgraded the crontab entries to cleanly invoke the project virtual environment Python (`/home/vreddy1/Desktop/Projects/scripts/venv/bin/python`) instead of the global `python3`.
 - Commented out the `telegram_to_notebooklm.py` pipeline cron as requested, focusing only on the YouTube pipeline.
-- **Multica:** ALP-437 (done, assigned Vinod-AI-CEO)
+- **Multica:** ALP-450 (done, assigned Vinod-AI-CEO)
 
 ### 2026-06-01: OMP Quota Fix & Clawdi Cloud Integration
 - Diagnosed oh-my-pi (omp) 429 quota error under the free Google Gemini tier and bypassed it.
@@ -223,7 +223,7 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Set up Clawdi Cloud on the machine: installed clawdi CLI globally via Bun, registered Claude Code, Codex, and Hermes agents, and enabled healthy background sync daemons.
 - Scanned 45 local sessions and successfully synchronized all session history with Clawdi Cloud (pushed 9 new sessions).
 - Verified setup with clawdi doctor, passing all checks for all installed agents.
-- **Multica:** ALP-438 (done, assigned Vinod-AI-CEO)
+- **Multica:** ALP-451 (done, assigned Vinod-AI-CEO)
 
 ### 2026-06-01: Automated Arxiv → NotebookLM → Slack Research Pipeline
 - Built `arxiv_to_notebooklm.py` — fully automated, self-healing pipeline that scrapes recent papers from 10 disciplines with polite 2-second rate-limiting delays.
@@ -231,6 +231,7 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Implemented 48-hour success lock in `arxiv_to_notebooklm_state.json` (bypassed with `--force`) and configured daily trigger at 08:30 AM IST in crontab for self-healing error recovery.
 - Successfully verified full run: downloaded PDF, uploaded to NotebookLM, generated briefing doc + mind-map, saved artifacts, delivered Block Kit chunked payloads to Slack, and verified notebook deletion.
 - Documented pipeline in `README.md`.
+- **Multica:** ALP-452 (done, assigned Vinod-AI-CEO)
 
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
