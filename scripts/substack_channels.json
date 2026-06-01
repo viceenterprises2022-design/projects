@@ -1,6 +1,7 @@
 {
-    "npr_top_stories": {
+    "npr_filtered": {
         "feed_url": "https://www.npr.org/rss/rss.php?id=1001",
-        "display_name": "NPR Top Stories"
+        "display_name": "NPR Filtered News",
+        "filters": ["Trump", "Crypto", "Economy", "AI", "Tech"]
     }
 }
