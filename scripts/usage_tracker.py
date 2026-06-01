@@ -401,6 +401,9 @@ def _run_daemon():
     signal.signal(signal.SIGINT, handle_sigterm)
 
     log.info("Daemon started")
+    dbg_fd = os.open("/tmp/usage_dbg.txt", os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    os.write(dbg_fd, f"[{int(time.time())}] _run_daemon started\n".encode())
+    os.close(dbg_fd)
 
     while running:
         now = int(time.time())
