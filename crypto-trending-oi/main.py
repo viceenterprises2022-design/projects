@@ -1,3 +1,4 @@
+import argparse
 import datetime
 import asyncio
 import sqlite3
@@ -54,7 +55,7 @@ def identify_drivers(df, result):
     
     return bullish[:3], bearish[:3]
 
-def print_trending_oi():
+def print_trending_oi(limit=None):
     try:
         conn = sqlite3.connect("crypto_intraday_oi.db")
         c = conn.cursor()
@@ -105,6 +106,9 @@ def print_trending_oi():
         
         prev_diff = diff
         
+    if limit is not None:
+        display_rows = display_rows[:limit]
+        
     for dr in display_rows:
         t_table.add_row(*dr)
         
@@ -136,6 +140,9 @@ def print_oi_intelligence(df):
     console.print("\n")
 
 async def main():
+    import sys
+    is_short = "--short" in sys.argv
+    
     with console.status("[bold green]Fetching Async Crypto Factor Intelligence Data...[/bold green]", spinner="dots"):
         df_factors = await fetch_all_factors(use_mock=True)
         events = get_event_flags()
@@ -144,7 +151,7 @@ async def main():
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S IST")
     
     console.clear()
-    print_trending_oi()
+    print_trending_oi(limit=5 if is_short else None)
     print_oi_intelligence(df_factors)
     
     bullish_drivers, risk_flags = identify_drivers(df_factors, result)
