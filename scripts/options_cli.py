@@ -79,12 +79,25 @@ def save_to_db(conn, timestamp, index_name, spot, data_rows):
 # ── Upstox Fetchers ───────────────────────────────────────────────────────────
 
 def upstox_get(url, params):
-    try:
-        r = requests.get(url, headers=UH, params=params, timeout=12)
-        if r.status_code == 200:
-            return r.json()
-    except Exception:
-        pass
+    max_retries = 3
+    backoff = 1.0
+    # Spacing to prevent burst rate limit
+    time.sleep(0.15)
+    for attempt in range(max_retries):
+        try:
+            r = requests.get(url, headers=UH, params=params, timeout=12)
+            if r.status_code == 200:
+                return r.json()
+            elif r.status_code == 429:
+                print(f"    [W] Upstox 429 Rate Limit on {url.split('/')[-1]}. Retrying in {backoff}s... (Attempt {attempt+1}/{max_retries})")
+                time.sleep(backoff)
+                backoff *= 2
+            else:
+                print(f"    [W] Upstox API {r.status_code} on {url.split('/')[-1]}: {r.text[:200]}")
+                break
+        except Exception as e:
+            print(f"    [W] Connection error on {url.split('/')[-1]}: {e}")
+            time.sleep(0.5)
     return {}
 
 def get_symbol_from_key(key):

@@ -240,6 +240,19 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Updated `README.md` to document systemd user-level daemon commands, journal logs, and start scripts.
 - **Multica:** ALP-459 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-01: NotebookLM Cleanup & Bulk Deletion
+- Scanned NotebookLM cloud accounts and identified 53 temporary/stale notebooks created on 2026-06-01.
+- Executed automated Python deletion workflow utilizing the `notebooklm` CLI to bulk-delete all 53 today's notebooks, freeing cloud resources.
+- **Multica:** ALP-465 (done, assigned Vinod-AI-CEO)
+
+### 2026-06-01: Upstox API Monitoring & Self-Healing Integration
+- Diagnosed Upstox API HTTP 429 Rate Limit issues affecting the Option Chain endpoint.
+- Implemented 150ms request spacing and exponential backoff retry handler inside the `upstox_get` wrapper for `collector.py`, `market_analysis_v3.py`, and `options_cli.py`.
+- Restarted all systemd user collector daemons to load rate limit recovery logic, fully restoring Nifty/Sensex/BankNifty option chain data feeds.
+- Deployed stateful watchdog `monitor_upstox.py` running every 5 minutes in crontab to check Quotes, Expiries, and Chain health, sending alert/recovery integrations to Slack.
+- Updated `README.md` to document the new monitoring utility.
+- **Multica:** ALP-466 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

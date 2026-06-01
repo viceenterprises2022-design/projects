@@ -9475,8 +9475,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/collector.py": {
-    "mtime": 1780288870.2851534,
-    "ast_hash": "530e5a05b1477692320cc107798f77ff",
+    "mtime": 1780299776.6035805,
+    "ast_hash": "c3d6176812c849e6589b0e3d5937b8d4",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/test_exception.py": {
@@ -9495,8 +9495,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py": {
-    "mtime": 1780288870.2861533,
-    "ast_hash": "58ecf6582c64d9371b502cfa8072e429",
+    "mtime": 1780299786.1116118,
+    "ast_hash": "863a7f0d0c2b2d312a7b05fbce9fec1c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/report_and_send.py": {
@@ -9515,8 +9515,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/options_cli.py": {
-    "mtime": 1780288870.2861533,
-    "ast_hash": "74191d00cdfce468c230d8e09cb2304c",
+    "mtime": 1780299792.1086316,
+    "ast_hash": "9a5ffe579d4f7a7a78292f1e7867aefa",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
@@ -25605,8 +25605,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1780293352.3909845,
-    "ast_hash": "d1d7f06c342f26f7c6060cd045191888",
+    "mtime": 1780300006.965339,
+    "ast_hash": "f47662ca4448d9be4e03c9575e385b68",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_report.txt": {
@@ -25620,8 +25620,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/README.md": {
-    "mtime": 1780293349.000973,
-    "ast_hash": "d809ba5160eb84001d849dbfa592d11d",
+    "mtime": 1780299991.521288,
+    "ast_hash": "0481b07f0d07c0f30859c77d794aabb5",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/btc-api-2.md": {
@@ -40677,6 +40677,11 @@
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_13_2026-06-01.txt": {
     "mtime": 1780299088.1937802,
     "ast_hash": "4f57e98d0c02303c8362597513c93100",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/monitor_upstox.py": {
+    "mtime": 1780299576.1819205,
+    "ast_hash": "f736da429314e18147f874f3515ebcd0",
     "semantic_hash": ""
   }
 }

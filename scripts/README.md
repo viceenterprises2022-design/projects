@@ -4,6 +4,7 @@
 │   │   ├── collector.py                # Upstox + Yahoo → 10-factor signals → alphaedge.db
 │   │   ├── alphaedge_db.py             # SQLite schema + CRUD
 │   │   ├── api_server.py               # FastAPI REST :8765
+│   │   ├── monitor_upstox.py           # Upstox API health and rate limit monitor
 │   │   ├── market_analysis_v3.py       # Legacy monolith + OI collector thread
 │   │   ├── market_analysis_v2.py       # Older version
 │   │   ├── market_engine.py            # Async engine for crypto (aiohttp)
@@ -102,6 +103,7 @@ Comprehensive collection of scripts for Market Intelligence, AI Search, and auto
 | `collector.py` | **Core Engine**. Fetches market data from Upstox/Yahoo, calculates 10-factor signals, and saves to DB. |
 | `alphaedge_db.py` | **Database Manager**. Handles SQLite schema and data persistence for `alphaedge.db`. |
 | `alert_dashboard_alive.py` | **Dashboard Uptime Monitor**. Cron-friendly uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min. Silent when healthy; alerts Slack on 2+ consecutive failures plus recovery. State tracked in `/tmp/alert_dashboard_state.json`. |
+| `monitor_upstox.py` | **Upstox API Monitor**. Stateful health and rate-limit watchdog. Probes Quotes, Expiries, and Option Chain endpoints every 5 min. Automatically sends Slack alerts on HTTP 429/401/outages and handles recovery. State in `/tmp/monitor_upstox_state.json`. |
 | `api_server.py` | **API & Dashboard**. FastAPI backend serving market data and hosting the HTML dashboard on port 8765. Endpoints: `/api/latest`, `/api/history`, `/api/gainers-losers` (30s cache), `/api/portfolio/pnl` (multi-broker via `pnl_poller.py`), `/api/pixi/*` (options chain), `/api/strategies/nifty200-momentum`. |
 | `market_engine.py` | Orchestrates the analysis flow for market signals. |
 | `market_analysis_v3.py` | Latest version of core logic with **Auto-Refresh Terminal Dashboard**. |
@@ -328,6 +330,7 @@ python3 scaffold_agent.py --name "My Bot" --dest /path/to/dest
 | `send_slack.py` | Generic utility to send text or file content to any Slack webhook. |
 | `cron_watchdog.py` | Cron failure monitor — parses cron logs byte-offset, detects tracebacks, alerts Slack. State in `~/.opencode/cron_watchdog_state.json`. |
 | `alert_dashboard_alive.py` | Dashboard uptime monitor — checks `/`, `/pixi`, `/api/latest`, `/api/gainers-losers` every 5 min, alerts Slack on outage. |
+| `monitor_upstox.py` | Upstox API Monitor — checks health, rate limits, and outages of Upstox endpoints every 5 min, alerts Slack. State in `/tmp/monitor_upstox_state.json`. |
 | `send_telegram.py` | Generic utility to send messages via Telegram Bot API. |
 | `git-autosync.sh` | Shell script for automated git staging, committing, and pushing. |
 | `patch_market.py` | Utility to apply specific logic patches to the market analysis scripts. |
