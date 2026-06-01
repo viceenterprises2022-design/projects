@@ -472,12 +472,18 @@ def _run_daemon():
                 conn.commit()
 
             # Start new event
+            with open("/tmp/usage_dbg.txt", "a") as _dbg:
+                _dbg.write(f"[{now}] INSERTING... app={app!r} title={title!r} now={now}\n")
+                _dbg.flush()
             cur = conn.execute(
                 "INSERT INTO window_events (app, title, started_at) VALUES (?, ?, ?)",
                 (app, title, now)
             )
             current_event_id = cur.lastrowid
             conn.commit()
+            with open("/tmp/usage_dbg.txt", "a") as _dbg:
+                _dbg.write(f"[{now}] INSERTED id={current_event_id}\n")
+                _dbg.flush()
 
             # Process scan (every 30s)
             if now - last_process_scan >= PROCESS_SCAN_INTERVAL:
