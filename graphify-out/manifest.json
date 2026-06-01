@@ -40728,5 +40728,40 @@
     "mtime": 1780308326.5607526,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/gemini-projects/AGENTS.md": {
+    "mtime": 1780333517.1596518,
+    "ast_hash": "0dcf3b7c81bf1e62c35a80c5dc564191",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Polymarket_Claude/AGENTS.md": {
+    "mtime": 1780333517.160118,
+    "ast_hash": "cdba63cddf3f0c5604a6a61ec3280e09",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/AlphaEdge_NSE_Ticker/AGENTS.md": {
+    "mtime": 1780333517.160426,
+    "ast_hash": "8dceee034f59226ec4a708829c338912",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/btcusdt-futures-bot/AGENTS.md": {
+    "mtime": 1780333517.1633668,
+    "ast_hash": "22b7fba8bd3f3e9a000e7a8b16fd63e8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/daily_crypto_news/AGENTS.md": {
+    "mtime": 1780333517.1588228,
+    "ast_hash": "c782728881cfc932982fc766de153fc6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/crypto-trending-oi/AGENTS.md": {
+    "mtime": 1780333517.1564257,
+    "ast_hash": "1bebd4b6b70c77d18fc0ed61d501706d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_Copy/AGENTS.md": {
+    "mtime": 1780333517.155051,
+    "ast_hash": "20ed6c086e918b7e53d479e1fdab6417",
+    "semantic_hash": ""
   }
 }
