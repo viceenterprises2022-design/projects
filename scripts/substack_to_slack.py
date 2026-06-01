@@ -204,7 +204,7 @@ def process_with_notebooklm(title, content_text):
         # 4. Wait for NotebookLM source processing to complete
         # NLM 'source wait' requires just the ID, not the full string "Source created with ID: <UUID>"
         if source_id != "placeholder_source_id": # Only wait if we actually got an ID
-            nlm("source", "wait", source_id) # Re-enabled wait command
+            nlm("source", "wait", "--notebook", notebook_id, source_id) # Re-enabled wait command
             p(f"NotebookLM source processing completed for {source_id}")
         else:
             p(f"Skipping NLM source wait as source ID was not extracted.")
@@ -218,16 +218,16 @@ def process_with_notebooklm(title, content_text):
         artifact_id = artifact_id_match.group(1)
         p(f"Generating briefing report artifact (ID: {artifact_id})...")
 
-        # Wait for artifact generation to complete
-        nlm("artifact", "wait", artifact_id) # Re-enabled wait command
+        # 6. Wait for artifact generation to complete
+        nlm("artifact", "wait", "--notebook", notebook_id, artifact_id) # Re-enabled wait command
         p(f"Briefing report artifact generation completed for {artifact_id}")
 
-        # 6. Download the briefing report artifact
+        # 7. Download the briefing report artifact
         report_output_path = Path(OUTPUT_DIR) / f"briefing_report_{artifact_id}.md"
         nlm("download", "report", "--artifact", artifact_id, str(report_output_path))
         p(f"Downloaded briefing report to {report_output_path}")
 
-        # 7. Parse the downloaded report to extract the summary
+        # 8. Parse the downloaded report to extract the summary
         summary = "Summary not found."
         if report_output_path.exists():
             with open(report_output_path, 'r') as f:
@@ -253,7 +253,7 @@ def process_with_notebooklm(title, content_text):
         p(f"Error during NotebookLM processing for '{title}': {e}")
         return None
     finally:
-        # 8. Clean up temporary files and NotebookLM notebook
+        # 9. Clean up temporary files and NotebookLM notebook
         if temp_file_path and temp_file_path.exists():
             os.remove(temp_file_path)
             p(f"Deleted temporary file: {temp_file_path}")
