@@ -1,164 +1,112 @@
 {
-  "name": "Locally Coherent, Globally Incoherent LLM Agents",
+  "name": "Context-Dependent Argumentation Frameworks (CDAFs)",
   "children": [
     {
-      "name": "Core Problem",
+      "name": "Core Concepts",
       "children": [
         {
-          "name": "Compositional Incoherence"
+          "name": "Defeat Function"
         },
         {
-          "name": "Probability Axiom Violations"
+          "name": "Regime Influence"
         },
         {
-          "name": "Local Coherence Failure"
+          "name": "Strategic Perspectives"
         },
         {
-          "name": "Dutch-book Exposure"
+          "name": "Induced Frameworks"
         }
       ]
     },
     {
-      "name": "Key Metric: ε⋆",
+      "name": "Perspective-Labeled CDAF",
       "children": [
         {
-          "name": "Compositional Residual"
+          "name": "Source Perspectives (src)"
         },
         {
-          "name": "L2 Distance to Coherent Polytope"
+          "name": "Relevance Set (active ρ)"
         },
         {
-          "name": "Runtime Certificate"
+          "name": "Priority Function (π)"
         },
         {
-          "name": "Distribution-free Guarantee"
+          "name": "Attack Asymmetry"
         }
       ]
     },
     {
-      "name": "Theoretical Framework",
+      "name": "Strategic Advantages",
       "children": [
         {
-          "name": "Product-structure Dichotomy",
-          "children": [
-            {
-              "name": "Theorem 3.3"
-            },
-            {
-              "name": "Cartesian Product Factorization"
-            },
-            {
-              "name": "Non-commutation Characterization"
-            }
-          ]
+          "name": "Activation Manipulation"
         },
         {
-          "name": "Magnitude Prediction",
-          "children": [
-            {
-              "name": "Rayleigh-quotient Form"
-            },
-            {
-              "name": "Specialist Panel Covariance"
-            },
-            {
-              "name": "Corollary 3.9"
-            }
-          ]
+          "name": "Partial Relevance Acceptance"
         },
         {
-          "name": "Exposure Bound (FTAP)"
+          "name": "Breaking Structural Traps"
+        },
+        {
+          "name": "Beyond VAF Audiences"
         }
       ]
     },
     {
-      "name": "Solutions and Repairs",
+      "name": "Formal Analysis",
       "children": [
         {
-          "name": "Hierarchical JCD",
+          "name": "Decision Problem",
           "children": [
             {
-              "name": "Boyle–Dykstra Projection"
+              "name": "ACTIVATION-MANIPULATION"
             },
             {
-              "name": "Convex-analytic Repair"
-            },
-            {
-              "name": "Deterministic Convergence"
+              "name": "Credulous σ-acceptance"
             }
           ]
         },
         {
-          "name": "Sequential Monitoring",
+          "name": "Complexity Bounds",
           "children": [
             {
-              "name": "Anytime-valid e-process"
+              "name": "NP-complete (Stable/Preferred)"
             },
             {
-              "name": "Ville’s Inequality"
-            },
-            {
-              "name": "Coherence Testing"
+              "name": "P-hard (Grounded)"
             }
           ]
         }
       ]
     },
     {
-      "name": "Empirical Results",
+      "name": "Comparisons",
       "children": [
         {
-          "name": "Benchmarks",
-          "children": [
-            {
-              "name": "Paleka (Logical Relations)"
-            },
-            {
-              "name": "Polymarket (Partitions)"
-            }
-          ]
+          "name": "Dung's AF (Fixed Structure)"
         },
         {
-          "name": "Performance",
-          "children": [
-            {
-              "name": "Brier Improvement"
-            },
-            {
-              "name": "Log-payoff Gain"
-            },
-            {
-              "name": "Regret Reduction"
-            }
-          ]
+          "name": "Value-based AF (No Deactivation)"
         },
         {
-          "name": "Mitigation Failures",
-          "children": [
-            {
-              "name": "Retrieval Grounding"
-            },
-            {
-              "name": "Partition-aware Prompting"
-            },
-            {
-              "name": "Aggregator-LLM"
-            }
-          ]
+          "name": "Control Argumentation (Uncertainty)"
         }
       ]
     },
     {
-      "name": "Deployment Modes",
+      "name": "Future Work",
       "children": [
         {
-          "name": "Monitor Mode"
+          "name": "Multi-agent Variants"
         },
         {
-          "name": "Repair Mode"
+          "name": "Strategic Equilibria"
         },
         {
-          "name": "Abstain-or-escalate Mode"
+          "name": "Skeptical Acceptance"
+        },
+        {
+          "name": "Institutional Constraints"
         }
       ]
     }

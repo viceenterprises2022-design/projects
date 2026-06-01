@@ -8,6 +8,7 @@ import argparse
 from bs4 import BeautifulSoup
 import time
 import subprocess
+import re # Import re for regex parsing of NLM output
 
 # Configuration
 SUBSTACK_CHANNELS_FILE = Path(__file__).parent / "substack_channels.json"
@@ -38,7 +39,11 @@ def nlm_json(*args):
     """Wrapper for NotebookLM CLI commands returning JSON."""
     output = nlm(*args)
     if output:
-        return json.loads(output)
+        try:
+            return json.loads(output)
+        except json.JSONDecodeError:
+            p(f"Warning: NLM output is not JSON: {output[:200]}...") # Log snippet
+            return None # Or raise an error, depending on desired behavior
     return None
 
 def load_channels():
@@ -114,11 +119,12 @@ def get_article_content(url):
 
         content_source = None
 
-        # Prioritized selectors
+        # Prioritized selectors for NPR
         if not content_source:
-            content_source = soup.find('div', {'data-component': 'ArticleBody'})
+            content_source = soup.find('div', class_='storytext')
         if not content_source:
-            content_source = soup.find('div', class_='duet--article--body-page')
+            content_source = soup.find('div', id='storytext')
+        # General selectors
         if not content_source:
             content_source = soup.find('article')
         if not content_source:
@@ -127,7 +133,7 @@ def get_article_content(url):
             content_source = soup.find('div', class_='body prose')
 
         if not content_source:
-            # Fallback for Substack specific structure or common article containers
+            # Fallback for other structures or common article containers
             content_source = soup.find('div', class_='available-content') or \
                              soup.find('div', class_='markup') or \
                              soup.find('div', class_=lambda x: x and ('post-content' in x or 'entry-content' in x))
@@ -151,6 +157,10 @@ def get_article_content(url):
     except requests.exceptions.RequestException as e:
         p(f"Error fetching article content from {url}: {e}")
         return None
+    except Exception as e:
+        p(f"Error parsing article content from {url}: {e}")
+        return None
+
 def process_with_notebooklm(title, content_text):
     """
     Creates a NotebookLM notebook, uploads content, generates a briefing report,
@@ -169,22 +179,43 @@ def process_with_notebooklm(title, content_text):
         p(f"Created temporary content file: {temp_file_path}")
 
         # 2. Create a new NotebookLM notebook
-        notebook_id = nlm("create", title).strip()
+        notebook_output = nlm("create", title).strip()
+        # Extract UUID from "Created notebook: <UUID> - <TITLE>"
+        notebook_id_match = re.search(r'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', notebook_output)
+        if not notebook_id_match:
+            raise RuntimeError(f"Could not extract notebook ID from NLM output: {notebook_output}")
+        notebook_id = notebook_id_match.group(1)
         p(f"Created NotebookLM notebook: {title} (ID: {notebook_id})")
 
         # 3. Add the temporary file as a source
-        source_id = nlm("source", "add", "--notebook", notebook_id, "--file", str(temp_file_path)).strip()
+        source_output = nlm("source", "add", "--notebook", notebook_id, str(temp_file_path)).strip()
+        source_id_match = re.search(r'Source created with ID: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', source_output)
+        if not source_id_match:
+            # Fallback for when no explicit ID is returned but command succeeds, or if ID format is different
+            p(f"Warning: Could not extract source ID from NLM output: {source_output}. Assuming success and using a placeholder.")
+            source_id = "placeholder_source_id" # Proceed without specific source_id if not found
+        else:
+            source_id = source_id_match.group(1)
         p(f"Added source '{temp_file_name}' (ID: {source_id}) to notebook {notebook_id}")
 
         # 4. Wait for NotebookLM source processing to complete
-        nlm("source", "wait", source_id)
-        p(f"NotebookLM source processing completed for {source_id}")
+        # NLM 'source wait' requires just the ID, not the full string "Source created with ID: <UUID>"
+        if source_id != "placeholder_source_id": # Only wait if we actually got an ID
+            nlm("source", "wait", source_id)
+            p(f"NotebookLM source processing completed for {source_id}")
+        else:
+            p(f"Skipping NLM source wait as source ID was not extracted.")
+
 
         # 5. Generate a "briefing-report" artifact
-        artifact_id = nlm("artifact", "generate", "report", "--notebook", notebook_id).strip()
+        artifact_output = nlm("artifact", "generate", "report", "--notebook", notebook_id).strip()
+        artifact_id_match = re.search(r'Artifact created with ID: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', artifact_output)
+        if not artifact_id_match:
+            raise RuntimeError(f"Could not extract artifact ID from NLM output: {artifact_output}")
+        artifact_id = artifact_id_match.group(1)
         p(f"Generating briefing report artifact (ID: {artifact_id})...")
 
-        # Wait for artifact generation to complete
+        artifact_output = nlm("generate", "report", "--notebook", notebook_id).strip()
         nlm("artifact", "wait", artifact_id)
         p(f"Briefing report artifact generation completed for {artifact_id}")
 
@@ -225,89 +256,8 @@ def process_with_notebooklm(title, content_text):
             p(f"Deleted temporary file: {temp_file_path}")
         if notebook_id:
             try:
+                # NLM delete command only expects the UUID, not the full string
                 nlm("delete", notebook_id)
-                p(f"Deleted NotebookLM notebook: {notebook_id}")
-            except Exception as e:
-                p(f"Error deleting NotebookLM notebook {notebook_id}: {e}")
-
-def process_with_notebooklm(title, content_text):
-    """
-    Creates a NotebookLM notebook, uploads content, generates a briefing report,
-    downloads it, extracts summary, and cleans up.
-    """
-    p(f"Processing '{title}' with NotebookLM...")
-    notebook_id = None
-    temp_file_path = None
-    try:
-        # 1. Create a temporary text file with content_text
-        temp_file_name = f"substack_{int(time.time())}.txt"
-        temp_file_path = Path(OUTPUT_DIR) / temp_file_name
-        temp_file_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(temp_file_path, 'w') as f:
-            f.write(content_text)
-        p(f"Created temporary content file: {temp_file_path}")
-
-        # 2. Create a new NotebookLM notebook
-        notebook_info = nlm_json("notebooks", "new", "--title", title)
-        notebook_id = notebook_info['id']
-        p(f"Created NotebookLM notebook: {title} (ID: {notebook_id})")
-
-        # 3. Add the temporary file as a source
-        source_info = nlm_json("sources", "add", "--notebook", notebook_id, "--file", str(temp_file_path))
-        source_id = source_info['id']
-        p(f"Added source '{temp_file_name}' (ID: {source_id}) to notebook {notebook_id}")
-
-        # 4. Wait for NotebookLM source processing to complete
-        nlm("sources", "wait", source_id)
-        p(f"NotebookLM source processing completed for {source_id}")
-
-        # 5. Generate a "briefing-report" artifact
-        artifact_info = nlm_json("artifacts", "create", "--notebook", notebook_id, "--type", "briefing-report")
-        artifact_id = artifact_info['id']
-        p(f"Generating briefing report artifact (ID: {artifact_id})...")
-
-        # Wait for artifact generation to complete
-        nlm("artifacts", "wait", artifact_id)
-        p(f"Briefing report artifact generation completed for {artifact_id}")
-
-        # 6. Download the briefing report artifact
-        report_output_path = Path(OUTPUT_DIR) / f"briefing_report_{artifact_id}.md"
-        nlm("artifacts", "download", artifact_id, "--output", str(report_output_path))
-        p(f"Downloaded briefing report to {report_output_path}")
-
-        # 7. Parse the downloaded report to extract the summary
-        summary = "Summary not found."
-        if report_output_path.exists():
-            with open(report_output_path, 'r') as f:
-                report_content = f.read()
-                # Assuming the summary is in the first section or clearly marked
-                # This might need refinement based on actual NLM briefing report format
-                summary_start = report_content.find("## Briefing Report")
-                if summary_start != -1:
-                    summary_content = report_content[summary_start + len("## Briefing Report"):].strip()
-                    first_section_end = summary_content.find("\n## ") # Find next section header
-                    if first_section_end != -1:
-                        summary = summary_content[:first_section_end].strip()
-                    else:
-                        summary = summary_content.strip()
-                elif report_content.strip():
-                    summary = report_content.strip() # Fallback if specific header not found
-        else:
-            p(f"Warning: Briefing report not found at {report_output_path}")
-
-        return summary
-
-    except Exception as e:
-        p(f"Error during NotebookLM processing for '{title}': {e}")
-        return None
-    finally:
-        # 8. Clean up temporary files and NotebookLM notebook
-        if temp_file_path and temp_file_path.exists():
-            os.remove(temp_file_path)
-            p(f"Deleted temporary file: {temp_file_path}")
-        if notebook_id:
-            try:
-                nlm("notebooks", "delete", notebook_id)
                 p(f"Deleted NotebookLM notebook: {notebook_id}")
             except Exception as e:
                 p(f"Error deleting NotebookLM notebook {notebook_id}: {e}")
