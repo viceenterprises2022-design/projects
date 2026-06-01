@@ -401,20 +401,29 @@ def _run_daemon():
     signal.signal(signal.SIGINT, handle_sigterm)
 
     log.info("Daemon started")
-    dbg_fd = os.open("/tmp/usage_dbg.txt", os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
-    os.write(dbg_fd, f"[{int(time.time())}] _run_daemon started\n".encode())
-    os.close(dbg_fd)
 
     while running:
         now = int(time.time())
         try:
-            # Window tracking
-            window = get_active_window()
-            app = window[0] if window else "Unknown"
-            title = window[1] if window else ""
+            with open("/tmp/usage_dbg.txt", "a") as _dbg:
+                _dbg.write(f"[{now}] iter start\n")
+                _dbg.flush()
 
-            # Idle detection
-            idle = get_idle_seconds()
+                # Window tracking
+                _dbg.write(f"[{now}] calling get_active_window...\n")
+                _dbg.flush()
+                window = get_active_window()
+                _dbg.write(f"[{now}] window={window}\n")
+                _dbg.flush()
+                app = window[0] if window else "Unknown"
+                title = window[1] if window else ""
+
+                # Idle detection
+                _dbg.write(f"[{now}] calling get_idle_seconds...\n")
+                _dbg.flush()
+                idle = get_idle_seconds()
+                _dbg.write(f"[{now}] idle={idle}\n")
+                _dbg.flush()
             if idle > 300:
                 idle_accumulated += DAEMON_INTERVAL
                 if current_event_id is not None:
