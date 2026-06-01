@@ -267,7 +267,7 @@ def process_with_notebooklm(title, content_text):
 
 def send_summary_to_slack(channel_name, post_title, summary, post_url):
     """
-    Constructs and sends Slack Block Kit messages using send_slack.py.
+    Constructs and sends Slack messages using send_slack.py.
     """
     if not SLACK_WEBHOOK_URL:
         p("Skipping Slack notification: SLACK_WEBHOOK_URL not set.")
@@ -275,54 +275,17 @@ def send_summary_to_slack(channel_name, post_title, summary, post_url):
 
     p(f"Sending summary to Slack for '{post_title}' from {channel_name}")
     try:
-        # Use subprocess to call send_slack.py
-        # Need to ensure send_slack.py is importable or callable as a script
-        # For now, let's assume it's in the same directory and callable
         send_slack_script = Path(__file__).parent / "send_slack.py"
         
-        # Prepare blocks for Slack message
-        blocks = []
-
-        # Header section with channel name and post title
-        blocks.append({
-            "type": "header",
-            "text": {
-                "type": "plain_text",
-                "text": f"New Post from {channel_name}: {post_title}",
-                "emoji": True
-            }
-        })
-        blocks.append({"type": "divider"})
-
-        # Summary section
-        blocks.append({
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": summary
-            }
-        })
-
-        # Link to original post
-        blocks.append({
-            "type": "context",
-            "elements": [
-                {
-                    "type": "mrkdwn",
-                    "text": f"<{post_url}|Read the full article>"
-                }
-            ]
-        })
-        blocks.append({"type": "divider"})
-
-        # Construct the command for send_slack.py
+        # Construct the command for send_slack.py using header and text
         cmd = [
             "python3", str(send_slack_script),
             "--webhook", SLACK_WEBHOOK_URL,
             "--username", SLACK_USERNAME,
             "--icon", SLACK_ICON,
-            "--color", "info", # Can be 'good', 'warning', 'danger', 'info'
-            "--blocks", json.dumps(blocks) # JSON-encode the blocks list
+            "--color", "info", # Use 'info' color for general summaries
+            "--header", f"New Post from {channel_name}: {post_title}",
+            "--text", f"{summary}\n\nRead the full article: <{post_url}|{post_title}>"
         ]
         
         result = subprocess.run(cmd, capture_output=True, text=True, check=False)

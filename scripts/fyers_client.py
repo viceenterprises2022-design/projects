@@ -66,8 +66,8 @@ def update_env_var(key, val):
     logger.info(f"Updated {key} in .env file.")
 
 def is_fyers_configured():
-    """Checks if core Fyers credentials are set."""
-    return bool(FYERS_CLIENT_ID and FYERS_SECRET_KEY and FYERS_REFRESH_TOKEN)
+    """Disabled by request - force all feeds exclusively from Upstox."""
+    return False
 
 def refresh_fyers_access_token():
     """
