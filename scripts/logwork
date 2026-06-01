@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """
 LogWork CLI tool for AlphaEdge
-Automatically reads today's accomplishments from AGENTS.md, checks existing Multica issues,
-and logs any unlogged entries to Multica.
+Reads today's "Session Memory" entries from scripts/AGENTS.md, dedupes against
+existing Multica issues by title, creates new issues, and posts a Block Kit
+summary to Slack via the shared send_slack.py helper.
+
+Usage:
+  logwork                 # today (host clock)
+  logwork YYYY-MM-DD      # specific date
+  logwork --no-slack      # skip Slack summary
 """
 import sys
 import os
@@ -10,101 +16,161 @@ import re
 import json
 import subprocess
 import datetime
+from pathlib import Path
+
+# Make sibling send_slack importable when invoked from anywhere
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+try:
+    from send_slack import send_to_slack, compose_blocks  # type: ignore
+    from dotenv import load_dotenv  # type: ignore
+    load_dotenv(SCRIPT_DIR / ".env")
+except Exception as _e:
+    send_to_slack = None
+    compose_blocks = None
+
+
+AGENTS_PATH = SCRIPT_DIR / "AGENTS.md"
+MULTICA_BIN = "/usr/local/bin/multica"
+PROJECT_ID = "8eaf35e9"  # Tools
+ASSIGNEE = "Vinod-AI-CEO"
+
+
+def fetch_existing_titles():
+    res = subprocess.run(
+        [MULTICA_BIN, "issue", "list", "--output", "json", "--limit", "1000"],
+        capture_output=True, text=True,
+    )
+    titles = set()
+    if res.returncode != 0:
+        print("[LogWork] Warning: Could not reach Multica. Continuing without dedup.")
+        return titles
+    try:
+        data = json.loads(res.stdout)
+        issues = data if isinstance(data, list) else data.get("issues", [])
+        for issue in issues:
+            if isinstance(issue, dict) and "title" in issue:
+                titles.add(issue["title"].strip().lower())
+    except Exception as e:
+        print(f"[LogWork] Warning: parse failed ({e}). No dedup.")
+    return titles
+
+
+def parse_entries(content, day):
+    pattern = rf"### ({re.escape(day)}): ([^\n]+)\n(.*?)(?=\n###|\Z)"
+    return re.findall(pattern, content, re.DOTALL)
+
+
+def clean_description(raw):
+    out = []
+    for line in raw.strip().split("\n"):
+        s = line.strip()
+        if not s or "Multica:" in s:
+            continue
+        out.append(s.lstrip("- ").strip())
+    return "\n".join(out)
+
+
+def create_issue(title, desc, day):
+    cmd = [
+        MULTICA_BIN, "issue", "create",
+        "--project", PROJECT_ID,
+        "--title", title,
+        "--assignee", ASSIGNEE,
+        "--status", "done",
+        "--priority", "high",
+        "--start-date", f"{day}T00:00:00Z",
+        "--due-date", f"{day}T23:59:59Z",
+        "--description", desc,
+    ]
+    return subprocess.run(cmd, capture_output=True, text=True)
+
+
+def post_slack(day, logged, skipped, failed):
+    webhook = os.getenv("SLACK_WEBHOOK_URL")
+    if not webhook or send_to_slack is None or compose_blocks is None:
+        print("[LogWork] Slack skipped (no webhook or helper unavailable).")
+        return
+    total = len(logged) + len(skipped) + len(failed)
+    color = "good"
+    if failed:
+        color = "danger"
+    elif not logged:
+        color = "info"
+
+    def fmt_list(items):
+        return "\n".join(f"• {t}" for t in items) if items else "_none_"
+
+    body_parts = []
+    if logged:
+        body_parts.append(f"*Logged ({len(logged)}):*\n{fmt_list(logged)}")
+    if skipped:
+        body_parts.append(f"*Skipped — already present ({len(skipped)}):*\n{fmt_list(skipped)}")
+    if failed:
+        body_parts.append(f"*Failed ({len(failed)}):*\n" + "\n".join(f"• {t}: {e}" for t, e in failed))
+    body = "\n\n".join(body_parts) or "_no entries found_"
+
+    blocks = compose_blocks(
+        header=f"LogWork — {day}",
+        fields={
+            "Date": day,
+            "Logged": str(len(logged)),
+            "Skipped": str(len(skipped)),
+            "Failed": str(len(failed)),
+        },
+        body=body,
+        context=[f"Project `{PROJECT_ID}` • Assignee `{ASSIGNEE}` • {total} entries scanned"],
+    )
+    res = send_to_slack(webhook, f"LogWork {day}: {len(logged)} new, {len(skipped)} dup, {len(failed)} fail", blocks=blocks, color=color)
+    print(f"[LogWork] Slack: {res.get('ok')}")
+
 
 def main():
-    agents_path = "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md"
-    if not os.path.exists(agents_path):
-        print(f"Error: {agents_path} not found.")
-        sys.exit(1)
-        
-    with open(agents_path, 'r') as f:
-        content = f.read()
-        
-    # 1. Fetch current issues from Multica to deduplicate by title
-    print("[LogWork] Fetching existing issues from Multica...")
-    list_cmd = ["/usr/local/bin/multica", "issue", "list", "--output", "json", "--limit", "1000"]
-    res = subprocess.run(list_cmd, capture_output=True, text=True)
-    
-    existing_titles = set()
-    if res.returncode == 0:
-        try:
-            data = json.loads(res.stdout)
-            issues_list = []
-            if isinstance(data, list):
-                issues_list = data
-            elif isinstance(data, dict) and "issues" in data:
-                issues_list = data["issues"]
-            for issue in issues_list:
-                if isinstance(issue, dict) and "title" in issue:
-                    existing_titles.add(issue["title"].strip().lower())
-        except Exception as e:
-            print(f"[LogWork] Warning: Failed to parse existing issue list ({e}). Continuing without deduplication.")
-    else:
-        print("[LogWork] Warning: Could not reach Multica workspace. Continuing without deduplication.")
+    args = [a for a in sys.argv[1:] if a]
+    no_slack = "--no-slack" in args
+    args = [a for a in args if a != "--no-slack"]
+    day = args[0] if args else datetime.date.today().strftime("%Y-%m-%d")
 
-    # 2. Find all entries for today under Session Memory
-    if len(sys.argv) > 1:
-        today_str = sys.argv[1]
-    else:
-        today_str = datetime.date.today().strftime("%Y-%m-%d")
-        
-    # Find all matches for "### YYYY-MM-DD: Title" and capture content until next h3/###
-    pattern = rf"### ({today_str}): ([^\n]+)\n(.*?)(?=\n###|\Z)"
-    matches = re.findall(pattern, content, re.DOTALL)
-    
-    if not matches:
-        print(f"[LogWork] Error: No entries for today ({today_str}) found in AGENTS.md under Session Memory.")
+    if not AGENTS_PATH.exists():
+        print(f"Error: {AGENTS_PATH} not found.")
         sys.exit(1)
-        
-    logged_count = 0
-    for date_val, title_val, desc_val in matches:
+    content = AGENTS_PATH.read_text()
+
+    print("[LogWork] Fetching existing issues from Multica...")
+    existing = fetch_existing_titles()
+
+    matches = parse_entries(content, day)
+    if not matches:
+        print(f"[LogWork] No entries for {day} found under Session Memory.")
+        if not no_slack:
+            post_slack(day, [], [], [])
+        sys.exit(0)
+
+    logged, skipped, failed = [], [], []
+    for _, title_val, desc_val in matches:
         title = title_val.strip()
-        title_lower = title.lower()
-        
-        # Check if already logged
-        if title_lower in existing_titles:
-            print(f"[LogWork] Skipping: '{title}' is already logged in Multica.")
+        if title.lower() in existing:
+            print(f"[LogWork] Skip (dup): {title}")
+            skipped.append(title)
             continue
-            
-        # Format and clean description lines
-        desc_lines = []
-        for line in desc_val.strip().split("\n"):
-            clean_line = line.strip()
-            if not clean_line or "Multica:" in clean_line:
-                continue
-            desc_lines.append(clean_line.lstrip("- ").strip())
-        desc = "\n".join(desc_lines)
-        
-        print(f"\n[LogWork] Logging new work entry to Multica:")
-        print(f"  Title:       {title}")
-        print(f"  Project ID:  8eaf35e9 (Tools)")
-        print(f"  Assignee:    Vinod-AI-CEO")
-        print(f"  Due Date:    {today_str}")
-        print(f"  Description:\n{desc}\n")
-        
-        # Call multica issue create
-        cmd = [
-            "/usr/local/bin/multica", "issue", "create",
-            "--project", "8eaf35e9",
-            "--title", title,
-            "--assignee", "Vinod-AI-CEO",
-            "--status", "done",
-            "--priority", "high",
-            "--start-date", f"{today_str}T00:00:00Z",
-            "--due-date", f"{today_str}T23:59:59Z",
-            "--description", desc
-        ]
-        
-        create_res = subprocess.run(cmd, capture_output=True, text=True)
-        if create_res.returncode == 0:
-            print(f"[LogWork] Success! Issue created successfully in Multica:")
-            print(create_res.stdout)
-            logged_count += 1
+        desc = clean_description(desc_val)
+        print(f"\n[LogWork] Creating: {title}")
+        res = create_issue(title, desc, day)
+        if res.returncode == 0:
+            print(f"[LogWork] OK: {title}")
+            logged.append(title)
         else:
-            print(f"[LogWork] Error logging issue '{title}': {create_res.stderr.strip() or create_res.stdout.strip()}")
-            
-    if logged_count == 0:
-        print("\n[LogWork] All today's entries are already logged in Multica. Workspace is fully up-to-date!")
+            err = (res.stderr or res.stdout).strip().splitlines()[-1] if (res.stderr or res.stdout) else "unknown"
+            print(f"[LogWork] FAIL: {title} -> {err}")
+            failed.append((title, err))
+
+    print(f"\n[LogWork] Summary: {len(logged)} logged, {len(skipped)} skipped, {len(failed)} failed.")
+
+    if not no_slack:
+        post_slack(day, logged, skipped, failed)
+
 
 if __name__ == "__main__":
     main()
