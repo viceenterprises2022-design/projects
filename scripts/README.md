@@ -89,6 +89,31 @@
 ├── Claude_Com_playbook/                # Claude playbook
 ├── ... 12 more dirs                    # misc: data, docs, pdf, etc.
 
+## 📝 OpenCode Agent Commands
+
+This section details specialized commands implemented as OpenCode agents to automate workflow tasks.
+
+### `/logwork` — Automated Multica Issue Creation
+
+The `/logwork` command automates the creation of issues in the Multica project management system for work completed during the current session. It leverages a dedicated `logwork` agent to orchestrate this process.
+
+**Functionality:**
+1.  **Session Memory Parsing:** Reads the "Session Memory" section of `AGENTS.md` to identify completed tasks and associated Multica project IDs (e.g., `ALP-XXX`). It can also consult `README.md` for additional context if required.
+2.  **Project Mapping:** Translates identified work items into specific Multica project IDs based on a predefined internal mapping (e.g., `8eaf35e9` for "Tools", `ae64ae90` for "Agents").
+3.  **Issue Creation:** For each distinct task, it executes the `multica issue create` CLI command.
+    *   Issues are automatically assigned to `Vinod-AI-CEO`.
+    *   The issue title is extracted directly from the `AGENTS.md` session memory entry.
+    *   Status (e.g., "done", "in_progress") is inferred from the `AGENTS.md` entry.
+
+**Technical Details:**
+*   **Agent:** `logwork` (model: `opencode/big-pickle`)
+*   **Permissions:** Allows `bash`, `read`, `write`, `glob`, `grep`, and `external_directory` access to interact with the file system and the `multica` CLI.
+*   **Source:** Defined in `~/.config/opencode/opencode.jsonc` as an agent, and invoked via the `~/.config/opencode/commands/logwork.md` command definition.
+
+**Example Usage (Conceptual):**
+After completing a task and adding an entry like `**Multica:** ALP-335 (done, assigned Vinod-AI-CEO)` to the "Session Memory" section of `AGENTS.md`, running `/logwork` would create a corresponding issue in Multica.
+
+
 # Scripts Repository
 
 Comprehensive collection of scripts for Market Intelligence, AI Search, and automated reporting.
