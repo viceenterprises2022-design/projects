@@ -31,6 +31,9 @@ def nlm(*args, capture=True):
     if result.returncode != 0:
         p(f"NLM command failed: {result.stderr}")
         raise RuntimeError(f"NLM command failed: {result.stderr}")
+    else: # Always print stderr for debugging, even if returncode is 0
+        if result.stderr:
+            p(f"NLM command stderr: {result.stderr.strip()}")
     if capture:
         return result.stdout
     return None
@@ -201,8 +204,8 @@ def process_with_notebooklm(title, content_text):
         # 4. Wait for NotebookLM source processing to complete
         # NLM 'source wait' requires just the ID, not the full string "Source created with ID: <UUID>"
         if source_id != "placeholder_source_id": # Only wait if we actually got an ID
-            nlm("source", "wait", source_id)
-            p(f"NotebookLM source processing completed for {source_id}")
+            # nlm("source", "wait", source_id) # Temporarily commented out due to silent failure
+            p(f"NotebookLM source processing would have completed for {source_id}")
         else:
             p(f"Skipping NLM source wait as source ID was not extracted.")
 
@@ -216,12 +219,12 @@ def process_with_notebooklm(title, content_text):
         p(f"Generating briefing report artifact (ID: {artifact_id})...")
 
         # Wait for artifact generation to complete
-        nlm("artifact", "wait", artifact_id)
-        p(f"Briefing report artifact generation completed for {artifact_id}")
+        # nlm("artifact", "wait", artifact_id) # Temporarily commented out due to silent failure
+        p(f"Briefing report artifact generation would have completed for {artifact_id}")
 
         # 6. Download the briefing report artifact
         report_output_path = Path(OUTPUT_DIR) / f"briefing_report_{artifact_id}.md"
-        nlm("artifact", "download", artifact_id, "--output", str(report_output_path))
+        nlm("download", artifact_id, "--output", str(report_output_path))
         p(f"Downloaded briefing report to {report_output_path}")
 
         # 7. Parse the downloaded report to extract the summary
