@@ -9475,7 +9475,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/collector.py": {
-    "mtime": 1780288803.3189316,
+    "mtime": 1780288870.2851534,
     "ast_hash": "530e5a05b1477692320cc107798f77ff",
     "semantic_hash": ""
   },
@@ -9495,7 +9495,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_analysis_v3.py": {
-    "mtime": 1780288815.0729704,
+    "mtime": 1780288870.2861533,
     "ast_hash": "58ecf6582c64d9371b502cfa8072e429",
     "semantic_hash": ""
   },
@@ -9515,7 +9515,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/options_cli.py": {
-    "mtime": 1780288826.4890082,
+    "mtime": 1780288870.2861533,
     "ast_hash": "74191d00cdfce468c230d8e09cb2304c",
     "semantic_hash": ""
   },
@@ -9555,7 +9555,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/fo_breakout_scanner.py": {
-    "mtime": 1780288836.9230428,
+    "mtime": 1780288870.2851534,
     "ast_hash": "c394342b0e2916346b31b7122eac1aa7",
     "semantic_hash": ""
   },
@@ -40385,7 +40385,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack.py": {
-    "mtime": 1780288774.821837,
+    "mtime": 1780288870.2861533,
     "ast_hash": "b54bd0ce84b0274714e7ed8152ac507c",
     "semantic_hash": ""
   },
@@ -40477,6 +40477,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260601_0925_X_12_13.txt": {
     "mtime": 1780288024.9551802,
     "ast_hash": "086f3f75ebff89f5086c8d8441191c1b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/fyers_client.py": {
+    "mtime": 1780288733.4697,
+    "ast_hash": "aaf89b1076f9ab97c2c9ebc4f62721f0",
     "semantic_hash": ""
   }
 }
