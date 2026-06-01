@@ -25605,7 +25605,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1780289765.510045,
+    "mtime": 1780289862.061355,
     "ast_hash": "19af9c6464d7ed0543bcaa85582a803a",
     "semantic_hash": ""
   },
@@ -39035,7 +39035,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/logwork": {
-    "mtime": 1780289835.8532708,
+    "mtime": 1780289862.082355,
     "ast_hash": "c437bb5908458cde7d8f3811217be8a9",
     "semantic_hash": ""
   },
@@ -40380,13 +40380,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack_state.json": {
-    "mtime": 1780289837.470276,
-    "ast_hash": "7f7e7b18dd9580fedb75721171ff1331",
+    "mtime": 1780289984.9656036,
+    "ast_hash": "0b572f67fe8682f92784d1eaa8db2780",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack.py": {
-    "mtime": 1780288870.2861533,
-    "ast_hash": "b54bd0ce84b0274714e7ed8152ac507c",
+    "mtime": 1780290047.3849502,
+    "ast_hash": "8319956cff71d850b8b055db767b8e1c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_channels.json": {
@@ -40482,6 +40482,36 @@
   "/home/vreddy1/Desktop/Projects/scripts/fyers_client.py": {
     "mtime": 1780288733.4697,
     "ast_hash": "aaf89b1076f9ab97c2c9ebc4f62721f0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_416c9fc5-86cb-4a14-9223-0d92324a9ab2.md": {
+    "mtime": 1780289797.0898156,
+    "ast_hash": "af479577622c670d111db73f113c912b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_78e5683b-6662-4386-a040-cfad69c68da8.md": {
+    "mtime": 1780289871.1335464,
+    "ast_hash": "df0f66883e6610f11a542e1ef3ad73ef",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_01107184-0892-413f-87da-e6f3a3b2db68.md": {
+    "mtime": 1780289834.2605498,
+    "ast_hash": "bcac03235129245fad25e5d75a92711f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_50ca576d-9595-4df5-8f06-9900326e89f1.md": {
+    "mtime": 1780289759.9940658,
+    "ast_hash": "b6f41b173d106685f0681beb9378fe65",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_390b1a7b-42b6-4c84-9d5c-7d177f4dc4be.md": {
+    "mtime": 1780289723.761794,
+    "ast_hash": "bea16817fdfec1ef233195f5eb15d0b1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/substack/briefing_report_081b8c17-5d0c-4e5a-a90f-254b2dd1577f.md": {
+    "mtime": 1780289908.1939018,
+    "ast_hash": "1c1b1556f31bbc6b7ea11b1169f87ef0",
     "semantic_hash": ""
   }
 }

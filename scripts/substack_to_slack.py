@@ -322,7 +322,7 @@ def send_summary_to_slack(channel_name, post_title, summary, post_url):
             "--username", SLACK_USERNAME,
             "--icon", SLACK_ICON,
             "--color", "info", # Can be 'good', 'warning', 'danger', 'info'
-            "--blocks", json.dumps(blocks)
+            "--blocks", json.dumps(blocks) # JSON-encode the blocks list
         ]
         
         result = subprocess.run(cmd, capture_output=True, text=True, check=False)
