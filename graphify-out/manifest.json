@@ -9485,8 +9485,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/ai_events_results.json": {
-    "mtime": 1780198394.739475,
-    "ast_hash": "b4c82df4f147be023884bd93158f7e3e",
+    "mtime": 1780284881.3267338,
+    "ast_hash": "693d10e480e2cd6b98e1a74ddde6d57e",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/git-autosync.sh": {
@@ -25605,8 +25605,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1780283790.2280157,
-    "ast_hash": "de42c1f1ebf3148ce2a161e7f6685cbe",
+    "mtime": 1780284764.1293347,
+    "ast_hash": "43e2312b2952205f077f7a49baa28aec",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_report.txt": {
@@ -25620,8 +25620,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/README.md": {
-    "mtime": 1779991393.2726219,
-    "ast_hash": "9bf9e503ecf9a70e64d38e1f37f863da",
+    "mtime": 1780284757.9873137,
+    "ast_hash": "cb225c4e10910b2202b725a72ed75979",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/btc-api-2.md": {
@@ -40215,12 +40215,12 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/arxiv/output/mindmap.json": {
-    "mtime": 1780284545.1666887,
+    "mtime": 1780284594.840758,
     "ast_hash": "b6324c80c15479e327453b73470cf85d",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/arxiv/output/briefing-report.md": {
-    "mtime": 1780284542.4261854,
+    "mtime": 1780284594.840758,
     "ast_hash": "0e9e00a628cee6514fa3e5ef95aa824b",
     "semantic_hash": ""
   },
@@ -40380,18 +40380,28 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack_state.json": {
-    "mtime": 1780284562.2931862,
+    "mtime": 1780284956.6593792,
     "ast_hash": "803dcb34408670c3636d219ec8e83304",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_to_slack.py": {
-    "mtime": 1780284573.663686,
-    "ast_hash": "e9fad65f4b902ae6611e43a7b2a8d854",
+    "mtime": 1780284975.1650534,
+    "ast_hash": "fe76c46e2b28d241282e6258c7928c53",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/substack_channels.json": {
     "mtime": 1780284184.0603592,
     "ast_hash": "7683684024ce7c9526b6fa1e9b2ef608",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/arxiv_to_notebooklm_state.json": {
+    "mtime": 1780284553.6857128,
+    "ast_hash": "5be6bd157bef01d49b79a5246f12e183",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/arxiv_to_notebooklm.py": {
+    "mtime": 1780284258.3016121,
+    "ast_hash": "d54073f917575ad248b04af3f91a92a0",
     "semantic_hash": ""
   }
 }

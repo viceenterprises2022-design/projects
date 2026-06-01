@@ -180,7 +180,7 @@ def process_with_notebooklm(title, content_text):
 
         # 2. Create a new NotebookLM notebook
         notebook_output = nlm("create", title).strip()
-        # Extract UUID from "Created notebook: <UUID> - <TITLE>"
+        # Extract UUID from "Created notebook: <UUID>"
         notebook_id_match = re.search(r'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', notebook_output)
         if not notebook_id_match:
             raise RuntimeError(f"Could not extract notebook ID from NLM output: {notebook_output}")
@@ -189,7 +189,7 @@ def process_with_notebooklm(title, content_text):
 
         # 3. Add the temporary file as a source
         source_output = nlm("source", "add", "--notebook", notebook_id, str(temp_file_path)).strip()
-        source_id_match = re.search(r'Source created with ID: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', source_output)
+        source_id_match = re.search(r'Added source: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', source_output)
         if not source_id_match:
             # Fallback for when no explicit ID is returned but command succeeds, or if ID format is different
             p(f"Warning: Could not extract source ID from NLM output: {source_output}. Assuming success and using a placeholder.")
@@ -208,14 +208,14 @@ def process_with_notebooklm(title, content_text):
 
 
         # 5. Generate a "briefing-report" artifact
-        artifact_output = nlm("artifact", "generate", "report", "--notebook", notebook_id).strip()
-        artifact_id_match = re.search(r'Artifact created with ID: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', artifact_output)
+        artifact_output = nlm("generate", "report", "--notebook", notebook_id).strip()
+        artifact_id_match = re.search(r'Started: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', artifact_output)
         if not artifact_id_match:
             raise RuntimeError(f"Could not extract artifact ID from NLM output: {artifact_output}")
         artifact_id = artifact_id_match.group(1)
         p(f"Generating briefing report artifact (ID: {artifact_id})...")
 
-        artifact_output = nlm("generate", "report", "--notebook", notebook_id).strip()
+        # Wait for artifact generation to complete
         nlm("artifact", "wait", artifact_id)
         p(f"Briefing report artifact generation completed for {artifact_id}")
 
@@ -256,8 +256,8 @@ def process_with_notebooklm(title, content_text):
             p(f"Deleted temporary file: {temp_file_path}")
         if notebook_id:
             try:
-                # NLM delete command only expects the UUID, not the full string
-                nlm("delete", notebook_id)
+                # NLM delete command only expects the UUID with --notebook flag
+                nlm("delete", "--notebook", notebook_id)
                 p(f"Deleted NotebookLM notebook: {notebook_id}")
             except Exception as e:
                 p(f"Error deleting NotebookLM notebook {notebook_id}: {e}")

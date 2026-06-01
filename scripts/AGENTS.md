@@ -225,8 +225,16 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Verified setup with clawdi doctor, passing all checks for all installed agents.
 - **Multica:** ALP-438 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-01: Automated Arxiv → NotebookLM → Slack Research Pipeline
+- Built `arxiv_to_notebooklm.py` — fully automated, self-healing pipeline that scrapes recent papers from 10 disciplines with polite 2-second rate-limiting delays.
+- Resolved Economics URL issue by shifting from `/archive/econ` to `/list/econ/recent` and bypassed export.arxiv.org API HTTP 429 rate limit blocks by directly scraping HTML with customized browser headers.
+- Implemented 48-hour success lock in `arxiv_to_notebooklm_state.json` (bypassed with `--force`) and configured daily trigger at 08:30 AM IST in crontab for self-healing error recovery.
+- Successfully verified full run: downloaded PDF, uploaded to NotebookLM, generated briefing doc + mind-map, saved artifacts, delivered Block Kit chunked payloads to Slack, and verified notebook deletion.
+- Documented pipeline in `README.md`.
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints
 - **Command template** uses `$ARGUMENTS` for raw user input, routes to `goal` agent
 - **Tested:** plugin loads, all 4 tools execute correctly, state persists
+
