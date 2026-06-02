@@ -139,19 +139,16 @@ def print_oi_intelligence(df):
     console.print(Panel(left, border_style="magenta"))
     console.print("\n")
 
-async def main():
-    import sys
-    is_short = "--short" in sys.argv
-    
+async def main(use_mock: bool = True):
     with console.status("[bold green]Fetching Async Crypto Factor Intelligence Data...[/bold green]", spinner="dots"):
-        df_factors = await fetch_all_factors(use_mock=True)
+        df_factors = await fetch_all_factors(use_mock=use_mock)
         events = get_event_flags()
         result = run_engine(df_factors, events)
     
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S IST")
     
     console.clear()
-    print_trending_oi(limit=5 if is_short else None)
+    print_trending_oi(limit=5 if use_mock else None)
     print_oi_intelligence(df_factors)
     
     bullish_drivers, risk_flags = identify_drivers(df_factors, result)
@@ -204,4 +201,9 @@ async def main():
     console.print("\n")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(description="Crypto Trending OI Signal Engine")
+    parser.add_argument("--short", action="store_true", help="Use mock data (short/quick mode)")
+    parser.add_argument("--no-short", dest="short", action="store_false", help="Use live data (full mode)")
+    parser.set_defaults(short=True)
+    args = parser.parse_args()
+    asyncio.run(main(use_mock=args.short))
