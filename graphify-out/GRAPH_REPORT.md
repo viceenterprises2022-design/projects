@@ -1,16 +1,16 @@
 # Graph Report - Projects  (2026-06-02)
 
 ## Corpus Check
-- 6950 files · ~16,174,914 words
+- 6950 files · ~16,342,606 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 133004 nodes · 174581 edges · 10882 communities (8642 shown, 2240 thin omitted)
+- 133007 nodes · 174586 edges · 10980 communities (8665 shown, 2315 thin omitted)
 - Extraction: 87% EXTRACTED · 13% INFERRED · 0% AMBIGUOUS · INFERRED: 21828 edges (avg confidence: 0.6)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `df3772e9`
+- Built from commit: `def6ac5e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -7251,7 +7251,6 @@
 - [[_COMMUNITY_Community 7240|Community 7240]]
 - [[_COMMUNITY_Community 7241|Community 7241]]
 - [[_COMMUNITY_Community 7242|Community 7242]]
-- [[_COMMUNITY_Community 7243|Community 7243]]
 - [[_COMMUNITY_Community 7244|Community 7244]]
 - [[_COMMUNITY_Community 7245|Community 7245]]
 - [[_COMMUNITY_Community 7246|Community 7246]]
@@ -9604,7 +9603,6 @@
 - [[_COMMUNITY_Community 10258|Community 10258]]
 - [[_COMMUNITY_Community 10259|Community 10259]]
 - [[_COMMUNITY_Community 10260|Community 10260]]
-- [[_COMMUNITY_Community 10261|Community 10261]]
 - [[_COMMUNITY_Community 10262|Community 10262]]
 - [[_COMMUNITY_Community 10263|Community 10263]]
 - [[_COMMUNITY_Community 10264|Community 10264]]
@@ -10222,6 +10220,104 @@
 - [[_COMMUNITY_Community 10876|Community 10876]]
 - [[_COMMUNITY_Community 10877|Community 10877]]
 - [[_COMMUNITY_Community 10878|Community 10878]]
+- [[_COMMUNITY_Community 10879|Community 10879]]
+- [[_COMMUNITY_Community 10880|Community 10880]]
+- [[_COMMUNITY_Community 10881|Community 10881]]
+- [[_COMMUNITY_Community 10882|Community 10882]]
+- [[_COMMUNITY_Community 10883|Community 10883]]
+- [[_COMMUNITY_Community 10884|Community 10884]]
+- [[_COMMUNITY_Community 10885|Community 10885]]
+- [[_COMMUNITY_Community 10886|Community 10886]]
+- [[_COMMUNITY_Community 10887|Community 10887]]
+- [[_COMMUNITY_Community 10888|Community 10888]]
+- [[_COMMUNITY_Community 10889|Community 10889]]
+- [[_COMMUNITY_Community 10890|Community 10890]]
+- [[_COMMUNITY_Community 10891|Community 10891]]
+- [[_COMMUNITY_Community 10892|Community 10892]]
+- [[_COMMUNITY_Community 10893|Community 10893]]
+- [[_COMMUNITY_Community 10894|Community 10894]]
+- [[_COMMUNITY_Community 10895|Community 10895]]
+- [[_COMMUNITY_Community 10896|Community 10896]]
+- [[_COMMUNITY_Community 10897|Community 10897]]
+- [[_COMMUNITY_Community 10898|Community 10898]]
+- [[_COMMUNITY_Community 10899|Community 10899]]
+- [[_COMMUNITY_Community 10900|Community 10900]]
+- [[_COMMUNITY_Community 10901|Community 10901]]
+- [[_COMMUNITY_Community 10902|Community 10902]]
+- [[_COMMUNITY_Community 10903|Community 10903]]
+- [[_COMMUNITY_Community 10904|Community 10904]]
+- [[_COMMUNITY_Community 10905|Community 10905]]
+- [[_COMMUNITY_Community 10906|Community 10906]]
+- [[_COMMUNITY_Community 10907|Community 10907]]
+- [[_COMMUNITY_Community 10908|Community 10908]]
+- [[_COMMUNITY_Community 10909|Community 10909]]
+- [[_COMMUNITY_Community 10910|Community 10910]]
+- [[_COMMUNITY_Community 10911|Community 10911]]
+- [[_COMMUNITY_Community 10912|Community 10912]]
+- [[_COMMUNITY_Community 10913|Community 10913]]
+- [[_COMMUNITY_Community 10914|Community 10914]]
+- [[_COMMUNITY_Community 10915|Community 10915]]
+- [[_COMMUNITY_Community 10916|Community 10916]]
+- [[_COMMUNITY_Community 10917|Community 10917]]
+- [[_COMMUNITY_Community 10918|Community 10918]]
+- [[_COMMUNITY_Community 10919|Community 10919]]
+- [[_COMMUNITY_Community 10920|Community 10920]]
+- [[_COMMUNITY_Community 10921|Community 10921]]
+- [[_COMMUNITY_Community 10922|Community 10922]]
+- [[_COMMUNITY_Community 10923|Community 10923]]
+- [[_COMMUNITY_Community 10924|Community 10924]]
+- [[_COMMUNITY_Community 10925|Community 10925]]
+- [[_COMMUNITY_Community 10926|Community 10926]]
+- [[_COMMUNITY_Community 10927|Community 10927]]
+- [[_COMMUNITY_Community 10928|Community 10928]]
+- [[_COMMUNITY_Community 10929|Community 10929]]
+- [[_COMMUNITY_Community 10930|Community 10930]]
+- [[_COMMUNITY_Community 10931|Community 10931]]
+- [[_COMMUNITY_Community 10932|Community 10932]]
+- [[_COMMUNITY_Community 10933|Community 10933]]
+- [[_COMMUNITY_Community 10934|Community 10934]]
+- [[_COMMUNITY_Community 10935|Community 10935]]
+- [[_COMMUNITY_Community 10936|Community 10936]]
+- [[_COMMUNITY_Community 10937|Community 10937]]
+- [[_COMMUNITY_Community 10938|Community 10938]]
+- [[_COMMUNITY_Community 10939|Community 10939]]
+- [[_COMMUNITY_Community 10940|Community 10940]]
+- [[_COMMUNITY_Community 10941|Community 10941]]
+- [[_COMMUNITY_Community 10942|Community 10942]]
+- [[_COMMUNITY_Community 10943|Community 10943]]
+- [[_COMMUNITY_Community 10944|Community 10944]]
+- [[_COMMUNITY_Community 10945|Community 10945]]
+- [[_COMMUNITY_Community 10946|Community 10946]]
+- [[_COMMUNITY_Community 10947|Community 10947]]
+- [[_COMMUNITY_Community 10948|Community 10948]]
+- [[_COMMUNITY_Community 10949|Community 10949]]
+- [[_COMMUNITY_Community 10950|Community 10950]]
+- [[_COMMUNITY_Community 10951|Community 10951]]
+- [[_COMMUNITY_Community 10952|Community 10952]]
+- [[_COMMUNITY_Community 10953|Community 10953]]
+- [[_COMMUNITY_Community 10954|Community 10954]]
+- [[_COMMUNITY_Community 10955|Community 10955]]
+- [[_COMMUNITY_Community 10956|Community 10956]]
+- [[_COMMUNITY_Community 10957|Community 10957]]
+- [[_COMMUNITY_Community 10958|Community 10958]]
+- [[_COMMUNITY_Community 10959|Community 10959]]
+- [[_COMMUNITY_Community 10960|Community 10960]]
+- [[_COMMUNITY_Community 10961|Community 10961]]
+- [[_COMMUNITY_Community 10962|Community 10962]]
+- [[_COMMUNITY_Community 10963|Community 10963]]
+- [[_COMMUNITY_Community 10964|Community 10964]]
+- [[_COMMUNITY_Community 10965|Community 10965]]
+- [[_COMMUNITY_Community 10966|Community 10966]]
+- [[_COMMUNITY_Community 10967|Community 10967]]
+- [[_COMMUNITY_Community 10968|Community 10968]]
+- [[_COMMUNITY_Community 10969|Community 10969]]
+- [[_COMMUNITY_Community 10970|Community 10970]]
+- [[_COMMUNITY_Community 10971|Community 10971]]
+- [[_COMMUNITY_Community 10972|Community 10972]]
+- [[_COMMUNITY_Community 10973|Community 10973]]
+- [[_COMMUNITY_Community 10974|Community 10974]]
+- [[_COMMUNITY_Community 10975|Community 10975]]
+- [[_COMMUNITY_Community 10976|Community 10976]]
 - [[_COMMUNITY_Community 10980|Community 10980]]
 - [[_COMMUNITY_Community 10982|Community 10982]]
 - [[_COMMUNITY_Community 10986|Community 10986]]
@@ -10239,18 +10335,18 @@
 10. `BacktestHandler` - 412 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `test_validate_normal_path()` --calls--> `write_text()`  [INFERRED]
-  everything-claude-code/skills/continuous-learning-v2/scripts/test_parse_instinct.py → open-design/skills/hatch-pet/scripts/prepare_pet_run.py
-- `test_load_supports_yml_extension()` --calls--> `write_text()`  [INFERRED]
-  everything-claude-code/skills/continuous-learning-v2/scripts/test_parse_instinct.py → open-design/skills/hatch-pet/scripts/prepare_pet_run.py
-- `test_load_supports_md_extension()` --calls--> `write_text()`  [INFERRED]
-  everything-claude-code/skills/continuous-learning-v2/scripts/test_parse_instinct.py → open-design/skills/hatch-pet/scripts/prepare_pet_run.py
-- `test_load_instincts_from_dir_uses_utf8_encoding()` --calls--> `write_text()`  [INFERRED]
-  everything-claude-code/skills/continuous-learning-v2/scripts/test_parse_instinct.py → open-design/skills/hatch-pet/scripts/prepare_pet_run.py
-- `test_find_cross_project_empty_registry()` --calls--> `write_text()`  [INFERRED]
-  everything-claude-code/skills/continuous-learning-v2/scripts/test_parse_instinct.py → open-design/skills/hatch-pet/scripts/prepare_pet_run.py
+- `dispatchActionState()` --calls--> `SetState`  [INFERRED]
+  open-design/.tmp/tools-dev/default/web/next/dev/static/chunks/0qc9_next_dist_compiled_react-dom_0-0erx6._.js → open-codesign/apps/desktop/src/renderer/src/store.ts
+- `main()` --calls--> `ArgumentParser`  [INFERRED]
+  open-design/skills/hatch-pet/scripts/render_animation_videos.py → pkscreener/pkscreener/pkscreenercli.py
+- `main()` --calls--> `ArgumentParser`  [INFERRED]
+  open-design/skills/hatch-pet/scripts/validate_atlas.py → pkscreener/pkscreener/pkscreenercli.py
+- `main()` --calls--> `ArgumentParser`  [INFERRED]
+  open-design/skills/hatch-pet/scripts/pet_job_status.py → pkscreener/pkscreener/pkscreenercli.py
+- `main()` --calls--> `ArgumentParser`  [INFERRED]
+  open-design/skills/hatch-pet/scripts/queue_pet_repairs.py → pkscreener/pkscreener/pkscreenercli.py
 
-## Communities (10882 total, 2240 thin omitted)
+## Communities (10980 total, 2315 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.18
@@ -10262,67 +10358,67 @@ Nodes (275): PKScreenerMain, Handle saving pinned options for monitoring.       
 
 ### Community 2 - "Community 2"
 Cohesion: 0.02
-Nodes (63): handleScannerExecuteOption4(), Handle execution option 4 (lowest volume scanner) by getting days for calculatio, The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Test getScannerMenuChoices function., Test getSummaryCorrectnessOfStrategy function., Deeper tests for initExecution., Test handleSecondaryMenuChoices function., Test main with test build. (+55 more)
+Nodes (67): Tabulate backtest results for display.          Args:         saveResults (DataF, Toggle user configuration between intraday and daily modes.          Returns:, tabulateBacktestResults(), toggleUserConfig(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Test getScannerMenuChoices function., Test getSummaryCorrectnessOfStrategy function., Test handleSecondaryMenuChoices function. (+59 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.00
-Nodes (113): aa(), aN(), Ba(), BEe(), BF(), BL(), bN(), bq() (+105 more)
+Nodes (134): aa(), aN(), Ba(), BEe(), BF(), BL(), bN(), bq() (+126 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.01
-Nodes (211): The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Test finish_backtest_and_show_results coverage., Test finishing backtest with empty data., Test get_summary_correctness_of_strategy with success., Test successful summary with data., Test show_backtest_results with ValueError., Test showing results with ValueError., Test _reformat_table_for_html with colors. (+203 more)
+Nodes (227): The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Test finish_backtest_and_show_results coverage., Test finishing backtest with empty data., Complete coverage for take_backtest_inputs., Test taking inputs with period., Test get_summary_correctness_of_strategy with success., Test successful summary with data., Test getting backtest report filename with pre-set choices. (+219 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.12
 Nodes (23): ConnectionDiagnosticPanel(), ConnectionDiagnosticPanelProps, hostnameFromUrl(), isAbsoluteHttpUrl(), isOfficialProviderHost(), OFFICIAL_PROVIDER_HOST_SUFFIXES, shouldShowGatewayAllowlistHint(), BILLING_URLS (+15 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.01
-Nodes (244): active_session_count_only_counts_live_queue_states(), aggregate_cost_summary_mentions_fifty_percent_alert(), aggregate_cost_summary_mentions_ninety_percent_alert(), aggregate_cost_summary_mentions_total_cost(), aggregate_cost_summary_uses_custom_threshold_labels(), AggregateUsage, approval_queue_preview_line(), approval_queue_preview_line_uses_target_session_and_preview() (+236 more)
+Cohesion: 0.02
+Nodes (227): active_session_count_only_counts_live_queue_states(), aggregate_cost_summary_mentions_fifty_percent_alert(), aggregate_cost_summary_mentions_ninety_percent_alert(), aggregate_cost_summary_mentions_total_cost(), aggregate_cost_summary_uses_custom_threshold_labels(), AggregateUsage, approval_queue_preview_line(), approval_queue_preview_line_uses_target_session_and_preview() (+219 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.02
-Nodes (225): active_session_count_only_counts_live_queue_states(), aggregate_cost_summary_mentions_fifty_percent_alert(), aggregate_cost_summary_mentions_ninety_percent_alert(), aggregate_cost_summary_mentions_total_cost(), aggregate_cost_summary_uses_custom_threshold_labels(), AggregateUsage, approval_queue_preview_line(), approval_queue_preview_line_uses_target_session_and_preview() (+217 more)
+Nodes (222): inner, active_session_count_only_counts_live_queue_states(), aggregate_cost_summary_mentions_fifty_percent_alert(), aggregate_cost_summary_mentions_ninety_percent_alert(), aggregate_cost_summary_mentions_total_cost(), aggregate_cost_summary_uses_custom_threshold_labels(), AggregateUsage, approval_queue_preview_line() (+214 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.00
 Nodes (497): models, ai21.j2-mid-v1, ai21.j2-ultra-v1, ai21.jamba-1-5-large-v1:0, ai21.jamba-1-5-mini-v1:0, ai21.jamba-instruct-v1:0, amazon.nova-2-lite-v1:0, amazon.nova-2-pro-preview-20251202-v1:0 (+489 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.04
-Nodes (67): ActiveProviderCredentials, buildEndpointForWire(), buildModelsEndpoint(), CacheEntry, classifyHttpError(), classifyNetworkError(), _clearModelsCache(), ConnectionTestCapabilitySummary (+59 more)
+Cohesion: 0.02
+Nodes (135): created, { db, designId }, f, file, names, seed(), updated, bindWorkspace() (+127 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.04
-Nodes (68): create_app(), create_asgi_app(), GracefulLifespanApp, lifespan(), FastAPI application factory and configuration., Create the server ASGI app with graceful lifespan failure reporting., Application lifespan manager., ASGI wrapper that reports startup failures without Starlette tracebacks. (+60 more)
+Cohesion: 0.06
+Nodes (44): create_app(), create_asgi_app(), GracefulLifespanApp, lifespan(), Create the server ASGI app with graceful lifespan failure reporting., Application lifespan manager., ASGI wrapper that reports startup failures without Starlette tracebacks., Create and configure the FastAPI application. (+36 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.01
-Nodes (336): PinOverlay(), PinOverlayProps, pinStyleFromRect(), PinVariant, live, pos, v, variantFor() (+328 more)
+Nodes (241): CHAT_MESSAGES_CHANNELS_V1, Database, logger, parseAppendInput(), parseDesignId(), parseUpdateToolStatus(), registerChatMessagesIpc(), registerChatMessagesUnavailableIpc() (+233 more)
 
 ### Community 12 - "Community 12"
 Cohesion: 0.01
-Nodes (97): _add_level3_hierarchy(), MenuNavigation - Menu navigation and choice handling for PKScreener  This module, Build and return the menu choice hierarchy string.          This function constr, Add level 3 menu hierarchy based on execute option, update_menu_choice_hierarchy_impl(), config_manager(), mock_menus(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Comprehensive tests (+89 more)
+Nodes (108): _add_level3_hierarchy(), MenuNavigation - Menu navigation and choice handling for PKScreener  This module, Build and return the menu choice hierarchy string.          This function constr, Add level 3 menu hierarchy based on execute option, update_menu_choice_hierarchy_impl(), config_manager(), mock_menus(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Comprehensive tests (+100 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.01
-Nodes (259): iter, attr_value(), build_legacy_env_connector(), build_legacy_migration_audit_report(), build_legacy_migration_next_steps(), build_legacy_migration_plan_report(), build_legacy_plugin_draft(), build_legacy_remote_add_command() (+251 more)
+Nodes (246): build_legacy_env_connector(), build_legacy_migration_audit_report(), build_legacy_migration_next_steps(), build_legacy_migration_plan_report(), build_legacy_plugin_draft(), build_legacy_remote_add_command(), build_legacy_remote_dispatch_draft(), build_legacy_schedule_add_command() (+238 more)
 
 ### Community 14 - "Community 14"
 Cohesion: 0.01
-Nodes (246): build_legacy_env_connector(), build_legacy_migration_audit_report(), build_legacy_migration_next_steps(), build_legacy_migration_plan_report(), build_legacy_plugin_draft(), build_legacy_remote_add_command(), build_legacy_remote_dispatch_draft(), build_legacy_schedule_add_command() (+238 more)
+Nodes (257): iter, attr_value(), format_worktree_resolution_reports_human(), token_meter_renders_compact_usage_label(), attr_value(), build_legacy_env_connector(), build_legacy_migration_audit_report(), build_legacy_migration_next_steps() (+249 more)
 
 ### Community 15 - "Community 15"
 Cohesion: 0.01
-Nodes (207): AddMenu(), AddMenuProps, AssistantText(), AssistantTextProps, ChatMessageList(), ChatMessageListProps, RenderItem, CommentChipBar() (+199 more)
+Nodes (182): AddMenu(), AddMenuProps, CommentChipBar(), CommentItemProps, CommentsPanel(), CanvasErrorBar(), humanizeError(), CanvasTabBar() (+174 more)
 
 ### Community 16 - "Community 16"
 Cohesion: 0.03
 Nodes (96): DownloadDataOnly, EligibilityConditionNotMet, LTPNotInConfiguredRange, NotAStageTwoStock, NotEnoughVolumeAsPerConfig, NotNewlyListed, The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, StockDataNotAdequate (+88 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.02
-Nodes (78): _make_project(), patch_globals(), project_tree(), Tests for continuous-learning-v2 instinct-cli.py  Covers:   - parse_instinct_fil, Patch module-level globals to use tmp_path-based directories., Create project directory structure and return a project dict., Instincts without an 'id' field should be silently dropped., Tilde expansion should work. (+70 more)
+Cohesion: 0.03
+Nodes (39): MockPKEnvironment, The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Test helper functions in pkscreenerbot, Test text sanitization for Telegram message length limit, Tests to ensure all bot menu options are available., Test that key scanner menu options are available., Test that level 0 menu has X (Scanner) option., Test that level 0 menu has P (Piped Scanner) option. (+31 more)
 
 ### Community 18 - "Community 18"
 Cohesion: 0.01
@@ -10330,11 +10426,11 @@ Nodes (158): _actionrevalidationkind, _addpathprefix, ALLOWED_CODES, _appcallser
 
 ### Community 19 - "Community 19"
 Cohesion: 0.01
-Nodes (138): isInstance(), Fetch additional information for multiple tickers in parallel., Initialize multiprocessing components if not already done., Handle request for specific stocks based on options.                  Args:, Preprocess the acquired data by calculating technical indicators and adding them, get_provider(), Provider factory and resolver., TestGetProvider (+130 more)
+Nodes (107): isInstance(), Fetch additional information for multiple tickers in parallel., Initialize multiprocessing components if not already done., Handle request for specific stocks based on options.                  Args:, Preprocess the acquired data by calculating technical indicators and adding them, TestGetProvider, completed_ids(), job_view() (+99 more)
 
 ### Community 20 - "Community 20"
-Cohesion: 0.11
-Nodes (35): incoming_message_factory(), Core task processor - handles a single Claude CLI interaction., Main entry point for handling an incoming message.          Determines if this i, handler_integration(), mock_async_gen(), test_concurrent_replies_to_different_trees(), test_error_propagation_chain(), test_full_conversation_flow_single_user() (+27 more)
+Cohesion: 0.08
+Nodes (44): incoming_message_factory(), Core task processor - handles a single Claude CLI interaction., Main entry point for handling an incoming message.          Determines if this i, handler(), test_grandchild_reply_forks_from_branch_session(), test_sibling_replies_fork_from_parent_session_id(), handler(), handler_integration() (+36 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.01
@@ -10342,23 +10438,23 @@ Nodes (111): abortListenersBySignal, accumulateRootVaryParam(), accumulateVaryPa
 
 ### Community 22 - "Community 22"
 Cohesion: 0.01
-Nodes (205): DESIGN_SKILL_FILES, DESIGN_SKILLS, DesignSkillName, names, FRAME_FILES, FRAME_TEMPLATES, FrameName, err (+197 more)
+Nodes (205): DESIGN_SKILL_FILES, DESIGN_SKILLS, DesignSkillName, names, FRAME_FILES, FRAME_TEMPLATES, FrameName, makeRuntimeVerifier() (+197 more)
 
 ### Community 23 - "Community 23"
 Cohesion: 0.02
-Nodes (79): finish_backtest_data_cleanup(), get_backtest_report_filename(), prepare_grouped_xray(), prepare_grouped_xray_impl(), BacktestUtils - Backtesting utilities for PKScreener  This module handles: - Bac, Prepare grouped X-Ray analysis of backtest results.          Args:         backt, Show sorted backtest data.          Args:         backtest_df: Backtest datafram, Tabulate backtest results for display.          Args:         save_results: Resu (+71 more)
+Nodes (87): finish_backtest_data_cleanup_impl(), get_backtest_report_filename(), prepare_grouped_xray(), prepare_grouped_xray_impl(), BacktestUtils - Backtesting utilities for PKScreener  This module handles: - Bac, Prepare grouped X-Ray analysis of backtest results.          Args:         backt, Show sorted backtest data.          Args:         backtest_df: Backtest datafram, Tabulate backtest results for display.          Args:         save_results: Resu (+79 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.02
-Nodes (145): addOrRunPipedMenus(), analysisFinalResults(), cleanupLocalResults(), describeUser(), findPipedScannerOptionFromStdScanOptions(), finishScreening(), getBacktestReportFilename(), getDownloadChoices() (+137 more)
+Cohesion: 0.01
+Nodes (173): PKSpreadsheets, The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Pipe results from previous scan to next scan for chained analysis., Generate intraday analysis reports for all configured scans.                  Th, Save and send final outcome dataframe as formatted report.                  This, Update progress status for display in the console or Telegram bot., addOrRunPipedMenus(), analysisFinalResults() (+165 more)
 
 ### Community 25 - "Community 25"
 Cohesion: 0.03
 Nodes (237): Fh(), hF(), UH(), Va(), $a(), aa(), Ab(), af() (+229 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.02
-Nodes (93): cmd_python_c(), main(), CLI entry point for skill-comply., write_text(), _make_project(), patch_globals(), project_tree(), Tests for continuous-learning-v2 instinct-cli.py  Covers:   - parse_instinct_fil (+85 more)
+Cohesion: 0.01
+Nodes (172): cmd_python_c(), _make_project(), patch_globals(), project_tree(), Tests for continuous-learning-v2 instinct-cli.py  Covers:   - parse_instinct_fil, Patch module-level globals to use tmp_path-based directories., Create project directory structure and return a project dict., Instincts without an 'id' field should be silently dropped. (+164 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.04
@@ -10374,11 +10470,11 @@ Nodes (66): cleanup_provider(), get_provider(), get_provider_for_type(), get_set
 
 ### Community 30 - "Community 30"
 Cohesion: 0.03
-Nodes (188): merge_ready_worktrees_sets_operator_note_with_skip_summary(), merge_selected_worktree_sets_operator_note_when_ready(), base_checkout_path(), branch_conflict_preview(), branch_conflict_preview_reports_conflicting_branches(), branch_head_oid(), branch_head_oid_in_repo(), branch_name_for_session() (+180 more)
+Nodes (192): merge_ready_worktrees_sets_operator_note_with_skip_summary(), merge_selected_worktree_sets_operator_note_when_ready(), base_checkout_path(), branch_conflict_preview(), branch_conflict_preview_reports_conflicting_branches(), branch_head_oid(), branch_head_oid_in_repo(), branch_name_for_session() (+184 more)
 
 ### Community 31 - "Community 31"
 Cohesion: 0.01
-Nodes (104): a5, aB, aG, aI(), aL, ap(), aq, ar (+96 more)
+Nodes (109): a5, aB, aG, aL, aq, ar, aV, aw() (+101 more)
 
 ### Community 32 - "Community 32"
 Cohesion: 0.05
@@ -10386,27 +10482,27 @@ Nodes (41): extract_command_prefix(), extract_filepaths_from_command(), _is_env_
 
 ### Community 33 - "Community 33"
 Cohesion: 0.01
-Nodes (84): abortListenersBySignal, accumulateRootVaryParam(), accumulateVaryParam(), areCookiesMutableInCurrentPhase(), BubbledError, CachedParams, CachedSearchParams, CachedSearchParamsForUseCache (+76 more)
+Nodes (89): abortListenersBySignal, accumulateRootVaryParam(), accumulateVaryParam(), areCookiesMutableInCurrentPhase(), BubbledError, CachedParams, CachedSearchParams, CachedSearchParamsForUseCache (+81 more)
 
 ### Community 34 - "Community 34"
 Cohesion: 0.02
-Nodes (137): addEventListenerToChild(), addFragmentHandleToFiber(), addFragmentHandleToInstance(), areHookInputsEqual(), attachSuspenseRetryListeners(), blurActiveElementWithinFragment(), callCallback(), checkIfFullyUnsuspended() (+129 more)
+Nodes (133): addEventListenerToChild(), addFragmentHandleToFiber(), addFragmentHandleToInstance(), areHookInputsEqual(), attachSuspenseRetryListeners(), blurActiveElementWithinFragment(), callCallback(), checkIfFullyUnsuspended() (+125 more)
 
 ### Community 35 - "Community 35"
 Cohesion: 0.01
 Nodes (85): abortListenersBySignal, actionAsyncStorageInstance, _apppaths, AppRouterContext, _approutercontextsharedruntime, _approuterheaders, _asynclocalstorage, _bailouttocsr (+77 more)
 
 ### Community 36 - "Community 36"
-Cohesion: 0.02
-Nodes (115): uuid4(), text(), Close dangling blocks, emit a text error block at a fresh index, then message ta, _build_request_body(), _iter_heuristic_tool_use_sse(), OpenAIChatTransport, OpenAI-style chat base for :class:`OpenAIChatTransport` (NIM, etc.).  ``Anthropi, Release HTTP client resources. (+107 more)
+Cohesion: 0.03
+Nodes (97): uuid4(), text(), Close dangling blocks, emit a text error block at a fresh index, then message ta, _build_request_body(), _iter_heuristic_tool_use_sse(), OpenAIChatTransport, OpenAI-style chat base for :class:`OpenAIChatTransport` (NIM, etc.).  ``Anthropi, Release HTTP client resources. (+89 more)
 
 ### Community 37 - "Community 37"
-Cohesion: 0.04
-Nodes (64): Conversation, Project, ProjectTemplate, ArtifactEvent, createArtifactParser(), findOpenTag(), OpenTagMatch, parseAttrs() (+56 more)
+Cohesion: 0.03
+Nodes (84): AgentModelPrefs, AppConfigPrefs, AppConfigResponse, UpdateAppConfigRequest, Conversation, Project, ProjectTemplate, AgentInfo (+76 more)
 
 ### Community 38 - "Community 38"
 Cohesion: 0.02
-Nodes (115): BadRequestError, NvidiaNimProvider, NVIDIA NIM provider using official OpenAI client., NimSettings, Fixed NVIDIA NIM settings (not configurable via env)., make_openai_compat_stream_request(), Shared MagicMock request objects for OpenAI-compatible provider tests., Minimal request stub matching :meth:`OpenAIChatTransport._build_request_body` ne (+107 more)
+Nodes (109): NvidiaNimProvider, NVIDIA NIM provider using official OpenAI client., NimSettings, Fixed NVIDIA NIM settings (not configurable via env)., make_openai_compat_stream_request(), Shared MagicMock request objects for OpenAI-compatible provider tests., Minimal request stub matching :meth:`OpenAIChatTransport._build_request_body` ne, Return whether proxy auth came from process env, not dotenv config. (+101 more)
 
 ### Community 39 - "Community 39"
 Cohesion: 0.11
@@ -10414,19 +10510,19 @@ Nodes (26): GERMAN_CONTENT_IDS, entriesWithFile(), promptTemplateCategories, pro
 
 ### Community 40 - "Community 40"
 Cohesion: 0.03
-Nodes (55): AudioKind, MediaAspect, ProjectDisplayStatus, AppChromeHeader(), Props, Props, DesignsTab(), Props (+47 more)
+Nodes (54): AudioKind, MediaAspect, ProjectDisplayStatus, AppChromeHeader(), Props, DesignsTab(), Props, SubTab (+46 more)
 
 ### Community 41 - "Community 41"
 Cohesion: 0.02
-Nodes (158): configure_logging(), InterceptHandler, Loguru-based structured logging configuration.  All logs are written to server.l, Remove obvious API tokens and secrets before JSON log line emission., Format record as JSON with context vars at top level.     Returns a format templ, Redirect stdlib logging to loguru., Configure loguru with JSON output to log_file and intercept stdlib logging., _redact_sensitive_substrings() (+150 more)
+Nodes (164): configure_logging(), InterceptHandler, Loguru-based structured logging configuration.  All logs are written to server.l, Remove obvious API tokens and secrets before JSON log line emission., Format record as JSON with context vars at top level.     Returns a format templ, Redirect stdlib logging to loguru., Configure loguru with JSON output to log_file and intercept stdlib logging., _redact_sensitive_substrings() (+156 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.02
-Nodes (168): from_dict(), MessageNode, MessageState, MessageTree, Tree data structures for message queue.  Contains MessageState, MessageNode, and, A tree of message nodes with queue functionality.      Provides:     - O(1) node, Add a child node to the tree.          Args:             node_id: Unique ID for, Get a node by ID (O(1) lookup). (+160 more)
+Nodes (150): from_dict(), MessageNode, MessageState, MessageTree, Tree data structures for message queue.  Contains MessageState, MessageNode, and, A tree of message nodes with queue functionality.      Provides:     - O(1) node, Add a child node to the tree.          Args:             node_id: Unique ID for, Get a node by ID (O(1) lookup). (+142 more)
 
 ### Community 43 - "Community 43"
-Cohesion: 0.03
-Nodes (107): buildAuthHeaders(), buildAuthHeadersForWire(), CLAUDE_CODE_BETA, claudeCodeIdentityHeaders(), isOfficialAnthropicBaseUrl(), looksLikeClaudeOAuthToken(), shouldForceClaudeCodeIdentity(), h (+99 more)
+Cohesion: 0.02
+Nodes (140): buildAuthHeaders(), buildAuthHeadersForWire(), buildPiModel(), collectSkills(), CLAUDE_CODE_BETA, claudeCodeIdentityHeaders(), isOfficialAnthropicBaseUrl(), looksLikeClaudeOAuthToken() (+132 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.01
@@ -10438,7 +10534,7 @@ Nodes (9): TestAdaptMessagesForProvider, TestPromptBuilder, adapt_messages_for_p
 
 ### Community 46 - "Community 46"
 Cohesion: 0.01
-Nodes (108): handle_execute_option_3(), handle_execute_option_4(), handle_execute_option_5(), handle_execute_option_9(), Handle execute option 3 - force evaluate all stocks, Handle execute option 4 - days for lowest volume, Handle execute option 9 - volume ratio, Handle execute option 5 - RSI values (+100 more)
+Nodes (103): handle_execute_option_3(), handle_execute_option_4(), handle_execute_option_5(), handle_execute_option_9(), Handle execute option 3 - force evaluate all stocks, Handle execute option 4 - days for lowest volume, Handle execute option 9 - volume ratio, Handle execute option 5 - RSI values (+95 more)
 
 ### Community 47 - "Community 47"
 Cohesion: 0.03
@@ -10450,7 +10546,7 @@ Nodes (43): fetch_exa_context(), generate_report(), main(), SlackNotifier, write
 
 ### Community 49 - "Community 49"
 Cohesion: 0.02
-Nodes (141): BaseProvider, list_model_ids(), ProviderConfig, Return advertised model ids with optional provider capability metadata., Configuration for a provider.      Base fields apply to all providers. Provider-, Base class for all providers. Extend this to add your own., map_error(), Provider-specific exception mapping. (+133 more)
+Nodes (146): BaseProvider, list_model_ids(), ProviderConfig, Return advertised model ids with optional provider capability metadata., Configuration for a provider.      Base fields apply to all providers. Provider-, Base class for all providers. Extend this to add your own., OpenRouterProvider, Keep OpenRouter's existing request-id suffix format. (+138 more)
 
 ### Community 50 - "Community 50"
 Cohesion: 0.03
@@ -10461,16 +10557,16 @@ Cohesion: 0.07
 Nodes (20): format_run_option_name(), Get formatted run option name, Unit tests for OutputFunctions.py Tests for output and display functions., Tests for finish_backtest_data_cleanup function, Tests for format_run_option_name function, Tests for scan_output_directory function, Tests for get_backtest_report_filename function, Tests for get_mfi_stats function (+12 more)
 
 ### Community 52 - "Community 52"
-Cohesion: 0.02
-Nodes (118): asString(), capLength(), composeSummaryMarkdown(), formatTimelineData(), formatValue(), looksLikePrompt(), mdInlineCode(), redact() (+110 more)
+Cohesion: 0.03
+Nodes (98): asString(), capLength(), composeSummaryMarkdown(), formatTimelineData(), formatValue(), looksLikePrompt(), mdInlineCode(), redact() (+90 more)
 
 ### Community 53 - "Community 53"
 Cohesion: 0.03
-Nodes (60): handlePreviewMessage(), isTrustedPreviewMessageSource(), postModeToPreviewWindow(), PreviewSlot(), scaleRectForZoom(), stablePreviewSourceKey(), elementOutcome, entries (+52 more)
+Nodes (86): CommentBubble(), CommentBubbleProps, QUICK_ACTION_TEXT, ids, props, PinOverlay(), PinOverlayProps, pinStyleFromRect() (+78 more)
 
 ### Community 54 - "Community 54"
 Cohesion: 0.02
-Nodes (105): ExportRequest, ExportResponse, FORMAT_FILTERS, parseRequest(), registerExporterIpc(), result, resolveActiveApiKeyFromState(), resolveApiKeyForActive() (+97 more)
+Nodes (104): ExportRequest, ExportResponse, FORMAT_FILTERS, parseRequest(), registerExporterIpc(), result, resolveActiveApiKeyFromState(), resolveApiKeyForActive() (+96 more)
 
 ### Community 55 - "Community 55"
 Cohesion: 0.07
@@ -10485,8 +10581,8 @@ Cohesion: 0.03
 Nodes (11): The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, test_load_stock_data_github_download_fails(), test_load_stock_data_github_download_success(), test_load_stock_data_insufficient_data(), test_load_stock_data_no_cache_file(), test_load_stock_data_saves_on_download_only(), test_load_stock_data_stale_cache(), test_load_stock_data_trading_hours() (+3 more)
 
 ### Community 58 - "Community 58"
-Cohesion: 0.01
-Nodes (62): The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Comprehensive tests, Test validateLTP when price is within range., Test validateLTP when price is below minimum., Test validateLTP when price is above maximum., Test validateLTP with minChange parameter., Test validateRSI when RSI is within range., Test validateCCI when CCI is within range., Test validateVolume with high volume. (+54 more)
+Cohesion: 0.02
+Nodes (61): Test validateLTP when price is within range., Test validateLTP when price is below minimum., Test validateLTP when price is above maximum., Test validateLTP with minChange parameter., Test validateRSI when RSI is within range., Test validateCCI when CCI is within range., Test validateVolume with high volume., Test validateConsolidation with consolidating data. (+53 more)
 
 ### Community 59 - "Community 59"
 Cohesion: 0.18
@@ -10497,20 +10593,20 @@ Cohesion: 0.02
 Nodes (41): activeNotifications, AGENT_ALIASES, AGENT_LABELS, ALLOWED_EXPORTS, ALLOWED_KINDS, ALLOWED_RENDERERS, ALLOWED_STATUS, artifactRendererRegistry (+33 more)
 
 ### Community 61 - "Community 61"
-Cohesion: 0.05
-Nodes (45): parse_cli_event(), Parse a CLI event and return a structured result.      Args:         event: Raw, Test parsing error event., Test parsing exit event with success., Test parsing exit event with failure returns error then complete., Test parsing returns empty list for unrecognized event., Test parsing returns empty list for non-dict input., Test CLI event parsing. (+37 more)
+Cohesion: 0.07
+Nodes (34): parse_cli_event(), Parse a CLI event and return a structured result.      Args:         event: Raw, Test parsing error event., Test parsing exit event with success., Test parsing exit event with failure returns error then complete., Test parsing returns empty list for unrecognized event., Test parsing returns empty list for non-dict input., Test CLI event parsing. (+26 more)
 
 ### Community 62 - "Community 62"
 Cohesion: 0.03
-Nodes (68): _DiscordClient, DiscordPlatform, _get_discord(), _parse_allowed_channels(), Discord Platform Adapter  Implements MessagingPlatform for Discord using discord, Adapter entry point used by the internal discord client., Register a voice note as pending transcription., Cancel a pending voice transcription. Returns (voice_msg_id, status_msg_id) if f (+60 more)
+Nodes (60): _DiscordClient, DiscordPlatform, _get_discord(), _parse_allowed_channels(), Discord Platform Adapter  Implements MessagingPlatform for Discord using discord, Adapter entry point used by the internal discord client., Register a voice note as pending transcription., Cancel a pending voice transcription. Returns (voice_msg_id, status_msg_id) if f (+52 more)
 
 ### Community 63 - "Community 63"
-Cohesion: 0.05
-Nodes (66): cleanRequiredString(), closeDatabase(), compactWhitespace(), deleteConversation(), deletePreviewComment(), deleteProject(), deleteTemplate(), finiteNumber() (+58 more)
+Cohesion: 0.03
+Nodes (116): loadCraftSections(), cleanRequiredString(), closeDatabase(), compactWhitespace(), deleteConversation(), deletePreviewComment(), deleteProject(), deleteTemplate() (+108 more)
 
 ### Community 64 - "Community 64"
 Cohesion: 0.07
-Nodes (32): ColorSwatch(), humanize(), isColorString(), isNativeColorInputValue(), TokenRow(), Tokens, TokenValue, BareLocation (+24 more)
+Nodes (34): ColorSwatch(), humanize(), isColorString(), isNativeColorInputValue(), TokenRow(), Tokens, TokenValue, TweakPanel() (+26 more)
 
 ### Community 65 - "Community 65"
 Cohesion: 0.02
@@ -10518,19 +10614,19 @@ Nodes (63): fetcher(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra   
 
 ### Community 66 - "Community 66"
 Cohesion: 0.05
-Nodes (188): a(), ab(), abe(), AF(), ah(), ak(), ao(), AP() (+180 more)
+Nodes (182): a(), ab(), abe(), AF(), ah(), ak(), ao(), AP() (+174 more)
 
 ### Community 67 - "Community 67"
 Cohesion: 0.02
 Nodes (73): accumulateRootVaryParam(), accumulateVaryParam(), _actionrevalidationkind, _aftertaskasyncstorageexternal, afterTaskAsyncStorageInstance, _apppaths, _approutercontextsharedruntime, areCookiesMutableInCurrentPhase() (+65 more)
 
 ### Community 68 - "Community 68"
-Cohesion: 0.19
-Nodes (39): activate_pending_worktree_sessions_starts_queued_session_when_slot_opens(), assign_session_defers_when_team_is_saturated(), assign_session_inherits_lead_grouping_for_spawned_delegate(), assign_session_reuses_idle_delegate_when_available(), assign_session_reuses_idle_delegate_when_only_non_handoff_messages_are_unread(), assign_session_spawns_instead_of_reusing_backed_up_idle_delegate(), assign_session_spawns_when_team_has_capacity(), build_config() (+31 more)
+Cohesion: 0.14
+Nodes (56): activate_pending_worktree_sessions_starts_queued_session_when_slot_opens(), assign_session_defers_when_team_is_saturated(), assign_session_inherits_lead_grouping_for_spawned_delegate(), assign_session_prefers_idle_delegate_with_graph_context_match(), assign_session_reuses_idle_delegate_when_available(), assign_session_reuses_idle_delegate_when_only_non_handoff_messages_are_unread(), assign_session_spawns_instead_of_reusing_backed_up_idle_delegate(), assign_session_spawns_when_team_has_capacity() (+48 more)
 
 ### Community 69 - "Community 69"
 Cohesion: 0.05
-Nodes (41): AgentIcon(), FALLBACK, Props, Visual, VISUALS, AvatarMenu(), Props, safeHost() (+33 more)
+Nodes (43): AgentIcon(), FALLBACK, Props, Visual, VISUALS, Props, AvatarMenu(), Props (+35 more)
 
 ### Community 70 - "Community 70"
 Cohesion: 0.04
@@ -10541,36 +10637,36 @@ Cohesion: 0.06
 Nodes (82): cli, CliOptions, config, printJson(), printLogs(), parsePortOption(), appendStartupLogDiagnostics(), createStartupLogDiagnostics() (+74 more)
 
 ### Community 72 - "Community 72"
-Cohesion: 0.04
-Nodes (38): model_name(), Shared defaults used by config models and provider adapters., Configuration management., parse_optional_str(), NVIDIA NIM settings (fixed values, no env config)., ProviderDescriptor, Neutral provider catalog: IDs, credentials, defaults, proxy and capability metad, Metadata for building :class:`~providers.base.ProviderConfig` and factory wiring (+30 more)
+Cohesion: 0.02
+Nodes (97): BaseSettings, model_name(), Shared defaults used by config models and provider adapters., Configuration management., decode_gateway_model_id(), DecodedGatewayModelId, Gateway-safe model id encoding for Claude Code model discovery., Decode a model id advertised by this gateway, if it is one. (+89 more)
 
 ### Community 73 - "Community 73"
-Cohesion: 0.03
-Nodes (47): _check_temporal_order(), ComplianceResult, grade(), Grade observation traces against compliance specs using LLM classification., Check before_step/after_step constraints. Returns failure reason or None., Grade a trace against a compliance spec using LLM classification., StepResult, _mock_compliant_classification() (+39 more)
+Cohesion: 0.04
+Nodes (41): _check_temporal_order(), ComplianceResult, grade(), Grade observation traces against compliance specs using LLM classification., Check before_step/after_step constraints. Returns failure reason or None., Grade a trace against a compliance spec using LLM classification., StepResult, TestGradeCompliant (+33 more)
 
 ### Community 74 - "Community 74"
 Cohesion: 0.04
-Nodes (110): resolveFamily(), applyDerivedStateFromProps(), attemptEarlyBailoutIfNoScheduledUpdate(), bailoutHooks(), bailoutOffscreenComponent(), bailoutOnAlreadyFinishedWork(), beginWork(), buildHydrationDiffNode() (+102 more)
+Nodes (113): resolveFamily(), applyDerivedStateFromProps(), attemptEarlyBailoutIfNoScheduledUpdate(), attemptHydrationAtCurrentPriority(), bailoutHooks(), bailoutOffscreenComponent(), bailoutOnAlreadyFinishedWork(), beginWork() (+105 more)
 
 ### Community 75 - "Community 75"
-Cohesion: 0.04
-Nodes (80): AbstractResolver, enforce_web_fetch_egress(), get_validated_stream_addrinfos_for_egress(), _port_for_url(), Egress policy for user-controlled web_fetch URLs (SSRF guard)., Egress rules for user-influenced web_fetch URLs., Raised when a web_fetch URL is rejected by egress policy (SSRF guard)., Resolve and validate a URL for web_fetch, returning getaddrinfo rows for pinning (+72 more)
+Cohesion: 0.03
+Nodes (89): AbstractResolver, enforce_web_fetch_egress(), get_validated_stream_addrinfos_for_egress(), _port_for_url(), Egress policy for user-controlled web_fetch URLs (SSRF guard)., Egress rules for user-influenced web_fetch URLs., Raised when a web_fetch URL is rejected by egress policy (SSRF guard)., Resolve and validate a URL for web_fetch, returning getaddrinfo rows for pinning (+81 more)
 
 ### Community 76 - "Community 76"
 Cohesion: 0.02
-Nodes (178): _AnthropicBlockBase, ContentBlockImage, ContentBlockRedactedThinking, ContentBlockServerToolUse, ContentBlockText, ContentBlockThinking, ContentBlockToolResult, ContentBlockToolUse (+170 more)
+Nodes (148): _AnthropicBlockBase, ContentBlockImage, ContentBlockRedactedThinking, ContentBlockServerToolUse, ContentBlockText, ContentBlockThinking, ContentBlockToolResult, ContentBlockToolUse (+140 more)
 
 ### Community 77 - "Community 77"
-Cohesion: 0.03
-Nodes (54): AnthropicMessagesTransport, _model_list_json(), Shared transport for providers with native Anthropic Messages endpoints., Query the provider endpoint that advertises available model ids., Return headers for model-list requests., Parse the provider model-list response body., Parse provider model metadata; default to unknown capabilities., Return headers for the native messages request. (+46 more)
+Cohesion: 0.04
+Nodes (35): AnthropicMessagesTransport, _model_list_json(), Shared transport for providers with native Anthropic Messages endpoints., Query the provider endpoint that advertises available model ids., Return headers for model-list requests., Parse the provider model-list response body., Parse provider model metadata; default to unknown capabilities., Return headers for the native messages request. (+27 more)
 
 ### Community 78 - "Community 78"
-Cohesion: 0.06
-Nodes (47): ABC, AuthenticationError, ContextLengthError, LLMError, LLMProvider, ModelNotFoundError, RateLimitError, LLM Provider interface definition. (+39 more)
+Cohesion: 0.03
+Nodes (66): ABC, AuthenticationError, ContextLengthError, LLMError, LLMProvider, ModelNotFoundError, RateLimitError, LLM Provider interface definition. (+58 more)
 
 ### Community 79 - "Community 79"
-Cohesion: 0.04
-Nodes (39): discord_bold(), discord_code_inline(), escape_discord(), escape_discord_code(), format_status(), format_status_discord(), Discord markdown utilities.  Discord uses standard markdown: **bold**, *italic*,, Escape text for Discord markdown (bold, italic, etc.). (+31 more)
+Cohesion: 0.05
+Nodes (30): discord_bold(), discord_code_inline(), escape_discord(), escape_discord_code(), format_status(), format_status_discord(), Discord markdown utilities.  Discord uses standard markdown: **bold**, *italic*,, Escape text for Discord markdown (bold, italic, etc.). (+22 more)
 
 ### Community 80 - "Community 80"
 Cohesion: 0.10
@@ -10578,7 +10674,7 @@ Nodes (17): capability_names(), CapabilityContract, contracted_feature_ids(), Hi
 
 ### Community 81 - "Community 81"
 Cohesion: 0.06
-Nodes (70): add_and_list_context_observations(), add_context_observation_auto_compacts_entity_history(), append_conflict_signal(), append_output_line_keeps_latest_buffer_window(), approval_queue_counts_only_queries_and_conflicts(), board_column_index(), board_lane_for_state(), build_session() (+62 more)
+Nodes (68): add_and_list_context_observations(), add_context_observation_auto_compacts_entity_history(), append_conflict_signal(), append_output_line_keeps_latest_buffer_window(), board_column_index(), board_lane_for_state(), compact_context_graph_preserves_pinned_observations(), compact_context_graph_prunes_duplicate_and_overflow_observations() (+60 more)
 
 ### Community 82 - "Community 82"
 Cohesion: 0.06
@@ -10586,23 +10682,23 @@ Nodes (71): add_and_list_context_observations(), add_context_observation_auto_co
 
 ### Community 83 - "Community 83"
 Cohesion: 0.02
-Nodes (217): ALLOWED_IMPORT_ENV_KEYS, codexAuthPath(), codexConfigPath(), CodexImport, CodexProviderBlock, parseCodexConfig(), readCodexConfig(), readCodexOpenAiApiKey() (+209 more)
+Nodes (216): CHATGPT_CODEX_PROVIDER, claimActiveProviderIfUnset(), extractEmail(), getCodexTokenStore(), logger, migrateStaleCodexEntryIfNeeded(), persistProviderMutation(), registerCodexOAuthIpc() (+208 more)
 
 ### Community 84 - "Community 84"
 Cohesion: 0.04
 Nodes (94): ac(), ad(), ai(), As(), bc(), bd(), bi(), cc() (+86 more)
 
 ### Community 85 - "Community 85"
-Cohesion: 0.03
-Nodes (8): Optional, annotate_board_motion(), extract_task_handoff_context(), message_round_trip_tracks_unread_counts_and_read_state(), routing_activity_suffix(), scheduled_tasks_round_trip_and_advance_runs(), StateStore, prepare
+Cohesion: 0.05
+Nodes (10): annotate_board_motion(), approval_queue_counts_only_queries_and_conflicts(), build_session(), daemon_activity_round_trips_latest_passes(), daemon_activity_tracks_chronic_saturation_streak(), extract_task_handoff_context(), message_round_trip_tracks_unread_counts_and_read_state(), routing_activity_suffix() (+2 more)
 
 ### Community 86 - "Community 86"
 Cohesion: 0.05
-Nodes (72): addTrappedEventListener(), camelize(), checkAttributeStringCoercion(), checkControlledValueProps(), checkCSSPropertyStringCoercion(), checkFormFieldValueStringCoercion(), checkForUnmatchedText(), coerceFormActionProp() (+64 more)
+Nodes (76): addTrappedEventListener(), camelize(), checkAttributeStringCoercion(), checkControlledValueProps(), checkCSSPropertyStringCoercion(), checkFormFieldValueStringCoercion(), checkForUnmatchedText(), coerceFormActionProp() (+68 more)
 
 ### Community 87 - "Community 87"
-Cohesion: 0.02
-Nodes (58): PKCliRunner, Check and handle intraday component in monitor option string.                  P, Update configuration durations based on args options.                  Parses th, Pipe results from previous scan to next scan for chained analysis., Update configuration based on command line arguments.                  Applies s, Generate intraday analysis reports for all configured scans.                  Th, Save and send final outcome dataframe as formatted report.                  This, Handles CLI execution flow including application running, piped scans, and monit (+50 more)
+Cohesion: 0.03
+Nodes (54): PKCliRunner, Check and handle intraday component in monitor option string.                  P, Update configuration durations based on args options.                  Parses th, Update configuration based on command line arguments.                  Applies s, Handles CLI execution flow including application running, piped scans, and monit, Initialize the CLI runner with configuration and command line arguments., Comprehensive tests for ExecuteOptionHandlers module., Test module can be imported. (+46 more)
 
 ### Community 88 - "Community 88"
 Cohesion: 0.02
@@ -10610,7 +10706,7 @@ Nodes (13): CATEGORY_ORDER, ChatComposer, EXAMPLE_PROMPT_KEYS, FALLBACK, MODE_PI
 
 ### Community 89 - "Community 89"
 Cohesion: 0.03
-Nodes (75): assign_session(), assign_session_with_grouping(), assign_session_with_profile_and_grouping(), AssignmentOutcome, AssignmentPreview, attached_worktree_count(), background_runner_command_starts_new_session(), background_runner_stderr_log_path() (+67 more)
+Nodes (84): activate_pending_worktree_sessions(), activate_pending_worktree_sessions_with(), agent_program(), assign_session(), assign_session_with_grouping(), assign_session_with_profile_and_grouping(), AssignmentAction, AssignmentOutcome (+76 more)
 
 ### Community 90 - "Community 90"
 Cohesion: 0.06
@@ -10618,19 +10714,19 @@ Nodes (15): AgentProfileConfig, MemoryConnectorConfig, MemoryConnectorDotenvFile
 
 ### Community 91 - "Community 91"
 Cohesion: 0.08
-Nodes (82): bubbleNestedEffectDurations(), captureCommitPhaseError(), clearHydrationBoundary(), commitActivityHydrationCallbacks(), commitAttachRef(), commitCachePassiveMountEffect(), commitClassCallbacks(), commitClassSnapshot() (+74 more)
+Nodes (86): bubbleNestedEffectDurations(), captureCommitPhaseError(), clearContainerSparingly(), clearHydrationBoundary(), commitActivityHydrationCallbacks(), commitAttachRef(), commitCachePassiveMountEffect(), commitClassCallbacks() (+78 more)
 
 ### Community 92 - "Community 92"
 Cohesion: 0.04
-Nodes (59): bold, escape_md_v2(), Escape text for Telegram MarkdownV2., _ctx(), Verify subagent formatting (Task tool)., Verify ordered transcript rendering (thinking/tool/subagent/text/error/status)., Verify simple transcript with just text + status., test_subagents_formatting() (+51 more)
+Nodes (58): bold, escape_md_v2(), Escape text for Telegram MarkdownV2., _ctx(), Verify subagent formatting (Task tool)., Verify ordered transcript rendering (thinking/tool/subagent/text/error/status)., Verify simple transcript with just text + status., test_subagents_formatting() (+50 more)
 
 ### Community 93 - "Community 93"
 Cohesion: 0.03
-Nodes (65): AnthropicError, APIConnectionError, APIConnectionTimeoutError, APIResource, APIUserAbortError, asciiSlice(), asciiToBytes(), asciiWrite() (+57 more)
+Nodes (72): AnthropicError, APIConnectionError, APIConnectionTimeoutError, APIResource, APIUserAbortError, arrayIndexOf(), asciiSlice(), asciiToBytes() (+64 more)
 
 ### Community 94 - "Community 94"
 Cohesion: 0.03
-Nodes (100): activate_pending_worktree_sessions(), activate_pending_worktree_sessions_with(), agent_program(), apply_shared_harness_runtime_env(), assign_session(), assign_session_with_grouping(), assign_session_with_profile_and_grouping(), AssignmentOutcome (+92 more)
+Nodes (78): assign_session(), assign_session_with_grouping(), assign_session_with_profile_and_grouping(), AssignmentAction, AssignmentOutcome, AssignmentPreview, attached_worktree_count(), background_runner_command_starts_new_session() (+70 more)
 
 ### Community 95 - "Community 95"
 Cohesion: 0.02
@@ -10638,7 +10734,7 @@ Nodes (89): The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permissi
 
 ### Community 96 - "Community 96"
 Cohesion: 0.03
-Nodes (55): PKBotLocalCache, Singleton cache for bot-related data., combineDailyStockDataWithMorningSimulation(), ensureDailyStockDataExists(), ensureIntradayStockDataExists(), getIntradayCandleFromMorning(), PKDailyStockDataDB, PKIntradayStockDataDB (+47 more)
+Nodes (47): PKBotLocalCache, Singleton cache for bot-related data., Comprehensive unit tests for BotHandlers module.  This module provides extensive, Test channel constants., Test DEV_CHANNEL_ID constant., Test MarketHours integration., Test MarketHours is available., Test scan command parsing. (+39 more)
 
 ### Community 97 - "Community 97"
 Cohesion: 0.04
@@ -10646,19 +10742,19 @@ Nodes (61): addTransitionType(), advanceTimers(), aggregateErrors(), canPreserve
 
 ### Community 98 - "Community 98"
 Cohesion: 0.04
-Nodes (56): baseUrlHost(), checkClaudeCodeOAuthEvidence(), classifyUserType(), ClaudeCodeImport, ClaudeCodeSettings, claudeCodeSettingsPath(), ClaudeCodeUserType, LOCAL_HOSTS (+48 more)
+Nodes (68): baseUrlHost(), checkClaudeCodeOAuthEvidence(), classifyUserType(), ClaudeCodeImport, ClaudeCodeSettings, claudeCodeSettingsPath(), ClaudeCodeUserType, LOCAL_HOSTS (+60 more)
 
 ### Community 99 - "Community 99"
-Cohesion: 0.05
-Nodes (79): cli, CliOptions, config, printJson(), printLogs(), CacCommand, collectProcessTreePids(), readPackedMacLogs() (+71 more)
+Cohesion: 0.06
+Nodes (78): cli, CliOptions, config, printJson(), printLogs(), CacCommand, readPackedMacLogs(), appendNsisLog() (+70 more)
 
 ### Community 100 - "Community 100"
 Cohesion: 0.03
 Nodes (43): Test uncovered methods to increase coverage., Create a sample dataframe for testing., Test custom_strategy method., Test findHigherBullishOpens method., Test findHigherOpens method., Test findHighMomentum method., Test findHighMomentum method with strict mode., Test findIntradayHighCrossover method. (+35 more)
 
 ### Community 101 - "Community 101"
-Cohesion: 0.04
-Nodes (71): LanguageToggle(), LOCALE_CYCLE, localeLabel(), noDragStyle, cleanIpcError(), cosmicEn, cosmicZh, en (+63 more)
+Cohesion: 0.07
+Nodes (38): PreviewComment, PreviewCommentDeleteResponse, PreviewCommentPosition, PreviewCommentResponse, PreviewCommentsResponse, PreviewCommentStatus, PreviewCommentStatusRequest, PreviewCommentTarget (+30 more)
 
 ### Community 102 - "Community 102"
 Cohesion: 0.03
@@ -10666,31 +10762,31 @@ Nodes (49): percent_encode_git_ref(), percent_encode_git_ref(), a, BaseContext, 
 
 ### Community 103 - "Community 103"
 Cohesion: 0.00
-Nodes (341): argrelextrema(), Enhanced version that returns detailed signal scores for ranking and filtering., Compute balanced Buy/Sell signals with configurable thresholds and cooldown peri, Identify high-quality 52-week high breakout patterns.                  A genuine, Find stocks approaching 52-week high (setups for potential breakout)., Add additional bearish sell signals when ATR-based signals are weak., Identify genuine 10-day low breakout patterns with confirmation.         A quali, Identify bullish 10-day high breakout patterns (breakout to upside).         Con (+333 more)
+Nodes (343): combineDailyStockDataWithMorningSimulation(), ensureDailyStockDataExists(), ensureIntradayStockDataExists(), getIntradayCandleFromMorning(), PKDailyStockDataDB, PKIntradayStockDataDB, runOpenCloseAnalysis(), argrelextrema() (+335 more)
 
 ### Community 104 - "Community 104"
-Cohesion: 0.02
-Nodes (95): _deduplicate_by_date_fast_aware(), currentValue(), initialValue(), profit(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, analyze(), analysis.py — Read results.tsv and surface insights. Usage:     python analysis., eval_variant() (+87 more)
+Cohesion: 0.04
+Nodes (47): currentValue(), initialValue(), profit(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, analyze(), analysis.py — Read results.tsv and surface insights. Usage:     python analysis., eval_variant(), parallel_researcher.py — Run N domain-specialist strategy variants concurrently. (+39 more)
 
 ### Community 105 - "Community 105"
-Cohesion: 0.04
-Nodes (59): format_user_error_preview(), Truncate a user-facing error string for short chat replies., Register a voice note as pending transcription (for /clear reply during transcri, Cancel a pending voice transcription. Returns (voice_msg_id, status_msg_id) if f, Check if a voice note is still pending (not cancelled)., Initialize and connect to Telegram., Helper to execute a function with exponential backoff on network errors., Send a message to a chat. (+51 more)
+Cohesion: 0.03
+Nodes (65): Platform-neutral voice note helpers., Telegram Platform Adapter  Implements MessagingPlatform for Telegram using pytho, Register a voice note as pending transcription (for /clear reply during transcri, Cancel a pending voice transcription. Returns (voice_msg_id, status_msg_id) if f, Check if a voice note is still pending (not cancelled)., Initialize and connect to Telegram., Helper to execute a function with exponential backoff on network errors., Send a message to a chat. (+57 more)
 
 ### Community 106 - "Community 106"
 Cohesion: 0.04
-Nodes (67): Orphan </think> without opening tag should be stripped., Orphan </think> at start should be stripped., Orphan </think> at end should be stripped., Multiple orphan </think> tags should all be stripped., Orphan </think> split across chunks should be stripped., Orphan </think> followed by valid <think>...</think> pair., Parametrized: orphan </think> tags should be stripped from various positions., Empty string input should yield no chunks. (+59 more)
+Nodes (68): Orphan </think> without opening tag should be stripped., Orphan </think> at start should be stripped., Orphan </think> at end should be stripped., Multiple orphan </think> tags should all be stripped., Orphan </think> split across chunks should be stripped., Orphan </think> followed by valid <think>...</think> pair., Parametrized: orphan </think> tags should be stripped from various positions., Empty string input should yield no chunks. (+60 more)
 
 ### Community 107 - "Community 107"
 Cohesion: 0.05
 Nodes (22): Tests for get_token_count function., Test token count with empty messages., Test token count with simple text message., Test token count includes system prompt., Test token count with list content blocks., Test token count includes thinking blocks., Test token count includes tool use blocks., Test token count includes tool result blocks. (+14 more)
 
 ### Community 108 - "Community 108"
-Cohesion: 0.06
-Nodes (48): strip(), BotConfig, load_config(), load_dotenv(), load_simple_yaml(), _parse_scalar(), generate_scenarios(), Generate pressure scenarios from skill + spec using LLM. (+40 more)
+Cohesion: 0.04
+Nodes (73): chunk_text(), fetch_ai_news(), load_events_from_json(), main(), run_search(), send_to_slack(), strip(), classify_events() (+65 more)
 
 ### Community 109 - "Community 109"
-Cohesion: 0.01
-Nodes (148): Initialize results-related state., Initialize multiprocessing-related state., Initialize notification-related state., Initialize configuration-related state., Initialize data fetcher instances., Initialize menu instances., Initialize scan-related state., Initialize the MenuManager with configuration and user arguments. (+140 more)
+Cohesion: 0.02
+Nodes (65): allMenus(), _get_cached_menu(), menu, MenuRenderStyle, AnalyticsAction, Constants for Google Analytics event actions., DistributionNotFound, EntryPoint (+57 more)
 
 ### Community 110 - "Community 110"
 Cohesion: 0.05
@@ -10733,16 +10829,16 @@ Cohesion: 0.04
 Nodes (46): DirectionCard, formatFormAnswers(), FormQuestion, FormSegment, parseAttrs(), QuestionForm, QuestionType, splitOnQuestionForms() (+38 more)
 
 ### Community 120 - "Community 120"
-Cohesion: 0.02
-Nodes (107): AgentModelPrefs, AppConfigPrefs, AppConfigResponse, UpdateAppConfigRequest, ArtifactExportKind, ArtifactKind, ArtifactManifest, ArtifactRendererId (+99 more)
+Cohesion: 0.03
+Nodes (71): ArtifactExportKind, ArtifactKind, ArtifactManifest, ArtifactRendererId, ArtifactStatus, SaveArtifactRequest, SaveArtifactResponse, ChatAttachment (+63 more)
 
 ### Community 121 - "Community 121"
 Cohesion: 0.06
 Nodes (64): AUDIO_MUSIC_IDS, AUDIO_SFX_IDS, AUDIO_SPEECH_IDS, IMAGE_IDS, VIDEO_IDS, aspectToBox(), AUDIO_KINDS, autoOutputName() (+56 more)
 
 ### Community 122 - "Community 122"
-Cohesion: 0.06
-Nodes (59): A, a3(), aA(), ac, aE(), aj(), at, aw() (+51 more)
+Cohesion: 0.07
+Nodes (57): A, a3(), aA(), aI(), aj(), ap(), at, aX() (+49 more)
 
 ### Community 123 - "Community 123"
 Cohesion: 0.01
@@ -10770,33 +10866,21 @@ Nodes (55): fakeContract, FakeStamp, stamp, errorCode(), errorMessage(), isWindo
 
 ### Community 129 - "Community 129"
 Cohesion: 0.06
-Nodes (62): listProcessSnapshots(), listWindowsProcessSnapshots(), buildWorkspaceArtifacts(), cleanBuilderScratchMetadata(), cleanupPackedMacNamespace(), clearQuarantine(), collectWorkspaceTarballs(), commandMatchesDesktopMarker() (+54 more)
+Nodes (63): collectProcessTreePids(), listProcessSnapshots(), listWindowsProcessSnapshots(), buildWorkspaceArtifacts(), cleanBuilderScratchMetadata(), cleanupPackedMacNamespace(), clearQuarantine(), collectWorkspaceTarballs() (+55 more)
 
 ### Community 130 - "Community 130"
-Cohesion: 0.05
-Nodes (27): budget_ratio(), budget_state(), BudgetState, format_currency(), format_token_count(), gradient_color(), interpolate_rgb(), MeterFormat (+19 more)
+Cohesion: 0.11
+Nodes (13): budget_ratio(), budget_state(), BudgetState, format_currency(), format_token_count(), gradient_color(), interpolate_rgb(), MeterFormat (+5 more)
 
 ### Community 131 - "Community 131"
-Cohesion: 0.06
-Nodes (36): fs, {
+Cohesion: 0.04
+Nodes (46): content, EXCLUDED_PATTERNS, files, fs, { isGitRepo, getGitModifiedFiles, readFile, log }, fs, {
   getLearnedSkillsDir,
   ensureDir,
   readFile,
   countInFile,
   log
-}, path, {
-  getSessionsDir,
-  getDateTimeString,
-  getTimeString,
-  findFiles,
-  ensureDir,
-  appendFile,
-  log
-}, path, fs, {
-  getTempDir,
-  writeFile,
-  log
-}, path (+28 more)
+}, path (+38 more)
 
 ### Community 132 - "Community 132"
 Cohesion: 0.03
@@ -10811,16 +10895,16 @@ Cohesion: 0.15
 Nodes (16): cleanup(), getOrSetLastRelease(), listedMenusFromRendering(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, test_option_X_12_1(), test_option_X_12_21_1(), test_option_X_12_21_2(), test_option_X_12_21_3() (+8 more)
 
 ### Community 135 - "Community 135"
-Cohesion: 0.08
-Nodes (22): Retry once with a downgraded body when NIM rejects a known field., NVIDIA NIM provider implementation., NVIDIA NIM provider package., Request builder for NVIDIA NIM provider., clone_body_without_chat_template(), clone_body_without_reasoning_budget(), clone_body_without_reasoning_content(), _clone_strip_extra_body() (+14 more)
+Cohesion: 0.07
+Nodes (26): Retry once with a downgraded body when NIM rejects a known field., NVIDIA NIM provider implementation., NVIDIA NIM provider package., Request builder for NVIDIA NIM provider., clone_body_without_chat_template(), clone_body_without_reasoning_budget(), clone_body_without_reasoning_content(), _clone_strip_extra_body() (+18 more)
 
 ### Community 136 - "Community 136"
 Cohesion: 0.07
 Nodes (56): analyzeDeployPlan(), buildDeployFilePlan(), buildDeployFileSet(), checkDeploymentUrl(), deployConfigPath(), DeployError, deploymentUrl(), deploymentUrlCandidates() (+48 more)
 
 ### Community 137 - "Community 137"
-Cohesion: 0.06
-Nodes (7): annotate_board_motion(), daemon_activity_round_trips_latest_passes(), daemon_activity_tracks_chronic_saturation_streak(), extract_task_handoff_context(), routing_activity_suffix(), scheduled_tasks_round_trip_and_advance_runs(), StateStore
+Cohesion: 0.04
+Nodes (9): Optional, prepare, annotate_board_motion(), daemon_activity_round_trips_latest_passes(), daemon_activity_tracks_chronic_saturation_streak(), extract_task_handoff_context(), routing_activity_suffix(), scheduled_tasks_round_trip_and_advance_runs() (+1 more)
 
 ### Community 138 - "Community 138"
 Cohesion: 0.11
@@ -10835,8 +10919,8 @@ Cohesion: 0.07
 Nodes (57): _atr(), build_oi_summary(), calculate_buildup(), candle_data_loop(), days_to_expiry(), db_read_oi(), _ema(), fast_data_loop() (+49 more)
 
 ### Community 141 - "Community 141"
-Cohesion: 0.06
-Nodes (14): CLISession, queue_delete_message(), Protocol for CLI session - avoid circular import from cli package., Delete many messages; default loops :meth:`queue_delete_message`.          Adapt, Protocol for session managers to avoid tight coupling with cli package.      Imp, Get an existing session or create a new one.          Returns: Tuple of (session, Register the real session ID from CLI output., Remove a session from the manager. (+6 more)
+Cohesion: 0.04
+Nodes (30): CLISession, queue_delete_message(), Protocol for CLI session - avoid circular import from cli package., Delete many messages; default loops :meth:`queue_delete_message`.          Adapt, Protocol for session managers to avoid tight coupling with cli package.      Imp, Get an existing session or create a new one.          Returns: Tuple of (session, Register the real session ID from CLI output., Remove a session from the manager. (+22 more)
 
 ### Community 142 - "Community 142"
 Cohesion: 0.07
@@ -10855,20 +10939,20 @@ Cohesion: 0.07
 Nodes (41): accumulateOrCreateContinuousQueuedReplayableEvent(), acquireSingletonInstance(), attemptContinuousHydration(), attemptReplayContinuousQueuedEvent(), attemptReplayContinuousQueuedEventInMap(), cancelCallback(), clearIfContinuousEvent(), commitFragmentInstanceDeletionEffects() (+33 more)
 
 ### Community 146 - "Community 146"
-Cohesion: 0.13
-Nodes (16): buildRows(), detailOf(), extractTodos(), iconAndLabel(), InlineTodoList(), isCreateCommand(), isEditCommand(), isTextEditorTool() (+8 more)
+Cohesion: 0.03
+Nodes (59): AssistantText(), AssistantTextProps, ChatMessageList(), ChatMessageListProps, RenderItem, EmptyState(), EmptyStateProps, STARTER_CARDS (+51 more)
 
 ### Community 147 - "Community 147"
 Cohesion: 0.07
 Nodes (38): append_event(), cleanup_pid(), default_output_dir(), ensure_private_dir(), is_fatal_error(), listen_with_retry(), log(), main() (+30 more)
 
 ### Community 148 - "Community 148"
-Cohesion: 0.18
-Nodes (16): build_merge_queue(), build_merge_queue_orders_ready_sessions_and_blocks_conflicts(), can_auto_rebase_merge_queue_entry(), classify_merge_queue_report(), delete_session(), merge_queue_priority(), merge_ready_worktrees(), merge_ready_worktrees_merges_ready_sessions_and_skips_active_and_dirty() (+8 more)
+Cohesion: 0.10
+Nodes (34): assign_session_in_dir_with_runner_program(), assignment_action_routes_work(), auto_dispatch_backlog(), build_merge_queue(), build_template_variables(), can_auto_rebase_merge_queue_entry(), classify_merge_queue_report(), coordinate_backlog() (+26 more)
 
 ### Community 149 - "Community 149"
-Cohesion: 0.06
-Nodes (42): Global rate limiter for API requests., concurrency_slot(), get_scoped_instance(), GlobalRateLimiter, Wait if currently rate limited or throttle to meet quota.          Returns:, Acquire a proactive slot enforcing a strict rolling window.          Guarantees:, Set global block for specified seconds (reactive).          Args:             se, Check if currently reactively blocked. (+34 more)
+Cohesion: 0.07
+Nodes (36): Global rate limiter for API requests., concurrency_slot(), get_scoped_instance(), GlobalRateLimiter, Wait if currently rate limited or throttle to meet quota.          Returns:, Acquire a proactive slot enforcing a strict rolling window.          Guarantees:, Set global block for specified seconds (reactive).          Args:             se, Check if currently reactively blocked. (+28 more)
 
 ### Community 150 - "Community 150"
 Cohesion: 0.05
@@ -10883,16 +10967,16 @@ Cohesion: 0.04
 Nodes (37): Comprehensive unit tests for Utility module.  This module provides extensive tes, Test OutputControls is available., Test GitHub URL constants., Test repo owner constant., Test repo name constant., Test branch name constant., Test file operation utilities., Test Archiver is available. (+29 more)
 
 ### Community 153 - "Community 153"
-Cohesion: 0.06
-Nodes (34): draft_report_task(), MarketReportCrew, MarketReportCrewLite, Moderate mode: single-pass JSON draft only., Heavy mode: draft + risk review., review_report_task(), CrewaiTesting, run_with_trigger() (+26 more)
+Cohesion: 0.04
+Nodes (53): BotConfig, load_config(), load_dotenv(), load_simple_yaml(), _parse_scalar(), draft_report_task(), MarketReportCrew, MarketReportCrewLite (+45 more)
 
 ### Community 154 - "Community 154"
 Cohesion: 0.00
-Nodes (837): create_menu_handler(), _get_launcher(), handle_backtest_menu(), _handle_backtest_period(), _handle_download_menu(), _handle_download_nse_indices(), _handle_download_sector_info(), _handle_fundamental_menu() (+829 more)
+Nodes (665): _get_launcher(), handle_backtest_menu(), _handle_backtest_period(), _handle_download_menu(), _handle_download_nse_indices(), _handle_fundamental_menu(), _handle_log_menu(), _handle_long_short_period() (+657 more)
 
 ### Community 155 - "Community 155"
 Cohesion: 0.03
-Nodes (93): PreviewComment, PreviewCommentDeleteResponse, PreviewCommentPosition, PreviewCommentResponse, PreviewCommentsResponse, PreviewCommentStatus, PreviewCommentStatusRequest, PreviewCommentTarget (+85 more)
+Nodes (64): DesignSpecView(), Props, DesignSystemPreviewModal(), Props, AudioViewer(), baseDirFor(), BinaryViewer(), documentMetaLabel() (+56 more)
 
 ### Community 156 - "Community 156"
 Cohesion: 0.04
@@ -10937,14 +11021,16 @@ Cohesion: 0.06
 Nodes (42): AGENTS_PATH, buildCatalog(), createDocumentSpecs(), createDocumentSpecsForRoot(), DOCS_ZH_CN_AGENTS_PATH, DOCS_ZH_CN_README_PATH, DOCUMENT_SPECS, evaluateExpectations() (+34 more)
 
 ### Community 165 - "Community 165"
-Cohesion: 0.04
-Nodes (46): content, EXCLUDED_PATTERNS, files, fs, { isGitRepo, getGitModifiedFiles, readFile, log }, fs, {
-  getLearnedSkillsDir,
+Cohesion: 0.05
+Nodes (38): content, input, lines, matches, { readFile }, {
+  getSessionsDir,
+  getDateTimeString,
+  getTimeString,
+  findFiles,
   ensureDir,
-  readFile,
-  countInFile,
+  appendFile,
   log
-}, path (+38 more)
+}, path, fs (+30 more)
 
 ### Community 166 - "Community 166"
 Cohesion: 0.06
@@ -10996,7 +11082,7 @@ Nodes (34): {
 
 ### Community 171 - "Community 171"
 Cohesion: 0.06
-Nodes (50): addObjectDiffToProperties(), addObjectToProperties(), addValueToProperties(), claimQueuedTransitionTypes(), collectChildren(), commitRoot(), containsNode(), createLaneMap() (+42 more)
+Nodes (48): addObjectDiffToProperties(), addObjectToProperties(), addValueToProperties(), claimQueuedTransitionTypes(), collectChildren(), commitRoot(), containsNode(), createLaneMap() (+40 more)
 
 ### Community 172 - "Community 172"
 Cohesion: 0.08
@@ -11007,8 +11093,8 @@ Cohesion: 0.06
 Nodes (41): AuthorizeUrlOpts, buildAuthorizeUrl(), CodexOAuthTokenError, decodeJwtClaims(), exchangeCode(), extractAccountId(), formatOAuthErrorDetail(), generatePkce() (+33 more)
 
 ### Community 174 - "Community 174"
-Cohesion: 0.06
-Nodes (25): checkIsOnDemandRevalidate(), createCachedPrerenderResponse(), createCookiesFromSample(), createDedupeFetch(), createHeadersFromSample(), createOpaqueFallbackRouteParams(), createPathnameFromRouteAndSampleParams(), createRelativeURLFromSamples() (+17 more)
+Cohesion: 0.05
+Nodes (27): checkIsOnDemandRevalidate(), createCachedPrerenderResponse(), createCookiesFromSample(), createDedupeFetch(), createHeadersFromSample(), createOpaqueFallbackRouteParams(), createPathnameFromRouteAndSampleParams(), createRelativeURLFromSamples() (+19 more)
 
 ### Community 175 - "Community 175"
 Cohesion: 0.09
@@ -11051,8 +11137,8 @@ Cohesion: 0.09
 Nodes (26): AI_DEFAULT_INDIGO, buildResolvedThemes(), clip(), detectBlueCyanTrustGradient(), escapeRe(), extractCssTokens(), FILLER_PATTERNS, findLastDecl() (+18 more)
 
 ### Community 185 - "Community 185"
-Cohesion: 0.05
-Nodes (31): appendMutableCookies(), collectSegmentData(), createCacheKey(), createClientSearchParamsInValidation(), createExhaustiveSearchParamsProxy(), createPrerenderParamsForClientSegment(), createRenderSearchParams(), createRuntimePrerenderSearchParams() (+23 more)
+Cohesion: 0.07
+Nodes (25): appendMutableCookies(), collectSegmentData(), createCacheKey(), createClientSearchParamsInValidation(), createExhaustiveSearchParamsProxy(), createPrerenderParamsForClientSegment(), createRenderSearchParams(), createRuntimePrerenderSearchParams() (+17 more)
 
 ### Community 186 - "Community 186"
 Cohesion: 0.04
@@ -11107,8 +11193,8 @@ Cohesion: 0.04
 Nodes (31): Comprehensive unit tests for MenuManager class.  This module provides extensive, Test menu navigation., Test navigation states., Test back navigation constant., Test menu option types., Test numeric options., Test module structure., Test MenuManager import. (+23 more)
 
 ### Community 199 - "Community 199"
-Cohesion: 0.06
-Nodes (20): config(), labeler(), loader(), manager(), navigator(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Targeted tests to co, Test trending methods., Test consolidating methods. (+12 more)
+Cohesion: 0.12
+Nodes (10): config(), labeler(), loader(), manager(), navigator(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Targeted tests to co, Create a configuration manager., Create comprehensive stock DataFrame. (+2 more)
 
 ### Community 200 - "Community 200"
 Cohesion: 0.05
@@ -11302,7 +11388,7 @@ Nodes (46): 1. IAM & Access Control, 2. Secrets Management, 3. Network Security,
 
 ### Community 248 - "Community 248"
 Cohesion: 0.06
-Nodes (44): afterMarketStockDataExists(), alive_bar(), _apply_fresh_ticks_to_data(), _deduplicate_by_date(), deduplicate_stock_data(), default_logger(), _detect_timestamp_format(), _download_and_validate_pkl() (+36 more)
+Nodes (43): afterMarketStockDataExists(), alive_bar(), _apply_fresh_ticks_to_data(), _deduplicate_by_date(), _deduplicate_by_date_fast_aware(), deduplicate_stock_data(), default_logger(), _detect_timestamp_format() (+35 more)
 
 ### Community 249 - "Community 249"
 Cohesion: 0.07
@@ -11440,7 +11526,7 @@ Nodes (45): API Resources, Caching, code:block1 (app/), code:php (protected func
 
 ### Community 282 - "Community 282"
 Cohesion: 0.06
-Nodes (20): Eagerly validate/build the upstream request before opening an SSE stream., DeepSeekProvider, DeepSeek using ``https://api.deepseek.com/anthropic`` (Anthropic Messages API)., DeepSeek lists models from the OpenAI-format root, not /anthropic., DeepSeek provider implementation (native Anthropic-compatible Messages)., DeepSeek provider exports., deepseek_config(), deepseek_provider() (+12 more)
+Nodes (21): Eagerly validate/build the upstream request before opening an SSE stream., DeepSeekProvider, DeepSeek using ``https://api.deepseek.com/anthropic`` (Anthropic Messages API)., DeepSeek lists models from the OpenAI-format root, not /anthropic., DeepSeek provider implementation (native Anthropic-compatible Messages)., DeepSeek provider exports., _create_deepseek(), deepseek_config() (+13 more)
 
 ### Community 283 - "Community 283"
 Cohesion: 0.06
@@ -11511,12 +11597,12 @@ Cohesion: 0.04
 Nodes (45): API Resources, Caching, code:block1 (app/), code:php (protected function budgetCents(): Attribute), code:php ($orders = Order::query()), code:php (final class ProjectQuery), code:php (use Illuminate\Database\Eloquent\SoftDeletes;), code:php (use Illuminate\Database\Eloquent\Builder;) (+37 more)
 
 ### Community 300 - "Community 300"
-Cohesion: 0.07
-Nodes (34): allEntries, annotateFrame(), args, buildOverlaySVG(), COMP_DIR, compositeOver(), FPS, HEIGHT (+26 more)
+Cohesion: 0.06
+Nodes (36): allEntries, annotateFrame(), args, buildOverlaySVG(), COMP_DIR, compositeOver(), FPS, HEIGHT (+28 more)
 
 ### Community 301 - "Community 301"
-Cohesion: 0.05
-Nodes (47): OpenRouterProvider, Keep OpenRouter's existing request-id suffix format., Emit the Anthropic SSE error shape expected by Claude clients., OpenRouter provider using the native Anthropic-compatible messages API., Return OpenRouter's Anthropic-compatible messages headers., Return OpenRouter's OpenAI-compatible model-list headers., append_request_id(), User-facing error formatting shared by API, providers, and integrations. (+39 more)
+Cohesion: 0.09
+Nodes (33): parse_sse_text(), FakeResponse, mock_rate_limiter(), MockMessage, MockRequest, open_router_config(), open_router_provider(), Tests for OpenRouter providers. (+25 more)
 
 ### Community 302 - "Community 302"
 Cohesion: 0.03
@@ -11528,7 +11614,7 @@ Nodes (39): cleanup(), messageSentToTelegramQueue(), The MIT License (MIT)      
 
 ### Community 304 - "Community 304"
 Cohesion: 0.11
-Nodes (30): BBacktests(), command_handler(), default_markup(), editMessageText(), end(), error_handler(), getinlineMenuListRow(), handleHousekeeping() (+22 more)
+Nodes (34): cancelAlertSubscription(), command_handler(), default_markup(), error_handler(), getinlineMenuListRow(), help_command(), isUserSubscribed(), launchScreener() (+26 more)
 
 ### Community 305 - "Community 305"
 Cohesion: 0.04
@@ -11615,8 +11701,8 @@ Cohesion: 0.04
 Nodes (44): All PKScreener Menus Must Be Tested, All Repositories Must:, Automated Release Pipeline, code:block1 (PKDevTools (base)), code:block2 (major.minor.YYYYMMDD.buildNumber), code:block3 (PKDevTools>=0.13.YYYYMMDD.{new_version}), code:block4 (PKDevTools>=0.13.YYYYMMDD.{new_version}), code:block5 (PKDevTools>=0.13.YYYYMMDD.{new_version}) (+36 more)
 
 ### Community 326 - "Community 326"
-Cohesion: 0.03
-Nodes (55): DataLoader - Stock data loading and preparation for PKScreener  This module hand, Implementation of saveDownloadedData for delegation from globals.py.          Th, save_downloaded_data_impl(), Unit tests for DataLoader.py Tests for stock data loading and preparation., Should return True for option 33:3, Should return True for option 32, Tests for StockDataLoader initialization, Should return False for regular options (+47 more)
+Cohesion: 0.01
+Nodes (108): DataLoader - Stock data loading and preparation for PKScreener  This module hand, Implementation of saveDownloadedData for delegation from globals.py.          Th, save_downloaded_data_impl(), handle_secondary_menu_choices_impl(), Handle secondary menu choices (H, U, T, E, Y).     Returns None to continue or (, Unit tests for DataLoader.py Tests for stock data loading and preparation., Should return True for option 33:3, Should return True for option 32 (+100 more)
 
 ### Community 327 - "Community 327"
 Cohesion: 0.08
@@ -11936,7 +12022,7 @@ Nodes (35): agentsPath, assert, codexDir, config, configPath, deterministicPacka
 
 ### Community 406 - "Community 406"
 Cohesion: 0.05
-Nodes (46): a4, aH, an, aO(), c, c3, cp, cW() (+38 more)
+Nodes (43): a4, ac, aE(), aH, an, aO(), c, c3 (+35 more)
 
 ### Community 407 - "Community 407"
 Cohesion: 0.05
@@ -11979,16 +12065,16 @@ Cohesion: 0.05
 Nodes (35): agentsPath, assert, codexDir, config, configPath, deterministicPackageEnv, first, fs (+27 more)
 
 ### Community 417 - "Community 417"
-Cohesion: 0.07
-Nodes (33): LMStudioProvider, LM Studio provider implementation., LM Studio provider using native Anthropic Messages endpoint., LM Studio provider - Anthropic-compatible local API., _create_lmstudio(), lmstudio_config(), lmstudio_provider(), mock_rate_limiter() (+25 more)
+Cohesion: 0.04
+Nodes (63): LMStudioProvider, LM Studio provider implementation., LM Studio provider using native Anthropic Messages endpoint., LM Studio provider - Anthropic-compatible local API., _create_lmstudio(), assert_canonical_stream_error_envelope(), Shared assertions for canonical provider streaming error envelopes., Native transports emit message_start → text error → message_stop. (+55 more)
 
 ### Community 418 - "Community 418"
-Cohesion: 0.02
-Nodes (90): finish_backtest_data_cleanup_impl(), Implementation of FinishBacktestDataCleanup for delegation from globals.py., label_data_for_printing_impl(), ResultsLabeler - Results labeling and formatting for PKScreener  This module han, Implementation of labelDataForPrinting for delegation from globals.py., labelDataForPrinting(), Label data for printing with appropriate formatting.          Args:         scre, Should cleanup backtest data correctly (+82 more)
+Cohesion: 0.03
+Nodes (54): label_data_for_printing_impl(), ResultsLabeler - Results labeling and formatting for PKScreener  This module han, Implementation of labelDataForPrinting for delegation from globals.py., Should label data correctly for printing, Tests for ResultsLabeler module, Should handle None save results, Should label data correctly, TestResultsLabeler (+46 more)
 
 ### Community 419 - "Community 419"
-Cohesion: 0.06
-Nodes (41): CardProps, CATEGORY_ORDER, DesignSystemsTab(), Props, SURFACE_PILLS, SurfaceFilter, ExampleCard(), ExamplesTab() (+33 more)
+Cohesion: 0.10
+Nodes (24): CardProps, CATEGORY_ORDER, DesignSystemsTab(), Props, SURFACE_PILLS, SurfaceFilter, DE_DESIGN_SYSTEM_CATEGORIES, DE_DESIGN_SYSTEM_IDS_WITH_EN_FALLBACK (+16 more)
 
 ### Community 420 - "Community 420"
 Cohesion: 0.09
@@ -12082,6 +12168,10 @@ Nodes (40): 1 · 我們不帶 agent，你的就夠好, 2 · Skill 是檔案，�
 Cohesion: 0.06
 Nodes (12): BaseNextResponse, chainStreams(), clearPreviewData(), createWriterFromResponse(), fromResponseCacheEntry(), isAbortError(), NodeNextResponse, pipeToNodeResponse() (+4 more)
 
+### Community 443 - "Community 443"
+Cohesion: 0.05
+Nodes (11): align_series(), ATR(), AVWAP(), highest(), KeltnersChannel(), lowest(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, RVM() (+3 more)
+
 ### Community 444 - "Community 444"
 Cohesion: 0.05
 Nodes (40): 1. Visual Theme & Atmosphere, 2. Color Palette & Roles, 3. Typography Rules, 4. Component Stylings, 5. Layout Principles, 6. Depth & Elevation, 7. Do's and Don'ts, 8. Responsive Behavior (+32 more)
@@ -12131,8 +12221,8 @@ Cohesion: 0.08
 Nodes (10): PKScheduledTaskProgress, The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Portfolio, PortfolioSecurity, Test updating progress for a valid task ID., Test updating progress for an invalid task ID., Test updating progress when no task is present., Test that progressUpdater.refresh is called when task is valid. (+2 more)
 
 ### Community 456 - "Community 456"
-Cohesion: 0.10
-Nodes (30): am(), BM(), BW(), cm(), cw(), dm(), DV(), dw() (+22 more)
+Cohesion: 0.23
+Nodes (15): am(), BM(), cm(), dm(), fm(), im(), JM(), lm() (+7 more)
 
 ### Community 457 - "Community 457"
 Cohesion: 0.05
@@ -12284,15 +12374,15 @@ Nodes (39): 1. Storytelling Flow, 2. Pacing, 3. Cursor Overlay, 4. Mouse Movemen
 
 ### Community 494 - "Community 494"
 Cohesion: 0.04
-Nodes (49): ChatComposer, ChatComposerHandle, Props, SlashCommand, TranslateFn, ChatPane(), ConversationRow(), EXAMPLE_PROMPT_KEYS (+41 more)
+Nodes (52): ChatMessage, streamViaDaemon(), ChatComposer, ChatComposerHandle, Props, SlashCommand, TranslateFn, ChatPane() (+44 more)
 
 ### Community 495 - "Community 495"
 Cohesion: 0.07
 Nodes (20): create_config_manager(), Additional tests for performValidityCheckForExecuteOptions., Additional tests for getCleanedDataForDuration., Test performValidityCheckForExecuteOptions method., Test more validity check options., Test option 42 super gainers., Test option 43 super losers., Test option 44 strong buy signals. (+12 more)
 
 ### Community 496 - "Community 496"
-Cohesion: 0.10
-Nodes (23): escape_md_v2_code(), escape_md_v2_link_url(), format_status(), mdv2_bold(), mdv2_code_inline(), Telegram MarkdownV2 utilities.  Renders common Markdown into Telegram MarkdownV2, Escape text for Telegram MarkdownV2 code spans/blocks., Escape URL for Telegram MarkdownV2 link destination. (+15 more)
+Cohesion: 0.06
+Nodes (33): _is_gfm_table_header_line(), normalize_gfm_tables(), Shared Markdown table pre-normalization for platform renderers., Return whether a line looks like a GFM table header., Insert blank lines before detected tables outside fenced code blocks., escape_md_v2_code(), escape_md_v2_link_url(), format_status() (+25 more)
 
 ### Community 497 - "Community 497"
 Cohesion: 0.05
@@ -12303,8 +12393,8 @@ Cohesion: 0.05
 Nodes (39): 1. Visual Theme & Atmosphere, 2. Color Palette & Roles, 3. Typography Rules, 4. Component Stylings, 5. Layout Principles, 6. Depth & Elevation, 7. Do's and Don'ts, 8. Responsive Behavior (+31 more)
 
 ### Community 499 - "Community 499"
-Cohesion: 0.04
-Nodes (53): CLI integration for Claude Code., Claude Code CLI session management., Configuration for a managed Claude CLI subprocess., CLISessionManager, CLI Session Manager for Multi-Instance Claude CLI Support  Manages a pool of CLI, Remove a session from the manager., Get session statistics., Manages multiple CLISession instances for parallel conversation processing. (+45 more)
+Cohesion: 0.08
+Nodes (30): CLI integration for Claude Code., Claude Code CLI session management., Configuration for a managed Claude CLI subprocess., CLI Session Manager for Multi-Instance Claude CLI Support  Manages a pool of CLI, ensure_atexit_registered(), kill_all_best_effort(), Track and clean up spawned CLI subprocesses.  This is a safety net for cases whe, Kill any still-running registered pids (best-effort). (+22 more)
 
 ### Community 500 - "Community 500"
 Cohesion: 0.05
@@ -12403,8 +12493,8 @@ Cohesion: 0.05
 Nodes (39): canvas, closeTab, files, filesTab, filesTabEmpty, newDesignDialog, openInTab, previewHint (+31 more)
 
 ### Community 524 - "Community 524"
-Cohesion: 0.05
-Nodes (39): canvas, closeTab, files, filesTab, filesTabEmpty, newDesignDialog, openInTab, previewHint (+31 more)
+Cohesion: 0.09
+Nodes (22): canvas, closeTab, files, filesTab, filesTabEmpty, newDesignDialog, openInTab, previewHint (+14 more)
 
 ### Community 525 - "Community 525"
 Cohesion: 0.05
@@ -12655,8 +12745,8 @@ Cohesion: 0.05
 Nodes (37): A Python-based stock screener for NSE, India., Backtests, Building from source repo, code:block1 (X > Scanners), code:block2 (W > Screen stocks from my own Watchlist), code:block3 (0 > Full Screening (Shows Technical Parameters without any c), code:block4 (1 > Volume Scanners | High Momentum | Breaking Out Now | ATR), code:block5 (docker pull pkjmesra/pkscreener:latest) (+29 more)
 
 ### Community 585 - "Community 585"
-Cohesion: 0.06
-Nodes (33): dependencies, @anthropic-ai/sdk, next, @open-design/contracts, @open-design/platform, @open-design/sidecar, @open-design/sidecar-proto, react (+25 more)
+Cohesion: 0.05
+Nodes (34): dependencies, @anthropic-ai/sdk, next, @open-design/contracts, @open-design/platform, @open-design/sidecar, @open-design/sidecar-proto, openai (+26 more)
 
 ### Community 586 - "Community 586"
 Cohesion: 0.05
@@ -12715,8 +12805,8 @@ Cohesion: 0.07
 Nodes (17): checkEvalAvailabilityOnceDev(), createDebugCallbackFromWritableStream(), createResponseFromOptions(), createStreamState(), describeElementType(), describeKeyForErrorMessage(), describeObjectForErrorMessage(), describeValueForErrorMessage() (+9 more)
 
 ### Community 600 - "Community 600"
-Cohesion: 0.09
-Nodes (10): APIClient, createResponseHeaders(), debug(), defaultParseResponse(), generate(), isAbsoluteURL(), readEnv(), safeJSON() (+2 more)
+Cohesion: 0.07
+Nodes (13): APIClient, Batches, Completions, createResponseHeaders(), debug(), defaultParseResponse(), generate(), isAbsoluteURL() (+5 more)
 
 ### Community 601 - "Community 601"
 Cohesion: 0.05
@@ -12751,8 +12841,8 @@ Cohesion: 0.15
 Nodes (35): prepData(), prepPatch(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, test_findPattern_3_black_crows(), test_findPattern_3_inside_down(), test_findPattern_3_inside_up(), test_findPattern_3_line_strike_bearish(), test_findPattern_3_line_strike_bullish() (+27 more)
 
 ### Community 609 - "Community 609"
-Cohesion: 0.05
-Nodes (54): indentOf(), isBlockScalarIndicator(), loadAllSkills(), LoadAllSkillsOptions, loadBuiltinSkills(), loadSkillsFromDir(), parseBlockScalar(), parseBlockSequence() (+46 more)
+Cohesion: 0.11
+Nodes (26): indentOf(), isBlockScalarIndicator(), loadAllSkills(), LoadAllSkillsOptions, loadBuiltinSkills(), loadSkillsFromDir(), parseBlockScalar(), parseBlockSequence() (+18 more)
 
 ### Community 610 - "Community 610"
 Cohesion: 0.05
@@ -12819,8 +12909,8 @@ Cohesion: 0.06
 Nodes (35): 1. Visual Theme & Atmosphere, 2. Color Palette & Roles, 3. Typography Rules, 4. Component Stylings, 5. Layout Principles, 6. Depth & Elevation, 7. Do's and Don'ts, 8. Responsive Behavior (+27 more)
 
 ### Community 626 - "Community 626"
-Cohesion: 0.11
-Nodes (20): message_payload(), post_json(), test_count_tokens_accepts_thinking_tools_and_results(), test_invalid_messages_returns_anthropic_error(), test_optimization_fast_paths_do_not_need_provider(), test_vscode_and_jetbrains_shaped_requests(), MockLive, run_mock_scanner() (+12 more)
+Cohesion: 0.36
+Nodes (11): _settings(), _smoke_config(), test_ollama_provider_configuration_uses_base_url(), test_ollama_provider_matrix_filters_models(), test_provider_smoke_does_not_include_default_local_urls_when_unmapped(), test_provider_smoke_includes_local_provider_when_model_mapping_uses_it(), test_provider_smoke_matrix_filters_provider_catalog(), test_provider_smoke_model_override_accepts_model_name_without_prefix() (+3 more)
 
 ### Community 627 - "Community 627"
 Cohesion: 0.06
@@ -12879,8 +12969,8 @@ Cohesion: 0.06
 Nodes (34): chat, emptyHint, placeholder, placeholderRich, send, sendAction, sendAnywhere, sendShortcut (+26 more)
 
 ### Community 641 - "Community 641"
-Cohesion: 0.06
-Nodes (34): chat, emptyHint, placeholder, placeholderRich, send, sendAction, sendAnywhere, sendShortcut (+26 more)
+Cohesion: 0.07
+Nodes (26): chat, emptyHint, placeholder, placeholderRich, send, sendAction, sendAnywhere, sendShortcut (+18 more)
 
 ### Community 642 - "Community 642"
 Cohesion: 0.06
@@ -12944,7 +13034,7 @@ Nodes (18): Helper to temporarily remove RUNNER from environment., Helper to res
 
 ### Community 657 - "Community 657"
 Cohesion: 0.09
-Nodes (22): get_instance(), MessagingRateLimiter, Global Rate Limiter for Messaging Platforms.  Centralizes outgoing message reque, Stop the background worker so process shutdown doesn't hang., A thread-safe global rate limiter for messaging.      Uses a custom queue with t, Enqueue a messaging task and return its future result.         If dedup_key is p, Enqueue a task without waiting for the result., Ensure the worker task exists. (+14 more)
+Nodes (21): get_instance(), MessagingRateLimiter, Stop the background worker so process shutdown doesn't hang., A thread-safe global rate limiter for messaging.      Uses a custom queue with t, Enqueue a messaging task and return its future result.         If dedup_key is p, Enqueue a task without waiting for the result., Ensure the worker task exists., Background worker that processes queued messaging tasks. (+13 more)
 
 ### Community 658 - "Community 658"
 Cohesion: 0.06
@@ -13131,8 +13221,8 @@ Cohesion: 0.06
 Nodes (32): Agents, code:bash (# Install to current project), code:bash (# Install globally to ~/.trae-cn/), code:bash (# If already in project directory with .trae folder), code:bash (cd /path/to/your/project), code:bash (# From project directory), code:bash (# From project root, force the CN environment), code:bash (# Uninstall from current directory (if already inside .trae ) (+24 more)
 
 ### Community 704 - "Community 704"
-Cohesion: 0.09
-Nodes (34): ck(), "./dist/compiled/react/cjs/react-compiler-runtime.production.js"(), "./dist/compiled/react/cjs/react.production.js"(), "./dist/compiled/react/compiler-runtime.js"(), "./dist/compiled/react-dom/cjs/react-dom.production.js"(), "./dist/compiled/react-dom/client.js"(), "./dist/compiled/react-dom/index.js"(), "./dist/compiled/react/index.js"() (+26 more)
+Cohesion: 0.08
+Nodes (35): ck(), "./dist/compiled/react/cjs/react-compiler-runtime.production.js"(), "./dist/compiled/react/cjs/react.production.js"(), "./dist/compiled/react/compiler-runtime.js"(), "./dist/compiled/react-dom/cjs/react-dom.production.js"(), "./dist/compiled/react-dom/client.js"(), "./dist/compiled/react-dom/index.js"(), "./dist/compiled/react/index.js"() (+27 more)
 
 ### Community 705 - "Community 705"
 Cohesion: 0.06
@@ -13144,7 +13234,7 @@ Nodes (33): darkDesc, darkLabel, langEn, langPtBR, languageHint, languageLabel, 
 
 ### Community 707 - "Community 707"
 Cohesion: 0.06
-Nodes (33): darkDesc, darkLabel, langEn, langPtBR, languageHint, languageLabel, languageLoadFailed, langZhCN (+25 more)
+Nodes (36): beta, checkForUpdatesOnStartup, checkForUpdatesOnStartupHint, devtools, devtoolsFailed, devtoolsHint, prefsLoadFailed, prefsSaveFailed (+28 more)
 
 ### Community 708 - "Community 708"
 Cohesion: 0.10
@@ -13383,12 +13473,12 @@ Cohesion: 0.06
 Nodes (31): apiKeyOptional, presetDescription, presetName, thinkingHint, body, dismissAction, importAction, title (+23 more)
 
 ### Community 768 - "Community 768"
-Cohesion: 0.06
-Nodes (31): apiKeyOptional, presetDescription, presetName, thinkingHint, body, dismissAction, importAction, title (+23 more)
+Cohesion: 0.05
+Nodes (39): apiKeyOptional, presetDescription, presetName, thinkingHint, body, dismissAction, importAction, title (+31 more)
 
 ### Community 769 - "Community 769"
-Cohesion: 0.09
-Nodes (29): _apply_openrouter_reasoning_policy(), build_base_native_anthropic_request_body(), build_openrouter_native_request_body(), dump_raw_messages_request(), _dump_request_fields(), _normalize_system_prompt_for_openrouter(), OpenRouterExtraBodyError, Native Anthropic Messages request body construction (JSON-ready dicts).  Provide (+21 more)
+Cohesion: 0.06
+Nodes (46): build_request_body(), Request builder and DeepSeek native Anthropic compatibility sanitizer., _apply_openrouter_reasoning_policy(), build_base_native_anthropic_request_body(), build_openrouter_native_request_body(), dump_raw_messages_request(), _dump_request_fields(), _normalize_system_prompt_for_openrouter() (+38 more)
 
 ### Community 770 - "Community 770"
 Cohesion: 0.06
@@ -13471,12 +13561,12 @@ Cohesion: 0.06
 Nodes (30): STEAM Task Graphic Organiser for Students.docx.md, Unit 1/Causes for the Fall of Roman Empire.docx.md, Unit 1/Event Card- Fall of Roman Empire.pdfPDF.md, Unit 1/Impacts of the Crusades.pdfPDF.md, Unit 1/Jerusalem and Abrahamic Faiths .docx.md, Unit 1/People's & Prince's Crusades.pdfPDF.md, Unit 1/Reasons for the peoples participation in Crusades.docx.md, Unit 1/SuleymantheMagnificent.pdfPDF.md (+22 more)
 
 ### Community 790 - "Community 790"
-Cohesion: 0.15
-Nodes (54): activate_pending_worktree_sessions_starts_queued_session_when_slot_opens(), assign_session_defers_when_team_is_saturated(), assign_session_inherits_lead_grouping_for_spawned_delegate(), assign_session_prefers_idle_delegate_with_graph_context_match(), assign_session_reuses_idle_delegate_when_available(), assign_session_reuses_idle_delegate_when_only_non_handoff_messages_are_unread(), assign_session_spawns_instead_of_reusing_backed_up_idle_delegate(), assign_session_spawns_when_team_has_capacity() (+46 more)
+Cohesion: 0.18
+Nodes (40): activate_pending_worktree_sessions_starts_queued_session_when_slot_opens(), assign_session_defers_when_team_is_saturated(), assign_session_inherits_lead_grouping_for_spawned_delegate(), assign_session_reuses_idle_delegate_when_available(), assign_session_reuses_idle_delegate_when_only_non_handoff_messages_are_unread(), assign_session_spawns_instead_of_reusing_backed_up_idle_delegate(), assign_session_spawns_when_team_has_capacity(), auto_dispatch_backlog_routes_multiple_lead_inboxes() (+32 more)
 
 ### Community 791 - "Community 791"
-Cohesion: 0.19
-Nodes (18): BacktestTrade, KillSwitchEvent, KillSwitchLevel, AlphaCopy — Global Risk Engine ═════════════════════════════════════════════════, Immutable result object returned for every trade proposal., _reject(), RuleViolation, TradeValidationResult (+10 more)
+Cohesion: 0.07
+Nodes (22): CLISessionManager, Remove a session from the manager., Get session statistics., Manages multiple CLISession instances for parallel conversation processing., Initialize the session manager.          Args:             workspace_path: Worki, Get an existing session or create a new one.          Returns:             Tuple, Register the real session ID from CLI output., test_register_real_session_id_missing_temp_id_returns_false() (+14 more)
 
 ### Community 792 - "Community 792"
 Cohesion: 0.09
@@ -13762,11 +13852,11 @@ Nodes (20): build_report(), call_mcp(), execute_skill(), find_skill(), fmt_altco
 
 ### Community 860 - "Community 860"
 Cohesion: 0.07
-Nodes (24): backtest(), backtestSummary(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Update backtest results with new data.                  Args:             backte, Process backtest results, processResults(), Process individual scan result and update result lists.          Args:         m, Update backtest results with new data.          Args:         backtestPeriod (in (+16 more)
+Nodes (22): backtest(), backtestSummary(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Update backtest results with new data.                  Args:             backte, finish_backtest_data_cleanup(), Process backtest results, Finish backtest data cleanup and display results.          Args:         backtes, Process scanning results and update data structures.                  Args: (+14 more)
 
 ### Community 861 - "Community 861"
 Cohesion: 0.11
-Nodes (9): AlgoValidator, PositionSizer, Computes the correct position size using fixed-risk model (1% rule),     then va, Returns: (final_size_usd, risk_usd, risk_pct, actual_rr), Compute a take-profit price that achieves the target R:R., Validates a trading algorithm's backtest results before allowing live deployment, Run all validation checks on backtest results., Can this bot graduate from paper trading to live? (+1 more)
+Nodes (12): budget_ratio(), budget_state(), BudgetState, format_currency(), format_token_count(), gradient_color(), interpolate_rgb(), MeterFormat (+4 more)
 
 ### Community 862 - "Community 862"
 Cohesion: 0.04
@@ -13870,7 +13960,7 @@ Nodes (28): 1. 模組化與關注點分離, 1. 現狀分析, 2. 可擴展性, 2.
 
 ### Community 887 - "Community 887"
 Cohesion: 0.12
-Nodes (9): Test send_event when analytics disabled., Comprehensive tests for PKAnalyticsService., Test VERSION is imported correctly., Test PKAnalyticsService is singleton., Test PKAnalyticsService initialization sets attributes., Test collectMetrics when analytics disabled., Test collectMetrics when analytics enabled., Test getUserName returns username. (+1 more)
+Nodes (26): apply_shared_harness_runtime_env(), BudgetEnforcementOutcome, build_agent_command(), build_agent_command_applies_profile_runner_flags_for_claude(), build_agent_command_exports_detected_package_manager_env_from_lockfile(), build_agent_command_normalizes_runner_flags_for_codex(), build_agent_command_normalizes_runner_flags_for_gemini(), build_agent_command_normalizes_runner_flags_for_opencode() (+18 more)
 
 ### Community 888 - "Community 888"
 Cohesion: 0.07
@@ -14101,8 +14191,8 @@ Cohesion: 0.17
 Nodes (7): KillSwitchEngine, Monitors real-time thresholds and triggers emergency halts.      Triggers:, Call after every closed position.         Returns a KillSwitchEvent if a trigger, Track trade velocity., Heartbeat checks: portfolio DD, weekly loss, stale positions., Manually resume a halted bot (after human review)., Full system reset (emergency use only).
 
 ### Community 943 - "Community 943"
-Cohesion: 0.18
-Nodes (14): cleanText(), IMAGE_MIME_TYPES, inspectReferenceUrl(), isProbablyText(), PreparedPromptContext, preparePromptContext(), readAttachment(), readResponseText() (+6 more)
+Cohesion: 0.13
+Nodes (25): calculate_max_pain(), calculate_pcr(), create_asset_panel(), create_cmc_panel(), create_cross_asset_panel(), create_etf_panel(), create_liquidity_panel(), create_macro_news_panel() (+17 more)
 
 ### Community 944 - "Community 944"
 Cohesion: 0.13
@@ -14287,8 +14377,8 @@ Cohesion: 0.07
 Nodes (27): ABC/XYZ Classification, Additional Resources, Automatic Escalation Triggers, Communication Patterns, Core Knowledge, Decision Frameworks, Escalation Chain, Escalation Protocols (+19 more)
 
 ### Community 988 - "Community 988"
-Cohesion: 0.07
-Nodes (14): Handle sector info download option, Generate a persistent anonymous user ID (no PII).                  Creates a has, Fetch location information in background thread (non-blocking)., Send a categorized analytics event (GA4 style) with backward compatibility., Normalize OS names to GA4 standard values., Synchronous event sending (runs in background thread)., Check if current user has premium subscription., Track a scanner execution (convenience method).                  Args: (+6 more)
+Cohesion: 0.08
+Nodes (13): Generate a persistent anonymous user ID (no PII).                  Creates a has, Fetch location information in background thread (non-blocking)., Send a categorized analytics event (GA4 style) with backward compatibility., Normalize OS names to GA4 standard values., Synchronous event sending (runs in background thread)., Check if current user has premium subscription., Track a scanner execution (convenience method).                  Args:, Track performance metrics.                  Args:             operation (str): O (+5 more)
 
 ### Community 989 - "Community 989"
 Cohesion: 0.11
@@ -14707,8 +14797,8 @@ Cohesion: 0.08
 Nodes (25): 3-year financial model, Base case model, Board decisions, Bull case, Buyer personas, Competitive positioning, Executive overview, Go-to-market implications (+17 more)
 
 ### Community 1095 - "Community 1095"
-Cohesion: 0.01
-Nodes (115): _configure_super_confluence(), _configure_vcp_filters(), _handle_candlestick_patterns(), _handle_chart_pattern_1_2_3(), _handle_chart_pattern_6_9(), handle_execute_option_12(), handle_execute_option_21(), handle_execute_option_22() (+107 more)
+Cohesion: 0.09
+Nodes (21): _configure_super_confluence(), _configure_vcp_filters(), _handle_candlestick_patterns(), _handle_chart_pattern_1_2_3(), _handle_chart_pattern_6_9(), handle_execute_option_30(), handle_execute_option_34(), handle_execute_option_7() (+13 more)
 
 ### Community 1096 - "Community 1096"
 Cohesion: 0.10
@@ -15475,12 +15565,12 @@ Cohesion: 0.20
 Nodes (19): err, result, asRecord(), extractBodyHead(), extractCode(), extractErrorName(), extractMessage(), extractRequestId() (+11 more)
 
 ### Community 1290 - "Community 1290"
-Cohesion: 0.04
-Nodes (37): BinanceBot, fetch_positions_normalized(), AlphaCopy - Binance Futures Copy Bot  Data source: Binance's unofficial leaderbo, Detect new/closed positions by diffing against cached snapshot., Fetch and normalize positions to {symbol: pos_data}., Binance Futures copy trading bot.      Flow:       1. Scrape leaderboard → score, HyperliquidBot, AlphaCopy - Hyperliquid Copy Bot Uses official hyperliquid-python-sdk for execut (+29 more)
+Cohesion: 0.13
+Nodes (10): HyperliquidBot, AlphaCopy - Hyperliquid Copy Bot Uses official hyperliquid-python-sdk for execut, Score and pick the best traders to copy., Subscribe to userFills for a target wallet., Subscribe to all marks for SL/TP monitoring., Process a fill from a target wallet and mirror it.         fill schema: {coin, s, Update SL/TP/trailing for all open positions., Hyperliquid copy trading bot.      Flow:       1. Fetch leaderboard → score → pi (+2 more)
 
 ### Community 1291 - "Community 1291"
-Cohesion: 0.12
-Nodes (16): addCommandsForMenuItems(), get_platform(), initializeIntradayTimer(), launchIntradayMonitor(), loadRegisteredUsers(), Mock get_platform function., Register all menu command handlers with the application.          Dynamically cr, Main entry point to run the PKScreener Telegram bot.          Initializes the bo (+8 more)
+Cohesion: 0.17
+Nodes (12): addCommandsForMenuItems(), initializeIntradayTimer(), loadRegisteredUsers(), Start background thread for daily workflow triggers., Stop the background thread., Register all menu command handlers with the application.          Dynamically cr, Main entry point to run the PKScreener Telegram bot.          Initializes the bo, Load all registered user IDs from the database into the local cache. (+4 more)
 
 ### Community 1292 - "Community 1292"
 Cohesion: 0.16
@@ -15660,7 +15750,7 @@ Nodes (22): code:bash (npx remotion add @remotion/media # If project uses npm), 
 
 ### Community 1334 - "Community 1334"
 Cohesion: 0.13
-Nodes (23): aS(), i2(), i4(), iB(), ig(), ik(), im(), iq (+15 more)
+Nodes (22): aS(), i2(), i4(), iB(), ig(), ik(), im(), iq (+14 more)
 
 ### Community 1335 - "Community 1335"
 Cohesion: 0.09
@@ -15695,8 +15785,8 @@ Cohesion: 0.09
 Nodes (26): compact(), constructor(), createPrerenderParamsForClientSegment(), createRenderParamsInProd(), createRuntimePrerenderSearchParams(), createServerSearchParamsForMetadata(), createServerSearchParamsForServerPage(), createStaticPrerenderParams() (+18 more)
 
 ### Community 1343 - "Community 1343"
-Cohesion: 0.18
-Nodes (5): Master pre-trade gate.         Returns TradeValidationResult — use .approved to, For dashboard: full risk engine status., Convenience method: build a Position object from a validated result.         Use, Central risk manager. One instance shared across all three bots.      Args:, RiskManager
+Cohesion: 0.08
+Nodes (6): _mock_compliant_classification(), _mock_noncompliant_classification(), Tests for grader module — compliance scoring with LLM classification., Simulate LLM correctly classifying a compliant trace., Simulate LLM classifying a noncompliant trace (impl before test)., test_returns_compliance_result()
 
 ### Community 1344 - "Community 1344"
 Cohesion: 0.09
@@ -15860,7 +15950,7 @@ Nodes (22): Android Specific (MEDIUM), Approval Criteria, Architecture (CRITICAL
 
 ### Community 1382 - "Community 1382"
 Cohesion: 0.01
-Nodes (1271): PKAssetsManager, PKAssetsManager - Centralized Asset and Data Management for PK Screener      Thi, BacktestHandler, Handles all backtesting operations for the PKScreener application.     Includes, BacktestResultsHandler, Handles backtest results processing and display, CandlePatterns, tools (+1263 more)
+Nodes (1341): PKAssetsManager, PKAssetsManager - Centralized Asset and Data Management for PK Screener      Thi, BacktestHandler, Handles all backtesting operations for the PKScreener application.     Includes, BacktestResultsHandler, Handles backtest results processing and display, CandlePatterns, tools (+1333 more)
 
 ### Community 1383 - "Community 1383"
 Cohesion: 0.13
@@ -16139,8 +16229,8 @@ Cohesion: 0.09
 Nodes (21): DateSorted.html, /finance/chart/, https://api.github.com/repos/pkjmesra/PKScreener/releases/latest, assets, assets_url, draft, html_url, message (+13 more)
 
 ### Community 1453 - "Community 1453"
-Cohesion: 0.10
-Nodes (33): apply_shared_harness_runtime_env(), assignment_action_routes_work(), auto_dispatch_backlog(), auto_dispatch_backlog_routes_multiple_lead_inboxes(), BudgetEnforcementOutcome, build_agent_command(), build_agent_command_applies_profile_runner_flags_for_claude(), build_agent_command_exports_detected_package_manager_env_from_lockfile() (+25 more)
+Cohesion: 0.16
+Nodes (17): apply_shared_harness_runtime_env(), build_agent_command(), build_agent_command_applies_profile_runner_flags_for_claude(), build_agent_command_exports_detected_package_manager_env_from_lockfile(), build_agent_command_normalizes_runner_flags_for_codex(), build_agent_command_normalizes_runner_flags_for_gemini(), build_agent_command_normalizes_runner_flags_for_opencode(), build_agent_command_prefers_project_package_manager_config_over_lockfile() (+9 more)
 
 ### Community 1454 - "Community 1454"
 Cohesion: 0.09
@@ -16425,7 +16515,7 @@ Nodes (6): createHangingInputAbortSignal(), delayUntilRuntimeStage(), getRuntime
 
 ### Community 1521 - "Community 1521"
 Cohesion: 0.11
-Nodes (6): _decodeChunks(), JSONLDecoder, LineDecoder, readableStreamAsyncIterable(), sseDecoder, Stream
+Nodes (7): _decodeChunks(), JSONLDecoder, LineDecoder, partition(), readableStreamAsyncIterable(), sseDecoder, Stream
 
 ### Community 1522 - "Community 1522"
 Cohesion: 0.10
@@ -17013,20 +17103,20 @@ Cohesion: 0.14
 Nodes (13): getGlobalMarketBarometerValuation(), getScreenshotsForGlobalMarketBarometer(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, takeScreenshot(), write_pdf(), write_png(), k, launch() (+5 more)
 
 ### Community 1665 - "Community 1665"
-Cohesion: 0.10
-Nodes (12): Dashboard, AlphaCopy - Performance Dashboard Console + JSON reporting for all three bots., BotState, Position, AlphaCopy - Unified Risk Manager Enforces position limits, drawdown stops, and s, Evaluate SL/TP/trailing stop.         Returns action: None | "STOP_LOSS" | "TAKE, Externally triggered close (e.g. trader closed their position)., Kelly-inspired fixed-risk sizing.         risk_pct = fraction of equity to risk (+4 more)
+Cohesion: 0.13
+Nodes (10): BotState, Position, AlphaCopy - Unified Risk Manager Enforces position limits, drawdown stops, and s, Evaluate SL/TP/trailing stop.         Returns action: None | "STOP_LOSS" | "TAKE, Externally triggered close (e.g. trader closed their position)., Kelly-inspired fixed-risk sizing.         risk_pct = fraction of equity to risk, Central risk engine for all three copy bots.     Call check_trade() before placi, Returns: (approved, reason, adjusted_size_usd) (+2 more)
 
 ### Community 1666 - "Community 1666"
 Cohesion: 0.14
 Nodes (17): address, AgentInfo, AgentsResponse, available, availableAgents, CloseDatabase, collectSseEvents(), liveTimeoutMs (+9 more)
 
 ### Community 1667 - "Community 1667"
-Cohesion: 0.04
-Nodes (75): calculate_max_pain(), calculate_pcr(), create_asset_panel(), fetch_deribit_quotes(), generate_liquidation_map(), main(), make_liquidation_map_table(), make_options_table() (+67 more)
+Cohesion: 0.06
+Nodes (50): calculate_max_pain(), calculate_pcr(), create_asset_panel(), fetch_deribit_quotes(), generate_liquidation_map(), main(), make_liquidation_map_table(), make_options_table() (+42 more)
 
 ### Community 1668 - "Community 1668"
-Cohesion: 0.05
-Nodes (63): attemptHydrationAtCurrentPriority(), callComponentWillReceiveProps(), captureCommitPhaseErrorOnRoot(), chainThenableValue(), checkIfSnapshotChanged(), createCache(), createClassErrorUpdate(), createFiberRoot() (+55 more)
+Cohesion: 0.07
+Nodes (44): callComponentWillReceiveProps(), chainThenableValue(), checkIfSnapshotChanged(), createCache(), createFiberRoot(), dispatchActionState(), dispatchOptimisticSetState(), dispatchReducerAction() (+36 more)
 
 ### Community 1669 - "Community 1669"
 Cohesion: 0.12
@@ -17205,8 +17295,8 @@ Cohesion: 0.11
 Nodes (18): Async Tests, code:text (my_crate/), code:rust (#[cfg(test)]), code:rust (use rstest::rstest;), code:rust (#[tokio::test]), code:rust (// Production trait — pub so integration tests can import it), code:bash (cargo llvm-cov                       # Summary), code:bash (cargo test                       # Run all tests) (+10 more)
 
 ### Community 1713 - "Community 1713"
-Cohesion: 0.12
-Nodes (17): $ref, $ref, $ref, durationMs, failureReason, outcome, sessionId, skillVersion (+9 more)
+Cohesion: 0.11
+Nodes (19): skillRun, $ref, $ref, $ref, durationMs, failureReason, outcome, skillVersion (+11 more)
 
 ### Community 1714 - "Community 1714"
 Cohesion: 0.11
@@ -17521,8 +17611,8 @@ Cohesion: 0.17
 Nodes (4): main(), main.py — Polybot orchestrator.  Starts all async loops concurrently:   - Whale, CopySignal, WhaleTracker
 
 ### Community 1793 - "Community 1793"
-Cohesion: 0.40
-Nodes (4): Test processResults function., Test processing results., Test processResults function., TestProcessResults
+Cohesion: 0.11
+Nodes (14): processResults(), Process individual scan result and update result lists.          Args:         m, Update backtest results with new data.          Args:         backtestPeriod (in, updateBacktestResults(), Test processResults function., Test processing results., Test updateBacktestResults function., Test updating backtest results. (+6 more)
 
 ### Community 1794 - "Community 1794"
 Cohesion: 0.11
@@ -17549,8 +17639,8 @@ Cohesion: 0.11
 Nodes (17): 1.1 Tight ICP recap (for your own filter), 1.2 Warm outreach email (use when you have any weak tie), 1.3 Cold outreach variant (no NVIDIA mention if conflict‑sensitive), 1.4 Discovery call structure (45–60 mins), 1) Design partner outreach, 2.1 Problem statement, 2.2 Target users (v0), 2.3 In‑scope v0 capabilities (+9 more)
 
 ### Community 1800 - "Community 1800"
-Cohesion: 0.16
-Nodes (15): addNewButtonsToReplyMarkup(), cancelAlertSubscription(), matchUTR(), otp(), Add new buttons to an existing inline keyboard markup.          Args:         re, Cancel a user's alert subscription for a specific scanner.          Args:, Display user's subscription information and available subscription options., Share user activity updates with the configured channel.          Args: (+7 more)
+Cohesion: 0.12
+Nodes (22): addNewButtonsToReplyMarkup(), BBacktests(), editMessageText(), end(), handleHousekeeping(), otp(), PScanners(), Add new buttons to an existing inline keyboard markup.          Args:         re (+14 more)
 
 ### Community 1801 - "Community 1801"
 Cohesion: 0.12
@@ -17773,8 +17863,8 @@ Cohesion: 0.11
 Nodes (17): 1. Inventory the current surface, 2. Decide what deserves interruption, 3. Collapse duplicates before adding channels, 4. Design the ECC-native workflow, 5. Return an action-biased design, code:text (CURRENT SURFACE), Default Severity Model, Event Pipeline (+9 more)
 
 ### Community 1856 - "Community 1856"
-Cohesion: 0.13
-Nodes (14): Batch Config Summary, code:python (# Audio: every 50 words), code:python (# Start live transcription), code:python (import time), code:python (# Begin ingestion), code:python (import time), Complete Workflow, Generating Streams (+6 more)
+Cohesion: 0.11
+Nodes (17): Batch Config Summary, code:python (# Audio: every 50 words), code:python (# Start live transcription), code:python (import time), code:python (# Begin ingestion), code:python (import time), code:python (export_result = rtstream.export(name="Meeting Recording 2024), Complete Workflow (+9 more)
 
 ### Community 1857 - "Community 1857"
 Cohesion: 0.12
@@ -17821,8 +17911,8 @@ Cohesion: 0.11
 Nodes (17): dependencies, @open-codesign/shared, devDependencies, typescript, vitest, exports, ./overlay, files (+9 more)
 
 ### Community 1868 - "Community 1868"
-Cohesion: 0.18
-Nodes (14): build_session(), choose_conflict_resolution(), conflict_incident_key(), conflict_strategy_label(), enforce_conflict_resolution(), enforce_conflict_resolution_pauses_later_session_and_notifies_lead(), enforce_conflict_resolution_supports_last_write_wins(), get_status() (+6 more)
+Cohesion: 0.14
+Nodes (17): build_session(), choose_conflict_resolution(), collect_delegation_descendants(), conflict_incident_key(), conflict_strategy_label(), enforce_conflict_resolution(), enforce_conflict_resolution_pauses_later_session_and_notifies_lead(), enforce_conflict_resolution_supports_last_write_wins() (+9 more)
 
 ### Community 1869 - "Community 1869"
 Cohesion: 0.11
@@ -18262,7 +18352,7 @@ Nodes (16): API Response Envelope, Builder Pattern, code:rust (pub trait OrderRe
 
 ### Community 1978 - "Community 1978"
 Cohesion: 0.12
-Nodes (17): $defs, jsonArray, jsonValue, nonEmptyString, nullableInteger, nullableString, skillRun, type (+9 more)
+Nodes (17): additionalProperties, required, type, $defs, decision, jsonArray, jsonValue, nonEmptyString (+9 more)
 
 ### Community 1979 - "Community 1979"
 Cohesion: 0.12
@@ -18440,8 +18530,8 @@ Cohesion: 0.12
 Nodes (16): Class inventory, code:html (<div class="header" data-od-id="header">), code:html (<div class="ph-img wide" style="border-radius: 0; aspect-rat), code:html (<section class="pad stack" style="height: 100%; padding-top:), code:html (<section class="pad" style="padding-top: 8px;" data-od-id="h), code:html (<section class="pad" style="padding-top: 12px;" data-od-id="), code:html (<div class="header" data-od-id="header">), Pre-flight (+8 more)
 
 ### Community 2020 - "Community 2020"
-Cohesion: 0.19
-Nodes (14): assign_session_in_dir_with_runner_program(), assign_session_prefers_idle_delegate_with_graph_context_match(), AssignmentAction, delegate_selection_key(), direct_delegate_sessions(), extract_legacy_handoff_task(), graph_context_match_score(), graph_context_matched_terms() (+6 more)
+Cohesion: 0.12
+Nodes (22): _importing_package_parts(), _imports_from(), _imports_matching(), _is_forbidden(), _module_fqn_from_path(), Package import contract tests (static AST; dynamic ``importlib`` loads are not s, HTTP layer must not depend on per-adapter provider subpackages., Match root modules (``import api``) and submodules (``import api.x``). (+14 more)
 
 ### Community 2021 - "Community 2021"
 Cohesion: 0.12
@@ -18671,8 +18761,8 @@ Cohesion: 0.20
 Nodes (17): background(), diffRouteTreeAgainstCurrent(), doesCurrentSegmentMatchCachedSegment(), hasNetworkBandwidth(), pingFullSegmentRevalidation(), pingNewPartOfCacheComponentsTree(), pingPPRDisabledRouteTreeUpToLoadingBoundary(), pingPPRSegmentRevalidation() (+9 more)
 
 ### Community 2075 - "Community 2075"
-Cohesion: 0.08
-Nodes (27): ChatgptLoginCard(), ChatgptLoginCardProps, ChatgptViewState, CodexOAuthApi, formatLoginErrorDescription(), isCodexLoginCancelledError(), isUnsupportedCountryRegionError(), performFetchStatus() (+19 more)
+Cohesion: 0.03
+Nodes (64): patchConsoleMethod(), AddCustomProviderModal(), DiscoveryState, Props, html, TestState, Button(), ButtonProps (+56 more)
 
 ### Community 2077 - "Community 2077"
 Cohesion: 0.13
@@ -18975,8 +19065,8 @@ Cohesion: 0.12
 Nodes (15): code:bash (# 偵測目前的套件管理器), code:json (// ~/.claude/package-manager.json), code:json (// .claude/package-manager.json), code:json ({), code:bash (# Windows (PowerShell)), code:bash (node scripts/setup-package-manager.js --detect), package.json, 使用方式 (+7 more)
 
 ### Community 2152 - "Community 2152"
-Cohesion: 0.13
-Nodes (14): code:powershell (uv run pytest smoke --collect-only -q), code:powershell ($env:FCC_LIVE_SMOKE = "1"), code:powershell ($env:FCC_LIVE_SMOKE = "1"), code:powershell ($env:FCC_LIVE_SMOKE = "1"), code:powershell ($env:FCC_LIVE_SMOKE = "1"), code:powershell ($env:FCC_LIVE_SMOKE = "1"), Examples, Failure Classes (+6 more)
+Cohesion: 0.08
+Nodes (16): Get the number of trees in the repository., Get the number of active message trees., Tests for messaging/ module., Test messaging models., Test TreeQueueManager., Test TreeQueueManager initialization., Test IncomingMessage dataclass., Test tree is not busy when no messages. (+8 more)
 
 ### Community 2153 - "Community 2153"
 Cohesion: 0.16
@@ -19382,7 +19472,7 @@ Nodes (16): chainTransformers(), continueDynamicHTMLResume(), continueDynamicPre
 
 ### Community 2249 - "Community 2249"
 Cohesion: 0.18
-Nodes (17): buildFakeCallStack(), createFakeFunction(), createLazyChunkWrapper(), defineLazyGetter(), getComponentNameFromType(), getInferredFunctionApproximate(), getRootTask(), getTaskName() (+9 more)
+Nodes (16): buildFakeCallStack(), createFakeFunction(), createLazyChunkWrapper(), defineLazyGetter(), getComponentNameFromType(), getInferredFunctionApproximate(), getRootTask(), getTaskName() (+8 more)
 
 ### Community 2251 - "Community 2251"
 Cohesion: 0.12
@@ -19735,8 +19825,8 @@ Cohesion: 0.12
 Nodes (15): 1. Write Test First (RED), 2. Run Test -- Verify it FAILS, 3. Write Minimal Implementation (GREEN), 4. Run Test -- Verify it PASSES, 5. Refactor (IMPROVE), 6. Verify Coverage, code:bash (npm test), code:bash (npm run test:coverage) (+7 more)
 
 ### Community 2334 - "Community 2334"
-Cohesion: 0.14
-Nodes (14): manual_trigger(), Trigger the production scans workflow via GitHub Actions.          Returns:, Background thread that triggers workflows at scheduled IST times.          Args:, Start background thread for daily workflow triggers., Stop the background thread., Manual command to test the workflow trigger. Usage: /trigger_scans          Args, Manual command to stop the scheduled workflow trigger. Usage: /stop_trigger, Determine if the bot should avoid responding to a message.          Prevents the (+6 more)
+Cohesion: 0.20
+Nodes (10): manual_trigger(), Trigger the production scans workflow via GitHub Actions.          Returns:, Background thread that triggers workflows at scheduled IST times.          Args:, Manual command to test the workflow trigger. Usage: /trigger_scans          Args, Manual command to stop the scheduled workflow trigger. Usage: /stop_trigger, Determine if the bot should avoid responding to a message.          Prevents the, scheduled_workflow_trigger(), _shouldAvoidResponse() (+2 more)
 
 ### Community 2335 - "Community 2335"
 Cohesion: 0.20
@@ -19759,8 +19849,8 @@ Cohesion: 0.12
 Nodes (8): Fetch stock data using either a PKTask object or individual arguments., Update task progress tracking dictionaries.                  Args:             t, Fetch stock price data using high-performance data provider.                  Th, Convert period string to candle count., Normalize interval string to standard format., Print the current fetch progress to console., Print fetch error message to console., Print fetch success message to console.
 
 ### Community 2340 - "Community 2340"
-Cohesion: 0.16
-Nodes (14): collect_delegation_descendants(), coordinate_backlog(), coordination_health(), coordination_mode(), enforce_session_heartbeats(), enforce_session_heartbeats_auto_terminates_when_enabled(), enforce_session_heartbeats_marks_overdue_running_sessions_stale(), enforce_session_heartbeats_with() (+6 more)
+Cohesion: 0.09
+Nodes (14): handle_execute_option_6(), Handle execute option 6 - reversal screening, Test handle_execute_option_6 with various reversal options., Tests for handle_execute_option_6 function, Should return reversal option from options, Should use default maLength for option 4, Should use default maLength 3 for option 7, Should return None when reversalOption is 0 (+6 more)
 
 ### Community 2341 - "Community 2341"
 Cohesion: 0.11
@@ -20127,12 +20217,12 @@ Cohesion: 0.13
 Nodes (14): code:rust (// BAD), code:rust (// BAD — SQL injection via format string), code:rust (// Parse, don't validate — invalid states are unrepresentabl), code:rust (// GOOD — safety comment documents ALL required invariants), code:bash (# Security audit), code:rust (// Map errors to appropriate status codes and generic messag), Dependency Security, Error Messages (+6 more)
 
 ### Community 2432 - "Community 2432"
-Cohesion: 0.12
-Nodes (17): $ref, $ref, additionalProperties, properties, required, type, decision, alternatives (+9 more)
+Cohesion: 0.13
+Nodes (15): $ref, $ref, properties, $ref, alternatives, createdAt, id, rationale (+7 more)
 
 ### Community 2433 - "Community 2433"
 Cohesion: 0.13
-Nodes (15): governanceEvent, $ref, additionalProperties, properties, required, type, $ref, $ref (+7 more)
+Nodes (15): governanceEvent, $ref, additionalProperties, properties, required, type, $ref, eventType (+7 more)
 
 ### Community 2434 - "Community 2434"
 Cohesion: 0.20
@@ -20273,8 +20363,8 @@ Cohesion: 0.13
 Nodes (15): trigger, addMenu, artifactDefaultLabel, artifactDelivered, claudeLabel, noModel, streamingLabel, thinking (+7 more)
 
 ### Community 2467 - "Community 2467"
-Cohesion: 0.19
-Nodes (13): help_command(), isUserSubscribed(), PScanners(), Handle scanner menu navigation for X (scanner) commands.          Args:, Check if a user has an active subscription.          Args:         user: Telegra, Handle /help command - display available commands and usage information., Register a user in the system and retrieve their OTP and subscription informatio, Handle /start command - initialize bot session and display main menu.          A (+5 more)
+Cohesion: 0.09
+Nodes (16): handle_strategy_menu(), Handle S (Strategy) menu.     Returns (should_return_early, menuOption, indexOpt, Test strategy menu functions., Test handle_strategy_menu with M option using default answer., Test handle_strategy_menu with Z option using default answer., Test handle_strategy_menu with valid strategy number., Test handle_strategy_menu with comma-separated options., Test handle_strategy_menu with S option. (+8 more)
 
 ### Community 2468 - "Community 2468"
 Cohesion: 0.13
@@ -20295,6 +20385,10 @@ Nodes (15): createClientParamsInInstantValidation(), createExhaustiveParamsProxy
 ### Community 2472 - "Community 2472"
 Cohesion: 0.26
 Nodes (15): filterDebugInfo(), fulfillReference(), getOutlinedModel(), initializeDebugChunk(), initializeModelChunk(), initializeModuleChunk(), moveDebugInfoFromChunkToInnerValue(), readChunk() (+7 more)
+
+### Community 2473 - "Community 2473"
+Cohesion: 0.21
+Nodes (4): APIPromise, partialParse(), tokenize(), unstrip()
 
 ### Community 2474 - "Community 2474"
 Cohesion: 0.13
@@ -20554,11 +20648,11 @@ Nodes (14): code:rust (// BAD), code:rust (// BAD — SQL injection via format s
 
 ### Community 2538 - "Community 2538"
 Cohesion: 0.13
-Nodes (15): $ref, $ref, properties, alternatives, createdAt, rationale, sessionId, status (+7 more)
+Nodes (15): $ref, $ref, properties, $ref, alternatives, createdAt, id, rationale (+7 more)
 
 ### Community 2539 - "Community 2539"
 Cohesion: 0.13
-Nodes (15): governanceEvent, $ref, additionalProperties, properties, required, type, $ref, $ref (+7 more)
+Nodes (15): governanceEvent, $ref, additionalProperties, properties, required, type, $ref, eventType (+7 more)
 
 ### Community 2540 - "Community 2540"
 Cohesion: 0.18
@@ -20635,8 +20729,8 @@ Cohesion: 0.13
 Nodes (14): code:block1 (Analyzing your prompt...), Does Not Trigger, Examples, How It Works, Precision note, Shortcuts — skip the question, Source, Step 1 — Estimate input tokens (+6 more)
 
 ### Community 2557 - "Community 2557"
-Cohesion: 0.11
-Nodes (17): Batch Config Summary, code:python (# Audio: every 50 words), code:python (# Start live transcription), code:python (import time), code:python (# Begin ingestion), code:python (import time), code:python (export_result = rtstream.export(name="Meeting Recording 2024), Complete Workflow (+9 more)
+Cohesion: 0.13
+Nodes (14): Batch Config Summary, code:python (# Audio: every 50 words), code:python (# Start live transcription), code:python (import time), code:python (# Begin ingestion), code:python (import time), Complete Workflow, Generating Streams (+6 more)
 
 ### Community 2558 - "Community 2558"
 Cohesion: 0.13
@@ -20687,8 +20781,8 @@ Cohesion: 0.13
 Nodes (15): 1. Define Menu Entry, 2. Implement Validation Logic, 3. Add to Screening Switch, 4. Add Sub-Options (if needed), 5. Handle Sub-Options, 6. Write Tests, 7. Document, Adding New Scanners (+7 more)
 
 ### Community 2570 - "Community 2570"
-Cohesion: 0.20
-Nodes (3): Batches, Completions, Messages
+Cohesion: 0.17
+Nodes (8): aggregate_positions(), PolymarketBot, AlphaCopy - Polymarket Copy Bot  Uses:   - Polymarket CLOB API (clob.polymarket., Fetch current open positions for a wallet via CLOB API., Aggregate raw CLOB trades into net positions per token_id.     Returns {token_id, Polymarket copy trading bot.      Flow:       1. Fetch top traders from analytic, Fetch top traders from polymarketanalytics.com.         Falls back to known whal, TraderProfile
 
 ### Community 2571 - "Community 2571"
 Cohesion: 0.13
@@ -20976,7 +21070,7 @@ Nodes (5): Config, harness_runners_deserialize_from_toml(), layered_config_merge
 
 ### Community 2642 - "Community 2642"
 Cohesion: 0.14
-Nodes (9): MenuHandler, Handles menu navigation and rendering for the bot., Initialize MenuHandler with menu structures for different levels., Get menu items for a specific level.                  Retrieves and filters menu, Create inline keyboard markup from menu items.                  Converts a list, Tests for M (Monitor) menu options., Test that Monitor menu exists in level 0., Test that monitoring uses real-time data. (+1 more)
+Nodes (9): MenuHandler, Handles menu navigation and rendering for the bot., Initialize MenuHandler with menu structures for different levels., Get menu items for a specific level.                  Retrieves and filters menu, Create inline keyboard markup from menu items.                  Converts a list, Tests for D (Download) menu options., Test that Download menu exists in level 0., Test that download options are available. (+1 more)
 
 ### Community 2643 - "Community 2643"
 Cohesion: 0.14
@@ -21160,8 +21254,8 @@ Cohesion: 0.16
 Nodes (10): assert, { execFileSync, spawnSync }, fs, os, PACKAGE_JSON, path, resolvePowerShellCommand(), runTests() (+2 more)
 
 ### Community 2685 - "Community 2685"
-Cohesion: 0.17
-Nodes (14): collectInlinedEntries(), collectInlinedEntriesImpl(), createEmptyPart(), createLayoutSegmentPromises(), createNestedLayoutNavigationPromises(), createRootNavigationPromises(), discoverDynamicChild(), discoverKnownRoute() (+6 more)
+Cohesion: 0.10
+Nodes (24): collectInlinedEntries(), collectInlinedEntriesImpl(), createEmptyPart(), createLayoutSegmentPromises(), createNestedLayoutNavigationPromises(), createRootNavigationPromises(), deleteFromCacheMap(), deleteMapEntry() (+16 more)
 
 ### Community 2686 - "Community 2686"
 Cohesion: 0.14
@@ -21174,6 +21268,10 @@ Nodes (13): ADK 2.0 Workflows — Opt-in, ADK Cheatsheet, ADK Documentation, Age
 ### Community 2688 - "Community 2688"
 Cohesion: 0.14
 Nodes (13): 1. Crowded Positives (Consensus), 1. The Dominance of Well-Owned Stocks, 2. Equity Flow and Regional Shifts (April 2026), 2. Under-owned Negatives (Consensus), 3. Crowded Negatives (Contrarian), 3. Market Structure: The Rise of Passive Investing, 4. Under-owned Positives (Contrarian), Actionable Insights (+5 more)
+
+### Community 2689 - "Community 2689"
+Cohesion: 0.13
+Nodes (18): computeFingerprint(), extractTopFrames(), FingerprintInput, hash32Hex(), isNoiseFrame(), normalizeFrame(), a, b (+10 more)
 
 ### Community 2690 - "Community 2690"
 Cohesion: 0.22
@@ -21208,8 +21306,8 @@ Cohesion: 0.19
 Nodes (9): Check if live results should be shown, _should_show_live_results(), Tests for _should_show_live_results function, Should return False in monitor mode, Should return False for empty list, Should return False when options is None, Should return True for option 29, Should return False for non-29 option (+1 more)
 
 ### Community 2698 - "Community 2698"
-Cohesion: 0.17
-Nodes (16): alloc(), allocUnsafe(), arrayIndexOf(), assertSize(), bidirectionalIndexOf(), Buffer(), checked(), createBuffer() (+8 more)
+Cohesion: 0.23
+Nodes (12): alloc(), allocUnsafe(), assertSize(), Buffer(), checked(), createBuffer(), from(), fromArrayBuffer() (+4 more)
 
 ### Community 2699 - "Community 2699"
 Cohesion: 0.14
@@ -21617,8 +21715,8 @@ Cohesion: 0.16
 Nodes (20): accumulateSuspenseyCommitOnFiber(), acquireResource(), adoptPreloadPropsForScript(), adoptPreloadPropsForStylesheet(), describeLinkForResourceErrorDEV(), escapeSelectorAttributeValueInsideDoubleQuotes(), getHoistableRoot(), getResource() (+12 more)
 
 ### Community 2799 - "Community 2799"
-Cohesion: 0.02
-Nodes (115): get_status_for_event(), CLI event types and status-line mapping for transcript / UI updates., Return status string for event type, or None if no status update needed., dispatch_command(), message_kind_for_command(), parse_command_base(), Command parsing and dispatch for messaging handlers., Return the slash command without bot mention suffix. (+107 more)
+Cohesion: 0.03
+Nodes (60): FakePlatform, FakePlatformDriver, In-memory platform that exercises the real message handler., Persistent storage for message ↔ Claude session mappings and message trees., Replace tree queue manager via explicit API., Snapshot current state for serialization. Caller must hold self._lock., Atomically write data dict to disk. Must be called WITHOUT holding self._lock., Schedule a debounced save. Caller must hold self._lock. (+52 more)
 
 ### Community 2800 - "Community 2800"
 Cohesion: 0.22
@@ -22543,8 +22641,8 @@ Cohesion: 0.15
 Nodes (12): code:block1 (rules/), code:bash (# 安装通用 + 一个或多个语言特定的规则集), code:bash (# 创建目标目录), 安装, 带覆盖说明的通用规则, 示例, 结构, 规则 (+4 more)
 
 ### Community 3030 - "Community 3030"
-Cohesion: 0.15
-Nodes (13): oneOf, type, type, oneOf, type, properties, author, description (+5 more)
+Cohesion: 0.12
+Nodes (16): oneOf, type, type, oneOf, type, properties, author, description (+8 more)
 
 ### Community 3031 - "Community 3031"
 Cohesion: 0.26
@@ -23087,8 +23185,8 @@ Cohesion: 0.19
 Nodes (9): BaseProxy, assert_calls_equal(), assert_calls_equal_unsorted(), raise_calls_differ_error(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, Check whether the given mock object (or mock method) calls are equal and     ret, Raise an AssertionError with pretty print format for the given expected     and, Raises an AssertionError if the two iterables do not contain the same items. (+1 more)
 
 ### Community 3163 - "Community 3163"
-Cohesion: 0.17
-Nodes (15): addFormValue(), createForm(), getBytes(), getName(), getStringFromMaybeBuffer(), hasUploadableValue(), isAsyncIterableIterator(), isBlobLike() (+7 more)
+Cohesion: 0.25
+Nodes (11): addFormValue(), getBytes(), getName(), getStringFromMaybeBuffer(), isAsyncIterableIterator(), isBlobLike(), isFileLike(), isResponseLike() (+3 more)
 
 ### Community 3164 - "Community 3164"
 Cohesion: 0.17
@@ -23119,8 +23217,8 @@ Cohesion: 0.33
 Nodes (12): createIterator(), createPendingChunk(), createResolvedIteratorResultChunk(), createResolvedModelChunk(), getChunk(), processFullStringRow(), resolveConsoleEntry(), resolveIOInfo() (+4 more)
 
 ### Community 3171 - "Community 3171"
-Cohesion: 0.42
-Nodes (11): addObjectToProperties(), addValueToProperties(), flushComponentPerformance(), getArrayKind(), getIOColor(), getIODescription(), getIOLongName(), getIOShortName() (+3 more)
+Cohesion: 0.38
+Nodes (12): addObjectToProperties(), addValueToProperties(), flushComponentPerformance(), getArrayKind(), getIOColor(), getIODescription(), getIOLongName(), getIOShortName() (+4 more)
 
 ### Community 3172 - "Community 3172"
 Cohesion: 0.27
@@ -23470,7 +23568,7 @@ Nodes (8): assert, { execFileSync }, fs, os, path, runTests(), SCRIPT, test()
 
 ### Community 3256 - "Community 3256"
 Cohesion: 0.05
-Nodes (27): Get all trees in the repository., Get all tree root IDs., Remove node IDs from the node-to-tree mapping., Remove a tree and all its node mappings from the repository.          Returns:, Get all message IDs (incoming + status) for a given platform/chat., In-memory index of trees and node-to-root mappings.      Used only by :class:`Tr, Get a tree by its root ID., Get the tree containing a given node. (+19 more)
+Nodes (26): Get all trees in the repository., Get all tree root IDs., Remove node IDs from the node-to-tree mapping., Remove a tree and all its node mappings from the repository.          Returns:, Get all message IDs (incoming + status) for a given platform/chat., In-memory index of trees and node-to-root mappings.      Used only by :class:`Tr, Get a tree by its root ID., Get the tree containing a given node. (+18 more)
 
 ### Community 3257 - "Community 3257"
 Cohesion: 0.17
@@ -23501,8 +23599,8 @@ Cohesion: 0.17
 Nodes (6): Get the sort key and ascending order for results., Apply sorting to results dataframes., Clean up columns that should be removed., Format the volume column., Rename columns for display., Label and format data for printing to console.                  Args:
 
 ### Community 3264 - "Community 3264"
-Cohesion: 0.03
-Nodes (80): AudioViewer(), baseDirFor(), BinaryViewer(), documentMetaLabel(), DocumentPreviewViewer(), fetchProjectRelativeText(), FileViewer(), htmlPreviewSlideState (+72 more)
+Cohesion: 0.04
+Nodes (66): ExampleCard(), ExamplesTab(), matchesSurface(), MODE_PILLS, ModeFilter, Props, quotePrompt(), SCENARIO_LABEL_KEY (+58 more)
 
 ### Community 3265 - "Community 3265"
 Cohesion: 0.17
@@ -23557,8 +23655,8 @@ Cohesion: 0.18
 Nodes (10): Best-fit wedge, Differentiation, Margin outlook, Market opportunity, Planning to come up with AI Agentic Security startup with Complete security posture and Agent based security features. All the attached documents consists of why, what, how., Product-market fit, Recommendation, Revenue estimates (+2 more)
 
 ### Community 3278 - "Community 3278"
-Cohesion: 0.28
-Nodes (6): build_rendering_profile(), Platform rendering profiles for messaging transcripts and status text., Return rendering rules for a messaging platform., RenderingProfile, test_discord_rendering_profile_has_plain_parse_mode(), test_telegram_rendering_profile_uses_markdown_v2()
+Cohesion: 0.04
+Nodes (64): get_status_for_event(), CLI event types and status-line mapping for transcript / UI updates., Return status string for event type, or None if no status update needed., dispatch_command(), message_kind_for_command(), parse_command_base(), Command parsing and dispatch for messaging handlers., Return the slash command without bot mention suffix. (+56 more)
 
 ### Community 3279 - "Community 3279"
 Cohesion: 0.18
@@ -23641,8 +23739,8 @@ Cohesion: 0.18
 Nodes (10): 1. Visual Theme & Atmosphere, 2. Color, 3. Typography, 4. Spacing & Grid, 5. Layout & Composition, 6. Components, 7. Motion & Interaction, 8. Voice & Brand (+2 more)
 
 ### Community 3300 - "Community 3300"
-Cohesion: 0.32
-Nodes (4): DiversificationEngine, Tracks portfolio-wide correlations and enforces exposure limits.     Prevents co, Returns: (approved, reason)         Checks single-asset limit, group exposure, b, Returns current exposure breakdown for dashboard.
+Cohesion: 0.18
+Nodes (6): BinanceBot, fetch_positions_normalized(), AlphaCopy - Binance Futures Copy Bot  Data source: Binance's unofficial leaderbo, Detect new/closed positions by diffing against cached snapshot., Fetch and normalize positions to {symbol: pos_data}., Binance Futures copy trading bot.      Flow:       1. Scrape leaderboard → score
 
 ### Community 3301 - "Community 3301"
 Cohesion: 0.18
@@ -23997,8 +24095,8 @@ Cohesion: 0.18
 Nodes (11): code:go (func GracefulShutdown(server *http.Server) {), code:go (import "golang.org/x/sync/errgroup"), code:go (// 不良：如果 context 被取消會洩漏 goroutine), code:go (func WorkerPool(jobs <-chan Job, results chan<- Result, numW), code:go (func FetchWithTimeout(ctx context.Context, url string) ([]by), Worker Pool, 並行模式, 優雅關閉 (+3 more)
 
 ### Community 3389 - "Community 3389"
-Cohesion: 0.32
-Nodes (3): GlobalRiskEngine, THE single entry point for all trade decisions.     All bots MUST call validate_, Comprehensive risk status for dashboard.
+Cohesion: 0.13
+Nodes (15): handle_execute_option_31(), handle_execute_option_42_43(), Handle execute option 31 - DEEL Momentum. Returns maLength., Handle execute option 42 (Super Gainer) or 43 (Super Losers). Returns maLength., Unit tests for ExecuteOptionHandlers.py Tests for execute option processing hand, Tests for handle_execute_option_31 function, Should return 0 by default, Tests for handle_execute_option_42_43 function (+7 more)
 
 ### Community 3390 - "Community 3390"
 Cohesion: 0.18
@@ -24769,8 +24867,8 @@ Cohesion: 0.20
 Nodes (8): assert, fs, os, path, runTests(), SCRIPT, { spawnSync }, test()
 
 ### Community 3579 - "Community 3579"
-Cohesion: 0.14
-Nodes (24): 🛠️ Agent Scaffolder, 🎓 Arxiv → NotebookLM, code:json ({), code:bash (# Initialize the state file (resets last processed dates)), code:block12 (0 9 * * * cd /home/vreddy1/Desktop/Projects/scripts && pytho), code:bash (python3 scaffold_agent.py --name "Market Assistant"), code:bash (# Check status), code:bash (# Enable to start automatically on system boot) (+16 more)
+Cohesion: 0.16
+Nodes (18): 🛠️ Agent Scaffolder, 🎓 Arxiv → NotebookLM, code:json ({), code:bash (# Initialize the state file (resets last processed dates)), code:block12 (0 9 * * * cd /home/vreddy1/Desktop/Projects/scripts && pytho), code:bash (python3 scaffold_agent.py --name "Market Assistant"), code:bash (# Check status), code:bash (# Enable to start automatically on system boot) (+10 more)
 
 ### Community 3580 - "Community 3580"
 Cohesion: 0.18
@@ -25493,16 +25591,16 @@ Cohesion: 0.20
 Nodes (9): closeMock, dest, evaluateMock, fakePdfBytes, launchMock, newPageMock, pdfMock, setContentMock (+1 more)
 
 ### Community 3762 - "Community 3762"
-Cohesion: 0.30
-Nodes (12): 🤖 Antigravity CLI — AI Agent IDE, code:bash (venv/bin/python api_server.py  # Server (or managed by syste), code:bash (python3 exa_ai_agents.py), code:bash (python3 options_cli.py), code:bash (python3 metals_dashboard.py), code:block26 (PGLite failed to initialize its WASM runtime.), code:bash (apt-get download postgresql-17), code:bash (systemctl --user stop gbrain-autopilot.service) (+4 more)
+Cohesion: 0.31
+Nodes (11): code:bash (python3 ai_news_reporter.py), code:bash (python3 astro_report.py), code:bash (venv/bin/python api_server.py  # Server (or managed by syste), code:bash (venv/bin/python alphaedge_pro.py), code:bash (python3 exa_ai_agents.py), code:bash (# Keyword Search), code:bash (python3 options_cli.py), code:bash (python3 crypto_dashboard.py) (+3 more)
 
 ### Community 3763 - "Community 3763"
 Cohesion: 0.20
 Nodes (9): extends, labels, lockFileMaintenance, enabled, schedule, packageRules, $schema, vulnerabilityAlerts (+1 more)
 
 ### Community 3764 - "Community 3764"
-Cohesion: 0.04
-Nodes (58): loadCraftSections(), cleanTitle(), extractCategory(), extractSurface(), extractSwatches(), KNOWN_SURFACES, listDesignSystems(), readDesignSystem() (+50 more)
+Cohesion: 0.31
+Nodes (8): cleanTitle(), extractCategory(), extractSurface(), extractSwatches(), KNOWN_SURFACES, listDesignSystems(), readDesignSystem(), summarize()
 
 ### Community 3765 - "Community 3765"
 Cohesion: 0.29
@@ -26081,8 +26179,8 @@ Cohesion: 0.22
 Nodes (10): assertPostpone(), createPostponeReason(), markCurrentScopeAsDynamic(), Postpone(), postponeWithTracking(), useDynamicRouteParams(), useParams(), usePathname() (+2 more)
 
 ### Community 3909 - "Community 3909"
-Cohesion: 0.26
-Nodes (12): code:bash (rm -rf ./extracted_pg postgresql-17_*.deb), code:bash (antigravity --version), code:bash (sudo cp extracted/Antigravity-x64/antigravity /usr/share/ant), code:bash (# Terminal report), code:block35 (0 8 * * * cd /home/vreddy1/Desktop/Projects/scripts && pytho), code:block36 (EXA_API_KEY=...), code:bash (# Python 3.12 venv at:), code:block38 (55 3  * * 1-5   # 9:25 AM IST  — pre-open scan) (+4 more)
+Cohesion: 0.18
+Nodes (19): 🤖 Antigravity CLI — AI Agent IDE, code:bash (python3 metals_dashboard.py), code:block26 (PGLite failed to initialize its WASM runtime.), code:bash (apt-get download postgresql-17), code:bash (systemctl --user stop gbrain-autopilot.service), code:bash (./extracted_pg/usr/lib/postgresql/17/bin/pg_controldata -D ~), code:bash (./extracted_pg/usr/lib/postgresql/17/bin/pg_resetwal -f -D ~), code:bash (rm -rf ./extracted_pg postgresql-17_*.deb) (+11 more)
 
 ### Community 3910 - "Community 3910"
 Cohesion: 0.22
@@ -26101,8 +26199,8 @@ Cohesion: 0.25
 Nodes (5): Deep path tests for main function., Test main with C menu (Intraday Analysis)., Test main with D menu (Download)., Test main with S menu (Summarize)., TestMainDeepPaths
 
 ### Community 3914 - "Community 3914"
-Cohesion: 0.48
-Nodes (6): fetch_inbound_senders(), get_address_balances(), get_headers(), main(), Fetches unique sender addresses from inbound TRX and USDT transfers., Fetches live TRX and USDT balances for a specific address.
+Cohesion: 0.11
+Nodes (10): _handle_download_sector_info(), Handle Log collection menu option, Handle Predefined scans menu option.         Returns tuple of (should_continue,, Handle predefined scan options 1 and 4, Get the launcher command for subprocess calls, Handle Monitor menu option, Handle sector info download, Handle Download menu option (+2 more)
 
 ### Community 3915 - "Community 3915"
 Cohesion: 0.20
@@ -26686,7 +26784,7 @@ Nodes (9): Basic Coverage, Branch Coverage, code:bash (pytest --cov=src --cov-re
 
 ### Community 4061 - "Community 4061"
 Cohesion: 0.22
-Nodes (9): description, type, url, args, command, description, mcpServers, cloudflare-docs (+1 more)
+Nodes (9): description, type, url, args, command, description, mcpServers, clickhouse (+1 more)
 
 ### Community 4062 - "Community 4062"
 Cohesion: 0.22
@@ -26742,7 +26840,7 @@ Nodes (7): BudgetAlertThresholds, ComputerUseDispatchConfig, default_includes_po
 
 ### Community 4075 - "Community 4075"
 Cohesion: 0.22
-Nodes (9): minimum, type, type, properties, agents, configAssets, skills, minimum (+1 more)
+Nodes (9): minimum, type, type, additionalProperties, properties, type, agents, configAssets (+1 more)
 
 ### Community 4076 - "Community 4076"
 Cohesion: 0.25
@@ -26777,8 +26875,8 @@ Cohesion: 0.22
 Nodes (9): 3. Infinite Agentic Loop, Architecture: Two-Prompt System, Batching Strategy, code:block6 (PROMPT 1 (Orchestrator)              PROMPT 2 (Sub-Agents)), code:markdown (Parse the following arguments from $ARGUMENTS:), code:bash (/project:infinite specs/component-spec.md src/ 5), Implementation via Claude Code Commands, Key Insight: Uniqueness via Assignment (+1 more)
 
 ### Community 4084 - "Community 4084"
-Cohesion: 0.40
-Nodes (5): code:typescript (test('calculates similarity correctly', () => {), code:typescript (// PASS: GOOD: Descriptive test names), Test Naming, Test Structure (AAA Pattern), Testing Standards
+Cohesion: 0.22
+Nodes (8): code:typescript (test('calculates similarity correctly', () => {), code:typescript (// PASS: GOOD: Descriptive test names), Coding Standards & Best Practices, Scope Boundaries, Test Naming, Test Structure (AAA Pattern), Testing Standards, When to Activate
 
 ### Community 4085 - "Community 4085"
 Cohesion: 0.22
@@ -26933,8 +27031,8 @@ Cohesion: 0.22
 Nodes (9): 3. Typography Rules, code:css (/* English (default) */), Font Stacks, Hierarchy (screen, px), Letter-spacing, Line-height, Tabular-nums contexts, Weight rules (+1 more)
 
 ### Community 4119 - "Community 4119"
-Cohesion: 0.09
-Nodes (44): addFiberToLanesMap(), attachPingListener(), checkIfRootIsPrerendering(), completeRoot(), completeRootWhenReady(), completeUnitOfWork(), enqueueCapturedUpdate(), finishedViewTransition() (+36 more)
+Cohesion: 0.06
+Nodes (58): addFiberToLanesMap(), attachPingListener(), captureCommitPhaseErrorOnRoot(), checkIfRootIsPrerendering(), completeRoot(), completeRootWhenReady(), completeUnitOfWork(), createClassErrorUpdate() (+50 more)
 
 ### Community 4120 - "Community 4120"
 Cohesion: 0.40
@@ -27006,7 +27104,7 @@ Nodes (7): I18nProvider, LOCALE_LABEL, LOCALES, metadata, useI18n, useT, viewpor
 
 ### Community 4140 - "Community 4140"
 Cohesion: 0.03
-Nodes (29): inner, centered_rect(), compile_search_regex(), configured_pane_size(), cycle_graph_entity_filter_limits_rendered_entities(), Dashboard, directional_pane_focus_uses_grid_neighbors(), focus_next_approval_target_cycles_distinct_targets() (+21 more)
+Nodes (28): compile_search_regex(), configured_pane_size(), Dashboard, directional_pane_focus_uses_grid_neighbors(), focus_next_approval_target_cycles_distinct_targets(), focus_next_approval_target_selects_oldest_unread_target(), graph_search_matches_and_switches_selected_session(), highlight_output_line() (+20 more)
 
 ### Community 4141 - "Community 4141"
 Cohesion: 0.22
@@ -27466,7 +27564,7 @@ Nodes (9): type, type, legacyMode, profile, request, additionalProperties, prope
 
 ### Community 4255 - "Community 4255"
 Cohesion: 0.22
-Nodes (9): minimum, type, type, additionalProperties, properties, type, agents, configAssets (+1 more)
+Nodes (9): minimum, type, type, properties, agents, configAssets, skills, minimum (+1 more)
 
 ### Community 4256 - "Community 4256"
 Cohesion: 0.25
@@ -27682,11 +27780,11 @@ Nodes (9): Basic Commands, code:bash (# Run all tests), code:bash (# Run with co
 
 ### Community 4306 - "Community 4306"
 Cohesion: 0.02
-Nodes (127): buffer, entries, recordAction(), resetTimeline(), snapshotTimeline(), snap, ListEventsResult, ReportEventInput (+119 more)
+Nodes (131): ExportItem, PreviewToolbar(), ZOOM_OPTIONS, buffer, entries, recordAction(), resetTimeline(), snapshotTimeline() (+123 more)
 
 ### Community 4307 - "Community 4307"
-Cohesion: 0.08
-Nodes (39): assign_session_in_dir_with_runner_program(), assignment_action_routes_work(), auto_dispatch_backlog(), build_merge_queue(), build_template_variables(), can_auto_rebase_merge_queue_entry(), classify_merge_queue_report(), collect_delegation_descendants() (+31 more)
+Cohesion: 0.18
+Nodes (16): assign_session_in_dir_with_runner_program(), assign_session_prefers_idle_delegate_with_graph_context_match(), assignment_action_routes_work(), auto_dispatch_backlog(), delegate_selection_key(), direct_delegate_sessions(), direct_delegate_sessions_matches_harness_aliases_for_existing_rows(), direct_delegate_sessions_resolves_auto_to_configured_harness() (+8 more)
 
 ### Community 4308 - "Community 4308"
 Cohesion: 0.22
@@ -27717,12 +27815,12 @@ Cohesion: 0.25
 Nodes (5): Test trend-related methods., Create a dataframe with trend data., Test findTrend for uptrend., Test findTrend with empty dataframe., TestTrendMethods
 
 ### Community 4315 - "Community 4315"
-Cohesion: 0.22
-Nodes (10): deleteFromCacheMap(), deleteMapEntry(), dropRef(), getEntryWithFallbackImpl(), getFromCacheMap(), getOrInitialize(), isValueExpired(), lazilyEvictIfNeeded() (+2 more)
+Cohesion: 0.12
+Nodes (17): workspace, busyGenerating, change, choose, clear, default, label, open (+9 more)
 
 ### Community 4316 - "Community 4316"
-Cohesion: 0.14
-Nodes (14): calc_rr(), calc_rr_achieved(), duration_str(), fmt_pct(), fmt_pnl(), fmt_price(), AlphaCopy - Telegram Trade Journal Posts beautifully formatted trade alerts to y, Specialized SL alert with loss analysis. (+6 more)
+Cohesion: 0.03
+Nodes (58): AlgoValidator, BacktestTrade, _compute_sl_at_pct(), DiversificationEngine, GlobalRiskEngine, KillSwitchEvent, KillSwitchLevel, PositionSizer (+50 more)
 
 ### Community 4317 - "Community 4317"
 Cohesion: 0.22
@@ -27833,12 +27931,12 @@ Cohesion: 0.25
 Nodes (8): 3. Function Nodes, Auto Type Conversion, code:python (from google.adk.agents.context import Context), code:python (from google.adk.events.event import Event), code:python (from google.adk.workflow import node, FunctionNode, RetryCon), @node Decorator & Explicit FunctionNode, `node_input` Type by Predecessor, Return Types
 
 ### Community 4348 - "Community 4348"
-Cohesion: 0.20
-Nodes (3): event, LogPayload, payload
+Cohesion: 0.12
+Nodes (7): The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Comprehensive tests, Test preprocessData with empty dataframe., Test findTrend with insufficient data., Test edge cases and error handling., Test validateLTP with empty dataframe., Test validateLTP with missing columns., TestScreeningStatisticsEdgeCases
 
 ### Community 4349 - "Community 4349"
-Cohesion: 0.01
-Nodes (118): BacktestManager, DataManager, prepare_grouped_x_ray(), Get the review date for scanning operations.                  Returns:, Get the maximum allowed results count based on iterations and testing mode., Calculate iterations and stock counts for scanning operations., Close all worker processes and exit the application., Processes, formats, and displays screening results.     Handles data labeling, f (+110 more)
+Cohesion: 0.03
+Nodes (52): BacktestManager, DataManager, prepare_grouped_x_ray(), Get the review date for scanning operations.                  Returns:, Get the maximum allowed results count based on iterations and testing mode., Calculate iterations and stock counts for scanning operations., Close all worker processes and exit the application., Processes, formats, and displays screening results.     Handles data labeling, f (+44 more)
 
 ### Community 4350 - "Community 4350"
 Cohesion: 0.25
@@ -28865,8 +28963,8 @@ Cohesion: 0.22
 Nodes (8): 1. The Redefinition of "Early", 2. Operational Flexibility vs. Professional Stagnation, 3. Psychological Management of Productivity, Actionable Insights, Analysis of Key Themes, Executive Summary, Important Quotes and Contextual Analysis, Strategic Analysis of High-Performance Work Schedules
 
 ### Community 4608 - "Community 4608"
-Cohesion: 0.12
-Nodes (16): beta, checkForUpdatesOnStartup, checkForUpdatesOnStartupHint, devtools, devtoolsFailed, devtoolsHint, prefsLoadFailed, prefsSaveFailed (+8 more)
+Cohesion: 0.18
+Nodes (7): createPatchedFetcher(), getSpanId(), getTracer, isFetchPatched(), NextTracerImpl, patchFetch(), renderToInitialFizzStream()
 
 ### Community 4609 - "Community 4609"
 Cohesion: 0.29
@@ -28945,8 +29043,8 @@ Cohesion: 0.25
 Nodes (7): as_on_date, BLOCK_DEALS, BLOCK_DEALS_DATA, BULK_DEALS, BULK_DEALS_DATA, SHORT_DEALS, SHORT_DEALS_DATA
 
 ### Community 4637 - "Community 4637"
-Cohesion: 0.04
-Nodes (25): adapt_messages_for_provider(), get_provider_builder(), PromptBuilder, PromptConfig, Prompt builder for normalizing prompts across providers., ClaudeProvider, Claude provider adapter., OllamaProvider (+17 more)
+Cohesion: 0.36
+Nodes (5): adapt_messages_for_provider(), get_provider_builder(), PromptBuilder, PromptConfig, Prompt builder for normalizing prompts across providers.
 
 ### Community 4638 - "Community 4638"
 Cohesion: 0.14
@@ -29393,8 +29491,8 @@ Cohesion: 0.25
 Nodes (7): API Design Checklist, API Design Patterns, code:block18 (HTTP/1.1 200 OK), Headers, Rate Limit Tiers, Rate Limiting, When to Activate
 
 ### Community 4749 - "Community 4749"
-Cohesion: 0.40
-Nodes (5): code:typescript (// PASS: GOOD: Explain WHY, not WHAT), code:typescript (/**), Comments & Documentation, JSDoc for Public APIs, When to Comment
+Cohesion: 0.25
+Nodes (7): code:typescript (// PASS: GOOD: Explain WHY, not WHAT), code:typescript (/**), Coding Standards & Best Practices, Comments & Documentation, JSDoc for Public APIs, When to Activate, When to Comment
 
 ### Community 4750 - "Community 4750"
 Cohesion: 0.25
@@ -29704,6 +29802,10 @@ Nodes (5): Tests for addOrRunPipedMenus function., Test with piped menus., Test 
 Cohesion: 0.40
 Nodes (4): Test showSortedBacktestData function., Test showing sorted backtest data., Test showSortedBacktestData function., TestShowSortedBacktestData
 
+### Community 4828 - "Community 4828"
+Cohesion: 0.03
+Nodes (26): centered_rect(), compile_search_regex(), configured_pane_size(), Dashboard, directional_pane_focus_uses_grid_neighbors(), focus_next_approval_target_cycles_distinct_targets(), focus_next_approval_target_selects_oldest_unread_target(), highlight_output_line() (+18 more)
+
 ### Community 4829 - "Community 4829"
 Cohesion: 0.25
 Nodes (4): Initialize internal state for monitor management., Calculate grid positions for each monitor widget., Initialize the monitor DataFrame with proper columns., Initialize the MarketMonitor.                  Args:             monitors: List
@@ -29717,8 +29819,8 @@ Cohesion: 0.22
 Nodes (14): apply_event_decay(), apply_relationship(), compute_intraday_score(), compute_macro_regime_score(), compute_onchain_score(), normalize_zscore(), Spec §2 IMS weights:     Funding=0.30, OI=0.25, Liquidations=0.22, Skew=0.13, Ba, Flip sign for inverse-correlated factors. (+6 more)
 
 ### Community 4832 - "Community 4832"
-Cohesion: 0.38
-Nodes (4): _compute_sl_at_pct(), Validates and enforces mandatory stop-loss on every trade.     Computes a safe S, Returns: (valid, final_sl_price, message)         final_sl_price is always set —, StopLossValidator
+Cohesion: 0.18
+Nodes (16): build_merge_queue(), build_merge_queue_orders_ready_sessions_and_blocks_conflicts(), can_auto_rebase_merge_queue_entry(), classify_merge_queue_report(), delete_session(), merge_queue_priority(), merge_ready_worktrees(), merge_ready_worktrees_merges_ready_sessions_and_skips_active_and_dirty() (+8 more)
 
 ### Community 4833 - "Community 4833"
 Cohesion: 0.28
@@ -29729,8 +29831,8 @@ Cohesion: 0.38
 Nodes (6): GreetingResponse, Personality, personality_shaper(), Analyze the user's input to determine what kind of personality to adopt., Entry reasoner: shapes a personality then generates a contextual greeting., smart_greeter()
 
 ### Community 4835 - "Community 4835"
-Cohesion: 0.40
-Nodes (4): Test getReviewDate function., Test getReviewDate function., Test getting review date., TestGetReviewDate
+Cohesion: 0.22
+Nodes (7): getReviewDate(), Get the review date for screening/backtesting.          Args:         userPassed, Test getReviewDate function., Test with no arguments., Test getReviewDate function., Test getting review date., TestGetReviewDate
 
 ### Community 4836 - "Community 4836"
 Cohesion: 0.22
@@ -29757,8 +29859,8 @@ Cohesion: 0.29
 Nodes (6): APP_KEYS, OPEN_DESIGN_SIDECAR_CONTRACT, SIDECAR_MESSAGES, SIDECAR_SOURCES, SIDECAR_STAMP_FIELDS, validStamp
 
 ### Community 4842 - "Community 4842"
-Cohesion: 0.29
-Nodes (7): denormalizeWorkerPageName(), getClientReferenceManifest(), getManifestsSingleton(), getServerActionsManifest(), getServerModuleMap(), normalizeWorkerPageName(), selectWorkerForForwarding()
+Cohesion: 0.12
+Nodes (11): a, bulk, huge, last, messages, midText, oldAssistant, opening (+3 more)
 
 ### Community 4843 - "Community 4843"
 Cohesion: 0.33
@@ -29869,8 +29971,8 @@ Cohesion: 0.29
 Nodes (7): Agent Configuration, code:python (from crewai import LLM), code:python (from crewai import Agent), Direct Agent Usage (without a Crew), Key Optional Parameters, LLM Configuration, Required Parameters
 
 ### Community 4870 - "Community 4870"
-Cohesion: 0.40
-Nodes (4): Test userReportName function., Test getting user report name., Test userReportName function., TestUserReportName
+Cohesion: 0.22
+Nodes (7): Generate report name based on user menu options.          Args:         userMenu, userReportName(), Test userReportName function., Test getting user report name., Test userReportName function., Test with menu options., TestUserReportName
 
 ### Community 4871 - "Community 4871"
 Cohesion: 0.29
@@ -31577,8 +31679,8 @@ Cohesion: 0.29
 Nodes (7): API設計標準, code:block11 (GET    /api/markets              # すべてのマーケットを一覧), code:typescript (// PASS: GOOD: Consistent response structure), code:typescript (import { z } from 'zod'), REST API規約, レスポンス形式, 入力検証
 
 ### Community 5299 - "Community 5299"
-Cohesion: 0.29
-Nodes (6): 1. 可読性優先, 2. KISS (Keep It Simple, Stupid), 3. DRY (Don't Repeat Yourself), 4. YAGNI (You Aren't Gonna Need It), コーディング標準とベストプラクティス, コード品質の原則
+Cohesion: 0.40
+Nodes (5): 1. 可読性優先, 2. KISS (Keep It Simple, Stupid), 3. DRY (Don't Repeat Yourself), 4. YAGNI (You Aren't Gonna Need It), コード品質の原則
 
 ### Community 5300 - "Community 5300"
 Cohesion: 0.29
@@ -32744,9 +32846,13 @@ Nodes (4): _accesserrorstyles, _errorfallback, _jsxruntime, styles
 Cohesion: 0.29
 Nodes (6): Reset configuration to default, reset_config_to_default(), Tests for reset_config_to_default function, Should call getConfig, Should call setConfig when forced, TestResetConfigToDefault
 
+### Community 5596 - "Community 5596"
+Cohesion: 0.13
+Nodes (7): Initialize results-related state., Initialize multiprocessing-related state., Initialize notification-related state., Initialize configuration-related state., Initialize data fetcher instances., Initialize menu instances., Initialize scan-related state.
+
 ### Community 5597 - "Community 5597"
-Cohesion: 0.33
-Nodes (4): Tests for X Scanner menu options., Test that X scanner menu structure is correct., Test that all index options are available for X scanner., TestXScannerMenus
+Cohesion: 0.14
+Nodes (10): BotConstants, Constants used across bot handlers., Tests for X Scanner menu options., Test that X scanner menu structure is correct., Test that all index options are available for X scanner., Tests for B (Backtest) menu options., Test that backtest uses historical data (not just latest)., Test that backtest data has correct format. (+2 more)
 
 ### Community 5598 - "Community 5598"
 Cohesion: 0.40
@@ -32917,8 +33023,8 @@ Cohesion: 0.40
 Nodes (3): Extended Aroon tests., Test strong bullish Aroon., TestFindARoOnBullishExtended
 
 ### Community 5640 - "Community 5640"
-Cohesion: 0.03
-Nodes (108): MessagingPlatform, Base class for all messaging platform adapters.      Implement this to add suppo, auth_headers(), load(), _normalize_provider_model(), _parse_csv(), _parse_targets(), _provider_smoke_model() (+100 more)
+Cohesion: 0.02
+Nodes (129): MessagingPlatform, Base class for all messaging platform adapters.      Implement this to add suppo, cmd_fcc_init(), cmd_free_claude_code_serve(), cmd_uvicorn_server_app(), python_exe(), Child-process commands for smoke (avoid nested ``uv run`` on Windows).  Nested `, auth_headers() (+121 more)
 
 ### Community 5641 - "Community 5641"
 Cohesion: 0.20
@@ -32929,8 +33035,8 @@ Cohesion: 0.40
 Nodes (3): Test high/low crossover detection., Test higher highs pattern., TestFindHighLowCrossover
 
 ### Community 5643 - "Community 5643"
-Cohesion: 0.40
-Nodes (4): Test updateBacktestResults function., Test updating backtest results., Test updateBacktestResults function., TestUpdateBacktestResults
+Cohesion: 0.15
+Nodes (15): collect_delegation_descendants(), coordinate_backlog(), coordination_health(), coordination_mode(), coordination_status_summarizes_real_handoff_backlog(), enforce_session_heartbeats(), enforce_session_heartbeats_auto_terminates_when_enabled(), enforce_session_heartbeats_marks_overdue_running_sessions_stale() (+7 more)
 
 ### Community 5644 - "Community 5644"
 Cohesion: 0.40
@@ -33017,8 +33123,8 @@ Cohesion: 0.40
 Nodes (3): Extended IPO base tests., Test IPO base pattern., TestFindIpoBaseExtended
 
 ### Community 5666 - "Community 5666"
-Cohesion: 0.18
-Nodes (6): Detailed confluence tests., Test confluence with 200 SMA., Complete BBands squeeze tests., Test BBands squeeze detection., TestFindConfluenceDetailed, TestValidateBbandsSqeezeComplete
+Cohesion: 0.40
+Nodes (3): Detailed confluence tests., Test confluence with 200 SMA., TestFindConfluenceDetailed
 
 ### Community 5668 - "Community 5668"
 Cohesion: 0.33
@@ -35093,8 +35199,8 @@ Cohesion: 0.33
 Nodes (5): Agent Orchestration Philosophy, Core Identity, Core Principles, Cross-Harness Vision, Soul
 
 ### Community 6191 - "Community 6191"
-Cohesion: 0.14
-Nodes (7): ProjectMetadata, DESIGN_DIRECTIONS, DesignDirection, ComposeInput, composeSystemPrompt(), derivePreflight(), renderMetadataBlock()
+Cohesion: 0.05
+Nodes (35): CheckDeploymentLinkResponse, ConversationResponse, ConversationsResponse, CreateConversationRequest, CreateProjectRequest, CreateProjectResponse, DeployConfigResponse, DeploymentInfo (+27 more)
 
 ### Community 6192 - "Community 6192"
 Cohesion: 0.33
@@ -35174,7 +35280,7 @@ Nodes (9): 1. Clinical Efficacy and Survival Data, 2. Overcoming the "Undruggabl
 
 ### Community 6218 - "Community 6218"
 Cohesion: 0.20
-Nodes (10): k, pal, parts, spawn(), stop, activate_pending_worktree_sessions(), activate_pending_worktree_sessions_with(), agent_program() (+2 more)
+Nodes (10): activate_pending_worktree_sessions(), activate_pending_worktree_sessions_with(), agent_program(), run_session(), spawn_claude_code(), k, pal, parts (+2 more)
 
 ### Community 6219 - "Community 6219"
 Cohesion: 0.25
@@ -35289,8 +35395,8 @@ Cohesion: 0.22
 Nodes (8): Actionable Insights, Detailed Analysis of Key Themes, Executive Summary, Geopolitical Ambitions of the Israeli Far-Right Fringe: An Analysis of the "Greater Israel" Concept, Important Quotes and Contextual Analysis, Political and Activist Composition, Territorial Expansionism, The Concept of "Greater Israel"
 
 ### Community 6250 - "Community 6250"
-Cohesion: 0.52
-Nodes (6): chunk_text(), fetch_ai_news(), load_events_from_json(), main(), run_search(), send_to_slack()
+Cohesion: 0.14
+Nodes (10): Test GlobalStateProxy class., Test GlobalStateProxy initialization., Test update_from_globals method., Test GlobalStateProxy class., Test GlobalStateProxy initialization., Test GlobalStateProxy update_from_globals., Tests for GlobalStateProxy class., Test GlobalStateProxy initialization. (+2 more)
 
 ### Community 6251 - "Community 6251"
 Cohesion: 0.25
@@ -35328,9 +35434,13 @@ Nodes (5): End-to-end tests for CLI flow., Test flow from CLI arguments to scan 
 Cohesion: 0.22
 Nodes (8): 1. Shift to Armed Conflict Framework, 2. Operational Tempo and Lethality, 3. Transparency and Burden of Proof, Analysis of Key Themes, Executive Summary, Important Quotes and Context, Military Operations Against Latin American Narco-Trafficking Organizations: A Briefing, Strategic Observations and Insights
 
+### Community 6260 - "Community 6260"
+Cohesion: 0.31
+Nodes (12): color_distance(), component_group_image(), connected_components(), extract_component_frames(), extract_slot_frames(), extract_state(), fit_to_cell(), load_chroma_key() (+4 more)
+
 ### Community 6261 - "Community 6261"
-Cohesion: 0.48
-Nodes (6): fetch_inbound_senders(), get_address_balances(), get_headers(), main(), Fetches unique inbound senders using specific TRONSCAN API parameters., Fetches live TRX and USDT balances for identified sender wallets.
+Cohesion: 0.31
+Nodes (12): complete_job(), decode_response(), file_sha256(), load_manifest(), main(), manifest_jobs(), parse_states(), path_list() (+4 more)
 
 ### Community 6262 - "Community 6262"
 Cohesion: 0.33
@@ -35341,8 +35451,8 @@ Cohesion: 0.25
 Nodes (5): Tests for environment variable handling in CLI., Test that RUNNER environment is detected., Test production mode flag handling., Test Telegram user flag handling., TestCLIEnvironmentVariables
 
 ### Community 6264 - "Community 6264"
-Cohesion: 0.50
-Nodes (3): AssignmentAction, run_remote_dispatch_requests(), run_remote_dispatch_requests_with_runner_program()
+Cohesion: 0.15
+Nodes (13): darkDesc, darkLabel, langEn, langPtBR, languageHint, languageLabel, languageLoadFailed, langZhCN (+5 more)
 
 ### Community 6265 - "Community 6265"
 Cohesion: 0.20
@@ -35369,12 +35479,12 @@ Cohesion: 0.33
 Nodes (3): Test MACD bullish crossover., Test MACD histogram above zero., TestFindMACDComplete
 
 ### Community 6271 - "Community 6271"
-Cohesion: 0.33
-Nodes (5): 🏗️ AlphaEdge Architecture, 🌩️ Clawdi Sync Status, `/logwork` — Automated Multica Issue Creation, 📝 OpenCode Agent Commands, Scripts Repository
+Cohesion: 0.15
+Nodes (13): 🏗️ AlphaEdge Architecture, 📰 Beat the Street — NotebookLM Daily Pipeline, 🌩️ Clawdi Sync Status, code:bash (# project bootstrap commands — fill in from docs/architectur), code:bash (start scripts repository              # full bundle), code:block3 (notebooklm_output/), code:block4 (TELEGRAM_API_ID=...), Docs (+5 more)
 
 ### Community 6272 - "Community 6272"
-Cohesion: 0.50
-Nodes (4): description, type, url, clickhouse
+Cohesion: 0.21
+Nodes (8): handle_execute_option_21(), Handle execute option 21 - MFI stats.     Returns (popOption, show_mfi_only), Tests for handle_execute_option_21 function, Should parse pop option from options, Should set show_mfi_only for options 1, 2, 4, Should not set show_mfi_only for other options, Should return None for invalid option, TestHandleExecuteOption21
 
 ### Community 6273 - "Community 6273"
 Cohesion: 0.40
@@ -35401,8 +35511,8 @@ Cohesion: 0.40
 Nodes (3): Complete price action tests., Test price action cross., TestFindPriceActionComplete
 
 ### Community 6279 - "Community 6279"
-Cohesion: 0.50
-Nodes (4): isInMarketHours(), kickOffScannerJobIfNotKickedOff(), Start a scanner job for a user if it hasn't been started already.          Args:, Check if current time falls within NSE market trading hours.          Returns:
+Cohesion: 0.33
+Nodes (6): isInMarketHours(), kickOffScannerJobIfNotKickedOff(), Subscribe a user to automated scanner alerts for a specific scanner.          Ch, Start a scanner job for a user if it hasn't been started already.          Args:, Check if current time falls within NSE market trading hours.          Returns:, subscribeToScannerAlerts()
 
 ### Community 6281 - "Community 6281"
 Cohesion: 0.33
@@ -35489,8 +35599,8 @@ Cohesion: 0.40
 Nodes (5): 6. Parallel Processing, code:python (from google.adk.workflow import node), code:python (from google.adk.workflow import JoinNode), Fan-Out / Fan-In — diamond pattern, ParallelWorker — process list items concurrently
 
 ### Community 6305 - "Community 6305"
-Cohesion: 0.22
-Nodes (9): items, items, type, type, items, type, customTools, keywords (+1 more)
+Cohesion: 0.25
+Nodes (8): items, type, type, customTools, skills, items, minimum, type
 
 ### Community 6306 - "Community 6306"
 Cohesion: 0.40
@@ -37485,8 +37595,8 @@ Cohesion: 0.40
 Nodes (5): code:typescript (test('calculates similarity correctly', () => {), code:typescript (// PASS: GOOD: Descriptive test names), テストの命名, テスト構造（AAAパターン）, テスト標準
 
 ### Community 6817 - "Community 6817"
-Cohesion: 0.40
-Nodes (5): code:block14 (src/), code:block15 (components/Button.tsx          # コンポーネントは PascalCase), ファイル命名, ファイル構成, プロジェクト構造
+Cohesion: 0.29
+Nodes (6): code:block14 (src/), code:block15 (components/Button.tsx          # コンポーネントは PascalCase), コーディング標準とベストプラクティス, ファイル命名, ファイル構成, プロジェクト構造
 
 ### Community 6818 - "Community 6818"
 Cohesion: 0.40
@@ -38225,8 +38335,8 @@ Cohesion: 0.40
 Nodes (5): code:typescript (test('calculates similarity correctly', () => {), code:typescript (// PASS: GOOD: Descriptive test names), Test Naming, Test Structure (AAA Pattern), Testing Standards
 
 ### Community 7002 - "Community 7002"
-Cohesion: 0.25
-Nodes (7): code:block14 (src/), code:block15 (components/Button.tsx          # PascalCase for components), Coding Standards & Best Practices, File Naming, File Organization, Project Structure, When to Activate
+Cohesion: 0.40
+Nodes (5): code:block14 (src/), code:block15 (components/Button.tsx          # PascalCase for components), File Naming, File Organization, Project Structure
 
 ### Community 7003 - "Community 7003"
 Cohesion: 0.40
@@ -38784,6 +38894,10 @@ Nodes (4): dispatch_to_worker_pool(), The MIT License (MIT)      Copyright (c) 2
 Cohesion: 0.33
 Nodes (5): Test cleanupLocalResults function., Test cleaning up local results., Test cleanupLocalResults function., Test cleanup function., TestCleanupLocalResults
 
+### Community 7155 - "Community 7155"
+Cohesion: 0.20
+Nodes (8): handle_execute_option_8(), Handle execute option 8 - CCI values, Tests for handle_execute_option_8 function, Should parse numeric CCI values, Should use default CCI values for 'D' option, test_invalid_cci_returns_none(), TestHandleExecuteOption8, Test handle_execute_option_8.
+
 ### Community 7156 - "Community 7156"
 Cohesion: 0.48
 Nodes (6): fetch_inbound_senders(), get_address_balances(), get_headers(), main(), Fetches unique sender addresses from inbound transfers by querying all and filte, Fetches live TRX and USDT balances for a specific address.
@@ -38793,8 +38907,8 @@ Cohesion: 0.40
 Nodes (5): invalidateEntirePrefetchCache(), invalidateRouteCacheEntries(), invalidateSegmentCacheEntries(), notifyInvalidationListener(), pingInvalidationListeners()
 
 ### Community 7158 - "Community 7158"
-Cohesion: 0.48
-Nodes (6): fetch_inbound_senders(), get_headers(), get_live_balances(), main(), Fetches inbound senders from both TRX and USDT (TRC20) history., Fetches real-time TRX and USDT balances for a wallet.
+Cohesion: 0.20
+Nodes (9): getBacktestReportFilename(), getSummaryCorrectnessOfStrategy(), Get summary and detail DataFrames for strategy correctness from backtest reports, Generate backtest report filename.          Args:         sortKey (str): Sort ke, Test getSummaryCorrectnessOfStrategy function., Test with empty dataframe., Test with valid dataframe., test_get_filename() (+1 more)
 
 ### Community 7159 - "Community 7159"
 Cohesion: 0.29
@@ -38810,7 +38924,7 @@ Nodes (4): Targeted tests for processResults., Test with menu B (backtest)., Tes
 
 ### Community 7163 - "Community 7163"
 Cohesion: 0.02
-Nodes (78): create_mock_config(), default_logger(), Test MA signal methods., Test findTrend with detailed conditions., Test findBullishAVWAP with detailed conditions., Test validateNarrowRange detailed., Create a mocked ConfigManager with all necessary attributes., Test mutual fund and fair value methods. (+70 more)
+Nodes (81): create_mock_config(), default_logger(), Test validateConsolidationContraction with legs., Test contraction with multiple legs., Test MA signal methods., Test findTrend with detailed conditions., Test findBullishAVWAP with detailed conditions., Test validateNarrowRange detailed. (+73 more)
 
 ### Community 7164 - "Community 7164"
 Cohesion: 0.29
@@ -38853,16 +38967,16 @@ Cohesion: 0.40
 Nodes (3): Test findVSA detailed., Test VSA volume spread analysis., TestFindVSADetailed
 
 ### Community 7175 - "Community 7175"
-Cohesion: 0.40
-Nodes (4): Test prepareGroupedXRay function., Test preparing grouped xray., Test prepareGroupedXRay function., TestPrepareGroupedXRay
+Cohesion: 0.29
+Nodes (5): Test prepareGroupedXRay function., Test preparing grouped xray., Test prepareGroupedXRay function., Test with empty dataframe., TestPrepareGroupedXRay
 
 ### Community 7176 - "Community 7176"
 Cohesion: 0.40
 Nodes (3): Test CCI validation methods., Test basic CCI validation., TestValidateCCIMethods
 
 ### Community 7177 - "Community 7177"
-Cohesion: 0.20
-Nodes (7): BaseSettings, Config, Settings, Config, Settings, Config, Settings
+Cohesion: 0.24
+Nodes (7): handle_execute_option_33(), Handle execute option 33. Returns maLength., Tests for handle_execute_option_33 function, Should parse numeric option, Should use default value 2, Should increase maxdisplayresults for option 3, TestHandleExecuteOption33
 
 ### Community 7178 - "Community 7178"
 Cohesion: 0.40
@@ -38877,8 +38991,8 @@ Cohesion: 0.40
 Nodes (3): More tests for findPotentialBreakout., Test potential breakout pattern., TestFindPotentialBreakoutCoverage
 
 ### Community 7181 - "Community 7181"
-Cohesion: 0.13
-Nodes (20): cmd_fcc_init(), cmd_free_claude_code_serve(), cmd_uvicorn_server_app(), python_exe(), Child-process commands for smoke (avoid nested ``uv run`` on Windows).  Nested `, fail_missing_env(), is_upstream_unavailable_text(), Skip helpers for expected live-smoke environment gaps. (+12 more)
+Cohesion: 0.48
+Nodes (6): _assert_models_endpoint(), _assert_ollama_tags_endpoint(), _ollama_root_url(), test_llamacpp_models_endpoint_when_available(), test_lmstudio_models_endpoint_when_available(), test_ollama_models_endpoint_when_available()
 
 ### Community 7182 - "Community 7182"
 Cohesion: 0.40
@@ -38893,8 +39007,8 @@ Cohesion: 0.40
 Nodes (3): More tests for findPSARReversalWithRSI., Test PSAR bullish reversal., TestFindPSARReversalCoverage
 
 ### Community 7185 - "Community 7185"
-Cohesion: 0.40
-Nodes (4): Test removedUnusedColumns function., Test removedUnusedColumns function., Test removing unused columns., TestRemovedUnusedColumns
+Cohesion: 0.29
+Nodes (5): Test removedUnusedColumns function., Test with valid dataframes., Test removedUnusedColumns function., Test removing unused columns., TestRemovedUnusedColumns
 
 ### Community 7186 - "Community 7186"
 Cohesion: 0.33
@@ -38904,13 +39018,17 @@ Nodes (4): Comprehensive tests for processResults., Test with empty result tuple
 Cohesion: 0.29
 Nodes (4): agent_profile_resolution_rejects_inheritance_cycles(), agent_profiles_resolve_inheritance_and_defaults(), merge_unique(), ResolvedAgentProfile
 
+### Community 7188 - "Community 7188"
+Cohesion: 0.38
+Nodes (7): login(), populateSavedUserCreds(), presentTrialOptions(), The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, resetSavedUserCreds(), savedUserCreds(), validateToken()
+
 ### Community 7189 - "Community 7189"
 Cohesion: 0.29
 Nodes (6): Show live results for option 29, _show_live_results(), Tests for _show_live_results function, Should handle empty available columns, test_show_live_results_basic(), TestShowLiveResults
 
 ### Community 7191 - "Community 7191"
-Cohesion: 0.40
-Nodes (5): 📰 Beat the Street — NotebookLM Daily Pipeline, code:bash (# Install dependencies), code:block2 (30 10 * * *  cd /path/to/scripts && PYTHONUNBUFFERED=1 venv/), code:block3 (notebooklm_output/), code:block4 (TELEGRAM_API_ID=...)
+Cohesion: 0.22
+Nodes (9): loading, stage, tokens, done, parsing, rendering, sending, streaming (+1 more)
 
 ### Community 7192 - "Community 7192"
 Cohesion: 0.40
@@ -38925,8 +39043,8 @@ Cohesion: 0.40
 Nodes (3): Test validateSuperConfluence with EMA crossovers., Test super confluence with EMA crossover., TestValidateSuperConfluenceEMAs
 
 ### Community 7195 - "Community 7195"
-Cohesion: 0.40
-Nodes (4): Test removeUnknowns function., Test removeUnknowns function., Test removing unknown values., TestRemoveUnknowns
+Cohesion: 0.29
+Nodes (5): Test removeUnknowns function., Test with valid data., Test removeUnknowns function., Test removing unknown values., TestRemoveUnknowns
 
 ### Community 7196 - "Community 7196"
 Cohesion: 0.40
@@ -38937,8 +39055,8 @@ Cohesion: 0.33
 Nodes (4): Tests for trading days calculation., Test trading days calculation using PKDateUtilities., Test is trading time check., TestTradingDaysCalculation
 
 ### Community 7198 - "Community 7198"
-Cohesion: 0.18
-Nodes (6): Test validateConsolidationContraction with legs., Test contraction with multiple legs., Test Lorenzian validation methods., Test basic Lorenzian validation., TestValidateConsolidationContractionLegs, TestValidateLorenzianMethods
+Cohesion: 0.11
+Nodes (9): Test findBreakoutValue conditions., Test breakout value when detected., Test Lorenzian validation methods., Test basic Lorenzian validation., Test stage 2 validation., Test stage 2 uptrend validation., TestFindBreakoutValueConditions, TestValidateLorenzianMethods (+1 more)
 
 ### Community 7199 - "Community 7199"
 Cohesion: 0.25
@@ -39025,16 +39143,16 @@ Cohesion: 0.33
 Nodes (4): Full path tests for printNotifySaveScreenedResults., Test with empty results., Test with large results set., TestPrintNotifySaveFullPaths
 
 ### Community 7221 - "Community 7221"
-Cohesion: 0.42
-Nodes (8): append_repair_note(), archive_decoded_output(), job_list(), load_json(), main(), next_archive_path(), queue_repair(), rows_to_repair()
+Cohesion: 0.22
+Nodes (6): Test saveScreenResultsEncoded function., Test saving encoded results., Test saveScreenResultsEncoded function., Test with None input., Test with text input., TestSaveScreenResultsEncoded
 
 ### Community 7222 - "Community 7222"
 Cohesion: 0.40
 Nodes (3): Extended preprocessing tests., Test preprocessing with missing data., TestPreprocessDataExtended
 
 ### Community 7223 - "Community 7223"
-Cohesion: 0.40
-Nodes (5): classify_events(), _parse_classification(), Classify tool calls against compliance steps using LLM., Classify which tool calls match which compliance steps.      Returns {step_id: [, Parse LLM classification output into {step_id: [event_indices]}.
+Cohesion: 0.22
+Nodes (6): Test readScreenResultsDecoded function., Test reading decoded results., Test readScreenResultsDecoded function., Test with None filename., Test with nonexistent file., TestReadScreenResultsDecoded
 
 ### Community 7225 - "Community 7225"
 Cohesion: 0.40
@@ -39045,8 +39163,8 @@ Cohesion: 0.40
 Nodes (3): Test bullish intraday conditions., Test bullish intraday RSI MACD., TestFindBullishIntradayConditions
 
 ### Community 7227 - "Community 7227"
-Cohesion: 0.40
-Nodes (5): classify_events(), _parse_classification(), Classify tool calls against compliance steps using LLM., Classify which tool calls match which compliance steps.      Returns {step_id: [, Parse LLM classification output into {step_id: [event_indices]}.
+Cohesion: 0.29
+Nodes (3): Multi-factor scoring model for ranking traders.     Score = weighted sum of norm, Returns 0-100 alpha score, TraderScorer
 
 ### Community 7228 - "Community 7228"
 Cohesion: 0.40
@@ -39077,8 +39195,8 @@ Cohesion: 0.33
 Nodes (5): Test showOptionErrorMessage function., Test showing option error message., Test showOptionErrorMessage function., Test showing error message., TestShowOptionErrorMessage
 
 ### Community 7235 - "Community 7235"
-Cohesion: 0.67
-Nodes (3): code:python (export_result = rtstream.export(name="Meeting Recording 2024), Exporting to Video, RTStreamExportResult Properties
+Cohesion: 0.25
+Nodes (6): Fetch top traders from Hyperliquid leaderboard endpoint., detect_wash_trader(), AlphaCopy - Trader Selection Engine Scores and ranks leaderboard traders using m, Heuristics to detect wash-trading / airdrop farming., Criteria to qualify a trader for copying, TraderFilter
 
 ### Community 7236 - "Community 7236"
 Cohesion: 0.40
@@ -39089,8 +39207,8 @@ Cohesion: 0.33
 Nodes (4): Advanced tests for handleRequestForSpecificStocks., Test with single stock., Test with empty options., TestHandleRequestForSpecificStocksAdvanced
 
 ### Community 7238 - "Community 7238"
-Cohesion: 0.14
-Nodes (10): BotConstants, Constants used across bot handlers., Tests for D (Download) menu options., Test that Download menu exists in level 0., Test that download options are available., Integration tests for the complete bot flow., Test complete scan flow from bot command to results., Test that all 36 predefined scans are accessible. (+2 more)
+Cohesion: 0.33
+Nodes (4): Integration tests for the complete bot flow., Test complete scan flow from bot command to results., Test that all 36 predefined scans are accessible., TestBotIntegration
 
 ### Community 7239 - "Community 7239"
 Cohesion: 0.33
@@ -39107,10 +39225,6 @@ Nodes (4): description, type, url, cloudflare-observability
 ### Community 7242 - "Community 7242"
 Cohesion: 0.40
 Nodes (3): Test findCupAndHandlePattern complete., Test full cup and handle pattern., TestFindCupAndHandlePatternComplete
-
-### Community 7243 - "Community 7243"
-Cohesion: 0.40
-Nodes (3): Test findBreakoutValue conditions., Test breakout value when detected., TestFindBreakoutValueConditions
 
 ### Community 7244 - "Community 7244"
 Cohesion: 0.40
@@ -39129,8 +39243,8 @@ Cohesion: 0.50
 Nodes (4): description, type, url, cloudflare-workers-builds
 
 ### Community 7248 - "Community 7248"
-Cohesion: 0.25
-Nodes (4): contains_path_like_token(), looks_like_file_change(), looks_like_tool_call(), OutputFilter
+Cohesion: 0.29
+Nodes (6): handle_execute_option_12(), Handle execute option 12 - intraday toggle, Tests for handle_execute_option_12 function, Should use user specified intraday duration, Should use default 15m when not specified, TestHandleExecuteOption12
 
 ### Community 7249 - "Community 7249"
 Cohesion: 0.40
@@ -39197,8 +39311,8 @@ Cohesion: 0.40
 Nodes (3): Test breakout methods., Test breaking out now., TestFindBreakoutMethods
 
 ### Community 7266 - "Community 7266"
-Cohesion: 0.67
-Nodes (3): items, type, keywords
+Cohesion: 0.29
+Nodes (6): handle_execute_option_22(), Handle execute option 22, Tests for handle_execute_option_22 function, Should parse valid option, Should return None for invalid option, TestHandleExecuteOption22
 
 ### Community 7267 - "Community 7267"
 Cohesion: 0.33
@@ -39209,12 +39323,12 @@ Cohesion: 0.18
 Nodes (10): npr_filtered, display_name, feed_url, filters, npr_top_stories, display_name, feed_url, the_verge (+2 more)
 
 ### Community 7269 - "Community 7269"
-Cohesion: 0.25
-Nodes (8): reasoning, default, high, label, low, medium, minimal, xhigh
+Cohesion: 0.29
+Nodes (6): handle_execute_option_40(), Handle execute option 40 - SMA/EMA cross.     Returns (respChartPattern, reversa, Tests for handle_execute_option_40 function, Should parse SMA/EMA options, Should return None when option is 0, TestHandleExecuteOption40
 
 ### Community 7270 - "Community 7270"
-Cohesion: 0.40
-Nodes (3): Test LTP for portfolio calculation., Test portfolio calculation with price changes., TestValidateLTPForPortfolioCalc
+Cohesion: 0.29
+Nodes (6): handle_execute_option_41(), Handle execute option 41 - Pivot point.     Returns (respChartPattern, reversalO, Tests for handle_execute_option_41 function, Should parse pivot point options, Should return None for zero pivot, TestHandleExecuteOption41
 
 ### Community 7271 - "Community 7271"
 Cohesion: 0.33
@@ -39229,8 +39343,8 @@ Cohesion: 0.40
 Nodes (3): More tests for validateLorentzian., Test Lorentzian signal detection., TestValidateLorentzianCoverage
 
 ### Community 7274 - "Community 7274"
-Cohesion: 0.67
-Nodes (3): version, pattern, type
+Cohesion: 0.25
+Nodes (5): create_menu_handler(), Update state from globals module, Factory function to create MenuOptionHandler with global state, Test create_menu_handler function., Test create_menu_handler function.
 
 ### Community 7275 - "Community 7275"
 Cohesion: 0.40
@@ -39313,8 +39427,8 @@ Cohesion: 0.50
 Nodes (4): interpolate_optional_string(), interpolate_required_string(), orchestration_templates_fail_when_required_variables_are_missing(), orchestration_templates_resolve_steps_and_interpolate_variables()
 
 ### Community 7296 - "Community 7296"
-Cohesion: 0.67
-Nodes (3): additionalProperties, type, features
+Cohesion: 0.29
+Nodes (6): Tests for validation log summaries (metadata only)., test_summarize_handles_non_dict_messages_and_missing_tools(), test_summarize_lists_block_metadata_without_echoing_string_content(), Safe metadata summaries for HTTP 422 validation logging (no raw text content)., Return message shape summary and tool name list for debug logs., summarize_request_validation_body()
 
 ### Community 7297 - "Community 7297"
 Cohesion: 0.57
@@ -39337,8 +39451,8 @@ Cohesion: 0.40
 Nodes (4): UNIT 1/GR9- 7.jpg.md, UNIT 1/Gr 9 - 1.jpg.md, UNIT 1/GR 9 - 3.jpg.md, UNIT 1/GR 9 - 5.jpg.md
 
 ### Community 7302 - "Community 7302"
-Cohesion: 0.29
-Nodes (7): ATR(), highest(), KeltnersChannel(), lowest(), RVM(), SMA(), TRUERANGE()
+Cohesion: 0.25
+Nodes (8): get_platform(), launchIntradayMonitor(), Mock get_platform function., Remove intraday monitor output files from the filesystem.          Cleans up all, Launch the intraday monitor process to track stock movements.          Returns:, Handle developer mode operations (DV menu).          Provides developer options, removeMonitorFile(), XDevModeHandler()
 
 ### Community 7303 - "Community 7303"
 Cohesion: 0.50
@@ -39753,12 +39867,12 @@ Cohesion: 0.50
 Nodes (3): Coding Standards & Best Practices, Scope Boundaries, When to Activate
 
 ### Community 7422 - "Community 7422"
-Cohesion: 0.50
-Nodes (3): Coding Standards & Best Practices, Scope Boundaries, When to Activate
+Cohesion: 0.25
+Nodes (5): Should use default values for 'D' option, Should use defaults when systemlaunched is True, Tests for handle_execute_option_5 function, Should parse numeric RSI values, TestHandleExecuteOption5
 
 ### Community 7423 - "Community 7423"
-Cohesion: 0.40
-Nodes (3): Test populate indicators., Test populating all indicators., TestPopulateIndicators
+Cohesion: 0.25
+Nodes (6): Tests for MenuOptionHandler class., Test MenuOptionHandler initialization., Test MenuOptionHandler class., Test MenuOptionHandler initialization., Test get_launcher method., TestMenuOptionHandler
 
 ### Community 7424 - "Community 7424"
 Cohesion: 0.40
@@ -40525,8 +40639,8 @@ Cohesion: 0.33
 Nodes (4): Test getCleanedDataForDuration with backtest scenarios., Test getCleanedDataForDuration with positive backtest duration., Test getCleanedDataForDuration with empty processed data., TestGetCleanedDataBacktest
 
 ### Community 7655 - "Community 7655"
-Cohesion: 0.40
-Nodes (3): Test RSI crossover methods., Test RSI bullish crossover., TestValidateRSICrossover
+Cohesion: 0.38
+Nodes (6): ArtifactEvent, createArtifactParser(), findOpenTag(), OpenTagMatch, parseAttrs(), ParserState
 
 ### Community 7656 - "Community 7656"
 Cohesion: 0.33
@@ -40669,8 +40783,8 @@ Cohesion: 0.40
 Nodes (3): Extended tests for getFairValue., Test fair value calculation., TestGetFairValueExtended
 
 ### Community 7700 - "Community 7700"
-Cohesion: 0.50
-Nodes (4): items, minimum, type, commands
+Cohesion: 0.67
+Nodes (3): minimum, type, commands
 
 ### Community 7701 - "Community 7701"
 Cohesion: 0.50
@@ -40791,10 +40905,6 @@ Nodes (3): Targeted tests for analysisFinalResults., Test with run option name.,
 ### Community 7737 - "Community 7737"
 Cohesion: 0.50
 Nodes (3): Targeted tests for sendTestStatus., Test with label parameter., TestSendTestStatusTargeted
-
-### Community 7738 - "Community 7738"
-Cohesion: 0.33
-Nodes (5): content, EXCLUDED_PATTERNS, files, fs, { isGitRepo, getGitModifiedFiles, readFile, log }
 
 ### Community 7739 - "Community 7739"
 Cohesion: 0.50
@@ -41662,7 +41772,7 @@ Nodes (3): More path tests for processResults., Test with None values in result.
 
 ### Community 8461 - "Community 8461"
 Cohesion: 0.33
-Nodes (5): content, input, lines, matches, { readFile }
+Nodes (5): content, EXCLUDED_PATTERNS, files, fs, { isGitRepo, getGitModifiedFiles, readFile, log }
 
 ### Community 8462 - "Community 8462"
 Cohesion: 0.50
@@ -41773,8 +41883,8 @@ Cohesion: 0.60
 Nodes (5): computeChangedPath(), computeChangedPathImpl(), extractPathFromFlightRouterState(), normalizeSegments(), segmentToPathname()
 
 ### Community 8491 - "Community 8491"
-Cohesion: 0.25
-Nodes (8): items, type, type, customTools, skills, items, minimum, type
+Cohesion: 0.22
+Nodes (9): items, items, type, type, items, type, customTools, keywords (+1 more)
 
 ### Community 8492 - "Community 8492"
 Cohesion: 0.50
@@ -41971,6 +42081,10 @@ Nodes (3): Advanced tests for handleMenu_XBG., Test with X menu and index., Test
 ### Community 8545 - "Community 8545"
 Cohesion: 0.40
 Nodes (3): Test downtrend validation., Test downtrend detection., TestFindDowntrendValidation
+
+### Community 8546 - "Community 8546"
+Cohesion: 0.47
+Nodes (5): aggregate_ticks_to_daily(), fetch_ticks_from_github(), main(), Fetch tick data from PKBrokers main branch., Convert tick data to daily OHLCV format.          Expected ticks_data format (fr
 
 ### Community 8547 - "Community 8547"
 Cohesion: 0.50
@@ -42416,13 +42530,25 @@ Nodes (4): memory, args, command, description
 Cohesion: 0.67
 Nodes (3): getOrSetLastRelease(), test_if_changelog_version_changed(), test_if_release_version_incremented()
 
+### Community 10198 - "Community 10198"
+Cohesion: 0.33
+Nodes (4): Tests for handle_execute_option_3 function, Should set maxdisplayresults to at least 2000, Should use config maxdisplayresults when higher, TestHandleExecuteOption3
+
 ### Community 10200 - "Community 10200"
 Cohesion: 0.50
 Nodes (4): description, type, url, cloudflare-docs
 
+### Community 10229 - "Community 10229"
+Cohesion: 0.33
+Nodes (4): Tests for handle_execute_option_9 function, Should parse numeric volume ratio, Should use config default for 'D' option, TestHandleExecuteOption9
+
 ### Community 10232 - "Community 10232"
 Cohesion: 0.50
 Nodes (3): More tests for saveDownloadedData., Test with valid stock data., TestSaveDownloadedDataMore
+
+### Community 10234 - "Community 10234"
+Cohesion: 0.33
+Nodes (4): Tests for handle_execute_option_4 function, Should parse numeric option, Should use default 30 for 'D' option, TestHandleExecuteOption4
 
 ### Community 10237 - "Community 10237"
 Cohesion: 0.50
@@ -42431,6 +42557,10 @@ Nodes (3): Real execution tests for finishScreening., Test with valid results., 
 ### Community 10239 - "Community 10239"
 Cohesion: 0.50
 Nodes (3): Targeted tests for initPostLevel1Execution., Test with skip list and retrial flag., TestInitPostLevel1ExecutionTargeted
+
+### Community 10251 - "Community 10251"
+Cohesion: 0.60
+Nodes (4): main(), AlphaCopy - Main Orchestrator Runs all three copy bots concurrently with shared, run_dashboard_loop(), setup_logging()
 
 ### Community 10268 - "Community 10268"
 Cohesion: 0.03
@@ -42452,13 +42582,59 @@ Nodes (3): Deep dive tests for runScanners., Test with menu B (backtest)., TestR
 Cohesion: 0.40
 Nodes (3): Extended 10-day low breakout tests., Test 10-day low breakout detection., TestFind10DaysLowBreakoutExtended
 
+### Community 10705 - "Community 10705"
+Cohesion: 0.40
+Nodes (3): fs, {
+  getLearnedSkillsDir,
+  ensureDir,
+  readFile,
+  countInFile,
+  log
+}, path
+
+### Community 10706 - "Community 10706"
+Cohesion: 0.40
+Nodes (3): Test getLatestTradeDateTime function., Test with empty dict., TestLatestTradeDateTime
+
+### Community 10707 - "Community 10707"
+Cohesion: 0.40
+Nodes (3): Extended breakout value tests., Test breakout with resistance level., TestFindBreakoutValueExtended
+
+### Community 10708 - "Community 10708"
+Cohesion: 0.40
+Nodes (3): Complete BBands squeeze tests., Test BBands squeeze detection., TestValidateBbandsSqeezeComplete
+
+### Community 10709 - "Community 10709"
+Cohesion: 0.40
+Nodes (3): Test validateVCP with tops detection., Test VCP with clear tops., TestValidateVCPWithTops
+
+### Community 10710 - "Community 10710"
+Cohesion: 0.50
+Nodes (4): description, type, url, cloudflare-docs
+
 ### Community 10842 - "Community 10842"
 Cohesion: 0.01
-Nodes (381): Check if keyboard interrupt was fired., AnalyticsAction, AnalyticsCategory, AnalyticsLabel, Constants for Google Analytics event labels., Constants for Google Analytics event categories., Constants for Google Analytics event actions., Decorator to automatically track feature usage.          Works with:     - Insta (+373 more)
+Nodes (358): Check if keyboard interrupt was fired., AnalyticsCategory, AnalyticsLabel, Constants for Google Analytics event labels., Constants for Google Analytics event categories., Decorator to automatically track feature usage.          Works with:     - Insta, Decorator to automatically track performance.          Works with:     - Instanc, Decorator to automatically track errors in functions.          Works with instan (+350 more)
 
 ### Community 10876 - "Community 10876"
 Cohesion: 0.11
 Nodes (4): The MIT License (MIT)      Copyright (c) 2023 pkjmesra      Permission is hereby, test_updateIfRunningInTelegramBotMode(), TestMarketMonitor2, TestMarketMonitor3
+
+### Community 10879 - "Community 10879"
+Cohesion: 0.50
+Nodes (3): Comprehensive tests for PKConsoleMenuTools., Test configManager class attribute., TestPKConsoleMenuToolsCoverage
+
+### Community 10886 - "Community 10886"
+Cohesion: 0.67
+Nodes (3): items, type, keywords
+
+### Community 10895 - "Community 10895"
+Cohesion: 0.67
+Nodes (3): additionalProperties, type, features
+
+### Community 10896 - "Community 10896"
+Cohesion: 0.67
+Nodes (3): code:python (export_result = rtstream.export(name="Meeting Recording 2024), Exporting to Video, RTStreamExportResult Properties
 
 ### Community 10980 - "Community 10980"
 Cohesion: 0.50
@@ -42469,22 +42645,22 @@ Cohesion: 0.50
 Nodes (4): vercel, description, type, url
 
 ### Community 10986 - "Community 10986"
-Cohesion: 0.67
-Nodes (3): minimum, type, commands
+Cohesion: 0.50
+Nodes (4): items, minimum, type, commands
 
 ## Knowledge Gaps
-- **57237 isolated node(s):** `people`, `projects`, `name`, `children`, `version` (+57232 more)
+- **57236 isolated node(s):** `people`, `projects`, `name`, `children`, `version` (+57231 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **2240 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **2315 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `isInstance()` connect `Community 19` to `Community 1`, `Community 2`, `Community 7172`, `Community 5640`, `Community 10`, `Community 2572`, `Community 7181`, `Community 526`, `Community 2575`, `Community 2574`, `Community 17`, `Community 3601`, `Community 3604`, `Community 24`, `Community 26`, `Community 29`, `Community 7199`, `Community 10272`, `Community 1569`, `Community 1570`, `Community 546`, `Community 36`, `Community 545`, `Community 38`, `Community 1571`, `Community 1577`, `Community 42`, `Community 46`, `Community 47`, `Community 48`, `Community 49`, `Community 50`, `Community 7726`, `Community 6196`, `Community 7221`, `Community 7223`, `Community 7224`, `Community 58`, `Community 7227`, `Community 61`, `Community 1597`, `Community 65`, `Community 1095`, `Community 72`, `Community 73`, `Community 75`, `Community 76`, `Community 77`, `Community 78`, `Community 79`, `Community 10842`, `Community 92`, `Community 93`, `Community 6238`, `Community 610`, `Community 3172`, `Community 1125`, `Community 103`, `Community 104`, `Community 105`, `Community 106`, `Community 109`, `Community 111`, `Community 117`, `Community 123`, `Community 1667`, `Community 1670`, `Community 135`, `Community 1671`, `Community 2698`, `Community 140`, `Community 657`, `Community 147`, `Community 152`, `Community 153`, `Community 154`, `Community 159`, `Community 672`, `Community 172`, `Community 175`, `Community 690`, `Community 693`, `Community 1728`, `Community 4801`, `Community 197`, `Community 198`, `Community 200`, `Community 2250`, `Community 1227`, `Community 1228`, `Community 228`, `Community 744`, `Community 2797`, `Community 2799`, `Community 248`, `Community 4349`, `Community 769`, `Community 2339`, `Community 304`, `Community 5952`, `Community 3910`, `Community 326`, `Community 3911`, `Community 3916`, `Community 3917`, `Community 859`, `Community 860`, `Community 1382`, `Community 360`, `Community 8047`, `Community 2419`, `Community 400`, `Community 1937`, `Community 1939`, `Community 417`, `Community 418`, `Community 950`, `Community 443`, `Community 453`, `Community 463`, `Community 4052`, `Community 988`, `Community 992`, `Community 496`, `Community 499`, `Community 3066`, `Community 3068`?**
+- **Why does `isInstance()` connect `Community 19` to `Community 1`, `Community 2`, `Community 7172`, `Community 5640`, `Community 10`, `Community 2572`, `Community 7181`, `Community 526`, `Community 2575`, `Community 2574`, `Community 3601`, `Community 7185`, `Community 3604`, `Community 23`, `Community 24`, `Community 26`, `Community 29`, `Community 7199`, `Community 1569`, `Community 1570`, `Community 546`, `Community 36`, `Community 545`, `Community 38`, `Community 1571`, `Community 1577`, `Community 42`, `Community 46`, `Community 47`, `Community 48`, `Community 49`, `Community 50`, `Community 7726`, `Community 6196`, `Community 7224`, `Community 58`, `Community 61`, `Community 1597`, `Community 65`, `Community 10821`, `Community 1095`, `Community 72`, `Community 73`, `Community 75`, `Community 76`, `Community 77`, `Community 78`, `Community 79`, `Community 10842`, `Community 92`, `Community 93`, `Community 6238`, `Community 610`, `Community 3172`, `Community 1125`, `Community 103`, `Community 104`, `Community 105`, `Community 106`, `Community 7274`, `Community 108`, `Community 109`, `Community 111`, `Community 6260`, `Community 6261`, `Community 117`, `Community 123`, `Community 7296`, `Community 1667`, `Community 1670`, `Community 135`, `Community 1671`, `Community 10887`, `Community 2698`, `Community 10890`, `Community 140`, `Community 10893`, `Community 10894`, `Community 10888`, `Community 10889`, `Community 657`, `Community 10891`, `Community 147`, `Community 10892`, `Community 152`, `Community 153`, `Community 154`, `Community 159`, `Community 672`, `Community 172`, `Community 175`, `Community 690`, `Community 693`, `Community 10935`, `Community 10936`, `Community 1728`, `Community 4801`, `Community 197`, `Community 198`, `Community 200`, `Community 2250`, `Community 1227`, `Community 1228`, `Community 3278`, `Community 10959`, `Community 228`, `Community 744`, `Community 2797`, `Community 2799`, `Community 248`, `Community 4349`, `Community 769`, `Community 4870`, `Community 2339`, `Community 301`, `Community 304`, `Community 1343`, `Community 5952`, `Community 3910`, `Community 326`, `Community 3911`, `Community 3916`, `Community 3917`, `Community 859`, `Community 860`, `Community 8546`, `Community 1382`, `Community 360`, `Community 8047`, `Community 2419`, `Community 400`, `Community 1937`, `Community 1939`, `Community 417`, `Community 950`, `Community 443`, `Community 453`, `Community 463`, `Community 10706`, `Community 4052`, `Community 988`, `Community 992`, `Community 2020`, `Community 496`, `Community 499`, `Community 7158`, `Community 3066`, `Community 3068`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
-- **Why does `getLogger()` connect `Community 41` to `Community 83`, `Community 11`, `Community 52`, `Community 98`?**
+- **Why does `getLogger()` connect `Community 41` to `Community 98`, `Community 9`, `Community 11`, `Community 83`, `Community 52`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `menus` connect `Community 109` to `Community 96`, `Community 1`, `Community 1382`, `Community 7238`, `Community 733`, `Community 199`, `Community 134`, `Community 1228`, `Community 13`, `Community 46`, `Community 989`, `Community 2642`, `Community 2077`, `Community 10842`, `Community 87`, `Community 7256`, `Community 2362`, `Community 4349`?**
+- **Why does `menus` connect `Community 1382` to `Community 1`, `Community 10885`, `Community 134`, `Community 14`, `Community 17`, `Community 10897`, `Community 10898`, `Community 7188`, `Community 10261`, `Community 10899`, `Community 10900`, `Community 24`, `Community 10904`, `Community 154`, `Community 2077`, `Community 10909`, `Community 10911`, `Community 10912`, `Community 10913`, `Community 10910`, `Community 10915`, `Community 10923`, `Community 10924`, `Community 10925`, `Community 46`, `Community 10926`, `Community 10937`, `Community 2362`, `Community 10938`, `Community 10942`, `Community 10943`, `Community 10954`, `Community 10955`, `Community 1228`, `Community 10957`, `Community 10958`, `Community 10956`, `Community 10960`, `Community 2642`, `Community 10962`, `Community 10963`, `Community 10964`, `Community 87`, `Community 7256`, `Community 10842`, `Community 10970`, `Community 5596`, `Community 5597`, `Community 733`, `Community 989`, `Community 96`, `Community 10976`, `Community 10971`, `Community 109`, `Community 4349`, `Community 10879`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 658 inferred relationships involving `ScreeningStatistics` (e.g. with `PKGlobalStore` and `PKDailyStockDataDB`) actually correct?**
   _`ScreeningStatistics` has 658 INFERRED edges - model-reasoned connections that need verification._
