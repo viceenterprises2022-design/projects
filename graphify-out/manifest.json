@@ -25620,7 +25620,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/README.md": {
-    "mtime": 1780373416.9285197,
+    "mtime": 1780373718.0270615,
     "ast_hash": "2c60a74ba9728d12024767f553dc0491",
     "semantic_hash": ""
   },
@@ -39035,8 +39035,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/logwork": {
-    "mtime": 1780320150.6679525,
-    "ast_hash": "7993ecb8475067ece6368f4d6fe9597d",
+    "mtime": 1780373860.5415435,
+    "ast_hash": "e3fdb6e06e3812d2fec0d330789b1a1b",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260527_0355_X_1_1.txt": {
@@ -40812,6 +40812,151 @@
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_1_2026-06-02.txt": {
     "mtime": 1780373244.3034596,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/CHANGELOG.md": {
+    "mtime": 1780373416.9280443,
+    "ast_hash": "e4c0dc437a12f80ec4ab5b2fc844f163",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260602_0925_X_12_1.txt": {
+    "mtime": 1780373427.2509415,
+    "ast_hash": "63850bf0909375a50dcb865be4e1e68b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/README.md": {
+    "mtime": 1780311329.7357428,
+    "ast_hash": "8fb0cf4630d44dada6b0b0265fc42943",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/specs/2026-05-13-metals-intel-dashboard-design.md": {
+    "mtime": 1778660525.4614217,
+    "ast_hash": "2a1d5b0fb50afff5c7ab8adc4fe30807",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/specs/2026-05-12-crypto-options-liquidation-cli-design.md": {
+    "mtime": 1778593385.0173535,
+    "ast_hash": "707f8cdeb736e7ef4f8529dbd4c8b62a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/specs/2026-05-11-alphaedge-crypto-v2-design.md": {
+    "mtime": 1778495944.7071779,
+    "ast_hash": "0a52a3cdf0cb177dd7622dfdb32a873a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/specs/2026-06-01-usage-tracker-design.md": {
+    "mtime": 1780255229.3740833,
+    "ast_hash": "f421286db765478f12dfb3fa15c8f0ff",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/specs/2025-05-22-async-engine-fixes-design.md": {
+    "mtime": 1778497882.3568501,
+    "ast_hash": "1d4016bb57e3fa1fc42ac07e66c47105",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/plans/2026-05-11-alphaedge-crypto-v2-plan.md": {
+    "mtime": 1778496015.0534563,
+    "ast_hash": "24a9a1ad861780cd3094ec4c1273fc38",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/plans/2025-03-24-crypto-dashboard-v2.md": {
+    "mtime": 1778504594.753755,
+    "ast_hash": "61e27087cdcf32bd91ad802c4fc0fdf2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/plans/2025-05-22-async-engine-fixes.md": {
+    "mtime": 1778497907.2419488,
+    "ast_hash": "a49bdf3e0c7674a11261b8b4a2cc86c5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/plans/2026-05-13-metals-intel-dashboard.md": {
+    "mtime": 1778660598.7456868,
+    "ast_hash": "ed6ca9607929c737bbfdb4c930be92c8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.docs-split-backup-20260602-094016/docs/superpowers/plans/2026-05-12-crypto-options-liquidation-cli.md": {
+    "mtime": 1778593433.839536,
+    "ast_hash": "00a50f752a4a10012816d4a57c0cdcc2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/index.md": {
+    "mtime": 1780373416.9278584,
+    "ast_hash": "09c743728cf2bdd66c49dd4983005e7f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/architecture.md": {
+    "mtime": 1780373416.9276378,
+    "ast_hash": "da80c597e3c0d5c280033a84c8e4a488",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/runbook.md": {
+    "mtime": 1780373416.9277587,
+    "ast_hash": "58e70a48cf66bc82fd776d08f87f6dfd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/crypto-intelligence.md": {
+    "mtime": 1780373416.9264355,
+    "ast_hash": "58998ef8fcd431ed0a8d912db8f7aa6f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/arxiv-notebooklm.md": {
+    "mtime": 1780373416.9268992,
+    "ast_hash": "3903078061c670859f7abd1bdce8fb7c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/toddle-notebooklm.md": {
+    "mtime": 1780373416.9266796,
+    "ast_hash": "2c309ce3218d91458c37221a313eaccc",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/beat-the-street-notebooklm-daily-pipeline.md": {
+    "mtime": 1780373416.9265592,
+    "ast_hash": "fcf83873e75a947c19e2fa03cf8b6b4b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/youtube-notebooklm.md": {
+    "mtime": 1780373416.926797,
+    "ast_hash": "929b9884b140b961362192ef556ded69",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/portfolio-pl-dashboard.md": {
+    "mtime": 1780373416.927098,
+    "ast_hash": "9175e65d2bbfb2e5e1b95cbbadf62729",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/ai-search-discovery.md": {
+    "mtime": 1780373416.926316,
+    "ast_hash": "ddf677adf6ba9a74fce4275f6babb5b4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/live-market-dashboards.md": {
+    "mtime": 1780373416.9274108,
+    "ast_hash": "b4fa910626fa0bd98fcf5fc757071b5f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/alphaedge-market-intelligence.md": {
+    "mtime": 1780373416.9261715,
+    "ast_hash": "22908f0664e4206e8cd801f8eadd101c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/agent-scaffolder.md": {
+    "mtime": 1780373416.92731,
+    "ast_hash": "8915d8aed6bdabd00ac9903fbbd0670d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/substack-notebooklm-slack.md": {
+    "mtime": 1780373416.9270008,
+    "ast_hash": "31ca0c3fa529f2f784e338c1e8070927",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/utilities-helpers.md": {
+    "mtime": 1780373416.9275143,
+    "ast_hash": "4ee8c629838bfcb0877f4c22e79b7033",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/projects/strategies.md": {
+    "mtime": 1780373416.9271998,
+    "ast_hash": "63c4256ebf9fff29fdce139583109b51",
     "semantic_hash": ""
   }
 }

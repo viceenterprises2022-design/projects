@@ -33,9 +33,52 @@ except Exception as _e:
 
 
 AGENTS_PATH = SCRIPT_DIR / "AGENTS.md"
+CHANGELOG_PATH = SCRIPT_DIR / "CHANGELOG.md"
 MULTICA_BIN = "/usr/local/bin/multica"
 PROJECT_ID = "8eaf35e9"  # Tools
 ASSIGNEE = "Vinod-AI-CEO"
+
+
+def archive_to_changelog(day: str, archived: list[tuple[str, str]]) -> int:
+    """Append archived entries to CHANGELOG.md (newest first within the day group).
+    Returns number of entries written. Creates the file if missing."""
+    if not archived:
+        return 0
+    header = CHANGELOG_PATH.read_text() if CHANGELOG_PATH.exists() else "# Changelog\n\nDated history of work. Auto-populated by `/logwork --prune`.\n\n"
+    block = []
+    for title, desc in archived:
+        block.append(f"### {day}: {title}")
+        if desc.strip():
+            block.append(desc.strip())
+        block.append("- **Multica:** logged via `/logwork` on " + day)
+        block.append("")
+    new = header.rstrip() + "\n\n" + "\n".join(block).rstrip() + "\n"
+    CHANGELOG_PATH.write_text(new)
+    return len(archived)
+
+
+def prune_from_agents(day: str, titles_to_remove: list[str]) -> int:
+    """Remove `### {day}: {title}` blocks from AGENTS.md whose title matches.
+    Match is case-insensitive on the title. Returns count removed."""
+    if not titles_to_remove or not AGENTS_PATH.exists():
+        return 0
+    content = AGENTS_PATH.read_text()
+    removed = 0
+    wanted = {t.lower() for t in titles_to_remove}
+    # Match a full block starting at "### YYYY-MM-DD: ..." until the next "### " or end-of-file
+    pattern = rf"### ({re.escape(day)}): ([^\n]+)\n(.*?)(?=\n### |\Z)"
+    def repl(m: re.Match) -> str:
+        nonlocal removed
+        title = m.group(2).strip().lower()
+        if title in wanted:
+            removed += 1
+            return ""  # drop the whole block
+        return m.group(0)
+    new = re.sub(pattern, repl, content, flags=re.DOTALL)
+    # Tidy: collapse runs of 3+ blank lines down to 2
+    new = re.sub(r"\n{3,}", "\n\n", new)
+    AGENTS_PATH.write_text(new)
+    return removed
 
 
 def fetch_existing_titles():
@@ -130,7 +173,8 @@ def post_slack(day, logged, skipped, failed):
 def main():
     args = [a for a in sys.argv[1:] if a]
     no_slack = "--no-slack" in args
-    args = [a for a in args if a != "--no-slack"]
+    prune = "--prune" in args
+    args = [a for a in args if a not in ("--no-slack", "--prune")]
     day = args[0] if args else datetime.date.today().strftime("%Y-%m-%d")
 
     if not AGENTS_PATH.exists():
@@ -149,11 +193,13 @@ def main():
         sys.exit(0)
 
     logged, skipped, failed = [], [], []
+    archived_pairs: list[tuple[str, str]] = []
     for _, title_val, desc_val in matches:
         title = title_val.strip()
         if title.lower() in existing:
             print(f"[LogWork] Skip (dup): {title}")
             skipped.append(title)
+            archived_pairs.append((title, desc_val))  # already in Multica → safe to archive on --prune
             continue
         desc = clean_description(desc_val)
         print(f"\n[LogWork] Creating: {title}")
@@ -161,12 +207,20 @@ def main():
         if res.returncode == 0:
             print(f"[LogWork] OK: {title}")
             logged.append(title)
+            archived_pairs.append((title, desc_val))
         else:
             err = (res.stderr or res.stdout).strip().splitlines()[-1] if (res.stderr or res.stdout) else "unknown"
             print(f"[LogWork] FAIL: {title} -> {err}")
             failed.append((title, err))
 
     print(f"\n[LogWork] Summary: {len(logged)} logged, {len(skipped)} skipped, {len(failed)} failed.")
+
+    archived_count = 0
+    pruned_count = 0
+    if prune and archived_pairs:
+        archived_count = archive_to_changelog(day, archived_pairs)
+        pruned_count = prune_from_agents(day, [t for t, _ in archived_pairs])
+        print(f"[LogWork] Prune: archived {archived_count} entries to CHANGELOG.md, removed {pruned_count} from AGENTS.md.")
 
     if not no_slack:
         post_slack(day, logged, skipped, failed)
