@@ -130,9 +130,14 @@ def nlm(*args, capture=True):
 def nlm_json(*args):
     result = nlm(*args, "--json")
     try:
-        return json.loads(result.stdout)
+        data = json.loads(result.stdout)
+        if isinstance(data, dict) and data.get("error"):
+            p(f"  [API ERROR] {data.get('message')} (code: {data.get('code')})")
+        return data
     except json.JSONDecodeError:
+        p(f"  [ERROR] Failed to parse JSON. stdout: {result.stdout.strip()[:500]}, stderr: {result.stderr.strip()[:500]}")
         return {}
+
 
 
 def extract_video_id(url: str) -> str:
@@ -247,7 +252,7 @@ def process_video(video: dict, state: dict):
     data = nlm_json("create", nb_name)
     nb_id = data.get("notebook", {}).get("id", "")
     if not nb_id:
-        p("  FAILED. Run 'notebooklm login'.")
+        p(f"  FAILED. Run 'notebooklm login'. Error: {data.get('message', 'Unknown error')}")
         return False
     p(f"  ID: {nb_id}")
 
@@ -256,7 +261,7 @@ def process_video(video: dict, state: dict):
     data = nlm_json("source", "add", url, "--notebook", nb_id)
     sid = data.get("source", {}).get("id", "")
     if not sid:
-        p("  FAILED to add source.")
+        p(f"  FAILED to add source. Error: {data.get('message', 'Unknown error')}")
         return False
     p(f"  Source: {sid[:12]}")
 
