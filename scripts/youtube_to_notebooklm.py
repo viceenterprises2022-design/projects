@@ -188,7 +188,7 @@ def load_channels() -> list[str]:
 
 # ── Step 2: Fetch new videos (last 24h) ────────────────────────────────
 def fetch_new_videos(channels: list[str], state: dict) -> list[dict]:
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=96)
     new_videos = []
 
     for handle in channels:
@@ -256,12 +256,29 @@ def process_video(video: dict, state: dict):
         return False
     p(f"  ID: {nb_id}")
 
+    # Wait for propagation
+    p("  Waiting 3s for notebook propagation...")
+    time.sleep(3)
+
     # ── Add YouTube source ──────────────────────────────────────────
     p(f"\n[2/7] Adding YouTube source...")
-    data = nlm_json("source", "add", url, "--notebook", nb_id)
-    sid = data.get("source", {}).get("id", "")
+    sid = ""
+    max_attempts = 3
+    for attempt in range(1, max_attempts + 1):
+        if attempt > 1:
+            backoff = attempt * 5
+            p(f"  Retrying source add (attempt {attempt}/{max_attempts}) in {backoff}s...")
+            time.sleep(backoff)
+        data = nlm_json("source", "add", url, "--notebook", nb_id)
+        sid = data.get("source", {}).get("id", "")
+        if sid:
+            break
+        else:
+            p(f"  Attempt {attempt} failed. Error: {data.get('message', 'Unknown error')}")
+
     if not sid:
-        p(f"  FAILED to add source. Error: {data.get('message', 'Unknown error')}")
+        p("  FAILED to add source after all attempts. Cleaning up notebook...")
+        _delete_notebook(nb_id)
         return False
     p(f"  Source: {sid[:12]}")
 
