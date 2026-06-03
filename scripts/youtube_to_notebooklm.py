@@ -558,7 +558,10 @@ def main():
     p(f"{'='*55}")
 
     processed = 0
-    for v in new_videos:
+    for i, v in enumerate(new_videos):
+        if i > 0:
+            p("\nSleeping 15s between videos to respect rate limits...")
+            time.sleep(15)
         if process_video(v, state):
             processed += 1
 
