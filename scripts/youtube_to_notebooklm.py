@@ -188,7 +188,7 @@ def load_channels() -> list[str]:
 
 # ── Step 2: Fetch new videos (last 24h) ────────────────────────────────
 def fetch_new_videos(channels: list[str], state: dict) -> list[dict]:
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=96)
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
     new_videos = []
 
     for handle in channels:
