@@ -1,112 +1,149 @@
 {
-  "name": "Context-Dependent Argumentation Frameworks (CDAFs)",
+  "name": "KINA: Knowledge Index of Noah's Ark",
   "children": [
     {
-      "name": "Core Concepts",
+      "name": "Design Principles",
       "children": [
         {
-          "name": "Defeat Function"
-        },
-        {
-          "name": "Regime Influence"
-        },
-        {
-          "name": "Strategic Perspectives"
-        },
-        {
-          "name": "Induced Frameworks"
-        }
-      ]
-    },
-    {
-      "name": "Perspective-Labeled CDAF",
-      "children": [
-        {
-          "name": "Source Perspectives (src)"
-        },
-        {
-          "name": "Relevance Set (active ρ)"
-        },
-        {
-          "name": "Priority Function (π)"
-        },
-        {
-          "name": "Attack Asymmetry"
-        }
-      ]
-    },
-    {
-      "name": "Strategic Advantages",
-      "children": [
-        {
-          "name": "Activation Manipulation"
-        },
-        {
-          "name": "Partial Relevance Acceptance"
-        },
-        {
-          "name": "Breaking Structural Traps"
-        },
-        {
-          "name": "Beyond VAF Audiences"
-        }
-      ]
-    },
-    {
-      "name": "Formal Analysis",
-      "children": [
-        {
-          "name": "Decision Problem",
+          "name": "Disciplinary Representativeness",
           "children": [
             {
-              "name": "ACTIVATION-MANIPULATION"
+              "name": "Budgeted support centrality"
             },
             {
-              "name": "Credulous σ-acceptance"
+              "name": "Monotone submodular objective"
+            },
+            {
+              "name": "Greedy selection guarantee"
             }
           ]
         },
         {
-          "name": "Complexity Bounds",
+          "name": "Incentive-Aligned Review",
           "children": [
             {
-              "name": "NP-complete (Stable/Preferred)"
+              "name": "Bonus-on-bar tournament"
             },
             {
-              "name": "P-hard (Grounded)"
+              "name": "First-order stochastic dominance"
+            },
+            {
+              "name": "Stochastic principal audits"
+            }
+          ]
+        },
+        {
+          "name": "Ranking Stability",
+          "children": [
+            {
+              "name": "Bootstrap-based statistics"
+            },
+            {
+              "name": "Bounded-budget variance report"
             }
           ]
         }
       ]
     },
     {
-      "name": "Comparisons",
+      "name": "Construction Pipeline",
       "children": [
         {
-          "name": "Dung's AF (Fixed Structure)"
+          "name": "Rule-based Screening",
+          "children": [
+            {
+              "name": "Cosine similarity < 0.8"
+            },
+            {
+              "name": "LaTeX validation"
+            },
+            {
+              "name": "3-of-5 LLM failure filter"
+            }
+          ]
         },
         {
-          "name": "Value-based AF (No Deactivation)"
+          "name": "Expert Review",
+          "children": [
+            {
+              "name": "Double-blind allocation"
+            },
+            {
+              "name": "6-rubric scoring system"
+            }
+          ]
         },
         {
-          "name": "Control Argumentation (Uncertainty)"
+          "name": "LLM Consensus",
+          "children": [
+            {
+              "name": "3-judge majority vote"
+            },
+            {
+              "name": "Failure pattern analysis"
+            }
+          ]
+        },
+        {
+          "name": "Agentic Refinement",
+          "children": [
+            {
+              "name": "Diagnosis Agent (Search)"
+            },
+            {
+              "name": "Refinement Agent (Revision)"
+            }
+          ]
         }
       ]
     },
     {
-      "name": "Future Work",
+      "name": "Dataset Statistics",
       "children": [
         {
-          "name": "Multi-agent Variants"
+          "name": "899 Total Items"
         },
         {
-          "name": "Strategic Equilibria"
+          "name": "261 Fine-grained disciplines"
         },
         {
-          "name": "Skeptical Acceptance"
+          "name": "10-option pseudo-MCQ format"
         },
         {
-          "name": "Institutional Constraints"
+          "name": "10% Chance baseline"
+        }
+      ]
+    },
+    {
+      "name": "Experimental Findings",
+      "children": [
+        {
+          "name": "Model Performance",
+          "children": [
+            {
+              "name": "Gemini-3.1-Pro top (53.17%)"
+            },
+            {
+              "name": "Tiered leaderboard structure"
+            },
+            {
+              "name": "Headroom below saturation"
+            }
+          ]
+        },
+        {
+          "name": "Diagnostic Insights",
+          "children": [
+            {
+              "name": "Tool-use gains (+1.5 to +5.17)"
+            },
+            {
+              "name": "Humanities drive discrimination"
+            },
+            {
+              "name": "Parameter scaling saturation"
+            }
+          ]
         }
       ]
     }
