@@ -253,6 +253,12 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Updated `README.md` to document the new monitoring utility.
 - **Multica:** ALP-466 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-06: Kimchi Custom Provider & Hermes Integration
+- Configured and updated OpenAI provider configurations to use custom Kimchi endpoint and the new CastAI key across `~/.config/kimchi/config.json`, `~/.config/kimchi/harness/auth.json`, and `.env`.
+- Configured and verified Hermes agent configuration to route via custom Kimchi endpoint (`https://llm.kimchi.dev/openai/v1`) in `~/.hermes/config.yaml` and `.env` using model `nemotron-3-super-fp4`.
+- Restarted all clawdi user-level daemons (`clawdi-serve-hermes`, `clawdi-serve-claude_code`, `clawdi-serve-codex`) to load new credentials and verified successful test queries.
+- **Multica:** ALP-507 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints
