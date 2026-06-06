@@ -35880,8 +35880,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/youtube_to_notebooklm_state.json": {
-    "mtime": 1780660486.177922,
-    "ast_hash": "9d51ef29ebbfd5e42c65f390e6ac73aa",
+    "mtime": 1780746809.758084,
+    "ast_hash": "4b028080f34a806d56cb9fdec9fd482d",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-05-24/IYzCmGPtaZo/mindmap.json": {
@@ -41807,6 +41807,41 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_daily_2026-06-06.png": {
     "mtime": 1780713180.7331493,
     "ast_hash": "54d0110d1fe6fa2bf9e1862467ffd578",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-06/lrQkLBwP0rE/mindmap.json": {
+    "mtime": 1780746372.5008214,
+    "ast_hash": "f1c593890dcf4c8b623ff38c9891d37a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-06/n8rP6Ceskm4/mindmap.json": {
+    "mtime": 1780746434.617415,
+    "ast_hash": "e1cc08432fc2daa40ea71478a67f6095",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-06/eMJaEhTi8HA/mindmap.json": {
+    "mtime": 1780746566.3585575,
+    "ast_hash": "b3c7cf87b404699704b56f5641c98bab",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-06/lrQkLBwP0rE/report.md": {
+    "mtime": 1780746369.4718177,
+    "ast_hash": "3cb0611f645c7f4200405d0d13041614",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-06/yG5VXDsCBWE/report.md": {
+    "mtime": 1780746505.7500396,
+    "ast_hash": "1aa6d12c70fe17b95364fa4e4ad5fdc9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-06/n8rP6Ceskm4/report.md": {
+    "mtime": 1780746432.1404717,
+    "ast_hash": "4378d2b37801f6ca84afdbe2befcd8ce",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-06/eMJaEhTi8HA/report.md": {
+    "mtime": 1780746563.6541255,
+    "ast_hash": "856c96e75c9bd02ece32b1e56a831474",
     "semantic_hash": ""
   }
 }
