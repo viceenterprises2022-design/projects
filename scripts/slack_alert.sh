@@ -4,7 +4,10 @@
 # Usage: slack_alert.sh "ServiceName"
 
 SERVICE_NAME=$1
-WEBHOOK_URL=$(grep "SLACK_WEBHOOK_URL" /home/vreddy1/Desktop/Projects/scripts/.env | cut -d'=' -f2)
+WEBHOOK_URL=$(grep "^SLACK_WEBHOOK_SYSTEM_ALERTS=" /home/vreddy1/Desktop/Projects/scripts/.env | cut -d'=' -f2-)
+if [ -z "$WEBHOOK_URL" ]; then
+    WEBHOOK_URL=$(grep "^SLACK_WEBHOOK_URL=" /home/vreddy1/Desktop/Projects/scripts/.env | cut -d'=' -f2-)
+fi
 
 if [ -z "$SERVICE_NAME" ]; then
     echo "Usage: $0 <service_name>"

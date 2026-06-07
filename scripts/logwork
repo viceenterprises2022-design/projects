@@ -132,7 +132,7 @@ def create_issue(title, desc, day):
 
 
 def post_slack(day, logged, skipped, failed):
-    webhook = os.getenv("SLACK_WEBHOOK_URL")
+    webhook = os.getenv("SLACK_WEBHOOK_MULTICA") or os.getenv("SLACK_WEBHOOK_URL")
     if not webhook or send_to_slack is None or compose_blocks is None:
         print("[LogWork] Slack skipped (no webhook or helper unavailable).")
         return
