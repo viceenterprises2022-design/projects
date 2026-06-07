@@ -196,7 +196,7 @@ def slack_upload_file(file_path: Path, title: str = None):
 
 # ── Step 1: Download new PDFs from Telegram ──────────────────────────────────
 async def download_pdfs(channels: list[str]) -> list[Path]:
-    client = TelegramClient("tg_session", API_ID, API_HASH)
+    client = TelegramClient("/home/vreddy1/Desktop/Projects/scripts/tg_session", API_ID, API_HASH)
     await client.connect()
     if not await client.is_user_authorized():
         await client.disconnect()
