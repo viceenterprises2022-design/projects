@@ -209,7 +209,12 @@ async def download_pdfs(channels: list[str]) -> list[Path]:
     for ch in channels:
         p(f"  Channel {ch} — last {DAYS_BACK}d (since {cutoff.strftime('%Y-%m-%d %H:%M UTC')})")
         pdf_count = 0
-        async for msg in client.iter_messages(ch, limit=MSG_LIMIT, reverse=False):
+        try:
+            entity = await client.get_entity(ch)
+        except Exception as e:
+            p(f"    [WARN] Failed to resolve channel {ch}: {e}")
+            continue
+        async for msg in client.iter_messages(entity, limit=MSG_LIMIT, reverse=False):
             if not msg.date:
                 continue
             msg_dt = msg.date if msg.date.tzinfo else msg.date.replace(tzinfo=timezone.utc)
