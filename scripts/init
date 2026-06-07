@@ -22,13 +22,13 @@ else
     exit 1
 fi
 
-# Fun ASCII art banner: VINOD
+# Fun ASCII art banner: HELLO
 cat <<'EOF'
-V   V  I   N   N  OOO  D  D
- V V   I  NN  N O   O D  D
-  V    I  N N N O   O D  D
-  V    I  N  NN O   O D  D
-  V    I  N   N  OOO   DD
+H   H  EEEEE  L      L       OOO 
+H   H  E      L      L      O   O
+HHHHH  EEEE   L      L      O   O
+H   H  E      L      L      O   O
+H   H  EEEEE  LLLLL  LLLLL   OOO 
 EOF
 
 echo "Select an agent to launch:"
