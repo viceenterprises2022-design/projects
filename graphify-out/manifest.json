@@ -9505,8 +9505,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/telegram_to_notebooklm.py": {
-    "mtime": 1780842254.6273112,
-    "ast_hash": "8581597227595d90be6575244f312413",
+    "mtime": 1780843195.1485798,
+    "ast_hash": "c8e13dd871dcb2503d063bae1a1793db",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_no_claude.py": {
@@ -41887,6 +41887,21 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-07/5BT2yoPWLtI/report.md": {
     "mtime": 1780832768.1133404,
     "ast_hash": "11c84a9584e8aa189f5df22967bb58cb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/Beat-the-street-report-2026-06-07/mind-map.json": {
+    "mtime": 1780843023.4954014,
+    "ast_hash": "63f74f60c98330e8af824221dae3bd86",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/Beat-the-street-report-2026-06-07/report.md": {
+    "mtime": 1780843002.0637307,
+    "ast_hash": "d4b0143b5aeaf11e9200359391d2072e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/Beat-the-street-report-2026-06-07/infographic.png": {
+    "mtime": 1780843180.84053,
+    "ast_hash": "0727844d330146936614f27223da257e",
     "semantic_hash": ""
   }
 }
