@@ -24,11 +24,11 @@ fi
 
 # Fun ASCII art banner: VINOD
 cat <<'EOF'
-  _   _      _ _                           
- | | | | ___| | | ___                      
- | |_| |/ _ \ | |/ _ \                     
- |  _  |  __/ | | (_) |                    
- |_| |_|\___|_|_|\___/                     
+V   V  I   N   N  OOO  D  D
+ V V   I  NN  N O   O D  D
+  V    I  N N N O   O D  D
+  V    I  N  NN O   O D  D
+  V    I  N   N  OOO   DD
 EOF
 
 echo "Select an agent to launch:"
