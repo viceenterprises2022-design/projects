@@ -151,7 +151,7 @@ def slack_upload_file(file_path: Path, title: str = None):
         p("  [SKIP] No SLACK_TOKEN set — cannot upload files")
         return False
     try:
-        fname = title or file_path.name
+        fname = file_path.name
         fsize = file_path.stat().st_size
         headers = {"Authorization": f"Bearer {SLACK_TOKEN}", "Content-Type": "application/json"}
 
@@ -180,7 +180,7 @@ def slack_upload_file(file_path: Path, title: str = None):
         r3 = requests.post(
             "https://slack.com/api/files.completeUploadExternal",
             headers=headers,
-            json={"files": [{"id": file_id, "title": fname}], "channel_id": SLACK_CHANNEL},
+            json={"files": [{"id": file_id, "title": title or fname}], "channel_id": SLACK_CHANNEL},
             timeout=30,
         )
         d3 = r3.json()
