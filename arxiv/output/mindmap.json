@@ -1,0 +1,135 @@
+{
+  "name": "MLEvolve Framework",
+  "children": [
+    {
+      "name": "Core Challenges Addressed",
+      "children": [
+        {
+          "name": "Inter-branch information isolation"
+        },
+        {
+          "name": "Memoryless search strategies"
+        },
+        {
+          "name": "Lack of hierarchical control"
+        }
+      ]
+    },
+    {
+      "name": "Progressive MCGS",
+      "children": [
+        {
+          "name": "Graph-based Search Space",
+          "children": [
+            {
+              "name": "Primary edges (ET)"
+            },
+            {
+              "name": "Reference edges (Eref)"
+            }
+          ]
+        },
+        {
+          "name": "Progressive Exploration",
+          "children": [
+            {
+              "name": "Entropy-inspired scheduling"
+            },
+            {
+              "name": "Elite-Guided exploitation"
+            }
+          ]
+        },
+        {
+          "name": "Expansion Types",
+          "children": [
+            {
+              "name": "Primary expansion"
+            },
+            {
+              "name": "Intra-branch evolution"
+            },
+            {
+              "name": "Cross-branch reference"
+            },
+            {
+              "name": "Multi-branch aggregation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Retrospective Memory",
+      "children": [
+        {
+          "name": "Domain Knowledge Base (Cold-start)"
+        },
+        {
+          "name": "Dynamic Global Memory",
+          "children": [
+            {
+              "name": "Hybrid retrieval (BM25 + FAISS)"
+            },
+            {
+              "name": "Stage-aware retrieval"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hierarchical Planning & Coding",
+      "children": [
+        {
+          "name": "Planner-Coder decoupling"
+        },
+        {
+          "name": "Adaptive Coding Modes",
+          "children": [
+            {
+              "name": "Base mode (Full rewrite)"
+            },
+            {
+              "name": "Stepwise mode (Module-by-module)"
+            },
+            {
+              "name": "Diff mode (Patch edit)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Specialized Multi-Agent Team",
+      "children": [
+        {
+          "name": "Draft & Improve Agents"
+        },
+        {
+          "name": "Debug & Result Parse Agents"
+        },
+        {
+          "name": "Evolution & Fusion Agents"
+        },
+        {
+          "name": "Code Review & Data Leakage Agents"
+        }
+      ]
+    },
+    {
+      "name": "Performance & Evaluation",
+      "children": [
+        {
+          "name": "SOTA on MLE-Bench (65.3% Medal Rate)"
+        },
+        {
+          "name": "Outperforms AlphaEvolve in Math Optimization"
+        },
+        {
+          "name": "Sustained improvement over 12-hour budget"
+        }
+      ]
+    }
+  ]
+}
