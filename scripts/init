@@ -27,39 +27,39 @@ options=("Hermes" "Antigravity" "Opencode" "oh-my-pie" "goose" "freebuff" "kimch
 select opt in "${options[@]}"; do
     case $opt in
         "Hermes")
-            $LAUNCH bash -c "cd $DIR && hermes; exec bash"
+            $LAUNCH bash -c "cd $DIR && hermes; exec bash" &
             break
             ;;
         "Antigravity")
-            $LAUNCH bash -c "cd $DIR && agy; exec bash"
+            $LAUNCH bash -c "cd $DIR && agy; exec bash" &
             break
             ;;
         "Opencode")
-            $LAUNCH bash -c "cd $DIR && opencode; exec bash"
+            $LAUNCH bash -c "cd $DIR && opencode; exec bash" &
             break
             ;;
         "oh-my-pie")
-            $LAUNCH bash -c "cd $DIR && omp; exec bash"
+            $LAUNCH bash -c "cd $DIR && omp; exec bash" &
             break
             ;;
         "goose")
-            $LAUNCH bash -c "cd $DIR && goose; exec bash"
+            $LAUNCH bash -c "cd $DIR && goose; exec bash" &
             break
             ;;
         "freebuff")
-            $LAUNCH bash -c "cd $DIR && freebuff; exec bash"
+            $LAUNCH bash -c "cd $DIR && freebuff; exec bash" &
             break
             ;;
         "kimchi")
-            $LAUNCH bash -c "cd $DIR && kimchi; exec bash"
+            $LAUNCH bash -c "cd $DIR && kimchi; exec bash" &
             break
             ;;
         "Claude")
-            $LAUNCH bash -c "cd $DIR && claude; exec bash"
+            $LAUNCH bash -c "cd $DIR && claude; exec bash" &
             break
             ;;
         "Codex")
-            $LAUNCH bash -c "cd $DIR && codex; exec bash"
+            $LAUNCH bash -c "cd $DIR && codex; exec bash" &
             break
             ;;
         *) echo "Invalid option $REPLY";;
