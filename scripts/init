@@ -1,43 +1,66 @@
 #!/usr/bin/env bash
 DIR="/home/vreddy1/Desktop/Projects/scripts"
+# Determine terminal emulator
+if command -v gnome-terminal >/dev/null 2>&1; then
+    TERM_CMD="gnome-terminal --working-directory=$DIR --"
+elif command -v x-terminal-emulator >/dev/null 2>&1; then
+    TERM_CMD="x-terminal-emulator --working-directory=$DIR -e"
+elif command -v konsole >/dev/null 2>&1; then
+    TERM_CMD="konsole --workdir=$DIR --"
+elif command -v xfce4-terminal >/dev/null 2>&1; then
+    TERM_CMD="xfce4-terminal --working-directory=$DIR --"
+elif command -v lxterminal >/dev/null 2>&1; then
+    TERM_CMD="lxterminal --working-directory=$DIR --"
+elif command -v mate-terminal >/dev/null 2>&1; then
+    TERM_CMD="mate-terminal --working-directory=$DIR --"
+elif command -v alacritty >/dev/null 2>&1; then
+    TERM_CMD="alacritty --working-directory=$DIR --"
+elif command -v kitty >/dev/null 2>&1; then
+    TERM_CMD="kitty --directory=$DIR --"
+else
+    # fallback: just spawn a shell in background? but we want new window.
+    echo "No supported terminal emulator found. Please install gnome-terminal or another."
+    exit 1
+fi
+
 echo "Select an agent to launch:"
 options=("Hermes" "Antigravity" "Opencode" "oh-my-pie" "goose" "freebuff" "kimchi" "Claude" "Codex")
 select opt in "${options[@]}"; do
     case $opt in
         "Hermes")
-            gnome-terminal --working-directory="$DIR" -- bash -c "hermes; exec bash"
+            $TERM_CMD bash -c "hermes; exec bash"
             break
             ;;
         "Antigravity")
-            gnome-terminal --working-directory="$DIR" -- bash -c "agy; exec bash"
+            $TERM_CMD bash -c "agy; exec bash"
             break
             ;;
         "Opencode")
-            gnome-terminal --working-directory="$DIR" -- bash -c "opencode; exec bash"
+            $TERM_CMD bash -c "opencode; exec bash"
             break
             ;;
         "oh-my-pie")
-            gnome-terminal --working-directory="$DIR" -- bash -c "omp; exec bash"
+            $TERM_CMD bash -c "omp; exec bash"
             break
             ;;
         "goose")
-            gnome-terminal --working-directory="$DIR" -- bash -c "goose; exec bash"
+            $TERM_CMD bash -c "goose; exec bash"
             break
             ;;
         "freebuff")
-            gnome-terminal --working-directory="$DIR" -- bash -c "freebuff; exec bash"
+            $TERM_CMD bash -c "freebuff; exec bash"
             break
             ;;
         "kimchi")
-            gnome-terminal --working-directory="$DIR" -- bash -c "kimchi; exec bash"
+            $TERM_CMD bash -c "kimchi; exec bash"
             break
             ;;
         "Claude")
-            gnome-terminal --working-directory="$DIR" -- bash -c "claude; exec bash"
+            $TERM_CMD bash -c "claude; exec bash"
             break
             ;;
         "Codex")
-            gnome-terminal --working-directory="$DIR" -- bash -c "codex; exec bash"
+            $TERM_CMD bash -c "codex; exec bash"
             break
             ;;
         *) echo "Invalid option $REPLY";;
