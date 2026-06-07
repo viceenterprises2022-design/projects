@@ -1,24 +1,23 @@
 #!/usr/bin/env bash
 DIR="/home/vreddy1/Desktop/Projects/scripts"
-# Determine terminal emulator
-if command -v gnome-terminal >/dev/null 2>&1; then
-    TERM_CMD="gnome-terminal --working-directory=$DIR --"
-elif command -v x-terminal-emulator >/dev/null 2>&1; then
-    TERM_CMD="x-terminal-emulator --working-directory=$DIR -e"
+# Choose terminal launcher
+if command -v x-terminal-emulator >/dev/null 2>&1; then
+    LAUNCH="x-terminal-emulator -e"
+elif command -v gnome-terminal >/dev/null 2>&1; then
+    LAUNCH="gnome-terminal --working-directory=$DIR --"
 elif command -v konsole >/dev/null 2>&1; then
-    TERM_CMD="konsole --workdir=$DIR --"
+    LAUNCH="konsole --workdir=$DIR -e"
 elif command -v xfce4-terminal >/dev/null 2>&1; then
-    TERM_CMD="xfce4-terminal --working-directory=$DIR --"
+    LAUNCH="xfce4-terminal --working-directory=$DIR --"
 elif command -v lxterminal >/dev/null 2>&1; then
-    TERM_CMD="lxterminal --working-directory=$DIR --"
+    LAUNCH="lxterminal --working-directory=$DIR -e"
 elif command -v mate-terminal >/dev/null 2>&1; then
-    TERM_CMD="mate-terminal --working-directory=$DIR --"
+    LAUNCH="mate-terminal --working-directory=$DIR -e"
 elif command -v alacritty >/dev/null 2>&1; then
-    TERM_CMD="alacritty --working-directory=$DIR --"
+    LAUNCH="alacritty --working-directory=$DIR -e"
 elif command -v kitty >/dev/null 2>&1; then
-    TERM_CMD="kitty --directory=$DIR --"
+    LAUNCH="kitty --directory=$DIR"
 else
-    # fallback: just spawn a shell in background? but we want new window.
     echo "No supported terminal emulator found. Please install gnome-terminal or another."
     exit 1
 fi
@@ -28,39 +27,39 @@ options=("Hermes" "Antigravity" "Opencode" "oh-my-pie" "goose" "freebuff" "kimch
 select opt in "${options[@]}"; do
     case $opt in
         "Hermes")
-            $TERM_CMD bash -c "hermes; exec bash"
+            $LAUNCH bash -c "cd $DIR && hermes; exec bash"
             break
             ;;
         "Antigravity")
-            $TERM_CMD bash -c "agy; exec bash"
+            $LAUNCH bash -c "cd $DIR && agy; exec bash"
             break
             ;;
         "Opencode")
-            $TERM_CMD bash -c "opencode; exec bash"
+            $LAUNCH bash -c "cd $DIR && opencode; exec bash"
             break
             ;;
         "oh-my-pie")
-            $TERM_CMD bash -c "omp; exec bash"
+            $LAUNCH bash -c "cd $DIR && omp; exec bash"
             break
             ;;
         "goose")
-            $TERM_CMD bash -c "goose; exec bash"
+            $LAUNCH bash -c "cd $DIR && goose; exec bash"
             break
             ;;
         "freebuff")
-            $TERM_CMD bash -c "freebuff; exec bash"
+            $LAUNCH bash -c "cd $DIR && freebuff; exec bash"
             break
             ;;
         "kimchi")
-            $TERM_CMD bash -c "kimchi; exec bash"
+            $LAUNCH bash -c "cd $DIR && kimchi; exec bash"
             break
             ;;
         "Claude")
-            $TERM_CMD bash -c "claude; exec bash"
+            $LAUNCH bash -c "cd $DIR && claude; exec bash"
             break
             ;;
         "Codex")
-            $TERM_CMD bash -c "codex; exec bash"
+            $LAUNCH bash -c "cd $DIR && codex; exec bash"
             break
             ;;
         *) echo "Invalid option $REPLY";;
