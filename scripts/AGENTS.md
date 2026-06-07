@@ -259,6 +259,14 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Restarted all clawdi user-level daemons (`clawdi-serve-hermes`, `clawdi-serve-claude_code`, `clawdi-serve-codex`) to load new credentials and verified successful test queries.
 - **Multica:** ALP-507 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-07: Slack Channel Decluttering & Webhook Routing
+- Restructured Slack alerts across codebase to separate system failures, media digests, research briefings, and AI news into dedicated channels.
+- Configured Slack webhook routing in `.env` for `#ai-management-report`, `#ai-failure-alerts`, `#ai-notebooklm-summary`, and `#ai-events-agents`.
+- Updated `logwork` CLI tool to use `SLACK_WEBHOOK_MULTICA` for daily reports.
+- Modified systemd watchdog script `slack_alert.sh` to route to `#ai-failure-alerts`.
+- Sent validation test messages to all configured channels using `send_slack.py`.
+- **Multica:** ALP-508 (done, assigned Vinod-AI-CEO)
+
 ### OpenCode `/pursue` Goal Plugin — Reference
 - **Plugin SDK:** `@opencode-ai/plugin` v1.4.9, ESM only, Zod v4.1.8 via `tool.schema`. Tools key is `tool` (singular). Hook keys are exact strings like `experimental.chat.system.transform`
 - **State file:** `~/.opencode/goals/state.json` — JSON with goal_id, objective, condition, status, turns, checkpoints

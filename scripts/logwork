@@ -124,8 +124,8 @@ def create_issue(title, desc, day):
         "--assignee", ASSIGNEE,
         "--status", "done",
         "--priority", "high",
-        "--start-date", f"{day}T00:00:00Z",
-        "--due-date", f"{day}T23:59:59Z",
+        "--start-date", day,
+        "--due-date", day,
         "--description", desc,
     ]
     return subprocess.run(cmd, capture_output=True, text=True)
