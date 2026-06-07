@@ -1,27 +1,27 @@
 [
   {
-    "title": "Smarter GenAI Applications: RAG, Agentic RAG & Graph RAG Explained",
-    "url": "https://nestdigital.com/webinars/smarter-genai-rag-agentic-rag-graph-rag-webinar/",
-    "published_date": "2026-06-01T16:50:51.000Z"
+    "title": "OpenAI Academy (Codex & Agent Training)",
+    "url": "https://academy.openai.com/",
+    "published_date": "2026-06-11"
   },
   {
-    "title": "Fast & Efficient LLM Inference with vLLM: A New Course with DeepLearning.AI",
+    "title": "Fast & Efficient LLM Inference with vLLM (DeepLearning.AI)",
     "url": "https://vllm.ai/blog/2026-06-03-deeplearning-ai-vllm-course",
-    "published_date": "2026-06-03T00:01:48.000Z"
+    "published_date": "2026-06-03"
   },
   {
-    "title": "Free Live Webinar: Testing AI Agents in Python for Real-World Reliability",
-    "url": "https://dev.to/railsfactory_sedin/free-live-webinar-testing-ai-agents-in-python-for-real-world-reliability-2gpp",
-    "published_date": "2026-06-01T12:58:37.000Z"
-  },
-  {
-    "title": "Virtual Training: Copilot Studio, Microsoft Agent Framework and Foundry: Building Multi-Agent AI Systems",
+    "title": "Virtual Training: Copilot Studio, Microsoft Agent Framework and Foundry",
     "url": "https://live360events.com/events/training-seminars/2026/jun8/home.aspx",
-    "published_date": "2026-06-03T03:34:10.230Z"
+    "published_date": "2026-06-08"
   },
   {
-    "title": "Building Real-World AI Systems in Production with OpenAI’s Emre Okcular",
-    "url": "https://www.youtube.com/watch?v=N-R63hJp2a0",
-    "published_date": "2026-06-02T12:31:08.000Z"
+    "title": "ICML Tutorial - Adaptive Reasoning in LLMs",
+    "url": "https://icml.cc/virtual/2026/tutorial/12345",
+    "published_date": "2026-07-06"
+  },
+  {
+    "title": "AI Agentic Workflows Workshop",
+    "url": "https://msagilemed.com/ai-agentic-workflows/",
+    "published_date": "2026-06-26"
   }
 ]
