@@ -58,9 +58,9 @@ def generate_report(context):
 def main():
     load_dotenv()
     
-    slack_url = os.getenv("SLACK_WEBHOOK_URL")
+    slack_url = os.getenv("SLACK_WEBHOOK_ASTRO") or os.getenv("SLACK_WEBHOOK_URL")
     if not slack_url:
-        print("SLACK_WEBHOOK_URL missing. Defaulting to console.")
+        print("SLACK_WEBHOOK_ASTRO/SLACK_WEBHOOK_URL missing. Defaulting to console.")
         slack_url = ""
 
     print("Fetching data...")

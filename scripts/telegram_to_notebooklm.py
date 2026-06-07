@@ -69,7 +69,7 @@ for d in [OUTPUT_DIR, PDFS_DIR, DAILY_DIR]:
     d.mkdir(exist_ok=True)
 
 NLM = "/home/vreddy1/.local/bin/notebooklm"
-SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")
+SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_RESEARCH") or os.environ.get("SLACK_WEBHOOK_URL") or ""
 SLACK_TOKEN = os.environ.get("SLACK_TOKEN", "")
 SLACK_USERNAME = "Beat-the-Street"
 SLACK_ICON = ":newspaper:"

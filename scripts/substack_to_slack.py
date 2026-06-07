@@ -14,7 +14,7 @@ import re # Import re for regex parsing of NLM output
 SUBSTACK_CHANNELS_FILE = Path(__file__).parent / "substack_channels.json"
 STATE_FILE = Path(__file__).parent / "substack_to_slack_state.json"
 OUTPUT_DIR = Path(__file__).parent / "notebooklm_output" / "substack"
-SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
+SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_SUBSTACK") or os.environ.get("SLACK_WEBHOOK_URL")
 NLM_CMD = "/home/vreddy1/.local/bin/notebooklm" # Consistent with youtube_to_notebooklm.py
 SLACK_USERNAME = "Substack Summaries"
 SLACK_ICON = ":notebook:"

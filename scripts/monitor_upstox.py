@@ -20,7 +20,7 @@ except ImportError:
     pass
 
 BASE_DIR = Path(__file__).resolve().parent
-SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
+SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_SYSTEM_ALERTS") or os.environ.get("SLACK_WEBHOOK_URL")
 UPSTOX_TOKEN = os.environ.get("UPSTOX_TOKEN")
 
 STATE_FILE = Path("/tmp/monitor_upstox_state.json")

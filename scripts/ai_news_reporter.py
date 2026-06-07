@@ -11,7 +11,7 @@ import requests
 from exa_py import Exa
 
 # Slack settings
-NEW_SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL") # REPLACED SECRET
+NEW_SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_AI_NEWS") or os.getenv("SLACK_WEBHOOK_URL")
 EXA_API_KEY = os.environ.get("EXA_API_KEY")
 
 MAX_SLACK_TEXT_CHARS = 3500

@@ -193,8 +193,13 @@ def send_slack_alert(job_errors: list[dict]):
 
     message = "\n".join(lines)
 
+    webhook_url = os.environ.get("SLACK_WEBHOOK_SYSTEM_ALERTS") or os.environ.get("SLACK_WEBHOOK_URL")
+    cmd = [str(VENV_PYTHON), str(SLACK_SCRIPT), "--text", message]
+    if webhook_url:
+        cmd += ["--webhook-url", webhook_url]
+
     result = subprocess.run(
-        [str(VENV_PYTHON), str(SLACK_SCRIPT), "--text", message],
+        cmd,
         capture_output=True, text=True, timeout=30,
     )
     if result.returncode != 0:

@@ -104,7 +104,7 @@ CHANNELS_FILE = CONFIG_DIR / "youtube_channels.json"
 STATE_FILE = CONFIG_DIR / "youtube_to_notebooklm_state.json"
 OUTPUT_BASE = CONFIG_DIR / "notebooklm_output" / "youtube"
 
-SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL")
+SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_YOUTUBE") or os.environ.get("SLACK_WEBHOOK_URL")
 NLM_CMD = "/home/vreddy1/.local/bin/notebooklm"
 MAX_SLACK_CHARS = 3500
 

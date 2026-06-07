@@ -36,7 +36,7 @@ STATE_FILE = BASE_DIR / "arxiv_to_notebooklm_state.json"
 ARXIV_DIR = Path("/home/vreddy1/Desktop/Projects/arxiv")
 OUTPUT_DIR = ARXIV_DIR / "output"
 
-SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_URL")
+SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK_RESEARCH") or os.environ.get("SLACK_WEBHOOK_URL")
 NLM_CMD = "/home/vreddy1/.local/bin/notebooklm"
 
 SLACK_USERNAME = "arXiv \u2192 NotebookLM"

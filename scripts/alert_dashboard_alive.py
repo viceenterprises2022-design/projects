@@ -20,13 +20,13 @@ from pathlib import Path
 import requests
 
 BASE_URL = "http://localhost:8765"
-SLACK_WEBHOOK_URL = os.environ.get(
-    "SLACK_WEBHOOK_URL",
-    subprocess.run(
-        [sys.executable, "-c", "from dotenv import load_dotenv; load_dotenv(); import os; print(os.environ.get('SLACK_WEBHOOK_URL', ''))"],
+SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_SYSTEM_ALERTS") or os.environ.get("SLACK_WEBHOOK_URL")
+if not SLACK_WEBHOOK_URL:
+    cmd = "from dotenv import load_dotenv; load_dotenv(); import os; print(os.environ.get('SLACK_WEBHOOK_SYSTEM_ALERTS') or os.environ.get('SLACK_WEBHOOK_URL', ''))"
+    SLACK_WEBHOOK_URL = subprocess.run(
+        [sys.executable, "-c", cmd],
         capture_output=True, text=True, cwd=Path(__file__).parent
     ).stdout.strip()
-)
 ALERT_THRESHOLD = 2
 STATE_FILE = Path("/tmp/alert_dashboard_state.json")
 
