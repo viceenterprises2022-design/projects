@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+DIR="/home/vreddy1/Desktop/Projects/scripts"
+echo "Select an agent to launch:"
+options=("Hermes" "Antigravity" "Opencode" "oh-my-pie" "goose" "freebuff" "kimchi" "Claude" "Codex")
+select opt in "${options[@]}"; do
+    case $opt in
+        "Hermes")
+            gnome-terminal --working-directory="$DIR" -- bash -c "hermes; exec bash"
+            break
+            ;;
+        "Antigravity")
+            gnome-terminal --working-directory="$DIR" -- bash -c "agy; exec bash"
+            break
+            ;;
+        "Opencode")
+            gnome-terminal --working-directory="$DIR" -- bash -c "opencode; exec bash"
+            break
+            ;;
+        "oh-my-pie")
+            gnome-terminal --working-directory="$DIR" -- bash -c "omp; exec bash"
+            break
+            ;;
+        "goose")
+            gnome-terminal --working-directory="$DIR" -- bash -c "goose; exec bash"
+            break
+            ;;
+        "freebuff")
+            gnome-terminal --working-directory="$DIR" -- bash -c "freebuff; exec bash"
+            break
+            ;;
+        "kimchi")
+            gnome-terminal --working-directory="$DIR" -- bash -c "kimchi; exec bash"
+            break
+            ;;
+        "Claude")
+            gnome-terminal --working-directory="$DIR" -- bash -c "claude; exec bash"
+            break
+            ;;
+        "Codex")
+            gnome-terminal --working-directory="$DIR" -- bash -c "codex; exec bash"
+            break
+            ;;
+        *) echo "Invalid option $REPLY";;
+    esac
+done
