@@ -9505,7 +9505,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/telegram_to_notebooklm.py": {
-    "mtime": 1780908955.2395723,
+    "mtime": 1780909033.4588385,
     "ast_hash": "3bac54a77c51ceedfc11b37eafe96e7a",
     "semantic_hash": ""
   },
@@ -9655,7 +9655,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/crypto_to_notebooklm.py": {
-    "mtime": 1780908965.443607,
+    "mtime": 1780909033.4558384,
     "ast_hash": "09213dbc5df98495ff6402e297f7da33",
     "semantic_hash": ""
   },
@@ -35875,7 +35875,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/youtube_to_notebooklm.py": {
-    "mtime": 1780908947.0015442,
+    "mtime": 1780909033.4598384,
     "ast_hash": "6f67fd681df1e963a6e930bfb3c4f180",
     "semantic_hash": ""
   },
@@ -40380,7 +40380,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/arxiv_to_notebooklm.py": {
-    "mtime": 1780908962.4415967,
+    "mtime": 1780909033.4558384,
     "ast_hash": "d53040ef6693c1672b6183e94343707b",
     "semantic_hash": ""
   },
@@ -42025,8 +42025,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/obsidian_integration.py": {
-    "mtime": 1780907860.5778332,
+    "mtime": 1780909033.4588385,
     "ast_hash": "a65994466bc67e93a5af7c7c98201e70",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/test_obsidian.py": {
+    "mtime": 1780908969.1766198,
+    "ast_hash": "6bb2039a97d1a499de92fb3b9d25b2b1",
     "semantic_hash": ""
   }
 }
