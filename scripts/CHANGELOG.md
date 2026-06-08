@@ -189,3 +189,9 @@ Dated history of work on this project. Source of truth: `AGENTS.md` Session Memo
 - Configured and registered the new `@SahilBhadviya` YouTube channel to monitor list.
 - **Multica:** ALP-509 (done, assigned Vinod-AI-CEO)
 - **Multica:** logged via `/logwork` on 2026-06-08
+
+### 2026-06-08: Cursor IDE Update
+- Updated Cursor IDE installation from version `3.5.17` to `3.7.21-1780870136`.
+- Used a downloaded Debian package (`cursor_3.7.21_amd64.deb`) and updated it via `pkexec dpkg -i` to securely authenticate the root-level installation.
+- Verified successful installation and version changes.
+- **Multica:** logged via `/logwork` on 2026-06-08

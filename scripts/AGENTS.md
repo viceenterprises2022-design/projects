@@ -273,3 +273,10 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **Command template** uses `$ARGUMENTS` for raw user input, routes to `goal` agent
 - **Tested:** plugin loads, all 4 tools execute correctly, state persists
 
+### 2026-06-08: CryptoPanic CLI News Reader
+- Built `cryptopanic_cli.py` — token-free, decryption-based CLI news reader for CryptoPanic.
+- Reverse-engineered CryptoPanic's Vue stream client encryption: extracts CSRF token, derives key `)b7Z*$+)/T}$9>/L` and dynamic IV `("news" + CSRF_TOKEN)[:16]` to decrypt AES-128-CBC payload, then decompresses with zlib (wbits=15).
+- Integrated interactive console TUI and non-interactive Rich table options (supporting filters by currency, search, and sentiment, plus direct browser launch).
+- Saved, made executable, and committed changes to repository root.
+
+
