@@ -273,12 +273,3 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **Command template** uses `$ARGUMENTS` for raw user input, routes to `goal` agent
 - **Tested:** plugin loads, all 4 tools execute correctly, state persists
 
-### 2026-06-08: YouTube to NotebookLM Reliability & Manual Run
-- Diagnosed transient `API returned no data for URL` errors in the `youtube_to_notebooklm.py` pipeline.
-- Extended the video lookup lookback window from 24 hours to 3 days (72 hours) to support self-healing on subsequent runs.
-- Increased the source import retry limit to 5 attempts and implemented a longer exponential backoff sleep (up to 6.7 minutes).
-- Implemented a new CLI option (`--url <URL>`) to manually trigger the pipeline for a single YouTube video.
-- Configured and registered the new `@SahilBhadviya` YouTube channel to monitor list.
-- **Multica:** ALP-509 (done, assigned Vinod-AI-CEO)
-
-
