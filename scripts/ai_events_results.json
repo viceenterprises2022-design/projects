@@ -1,27 +1,27 @@
 [
   {
-    "title": "OpenAI Academy (Codex & Agent Training)",
-    "url": "https://academy.openai.com/",
-    "published_date": "2026-06-11"
-  },
-  {
     "title": "Fast & Efficient LLM Inference with vLLM (DeepLearning.AI)",
     "url": "https://vllm.ai/blog/2026-06-03-deeplearning-ai-vllm-course",
     "published_date": "2026-06-03"
   },
   {
-    "title": "Virtual Training: Copilot Studio, Microsoft Agent Framework and Foundry",
-    "url": "https://live360events.com/events/training-seminars/2026/jun8/home.aspx",
-    "published_date": "2026-06-08"
+    "title": "Build a Soccer Agent with Claude and Oracle (DataCamp Webinar)",
+    "url": "https://www.datacamp.com/webinars/build-a-soccer-agent",
+    "published_date": "2026-06-11"
   },
   {
-    "title": "ICML Tutorial - Adaptive Reasoning in LLMs",
+    "title": "Build Small Hackathon: Fine-tune FLUX.2 in under 60 min (Hugging Face)",
+    "url": "https://huggingface.co/blog/build-small-hackathon-flux-lora",
+    "published_date": "2026-06-04"
+  },
+  {
+    "title": "ICML 2026 Tutorial: Adaptive Reasoning in LLMs",
     "url": "https://icml.cc/virtual/2026/tutorial/12345",
     "published_date": "2026-07-06"
   },
   {
-    "title": "AI Agentic Workflows Workshop",
-    "url": "https://msagilemed.com/ai-agentic-workflows/",
-    "published_date": "2026-06-26"
+    "title": "Claude Code Masterclass by Luca Berton",
+    "url": "https://maven.com/luca-berton/claude-code-masterclass",
+    "published_date": "2026-07-11"
   }
 ]
