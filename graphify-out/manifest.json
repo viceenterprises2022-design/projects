@@ -35880,7 +35880,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/youtube_to_notebooklm_state.json": {
-    "mtime": 1780930611.5064692,
+    "mtime": 1780930903.8935797,
     "ast_hash": "af8fb87afd0ebb18ee439bc2527f939a",
     "semantic_hash": ""
   },
@@ -42087,6 +42087,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-08/pAL_QJUCHNQ/report.md": {
     "mtime": 1780930598.0848277,
     "ast_hash": "b89a0a9d3124f783f655277b4b632a4e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-08/pAL_QJUCHNQ/mindmap.json": {
+    "mtime": 1780930601.846566,
+    "ast_hash": "96054861296ee26fe8918cfaf6184d70",
     "semantic_hash": ""
   }
 }
