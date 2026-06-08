@@ -222,9 +222,25 @@ def main():
         pruned_count = prune_from_agents(day, [t for t, _ in archived_pairs])
         print(f"[LogWork] Prune: archived {archived_count} entries to CHANGELOG.md, removed {pruned_count} from AGENTS.md.")
 
+    # Automatically sync to Obsidian project folder
+    print("\n[LogWork] Syncing project files to Obsidian vault...")
+    try:
+        extractor_script = SCRIPT_DIR / "scratch" / "extract_projects.py"
+        if extractor_script.exists():
+            res = subprocess.run([sys.executable, str(extractor_script)], capture_output=True, text=True)
+            if res.returncode == 0:
+                print("[LogWork] Obsidian project sync completed successfully.")
+            else:
+                print(f"[LogWork] Obsidian sync failed: {res.stderr or res.stdout}")
+        else:
+            print(f"[LogWork] Obsidian sync skipped (extractor script not found: {extractor_script})")
+    except Exception as e:
+        print(f"[LogWork] Error running Obsidian sync: {e}")
+
     if not no_slack:
         post_slack(day, logged, skipped, failed)
 
 
 if __name__ == "__main__":
     main()
+
