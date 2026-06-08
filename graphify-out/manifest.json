@@ -25605,8 +25605,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1780835242.87327,
-    "ast_hash": "60bb877aae701a31d3b2b3317df64163",
+    "mtime": 1780909852.937633,
+    "ast_hash": "784342a9868ed4db7a4487074b197bad",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_report.txt": {
@@ -42027,11 +42027,6 @@
   "/home/vreddy1/Desktop/Projects/scripts/obsidian_integration.py": {
     "mtime": 1780909033.4588385,
     "ast_hash": "a65994466bc67e93a5af7c7c98201e70",
-    "semantic_hash": ""
-  },
-  "/home/vreddy1/Desktop/Projects/scripts/scratch/test_obsidian.py": {
-    "mtime": 1780908969.1766198,
-    "ast_hash": "6bb2039a97d1a499de92fb3b9d25b2b1",
     "semantic_hash": ""
   }
 }

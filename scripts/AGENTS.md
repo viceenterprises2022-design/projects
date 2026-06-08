@@ -273,3 +273,12 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - **Command template** uses `$ARGUMENTS` for raw user input, routes to `goal` agent
 - **Tested:** plugin loads, all 4 tools execute correctly, state persists
 
+### 2026-06-08: Obsidian Knowledge Graph Integration
+- Designed and built modular `obsidian_integration.py` to manage note formatting, title sanitization, YAML frontmatter tags, and filesystem vault writing with a fallback for headless/GUI offline states.
+- Integrated the Obsidian helper into `youtube_to_notebooklm.py`, `telegram_to_notebooklm.py`, `arxiv_to_notebooklm.py`, and `crypto_to_notebooklm.py` pipelines after report/mindmap artifact download but before Slack/Telegram notification.
+- Fixed snap application environment startup issues for Obsidian by adding `--no-sandbox` option and diagnosing user namespace permissions on Wayland.
+- Successfully verified note creation in active vault `Home-ubuntu-files` and validated clean, responsive layout formatting.
+- Cleaned up all temporary testing files and logs to preserve repository integrity.
+- **Multica:** ALP-509 (done, assigned Vinod-AI-CEO)
+
+
