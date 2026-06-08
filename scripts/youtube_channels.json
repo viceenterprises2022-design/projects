@@ -4,6 +4,7 @@
     "@bitwiseai",
     "@DavidOndrej",
     "@LewisWJackson",
+    "@SahilBhadviya",
     "@TheNextNewThingAI"
   ],
   "_comment": "Add new handles as @handle strings. Use `python3 youtube_to_notebooklm.py --add-channel @foo` to add from CLI."

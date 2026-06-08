@@ -297,10 +297,10 @@ def process_video(video: dict, state: dict):
     # ── Add YouTube source ──────────────────────────────────────────
     p(f"\n[2/7] Adding YouTube source...")
     sid = ""
-    max_attempts = 3
+    max_attempts = 5
     for attempt in range(1, max_attempts + 1):
         if attempt > 1:
-            backoff = attempt * 5
+            backoff = 15 * (3 ** (attempt - 2))  # 15s, 45s, 135s, 405s
             p(f"  Retrying source add (attempt {attempt}/{max_attempts}) in {backoff}s...")
             time.sleep(backoff)
         data = nlm_json("source", "add", url, "--notebook", nb_id)
