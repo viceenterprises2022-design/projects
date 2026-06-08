@@ -42078,5 +42078,10 @@
     "mtime": 1780919226.1741633,
     "ast_hash": "76c9a60f7363f93381c0205a476510b5",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/extract_projects.py": {
+    "mtime": 1780929051.1672966,
+    "ast_hash": "86db0577d98f8a4877b285e8000b9a29",
+    "semantic_hash": ""
   }
 }
