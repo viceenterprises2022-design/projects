@@ -164,6 +164,24 @@ def main():
     aid = step_generate_infographic(nb_id)
     info_path = step_download_infographic(nb_id)
 
+    # ── Save to Obsidian ─────────────────────────────────────────────
+    p("\n[6.5] Saving to Obsidian vault...")
+    try:
+        from obsidian_integration import save_to_obsidian
+        save_to_obsidian(
+            source_type="other",
+            title=f"Crypto Daily Brief — {TODAY}",
+            source_id=f"crypto_report_{TODAY}",
+            source_url="crypto_news_search.py",
+            notebook_id=nb_id,
+            report_path=Path(src_path),
+            mindmap_path=None,
+            infographic_path=Path(info_path) if info_path and Path(info_path).exists() else None,
+            additional_tags=["crypto", "bitcoin", "solana", "news"]
+        )
+    except Exception as obs_err:
+        p(f"  [OBSIDIAN ERROR] Failed to integrate with Obsidian: {obs_err}")
+
     step_delete_notebook(nb_id)
 
     if not info_path:

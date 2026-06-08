@@ -499,6 +499,23 @@ def main():
         if mm_path.exists():
             p(f"  ✓ Mind Map saved ({mm_path.stat().st_size:,} bytes)")
             
+        # ── Save to Obsidian ─────────────────────────────────────────────
+        p(f"\n[5.5/6] Saving to Obsidian vault...")
+        try:
+            from obsidian_integration import save_to_obsidian
+            save_to_obsidian(
+                source_type="arxiv",
+                title=candidate["title"],
+                source_id=candidate["id"],
+                source_url=candidate["abs_url"],
+                notebook_id=nb_id,
+                report_path=report_path,
+                mindmap_path=mm_path,
+                additional_tags=[candidate["category"], candidate["authors"].split(",")[0]]
+            )
+        except Exception as obs_err:
+            p(f"  [OBSIDIAN ERROR] Failed to integrate with Obsidian: {obs_err}")
+
         # ── Step 5: Deliver formatted message to Slack ──────────────────
         p(f"\n[6/6] Delivering structured research briefing to Slack...")
         slack_ok = send_to_slack_blocks(candidate, nb_id, report_path, mm_path)

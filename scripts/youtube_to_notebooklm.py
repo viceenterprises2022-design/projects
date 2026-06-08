@@ -327,6 +327,23 @@ def process_video(video: dict, state: dict):
         else:
             p(f"  {path.name} — not available")
 
+    # ── Save to Obsidian ─────────────────────────────────────────────
+    p(f"\n[6.5/7] Saving to Obsidian vault...")
+    try:
+        from obsidian_integration import save_to_obsidian
+        save_to_obsidian(
+            source_type="youtube",
+            title=title,
+            source_id=vid_id,
+            source_url=url,
+            notebook_id=nb_id,
+            report_path=report_path,
+            mindmap_path=mm_path,
+            additional_tags=[channel]
+        )
+    except Exception as obs_err:
+        p(f"  [OBSIDIAN ERROR] Failed to integrate with Obsidian: {obs_err}")
+
     # ── Send to Slack ───────────────────────────────────────────────
     p(f"\n[7/7] Sending to Slack...")
     slack_ok = _send_slack(video, nb_id, report_path, mm_path)

@@ -551,6 +551,32 @@ async def main():
         if f.is_file():
             p(f"  {f.name} ({f.stat().st_size:,} bytes)")
 
+    # ── Step 5.5: Save to Obsidian
+    p("\n" + "=" * 50)
+    p("[5.5/7] Saving to Obsidian vault...")
+    try:
+        from obsidian_integration import save_to_obsidian
+        report_path = DAILY_DIR / "report.md"
+        mindmap_path = DAILY_DIR / "mind-map.json"
+        infographic_path = DAILY_DIR / "infographic.png"
+        
+        pdf_names = ", ".join([pf.name for pf in pdf_paths])
+        tags = [c for c in CHANNELS]
+        
+        save_to_obsidian(
+            source_type="telegram",
+            title=f"Beat-the-Street Report - {TODAY}",
+            source_id=pdf_names,
+            source_url=CHANNELS[0] if CHANNELS else "telegram",
+            notebook_id=nb_id,
+            report_path=report_path,
+            mindmap_path=mindmap_path,
+            infographic_path=infographic_path if infographic_path.exists() else None,
+            additional_tags=tags
+        )
+    except Exception as obs_err:
+        p(f"  [OBSIDIAN ERROR] Failed to integrate with Obsidian: {obs_err}")
+
     # ── Step 6: Slack delivery
     p("\n" + "=" * 50)
     send_artifacts_to_slack(nb_id, source_ids, pdf_paths)
