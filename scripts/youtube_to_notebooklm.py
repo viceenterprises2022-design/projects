@@ -98,6 +98,35 @@ def fetch_all_from_playlist(api_key, playlist_id):
     return videos
 
 
+def fetch_video_by_id(api_key, video_id):
+    url = "https://www.googleapis.com/youtube/v3/videos"
+    params = {
+        "part": "snippet,contentDetails,statistics",
+        "id": video_id,
+        "key": api_key,
+    }
+    resp = requests.get(url, params=params)
+    resp.raise_for_status()
+    data = resp.json()
+    if not data.get("items"):
+        raise ValueError(f"No video found for ID {video_id}")
+    item = data["items"][0]
+    snippet = item["snippet"]
+    content = item.get("contentDetails", {})
+    stats_detail = item.get("statistics", {})
+    return {
+        "id": video_id,
+        "title": snippet.get("title", ""),
+        "publishedAt": snippet.get("publishedAt", ""),
+        "views": int(stats_detail.get("viewCount", 0)),
+        "duration": content.get("duration", ""),
+        "thumbnail": snippet.get("thumbnails", {}).get("medium", {}).get("url", ""),
+        "url": f"https://www.youtube.com/watch?v={video_id}",
+        "channel_handle": snippet.get("channelTitle", "Unknown Channel"),
+    }
+
+
+
 # ── Config ──────────────────────────────────────────────────────────────
 CONFIG_DIR = Path(__file__).parent
 CHANNELS_FILE = CONFIG_DIR / "youtube_channels.json"
@@ -141,6 +170,11 @@ def nlm_json(*args):
 
 
 def extract_video_id(url: str) -> str:
+    # Handle youtu.be/abc format
+    m = re.search(r"youtu\.be/([a-zA-Z0-9_-]+)", url)
+    if m:
+        return m.group(1)
+    # Handle v=abc format
     m = re.search(r"v=([a-zA-Z0-9_-]+)", url)
     return m.group(1) if m else url
 
@@ -188,7 +222,7 @@ def load_channels() -> list[str]:
 
 # ── Step 2: Fetch new videos (last 24h) ────────────────────────────────
 def fetch_new_videos(channels: list[str], state: dict) -> list[dict]:
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=3)
     new_videos = []
 
     for handle in channels:
@@ -542,6 +576,7 @@ def main():
     group.add_argument("--add-channel", metavar="@handle", help="Add a YouTube channel to monitor")
     group.add_argument("--remove-channel", metavar="@handle", help="Remove a YouTube channel")
     group.add_argument("--list-channels", action="store_true", help="List configured channels")
+    parser.add_argument("--url", help="Process a single YouTube video URL manually")
     args = parser.parse_args()
 
     if args.add_channel:
@@ -559,10 +594,30 @@ def main():
     p(f"  {datetime.now().strftime('%Y-%m-%d %H:%M UTC')}")
     p("=" * 55)
 
+    state = load_state()
+
+    if args.url:
+        vid_id = extract_video_id(args.url)
+        p(f"Fetching metadata for video ID: {vid_id}...")
+        try:
+            video = fetch_video_by_id(YT_API_KEY, vid_id)
+        except Exception as e:
+            p(f"ERROR fetching video metadata: {e}")
+            sys.exit(1)
+        
+        # Try to map video channelTitle to configured @handle
+        channel_title = video.get("channel_handle", "")
+        channels = load_channels()
+        for c in channels:
+            if c.lstrip("@").lower() == channel_title.replace(" ", "").lower():
+                video["channel_handle"] = c
+                break
+        
+        process_video(video, state)
+        return
+
     channels = load_channels()
     p(f"\nChannels ({len(channels)}): {', '.join(channels)}")
-
-    state = load_state()
     p(f"State loaded: {len(state)} channel(s) tracked")
 
     new_videos = fetch_new_videos(channels, state)
