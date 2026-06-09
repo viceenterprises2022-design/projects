@@ -26,7 +26,7 @@ def run_belt(app: str, payload: dict, timeout: int = 30) -> dict | None:
 
 
 def run_belt_search(
-    query: str, depth: str = "advanced", max_results: int = 5
+    query: str, depth: str = "advanced", max_results: int = 5, timelimit: str = "y"
 ) -> list[dict]:
     depth_param = "advanced" if depth == "advanced" else "basic"
     data = run_belt("tavily/search-assistant", {
@@ -40,22 +40,61 @@ def run_belt_search(
     if data and "results" in data:
         return data["results"]
 
-    return _run_ddg_search(query, max_results)
+    return _run_ddg_search(query, max_results, timelimit)
 
 
-def _run_ddg_search(query: str, max_results: int = 5) -> list[dict]:
+_CURRENT_YEAR = 2026
+_MIN_YEAR = _CURRENT_YEAR - 1  # reject content older than last year
+
+
+def _is_fresh(raw: dict) -> bool:
+    published = raw.get("published") or raw.get("date", "")
+    if published and isinstance(published, str):
+        import re
+        m = re.search(r'\b(20\d{2})\b', published)
+        if m and int(m.group(1)) < _MIN_YEAR:
+            return False
+    return True
+
+
+_TIMELIMIT_MAP = {"d": "d", "w": "w", "m": "m", "y": "y", "all": None}
+
+
+def _run_ddg_search(query: str, max_results: int = 5, timelimit: str = "y") -> list[dict]:
     try:
         from ddgs import DDGS
-        results = list(DDGS(proxy=None).text(query, max_results=max_results))
-        return [
-            {
+        ddgs_limit = _TIMELIMIT_MAP.get(timelimit, "y")
+        raw = list(DDGS(proxy=None).text(query, timelimit=ddgs_limit, max_results=max_results))
+        results = []
+        for r in raw:
+            url = r.get("href", "")
+            if not _is_fresh(r):
+                continue
+            results.append({
                 "title": r.get("title", "Untitled"),
-                "url": r.get("href", ""),
+                "url": url,
                 "content": r.get("body", ""),
                 "snippet": r.get("body", ""),
-            }
-            for r in results
-        ]
+            })
+        if len(results) < max_results // 2 and timelimit != "all":
+            fallback = list(DDGS(proxy=None).text(query, timelimit=None, max_results=max_results))
+            seen_urls = {r["url"] for r in results}
+            for r in fallback:
+                url = r.get("href", "")
+                if url in seen_urls:
+                    continue
+                if not _is_fresh(r):
+                    continue
+                results.append({
+                    "title": r.get("title", "Untitled"),
+                    "url": url,
+                    "content": r.get("body", ""),
+                    "snippet": r.get("body", ""),
+                })
+                seen_urls.add(url)
+                if len(results) >= max_results:
+                    break
+        return results
     except Exception:
         return []
 
@@ -71,6 +110,9 @@ def extract_url_content(url: str, timeout: int = 15) -> str:
         if not html or len(html) < 200:
             return ""
     except Exception:
+        return ""
+
+    if _content_is_stale(html):
         return ""
 
     try:
@@ -105,6 +147,20 @@ def extract_url_content(url: str, timeout: int = 15) -> str:
         return _clean_extracted_text(text)
     except Exception:
         return ""
+
+
+def _content_is_stale(text: str) -> bool:
+    import re
+    years = sorted(set(int(m) for m in re.findall(r'\b(20[0-9]{2})\b', text)))
+    if not years:
+        return False
+    recent_years = [y for y in years if y >= _MIN_YEAR]
+    if recent_years:
+        return False
+    latest = max(years)
+    if latest < _MIN_YEAR:
+        return True
+    return False
 
 
 def _clean_extracted_text(text: str) -> str:
@@ -181,8 +237,31 @@ def classify_theme(title: str, snippet: str, content: str = "") -> str:
     return best_theme
 
 
+def _source_is_stale(title: str, url: str, snippet: str = "") -> bool:
+    import re
+    text = f"{title} {url} {snippet}"
+    years = sorted(set(int(m) for m in re.findall(r'\b(20[0-9]{2})\b', text)))
+    recent = [y for y in years if y >= _MIN_YEAR]
+    if recent:
+        return False
+    if years and max(years) < _MIN_YEAR:
+        return True
+    return False
+
+
 def enrich_sources(raw_results: list[dict]) -> list[dict]:
     import concurrent.futures
+    filtered = []
+    for r in raw_results:
+        title = r.get("title", "Untitled")
+        url = r.get("url", r.get("href", ""))
+        snippet = r.get("snippet", r.get("body", r.get("content", "")))
+        if _source_is_stale(title, url, snippet):
+            continue
+        filtered.append(r)
+    raw_results = filtered
+    if not raw_results:
+        return []
     urls = [r.get("url", r.get("href", "")) for r in raw_results]
     contents = {}
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as ex:
@@ -222,7 +301,7 @@ class BaseCollector(ABC):
     domain: Domain
 
     @abstractmethod
-    async def collect(self, query: str) -> CollectorResult:
+    async def collect(self, query: str, timelimit: str = "y") -> CollectorResult:
         ...
 
     def _make_result(

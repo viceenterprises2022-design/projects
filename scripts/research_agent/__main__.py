@@ -44,6 +44,13 @@ def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
         help="Classification confidence threshold (default: 0.20)",
     )
     parser.add_argument(
+        "--max-age",
+        type=str,
+        default="1y",
+        choices=["1d", "1w", "1m", "1y", "all"],
+        help="Max age of results: 1d, 1w, 1m, 1y, all (default: 1y)",
+    )
+    parser.add_argument(
         "--no-pdf",
         action="store_true",
         help="Skip PDF generation, output .md only",
@@ -62,7 +69,8 @@ def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
 
 
 async def _run_collectors(
-    query: str, domains: list, synthesis: Optional[str], threshold: float, force_domain: Optional[str]
+    query: str, domains: list, synthesis: Optional[str], threshold: float, force_domain: Optional[str],
+    timelimit: str = "y",
 ) -> ResearchReport:
     classifier = classify_domain(query, threshold=threshold, force_domain=force_domain)
 
@@ -80,7 +88,7 @@ async def _run_collectors(
         if collector_cls is None:
             continue
         collector = collector_cls()
-        tasks.append(collector.collect(query))
+        tasks.append(collector.collect(query, timelimit=timelimit))
 
     if tasks:
         results = await asyncio.gather(*tasks, return_exceptions=True)
@@ -107,6 +115,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     slug = "".join(c if c.isalnum() or c in "-_" else "_" for c in args.query).strip("_ ")[:60]
     base_name = f"research_{slug}_{timestamp}"
 
+    max_age = args.max_age if hasattr(args, "max_age") else "1y"
+    timelimit = {"1d": "d", "1w": "w", "1m": "m", "1y": "y", "all": "all"}.get(max_age, "y")
     report = asyncio.run(
         _run_collectors(
             query=args.query,
@@ -114,6 +124,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             synthesis=args.synthesis,
             threshold=args.threshold,
             force_domain=args.domain,
+            timelimit=timelimit,
         )
     )
 

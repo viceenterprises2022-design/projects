@@ -23,7 +23,7 @@ def _import_from_path(name: str, path: str):
 class CryptoCollector(BaseCollector):
     domain = Domain.CRYPTO
 
-    async def collect(self, query: str) -> CollectorResult:
+    async def collect(self, query: str, timelimit: str = "y") -> CollectorResult:
         data_points = []
         sources = []
 
@@ -60,7 +60,7 @@ class CryptoCollector(BaseCollector):
             except Exception:
                 pass
 
-        search_results = run_belt_search(f"cryptocurrency {query}", max_results=10)
+        search_results = run_belt_search(f"cryptocurrency {query}", max_results=10, timelimit=timelimit)
         for r in search_results:
             sources.append({
                 "title": r.get("title", "Untitled"),

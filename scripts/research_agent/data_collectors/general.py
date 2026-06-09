@@ -7,8 +7,8 @@ from .base import BaseCollector, CollectorResult, run_belt_search
 class GeneralCollector(BaseCollector):
     domain = Domain.GENERAL
 
-    async def collect(self, query: str) -> CollectorResult:
-        results = run_belt_search(query, depth="advanced", max_results=10)
+    async def collect(self, query: str, timelimit: str = "y") -> CollectorResult:
+        results = run_belt_search(query, depth="advanced", max_results=10, timelimit=timelimit)
         if not results:
             return self._make_result(
                 query=query,

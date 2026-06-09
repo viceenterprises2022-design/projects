@@ -42245,8 +42245,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/__main__.py": {
-    "mtime": 1780979287.6917114,
-    "ast_hash": "7f00a31c781d6706fae8c7f9a98604c4",
+    "mtime": 1780980659.990422,
+    "ast_hash": "ffd426d5fd1c0497e6c744b4db2e2358",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/__init__.py": {
@@ -42265,7 +42265,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/report_builder.py": {
-    "mtime": 1780980180.3407764,
+    "mtime": 1780980481.7928107,
     "ast_hash": "c51978ed93aeb7cce83d0803ef8c3a9b",
     "semantic_hash": ""
   },
@@ -42275,8 +42275,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/base.py": {
-    "mtime": 1780980360.2063935,
-    "ast_hash": "b8c497e4d51717598879f67eab35d3a0",
+    "mtime": 1780980710.7005959,
+    "ast_hash": "7e4307be88f69fa4034f3be69abed827",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/__init__.py": {
@@ -42285,8 +42285,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/general.py": {
-    "mtime": 1780980252.234023,
-    "ast_hash": "aabcec2409e5fa964c0f45e3042e9163",
+    "mtime": 1780980620.085285,
+    "ast_hash": "258c1fd87921a8de757449d7969a95db",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/academia.py": {
@@ -42295,8 +42295,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/crypto.py": {
-    "mtime": 1780980300.87319,
-    "ast_hash": "cc84347ce1c16e4824de8249094ce27f",
+    "mtime": 1780980635.842339,
+    "ast_hash": "86ee37078acbd7b4aefd968b3d65fd8c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/india_stocks.py": {
