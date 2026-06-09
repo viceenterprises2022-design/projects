@@ -13,6 +13,7 @@ from .topic_classifier import classify as classify_domain
 from .data_collectors import COLLECTOR_MAP
 from .report_builder import build_markdown
 from .pdf_converter import md_to_pdf
+from .synthesizer import synthesize
 
 
 def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
@@ -60,16 +61,11 @@ def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
         action="store_true",
         help="Also emit raw data as JSON",
     )
-    parser.add_argument(
-        "--synthesis", "-s",
-        help="Optional synthesis text (else OpenCode supplies it)",
-        default=None,
-    )
     return parser.parse_args(argv)
 
 
 async def _run_collectors(
-    query: str, domains: list, synthesis: Optional[str], threshold: float, force_domain: Optional[str],
+    query: str, domains: list, threshold: float, force_domain: Optional[str],
     timelimit: str = "y",
 ) -> ResearchReport:
     classifier = classify_domain(query, threshold=threshold, force_domain=force_domain)
@@ -78,7 +74,6 @@ async def _run_collectors(
         query=query,
         domains=classifier.domains,
         classifier_reasoning=classifier.reasoning,
-        synthesis=synthesis or "",
     )
 
     tasks = []
@@ -98,9 +93,16 @@ async def _run_collectors(
             report.collector_results.append(r)
 
     total = 0
+    all_sources = []
+    all_theme_groups = []
     for cr in report.collector_results:
         total += len(cr.sources)
+        all_sources.extend(cr.sources)
+        all_theme_groups.extend(cr.theme_groups or [])
     report.total_sources = total
+
+    if all_sources and not report.synthesis:
+        report.synthesis = synthesize(query, all_theme_groups, all_sources)
 
     return report
 
@@ -121,7 +123,6 @@ def main(argv: Optional[list[str]] = None) -> int:
         _run_collectors(
             query=args.query,
             domains=[],
-            synthesis=args.synthesis,
             threshold=args.threshold,
             force_domain=args.domain,
             timelimit=timelimit,
@@ -148,12 +149,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         report.to_json(str(json_path))
         print(f"  JSON:     {json_path}")
 
-    if args.synthesis is None:
-        print("\n  ⚠️  No synthesis provided. OpenCode should call this tool, read")
-        print("     the collector results, synthesize, and re-run with --synthesis.")
-    else:
-        print(f"\n  ✅ Report complete — {len(report.collector_results)} collector(s), "
-              f"{report.total_sources} source(s).")
+    print(f"\n  ✅ Report complete — {len(report.collector_results)} collector(s), "
+          f"{report.total_sources} source(s).")
 
     return 0
 
