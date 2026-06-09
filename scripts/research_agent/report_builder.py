@@ -28,80 +28,116 @@ def _format_timestamp(ts: str) -> str:
         return ts
 
 
+_SECTION_ORDER = [
+    "Monetary Policy / Rates",
+    "Market Impact",
+    "Inflation / Macros",
+    "Correlation / Analysis",
+    "Investor Strategy",
+    "Regulation / Policy",
+    "Technology / Fundamentals",
+    "General",
+]
+
+
 def _extract_numbers(text: str) -> list[str]:
     found = re.findall(r'(?:\$)?\d{1,3}(?:,\d{3})*(?:\.\d+)?(?:%\s*(?:of|per|\w+)?|x\b)?|\$[\d,.]+[kKmMbB]?', text)
     return [f.strip() for f in found[:10]]
 
 
+_STOP_ENTITIES = frozenset({
+    "This", "That", "These", "What", "When", "Where", "How", "From", "They",
+    "Will", "Have", "With", "Their", "About", "Which", "Would", "Could",
+    "Should", "There", "Here", "Than", "Then", "Been", "Very", "Just",
+    "Also", "More", "Some", "Such", "Each", "Both", "Over", "Into",
+    "While", "Since", "After", "Before", "Still", "Already", "Even",
+    "Rather", "Many", "Much", "Most", "Few", "Only", "Other", "Another",
+    "First", "Second", "Third", "Next", "Last", "Previous", "Final",
+    "Overall", "Indeed", "However", "Therefore", "Moreover", "Furthermore",
+    "Additionally", "Consequently", "Meanwhile", "Nevertheless",
+})
+
+
 def _extract_entities(text: str) -> list[str]:
     entities = re.findall(r'\b[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)*\b', text)
-    filtered = [e for e in entities if len(e) > 3 and e not in {"This", "That", "These", "What", "When", "Where", "How", "From", "They", "Will", "Have", "With", "Their", "About", "Which", "Would", "Could", "Should"}]
-    return [e for e in filtered if Counter(filtered)[e] >= 2][:20]
+    return [e for e in entities if len(e) > 3 and e not in _STOP_ENTITIES]
 
 
-_section_map = {
-    "Monetary Policy / Rates": "monetary",
-    "Market Impact": "market",
-    "Inflation / Macros": "inflation",
-    "Correlation / Analysis": "correlation",
-    "Investor Strategy": "strategy",
-    "Regulation / Policy": "regulation",
-    "Technology / Fundamentals": "tech",
-    "General": "general",
-}
+def _extract_topics(key_points: list[str]) -> list[tuple[str, list[str], float]]:
+    topic_keywords = {
+        "price action": ["price", "bitcoin", "btc", "trading", "rally", "decline", "drop", "surge", "slid", "fell", "rose", "level", "resistance", "support"],
+        "inflation & rates": ["inflation", "fed", "federal reserve", "interest rate", "cpi", "treasury", "yield", "monetary"],
+        "institutional": ["etf", "institutional", "blackrock", "fidelity", "grayscale", "strategy", "michael saylor", "microstrategy"],
+        "market structure": ["liquidity", "volatility", "correlation", "breakout", "corridor", "range", "consolidation"],
+        "regulation": ["regulation", "sec", "regulatory", "policy", "compliance", "legal"],
+        "adoption": ["adoption", "mainstream", "integration", "payment", "defi", "lightning"],
+    }
+    topics: list[tuple[str, list[str], float]] = []
+    for topic_name, keywords in topic_keywords.items():
+        matches: list[str] = []
+        score = 0
+        for kp in key_points:
+            kp_lower = kp.lower()
+            match_count = sum(1 for kw in keywords if kw in kp_lower)
+            if match_count > 0:
+                matches.append(kp)
+                score += match_count
+        if matches:
+            avg_score = score / len(matches)
+            topics.append((topic_name, matches, avg_score))
+    topics.sort(key=lambda x: (-len(x[1]), -x[2]))
+    return topics
 
 
-def _top_n_entities(source_group: list[Source], n: int = 5) -> list[str]:
-    entities: list[str] = []
-    for src in source_group:
-        content = (src.full_content or src.snippet or src.title)
-        entities.extend(_extract_entities(content))
-        for kp in src.key_points:
-            entities.extend(_extract_entities(kp))
-    if not entities:
-        return []
-    counts: dict[str, int] = {}
-    for e in entities:
-        counts[e] = counts.get(e, 0) + 1
-    sorted_ents = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
-    return [e for e, c in sorted_ents[:n]]
+def _resolve_numbers(key_points: list[str]) -> dict[str, set[str]]:
+    numbers: dict[str, set[str]] = defaultdict(set)
+    import re
+    for kp in key_points:
+        nums = re.findall(r'\$[\d,]+[kKmMbB]?[-–—to]*[\d,]*[kKmMbB]?|\d+\.?\d*\s*%|'
+                          r'\$[\d,]+(?:\.\d+)?|\d{1,3}(?:,\d{3})*(?:\.\d+)?', kp)
+        for n in nums:
+            numbers["data points"].add(n.strip())
+    return numbers
 
 
 def _theme_based_analysis(source_group: list[Source]) -> str:
-    key_points: list[str] = []
+    all_kp: list[str] = []
     for src in source_group:
-        key_points.extend(src.key_points)
-    if not key_points:
+        all_kp.extend(src.key_points)
+    if not all_kp:
         return ""
 
-    by_entity: dict[str, list[str]] = defaultdict(list)
-    for kp in key_points:
-        entities = _extract_entities(kp)
-        for e in entities[:2]:
-            by_entity[e].append(kp)
+    topics = _extract_topics(all_kp)
+    if not topics:
+        return ""
 
     parts: list[str] = []
-    top_entities = sorted(by_entity.items(), key=lambda x: -len(x[1]))[:4]
-    for entity, kps in top_entities:
-        if parts:
-            entity_label = entity
-        else:
-            entity_label = entity
-        for kp in kps[:2]:
-            parts.append(kp)
+    for topic_name, kps, _ in topics[:3]:
+        seen = set()
+        unique_kps: list[str] = []
+        for kp in kps:
+            key = kp[:100].lower()
+            if key not in seen:
+                seen.add(key)
+                unique_kps.append(kp)
+        if unique_kps:
+            parts.append(f"**{topic_name.title()}** — {len(unique_kps)} data point(s)")
+            for kp in unique_kps[:2]:
+                parts.append(f"- {kp}")
 
-    if not parts:
-        return ""
+    return "\n".join(parts) if parts else ""
 
-    seen = set()
-    unique: list[str] = []
-    for p in parts:
-        key = p[:60].lower()
-        if key not in seen:
-            seen.add(key)
-            unique.append(p)
 
-    return " ".join(unique[:3])
+def _findings_summary(all_keys: list[str]) -> list[str]:
+    topics = _extract_topics(all_keys)
+    if not topics:
+        return []
+    lines: list[str] = []
+    lines.append("**Top Findings:**")
+    for topic_name, kps, _ in topics[:3]:
+        if kps:
+            lines.append(f"- **{topic_name.title()}**: {kps[0][:200]}")
+    return lines
 
 
 def _render_analysis(report: ResearchReport) -> list[str]:
@@ -120,19 +156,16 @@ def _render_analysis(report: ResearchReport) -> list[str]:
     lines.append(f"Based on {report.total_sources} sources covering {len(all_keys)} extracted data points.")
     lines.append("")
 
-    domain_numbers: dict[str, int] = {}
-    source_number = 1
-    for cr in report.collector_results:
-        domain_key = cr.domain.value
-        domain_numbers[domain_key] = source_number
-        source_number += len(cr.sources)
+    summary = _findings_summary(all_keys)
+    if summary:
+        lines.extend(summary)
+        lines.append("")
 
     for cr in report.collector_results:
         if not cr.theme_groups:
             continue
         lines.append(f"### {_domain_badge(cr.domain)}")
 
-        theme_texts: list[str] = []
         all_srcs: list[Source] = []
 
         for tg in cr.theme_groups:

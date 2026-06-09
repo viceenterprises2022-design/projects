@@ -182,7 +182,7 @@ def _clean_extracted_text(text: str) -> str:
     return "\n".join(cleaned[:40])
 
 
-def extract_key_points(text: str, max_points: int = 3) -> list[str]:
+def extract_key_points(text: str, max_points: int = 4) -> list[str]:
     if not text or len(text) < 100:
         return []
     import re
@@ -193,14 +193,23 @@ def extract_key_points(text: str, max_points: int = 3) -> list[str]:
         r'disclaimer|opinions?\s+expressed|always\s+consult|do\s+your\s+own|'
         r'this\s+is\s+not|investing\s+involves|past\s+performance|'
         r'(author|journalist|writer|reporter)\s+is\s+a|with\s+over\s+\d+\s+years?|'
-        r'^\s*:|\w+\s+is\s+a\s+\w+\s+(journalist|writer|reporter))',
+        r'^\s*:|\w+\s+is\s+a\s+\w+\s+(journalist|writer|reporter)|'
+        r'by\s+subscribing|readers\s+should|you\s+should\s+consult|'
+        r'all\s+rights?\s+reserved|editor\'?s?\s+note|'
+        r'for\s+more\s+information|get\s+started\s+today|'
+        r'live\s+(and\s+)?exclusive|register\s+(now|today)|'
+        r'^\w+\s+\d+\s*\||^\d+\s+(minutes?|hours?|days?)\s+ago)',
         re.IGNORECASE,
     )
     heading_pattern = re.compile(r'^(how\s+\w+|what\s+\w+|why\s+\w+|the\s+\w+\s+\w+|'
-                                 r'\w+\s+\w+\s+\w+:\s+|breaking:)', re.IGNORECASE)
+                                 r'\w+\s+\w+\s+\w+:\s+|breaking:|'
+                                 r'^\w+\s+\w+\s+\w+:)', re.IGNORECASE)
+    old_price_pattern = re.compile(r'(?:below|under|at)\s+\$[0-5]\d{2}(?:,\d{3})?', re.IGNORECASE)
+    old_year_pattern = re.compile(r'\b(201[0-9]|202[0-5])\b')
+
     for s in sentences:
         s = s.strip()
-        if len(s) < 60 or len(s) > 400:
+        if len(s) < 80 or len(s) > 500:
             continue
         if not s.endswith((".", "!", "?")):
             continue
@@ -210,7 +219,15 @@ def extract_key_points(text: str, max_points: int = 3) -> list[str]:
             continue
         if s == s.upper() and len(s) < 120:
             continue
+        if old_price_pattern.search(s):
+            continue
+        if old_year_pattern.search(s):
+            continue
+        specificity = sum(1 for w in s.split() if w[0].isupper() or w.isdigit())
+        if specificity < 2 and len(s) < 120:
+            continue
         candidates.append(s)
+    candidates.sort(key=lambda x: -sum(1 for w in x.split() if w[0].isupper() or w.isdigit()))
     return candidates[:max_points]
 
 

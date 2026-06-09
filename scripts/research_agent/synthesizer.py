@@ -1,98 +1,102 @@
-from __future__ import annotations
-
 import os
-from .schemas import Source, ThemeGroup
+import json
+import time
+import httpx
+from .schemas import CollectorResult, Source, ThemeGroup
+
+KIMCHI_API_KEY = os.environ.get("KIMCHI_API_KEY", "")
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+SYSTEM_PROMPT = """You are a senior research analyst. Your task is to synthesize multiple sources into a clear, analytical research report.
+
+Given a set of sources grouped by theme, produce a synthesis that:
+
+1. **Executive Summary** (2-3 sentences): The single most important takeaway across all sources.
+
+2. **Thematic Analysis**: For each theme group, write 2-4 paragraphs that:
+   - Identify the key narrative or development
+   - Cross-reference claims across sources (e.g., "Both [1] and [3] note... while [2] counters that...")
+   - Highlight points of agreement and disagreement
+   - Extract specific data points, metrics, and quotes with source attribution
+
+3. **Key Data Points** (bullet list): The most important numbers, dates, thresholds, percentages cited across sources.
+
+4. **Points of Contention**: Where sources disagree or present different angles.
+
+5. **Bottom Line** (1-2 sentences): What this means for the topic.
+
+Rules:
+- Cite sources as [N] where N is the source number from the references list.
+- Be specific — use actual numbers, percentages, and quotes from the material.
+- If sources contradict, say so explicitly.
+- Keep analysis grounded in the provided material — do not add outside knowledge.
+- Output in markdown."""
 
 
-_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
-_MODEL = "gemini-2.0-flash"
-_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{_MODEL}:generateContent?key={_API_KEY}"
-
-
-def _build_prompt(query: str, theme_groups: list[ThemeGroup], sources: list[Source]) -> str:
-    parts = [
-        f"You are a senior research analyst. Synthesize the following research on:\n\n\"{query}\"\n",
-        "---\n### SOURCES\n",
-    ]
-
-    for i, src in enumerate(sources, 1):
-        title = src.title or "Untitled"
-        url = src.url
-        content = (src.full_content or src.snippet or "")[:3000]
-        date = f" ({src.published})" if src.published else ""
-        parts.append(f"[Source {i}] {title}{date}\nURL: {url}\n{content}\n")
-
-    parts.append(
-        "---\n"
-        "Write a research report with EXACTLY these sections (use level-2 headings ##):\n\n"
-        "## Executive Summary\n"
-        "2-3 paragraph synthesis of the single most important story across sources. "
-        "Lead with a strong claim supported by evidence. Include specific numbers, dates, and entities.\n\n"
-        "## Thematic Analysis\n"
-        "Break down into 2-4 sub-themes. For EACH sub-theme:\n"
-        "- One analytical paragraph explaining the dynamics\n"
-        "- Specific evidence: prices, percentages, dates, events\n"
-        "- Cite sources as [1], [2] etc.\n\n"
-        "## Key Data Points\n"
-        "Numbered list of the most concrete, specific facts found: prices, ratios, dates, "
-        "forecast numbers, regulatory actions. Include source citations.\n\n"
-        "## Points of Contention\n"
-        "Where do sources disagree or where is the outlook uncertain? "
-        "Be specific about what's contested and why.\n\n"
-        "## Bottom Line\n"
-        "Actionable 1-paragraph conclusion. What should a reader take away? "
-        "What's the highest-conviction call?\n\n"
-        "CRITICAL RULES:\n"
-        "- NEVER say \"sources suggest\" or \"according to reports\" — just state what the evidence shows\n"
-        "- EVERY factual claim MUST cite a source number like [1] or [3]\n"
-        "- Use specific numbers (prices, dates, percentages) not vague quantifiers\n"
-        "- If content is insufficient for a section, say so honestly rather than filling with fluff\n"
-        "- Write in confident, declarative voice — this is analysis, not a summary\n"
-        "- Output ONLY the report sections, no preamble or postamble\n"
-    )
-    return "\n".join(parts)
-
-
-def synthesize(query: str, theme_groups: list[ThemeGroup], sources: list[Source]) -> str:
-    if not _API_KEY:
+def synthesize(query: str, sources: list[Source], theme_groups: list[ThemeGroup]) -> str:
+    if not KIMCHI_API_KEY:
         return ""
+    if not sources:
+        return ""
+    all_sources = [s for s in sources if s.title and s.url]
+    source_blocks = []
+    theme_groups: dict[str, list[Source]] = {}
+    for s in all_sources:
+        t = s.theme or "General"
+        theme_groups.setdefault(t, []).append(s)
+    for i, s in enumerate(all_sources, 1):
+        fp = s.key_points[:3] if s.key_points else []
+        pts = "\n".join(f"  - {p}" for p in fp[:3])
+        block = f"[{i}] {s.title}\nURL: {s.url}\nTheme: {s.theme or 'General'}\nExcerpt: {s.snippet or ''}\nKey points:\n{pts}"
+        source_blocks.append(block)
+    theme_summary = ""
+    for t, srcs in theme_groups.items():
+        theme_summary += f"\nTheme '{t}': {len(srcs)} sources\n"
+    source_text = "\n---\n".join(source_blocks)
+    prompt = f"""Research query: {query}
 
-    prompt = _build_prompt(query, theme_groups, sources)
+Collected sources ({len(all_sources)} total):
 
-    import httpx
-    import time
+Themes identified:{theme_summary}
 
-    last_err = ""
+Sources:
+{source_text}
+
+Produce a synthesis following the analyst guidelines."""
+    payload = {
+        "model": "anthropic/claude-3.5-haiku-20241022",
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        "temperature": 0.3,
+        "max_tokens": 4096,
+    }
+    last_error = None
     for attempt in range(3):
         try:
             resp = httpx.post(
-                _URL,
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {
-                        "temperature": 0.3,
-                        "maxOutputTokens": 4096,
-                        "topP": 0.95,
-                    },
+                OPENROUTER_URL,
+                headers={
+                    "Authorization": f"Bearer {KIMCHI_API_KEY}",
+                    "Content-Type": "application/json",
                 },
+                json=payload,
                 timeout=120,
             )
-            if resp.status_code == 429 and attempt < 2:
-                wait = 5 * (attempt + 1)
-                time.sleep(wait)
+            if resp.status_code == 429:
+                retry_after = 2 ** (attempt + 2)
+                time.sleep(retry_after)
                 continue
-            resp.raise_for_status()
+            if resp.status_code != 200:
+                last_error = f"HTTP {resp.status_code}: {resp.text[:200]}"
+                continue
             data = resp.json()
-            candidates = data.get("candidates", [])
-            if not candidates:
-                last_err = f"no candidates"
-                continue
-            text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-            return text.strip()
+            return data["choices"][0]["message"]["content"]
+        except httpx.TimeoutException:
+            last_error = "Timeout"
+            time.sleep(5)
         except Exception as e:
-            last_err = str(e)
-            if attempt < 2:
-                time.sleep(3)
-            continue
-
+            last_error = str(e)
+            time.sleep(3)
     return ""

@@ -42245,8 +42245,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/__main__.py": {
-    "mtime": 1780981077.6358547,
-    "ast_hash": "67ddfbe60f7b5ce3bbc2e458f1cab82a",
+    "mtime": 1780981600.6506588,
+    "ast_hash": "e61f91a74c8b249a297a4b4fe704de36",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/__init__.py": {
@@ -42265,8 +42265,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/report_builder.py": {
-    "mtime": 1780981211.8493176,
-    "ast_hash": "bd927d4d11866d7c1725f1b80fa08383",
+    "mtime": 1780981688.0859604,
+    "ast_hash": "f07d5d0c7f618ea35bd34dfcbb2364f0",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/us_stocks.py": {
@@ -42275,8 +42275,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/base.py": {
-    "mtime": 1780980894.2822256,
-    "ast_hash": "7e4307be88f69fa4034f3be69abed827",
+    "mtime": 1780981672.2119057,
+    "ast_hash": "795071523cb2fe915c9e625960002f20",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/__init__.py": {
@@ -42342,6 +42342,41 @@
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_influence_of_macros_on_BTC_and_ETH_20260609_045316.html": {
     "mtime": 1780980805.5175374,
     "ast_hash": "d656835042ba1b6bb082d277c850e3cb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/synthesizer.py": {
+    "mtime": 1780981545.1564674,
+    "ast_hash": "dbb301046a259affaf712d5e271bcdf0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_macro_effects_on_price_20260609_045812.md": {
+    "mtime": 1780981101.1353593,
+    "ast_hash": "0968ad76dd8a6beb0796416641983207",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_macro_effects_on_price_20260609_050016.md": {
+    "mtime": 1780981237.7055821,
+    "ast_hash": "00b52e939c86b3f189b997c12abac48e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_macro_effects_on_price_20260609_045812.html": {
+    "mtime": 1780981101.1374078,
+    "ast_hash": "8788db3355c4e4f995009f2078795d8a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_macro_effects_on_price_20260609_050016.html": {
+    "mtime": 1780981237.7074327,
+    "ast_hash": "d00b06ae76b4c546697aba86adaf80e4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_macro_effects_on_price_20260609_045853.html": {
+    "mtime": 1780981170.1706393,
+    "ast_hash": "a802f7729d6058e3d43ce693140462fd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_macro_effects_on_price_20260609_045853.md": {
+    "mtime": 1780981170.168786,
+    "ast_hash": "814d441303c9de77bc98f5bebd0a6aa8",
     "semantic_hash": ""
   }
 }

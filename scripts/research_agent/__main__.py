@@ -102,7 +102,9 @@ async def _run_collectors(
     report.total_sources = total
 
     if all_sources and not report.synthesis:
-        report.synthesis = synthesize(query, all_theme_groups, all_sources)
+        result = synthesize(query, all_sources, all_theme_groups)
+        print(f"DEBUG synthesis result: len={len(result)}, preview={result[:100]!r}")
+        report.synthesis = result
 
     return report
 
