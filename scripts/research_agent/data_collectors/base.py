@@ -186,6 +186,8 @@ def extract_key_points(text: str, max_points: int = 4) -> list[str]:
     if not text or len(text) < 100:
         return []
     import re
+    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'(?<=\w)\s+-\s+(?=\w)', ' | ', text)
     sentences = re.split(r'(?<=[.!?])\s+', text)
     candidates = []
     noise_patterns = re.compile(
@@ -201,11 +203,24 @@ def extract_key_points(text: str, max_points: int = 4) -> list[str]:
         r'^\w+\s+\d+\s*\||^\d+\s+(minutes?|hours?|days?)\s+ago)',
         re.IGNORECASE,
     )
-    heading_pattern = re.compile(r'^(how\s+\w+|what\s+\w+|why\s+\w+|the\s+\w+\s+\w+|'
-                                 r'\w+\s+\w+\s+\w+:\s+|breaking:|'
-                                 r'^\w+\s+\w+\s+\w+:)', re.IGNORECASE)
+    heading_pattern = re.compile(
+        r'^(?:how\s+\w+|what\s+\w+|why\s+\w+|the\s+\w+\s+\w+|breaking:|'
+        r'\w+\s+\w+\s+\w+:\s+|\w+\s+\w+\s+\w+\s+\w+:)',
+        re.IGNORECASE,
+    )
     old_price_pattern = re.compile(r'(?:below|under|at)\s+\$[0-5]\d{2}(?:,\d{3})?', re.IGNORECASE)
     old_year_pattern = re.compile(r'\b(201[0-9]|202[0-5])\b')
+    structured_data = re.compile(
+        r'^(?:liquidity\s+risk|volatility\s+risk|medium\s+risk|low\s+risk|high\s+risk|'
+        r'\w+\s+risk:\s*|score:|algorithmic|technical\s+analysis|'
+        r'investor\s+(?:psychology|sentiment)|behavioural\s+finance|'
+        r'quantitative\s+analysis|scientific\s+methods|'
+        r'insider\s+trades|seasonal\s+variations|intraday\s+trading|'
+        r'period|vol\.bal\.|negative\s*\(|positive\s*\(|bullish|bearish|'
+        r'overall\s+analysis|close:\s*\d)',
+        re.IGNORECASE,
+    )
+    short_heading = re.compile(r'^[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,3}\s*$')
 
     for s in sentences:
         s = s.strip()
@@ -217,11 +232,17 @@ def extract_key_points(text: str, max_points: int = 4) -> list[str]:
             continue
         if heading_pattern.match(s):
             continue
+        if short_heading.match(s):
+            continue
         if s == s.upper() and len(s) < 120:
+            continue
+        if structured_data.search(s):
             continue
         if old_price_pattern.search(s):
             continue
         if old_year_pattern.search(s):
+            continue
+        if '|' in s:
             continue
         specificity = sum(1 for w in s.split() if w[0].isupper() or w.isdigit())
         if specificity < 2 and len(s) < 120:
@@ -266,6 +287,23 @@ def _source_is_stale(title: str, url: str, snippet: str = "") -> bool:
     return False
 
 
+_TRACKING_DOMAINS = frozenset({
+    "l.facebook.com", "out.reddit.com", "t.co", "tracking.", "click.",
+    "redirect.", "go.redirectingat.com",
+})
+
+
+def _url_is_valid(url: str) -> bool:
+    if not url or not url.startswith("http"):
+        return False
+    if "/clev?" in url or "startpage" in url.lower() or "event=" in url:
+        return False
+    domain = url.split("/")[2].lower() if "://" in url else ""
+    if any(t in domain for t in _TRACKING_DOMAINS):
+        return False
+    return True
+
+
 def enrich_sources(raw_results: list[dict]) -> list[dict]:
     import concurrent.futures
     filtered = []
@@ -273,6 +311,8 @@ def enrich_sources(raw_results: list[dict]) -> list[dict]:
         title = r.get("title", "Untitled")
         url = r.get("url", r.get("href", ""))
         snippet = r.get("snippet", r.get("body", r.get("content", "")))
+        if not _url_is_valid(url):
+            continue
         if _source_is_stale(title, url, snippet):
             continue
         filtered.append(r)
