@@ -39,6 +39,10 @@ from fastapi.responses import FileResponse
 sys.path.insert(0, os.path.dirname(__file__))
 import alphaedge_db as db
 import pnl_poller
+import paper_trading_engine
+
+engine = paper_trading_engine.PaperTradingEngine()
+engine.start()
 
 # ── Extra DB Paths (PixiJS endpoints) ─────────────────────────────────────────
 _BASE        = Path(__file__).parent
