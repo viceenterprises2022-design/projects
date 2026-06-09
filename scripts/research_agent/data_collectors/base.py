@@ -12,7 +12,7 @@ from ..schemas import CollectorResult, Domain
 def run_belt(app: str, payload: dict, timeout: int = 30) -> dict | None:
     try:
         cmd = [
-            sys.executable, "-m", "belt", "app", "run", app,
+            "belt", "app", "run", app,
             "--input", json.dumps(payload),
         ]
         result = subprocess.run(
@@ -28,10 +28,14 @@ def run_belt(app: str, payload: dict, timeout: int = 30) -> dict | None:
 def run_belt_search(
     query: str, depth: str = "advanced", max_results: int = 5
 ) -> list[dict]:
-    data = run_belt("tavily-search", {
+    depth_param = "advanced" if depth == "advanced" else "basic"
+    data = run_belt("tavily/search-assistant", {
         "query": query,
-        "search_depth": depth,
+        "search_depth": depth_param,
         "max_results": max_results,
+        "include_answer": True,
+        "include_images": False,
+        "topic": "general",
     })
     if data and "results" in data:
         return data["results"]

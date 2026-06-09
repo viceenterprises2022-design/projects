@@ -42238,5 +42238,110 @@
     "mtime": 1780977335.5260038,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/topic_classifier.py": {
+    "mtime": 1780979108.0170941,
+    "ast_hash": "143833b996a191ac98c94a55f4615618",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/__main__.py": {
+    "mtime": 1780979287.6917114,
+    "ast_hash": "7f00a31c781d6706fae8c7f9a98604c4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/__init__.py": {
+    "mtime": 1780979141.3312087,
+    "ast_hash": "430e9f5313f59fa2b5fe48812a8e11a4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/schemas.py": {
+    "mtime": 1780978510.8360398,
+    "ast_hash": "dbf7c5f6069e6104054176a7d7c7ed02",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/pdf_converter.py": {
+    "mtime": 1780979443.0532448,
+    "ast_hash": "dcf66a3e6eeb14699f7a7120660b6407",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/report_builder.py": {
+    "mtime": 1780979109.398099,
+    "ast_hash": "73f792e205f306147448fef5048c1f8d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/us_stocks.py": {
+    "mtime": 1780979110.8531039,
+    "ast_hash": "5d9569b468dd34c35a9c726d972d36aa",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/base.py": {
+    "mtime": 1780979645.795941,
+    "ast_hash": "9b4cc3b23e288619d959e41d480496cb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/__init__.py": {
+    "mtime": 1780979125.6391547,
+    "ast_hash": "1273dea36622e0c728586891b3779026",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/general.py": {
+    "mtime": 1780979113.0161114,
+    "ast_hash": "ffe64bad8c67ef131baeb47a8cd3fc44",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/academia.py": {
+    "mtime": 1780979112.5411098,
+    "ast_hash": "7816e8ff27aa87d639a9fbca192b1db0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/crypto.py": {
+    "mtime": 1780979110.1451015,
+    "ast_hash": "65b6e4674b23ef8f57e2a92dbf8490d5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/india_stocks.py": {
+    "mtime": 1780979111.2811055,
+    "ast_hash": "87ff6a8e87841d633ad6467f06ef014d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/news.py": {
+    "mtime": 1780979111.9441078,
+    "ast_hash": "4dec5d754f399256a6f0209346ac2d15",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/evals/baseline_eval.py": {
+    "mtime": 1780979253.5845942,
+    "ast_hash": "9a6efab7c4aae4c1a69a26027017a72e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/SECURITY.md": {
+    "mtime": 1780979225.3634973,
+    "ast_hash": "573237236dffa4663d63aaa68659201d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/CLAUDE.md": {
+    "mtime": 1780978977.9376473,
+    "ast_hash": "8bd426d2ff44ff69175b5fb43ee9ba03",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/requirements.txt": {
+    "mtime": 1780978578.6832733,
+    "ast_hash": "4f4e0339d3bd3b8ab5d42a337e7d9bcd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_test_PDF_path_20260609_042818.md": {
+    "mtime": 1780979298.7351222,
+    "ast_hash": "b903dcafa6e0d97152465760e8c4d5b1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_impact_of_Fed_rate_cuts_on_Bitcoin_20260609_042812.md": {
+    "mtime": 1780979293.4988015,
+    "ast_hash": "a834e13faf6c8f902b0f2b5a82c2bbf7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.github/workflows/harness.yml": {
+    "mtime": 1780979250.9320798,
+    "ast_hash": "8f3604b9ccff040367026d585659b43a",
+    "semantic_hash": ""
   }
 }

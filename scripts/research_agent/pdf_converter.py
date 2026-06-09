@@ -111,7 +111,8 @@ def _try_pandoc(md_path: str, pdf_path: str) -> Optional[str]:
 
 
 def _try_fallback_pdf(md_path: str, pdf_path: str) -> str:
-    html = _md_to_html_simple(Path(md_path).read_text())
+    md_file = Path(md_path)
+    html = _md_to_html_simple(md_file.read_text())
     try:
         from weasyprint import HTML
         HTML(string=html).write_pdf(pdf_path)
@@ -121,13 +122,17 @@ def _try_fallback_pdf(md_path: str, pdf_path: str) -> str:
             pdf = fpdf.FPDF()
             pdf.add_page()
             pdf.set_auto_page_break(auto=True, margin=15)
-            pdf.add_font("DejaVu", "", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", uni=True)
-            pdf.set_font("DejaVu", "", 10)
-            for line in Path(md_path).read_text().split("\n"):
+            try:
+                pdf.add_font("DejaVu", "", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", uni=True)
+                pdf.set_font("DejaVu", "", 10)
+            except RuntimeError:
+                pdf.set_font("Helvetica", "", 10)
+            for line in md_file.read_text().split("\n"):
                 pdf.cell(0, 6, line[:90], new_x="LMARGIN", new_y="NEXT")
             pdf.output(pdf_path)
         except Exception:
-            with open(md_path.replace(".pdf", ".html"), "w") as f:
-                f.write(html)
-            pdf_path = md_path.replace(".pdf", ".html")
+            html_path = str(md_file.with_suffix(".html"))
+            Path(html_path).write_text(html)
+            if not Path(pdf_path).exists():
+                pdf_path = html_path
     return pdf_path
