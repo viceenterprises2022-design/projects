@@ -42339,18 +42339,8 @@
     "ast_hash": "dbb301046a259affaf712d5e271bcdf0",
     "semantic_hash": ""
   },
-  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_influence_of_macros_on_BTC_and_ETH_20260609_051145.html": {
-    "mtime": 1780981926.9980633,
-    "ast_hash": "bd0ef33ad5b1b9756e86e7ee1a7a33e1",
-    "semantic_hash": ""
-  },
-  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_influence_of_macros_on_BTC_and_ETH_20260609_051145.md": {
-    "mtime": 1780981926.9968054,
-    "ast_hash": "f2a445710255227efbe5a4af307272f5",
-    "semantic_hash": ""
-  },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/orchestrator.py": {
-    "mtime": 1780983767.4441323,
+    "mtime": 1780984101.5362751,
     "ast_hash": "075a9cc977af375af6298b4449cdda68",
     "semantic_hash": ""
   }
