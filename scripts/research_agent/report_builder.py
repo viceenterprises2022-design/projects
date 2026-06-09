@@ -7,12 +7,12 @@ from .schemas import DOMAIN_LABELS, Domain, ResearchReport
 
 def _domain_badge(domain: Domain) -> str:
     badges = {
-        Domain.GENERAL: "🔬 General",
-        Domain.ACADEMIA: "📖 Academia",
-        Domain.WORLD_NEWS: "🌍 World News",
-        Domain.INDIA_STOCKS: "📈 India Stocks",
-        Domain.US_STOCKS: "📊 US Stocks",
-        Domain.CRYPTO: "₿ Crypto",
+        Domain.GENERAL: "General",
+        Domain.ACADEMIA: "Academia",
+        Domain.WORLD_NEWS: "World News",
+        Domain.INDIA_STOCKS: "India Stocks",
+        Domain.US_STOCKS: "US Stocks",
+        Domain.CRYPTO: "Crypto",
     }
     return badges.get(domain, domain.value)
 
@@ -52,29 +52,27 @@ def build_markdown(report: ResearchReport) -> str:
             lines.append(cr.summary)
             lines.append("")
 
-            if cr.data_points:
-                lines.append("| Metric | Value |")
-                lines.append("|--------|-------|")
-                for dp in cr.data_points:
-                    unit = f" {dp.unit}" if dp.unit else ""
-                    lines.append(f"| {dp.label} | {dp.value}{unit} |")
+            if cr.top_insights:
+                lines.append("**Key Insights:**")
+                lines.append("")
+                for ins in cr.top_insights:
+                    lines.append(f"- {ins}")
                 lines.append("")
 
-            if cr.sources:
-                lines.append("**Sources:**")
-                for i, src in enumerate(cr.sources, 1):
-                    line = f"- [{src.title}]({src.url})"
-                    if src.snippet:
-                        snippet = src.snippet[:120].replace("\n", " ")
-                        line += f" — {snippet}"
-                    if src.published:
-                        line += f" *({src.published})*"
-                    lines.append(line)
-                lines.append("")
-
-            if cr.error:
-                lines.append(f"> ⚠️ Collector note: {cr.error}")
-                lines.append("")
+            if cr.theme_groups:
+                for tg in cr.theme_groups:
+                    lines.append(f"**{tg.name}** — {len(tg.sources)} source(s)")
+                    for src in tg.sources:
+                        line = f"- [{src.title}]({src.url})"
+                        if src.key_points:
+                            kp = src.key_points[0]
+                            line += f"\n  - {kp[:200]}"
+                        elif src.snippet:
+                            line += f"\n  - {src.snippet[:200]}"
+                        if src.published:
+                            line += f" *({src.published})*"
+                        lines.append(line)
+                    lines.append("")
 
     lines.append("---")
     lines.append("")

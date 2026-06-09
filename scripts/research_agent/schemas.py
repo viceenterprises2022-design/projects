@@ -45,6 +45,9 @@ class Source:
     url: str
     snippet: str = ""
     published: Optional[str] = None
+    full_content: str = ""
+    key_points: list[str] = field(default_factory=list)
+    theme: str = ""
 
 
 @dataclass
@@ -52,6 +55,13 @@ class DataPoint:
     label: str
     value: str
     unit: str = ""
+
+
+@dataclass
+class ThemeGroup:
+    name: str
+    sources: list[Source] = field(default_factory=list)
+    insight: str = ""
 
 
 @dataclass
@@ -66,6 +76,8 @@ class CollectorResult:
     collected_at: str = field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
+    theme_groups: list[ThemeGroup] = field(default_factory=list)
+    top_insights: list[str] = field(default_factory=list)
 
 
 @dataclass

@@ -42255,18 +42255,18 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/schemas.py": {
-    "mtime": 1780978510.8360398,
-    "ast_hash": "dbf7c5f6069e6104054176a7d7c7ed02",
+    "mtime": 1780980035.1642785,
+    "ast_hash": "6a7bbf270d620864c00bdb6d0593c33c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/pdf_converter.py": {
-    "mtime": 1780979443.0532448,
+    "mtime": 1780979692.9391031,
     "ast_hash": "dcf66a3e6eeb14699f7a7120660b6407",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/report_builder.py": {
-    "mtime": 1780979109.398099,
-    "ast_hash": "73f792e205f306147448fef5048c1f8d",
+    "mtime": 1780980061.0703673,
+    "ast_hash": "0e180ba8d45c8f8ff34f4c750c80dd4b",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/us_stocks.py": {
@@ -42275,8 +42275,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/base.py": {
-    "mtime": 1780979645.795941,
-    "ast_hash": "9b4cc3b23e288619d959e41d480496cb",
+    "mtime": 1780980052.752339,
+    "ast_hash": "f91acb5c45fd9741466cbc450fb85c11",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/__init__.py": {
@@ -42342,6 +42342,41 @@
   "/home/vreddy1/Desktop/Projects/scripts/.github/workflows/harness.yml": {
     "mtime": 1780979250.9320798,
     "ast_hash": "8f3604b9ccff040367026d585659b43a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_impact_of_Fed_rate_cuts_on_Bitcoin_20260609_043410.md": {
+    "mtime": 1780979651.8779762,
+    "ast_hash": "e279aaa27ddbf7f0cd51f89270ea6753",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_impact_of_Fed_rate_cuts_on_Bitcoin_20260609_043410.html": {
+    "mtime": 1780979651.8790832,
+    "ast_hash": "2db1f9addcecda16ca797b644a033512",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_test_PDF_fix_20260609_043047.md": {
+    "mtime": 1780979448.0360975,
+    "ast_hash": "5e7591ebc8654eb9322c661ed5045836",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_impact_of_Fed_rate_cuts_on_Bitcoin_20260609_043317.html": {
+    "mtime": 1780979600.8422828,
+    "ast_hash": "5137d409dc5fa15eb2429c19650d1600",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_impact_of_Fed_rate_cuts_on_Bitcoin_20260609_043317.md": {
+    "mtime": 1780979600.8410902,
+    "ast_hash": "06a06f4739a3d81d48256cde52fbefee",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_test_PDF_gen_20260609_043059.html": {
+    "mtime": 1780979459.2468793,
+    "ast_hash": "89af116e24835ebfb793ed7d9bfbb7c3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_test_PDF_gen_20260609_043059.md": {
+    "mtime": 1780979459.2414644,
+    "ast_hash": "0fb805cbec68f32be94da8f3d55ad411",
     "semantic_hash": ""
   }
 }
