@@ -62,6 +62,13 @@ class PaperTradingEngine:
     def stop(self):
         self.running = False
 
+    def get_liquidation_price(self, entry: float, leverage: float, side: str) -> float:
+        """Returns computed liquidation price for paper trading."""
+        if side.upper() == "LONG":
+            return max(0.0, entry * (1.0 - 1.0 / leverage + 0.005))
+        else:
+            return entry * (1.0 + 1.0 / leverage - 0.005)
+
     def get_symbol_state(self, symbol: str) -> dict:
         """Returns the full UI state bundle for BTC or ETH."""
         symbol = symbol.upper()
@@ -75,7 +82,12 @@ class PaperTradingEngine:
         active_pos = None
         for p in pos_rows:
             if sym_key in p["symbol"].upper():
-                active_pos = p
+                active_pos = dict(p)
+                active_pos["liq_price"] = self.get_liquidation_price(
+                    active_pos["entry_price"], 
+                    active_pos["leverage"], 
+                    active_pos["side"]
+                )
                 break
                 
         # Calc position execution strength (derived from global positions)
@@ -111,7 +123,7 @@ class PaperTradingEngine:
             }
         }
 
-    def place_order(self, symbol: str, side: str, order_type: str, size: float, leverage: float, limit_price: float = None) -> dict:
+    def place_order(self, symbol: str, side: str, order_type: str, size: float, leverage: float, limit_price: float = None, tp_price: float = None, sl_price: float = None) -> dict:
         """Places a long/short paper order, adjusting balance and margin."""
         symbol = symbol.upper()
         sym_key = "BTC" if "BTC" in symbol else "ETH"
@@ -157,7 +169,7 @@ class PaperTradingEngine:
                 if remaining_size > 0:
                     new_margin = (remaining_size * exec_price) / leverage
                     balance -= new_margin
-                    db.upsert_position(sym_key, side, remaining_size, exec_price, leverage, new_margin, 0.0)
+                    db.upsert_position(sym_key, side, remaining_size, exec_price, leverage, new_margin, 0.0, tp_price, sl_price)
                     db.add_trade(sym_key, side, "OPEN", exec_price, remaining_size, 0.0)
             else:
                 # Reduce opposite position size
@@ -180,13 +192,13 @@ class PaperTradingEngine:
                 new_margin = (total_size * avg_entry) / leverage
                 
                 balance -= (new_margin - existing["margin"])
-                db.upsert_position(sym_key, side, total_size, avg_entry, leverage, new_margin, existing["unrealized_pnl"])
+                db.upsert_position(sym_key, side, total_size, avg_entry, leverage, new_margin, existing["unrealized_pnl"], tp_price, sl_price)
                 db.add_trade(sym_key, side, "ADD", exec_price, size, 0.0)
             else:
                 # Open new position
                 new_margin = margin_required
                 balance -= new_margin
-                db.upsert_position(sym_key, side, size, exec_price, leverage, new_margin, 0.0)
+                db.upsert_position(sym_key, side, size, exec_price, leverage, new_margin, 0.0, tp_price, sl_price)
                 db.add_trade(sym_key, side, "OPEN", exec_price, size, 0.0)
 
         # Update account balance and equity
@@ -250,14 +262,67 @@ class PaperTradingEngine:
                     side = p["side"]
                     size = p["size"]
                     entry = p["entry_price"]
+                    leverage = p["leverage"]
+                    margin = p["margin"]
+                    tp = p["tp_price"]
+                    sl = p["sl_price"]
                     current = self.prices.get(sym, entry)
                     
-                    pnl = size * (current - entry) if side == "LONG" else size * (entry - current)
-                    db.upsert_position(sym, side, size, entry, p["leverage"], p["margin"], pnl)
+                    # Compute liquidation price
+                    liq = self.get_liquidation_price(entry, leverage, side)
                     
-                    total_unrealized += pnl
-                    total_margin += p["margin"]
+                    # Check trigger boundaries
+                    triggered = False
+                    trigger_type = None
+                    trigger_price = current
                     
+                    if side == "LONG":
+                        if tp and tp > 0 and current >= tp:
+                            triggered = True
+                            trigger_type = "TAKE_PROFIT"
+                            trigger_price = tp
+                        elif sl and sl > 0 and current <= sl:
+                            triggered = True
+                            trigger_type = "STOP_LOSS"
+                            trigger_price = sl
+                        elif current <= liq:
+                            triggered = True
+                            trigger_type = "LIQUIDATED"
+                            trigger_price = liq
+                    else: # SHORT
+                        if tp and tp > 0 and current <= tp:
+                            triggered = True
+                            trigger_type = "TAKE_PROFIT"
+                            trigger_price = tp
+                        elif sl and sl > 0 and current >= sl:
+                            triggered = True
+                            trigger_type = "STOP_LOSS"
+                            trigger_price = sl
+                        elif current >= liq:
+                            triggered = True
+                            trigger_type = "LIQUIDATED"
+                            trigger_price = liq
+                            
+                    if triggered:
+                        # Close position at trigger price
+                        pnl = size * (trigger_price - entry) if side == "LONG" else size * (entry - trigger_price)
+                        if trigger_type == "LIQUIDATED":
+                            # Cap loss at margin
+                            pnl = max(-margin, pnl)
+                        
+                        db.delete_position(sym, side)
+                        db.add_trade(sym, side, trigger_type, trigger_price, size, pnl, tp, sl)
+                        
+                        # Add margin + pnl back to balance
+                        balance = balance + margin + pnl
+                        db.update_account(balance, balance, 0.0, 0.0)
+                        print(f"[Paper Engine] Position {sym} {side} closed via {trigger_type} at {trigger_price}. PnL: {pnl:.2f}")
+                    else:
+                        pnl = size * (current - entry) if side == "LONG" else size * (entry - current)
+                        db.upsert_position(sym, side, size, entry, leverage, margin, pnl, tp, sl)
+                        total_unrealized += pnl
+                        total_margin += margin
+                        
                 equity = balance + total_margin + total_unrealized
                 total_pnl = equity - 100000.0
                 today_pnl = total_pnl # Simplification for dashboard real-time glow

@@ -176,6 +176,16 @@
               <option value="20">20x (Aggr)</option>
             </select>
           </div>
+
+          <div class="order-form-group">
+            <label>Take Profit (TP) Price</label>
+            <input type="number" class="order-input" id="order-tp" placeholder="Optional" step="0.01">
+          </div>
+
+          <div class="order-form-group">
+            <label>Stop Loss (SL) Price</label>
+            <input type="number" class="order-input" id="order-sl" placeholder="Optional" step="0.01">
+          </div>
           
           <button class="order-btn-submit" onclick="submitOrder()">PLACE SIMULATED ORDER</button>
         </div>

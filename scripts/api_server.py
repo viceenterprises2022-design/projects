@@ -673,10 +673,18 @@ class PaperOrderRequest(BaseModel):
     size: float
     leverage: float
     limit_price: Optional[float] = None
+    tp_price: Optional[float] = None
+    sl_price: Optional[float] = None
 
 class PaperCloseRequest(BaseModel):
     symbol: str
     side: str
+
+class PaperUpdateSLTPRequest(BaseModel):
+    symbol: str
+    side: str
+    tp_price: Optional[float] = None
+    sl_price: Optional[float] = None
 
 @app.get("/api/paper/state")
 def api_paper_state(symbol: str = Query("ETH")):
@@ -688,7 +696,16 @@ def api_paper_state(symbol: str = Query("ETH")):
 @app.post("/api/paper/order")
 def api_paper_order(req: PaperOrderRequest):
     try:
-        res = engine.place_order(req.symbol, req.side, req.type, req.size, req.leverage, req.limit_price)
+        res = engine.place_order(
+            req.symbol, 
+            req.side, 
+            req.type, 
+            req.size, 
+            req.leverage, 
+            req.limit_price,
+            req.tp_price,
+            req.sl_price
+        )
         if not res.get("success"):
             raise HTTPException(status_code=400, detail=res.get("error", "Order failed"))
         return res
@@ -704,6 +721,20 @@ def api_paper_close(req: PaperCloseRequest):
         if not res.get("success"):
             raise HTTPException(status_code=400, detail=res.get("error", "Close failed"))
         return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/paper/update_sltp")
+def api_paper_update_sltp(req: PaperUpdateSLTPRequest):
+    try:
+        import paper_trading_db as ptdb
+        pos = ptdb.get_position(req.symbol, req.side)
+        if not pos:
+            raise HTTPException(status_code=404, detail="No active position found")
+        ptdb.update_position_sltp(req.symbol, req.side, req.tp_price, req.sl_price)
+        return {"success": True}
+    except HTTPException as he:
+        raise he
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

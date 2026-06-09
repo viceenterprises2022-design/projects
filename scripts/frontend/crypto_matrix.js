@@ -221,23 +221,55 @@ function renderUI(data) {
     } else {
       posList.innerHTML = activePositions.map(p => {
         const pnlCls = p.unrealized_pnl >= 0 ? "up" : "dn";
+        const liqPrice = p.liq_price ? p.liq_price.toFixed(2) : "—";
         return `
           <div class="open-pos-item">
-            <div class="open-pos-info">
+            <div class="pos-item-header">
               <div class="open-pos-sym-side">
                 ${p.symbol} 
-                <span class="side-badge ${p.side.toLowerCase()}">${p.side}</span>
+                <span class="side-badge ${p.side.toLowerCase()}">${p.side} ${p.leverage}x</span>
               </div>
-              <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">
-                Size: ${p.size} &middot; Entry: ${p.entry_price.toFixed(2)} &middot; Margin: ${p.margin.toFixed(1)}
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:12px;">
               <div class="open-pos-pnl ${pnlCls}">
-                ${p.unrealized_pnl >= 0 ? "+" : ""}${p.unrealized_pnl.toFixed(2)}
+                ${p.unrealized_pnl >= 0 ? "+" : ""}${p.unrealized_pnl.toFixed(2)} USDT
               </div>
-              <button class="btn-close-pos" onclick="closePosition('${p.symbol}', '${p.side}')">Close</button>
             </div>
+            
+            <div class="pos-item-grid">
+              <div class="grid-cell">
+                <span class="cell-lbl">Size</span>
+                <span class="cell-val">${p.size} ${p.symbol}</span>
+              </div>
+              <div class="grid-cell">
+                <span class="cell-lbl">Entry</span>
+                <span class="cell-val">${p.entry_price.toFixed(2)}</span>
+              </div>
+              <div class="grid-cell">
+                <span class="cell-lbl">LTP</span>
+                <span class="cell-val">${ltp.toFixed(2)}</span>
+              </div>
+              <div class="grid-cell">
+                <span class="cell-lbl">Margin</span>
+                <span class="cell-val">${p.margin.toFixed(1)}</span>
+              </div>
+              <div class="grid-cell">
+                <span class="cell-lbl">Liq Price</span>
+                <span class="cell-val liq-color">${liqPrice}</span>
+              </div>
+            </div>
+            
+            <div class="pos-sltp-row">
+              <div class="pos-sltp-col">
+                <span class="sltp-lbl">TP Price</span>
+                <input type="number" class="pos-sltp-input" id="pos-tp-${p.symbol}-${p.side}" value="${p.tp_price ? p.tp_price.toFixed(2) : ''}" placeholder="None" step="0.01">
+              </div>
+              <div class="pos-sltp-col">
+                <span class="sltp-lbl">SL Price</span>
+                <input type="number" class="pos-sltp-input" id="pos-sl-${p.symbol}-${p.side}" value="${p.sl_price ? p.sl_price.toFixed(2) : ''}" placeholder="None" step="0.01">
+              </div>
+              <button class="btn-save-sltp" onclick="savePositionSLTP('${p.symbol}', '${p.side}')">Save</button>
+            </div>
+            
+            <button class="btn-close-pos-full" onclick="closePosition('${p.symbol}', '${p.side}')">CLOSE POSITION</button>
           </div>
         `;
       }).join("");
@@ -337,6 +369,11 @@ async function submitOrder() {
   const leverage = parseFloat(document.getElementById("order-leverage").value);
   const limitPrice = parseFloat(document.getElementById("order-price").value);
   
+  const tpPriceRaw = document.getElementById("order-tp").value;
+  const slPriceRaw = document.getElementById("order-sl").value;
+  const tpPrice = tpPriceRaw ? parseFloat(tpPriceRaw) : null;
+  const slPrice = slPriceRaw ? parseFloat(slPriceRaw) : null;
+  
   if (isNaN(size) || size <= 0) {
     alert("Please enter a valid order size");
     return;
@@ -348,7 +385,9 @@ async function submitOrder() {
     type: type,
     size: size,
     leverage: leverage,
-    limit_price: type === "LIMIT" ? limitPrice : null
+    limit_price: type === "LIMIT" ? limitPrice : null,
+    tp_price: isNaN(tpPrice) || tpPrice === null ? null : tpPrice,
+    sl_price: isNaN(slPrice) || slPrice === null ? null : slPrice
   };
 
   try {
@@ -362,6 +401,10 @@ async function submitOrder() {
     if (!res.ok) {
       alert(data.detail || "Order execution failed");
     } else {
+      // Clear inputs
+      document.getElementById("order-tp").value = "";
+      document.getElementById("order-sl").value = "";
+      
       // Trigger order feedback visual indicators
       spawnTradeFlashParticles();
       fetchState();
@@ -370,6 +413,36 @@ async function submitOrder() {
     console.error("[Order] Request failed:", err);
   }
 }
+
+window.savePositionSLTP = async function(symbol, side) {
+  const tpEl = document.getElementById(`pos-tp-${symbol}-${side}`);
+  const slEl = document.getElementById(`pos-sl-${symbol}-${side}`);
+  
+  const tpVal = tpEl && tpEl.value ? parseFloat(tpEl.value) : null;
+  const slVal = slEl && slEl.value ? parseFloat(slEl.value) : null;
+  
+  try {
+    const res = await fetch(`${API_BASE}/api/paper/update_sltp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        symbol: symbol,
+        side: side,
+        tp_price: isNaN(tpVal) || tpVal === null ? null : tpVal,
+        sl_price: isNaN(slVal) || slVal === null ? null : slVal
+      })
+    });
+    
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.detail || "Failed to update SL/TP");
+    } else {
+      fetchState();
+    }
+  } catch (err) {
+    console.error("[SLTP Update] Request failed:", err);
+  }
+};
 
 async function closePosition(symbol, side) {
   try {
