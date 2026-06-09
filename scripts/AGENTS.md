@@ -279,4 +279,11 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Integrated interactive console TUI and non-interactive Rich table options (supporting filters by currency, search, and sentiment, plus direct browser launch).
 - Saved, made executable, and committed changes to repository root.
 
+### 2026-06-09: Migrate Multica Agents to Antigravity Runtime
+- Migrated all 14 Multica agents using the deprecated Gemini runtime (`47e3b4cd-5b28-42ff-8cb6-6329036ec0cb`) to the new Antigravity runtime (`ad350c99-84ea-4650-80f9-1ddd165f7f6b`).
+- Stopped and restarted the local `multica` daemon to apply the configuration.
+- Removed deprecated `clawdi-serve-gemini.service` from systemd daemon check script `check_daemons.sh`.
+- Updated service references in `AGENTS.md` and `docs/runbook.md`.
+- **Multica:** ALP-536 (done, assigned Vinod-AI-CEO)
+
 
