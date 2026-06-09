@@ -1,0 +1,209 @@
+{
+  "query": "Bitcoin price 2024",
+  "domains": [
+    "crypto"
+  ],
+  "classifier_reasoning": "Domains matched (threshold=0.2): crypto=0.30. Query: 'Bitcoin price 2024'",
+  "collector_results": [
+    {
+      "domain": "crypto",
+      "query": "Bitcoin price 2024",
+      "summary": "Analyzed 10 sources with full content extraction. Themes include monetary policy, market structure, and macro drivers.",
+      "sources": [
+        {
+          "title": "Bitcoin Price History Chart 2009 To 2024 \u2013 Forbes Advisor INDIA",
+          "url": "https://www.forbes.com/advisor/in/investing/cryptocurrency/bitcoin-price-history-chart/",
+          "snippet": "April 1, 2026 - As of Feb. 29, 2024, BTC hit the exceptional level of $62,642 for the first time since Dec. 2021, with a market capitalization of $1.23 trillion and a cryptocurrency market capitalization of $2.29 trillion way before Bitcoin Halving.",
+          "published": "",
+          "full_content": "",
+          "key_points": [],
+          "theme": "Market Impact"
+        },
+        {
+          "title": "Bitcoin cracks $60,000, sinking to lowest level since October 2024",
+          "url": "https://www.cnbc.com/2026/06/05/bitcoin-dismal-week-price-below-all-time-high-crypto-investors.html",
+          "snippet": "3 days ago - Bitcoin extended its losses on Friday, dropping to October 2024 lows to cap an already bruising week for crypto investors. The flagship cryptocurrency was last lower by 3.4% at $61,514.90. Earlier, it fell to $59,099.25, its lowest level",
+          "published": "",
+          "full_content": "Sopa Images | Lightrocket | Getty Images\nBitcoin\nextended its losses on Friday, dropping to October 2024 lows to cap an already bruising week for crypto investors.\nThe flagship cryptocurrency was last lower by 3.4% at $61,514.90. Earlier, it fell to $59,099.25, its lowest level since October 2024. It was off 16% on the week.\nThe declines began after\nStrategy\n, founded by Michael Saylor,\nsold a small amount of its bitcoin\nholding. This\nweighed on sentiment\nand forced hundreds of millions of dollars in liquidations that accelerated the downside pressure. Losses were exacerbated after a stronger-than-expected\nMay jobs report\nFriday sent Treasury yields higher and pressured risk assets.\nStrategy\ngave back earlier losses but still ended the day down 6.9% and the week down 24%, making it the stock's worst week since November 2022.\nStock Chart Icon\nStock chart icon\nHow bitcoin has fared over the past year.\nAt the $60,000 level, bitcoin is down by more than half from its all-time high of about $126,000 reached in October 2025.\nCharles-Henry Monchau, chief investment officer at Syz Group, said bitcoin's latest weekly decline\nhas been driven by a combination\nof Strategy's selling and a crowding-out effect from hot money chasing other assets.\n\"Speculators are going all-in on AI stocks and memory chips, especially in Korea, and the market also anticipates that upcoming monster IPOs\u00a0will divert some retail money into the new stocks,\" Monchau told CNBC over email.\nAdditionally, bitcoin's key catalyst for renewed investor interest, the crypto market structure bill known as the\nClarity Act\n, is drifting further out of reach as legislative priorities shift and lawmakers remain divided on key provisions of the bill.\nAs uncertainty around the Iran war has kept bitcoin under pressure in recent months, the stock market has risen to new records. The divergence has investors questioning both of bitcoin's dominant narratives: that it is \"digital gold\" that should benefit from geopolitical uncertainty, and that it trades like a high beta tech stock.\n\"We saw the 30-day Pearson correlation between bitcoin and the Nasdaq and S&P 500 reach a near-perfect positive correlation as recently as a month ago, but that has collapsed over the last several weeks,\" Rajiv Sawhney, head of international portfolio management at Wave Digital Assets, told CNBC over email.\n\"So while global equities, particularly tech stocks, continued to reach new all-time highs, bitcoin has failed to track the same u",
+          "key_points": [
+            "\"We saw the 30-day Pearson correlation between bitcoin and the Nasdaq and S&P 500 reach a near-perfect positive correlation as recently as a month ago, but that has collapsed over the last several weeks,\" Rajiv Sawhney, head of international portfolio management at Wave Digital Assets, told CNBC over email.",
+            "Speaking to CNBC's Squawk Box Europe on Friday, Strive chief executive Matt Cole said that bitcoin's fundamentals have \"never been better.\" \"This is the fifth time that bitcoin has been at its 200-week moving average \u2014 the previous four have all been the perfect time to buy the dip, and I think this time will age in the same manner,\" he added.",
+            "Charles-Henry Monchau, chief investment officer at Syz Group, said bitcoin's latest weekly decline has been driven by a combination of Strategy's selling and a crowding-out effect from hot money chasing other assets.",
+            "\"Speculators are going all-in on AI stocks and memory chips, especially in Korea, and the market also anticipates that upcoming monster IPOs will divert some retail money into the new stocks,\" Monchau told CNBC over email."
+          ],
+          "theme": "Market Impact"
+        },
+        {
+          "title": "Bitcoin (BTC) Price Prediction 2026 2027 2028 - 2040",
+          "url": "https://changelly.com/blog/bitcoin-price-prediction/",
+          "snippet": "3 days ago - \u2022 2023, Recovery Phase: $16,500 \u2192 $42,000 Bitcoin recovered approximately 157% over the year, driven largely by anticipation of U.S. spot ETF approvals and renewed macro stability. \u2022 2024, Spot ETFs and Fourth Halving: $42,000 \u2192 $106,000",
+          "published": "",
+          "full_content": "",
+          "key_points": [],
+          "theme": "Market Impact"
+        },
+        {
+          "title": "Bitcoin Price in India (BTC) - Investing.com India",
+          "url": "https://in.investing.com/crypto/bitcoin",
+          "snippet": "19 hours ago - Investing.com -- The world\u2019s largest cryptocurrency on Friday plumbed its lowest level since October 2024, and briefly... ... Investing.com -- Bitcoin rose above $61,000 on Sunday, clawing back from its lowest levels of 2026 after a br",
+          "published": "",
+          "full_content": "",
+          "key_points": [],
+          "theme": "Market Impact"
+        },
+        {
+          "title": "Cryptocurrency Prices, Charts And Market Capitalizations | CoinMarketCap",
+          "url": "https://coinmarketcap.com/",
+          "snippet": "Top cryptocurrency prices and charts, listed by market capitalization. Free access to current and historic data for Bitcoin and thousands of altcoins.",
+          "published": "",
+          "full_content": "Today\u2019s Cryptocurrency Prices, Charts and Data\nWelcome to CoinMarketCap.com! This site was founded in May 2013 by Brandon Chez to provide up-to-date cryptocurrency prices, charts and data about the emerging cryptocurrency markets. Since then, the world of blockchain and cryptocurrency has grown exponentially and we are very proud to have grown with it. We take our data very seriously and we do not change our data to fit any narrative: we stand for accurately, timely and unbiased information.\nAll Your Crypto Market Data Needs in One Place\nHere at CoinMarketCap, we work very hard to ensure that all the relevant and\nup-to-date information\nabout cryptocurrencies, coins and tokens can be located in one easily discoverable place. From the very first day, the goal was for the site to be the number one location online for crypto market data, and we work hard to empower our users with our unbiased and accurate information.\nWe Provide Live and Historic Crypto Charts for Free\nEach of our coin data pages has a graph that shows both the current and historic price information for the coin or token. Normally, the graph starts at the launch of the asset, but it is possible to select specific to and from dates to customize the chart to your own needs. These charts and their information are free to visitors of our website.\nThe most experienced and professional traders often choose to use the\nbest crypto API\non the market. Our API enables millions of calls to track current prices and to also investigate historic prices and is used by some of the largest crypto exchanges and financial institutions in the world.\nCoinMarketCap also provides data about the\nmost successful traders\nfor you to monitor. We also provide data about the\nlatest trending cryptos\nand\ntrending DEX pairs\n.\nHow Do We Calculate Our Cryptocurrency Prices?\nWe receive updated cryptocurrency prices directly from many exchanges based on their pairs. We then convert the number to USD. A full explanation can be found\nhere\n.\nRelated Links\nAre you ready to learn more? Visit our\nglossary\nand\ncrypto learning\ncenter.\nAre you interested in the scope of crypto assets? Investigate our list of\ncryptocurrency categories.\nAre you interested in knowing which the\nhottest dex pairs\nare currently?\nHow Do We Calculate Our Crypto Valuations?\nWe calculate our valuations based on the total circulating supply of an asset multiplied by the currency reference price. The topic is explained in more detail\nhere\n.\nHow Do We Calculate the Cry",
+          "key_points": [
+            "All Your Crypto Market Data Needs in One Place Here at CoinMarketCap, we work very hard to ensure that all the relevant and up-to-date information about cryptocurrencies, coins and tokens can be located in one easily discoverable place.",
+            "We Provide Live and Historic Crypto Charts for Free Each of our coin data pages has a graph that shows both the current and historic price information for the coin or token.",
+            "Our API enables millions of calls to track current prices and to also investigate historic prices and is used by some of the largest crypto exchanges and financial institutions in the world.",
+            "Since then, the world of blockchain and cryptocurrency has grown exponentially and we are very proud to have grown with it."
+          ],
+          "theme": "Market Impact"
+        },
+        {
+          "title": "BTC USD \u2014 Bitcoin Price and Chart \u2014 TradingView \u2014 India",
+          "url": "https://in.tradingview.com/symbols/BTCUSD/",
+          "snippet": "April 27, 2026 - BTCUSD (1H) High-Probability Reversal Setups:Retest vs.LiquidityHello Traders, Following a sharp institutional sell-off from the $73,000+ levels, Bitcoin (BTCUSD) is currently hovering around a crucial turning point near $70,328. As ",
+          "published": "",
+          "full_content": "Bitcoin is the world\u2019s most traded cryptocurrency, and represents the largest piece of the crypto market pie. It was the first digital coin and as such, remains the most famous and widely-adopted cryptocurrency in the world. It's the original gangster in whose footsteps all other coins follow. The birth of Bitcoin was the genesis of an entirely new asset class, and a huge step away from traditional, centrally controlled money. Today, many advocates believe Bitcoin will facilitate the next stage for the global financial system, although this \u2014 of course \u2014 remains to be seen.",
+          "key_points": [
+            "Today, many advocates believe Bitcoin will facilitate the next stage for the global financial system, although this \u2014 of course \u2014 remains to be seen."
+          ],
+          "theme": "Market Impact"
+        },
+        {
+          "title": "Bitcoin Price Prediction 2026-2031: Can BTC Reclaim $70K?",
+          "url": "https://coindcx.com/blog/price-predictions/bitcoin-price-weekly/",
+          "snippet": "1 day ago - Current Status: Presently, Bitcoin is priced at $63,324, which shows resilience despite a minor loss of just 1.3% in the last 24 hours. The recent dip seems to be caused by some investors taking profits shortly after the significant ramp-",
+          "published": "",
+          "full_content": "By 2027, Bitcoin could be on a stronger recovery trajectory, fueled by increasing adoption in both developed and emerging economies. As more financial institutions integrate crypto services and Bitcoin becomes a more established part of investment portfolios worldwide, the demand for BTC is expected to rise steadily. At this stage, Bitcoin may also see broader adoption in sectors beyond investment, such as remittances and as a hedge against inflation in countries with less stable fiat currencies. While 2027\u2019s price predictions vary, analysts suggest Bitcoin could reach between $120,000 and $180,000, driven by the gradual maturation of crypto markets, advancements in blockchain scalability, and increasing integration with traditional finance.",
+          "key_points": [
+            "As more financial institutions integrate crypto services and Bitcoin becomes a more established part of investment portfolios worldwide, the demand for BTC is expected to rise steadily.",
+            "By 2027, Bitcoin could be on a stronger recovery trajectory, fueled by increasing adoption in both developed and emerging economies.",
+            "At this stage, Bitcoin may also see broader adoption in sectors beyond investment, such as remittances and as a hedge against inflation in countries with less stable fiat currencies.",
+            "While 2027\u2019s price predictions vary, analysts suggest Bitcoin could reach between $120,000 and $180,000, driven by the gradual maturation of crypto markets, advancements in blockchain scalability, and increasing integration with traditional finance."
+          ],
+          "theme": "Investor Strategy"
+        }
+      ],
+      "data_points": [],
+      "raw_data": {},
+      "error": null,
+      "collected_at": "2026-06-09T06:06:17.003710+00:00",
+      "theme_groups": [
+        {
+          "name": "Market Impact",
+          "sources": [
+            {
+              "title": "Bitcoin Price History Chart 2009 To 2024 \u2013 Forbes Advisor INDIA",
+              "url": "https://www.forbes.com/advisor/in/investing/cryptocurrency/bitcoin-price-history-chart/",
+              "snippet": "April 1, 2026 - As of Feb. 29, 2024, BTC hit the exceptional level of $62,642 for the first time since Dec. 2021, with a market capitalization of $1.23 trillion and a cryptocurrency market capitalization of $2.29 trillion way before Bitcoin Halving.",
+              "published": "",
+              "full_content": "",
+              "key_points": [],
+              "theme": "Market Impact"
+            },
+            {
+              "title": "Bitcoin cracks $60,000, sinking to lowest level since October 2024",
+              "url": "https://www.cnbc.com/2026/06/05/bitcoin-dismal-week-price-below-all-time-high-crypto-investors.html",
+              "snippet": "3 days ago - Bitcoin extended its losses on Friday, dropping to October 2024 lows to cap an already bruising week for crypto investors. The flagship cryptocurrency was last lower by 3.4% at $61,514.90. Earlier, it fell to $59,099.25, its lowest level",
+              "published": "",
+              "full_content": "Sopa Images | Lightrocket | Getty Images\nBitcoin\nextended its losses on Friday, dropping to October 2024 lows to cap an already bruising week for crypto investors.\nThe flagship cryptocurrency was last lower by 3.4% at $61,514.90. Earlier, it fell to $59,099.25, its lowest level since October 2024. It was off 16% on the week.\nThe declines began after\nStrategy\n, founded by Michael Saylor,\nsold a small amount of its bitcoin\nholding. This\nweighed on sentiment\nand forced hundreds of millions of dollars in liquidations that accelerated the downside pressure. Losses were exacerbated after a stronger-than-expected\nMay jobs report\nFriday sent Treasury yields higher and pressured risk assets.\nStrategy\ngave back earlier losses but still ended the day down 6.9% and the week down 24%, making it the stock's worst week since November 2022.\nStock Chart Icon\nStock chart icon\nHow bitcoin has fared over the past year.\nAt the $60,000 level, bitcoin is down by more than half from its all-time high of about $126,000 reached in October 2025.\nCharles-Henry Monchau, chief investment officer at Syz Group, said bitcoin's latest weekly decline\nhas been driven by a combination\nof Strategy's selling and a crowding-out effect from hot money chasing other assets.\n\"Speculators are going all-in on AI stocks and memory chips, especially in Korea, and the market also anticipates that upcoming monster IPOs\u00a0will divert some retail money into the new stocks,\" Monchau told CNBC over email.\nAdditionally, bitcoin's key catalyst for renewed investor interest, the crypto market structure bill known as the\nClarity Act\n, is drifting further out of reach as legislative priorities shift and lawmakers remain divided on key provisions of the bill.\nAs uncertainty around the Iran war has kept bitcoin under pressure in recent months, the stock market has risen to new records. The divergence has investors questioning both of bitcoin's dominant narratives: that it is \"digital gold\" that should benefit from geopolitical uncertainty, and that it trades like a high beta tech stock.\n\"We saw the 30-day Pearson correlation between bitcoin and the Nasdaq and S&P 500 reach a near-perfect positive correlation as recently as a month ago, but that has collapsed over the last several weeks,\" Rajiv Sawhney, head of international portfolio management at Wave Digital Assets, told CNBC over email.\n\"So while global equities, particularly tech stocks, continued to reach new all-time highs, bitcoin has failed to track the same u",
+              "key_points": [
+                "\"We saw the 30-day Pearson correlation between bitcoin and the Nasdaq and S&P 500 reach a near-perfect positive correlation as recently as a month ago, but that has collapsed over the last several weeks,\" Rajiv Sawhney, head of international portfolio management at Wave Digital Assets, told CNBC over email.",
+                "Speaking to CNBC's Squawk Box Europe on Friday, Strive chief executive Matt Cole said that bitcoin's fundamentals have \"never been better.\" \"This is the fifth time that bitcoin has been at its 200-week moving average \u2014 the previous four have all been the perfect time to buy the dip, and I think this time will age in the same manner,\" he added.",
+                "Charles-Henry Monchau, chief investment officer at Syz Group, said bitcoin's latest weekly decline has been driven by a combination of Strategy's selling and a crowding-out effect from hot money chasing other assets.",
+                "\"Speculators are going all-in on AI stocks and memory chips, especially in Korea, and the market also anticipates that upcoming monster IPOs will divert some retail money into the new stocks,\" Monchau told CNBC over email."
+              ],
+              "theme": "Market Impact"
+            },
+            {
+              "title": "Bitcoin (BTC) Price Prediction 2026 2027 2028 - 2040",
+              "url": "https://changelly.com/blog/bitcoin-price-prediction/",
+              "snippet": "3 days ago - \u2022 2023, Recovery Phase: $16,500 \u2192 $42,000 Bitcoin recovered approximately 157% over the year, driven largely by anticipation of U.S. spot ETF approvals and renewed macro stability. \u2022 2024, Spot ETFs and Fourth Halving: $42,000 \u2192 $106,000",
+              "published": "",
+              "full_content": "",
+              "key_points": [],
+              "theme": "Market Impact"
+            },
+            {
+              "title": "Bitcoin Price in India (BTC) - Investing.com India",
+              "url": "https://in.investing.com/crypto/bitcoin",
+              "snippet": "19 hours ago - Investing.com -- The world\u2019s largest cryptocurrency on Friday plumbed its lowest level since October 2024, and briefly... ... Investing.com -- Bitcoin rose above $61,000 on Sunday, clawing back from its lowest levels of 2026 after a br",
+              "published": "",
+              "full_content": "",
+              "key_points": [],
+              "theme": "Market Impact"
+            },
+            {
+              "title": "Cryptocurrency Prices, Charts And Market Capitalizations | CoinMarketCap",
+              "url": "https://coinmarketcap.com/",
+              "snippet": "Top cryptocurrency prices and charts, listed by market capitalization. Free access to current and historic data for Bitcoin and thousands of altcoins.",
+              "published": "",
+              "full_content": "Today\u2019s Cryptocurrency Prices, Charts and Data\nWelcome to CoinMarketCap.com! This site was founded in May 2013 by Brandon Chez to provide up-to-date cryptocurrency prices, charts and data about the emerging cryptocurrency markets. Since then, the world of blockchain and cryptocurrency has grown exponentially and we are very proud to have grown with it. We take our data very seriously and we do not change our data to fit any narrative: we stand for accurately, timely and unbiased information.\nAll Your Crypto Market Data Needs in One Place\nHere at CoinMarketCap, we work very hard to ensure that all the relevant and\nup-to-date information\nabout cryptocurrencies, coins and tokens can be located in one easily discoverable place. From the very first day, the goal was for the site to be the number one location online for crypto market data, and we work hard to empower our users with our unbiased and accurate information.\nWe Provide Live and Historic Crypto Charts for Free\nEach of our coin data pages has a graph that shows both the current and historic price information for the coin or token. Normally, the graph starts at the launch of the asset, but it is possible to select specific to and from dates to customize the chart to your own needs. These charts and their information are free to visitors of our website.\nThe most experienced and professional traders often choose to use the\nbest crypto API\non the market. Our API enables millions of calls to track current prices and to also investigate historic prices and is used by some of the largest crypto exchanges and financial institutions in the world.\nCoinMarketCap also provides data about the\nmost successful traders\nfor you to monitor. We also provide data about the\nlatest trending cryptos\nand\ntrending DEX pairs\n.\nHow Do We Calculate Our Cryptocurrency Prices?\nWe receive updated cryptocurrency prices directly from many exchanges based on their pairs. We then convert the number to USD. A full explanation can be found\nhere\n.\nRelated Links\nAre you ready to learn more? Visit our\nglossary\nand\ncrypto learning\ncenter.\nAre you interested in the scope of crypto assets? Investigate our list of\ncryptocurrency categories.\nAre you interested in knowing which the\nhottest dex pairs\nare currently?\nHow Do We Calculate Our Crypto Valuations?\nWe calculate our valuations based on the total circulating supply of an asset multiplied by the currency reference price. The topic is explained in more detail\nhere\n.\nHow Do We Calculate the Cry",
+              "key_points": [
+                "All Your Crypto Market Data Needs in One Place Here at CoinMarketCap, we work very hard to ensure that all the relevant and up-to-date information about cryptocurrencies, coins and tokens can be located in one easily discoverable place.",
+                "We Provide Live and Historic Crypto Charts for Free Each of our coin data pages has a graph that shows both the current and historic price information for the coin or token.",
+                "Our API enables millions of calls to track current prices and to also investigate historic prices and is used by some of the largest crypto exchanges and financial institutions in the world.",
+                "Since then, the world of blockchain and cryptocurrency has grown exponentially and we are very proud to have grown with it."
+              ],
+              "theme": "Market Impact"
+            },
+            {
+              "title": "BTC USD \u2014 Bitcoin Price and Chart \u2014 TradingView \u2014 India",
+              "url": "https://in.tradingview.com/symbols/BTCUSD/",
+              "snippet": "April 27, 2026 - BTCUSD (1H) High-Probability Reversal Setups:Retest vs.LiquidityHello Traders, Following a sharp institutional sell-off from the $73,000+ levels, Bitcoin (BTCUSD) is currently hovering around a crucial turning point near $70,328. As ",
+              "published": "",
+              "full_content": "Bitcoin is the world\u2019s most traded cryptocurrency, and represents the largest piece of the crypto market pie. It was the first digital coin and as such, remains the most famous and widely-adopted cryptocurrency in the world. It's the original gangster in whose footsteps all other coins follow. The birth of Bitcoin was the genesis of an entirely new asset class, and a huge step away from traditional, centrally controlled money. Today, many advocates believe Bitcoin will facilitate the next stage for the global financial system, although this \u2014 of course \u2014 remains to be seen.",
+              "key_points": [
+                "Today, many advocates believe Bitcoin will facilitate the next stage for the global financial system, although this \u2014 of course \u2014 remains to be seen."
+              ],
+              "theme": "Market Impact"
+            }
+          ],
+          "insight": ""
+        },
+        {
+          "name": "Investor Strategy",
+          "sources": [
+            {
+              "title": "Bitcoin Price Prediction 2026-2031: Can BTC Reclaim $70K?",
+              "url": "https://coindcx.com/blog/price-predictions/bitcoin-price-weekly/",
+              "snippet": "1 day ago - Current Status: Presently, Bitcoin is priced at $63,324, which shows resilience despite a minor loss of just 1.3% in the last 24 hours. The recent dip seems to be caused by some investors taking profits shortly after the significant ramp-",
+              "published": "",
+              "full_content": "By 2027, Bitcoin could be on a stronger recovery trajectory, fueled by increasing adoption in both developed and emerging economies. As more financial institutions integrate crypto services and Bitcoin becomes a more established part of investment portfolios worldwide, the demand for BTC is expected to rise steadily. At this stage, Bitcoin may also see broader adoption in sectors beyond investment, such as remittances and as a hedge against inflation in countries with less stable fiat currencies. While 2027\u2019s price predictions vary, analysts suggest Bitcoin could reach between $120,000 and $180,000, driven by the gradual maturation of crypto markets, advancements in blockchain scalability, and increasing integration with traditional finance.",
+              "key_points": [
+                "As more financial institutions integrate crypto services and Bitcoin becomes a more established part of investment portfolios worldwide, the demand for BTC is expected to rise steadily.",
+                "By 2027, Bitcoin could be on a stronger recovery trajectory, fueled by increasing adoption in both developed and emerging economies.",
+                "At this stage, Bitcoin may also see broader adoption in sectors beyond investment, such as remittances and as a hedge against inflation in countries with less stable fiat currencies.",
+                "While 2027\u2019s price predictions vary, analysts suggest Bitcoin could reach between $120,000 and $180,000, driven by the gradual maturation of crypto markets, advancements in blockchain scalability, and increasing integration with traditional finance."
+              ],
+              "theme": "Investor Strategy"
+            }
+          ],
+          "insight": ""
+        }
+      ],
+      "top_insights": [
+        "Speaking to CNBC's Squawk Box Europe on Friday, Strive chief executive Matt Cole said that bitcoin's fundamentals have \"never been better.\" \"This is the fifth time that bitcoin has been at its 200-week moving average \u2014 the previous four have all been the perfect time to buy the dip, and I think this",
+        "\"We saw the 30-day Pearson correlation between bitcoin and the Nasdaq and S&P 500 reach a near-perfect positive correlation as recently as a month ago, but that has collapsed over the last several weeks,\" Rajiv Sawhney, head of international portfolio management at Wave Digital Assets, told CNBC ove",
+        "All Your Crypto Market Data Needs in One Place Here at CoinMarketCap, we work very hard to ensure that all the relevant and up-to-date information about cryptocurrencies, coins and tokens can be located in one easily discoverable place.",
+        "We Provide Live and Historic Crypto Charts for Free Each of our coin data pages has a graph that shows both the current and historic price information for the coin or token.",
+        "\"Speculators are going all-in on AI stocks and memory chips, especially in Korea, and the market also anticipates that upcoming monster IPOs will divert some retail money into the new stocks,\" Monchau told CNBC over email."
+      ]
+    }
+  ],
+  "synthesis": "",
+  "rounds": [],
+  "claims": [],
+  "gaps_remaining": [],
+  "generated_at": "2026-06-09T06:05:52.646791+00:00",
+  "total_sources": 7,
+  "output_path_md": "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_price_2024_20260609_060552.md",
+  "output_path_pdf": null
+}
