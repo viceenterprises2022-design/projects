@@ -42110,23 +42110,53 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/main.py": {
-    "mtime": 1780975768.0896518,
-    "ast_hash": "987b67bd47025c6038adb119baf02432",
+    "mtime": 1780976327.7325592,
+    "ast_hash": "842c61c1df273d63f8acf14898f93486",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/docker-compose.yml": {
-    "mtime": 1780975780.0546925,
-    "ast_hash": "3765beab29d13bbf18aeab52e0be5613",
+    "mtime": 1780976330.4495683,
+    "ast_hash": "39c465e55c965cbd4ec95e86e57e1a7f",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/README.md": {
-    "mtime": 1780976014.37049,
-    "ast_hash": "19276d30b50e8787831b906f4fd297f6",
+    "mtime": 1780976332.675576,
+    "ast_hash": "800fceba41bac7700d2d0994ab9847df",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/requirements.txt": {
     "mtime": 1780975777.9466853,
     "ast_hash": "ac83d07938d47c22b5bb7eb5dd83fb75",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/reasoners/__init__.py": {
+    "mtime": 1780975736.1015432,
+    "ast_hash": "38cdb795315d2ac0b5d4177f0be8552a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/reasoners/safety.py": {
+    "mtime": 1780975726.2371607,
+    "ast_hash": "99100bf03df22d5cd3aa4cc9cc1d19de",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/reasoners/coin.py": {
+    "mtime": 1780975734.1805367,
+    "ast_hash": "aa9aee67bd623fac48dbf36bd4581742",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/reasoners/market.py": {
+    "mtime": 1780975731.1275265,
+    "ast_hash": "bafe752ec218b3dcbc1b851dea66abfd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/tools/cmc_mcp_tools.py": {
+    "mtime": 1780976425.6778932,
+    "ast_hash": "cd9f054c55f506f52b855bbfec6f4a25",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/CLAUDE.md": {
+    "mtime": 1780976341.5546062,
+    "ast_hash": "c2b36403e01ea08bedfb6467e7921cd0",
     "semantic_hash": ""
   }
 }
