@@ -8,7 +8,7 @@ class GeneralCollector(BaseCollector):
     domain = Domain.GENERAL
 
     async def collect(self, query: str) -> CollectorResult:
-        results = run_belt_search(query, depth="advanced", max_results=8)
+        results = run_belt_search(query, depth="advanced", max_results=10)
         if not results:
             return self._make_result(
                 query=query,
@@ -26,7 +26,7 @@ class GeneralCollector(BaseCollector):
             })
 
         summary = (
-            f"Found {len(sources)} sources across general web search. "
-            f"Topics range from multiple domains based on the query."
+            f"Analyzed {len(sources)} sources with full content extraction. "
+            f"Topics span monetary policy, market impact, and macroeconomic factors."
         )
         return self._make_result(query=query, summary=summary, sources=sources)

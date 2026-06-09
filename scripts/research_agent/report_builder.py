@@ -63,15 +63,12 @@ def build_markdown(report: ResearchReport) -> str:
                 for tg in cr.theme_groups:
                     lines.append(f"**{tg.name}** — {len(tg.sources)} source(s)")
                     for src in tg.sources:
-                        line = f"- [{src.title}]({src.url})"
+                        lines.append(f"- [{src.title}]({src.url})")
                         if src.key_points:
-                            kp = src.key_points[0]
-                            line += f"\n  - {kp[:200]}"
-                        elif src.snippet:
-                            line += f"\n  - {src.snippet[:200]}"
+                            kp = src.key_points[0].strip()[:250]
+                            lines.append(f"  > {kp}")
                         if src.published:
-                            line += f" *({src.published})*"
-                        lines.append(line)
+                            lines.append(f"  *({src.published})*")
                     lines.append("")
 
     lines.append("---")

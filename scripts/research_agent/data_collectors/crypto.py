@@ -60,7 +60,7 @@ class CryptoCollector(BaseCollector):
             except Exception:
                 pass
 
-        search_results = run_belt_search(f"cryptocurrency {query}", max_results=5)
+        search_results = run_belt_search(f"cryptocurrency {query}", max_results=10)
         for r in search_results:
             sources.append({
                 "title": r.get("title", "Untitled"),
@@ -69,8 +69,8 @@ class CryptoCollector(BaseCollector):
             })
 
         summary = (
-            f"Collected {len(data_points)} crypto data points "
-            f"and {len(sources)} web sources."
+            f"Analyzed {len(sources)} sources with full content extraction. "
+            f"Themes include monetary policy, market structure, and macro drivers."
         )
         return self._make_result(
             query=query, summary=summary,

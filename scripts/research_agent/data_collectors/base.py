@@ -63,18 +63,67 @@ def _run_ddg_search(query: str, max_results: int = 5) -> list[dict]:
 def extract_url_content(url: str, timeout: int = 15) -> str:
     try:
         import httpx
-        from bs4 import BeautifulSoup
+
         resp = httpx.get(url, timeout=timeout, follow_redirects=True,
                          headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"})
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
-        for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
-            tag.decompose()
-        text = soup.get_text(separator="\n", strip=True)
-        lines = [l for l in text.splitlines() if len(l.strip()) > 40]
-        return "\n".join(lines[:80])
+        html = resp.text
+        if not html or len(html) < 200:
+            return ""
     except Exception:
         return ""
+
+    try:
+        import logging
+        logging.getLogger("readability").setLevel(logging.ERROR)
+        from readability import Document
+        doc = Document(html)
+        summary_html = doc.summary()
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(summary_html, "html.parser")
+        text = soup.get_text(separator="\n", strip=True)
+        if len(text) > 100:
+            return _clean_extracted_text(text)
+    except Exception:
+        pass
+
+    try:
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(html, "html.parser")
+        for tag in soup(["script", "style", "nav", "footer", "header", "aside", "noscript"]):
+            tag.decompose()
+        candidates = (
+            soup.find("article") or
+            soup.find(class_=lambda c: c and any(x in c.lower() for x in ["content", "article", "post", "main", "entry"])) or
+            soup.find("main") or
+            soup.find("body")
+        )
+        if candidates:
+            text = candidates.get_text(separator="\n", strip=True)
+        else:
+            text = soup.get_text(separator="\n", strip=True)
+        return _clean_extracted_text(text)
+    except Exception:
+        return ""
+
+
+def _clean_extracted_text(text: str) -> str:
+    import re
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    lines = text.splitlines()
+    cleaned = []
+    for l in lines:
+        s = l.strip()
+        if not s:
+            continue
+        if any(s.lower().startswith(x) for x in [
+            "copyright", "all rights reserved", "privacy policy", "terms of service",
+            "cookie", "subscribe", "follow us", "share this", "related:", "you might also",
+            "advertisement", "click here", "read more", "sign up", "newsletter",
+        ]):
+            continue
+        cleaned.append(s)
+    return "\n".join(cleaned[:40])
 
 
 def extract_key_points(text: str, max_points: int = 3) -> list[str]:
@@ -82,7 +131,30 @@ def extract_key_points(text: str, max_points: int = 3) -> list[str]:
         return []
     import re
     sentences = re.split(r'(?<=[.!?])\s+', text)
-    candidates = [s.strip() for s in sentences if 40 < len(s.strip()) < 300]
+    candidates = []
+    noise_patterns = re.compile(
+        r'^(i\s+am|i\'?m\s+a|this\s+article|we\s+will|in\s+this|click|sign\s+up|'
+        r'disclaimer|opinions?\s+expressed|always\s+consult|do\s+your\s+own|'
+        r'this\s+is\s+not|investing\s+involves|past\s+performance|'
+        r'(author|journalist|writer|reporter)\s+is\s+a|with\s+over\s+\d+\s+years?|'
+        r'^\s*:|\w+\s+is\s+a\s+\w+\s+(journalist|writer|reporter))',
+        re.IGNORECASE,
+    )
+    heading_pattern = re.compile(r'^(how\s+\w+|what\s+\w+|why\s+\w+|the\s+\w+\s+\w+|'
+                                 r'\w+\s+\w+\s+\w+:\s+|breaking:)', re.IGNORECASE)
+    for s in sentences:
+        s = s.strip()
+        if len(s) < 60 or len(s) > 400:
+            continue
+        if not s.endswith((".", "!", "?")):
+            continue
+        if noise_patterns.search(s):
+            continue
+        if heading_pattern.match(s):
+            continue
+        if s == s.upper() and len(s) < 120:
+            continue
+        candidates.append(s)
     return candidates[:max_points]
 
 
@@ -130,7 +202,7 @@ def enrich_sources(raw_results: list[dict]) -> list[dict]:
             "url": url,
             "snippet": snippet[:250],
             "published": r.get("published", r.get("date", "")),
-            "full_content": content[:3000],
+            "full_content": content[:2500],
             "key_points": key_pts,
             "theme": theme,
         })
@@ -181,13 +253,20 @@ class BaseCollector(ABC):
         )
 
 
-def _build_insights(sources: list, max_insights: int = 3) -> list[str]:
-    insights = []
+def _build_insights(sources: list, max_insights: int = 5) -> list[str]:
+    candidates = []
     seen = set()
     for src in sources:
         for kp in src.key_points:
-            key = kp[:60]
-            if key not in seen:
-                seen.add(key)
-                insights.append(kp)
-    return insights[:max_insights]
+            key = kp[:80].lower().strip()
+            if key in seen:
+                continue
+            seen.add(key)
+            text = kp.strip()
+            if not text.endswith((".", "!", "?")):
+                continue
+            specificity = sum(1 for w in text.split() if w[0].isupper() or w.isdigit())
+            if specificity >= 2 or len(text) > 80:
+                candidates.append((specificity, len(text), text))
+    candidates.sort(key=lambda x: (-x[0], -x[1]))
+    return [c[2][:300] for c in candidates[:max_insights]]
