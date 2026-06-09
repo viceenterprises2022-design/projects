@@ -654,6 +654,70 @@ def _format_macro_row(row: dict) -> dict:
     }
 
 
+@app.get("/crypto-matrix", include_in_schema=False)
+def serve_crypto_matrix():
+    f = FRONTEND_DIR / "crypto_matrix.html"
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="crypto_matrix.html not found")
+    return FileResponse(str(f))
+
+
+# ── Paper Trading Routes ──────────────────────────────────────────────────────
+from pydantic import BaseModel
+from typing import Optional
+
+class PaperOrderRequest(BaseModel):
+    symbol: str
+    side: str
+    type: str
+    size: float
+    leverage: float
+    limit_price: Optional[float] = None
+
+class PaperCloseRequest(BaseModel):
+    symbol: str
+    side: str
+
+@app.get("/api/paper/state")
+def api_paper_state(symbol: str = Query("ETH")):
+    try:
+        return engine.get_symbol_state(symbol)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/paper/order")
+def api_paper_order(req: PaperOrderRequest):
+    try:
+        res = engine.place_order(req.symbol, req.side, req.type, req.size, req.leverage, req.limit_price)
+        if not res.get("success"):
+            raise HTTPException(status_code=400, detail=res.get("error", "Order failed"))
+        return res
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/paper/close")
+def api_paper_close(req: PaperCloseRequest):
+    try:
+        res = engine.close_position(req.symbol, req.side)
+        if not res.get("success"):
+            raise HTTPException(status_code=400, detail=res.get("error", "Close failed"))
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/paper/reset")
+def api_paper_reset():
+    try:
+        import paper_trading_db as ptdb
+        ptdb.reset_db()
+        engine._recalculate_account_state(100000.0)
+        return {"success": True}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ── Entry Point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":

@@ -401,7 +401,7 @@ class PaperTradingEngine:
             time.sleep(300) # 5 minutes
 
     def _fetch_gemini_commentary(self, sym: str):
-        """Call Gemini to get a professional trading advisor report."""
+        """Call Antigravity to get a professional trading advisor report."""
         inds = self.indicators_cache.get(sym, self._get_fallback_indicators(sym, self.prices[sym]))
         
         prompt = f"""
@@ -421,21 +421,29 @@ class PaperTradingEngine:
         Ensure the final output contains strictly 3 sentences and no conversational fillers.
         """
         
-        headers = {"Content-Type": "application/json"}
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.2,
-                "maxOutputTokens": 200
-            }
-        }
-        
-        r = requests.post(url, json=payload, headers=headers, timeout=12)
-        if r.status_code == 200:
-            text = r.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-            self.advisor_cache[sym] = text
-            log.info("[Paper Engine] Successfully updated Gemini advice for %s.", sym)
+        try:
+            import asyncio
+            from google.antigravity import Agent, LocalAgentConfig
+            
+            async def _run_agy():
+                config = LocalAgentConfig(
+                    api_key=GEMINI_API_KEY,
+                )
+                async with Agent(config=config) as agent:
+                    response = await agent.chat(prompt)
+                    return await response.text()
+            
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            text = loop.run_until_complete(_run_agy())
+            loop.close()
+            
+            text = text.strip()
+            if text:
+                self.advisor_cache[sym] = text
+                log.info("[Paper Engine] Successfully updated Antigravity advice for %s.", sym)
+        except Exception as e:
+            log.error("[Paper Engine] Antigravity failed for %s: %s", sym, e)
 
     # ── Technical Indicator Math Helpers ──────────────────────────────────────
     
@@ -472,6 +480,8 @@ class PaperTradingEngine:
 if __name__ == "__main__":
     engine = PaperTradingEngine()
     engine.start()
-    time.sleep(4)
+    time.sleep(3)
+    print("[Test] Running Antigravity Advisor generation...")
+    engine._fetch_gemini_commentary("ETH")
     print("ETH State:", engine.get_symbol_state("ETH"))
     engine.stop()

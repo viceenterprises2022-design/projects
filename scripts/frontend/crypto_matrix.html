@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IMMT AI Trading World · Crypto Matrix</title>
+  <meta name="description" content="AlphaEdge Paper Trading & AI Diagnostics Matrix Dashboard for BTC & ETH.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/crypto_matrix.css">
+</head>
+<body>
+
+  <!-- ── Header ────────────────────────────────── -->
+  <header>
+    <div class="brand">
+      <div class="logo-mark">AE</div>
+      <div>
+        <div class="logo-name">AlphaEdge Intelligence</div>
+        <nav class="nav-links">
+          <a href="/">Dashboard</a>
+          <a href="/market">Market</a>
+          <a href="/portfolio">Portfolio</a>
+          <a href="/holdings">Holdings</a>
+          <a href="/positions">Positions</a>
+          <a href="/crypto-matrix" class="active">Crypto Matrix</a>
+        </nav>
+      </div>
+    </div>
+    
+    <div class="sym-tabs">
+      <button class="sym-tab active" id="tab-eth" onclick="switchSymbol('ETH')">ETHUSDT</button>
+      <button class="sym-tab" id="tab-btc" onclick="switchSymbol('BTC')">BTCUSDT</button>
+    </div>
+    
+    <div class="header-right">
+      <div class="live-indicator">
+        <span class="dot"></span>
+        <span>LIVE FEEDS CONNECTED</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main Grid ── -->
+  <div class="dashboard-grid">
+    
+    <!-- Row 1: PnL Rows -->
+    <div class="pnl-row">
+      <div class="pnl-card">
+        <div class="pnl-label">Today PnL</div>
+        <div class="pnl-value up" id="today-pnl-val">+0.00 USDT</div>
+        <div class="pnl-sub" id="today-pnl-chg">▲ 0.00% Today</div>
+      </div>
+      
+      <div class="pnl-card month-pnl-wrap">
+        <div>
+          <div class="pnl-label">This Month PnL</div>
+          <div class="pnl-value dn" id="month-pnl-val">-0.00 USDT</div>
+        </div>
+        <div class="mini-chart" id="mini-chart-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+      
+      <div class="pnl-card">
+        <div class="pnl-label">Total PnL</div>
+        <div class="pnl-value up" id="total-pnl-val">+0.00 USDT</div>
+        <div class="pnl-sub" id="total-pnl-sub">ROI: 0.00% Cumulative</div>
+      </div>
+    </div>
+
+    <!-- Row 2: Deep Matrix Grid -->
+    <div class="matrix-row">
+      
+      <!-- Left Column -->
+      <div class="sidebar-col">
+        <!-- Gauges -->
+        <div class="panel-card">
+          <div class="panel-title">Position Sentiment <span class="panel-badge">Gauges</span></div>
+          <div class="gauges-container">
+            <div class="gauge-wrap">
+              <svg class="gauge-svg">
+                <circle class="gauge-bg" cx="38" cy="38" r="35"></circle>
+                <circle class="gauge-fill" id="binance-long-gauge" cx="38" cy="38" r="35"></circle>
+              </svg>
+              <div class="gauge-val-text" id="binance-long-val">70.2%</div>
+              <div class="gauge-label">Binance Longs</div>
+            </div>
+            
+            <div class="gauge-wrap">
+              <svg class="gauge-svg">
+                <circle class="gauge-bg" cx="38" cy="38" r="35"></circle>
+                <circle class="gauge-fill" id="toptrader-long-gauge" style="stroke: var(--accent)" cx="38" cy="38" r="35"></circle>
+              </svg>
+              <div class="gauge-val-text" id="toptrader-long-val">56.9%</div>
+              <div class="gauge-label">Top Traders Long</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Live Chart -->
+        <div class="panel-card" style="flex: 1; border-bottom: none; display: flex; flex-direction: column;">
+          <div class="panel-title">Realtime Market Chart <span class="panel-badge">5M</span></div>
+          <div class="chart-container" id="tv-widget-wrap">
+            <!-- Embedded TradingView widget iframe -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Column (Isometric Map) -->
+      <div class="center-matrix">
+        <div class="canvas-overlay-top">
+          <div class="canvas-overlay-item">
+            <div class="lbl">TrendLine 5M</div>
+            <div class="val">NONE &middot; none</div>
+          </div>
+          <div class="canvas-overlay-item">
+            <div class="lbl">Fast ReAction</div>
+            <div class="val">standby &middot; NONE</div>
+          </div>
+        </div>
+        
+        <!-- Order Panel Overlay -->
+        <div class="order-panel">
+          <div class="panel-title" style="margin-bottom: 8px;">Simulated Order <span class="panel-badge">USDT</span></div>
+          
+          <div class="order-form-group">
+            <label>Trade Side</label>
+            <div class="order-form-inputs">
+              <button class="order-btn-side long active">LONG</button>
+              <button class="order-btn-side short">SHORT</button>
+            </div>
+          </div>
+          
+          <div class="order-form-group">
+            <label>Order Type</label>
+            <select class="order-input" id="order-type">
+              <option value="MARKET">MARKET</option>
+              <option value="LIMIT">LIMIT</option>
+            </select>
+          </div>
+          
+          <div class="order-form-group" id="limit-price-group" style="display: none;">
+            <label>Limit Price</label>
+            <input type="number" class="order-input" id="order-price" step="0.01">
+          </div>
+          
+          <div class="order-form-group">
+            <label>Size (contracts)</label>
+            <input type="number" class="order-input" id="order-size" value="0.1" step="0.01">
+          </div>
+          
+          <div class="order-form-group">
+            <label>Leverage</label>
+            <select class="order-input" id="order-leverage">
+              <option value="1">1x (Spot)</option>
+              <option value="5">5x (Conserv)</option>
+              <option value="10" selected>10x (Medium)</option>
+              <option value="20">20x (Aggr)</option>
+            </select>
+          </div>
+          
+          <button class="order-btn-submit" onclick="submitOrder()">PLACE SIMULATED ORDER</button>
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="matrix-canvas"></canvas>
+        </div>
+        
+        <!-- Position execution strength bar -->
+        <div class="position-execution-bar">
+          <div class="bar-title">
+            <span>Execution Strength Balance</span>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-fill-long" id="execution-strength-fill" style="width: 70.2%"></div>
+          </div>
+          <div class="strength-labels">
+            <span id="execution-strength-val">LONG 70.2% / SHORT 29.8%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="sidebar-col sidebar-right">
+        <!-- AI Gate Checklist -->
+        <div class="panel-card">
+          <div class="panel-title">AI Gate Breakdown <span class="panel-badge">Quality</span></div>
+          <div id="gate-breakdown-list">
+            <!-- Checklist items -->
+          </div>
+        </div>
+        
+        <!-- AI Advisor -->
+        <div class="panel-card">
+          <div class="panel-title">AI Advisor Commentary <span class="panel-badge">LLM</span></div>
+          <div class="advisor-text" id="advisor-text-content">
+            Loading market commentary...
+          </div>
+        </div>
+        
+        <!-- Active open positions list -->
+        <div class="panel-card" style="flex: 1;">
+          <div class="panel-title">Active Paper Positions <span class="panel-badge" id="open-pos-count">0 POS</span></div>
+          <div class="open-pos-list" id="open-positions-list">
+            <!-- Open positions -->
+          </div>
+        </div>
+        
+        <!-- Ratio Grid stats -->
+        <div class="panel-card">
+          <div class="panel-title">Cross Asset Ratios <span class="panel-badge">Stats</span></div>
+          <div class="ratio-info">
+            <div class="ratio-row">
+              <span class="ratio-label">Put/Call Ratio</span>
+              <span class="ratio-val" id="stat-overall-pcr">1.0</span>
+            </div>
+            <div class="ratio-row">
+              <span class="ratio-label">Option Max Pain</span>
+              <span class="ratio-val" id="stat-max-pain">0</span>
+            </div>
+            <div class="ratio-row">
+              <span class="ratio-label">Contract Expiry</span>
+              <span class="ratio-val" id="stat-expiry">—</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Account reset -->
+        <div class="reset-btn-wrap">
+          <button class="btn-reset-acct" onclick="resetAccount()">RESET PAPER BALANCE</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 3: Bottom Ticker -->
+    <div class="bottom-ticker">
+      <span class="ticker-title">Trade LEDGER Hist</span>
+      <div class="ticks-container" id="ticks-wrap">
+        <!-- Outcomes -->
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/static/crypto_matrix.js"></script>
+</body>
+</html>

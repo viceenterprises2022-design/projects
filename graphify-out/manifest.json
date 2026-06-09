@@ -9520,8 +9520,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1779940116.4181476,
-    "ast_hash": "fad684cd7d22d42e47f36d2c3081feae",
+    "mtime": 1781018635.503118,
+    "ast_hash": "f90a056fadba0b3ef19426a96d4a3736",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_trending.py": {
@@ -33430,8 +33430,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1779768580.4907162,
-    "ast_hash": "f395abaad4dfb83d62ce641fe79bfd75",
+    "mtime": 1781018703.4173415,
+    "ast_hash": "7398a49c206bb56993aa8635a5c021c6",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
@@ -38760,23 +38760,23 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
-    "mtime": 1779716043.7441926,
-    "ast_hash": "5c20d5f88a59019255c3d48984acc96c",
+    "mtime": 1781018730.9954321,
+    "ast_hash": "1b2fd53f733e4a189992025e2906a2e0",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/portfolio.html": {
-    "mtime": 1779716004.0790617,
-    "ast_hash": "b89b85f17711ca07f4ba415fde2af5a6",
+    "mtime": 1781018724.9364123,
+    "ast_hash": "c2a5ee3269fd1d910f4bed072ddbc1c8",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
-    "mtime": 1779716013.4690926,
-    "ast_hash": "57685620501f4667e6c5082a0512a294",
+    "mtime": 1781018713.336374,
+    "ast_hash": "315bf656b3a5ae242afa7af7bbdbd086",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/market.html": {
-    "mtime": 1779718867.8356032,
-    "ast_hash": "dee7ad3201e1d8db9797c652d8f18034",
+    "mtime": 1781018718.9323926,
+    "ast_hash": "3c6603be4957fbdd5bc157d7d28dd20a",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/.opencode/package.json": {
@@ -42537,6 +42537,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-09/Nn7EbMJRRGo/report.md": {
     "mtime": 1781005967.0441146,
     "ast_hash": "0fac53467dfee2dbaa1feac660a09fef",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/paper_trading_engine.py": {
+    "mtime": 1781018933.625099,
+    "ast_hash": "eeb0a32cbefd3cbb69cdbe1e32cb5853",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/paper_trading_db.py": {
+    "mtime": 1781018577.184926,
+    "ast_hash": "8f65fd60243e61e7a64e92e21c42cae2",
     "semantic_hash": ""
   }
 }
