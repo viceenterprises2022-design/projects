@@ -195,3 +195,20 @@ Dated history of work on this project. Source of truth: `AGENTS.md` Session Memo
 - Used a downloaded Debian package (`cursor_3.7.21_amd64.deb`) and updated it via `pkexec dpkg -i` to securely authenticate the root-level installation.
 - Verified successful installation and version changes.
 - **Multica:** logged via `/logwork` on 2026-06-08
+
+### 2026-06-09: Migrate Multica Agents to Antigravity Runtime
+- Migrated all 14 Multica agents using the deprecated Gemini runtime (`47e3b4cd-5b28-42ff-8cb6-6329036ec0cb`) to the new Antigravity runtime (`ad350c99-84ea-4650-80f9-1ddd165f7f6b`).
+- Stopped and restarted the local `multica` daemon to apply the configuration.
+- Removed deprecated `clawdi-serve-gemini.service` from systemd daemon check script `check_daemons.sh`.
+- Updated service references in `AGENTS.md` and `docs/runbook.md`.
+- **Multica:** ALP-536 (done, assigned Vinod-AI-CEO)
+- **Multica:** logged via `/logwork` on 2026-06-09
+
+### 2026-06-09: Migrate CoinMarketCap Agent to AgentField SDK
+- Scaffolded new side-by-side AgentField agent node `cmc-intelligence` on port `8082` under `scratch/cmc-agent-field/`.
+- Decomposed LangGraph orchestrator into 5 parallel specialist reasoners (`validate_intent`, `macro_analyst`, `technical_scanner`, `coin_researcher`, `report_compiler`).
+- Integrated CoinMarketCap skill hub HTTP stream endpoint (`/skill-hub/stream`) to execute native cloud skills.
+- Created `README.md` and `CLAUDE.md` documentation.
+- Successfully verified end-to-end async execution and capabilities registration on the local control plane.
+- **Multica:** ALP-537 (done, assigned Vinod-AI-CEO)
+- **Multica:** logged via `/logwork` on 2026-06-09
