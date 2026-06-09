@@ -5,7 +5,6 @@ SERVICES=(
     "clawdi-serve-hermes.service"
     "clawdi-serve-claude_code.service"
     "clawdi-serve-codex.service"
-    "clawdi-serve-gemini.service"
     "clawdi-serve-antigravity.service"
     "multica-daemon.service"
 

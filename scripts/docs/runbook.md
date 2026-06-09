@@ -7,7 +7,7 @@ _(was: ⚙️ Systemd Services)_
 | Service | Description | Port |
 |:--- |:--- |:--- |
 | `alphaedge-api.service` | AlphaEdge Market Intelligence API (FastAPI + uvicorn) | `:8765` |
-| `multica-daemon.service` | Multica Agent Runtime (Claude, Codex, Gemini, Hermes, Cursor) | — |
+| `multica-daemon.service` | Multica Agent Runtime (Claude, Codex, Antigravity, Hermes, Cursor) | — |
 
 ```bash
 # Check status

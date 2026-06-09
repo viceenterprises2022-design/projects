@@ -85,7 +85,7 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 
 ### Running Services (systemd)
 - `alphaedge-api.service` → FastAPI/uvicorn on `:8765`
-- `multica-daemon.service` → Multica Agent Runtime (Claude, Codex, Gemini, Hermes, Cursor)
+- `multica-daemon.service` → Multica Agent Runtime (Claude, Codex, Antigravity, Hermes, Cursor)
 
 ### Tech Stack
 - Python 3, FastAPI, uvicorn, SQLite (alphaedge.db + intraday OI DBs), Rich (terminal dashboards), requests/aiohttp (async HTTP)
