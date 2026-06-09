@@ -173,8 +173,13 @@ def _collect_for_query(
     if collector_cls is None:
         return None
     import asyncio
+    import inspect
+
     collector = collector_cls()
-    return asyncio.run(collector.collect(query, timelimit=timelimit))
+    sig = inspect.signature(collector.collect)
+    if "timelimit" in sig.parameters:
+        return asyncio.run(collector.collect(query, timelimit=timelimit))
+    return asyncio.run(collector.collect(query))
 
 
 class DeepResearchOrchestrator:
