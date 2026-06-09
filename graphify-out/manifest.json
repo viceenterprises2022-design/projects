@@ -42275,7 +42275,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/data_collectors/base.py": {
-    "mtime": 1780981809.2723784,
+    "mtime": 1780982092.1413543,
     "ast_hash": "03353fcd1110dfdc49746c45cb476c85",
     "semantic_hash": ""
   },
@@ -42337,6 +42337,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/research_agent/synthesizer.py": {
     "mtime": 1780981732.6221142,
     "ast_hash": "dbb301046a259affaf712d5e271bcdf0",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_influence_of_macros_on_BTC_and_ETH_20260609_051145.html": {
+    "mtime": 1780981926.9980633,
+    "ast_hash": "bd0ef33ad5b1b9756e86e7ee1a7a33e1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_influence_of_macros_on_BTC_and_ETH_20260609_051145.md": {
+    "mtime": 1780981926.9968054,
+    "ast_hash": "f2a445710255227efbe5a4af307272f5",
     "semantic_hash": ""
   }
 }
