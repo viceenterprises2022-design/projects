@@ -5,7 +5,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from typing import Optional
 
-from .schemas import DOMAIN_LABELS, Domain, ResearchReport, Source, ThemeGroup
+from .schemas import DOMAIN_LABELS, Domain, ResearchReport, Source, ThemeGroup, Claim
 
 
 def _domain_badge(domain: Domain) -> str:
@@ -233,6 +233,73 @@ def _render_references(all_sources: list[Source]) -> list[str]:
     return lines
 
 
+def _render_claims(claims: list[Claim]) -> list[str]:
+    if not claims:
+        return []
+    lines: list[str] = []
+    lines.append("## Key Claims")
+    lines.append("")
+
+    high_confidence = [c for c in claims if c.confidence == "high"]
+    medium_confidence = [c for c in claims if c.confidence == "medium"]
+    low_confidence = [c for c in claims if c.confidence == "low"]
+
+    if high_confidence:
+        lines.append("**High Confidence**")
+        for c in high_confidence:
+            lines.append(f"- **{c.statement}**")
+            if c.supporting_evidence:
+                for ev in c.supporting_evidence[:2]:
+                    lines.append(f"  - > {ev}")
+            if c.source_refs:
+                lines.append(f"  *Sources: {', '.join(f'[{r}]' for r in c.source_refs)}*")
+        lines.append("")
+
+    if medium_confidence:
+        lines.append("**Medium Confidence**")
+        for c in medium_confidence:
+            lines.append(f"- {c.statement}")
+            if c.source_refs:
+                lines.append(f"  *Sources: {', '.join(f'[{r}]' for r in c.source_refs)}*")
+        lines.append("")
+
+    if low_confidence:
+        lines.append("**Low Confidence / Needs Verification**")
+        for c in low_confidence:
+            lines.append(f"- {c.statement}")
+        lines.append("")
+
+    return lines
+
+
+def _render_research_rounds(report: ResearchReport) -> list[str]:
+    if not report.rounds:
+        return []
+    lines: list[str] = []
+    lines.append("## Research Depth")
+    lines.append("")
+
+    for r in report.rounds:
+        label = "🔍 Shallow" if r.depth == "shallow" else "📡 Deep"
+        lines.append(f"**Round {r.round_number} ({label})** — {r.sources_found} sources, {len(r.sub_queries)} query(s)")
+        if len(r.sub_queries) > 1:
+            for sq in r.sub_queries[1:]:
+                lines.append(f"- Follow-up: *{sq}*")
+        if r.gaps_identified:
+            for g in r.gaps_identified:
+                status = "✅ Resolved" if g.resolved else "❌ Unresolved"
+                lines.append(f"- Gap: {g.question} ({status})")
+        lines.append("")
+
+    if report.gaps_remaining:
+        lines.append("**Remaining Gaps:**")
+        for g in report.gaps_remaining:
+            lines.append(f"- {g}")
+        lines.append("")
+
+    return lines
+
+
 def build_markdown(report: ResearchReport) -> str:
     lines: list[str] = []
     lines.append(f"# Research Report: {report.query}")
@@ -242,6 +309,13 @@ def build_markdown(report: ResearchReport) -> str:
         f"| **Domains:** {', '.join(_domain_badge(d) for d in report.domains)}  "
         f"| **Sources:** {report.total_sources}"
     )
+    if report.claims:
+        high = sum(1 for c in report.claims if c.confidence == "high")
+        lines.append(
+            f"> **Claims:** {len(report.claims)} extracted ({high} high-confidence)"
+        )
+    if report.gaps_remaining:
+        lines.append(f"> **Gaps Remaining:** {len(report.gaps_remaining)}")
     lines.append("")
 
     if report.classifier_reasoning:
@@ -278,6 +352,16 @@ def build_markdown(report: ResearchReport) -> str:
                             if src.published:
                                 lines.append(f"  *({src.published})*")
                         lines.append("")
+
+    if report.rounds:
+        lines.append("---")
+        lines.append("")
+        lines.extend(_render_research_rounds(report))
+
+    if report.claims:
+        lines.append("---")
+        lines.append("")
+        lines.extend(_render_claims(report.claims))
 
     if all_sources:
         lines.append("---")

@@ -37,6 +37,8 @@ python -m research_agent "query" --synthesis "Your synthesized conclusion here..
 | `--domain/-d` | Force a domain (skip auto-classification) |
 | `--output/-o` | Output directory (default: ./outputs/) |
 | `--threshold/-t` | Classification confidence threshold (default 0.20) |
+| `--deep` | Multi-round research with LLM gap analysis & claims extraction (requires KIMCHI_API_KEY) |
+| `--max-rounds` | Max research rounds in deep mode (default: 2) |
 | `--no-pdf` | Skip PDF, output .md only |
 | `--json` | Also emit raw JSON with data |
 | `--synthesis/-s` | Attach synthesis text to report |
@@ -46,10 +48,12 @@ python -m research_agent "query" --synthesis "Your synthesized conclusion here..
 ```
 __main__.py          → CLI entry, orchestrates
 topic_classifier.py  → Regex/keyword auto-routing
+orchestrator.py      → Multi-round deep research with LLM gap analysis & claims
 data_collectors/     → Domain-specific data fetchers
-report_builder.py    → .md report generator
+report_builder.py    → .md report generator (includes Claims + Research Depth sections)
 pdf_converter.py     → .md → .pdf (weasyprint / pandoc / fallback)
-schemas.py           → Shared data models
+schemas.py           → Shared data models (includes Claim, ResearchRound, GapAnalysis)
+synthesizer.py       → LLM synthesis with source attribution
 ```
 
 ## PDF Dependencies

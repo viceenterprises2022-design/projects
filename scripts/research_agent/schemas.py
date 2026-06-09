@@ -81,12 +81,42 @@ class CollectorResult:
 
 
 @dataclass
+class Claim:
+    statement: str
+    confidence: str = "medium"  # high / medium / low
+    supporting_evidence: list[str] = field(default_factory=list)
+    source_refs: list[int] = field(default_factory=list)
+    counter_evidence: list[str] = field(default_factory=list)
+
+
+@dataclass
+class GapAnalysis:
+    question: str
+    context: str = ""
+    follow_up_query: str = ""
+    resolved: bool = False
+    resolution: str = ""
+
+
+@dataclass
+class ResearchRound:
+    round_number: int
+    depth: str = "shallow"  # shallow / deep
+    sub_queries: list[str] = field(default_factory=list)
+    sources_found: int = 0
+    gaps_identified: list[GapAnalysis] = field(default_factory=list)
+
+
+@dataclass
 class ResearchReport:
     query: str
     domains: list[Domain]
     classifier_reasoning: str = ""
     collector_results: list[CollectorResult] = field(default_factory=list)
     synthesis: str = ""
+    rounds: list[ResearchRound] = field(default_factory=list)
+    claims: list[Claim] = field(default_factory=list)
+    gaps_remaining: list[str] = field(default_factory=list)
     generated_at: str = field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )

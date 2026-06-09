@@ -14,6 +14,7 @@ from .data_collectors import COLLECTOR_MAP
 from .report_builder import build_markdown
 from .pdf_converter import md_to_pdf
 from .synthesizer import synthesize
+from .orchestrator import DeepResearchOrchestrator
 
 
 def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
@@ -55,6 +56,17 @@ def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
         "--no-pdf",
         action="store_true",
         help="Skip PDF generation, output .md only",
+    )
+    parser.add_argument(
+        "--deep",
+        action="store_true",
+        help="Multi-round deep research with iterative gap analysis (requires KIMCHI_API_KEY)",
+    )
+    parser.add_argument(
+        "--max-rounds",
+        type=int,
+        default=2,
+        help="Max research rounds in deep mode (default: 2)",
     )
     parser.add_argument(
         "--json",
@@ -121,15 +133,32 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     max_age = args.max_age if hasattr(args, "max_age") else "1y"
     timelimit = {"1d": "d", "1w": "w", "1m": "m", "1y": "y", "all": "all"}.get(max_age, "y")
-    report = asyncio.run(
-        _run_collectors(
+
+    if args.deep:
+        orchestrator = DeepResearchOrchestrator(
             query=args.query,
-            domains=[],
-            threshold=args.threshold,
             force_domain=args.domain,
+            threshold=args.threshold,
+            max_rounds=args.max_rounds,
             timelimit=timelimit,
         )
-    )
+        report = orchestrator.run()
+        if report.rounds:
+            round_log = ", ".join(
+                f"R{r.round_number}({r.depth},{r.sources_found}s)"
+                for r in report.rounds
+            )
+            print(f"  Deep research rounds: {round_log}")
+    else:
+        report = asyncio.run(
+            _run_collectors(
+                query=args.query,
+                domains=[],
+                threshold=args.threshold,
+                force_domain=args.domain,
+                timelimit=timelimit,
+            )
+        )
 
     md_content = build_markdown(report)
     md_path = out_dir / f"{base_name}.md"
@@ -151,8 +180,16 @@ def main(argv: Optional[list[str]] = None) -> int:
         report.to_json(str(json_path))
         print(f"  JSON:     {json_path}")
 
+    gap_info = ""
+    if report.gaps_remaining:
+        gap_info = f", {len(report.gaps_remaining)} gap(s) remaining"
+    claims_info = ""
+    if report.claims:
+        high = sum(1 for c in report.claims if c.confidence == "high")
+        claims_info = f", {len(report.claims)} claim(s) ({high} high-confidence)"
+
     print(f"\n  ✅ Report complete — {len(report.collector_results)} collector(s), "
-          f"{report.total_sources} source(s).")
+          f"{report.total_sources} source(s){claims_info}{gap_info}.")
 
     return 0
 
