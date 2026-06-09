@@ -42108,5 +42108,25 @@
     "mtime": 1780972392.2082026,
     "ast_hash": "03be85012352aee5cdbc1a1ab4a48d2b",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/main.py": {
+    "mtime": 1780975768.0896518,
+    "ast_hash": "987b67bd47025c6038adb119baf02432",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/docker-compose.yml": {
+    "mtime": 1780975780.0546925,
+    "ast_hash": "3765beab29d13bbf18aeab52e0be5613",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/README.md": {
+    "mtime": 1780976014.37049,
+    "ast_hash": "19276d30b50e8787831b906f4fd297f6",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/cmc-agent-field/requirements.txt": {
+    "mtime": 1780975777.9466853,
+    "ast_hash": "ac83d07938d47c22b5bb7eb5dd83fb75",
+    "semantic_hash": ""
   }
 }
