@@ -42373,5 +42373,20 @@
     "mtime": 1780985023.1344569,
     "ast_hash": "817b62c3c1ce60956d5c26687c21df91",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_price_2024_20260609_060552.json": {
+    "mtime": 1780985177.132989,
+    "ast_hash": "fe2d54778a0d56e6f3fd6dfc021fe1cf",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_price_2024_20260609_060622.md": {
+    "mtime": 1780985187.8140259,
+    "ast_hash": "6e960d2d2f3857705785311e146d3d70",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research_agent/outputs/research_Bitcoin_price_2024_20260609_060552.md": {
+    "mtime": 1780985177.131989,
+    "ast_hash": "627d88f4d4400a82c0ff16c3dc3c37f4",
+    "semantic_hash": ""
   }
 }
