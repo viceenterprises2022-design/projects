@@ -36,7 +36,7 @@ python -m research_agent "query" --synthesis "Your synthesized conclusion here..
 |------|-------------|
 | `--domain/-d` | Force a domain (skip auto-classification) |
 | `--output/-o` | Output directory (default: ./outputs/) |
-| `--threshold/-t` | Classification confidence threshold (default 0.25) |
+| `--threshold/-t` | Classification confidence threshold (default 0.20) |
 | `--no-pdf` | Skip PDF, output .md only |
 | `--json` | Also emit raw JSON with data |
 | `--synthesis/-s` | Attach synthesis text to report |

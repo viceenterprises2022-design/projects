@@ -42238,5 +42238,85 @@
     "mtime": 1780977335.5260038,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/topic_classifier.py": {
+    "mtime": 1780978698.6966863,
+    "ast_hash": "e2a02d3beb8d958feca5c63a633ff0d9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/__main__.py": {
+    "mtime": 1780978651.1295228,
+    "ast_hash": "b42644cd11d97a478fdd1a1b0276f8a1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/__init__.py": {
+    "mtime": 1780978507.7420292,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/schemas.py": {
+    "mtime": 1780978510.8360398,
+    "ast_hash": "dbf7c5f6069e6104054176a7d7c7ed02",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/pdf_converter.py": {
+    "mtime": 1780978561.0232127,
+    "ast_hash": "6ccc3ca059a5634316c8e2b1bad6c624",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/report_builder.py": {
+    "mtime": 1780978553.0401852,
+    "ast_hash": "b468b79ae257dea828a3623cce432be8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/us_stocks.py": {
+    "mtime": 1780978536.6221287,
+    "ast_hash": "0fb6787c83cecaa1fcbf8eb3f81ce7fe",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/base.py": {
+    "mtime": 1780978526.1380925,
+    "ast_hash": "f832831dca3b2b710cac9fecc3343da1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/__init__.py": {
+    "mtime": 1780978519.288069,
+    "ast_hash": "d29e77222d81bf64caacf7cde49e3d28",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/general.py": {
+    "mtime": 1780978528.0990994,
+    "ast_hash": "db77e157942a098db8cf2888d524005c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/academia.py": {
+    "mtime": 1780978529.8251052,
+    "ast_hash": "47e6b058414bc9ef36e3b4e6eec101d2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/crypto.py": {
+    "mtime": 1780978539.8681397,
+    "ast_hash": "792e9077e14b72a4974c77cff5c01e1b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/india_stocks.py": {
+    "mtime": 1780978534.994123,
+    "ast_hash": "be124ff28b5f7bc602f930316e4e3d0a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/data_collectors/news.py": {
+    "mtime": 1780978531.4771109,
+    "ast_hash": "9373b31f2b8d9e8b181aeae6b1896404",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/CLAUDE.md": {
+    "mtime": 1780978655.535538,
+    "ast_hash": "8bd426d2ff44ff69175b5fb43ee9ba03",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/research-agent/requirements.txt": {
+    "mtime": 1780978578.6832733,
+    "ast_hash": "4f4e0339d3bd3b8ab5d42a337e7d9bcd",
+    "semantic_hash": ""
   }
 }

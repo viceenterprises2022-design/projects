@@ -40,8 +40,8 @@ def _parse_args(argv: Optional[list[str]] = None) -> argparse.Namespace:
     parser.add_argument(
         "--threshold", "-t",
         type=float,
-        default=0.25,
-        help="Classification confidence threshold (default: 0.25)",
+        default=0.20,
+        help="Classification confidence threshold (default: 0.20)",
     )
     parser.add_argument(
         "--no-pdf",

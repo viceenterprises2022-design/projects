@@ -68,7 +68,7 @@ DOMAIN_SIGNALS: dict[Domain, dict] = {
     Domain.WORLD_NEWS: {
         "keywords": [
             "news", "breaking", "update", "current events", "report",
-            "happening", "latest", "today", "this week",
+            "happening", "latest",
             "geopolitical", "election", "summit", "treaty",
             "conflict", "sanctions", "policy", "regulation",
         ],
@@ -89,8 +89,8 @@ def _score_domain(query_lower: str, domain: Domain, signals: dict) -> float:
             score += signals["weight"] * 1.0
 
     for company in signals.get("companies", []):
-        if company in query_lower:
-            score += signals["weight"] * 0.6
+        if re.search(r"\b" + re.escape(company) + r"\b", query_lower):
+            score += signals["weight"] * 0.8
 
     for pattern in signals.get("suffixes", []):
         if re.search(pattern, query_lower, re.IGNORECASE):
@@ -112,7 +112,7 @@ def _generate_reasoning(
 
 def classify(
     query: str,
-    threshold: float = 0.25,
+    threshold: float = 0.20,
     force_domain: Optional[str] = None,
 ) -> ClassifierResult:
     if force_domain:
