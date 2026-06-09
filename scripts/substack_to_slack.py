@@ -10,21 +10,6 @@ import time
 import subprocess
 import re # Import re for regex parsing of NLM output
 
-# Load env variables from crewai_testing/.env for API keys
-def load_crewai_env():
-    env_path = Path(__file__).parent.parent / "crewai_testing" / ".env"
-    if env_path.exists():
-        with open(env_path, "r") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, val = line.split("=", 1)
-                    os.environ[key.strip()] = val.strip()
-
-load_crewai_env()
-
-from crewai import Agent, Task, Crew, LLM
-
 # Configuration
 SUBSTACK_CHANNELS_FILE = Path(__file__).parent / "substack_channels.json"
 STATE_FILE = Path(__file__).parent / "substack_to_slack_state.json"
@@ -189,62 +174,106 @@ def get_article_content(url):
         p(f"Error parsing article content from {url}: {e}")
         return None
 
-def process_with_crewai(title, content_text):
+def process_with_notebooklm(title, content_text):
     """
-    Summarize Substack post content using CrewAI.
+    Creates a NotebookLM notebook, uploads content, generates a briefing report,
+    downloads it, extracts summary, and cleans up.
     """
-    p(f"Processing '{title}' with CrewAI...")
+    p(f"Processing '{title}' with NotebookLM...")
+    notebook_id = None
+    temp_file_path = None
     try:
-        # Define LLM using the loaded environment variables
-        model_name = os.environ.get("MODEL", "anthropic/claude-3-5-sonnet-20241022")
-        llm = LLM(
-            model=model_name,
-            api_key=os.environ.get("ANTHROPIC_API_KEY"),
-            verbose=True
-        )
+        # 1. Create a temporary text file with content_text
+        temp_file_name = f"substack_{int(time.time())}.txt"
+        temp_file_path = Path(OUTPUT_DIR) / temp_file_name
+        temp_file_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(temp_file_path, 'w') as f:
+            f.write(content_text)
+        p(f"Created temporary content file: {temp_file_path}")
 
-        # Define Agent
-        summarizer = Agent(
-            role="Senior Content Curator",
-            goal="Synthesize complex long-form articles into concise, high-impact summaries.",
-            backstory="An expert newsletter editor who extracts core arguments, key insights, and actionable takeaways from technical and macro articles.",
-            llm=llm,
-            verbose=True
-        )
+        # 2. Create a new NotebookLM notebook
+        notebook_output = nlm("create", title).strip()
+        # Extract UUID from "Created notebook: <UUID>"
+        notebook_id_match = re.search(r'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', notebook_output)
+        if not notebook_id_match:
+            raise RuntimeError(f"Could not extract notebook ID from NLM output: {notebook_output}")
+        notebook_id = notebook_id_match.group(1)
+        p(f"Created NotebookLM notebook: {title} (ID: {notebook_id})")
 
-        # Define Task
-        task_desc = f"""Read the article content and write an engaging, structured summary.
-Focus on:
-1. Core thesis / Main argument
-2. Key insights and data points
-3. Three main takeaways/action points
+        # 3. Add the temporary file as a source
+        source_output = nlm("source", "add", "--notebook", notebook_id, str(temp_file_path)).strip()
+        source_id_match = re.search(r'Added source: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', source_output)
+        if not source_id_match:
+            # Fallback for when no explicit ID is returned but command succeeds, or if ID format is different
+            p(f"Warning: Could not extract source ID from NLM output: {source_output}. Assuming success and using a placeholder.")
+            source_id = "placeholder_source_id" # Proceed without specific source_id if not found
+        else:
+            source_id = source_id_match.group(1)
+        p(f"Added source '{temp_file_name}' (ID: {source_id}) to notebook {notebook_id}")
 
-Format the output cleanly in Markdown with bold headers and bullet points.
+        # 4. Wait for NotebookLM source processing to complete
+        # NLM 'source wait' requires just the ID, not the full string "Source created with ID: <UUID>"
+        if source_id != "placeholder_source_id": # Only wait if we actually got an ID
+            nlm("source", "wait", "--notebook", notebook_id, source_id) # Re-enabled wait command
+            p(f"NotebookLM source processing completed for {source_id}")
+        else:
+            p(f"Skipping NLM source wait as source ID was not extracted.")
 
-Article Title: {title}
-Article Content:
-{content_text}"""
 
-        summarization_task = Task(
-            description=task_desc,
-            expected_output="Structured Markdown summary with bullet points and bold sections.",
-            agent=summarizer
-        )
+        # 5. Generate a "briefing-report" artifact
+        artifact_output = nlm("generate", "report", "--notebook", notebook_id).strip()
+        artifact_id_match = re.search(r'Started: ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})', artifact_output)
+        if not artifact_id_match:
+            raise RuntimeError(f"Could not extract artifact ID from NLM output: {artifact_output}")
+        artifact_id = artifact_id_match.group(1)
+        p(f"Generating briefing report artifact (ID: {artifact_id})...")
 
-        # Create Crew
-        crew = Crew(
-            agents=[summarizer],
-            tasks=[summarization_task],
-            verbose=True
-        )
+        # 6. Wait for artifact generation to complete
+        nlm("artifact", "wait", "--notebook", notebook_id, artifact_id) # Re-enabled wait command
+        p(f"Briefing report artifact generation completed for {artifact_id}")
 
-        # Kickoff
-        result = crew.kickoff()
-        summary = str(result.raw)
+        # 7. Download the briefing report artifact
+        report_output_path = Path(OUTPUT_DIR) / f"briefing_report_{artifact_id}.md"
+        nlm("download", "report", "--notebook", notebook_id, "--artifact", artifact_id, str(report_output_path))
+        p(f"Downloaded briefing report to {report_output_path}")
+
+        # 8. Parse the downloaded report to extract the summary
+        summary = "Summary not found."
+        if report_output_path.exists():
+            with open(report_output_path, 'r') as f:
+                report_content = f.read()
+                # Assuming the summary is in the first section or clearly marked
+                # This might need refinement based on actual NLM briefing report format
+                summary_start = report_content.find("## Briefing Report")
+                if summary_start != -1:
+                    summary_content = report_content[summary_start + len("## Briefing Report"):].strip()
+                    first_section_end = summary_content.find("\n## ") # Find next section header
+                    if first_section_end != -1:
+                        summary = summary_content[:first_section_end].strip()
+                    else:
+                        summary = summary_content.strip()
+                elif report_content.strip():
+                    summary = report_content.strip() # Fallback if specific header not found
+        else:
+            p(f"Warning: Briefing report not found at {report_output_path}")
+
         return summary
+
     except Exception as e:
-        p(f"Error during CrewAI processing for '{title}': {e}")
+        p(f"Error during NotebookLM processing for '{title}': {e}")
         return None
+    finally:
+        # 9. Clean up temporary files and NotebookLM notebook
+        if temp_file_path and temp_file_path.exists():
+            os.remove(temp_file_path)
+            p(f"Deleted temporary file: {temp_file_path}")
+        if notebook_id:
+            try:
+                # NLM delete command only expects the UUID with --notebook flag and --yes for confirmation
+                nlm("delete", "--yes", "--notebook", notebook_id)
+                p(f"Deleted NotebookLM notebook: {notebook_id}")
+            except Exception as e:
+                p(f"Error deleting NotebookLM notebook {notebook_id}: {e}")
 
 def send_summary_to_slack(channel_name, post_title, summary, post_url):
     """
@@ -340,7 +369,7 @@ def main():
             article_content = get_article_content(post_link)
 
             if article_content:
-                summary = process_with_crewai(post_title, article_content)
+                summary = process_with_notebooklm(post_title, article_content)
                 if summary:
                     send_summary_to_slack(display_name, post_title, summary, post_link)
                 else:
