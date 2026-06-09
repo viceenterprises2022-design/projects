@@ -169,7 +169,7 @@ header {
 /* --- Row 1: PnL Cards --- */
 .pnl-row {
   display: grid;
-  grid-template-columns: 280px 1fr 340px;
+  grid-template-columns: 240px 1fr 240px 380px;
   border-bottom: 1px solid var(--border);
   background: rgba(7, 13, 25, 0.3);
 }

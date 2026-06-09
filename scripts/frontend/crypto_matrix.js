@@ -148,125 +148,159 @@ function renderUI(data) {
   // 1. Update Today's PnL card
   const todayVal = document.getElementById("today-pnl-val");
   const todayChg = document.getElementById("today-pnl-chg");
-  todayVal.className = "pnl-value " + (acc.today_pnl >= 0 ? "up" : "dn");
-  todayVal.textContent = (acc.today_pnl >= 0 ? "+" : "") + formatUSDT(acc.today_pnl);
-  
-  const totalInvested = acc.equity - acc.today_pnl;
-  const todayPct = totalInvested > 0 ? (acc.today_pnl / totalInvested * 100) : 0.0;
-  todayChg.textContent = `${todayPct >= 0 ? "▲" : "▼"} ${Math.abs(todayPct).toFixed(2)}% Today`;
+  if (todayVal) {
+    todayVal.className = "pnl-value " + (acc.today_pnl >= 0 ? "up" : "dn");
+    todayVal.textContent = (acc.today_pnl >= 0 ? "+" : "") + formatUSDT(acc.today_pnl);
+  }
+  if (todayChg) {
+    const totalInvested = acc.equity - acc.today_pnl;
+    const todayPct = totalInvested > 0 ? (acc.today_pnl / totalInvested * 100) : 0.0;
+    todayChg.textContent = `${todayPct >= 0 ? "▲" : "▼"} ${Math.abs(todayPct).toFixed(2)}% Today`;
+  }
 
   // 2. Render This Month PnL card with Mini-Chart
   const monthVal = document.getElementById("month-pnl-val");
-  monthVal.className = "pnl-value " + (acc.total_pnl >= 0 ? "up" : "dn");
-  monthVal.textContent = (acc.total_pnl >= 0 ? "+" : "") + formatUSDT(acc.total_pnl);
+  if (monthVal) {
+    monthVal.className = "pnl-value " + (acc.total_pnl >= 0 ? "up" : "dn");
+    monthVal.textContent = (acc.total_pnl >= 0 ? "+" : "") + formatUSDT(acc.total_pnl);
+  }
   renderMiniChart(data.daily_pnls);
 
   // 3. Render Total PnL card
   const totalVal = document.getElementById("total-pnl-val");
   const totalSub = document.getElementById("total-pnl-sub");
-  totalVal.className = "pnl-value " + (acc.total_pnl >= 0 ? "up" : "dn");
-  totalVal.textContent = (acc.total_pnl >= 0 ? "+" : "") + formatUSDT(acc.total_pnl);
-  
-  const totalPct = 100000.0 > 0 ? (acc.total_pnl / 100000.0 * 100) : 0.0;
-  totalSub.textContent = `ROI: ${totalPct.toFixed(2)}% Cumulative`;
+  if (totalVal) {
+    totalVal.className = "pnl-value " + (acc.total_pnl >= 0 ? "up" : "dn");
+    totalVal.textContent = (acc.total_pnl >= 0 ? "+" : "") + formatUSDT(acc.total_pnl);
+  }
+  if (totalSub) {
+    const totalPct = 100000.0 > 0 ? (acc.total_pnl / 100000.0 * 100) : 0.0;
+    totalSub.textContent = `ROI: ${totalPct.toFixed(2)}% Cumulative`;
+  }
 
   // 4. Update Position Count Badge & Summary sub-cards
   const activePositions = data.position ? [data.position] : [];
-  document.getElementById("open-pos-count").textContent = `${activePositions.length} POS`;
+  const openPosCount = document.getElementById("open-pos-count");
+  if (openPosCount) {
+    openPosCount.textContent = `${activePositions.length} POS`;
+  }
   
   const longSizeEl = document.getElementById("long-size-val");
   const shortSizeEl = document.getElementById("short-size-val");
-  
-  if (data.position && data.position.side === "LONG") {
-    longSizeEl.textContent = `${data.position.size} ${data.symbol}`;
-    shortSizeEl.textContent = "-";
-  } else if (data.position && data.position.side === "SHORT") {
-    shortSizeEl.textContent = `${data.position.size} ${data.symbol}`;
-    longSizeEl.textContent = "-";
-  } else {
-    longSizeEl.textContent = "-";
-    shortSizeEl.textContent = "-";
+  if (longSizeEl && shortSizeEl) {
+    if (data.position && data.position.side === "LONG") {
+      longSizeEl.textContent = `${data.position.size} ${data.symbol}`;
+      shortSizeEl.textContent = "-";
+    } else if (data.position && data.position.side === "SHORT") {
+      shortSizeEl.textContent = `${data.position.size} ${data.symbol}`;
+      longSizeEl.textContent = "-";
+    } else {
+      longSizeEl.textContent = "-";
+      shortSizeEl.textContent = "-";
+    }
   }
 
   // 5. Update Position Ratios and Gauges
   updateGauge("binance-long-gauge", data.ratios.global_long_pct);
-  document.getElementById("binance-long-val").textContent = `${data.ratios.global_long_pct}%`;
+  const binanceLongVal = document.getElementById("binance-long-val");
+  if (binanceLongVal) {
+    binanceLongVal.textContent = `${data.ratios.global_long_pct}%`;
+  }
   
   updateGauge("toptrader-long-gauge", data.ratios.top_long_pct);
-  document.getElementById("toptrader-long-val").textContent = `${data.ratios.top_long_pct}%`;
+  const toptraderLongVal = document.getElementById("toptrader-long-val");
+  if (toptraderLongVal) {
+    toptraderLongVal.textContent = `${data.ratios.top_long_pct}%`;
+  }
 
   // 6. Update Open Positions List
   const posList = document.getElementById("open-positions-list");
-  if (activePositions.length === 0) {
-    posList.innerHTML = `<div style="text-align:center;padding:12px;color:var(--muted);font-size:0.7rem;">No open positions active.</div>`;
-  } else {
-    posList.innerHTML = activePositions.map(p => {
-      const pnlCls = p.unrealized_pnl >= 0 ? "up" : "dn";
-      return `
-        <div class="open-pos-item">
-          <div class="open-pos-info">
-            <div class="open-pos-sym-side">
-              ${p.symbol} 
-              <span class="side-badge ${p.side.toLowerCase()}">${p.side}</span>
+  if (posList) {
+    if (activePositions.length === 0) {
+      posList.innerHTML = `<div style="text-align:center;padding:12px;color:var(--muted);font-size:0.7rem;">No open positions active.</div>`;
+    } else {
+      posList.innerHTML = activePositions.map(p => {
+        const pnlCls = p.unrealized_pnl >= 0 ? "up" : "dn";
+        return `
+          <div class="open-pos-item">
+            <div class="open-pos-info">
+              <div class="open-pos-sym-side">
+                ${p.symbol} 
+                <span class="side-badge ${p.side.toLowerCase()}">${p.side}</span>
+              </div>
+              <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">
+                Size: ${p.size} &middot; Entry: ${p.entry_price.toFixed(2)} &middot; Margin: ${p.margin.toFixed(1)}
+              </div>
             </div>
-            <div style="font-size:0.6rem;color:var(--muted);margin-top:2px;">
-              Size: ${p.size} &middot; Entry: ${p.entry_price.toFixed(2)} &middot; Margin: ${p.margin.toFixed(1)}
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="open-pos-pnl ${pnlCls}">
+                ${p.unrealized_pnl >= 0 ? "+" : ""}${p.unrealized_pnl.toFixed(2)}
+              </div>
+              <button class="btn-close-pos" onclick="closePosition('${p.symbol}', '${p.side}')">Close</button>
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="open-pos-pnl ${pnlCls}">
-              ${p.unrealized_pnl >= 0 ? "+" : ""}${p.unrealized_pnl.toFixed(2)}
-            </div>
-            <button class="btn-close-pos" onclick="closePosition('${p.symbol}', '${p.side}')">Close</button>
+        `;
+      }).join("");
+    }
+  }
+
+  // 7. Update Position execution strength bar
+  const strengthFill = document.getElementById("execution-strength-fill");
+  const executionVal = document.getElementById("execution-strength-val");
+  let longWeight = 50;
+  if (data.indicators) {
+    const rsi = data.indicators.rsi;
+    longWeight = Math.min(Math.max(Math.round(rsi), 10), 90);
+  }
+  if (strengthFill) {
+    strengthFill.style.width = `${longWeight}%`;
+  }
+  if (executionVal) {
+    executionVal.textContent = `LONG ${longWeight}% / SHORT ${100 - longWeight}%`;
+  }
+
+  // 8. Update AI Gate breakdown
+  const gateList = document.getElementById("gate-breakdown-list");
+  if (gateList) {
+    gateList.innerHTML = data.gate_breakdown.map(g => {
+      return `
+        <div class="checklist-item">
+          <div class="checklist-hdr">
+            <span>${g.name}</span>
+            <span style="font-family:var(--mono)">${g.val.toFixed(1)}%</span>
+          </div>
+          <div class="checklist-bar-bg">
+            <div class="checklist-bar-fill ${g.color}" style="width: ${g.val}%"></div>
           </div>
         </div>
       `;
     }).join("");
   }
 
-  // 7. Update Position execution strength bar
-  const strengthFill = document.getElementById("execution-strength-fill");
-  const executionVal = document.getElementById("execution-strength-val");
-  
-  // Calculate relative strength based on indicators (RSI & PCR)
-  let longWeight = 50;
-  if (data.indicators) {
-    const rsi = data.indicators.rsi;
-    longWeight = Math.min(Math.max(Math.round(rsi), 10), 90);
-  }
-  strengthFill.style.width = `${longWeight}%`;
-  executionVal.textContent = `LONG ${longWeight}% / SHORT ${100 - longWeight}%`;
-
-  // 8. Update AI Gate breakdown
-  const gateList = document.getElementById("gate-breakdown-list");
-  gateList.innerHTML = data.gate_breakdown.map(g => {
-    return `
-      <div class="checklist-item">
-        <div class="checklist-hdr">
-          <span>${g.name}</span>
-          <span style="font-family:var(--mono)">${g.val.toFixed(1)}%</span>
-        </div>
-        <div class="checklist-bar-bg">
-          <div class="checklist-bar-fill ${g.color}" style="width: ${g.val}%"></div>
-        </div>
-      </div>
-    `;
-  }).join("");
-
   // 9. Update AI Advisor
-  document.getElementById("advisor-text-content").textContent = data.advisor;
+  const advisorEl = document.getElementById("advisor-text-content");
+  if (advisorEl) {
+    advisorEl.textContent = data.advisor;
+  }
 
   // 10. Update position ratio grid detail
-  document.getElementById("stat-overall-pcr").textContent = data.indicators.pcr.toFixed(2);
-  document.getElementById("stat-max-pain").textContent = data.indicators.max_pain.toFixed(0);
-  document.getElementById("stat-expiry").textContent = "PERPETUAL";
+  const pcrEl = document.getElementById("stat-overall-pcr");
+  if (pcrEl) pcrEl.textContent = data.indicators.pcr.toFixed(2);
+  
+  const painEl = document.getElementById("stat-max-pain");
+  if (painEl) painEl.textContent = data.indicators.max_pain.toFixed(0);
+  
+  const expiryEl = document.getElementById("stat-expiry");
+  if (expiryEl) expiryEl.textContent = "PERPETUAL";
 
   // 11. Update bottom ticker
   const ticksWrap = document.getElementById("ticks-wrap");
-  ticksWrap.innerHTML = data.trades.map(t => {
-    const isUp = t.pnl >= 0;
-    return `<div class="tick-square ${isUp ? 'up' : 'dn'}" title="Trade ${t.symbol} ${t.side}: ${t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)} USDT"></div>`;
-  }).join("");
+  if (ticksWrap) {
+    ticksWrap.innerHTML = data.trades.map(t => {
+      const isUp = t.pnl >= 0;
+      return `<div class="tick-square ${isUp ? 'up' : 'dn'}" title="Trade ${t.symbol} ${t.side}: ${t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)} USDT"></div>`;
+    }).join("");
+  }
 }
 
 function updateGauge(id, percent) {
@@ -375,10 +409,12 @@ window.switchSymbol = function(sym) {
   document.querySelectorAll(".sym-tab").forEach(tab => {
     tab.classList.remove("active");
   });
-  document.getElementById(`tab-${activeSymbol.toLowerCase()}`).classList.add("active");
+  const tabEl = document.getElementById(`tab-${activeSymbol.toLowerCase()}`);
+  if (tabEl) tabEl.classList.add("active");
   
   // Clear price input to let state updater fetch active price
-  document.getElementById("order-price").value = "";
+  const priceInput = document.getElementById("order-price");
+  if (priceInput) priceInput.value = "";
   
   // Update TradingView widget if present
   updateTradingViewWidget();

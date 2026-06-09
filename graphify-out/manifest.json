@@ -9520,7 +9520,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1781018635.503118,
+    "mtime": 1781019036.310437,
     "ast_hash": "f90a056fadba0b3ef19426a96d4a3736",
     "semantic_hash": ""
   },
@@ -33430,7 +33430,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1781018703.4173415,
+    "mtime": 1781019036.311437,
     "ast_hash": "7398a49c206bb56993aa8635a5c021c6",
     "semantic_hash": ""
   },
@@ -38760,22 +38760,22 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
-    "mtime": 1781018730.9954321,
+    "mtime": 1781019036.311437,
     "ast_hash": "1b2fd53f733e4a189992025e2906a2e0",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/portfolio.html": {
-    "mtime": 1781018724.9364123,
+    "mtime": 1781019036.311437,
     "ast_hash": "c2a5ee3269fd1d910f4bed072ddbc1c8",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
-    "mtime": 1781018713.336374,
+    "mtime": 1781019036.311437,
     "ast_hash": "315bf656b3a5ae242afa7af7bbdbd086",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/market.html": {
-    "mtime": 1781018718.9323926,
+    "mtime": 1781019036.311437,
     "ast_hash": "3c6603be4957fbdd5bc157d7d28dd20a",
     "semantic_hash": ""
   },
@@ -42540,13 +42540,28 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/paper_trading_engine.py": {
-    "mtime": 1781018933.625099,
+    "mtime": 1781019036.316437,
     "ast_hash": "eeb0a32cbefd3cbb69cdbe1e32cb5853",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/paper_trading_db.py": {
     "mtime": 1781018577.184926,
     "ast_hash": "8f65fd60243e61e7a64e92e21c42cae2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/test_paper_trading.py": {
+    "mtime": 1781018751.1974988,
+    "ast_hash": "7c962dced397ed2b5ef74b820d9b2f7c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.js": {
+    "mtime": 1781019256.5651617,
+    "ast_hash": "f5776009d61f142edae737cdf2e3e9e8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.html": {
+    "mtime": 1781019214.133022,
+    "ast_hash": "61bad6eca227641868eadd1be42830e2",
     "semantic_hash": ""
   }
 }
