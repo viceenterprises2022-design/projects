@@ -74,9 +74,9 @@ class PaperTradingEngine:
     def get_liquidation_price(self, entry: float, leverage: float, side: str) -> float:
         """Returns computed liquidation price for paper trading."""
         if side.upper() == "LONG":
-            return max(0.0, entry * (1.0 - 0.5 / leverage))
+            return max(0.0, entry * (1.0 - 0.9 / leverage))
         else:
-            return entry * (1.0 + 0.5 / leverage)
+            return entry * (1.0 + 0.9 / leverage)
 
     def get_symbol_state(self, symbol: str) -> dict:
         """Returns the full UI state bundle for BTC or ETH."""
