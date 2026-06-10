@@ -660,8 +660,9 @@ canvas#matrix-canvas:active {
   font-family: var(--mono);
   font-size: 0.7rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
 }
 
 .open-pos-info {
