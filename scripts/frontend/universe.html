@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts Universe Mapper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #090d16;
+            --bg-secondary: #111827;
+            --bg-panel: rgba(17, 24, 39, 0.75);
+            --border-panel: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            
+            --color-product: #a855f7;
+            --color-script: #3b82f6;
+            --color-database: #06b6d4;
+            --color-datasource: #f97316;
+            --color-output: #10b981;
+            --color-daemon: #eab308;
+            --color-trigger: #ef4444;
+            
+            --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Glassmorphic Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(9, 13, 22, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-panel);
+            z-index: 10;
+        }
+
+        .logo-section h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-section p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .stats-banner {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Vis.js Canvas */
+        #network-container {
+            flex: 1;
+            height: 100%;
+            outline: none;
+        }
+
+        /* Floating Sidebar Control Panel (Left) */
+        .controls-panel {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            width: 320px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-panel);
+            border-radius: 16px;
+            padding: 1.5rem;
+            z-index: 5;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .filter-section h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .filter-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .filter-item input {
+            cursor: pointer;
+        }
+
+        .dot-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .btn-reload {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-reload:hover {
+            opacity: 0.9;
+        }
+
+        .btn-reload:active {
+            transform: scale(0.98);
+        }
+
+        /* Floating Details Panel (Right) */
+        .details-panel {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            bottom: 1.5rem;
+            width: 420px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-panel);
+            border-radius: 16px;
+            padding: 2rem;
+            z-index: 5;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+
+        .details-panel.open {
+            transform: translateX(0);
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1rem;
+        }
+
+        .details-title h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            word-break: break-all;
+        }
+
+        .details-title span {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 100px;
+            display: inline-block;
+            margin-top: 0.4rem;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .btn-close:hover {
+            color: #ffffff;
+        }
+
+        .details-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .details-section h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            border-left: 2px solid #3b82f6;
+            padding-left: 0.5rem;
+        }
+
+        .details-section p, .details-section ul {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #d1d5db;
+        }
+
+        .details-section ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .details-section li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+        }
+
+        .details-section li:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            color: #38bdf8;
+            max-height: 200px;
+        }
+
+        /* Legend helper overlay */
+        .legend-indicator {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background: rgba(9, 13, 22, 0.8);
+            border: 1px solid var(--border-panel);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Vis.js Tooltip Customization */
+        div.vis-tooltip {
+            background-color: var(--bg-secondary) !important;
+            border: 1px solid var(--border-panel) !important;
+            color: var(--text-primary) !important;
+            font-family: 'Inter', sans-serif !important;
+            padding: 8px 12px !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-section">
+            <h1>🌌 Scripts Universe Mapper</h1>
+            <p>Interactive graph of products, daemons, databases, and APIs</p>
+        </div>
+        <div class="stats-banner">
+            <div class="stat-item">
+                <div class="stat-value" id="stat-products">0</div>
+                <div class="stat-label">Products</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-scripts">0</div>
+                <div class="stat-label">Scripts</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-dbs">0</div>
+                <div class="stat-label">Databases</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-apis">0</div>
+                <div class="stat-label">Data Sources</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Control Panel (Left) -->
+        <div class="controls-panel">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search script, database, or API...">
+            </div>
+
+            <div class="filter-section">
+                <h3>Toggle Nodes</h3>
+                <div class="filter-group">
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-product" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-product)"></span>
+                        Products
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-script" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-script)"></span>
+                        Scripts
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-database" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-database)"></span>
+                        Databases
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-datasource" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-datasource)"></span>
+                        Data Sources
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-output" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-output)"></span>
+                        Outputs
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-daemon" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-daemon)"></span>
+                        Daemons (Systemd)
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-trigger" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-trigger)"></span>
+                        Triggers (Cron)
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Physics Mode</h3>
+                <label class="filter-item">
+                    <input type="checkbox" id="chk-physics" checked>
+                    Enable Layout Physics
+                </label>
+            </div>
+
+            <button class="btn-reload" id="btn-reanalyze">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Re-Analyze Codebase
+            </button>
+        </div>
+
+        <!-- Vis.js Canvas -->
+        <div id="network-container"></div>
+
+        <!-- Legend overlay -->
+        <div class="legend-indicator">
+            💡 Click on nodes to inspect details · Drag to rearrange
+        </div>
+
+        <!-- Details Sidebar Panel (Right) -->
+        <div class="details-panel" id="details-sidebar">
+            <div class="details-header">
+                <div class="details-title">
+                    <h2 id="node-name">Script Name</h2>
+                    <span id="node-badge" style="background-color: var(--color-script)">SCRIPT</span>
+                </div>
+                <button class="btn-close" id="btn-close-details">&times;</button>
+            </div>
+
+            <!-- Custom Info Sections dynamically updated -->
+            <div id="details-content" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Filled dynamically by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let network = null;
+        let allNodes = [];
+        let allEdges = [];
+        let rawData = null;
+
+        // Colors Mapping
+        const colors = {
+            product: varStyle('--color-product'),
+            script: varStyle('--color-script'),
+            database: varStyle('--color-database'),
+            datasource: varStyle('--color-datasource'),
+            output: varStyle('--color-output'),
+            daemon: varStyle('--color-daemon'),
+            trigger: varStyle('--color-trigger')
+        };
+
+        function varStyle(varName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        }
+
+        // Fetch graph data from backend
+        async function fetchGraphData() {
+            try {
+                // Determine if we should query relative or hardcoded path
+                // When served from FastAPI server, api route serves this JSON
+                const res = await fetch('/universe/data');
+                if (!res.ok) throw new Error("FastAPI fetch failed");
+                const data = await res.json();
+                loadGraph(data);
+            } catch (err) {
+                console.warn("Direct fetch failed, falling back to static load or universe_data.json path", err);
+                try {
+                    const res = await fetch('universe_data.json');
+                    const data = await res.json();
+                    loadGraph(data);
+                } catch (err2) {
+                    alert("Could not load universe_data.json. Make sure the analyzer script has generated it!");
+                }
+            }
+        }
+
+        // Re-analyze trigger
+        document.getElementById('btn-reanalyze').addEventListener('click', async () => {
+            const btn = document.getElementById('btn-reanalyze');
+            btn.disabled = true;
+            btn.innerHTML = 'Analyzing...';
+            try {
+                const res = await fetch('/universe/reanalyze', { method: 'POST' });
+                if (res.ok) {
+                    await fetchGraphData();
+                } else {
+                    alert("Re-analysis failed on server.");
+                }
+            } catch (err) {
+                alert("Server request failed. Please run python3 universe_analyzer.py manually.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg> Re-Analyze Codebase`;
+            }
+        });
+
+        // Initialize Vis.js network graph
+        function loadGraph(data) {
+            rawData = data;
+            allNodes = data.nodes;
+            allEdges = data.edges;
+
+            // Update Statistics
+            document.getElementById('stat-products').innerText = allNodes.filter(n => n.group === 'product').length;
+            document.getElementById('stat-scripts').innerText = allNodes.filter(n => n.group === 'script').length;
+            document.getElementById('stat-dbs').innerText = allNodes.filter(n => n.group === 'database').length;
+            document.getElementById('stat-apis').innerText = allNodes.filter(n => n.group === 'datasource').length;
+
+            updateNetwork();
+        }
+
+        function updateNetwork() {
+            const container = document.getElementById('network-container');
+            
+            // Gather checkbox states
+            const activeGroups = {
+                product: document.getElementById('chk-product').checked,
+                script: document.getElementById('chk-script').checked,
+                database: document.getElementById('chk-database').checked,
+                datasource: document.getElementById('chk-datasource').checked,
+                output: document.getElementById('chk-output').checked,
+                daemon: document.getElementById('chk-daemon').checked,
+                trigger: document.getElementById('chk-trigger').checked
+            };
+
+            // Filter nodes
+            const filteredNodes = allNodes.filter(node => activeGroups[node.group] === true);
+            const activeNodeIds = new Set(filteredNodes.map(n => n.id));
+
+            // Filter edges so they connect only active nodes
+            const filteredEdges = allEdges.filter(edge => activeNodeIds.has(edge.from) && activeNodeIds.has(edge.to));
+
+            // Format nodes for Vis.js
+            const visNodes = new vis.DataSet(filteredNodes.map(node => {
+                let size = 25;
+                let fontColor = '#f3f4f6';
+                let shape = 'dot';
+                
+                if (node.group === 'product') {
+                    size = 40;
+                    shape = 'hexagon';
+                } else if (node.group === 'script') {
+                    size = 28;
+                } else if (node.group === 'database') {
+                    size = 25;
+                    shape = 'database';
+                } else if (node.group === 'trigger') {
+                    size = 20;
+                    shape = 'diamond';
+                }
+
+                return {
+                    id: node.id,
+                    label: node.label,
+                    title: node.title,
+                    color: {
+                        background: colors[node.group] || '#94a3b8',
+                        border: '#ffffff',
+                        highlight: {
+                            background: colors[node.group] || '#94a3b8',
+                            border: '#60a5fa'
+                        }
+                    },
+                    borderWidth: 2,
+                    size: size,
+                    shape: shape,
+                    font: {
+                        color: fontColor,
+                        size: 14,
+                        face: 'Inter'
+                    },
+                    shadow: {
+                        enabled: true,
+                        color: 'rgba(0,0,0,0.5)',
+                        size: 10,
+                        x: 0,
+                        y: 4
+                    }
+                };
+            }));
+
+            const visEdges = new vis.DataSet(filteredEdges.map(edge => {
+                let color = '#475569';
+                let dashes = false;
+                
+                if (edge.relation === 'triggers') {
+                    color = '#f87171'; // red
+                    dashes = true;
+                } else if (edge.relation === 'polls') {
+                    color = '#fb923c'; // orange
+                } else if (edge.relation === 'reads_writes') {
+                    color = '#22d3ee'; // cyan
+                } else if (edge.relation === 'builds') {
+                    color = '#34d399'; // green
+                }
+
+                return {
+                    from: edge.from,
+                    to: edge.to,
+                    arrows: 'to',
+                    color: {
+                        color: color,
+                        highlight: '#60a5fa',
+                        hover: '#93c5fd'
+                    },
+                    width: 1.5,
+                    dashes: dashes,
+                    smooth: {
+                        type: 'continuous',
+                        roundness: 0.5
+                    }
+                };
+            }));
+
+            const options = {
+                nodes: {
+                    scaling: {
+                        min: 16,
+                        max: 50
+                    }
+                },
+                edges: {
+                    hoverWidth: 1.5,
+                    selectionWidth: 1.5
+                },
+                physics: {
+                    enabled: document.getElementById('chk-physics').checked,
+                    barnesHut: {
+                        gravitationalConstant: -10000,
+                        centralGravity: 0.3,
+                        springLength: 120,
+                        springConstant: 0.04,
+                        damping: 0.09,
+                        avoidOverlap: 0.5
+                    },
+                    stabilization: {
+                        iterations: 150,
+                        fit: true
+                    }
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 200,
+                    hideEdgesOnDrag: false
+                }
+            };
+
+            const visData = { nodes: visNodes, edges: visEdges };
+            network = new vis.Network(container, visData, options);
+
+            // Node Click Event (Populate details panel)
+            network.on("click", function (params) {
+                if (params.nodes.length > 0) {
+                    const nodeId = params.nodes[0];
+                    const node = filteredNodes.find(n => n.id === nodeId);
+                    if (node) showNodeDetails(node);
+                } else {
+                    closeDetails();
+                }
+            });
+        }
+
+        // Show Node Details Sidebar
+        function showNodeDetails(node) {
+            const sidebar = document.getElementById('details-sidebar');
+            const nameEl = document.getElementById('node-name');
+            const badgeEl = document.getElementById('node-badge');
+            const contentEl = document.getElementById('details-content');
+
+            nameEl.innerText = node.label;
+            badgeEl.innerText = node.group.toUpperCase();
+            badgeEl.style.backgroundColor = colors[node.group];
+
+            let html = '';
+
+            // Handle Script Info
+            if (node.group === 'script') {
+                const scriptInfo = rawData.raw_scripts.find(s => s.name === node.id);
+                if (scriptInfo) {
+                    html += `
+                        <div class="details-section">
+                            <h4>Overview</h4>
+                            <p><strong>Product:</strong> ${scriptInfo.product}</p>
+                            <p><strong>Path:</strong> <code>${scriptInfo.path}</code></p>
+                            <p><strong>File Size:</strong> ${(scriptInfo.size_bytes / 1024).toFixed(2)} KB</p>
+                        </div>
+                    `;
+
+                    if (scriptInfo.cron_timings.length > 0) {
+                        html += `
+                            <div class="details-section">
+                                <h4>Cron Schedule</h4>
+                                <ul>
+                                    ${scriptInfo.cron_timings.map(t => `<li><span class="badge">CRON</span> ${t}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    if (scriptInfo.systemd_services.length > 0) {
+                        html += `
+                            <div class="details-section">
+                                <h4>Systemd Services</h4>
+                                <ul>
+                                    ${scriptInfo.systemd_services.map(s => `<li><span class="badge">SYSTEMD</span> ${s}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    if (scriptInfo.databases.length > 0) {
+                        html += `
+                            <div class="details-section">
+                                <h4>Connected Databases</h4>
+                                <ul>
+                                    ${scriptInfo.databases.map(db => `<li onclick="focusNode('db_${db}')"><span class="badge" style="background-color: var(--color-database)">DB</span> ${db}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    if (scriptInfo.apis.length > 0) {
+                        html += `
+                            <div class="details-section">
+                                <h4>Polled Data Sources</h4>
+                                <ul>
+                                    ${scriptInfo.apis.map(api => {
+                                        const apiId = `api_${api.toLowerCase().replace(' ', '_')}`;
+                                        return `<li onclick="focusNode('${apiId}')"><span class="badge" style="background-color: var(--color-datasource)">API</span> ${api}</li>`;
+                                    }).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    if (scriptInfo.outputs.length > 0) {
+                        html += `
+                            <div class="details-section">
+                                <h4>Outputs & Deliveries</h4>
+                                <ul>
+                                    ${scriptInfo.outputs.map(out => {
+                                        const outId = `out_${out.toLowerCase().replace(' ', '_')}`;
+                                        return `<li onclick="focusNode('${outId}')"><span class="badge" style="background-color: var(--color-output)">OUT</span> ${out}</li>`;
+                                    }).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                }
+            } 
+            // Handle Database Info
+            else if (node.group === 'database') {
+                const scriptsUsing = rawData.raw_scripts.filter(s => s.databases.includes(node.label));
+                html += `
+                    <div class="details-section">
+                        <h4>Database File</h4>
+                        <p>SQLite database accessed locally by market intelligence systems.</p>
+                    </div>
+                    <div class="details-section">
+                        <h4>Accessed By</h4>
+                        <ul>
+                            ${scriptsUsing.map(s => `<li onclick="focusNode('${s.name}')"><span class="badge" style="background-color: var(--color-script)">SCRIPT</span> ${s.name}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            // Handle DataSource Info
+            else if (node.group === 'datasource') {
+                const scriptsUsing = rawData.raw_scripts.filter(s => s.apis.some(api => `api_${api.toLowerCase().replace(' ', '_')}` === node.id));
+                html += `
+                    <div class="details-section">
+                        <h4>External API Source</h4>
+                        <p>Real-time data feeds polled periodically by cron jobs or daemons.</p>
+                    </div>
+                    <div class="details-section">
+                        <h4>Polled By</h4>
+                        <ul>
+                            ${scriptsUsing.map(s => `<li onclick="focusNode('${s.name}')"><span class="badge" style="background-color: var(--color-script)">SCRIPT</span> ${s.name}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            // Handle Product Suite Info
+            else if (node.group === 'product') {
+                const prodScripts = rawData.raw_scripts.filter(s => s.product === node.label);
+                html += `
+                    <div class="details-section">
+                        <h4>Product Suite Overview</h4>
+                        <p>Aggregated functional group of scripts and databases in the pipeline.</p>
+                    </div>
+                    <div class="details-section">
+                        <h4>Contained Scripts</h4>
+                        <ul>
+                            ${prodScripts.map(s => `<li onclick="focusNode('${s.name}')"><span class="badge" style="background-color: var(--color-script)">SCRIPT</span> ${s.name}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            // Handle Output Info
+            else if (node.group === 'output') {
+                const scriptsUsing = rawData.raw_scripts.filter(s => s.outputs.some(out => `out_${out.toLowerCase().replace(' ', '_')}` === node.id));
+                html += `
+                    <div class="details-section">
+                        <h4>Deliverables & Views</h4>
+                        <p>End products pushed to messaging services or saved locally.</p>
+                    </div>
+                    <div class="details-section">
+                        <h4>Generated By</h4>
+                        <ul>
+                            ${scriptsUsing.map(s => `<li onclick="focusNode('${s.name}')"><span class="badge" style="background-color: var(--color-script)">SCRIPT</span> ${s.name}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            // Fallback Details
+            else {
+                html += `
+                    <div class="details-section">
+                        <h4>Node Information</h4>
+                        <p>${node.title || 'No metadata description available for this item.'}</p>
+                    </div>
+                `;
+            }
+
+            contentEl.innerHTML = html;
+            sidebar.classList.add('open');
+        }
+
+        // Close sidebar
+        function closeDetails() {
+            document.getElementById('details-sidebar').classList.remove('open');
+        }
+
+        document.getElementById('btn-close-details').addEventListener('click', closeDetails);
+
+        // Highlight/Focus a specific node
+        function focusNode(nodeId) {
+            if (network) {
+                network.selectNodes([nodeId]);
+                network.focus(nodeId, {
+                    scale: 1.2,
+                    animation: {
+                        duration: 800,
+                        easingFunction: 'easeInOutQuad'
+                    }
+                });
+                const node = allNodes.find(n => n.id === nodeId);
+                if (node) showNodeDetails(node);
+            }
+        }
+
+        // Search Bar Event
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length > 1 && network) {
+                const found = allNodes.find(n => n.label.toLowerCase().includes(query) || n.id.toLowerCase().includes(query));
+                if (found) {
+                    focusNode(found.id);
+                }
+            }
+        });
+
+        // Checkbox events to update network filters
+        const checkboxes = [
+            'chk-product', 'chk-script', 'chk-database', 'chk-datasource', 
+            'chk-output', 'chk-daemon', 'chk-trigger', 'chk-physics'
+        ];
+        checkboxes.forEach(id => {
+            document.getElementById(id).addEventListener('change', updateNetwork);
+        });
+
+        // Fetch first load
+        fetchGraphData();
+    </script>
+</body>
+</html>

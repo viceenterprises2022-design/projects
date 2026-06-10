@@ -81,6 +81,14 @@ SYMBOLS = ("NIFTY", "SENSEX", "BANKNIFTY")
 # ── Static Files + Dashboard ──────────────────────────────────────────────────
 
 @app.get("/", include_in_schema=False)
+def serve_universe_root():
+    index = FRONTEND_DIR / "universe.html"
+    if not index.exists():
+        raise HTTPException(status_code=404, detail="universe.html not found")
+    return FileResponse(str(index), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
+@app.get("/dashboard", include_in_schema=False)
 def serve_dashboard():
     index = FRONTEND_DIR / "dashboard.html"
     if not index.exists():
@@ -128,8 +136,42 @@ def serve_pixi():
     return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
+@app.get("/universe", include_in_schema=False)
+def serve_universe():
+    f = FRONTEND_DIR / "universe.html"
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="universe.html not found")
+    return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
+@app.get("/universe/data")
+def serve_universe_data():
+    f = _BASE / "universe_data.json"
+    if not f.exists():
+        try:
+            subprocess.run([sys.executable, str(_BASE / "universe_analyzer.py")], check=True, timeout=10)
+        except Exception:
+            raise HTTPException(status_code=404, detail="universe_data.json not found and generation failed")
+    
+    if not f.exists():
+        raise HTTPException(status_code=404, detail="universe_data.json not found")
+        
+    with open(f, "r") as file:
+        return _json.load(file)
+
+
+@app.post("/universe/reanalyze")
+def reanalyze_universe():
+    try:
+        subprocess.run([sys.executable, str(_BASE / "universe_analyzer.py")], check=True, timeout=15)
+        return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Re-analysis failed: {e}")
+
+
 if FRONTEND_DIR.exists():
     app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+
 
 
 # ── API Endpoints ─────────────────────────────────────────────────────────────
