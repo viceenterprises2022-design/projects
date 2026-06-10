@@ -1,110 +1,92 @@
-# MLEvolve: A Self-Evolving Multi-Agent Framework for Automated Machine Learning Discovery
+# The Architecture of Reasoning: The Role of Feedback Alignment in Self-Distillation
+
+This briefing document analyzes the technical findings of Kara and Ersoy (2026) regarding the optimization of Large Language Model (LLM) reasoning through self-distillation. The research shifts the focus from *whether* to provide feedback to *how* to structure that feedback, demonstrating that structural alignment between a critic's feedback and a solver’s reasoning trace is the primary driver of performance gains.
 
 ## Executive Summary
 
-**MLEvolve** represents a significant breakthrough in the field of **AI for Science**, specifically targeting the automation of Machine Learning Engineering (MLE) and algorithm discovery. Developed by researchers at the **Shanghai Artificial Intelligence Laboratory** and **East China Normal University**, the framework addresses the fundamental limitations of existing LLM agents—namely inter-branch information isolation, memoryless search, and a lack of hierarchical control.
+The prevailing method for improving LLM reasoning—Reinforcement Learning from Verifiable Rewards (RLVR)—often struggles with credit assignment because it relies on sparse, binary rewards. Self-distillation offers a denser, token-level alternative by matching a "student" model’s output to a "self-teacher" that has access to additional context.
 
-By unifying three core innovations—**Progressive Monte Carlo Graph Search (MCGS)**, **Retrospective Memory**, and **Hierarchical Planning with Adaptive Code Generation**—MLEvolve achieves state-of-the-art (SOTA) performance on the **MLE-Bench** (75 Kaggle competitions). Most notably, the framework achieves a **65.3% average medal rate** within a 12-hour budget, which is half the standard runtime typically allotted to such tasks. Beyond MLE, it demonstrates strong cross-domain generalization by outperforming specialized methods on mathematical algorithm optimization tasks.
-
----
-
-## The Challenges of Long-Horizon Discovery
-
-Designing high-performance AI systems traditionally relies on expert manual iteration. While previous AutoML tools optimized discrete stages (like model selection), they failed to cover the end-to-end pipeline. Existing LLM-based coding agents suffer from three critical bottlenecks:
-
-| Challenge | Impact on Self-Evolution |
-| :--- | :--- |
-| **Branch Isolation** | Linear or tree-structured searches confine information. Successful strategies found in one branch cannot easily transfer to another. |
-| **Memoryless Search** | Most frameworks propagate only scalar rewards, failing to accumulate or reuse nuanced experiential insights from past attempts. |
-| **One-Shot Generation** | Coupling strategic planning with code implementation in a single generation leads to low iteration efficiency and uncontrollable code rewrites. |
+The central breakthrough of this research is **StepAlignFB (Step-aligned Critique)**. By aligning feedback to the solver's specific reasoning steps rather than providing a generic reference solution, the model achieves massive accuracy gains. Specifically, StepAlignFB outperformed standard GRPO by **16.11 points** and reference-solution-conditioned self-distillation by **5.27 points** (Avg@12). The success of this method is attributed to its ability to concentrate learning signals on "error-adjacent tokens" while leaving correct reasoning intact—effectively functioning as a Process Reward Model (PRM) without the need for scalar labels or reward model training.
 
 ---
 
-## The MLEvolve Architecture: Three Pillars of Self-Evolution
+## Methodology and Mathematical Framework
 
-### 1. Progressive Monte Carlo Graph Search (MCGS)
-MLEvolve extends traditional tree search into a graph-based structure ($G = (V, E)$), where edges are categorized into Primary Edges ($E_T$) for generative order and Reference Edges ($E_{ref}$) for cross-branch knowledge flow.
+The research employs a **Solver–Critic** setup. A trainable solver ($π_θ$) generates step-tagged reasoning traces, while a frozen critic ($π_{critic}$) provides feedback ($f$) used as context ($c$) for the teacher distribution.
 
-*   **Progressive Exploration Scheduling:** Inspired by entropy-based principles, the framework uses a probabilistic soft switch between **UCT-based exploration** (high entropy) and **Elite-Guided exploitation** (low entropy). As search time progresses, a weight $w(t)$ gradually decays, concentrating computation on high-value "Elite" nodes.
-*   **Expansion Operators:**
-    *   **Intra-branch Evolution:** Reflects on the nearest $k$ nodes in the current branch to avoid repeating mistakes.
-    *   **Cross-branch Reference:** Triggered by branch stagnation; draws inspiration from the top-N nodes across *all* evaluated branches.
-    *   **Multi-branch Aggregation:** Triggered by global stagnation; fuses trajectories from different branches to spark novel "Collective Intelligence" directions.
+### Comparison of Training Conditions
 
-### 2. Retrospective Memory
-To transform search into experience-driven decision-making, MLEvolve utilizes a dual-memory system:
-*   **Domain Knowledge Base:** A "cold-start" curated library of candidate models and usage guidelines organized by task type (e.g., Image Classification, Tabular Regression).
-*   **Dynamic Global Memory:** Automatically accumulates structured records (plans, outcomes, analysis, and feedback) during the search.
-*   **Hybrid Retrieval:** Uses **Reciprocal Rank Fusion (RRF)** to combine lexical (BM25) and semantic (FAISS) search.
+| Condition | Description | Supervision Type |
+| :--- | :--- | :--- |
+| **GRPO** | Standard RLVR baseline using binary rewards (correct/incorrect). | Sparse Outcome |
+| **RefSol** | Teacher conditions on a ground-truth reference solution ($c$ = reference). | Dense, but Unaligned |
+| **StepAlignFB** | Teacher conditions on a step-by-step critique aligned to the solver’s trace. | Dense Process Alignment |
 
-### 3. Hierarchical Planning & Adaptive Code Generation
-The framework decouples the **Planner** ("what" and "why") from the **Coder** ("how"). The Coder adaptively selects from three modes based on the search state:
-*   **Base Mode:** Full code generation from scratch (used for initial drafts).
-*   **Stepwise Mode:** Module-by-module generation for complex, multi-stage pipelines.
-*   **Diff Mode:** Targeted "patch" edits on existing code for stable, localized refinement.
+### The Mechanics of Self-Distillation
+Self-distillation minimizes the divergence between the student (context-free) and the teacher (context-augmented). The loss function ($L_{SD}$) is defined as:
 
----
+$$L_{SD} = \mathbb{E}_{y \sim \pi_\theta(\cdot|x)} [ D(\pi_\theta(y|x) \, || \, \text{sg}[\pi_\theta(y|x, c)]) ]$$
 
-## Technical Methodology Summary
+Where $D$ is the divergence (forward KL in this study) and **sg** denotes a stop-gradient. The per-token advantage ($A_{SD,t}$) is the critical metric for credit assignment:
 
-### Selection Criterion (UCT)
-The selection policy traverses primary edges using the following formula:
-$$UCT(i) = Q_i + c(t) \sqrt{\frac{\ln(N_v + 1)}{N_i + \epsilon}}$$
-*   **$Q_i$:** Average reward of child node.
-*   **$c(t)$:** Exploration constant that reduces over time ($c_0 \to c_{min}$).
-*   **$\epsilon$:** Smoothing constant.
+$$A_{SD,t}(\hat{y}_t) = \log\pi_\theta(\hat{y}_t | x, c, y_{<t}) - \log\pi_\theta(\hat{y}_t | x, y_{<t})$$
 
-### Simulation & Reward Structure
-Rewards ($R(v)$) are assigned to stabilize credit assignment:
-*   **-1:** Execution failure or no valid metric.
-*   **1:** Success, but no improvement over branch best.
-*   **2:** Success and refreshes branch best.
-*   **Metric Value:** The actual task-specific score (e.g., Accuracy, AUC).
+This advantage quantifies how much the feedback $c$ shifts the model’s prediction at each specific token.
 
 ---
 
-## Performance Benchmarks & Results
+## Key Findings and Breakthroughs
 
-### MLE-Bench Main Results (75 Tasks)
-MLEvolve was tested against both proprietary and open-source agents using **Gemini-3.1-Pro-preview** as the backbone.
+### 1. Superiority of Step-Aligned Feedback
+The study proves that the structure of feedback is as important as its quality. StepAlignFB dominated across all metrics on the OpenMathReasoning dataset.
 
-| Agent | Time Budget | Low Complexity | Med Complexity | High Complexity | **Average Medal Rate** | **Gold Medal Rate** |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MLEvolve (Ours)** | **12h** | **80.3%** | **64.0%** | **46.7%** | **65.3%** | **34.7%** |
-| AIBuildAI | 24h | 77.3% | 61.4% | 46.7% | 63.1% | 25.8% |
-| MARS+ | 24h | 78.8% | 60.5% | 44.4% | 62.7% | 33.8% |
-| ML-Master 2.0 | 24h | 75.8% | 50.9% | 42.2% | 56.4% | 19.6% |
-| R&D-Agent | 12h | 68.2% | 21.1% | 22.2% | 35.1% | 16.4% |
+**Performance at Peak Checkpoints (OpenMathReasoning):**
+| Metric | GRPO | RefSol | StepAlignFB (Winner) |
+| :--- | :---: | :---: | :---: |
+| **Avg@12** | 19.72 | 30.56 | **35.83** |
+| **Maj@12** | 26.67 | 43.33 | **56.67** |
+| **Pass@12** | 76.67 | 86.67 | **90.00** |
 
-**Key Breakthroughs:**
-*   **Above-Median Rate:** 76.0% of MLEvolve submissions surpassed the human median Kaggle score.
-*   **Efficiency:** Achieved SOTA results at **half the standard 24-hour budget**.
-*   **Valid Submission Rate:** 100% across all 75 tasks.
+### 2. Localization vs. Diffuse Suppression
+The research identifies a major flaw in using reference solutions (RefSol) for self-distillation. Even if a solver's step is correct, a reference solution likely uses different phrasing or notation. This creates **diffuse negative advantages**, where the teacher suppresses correct behavior simply because it differs stylistically from the reference.
 
-### Generalization: AlphaEvolve Mathematical Tasks
-MLEvolve outperformed specialized discovery methods (like AlphaEvolve-v2 and TTT-Discover) on 11 out of 15 mathematical programming tasks, including Geometric Packing and Autocorrelation inequalities.
+In contrast, **StepAlignFB concentrates the signal**. By repeating correct steps verbatim and only correcting errors, the teacher distribution matches the student on correct prefixes (positive advantages) and diverges sharply only at the point of failure (targeted negative advantages).
 
----
-
-## Important Quotes with Context
-
-> "Existing MLE agents suffer from inter-branch information isolation, memoryless search, and lack of hierarchical control, which together hinder long-horizon optimization."
-
-**Context:** The researchers identify these three specific architectural failures as the primary reasons why current AI agents fail at sustained self-evolution in complex scientific tasks.
-
-> "A reasonable design requires distinguishing what to modify from how to implement... many methods rewrite the entire solution at every iteration, resulting in low iteration efficiency and uncontrollable modifications."
-
-**Context:** This justifies the "Hierarchical Planning" component, explaining why "Diff-based" editing is superior to "one-shot" generation for iterative engineering.
-
-> "MLEvolve achieves more stable and self-evolving exploration of end-to-end ML pipelines, leading to stronger solutions for challenging MLE tasks."
-
-**Context:** This serves as the core thesis of the paper, emphasizing that "stability" and "self-evolution" are the catalysts for superior performance.
+### 3. The "Faithful Scribe" Convention
+The researchers developed a specific prompting schema for the critic (Qwen/QwQ-32B) to ensure optimal distillation. The critic follows a strict decision procedure:
+*   **Case A:** Fully correct (reproduce student work exactly).
+*   **Case B:** Correct answer, missing justification (insert missing step).
+*   **Case C:** Incomplete/ran out of tokens (condense and finish).
+*   **Case D:** Incorrect (reproduce correct part, fix the earliest error, and continue).
 
 ---
 
-## Actionable Insights for AI Research
+## Mechanistic Interpretation: Induction-Head Copying
 
-1.  **Shift from Trees to Graphs:** For open-ended discovery, standard tree search is too restrictive. Implementing "Reference Edges" allows agents to synthesize "Collective Intelligence" by fusing insights from multiple failed or partially successful branches.
-2.  **Adaptive Resource Allocation:** Use entropy-inspired scheduling. Early search should be broad and exploratory, but as the time budget depletes, the system must pivot to "Elite-Guided" exploitation of the most promising candidates.
-3.  **Experience over Reflection:** While many agents use LLMs for explicit "reflection," MLEvolve proves that **Retrospective Memory** (automatic experience accumulation and hybrid retrieval) can provide high-quality guidance without the overhead of extra LLM calls for summarization.
-4.  **Backbone Neutrality:** Evaluation across different LLMs (Gemini, GPT, DeepSeek, Kimi) shows that while certain models have domain strengths (e.g., GPT-5.5 in NLP, Kimi-K2.6 in Audio), the **MLEvolve framework itself** is the primary driver of performance across all backbones.
+The effectiveness of StepAlignFB is hypothesized to rely on **induction-head copying**, a known behavior in LLMs where models repeat token sequences found earlier in the context.
+
+*   **Failure of Full Repetition:** If the critic quotes the student's *incorrect* step before offering a correction, the teacher’s induction heads anchor to the error, reinforcing it rather than the correction.
+*   **Failure of Omission:** If the critic acknowledges correctness without repeating the student’s tokens, the teacher distribution drifts, creating negative advantages on correct steps.
+*   **The Success of Partial Repetition:** By repeating the student’s trace *only up to the first error*, the critic recruits induction heads to reinforce correct prefixes while allowing the teacher to "freshly write" the correction at the un-anchored erroneous position.
+
+---
+
+## Key Insights and Important Quotes
+
+### On the Limitations of RLVR
+> "The standard approach is reinforcement learning from verifiable rewards (RLVR)... which learns from a single scalar reward per rollout. This reward says whether the final answer is correct, but not where in the reasoning trace the model went wrong, making credit assignment difficult."
+
+### On Feedback Quality vs. Alignment
+> "Feedback alignment matters as much as feedback quality. A complete, correct reference derivation is a strong signal, but in self-distillation it diffuses across the solver’s rollout because the derivation diverges from the solver’s trace in surface form even at correct steps."
+
+### On StepAlignFB as Implicit PRM
+> "The localization mirrors what a PRM provides... but is obtained without training a reward model or collecting per-step scalar labels."
+
+---
+
+## Actionable Insights for AI Researchers
+
+1.  **Prioritize Structural Alignment:** When using self-distillation to improve reasoning, do not simply provide "the right answer." Instead, provide feedback that "hugs" the solver's existing reasoning path, only departing at the specific moment of logical failure.
+2.  **Utilize the "Faithful Scribe" Strategy:** Force your critic models to repeat correct student steps verbatim. This activates induction-head mechanisms that stabilize the training signal for correct reasoning.
+3.  **Early Stopping is Critical:** The data indicates that self-distillation reaches peak performance relatively quickly (within 5–6 epochs). Continuous training beyond this point can lead to performance degradation, making per-checkpoint selection on a validation set essential.
+4.  **Balance Cost and Gain:** While StepAlignFB provides the strongest signal, it is the most computationally expensive due to the requirement for high-quality, on-policy critiques from a strong model (e.g., QwQ-32B). For simpler tasks, the marginal gain over RefSol may not justify the added inference cost during training.

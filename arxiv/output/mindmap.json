@@ -1,133 +1,106 @@
 {
-  "name": "MLEvolve Framework",
+  "name": "Feedback Alignment in Self-Distillation",
   "children": [
     {
-      "name": "Core Challenges Addressed",
+      "name": "Self-Distillation Mechanism",
       "children": [
         {
-          "name": "Inter-branch information isolation"
+          "name": "Student: question only"
         },
         {
-          "name": "Memoryless search strategies"
+          "name": "Self-Teacher: question + context"
         },
         {
-          "name": "Lack of hierarchical control"
+          "name": "Objective: match output distributions"
+        },
+        {
+          "name": "Benefits: dense credit assignment"
         }
       ]
     },
     {
-      "name": "Progressive MCGS",
+      "name": "Feedback Conditions Compared",
       "children": [
         {
-          "name": "Graph-based Search Space",
-          "children": [
-            {
-              "name": "Primary edges (ET)"
-            },
-            {
-              "name": "Reference edges (Eref)"
-            }
-          ]
+          "name": "GRPO: binary reward only"
         },
         {
-          "name": "Progressive Exploration",
-          "children": [
-            {
-              "name": "Entropy-inspired scheduling"
-            },
-            {
-              "name": "Elite-Guided exploitation"
-            }
-          ]
+          "name": "RefSol: reference solution"
         },
         {
-          "name": "Expansion Types",
-          "children": [
-            {
-              "name": "Primary expansion"
-            },
-            {
-              "name": "Intra-branch evolution"
-            },
-            {
-              "name": "Cross-branch reference"
-            },
-            {
-              "name": "Multi-branch aggregation"
-            }
-          ]
+          "name": "StepAlignFB: step-aligned critique"
         }
       ]
     },
     {
-      "name": "Retrospective Memory",
+      "name": "Step-Aligned Critique (StepAlignFB)",
       "children": [
         {
-          "name": "Domain Knowledge Base (Cold-start)"
+          "name": "Largest performance gains"
         },
         {
-          "name": "Dynamic Global Memory",
-          "children": [
-            {
-              "name": "Hybrid retrieval (BM25 + FAISS)"
-            },
-            {
-              "name": "Stage-aware retrieval"
-            }
-          ]
+          "name": "Implicit process supervision"
+        },
+        {
+          "name": "Targets failure tokens"
+        },
+        {
+          "name": "Preserves correct behavior"
         }
       ]
     },
     {
-      "name": "Hierarchical Planning & Coding",
+      "name": "Token-Level Credit Assignment",
       "children": [
         {
-          "name": "Planner-Coder decoupling"
-        },
-        {
-          "name": "Adaptive Coding Modes",
+          "name": "StepAlignFB Advantages",
           "children": [
             {
-              "name": "Base mode (Full rewrite)"
+              "name": "Concentrates signal at errors"
             },
             {
-              "name": "Stepwise mode (Module-by-module)"
+              "name": "Reinforces valid traces"
+            }
+          ]
+        },
+        {
+          "name": "RefSol Disadvantages",
+          "children": [
+            {
+              "name": "Diffuse suppressive signal"
             },
             {
-              "name": "Diff mode (Patch edit)"
+              "name": "Stylistic disagreement noise"
             }
           ]
         }
       ]
     },
     {
-      "name": "Specialized Multi-Agent Team",
+      "name": "Mechanistic Findings",
       "children": [
         {
-          "name": "Draft & Improve Agents"
+          "name": "Faithful-scribe convention"
         },
         {
-          "name": "Debug & Result Parse Agents"
+          "name": "Induction-head copying behavior"
         },
         {
-          "name": "Evolution & Fusion Agents"
-        },
-        {
-          "name": "Code Review & Data Leakage Agents"
+          "name": "Partial verbatim repetition is key"
         }
       ]
     },
     {
-      "name": "Performance & Evaluation",
+      "name": "Experimental Setup",
       "children": [
         {
-          "name": "SOTA on MLE-Bench (65.3% Medal Rate)"
+          "name": "Model: Qwen3-1.7B"
         },
         {
-          "name": "Outperforms AlphaEvolve in Math Optimization"
+          "name": "Critic: QwQ-32B"
         },
         {
-          "name": "Sustained improvement over 12-hour budget"
+          "name": "Dataset: OpenMathReasoning"
         }
       ]
     }
