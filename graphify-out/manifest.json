@@ -42540,8 +42540,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/paper_trading_engine.py": {
-    "mtime": 1781020801.723982,
-    "ast_hash": "49701b52bc8fdcfb672057024e9ec89a",
+    "mtime": 1781064021.982755,
+    "ast_hash": "69f92f1cbe7d4a92623c88ee0350cda0",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/paper_trading_db.py": {
@@ -42555,13 +42555,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.js": {
-    "mtime": 1781020801.7159822,
-    "ast_hash": "a2fb1c8bebe29b674b13b130b2fbb89b",
+    "mtime": 1781064059.1608782,
+    "ast_hash": "70017966f3967f1501f9f17f7b8419c2",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.html": {
-    "mtime": 1781020801.7159822,
-    "ast_hash": "26504acff30951912a41c6fdde9846b8",
+    "mtime": 1781064038.6698103,
+    "ast_hash": "055284eb599e04bc311f44badd82378a",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-10.txt": {
@@ -42577,6 +42577,86 @@
   "/home/vreddy1/Desktop/Projects/scripts/daily_insight_20260610.md": {
     "mtime": 1781063320.4894307,
     "ast_hash": "9d5393c6662d3992bde83d1db40dca61",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_1_13.txt": {
+    "mtime": 1781063730.307342,
+    "ast_hash": "800dbfa2540548004c54d8bfa8ed9e1e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_12_1.txt": {
+    "mtime": 1781063742.6938336,
+    "ast_hash": "81e716b1cb0827371ae2ddd7d39c2c90",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_12_23.txt": {
+    "mtime": 1781063761.3466566,
+    "ast_hash": "81e716b1cb0827371ae2ddd7d39c2c90",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_12_13.txt": {
+    "mtime": 1781063768.1273968,
+    "ast_hash": "2862cee5887896401db55d7a695c81b3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_12_44.txt": {
+    "mtime": 1781063755.0913765,
+    "ast_hash": "54d6df609512bbd6e299ac37d3253354",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_1_44.txt": {
+    "mtime": 1781063736.5308092,
+    "ast_hash": "5924abbd3723a3080df1bce110bbcd20",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_1_1.txt": {
+    "mtime": 1781063722.8699124,
+    "ast_hash": "24241c1d4797a3283f7c30787fd6064b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/pkscreener_output/20260610_0925_X_12_24.txt": {
+    "mtime": 1781063748.89385,
+    "ast_hash": "2862cee5887896401db55d7a695c81b3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_44_2026-06-10.txt": {
+    "mtime": 1781063735.0258043,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_24_2026-06-10.txt": {
+    "mtime": 1781063747.322845,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_1_2026-06-10.txt": {
+    "mtime": 1781063721.379759,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_44_2026-06-10.txt": {
+    "mtime": 1781063753.6408658,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_23_2026-06-10.txt": {
+    "mtime": 1781063759.8958867,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_13_2026-06-10.txt": {
+    "mtime": 1781063728.7697835,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_1_2026-06-10.txt": {
+    "mtime": 1781063741.2148247,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_13_2026-06-10.txt": {
+    "mtime": 1781063766.5009086,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
   }
 }

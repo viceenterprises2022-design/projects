@@ -886,3 +886,46 @@ canvas#matrix-canvas:active {
   box-shadow: 0 0 6px var(--error-glow);
 }
 
+/* Advisor tab styling */
+.advisor-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.adv-tab {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.adv-tab.active {
+  background: var(--comp);
+  color: var(--accent);
+}
+
+.agent-thoughts-log {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  line-height: 1.5;
+  color: #38bdf8;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  padding: 10px;
+  border-radius: 8px;
+  height: 120px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+

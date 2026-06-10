@@ -29,9 +29,10 @@ const GRID_SIZE = 10;
 
 // Entities for visual simulation
 let characters = [
-  { id: 1, x: 2, y: 2, targetX: 2, targetY: 2, progress: 0, speed: 0.015, color: '#f59e0b', name: 'Bot-1' },
-  { id: 2, x: 4, y: 5, targetX: 4, targetY: 5, progress: 0, speed: 0.010, color: '#10b981', name: 'Bot-2' },
-  { id: 3, x: 1, y: 7, targetX: 1, targetY: 7, progress: 0, speed: 0.020, color: '#3b82f6', name: 'Bot-3' }
+  { id: 1, x: 1, y: 1, targetX: 6, targetY: 1, progress: 0, speed: 0.008, color: '#f59e0b', name: 'Trainee Bot' },
+  { id: 2, x: 1, y: 1, targetX: 1, targetY: 6, progress: 0, speed: 0.006, color: '#10b981', name: 'Prophet Bot' },
+  { id: 3, x: 1, y: 1, targetX: 6, targetY: 6, progress: 0, speed: 0.012, color: '#3b82f6', name: 'Battler Bot' },
+  { id: 4, x: 1, y: 1, targetX: 1, targetY: 1, progress: 0, speed: 0.004, color: '#a855f7', name: 'Chief Bot' }
 ];
 
 let particles = [];
@@ -314,6 +315,23 @@ function renderUI(data) {
   if (advisorEl) {
     advisorEl.textContent = data.advisor;
   }
+  
+  const thoughtsEl = document.getElementById("agent-thoughts-log");
+  if (thoughtsEl && data.agent_logs) {
+    if (data.agent_logs.length === 0) {
+      thoughtsEl.innerHTML = `<div style="color:var(--muted);text-align:center;padding:10px;font-size:0.7rem;">No agent thoughts recorded yet.</div>`;
+    } else {
+      thoughtsEl.innerHTML = data.agent_logs.map(log => {
+        let color = "#38bdf8";
+        if (log.includes("[CHIEF]")) color = "#a855f7";
+        else if (log.includes("[TRAINEE]")) color = "#f59e0b";
+        else if (log.includes("[PROPHET]")) color = "#10b981";
+        else if (log.includes("[FIGHTER]")) color = "#ef4444";
+        return `<div style="color:${color}">${escapeHtml(log)}</div>`;
+      }).join("");
+      thoughtsEl.scrollTop = thoughtsEl.scrollHeight;
+    }
+  }
 
   // 10. Update position ratio grid detail
   const pcrEl = document.getElementById("stat-overall-pcr");
@@ -555,12 +573,24 @@ function updateEntities() {
       char.x = char.targetX;
       char.y = char.targetY;
       char.progress = 0;
-      // Set new random adjacent cell target inside grid
-      let dir = Math.floor(Math.random() * 4);
-      let dx = dir === 0 ? 1 : dir === 1 ? -1 : 0;
-      let dy = dir === 2 ? 1 : dir === 3 ? -1 : 0;
-      char.targetX = Math.min(Math.max(char.x + dx, 0), GRID_SIZE - 1);
-      char.targetY = Math.min(Math.max(char.y + dy, 0), GRID_SIZE - 1);
+      
+      const isAtVillage = (char.x <= 2 && char.y <= 2);
+      
+      if (isAtVillage) {
+        // Go to their respective zones
+        if (char.name === 'Trainee Bot') { char.targetX = 6; char.targetY = 1; }
+        else if (char.name === 'Prophet Bot') { char.targetX = 1; char.targetY = 6; }
+        else if (char.name === 'Battler Bot') { char.targetX = 6; char.targetY = 6; }
+        else { 
+          // Chief Bot wanders around the Village
+          char.targetX = Math.max(0, Math.min(2, char.x + (Math.random() > 0.5 ? 1 : -1)));
+          char.targetY = Math.max(0, Math.min(2, char.y + (Math.random() > 0.5 ? 1 : -1)));
+        }
+      } else {
+        // Return to Village
+        char.targetX = 1;
+        char.targetY = 1;
+      }
     } else {
       char.progress += char.speed;
     }
@@ -684,6 +714,23 @@ function drawDepthSortedEntities() {
     color: bf.color
   });
 
+  // 4. Add Village Houses
+  list.push({ type: 'house', depth: 1.5 + 0.8, x: 1.5, y: 0.8 });
+  list.push({ type: 'house', depth: 0.8 + 1.5, x: 0.8, y: 1.5 });
+  
+  // 5. Add Forest Trees
+  const trees = [
+    { x: 0.8, y: 6.2 }, { x: 1.5, y: 5.5 }, { x: 2.2, y: 6.8 },
+    { x: 1.0, y: 7.2 }, { x: 1.8, y: 7.8 }
+  ];
+  trees.forEach(t => {
+    list.push({ type: 'tree', depth: t.x + t.y, x: t.x, y: t.y });
+  });
+  
+  // 6. Add Training Target Boards
+  list.push({ type: 'target', depth: 6.5 + 1.2, x: 6.5, y: 1.2 });
+  list.push({ type: 'target', depth: 5.8 + 1.8, x: 5.8, y: 1.8 });
+
   // Sort by depth (painters algorithm)
   list.sort((a, b) => a.depth - b.depth);
 
@@ -707,7 +754,16 @@ function drawDepthSortedEntities() {
       ctx.fill();
     } else if (ent.type === 'boss') {
       // Draw ETH/BTC Boss monolith
-      const screen = isoToScreen(ent.x, ent.y);
+      const floatOffset = Math.sin(Date.now() * 0.003) * 6;
+      const screen = isoToScreen(ent.x, ent.y, 8 + floatOffset);
+      
+      // Combat ring glow on grid ground
+      const groundScreen = isoToScreen(ent.x, ent.y);
+      ctx.strokeStyle = ent.color + "88";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(groundScreen.x, groundScreen.y, 16, 8, 0, 0, Math.PI * 2);
+      ctx.stroke();
       
       // Draw diamond crystal
       ctx.fillStyle = "rgba(10, 20, 40, 0.9)";
@@ -728,6 +784,106 @@ function drawDepthSortedEntities() {
       ctx.fillStyle = "#ef4444";
       ctx.font = "bold 9px 'JetBrains Mono', monospace";
       ctx.fillText(`${activeSymbol} BOSS`, screen.x, screen.y - h - 6);
+    } else if (ent.type === 'house') {
+      const screen = isoToScreen(ent.x, ent.y);
+      const w = 12;
+      const h = 16;
+      
+      // Left wall
+      ctx.fillStyle = "rgba(23, 37, 66, 0.95)";
+      ctx.strokeStyle = "rgba(59, 130, 246, 0.4)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(screen.x, screen.y);
+      ctx.lineTo(screen.x - w, screen.y - w/2);
+      ctx.lineTo(screen.x - w, screen.y - w/2 - h);
+      ctx.lineTo(screen.x, screen.y - h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Right wall
+      ctx.fillStyle = "rgba(15, 23, 42, 0.95)";
+      ctx.beginPath();
+      ctx.moveTo(screen.x, screen.y);
+      ctx.lineTo(screen.x + w, screen.y - w/2);
+      ctx.lineTo(screen.x + w, screen.y - w/2 - h);
+      ctx.lineTo(screen.x, screen.y - h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Roof left
+      ctx.fillStyle = "rgba(168, 85, 247, 0.8)";
+      ctx.beginPath();
+      ctx.moveTo(screen.x, screen.y - h);
+      ctx.lineTo(screen.x - w, screen.y - w/2 - h);
+      ctx.lineTo(screen.x - w/2, screen.y - w/4 - h - 8);
+      ctx.lineTo(screen.x, screen.y - h - 8);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Roof right
+      ctx.fillStyle = "rgba(139, 92, 246, 0.8)";
+      ctx.beginPath();
+      ctx.moveTo(screen.x, screen.y - h);
+      ctx.lineTo(screen.x + w, screen.y - w/2 - h);
+      ctx.lineTo(screen.x + w/2, screen.y - w/4 - h - 8);
+      ctx.lineTo(screen.x, screen.y - h - 8);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    } else if (ent.type === 'tree') {
+      const screen = isoToScreen(ent.x, ent.y);
+      // Trunk
+      ctx.fillStyle = "#78350f";
+      ctx.fillRect(screen.x - 2, screen.y - 4, 4, 4);
+      
+      // Pine leaves layers
+      ctx.fillStyle = "rgba(16, 185, 129, 0.85)";
+      ctx.strokeStyle = "rgba(16, 185, 129, 0.3)";
+      ctx.lineWidth = 1;
+      
+      const drawLayer = (cx, cy, r, layerH) => {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - layerH);
+        ctx.lineTo(cx - r, cy);
+        ctx.lineTo(cx + r, cy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      };
+      
+      drawLayer(screen.x, screen.y - 3, 8, 6);
+      drawLayer(screen.x, screen.y - 6, 6, 6);
+      drawLayer(screen.x, screen.y - 9, 4, 6);
+    } else if (ent.type === 'target') {
+      const screen = isoToScreen(ent.x, ent.y);
+      // Leg stands
+      ctx.strokeStyle = "#b45309";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(screen.x - 4, screen.y);
+      ctx.lineTo(screen.x - 1, screen.y - 8);
+      ctx.moveTo(screen.x + 4, screen.y);
+      ctx.lineTo(screen.x + 1, screen.y - 8);
+      ctx.stroke();
+      
+      // Face
+      ctx.fillStyle = "#ffffff";
+      ctx.strokeStyle = "#ef4444";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(screen.x, screen.y - 10, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      
+      // Red Bullseye
+      ctx.fillStyle = "#ef4444";
+      ctx.beginPath();
+      ctx.arc(screen.x, screen.y - 10, 2.5, 0, Math.PI * 2);
+      ctx.fill();
     }
   });
 }
@@ -767,4 +923,32 @@ function spawnTradeFlashParticles() {
 function formatUSDT(value) {
   if (value == null) return "—";
   return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USDT";
+}
+
+window.switchAdvisorTab = function(tab) {
+  const briefTab = document.getElementById("adv-tab-commentary");
+  const logsTab = document.getElementById("adv-tab-logs");
+  const contentEl = document.getElementById("advisor-text-content");
+  const logsEl = document.getElementById("agent-thoughts-log");
+  
+  if (tab === "commentary") {
+    if (briefTab) briefTab.classList.add("active");
+    if (logsTab) logsTab.classList.remove("active");
+    if (contentEl) contentEl.style.display = "block";
+    if (logsEl) logsEl.style.display = "none";
+  } else {
+    if (briefTab) briefTab.classList.remove("active");
+    if (logsTab) logsTab.classList.add("active");
+    if (contentEl) contentEl.style.display = "none";
+    if (logsEl) logsEl.style.display = "flex";
+  }
+};
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

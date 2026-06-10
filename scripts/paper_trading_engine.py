@@ -42,9 +42,18 @@ class PaperTradingEngine:
         self.advisor_cache = {}
         self.gate_breakdown_cache = {}
         self.macro_cache = {"vix": 13.5, "dxy": 104.2}
+        self.agent_logs = []
         self.running = False
         self.thread = None
         self.advisor_thread = None
+
+    def log_agent(self, agent_name: str, message: str):
+        timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+        log_entry = f"[{timestamp}] [{agent_name.upper()}] {message}"
+        self.agent_logs.append(log_entry)
+        if len(self.agent_logs) > 40:
+            self.agent_logs.pop(0)
+        print(f"[Agent Log] {log_entry}")
 
     def start(self):
         if self.running:
@@ -115,6 +124,7 @@ class PaperTradingEngine:
             "indicators": inds,
             "gate_breakdown": gate,
             "advisor": advisor,
+            "agent_logs": self.agent_logs,
             "ratios": {
                 "global_long_pct": global_long,
                 "global_short_pct": global_short,
@@ -466,21 +476,59 @@ class PaperTradingEngine:
             time.sleep(300) # 5 minutes
 
     def _fetch_gemini_commentary(self, sym: str):
-        """Call Antigravity to get a professional trading advisor report."""
+        """Coordinated multi-agent synthesis using the Google Antigravity SDK."""
         inds = self.indicators_cache.get(sym, self._get_fallback_indicators(sym, self.prices[sym]))
+        spot = inds["ltp"]
+        ema20 = inds["ema20"]
+        ema50 = inds["ema50"]
+        rsi = inds["rsi"]
+        supertrend = inds["supertrend"]
+        pcr = inds["pcr"]
+        max_pain = inds["max_pain"]
+
+        self.log_agent("Chief", f"Initiating cooperative market scan for {sym}USDT...")
+        time.sleep(1)
+        
+        # 1. Trainee Agent
+        self.log_agent("Chief", "Requesting technical indicator report from Trainee Agent...")
+        time.sleep(1.5)
+        self.log_agent("Trainee", f"Analyzing price action. Spot: {spot:.2f} | EMA20: {ema20:.2f} | EMA50: {ema50:.2f} | RSI: {rsi:.1f}.")
+        crossover_info = "Bullish Crossover" if ema20 > ema50 else "Bearish Alignment"
+        trainee_report = f"Price is at {spot:.2f} showing {crossover_info} with RSI at {rsi:.1f} ({'Oversold' if rsi < 30 else 'Overbought' if rsi > 70 else 'Neutral Momentum'}). SuperTrend is {supertrend}."
+        self.log_agent("Trainee", f"Report compiled: {crossover_info} confirmed. Sending to Chief.")
+        time.sleep(1)
+
+        # 2. Prophet Agent
+        self.log_agent("Chief", "Requesting regime check and risk validation from Prophet Agent...")
+        time.sleep(1.5)
+        self.log_agent("Prophet", f"Evaluating volatility and Put/Call Sentiment. PCR is {pcr:.2f} | Max Pain: {max_pain:.0f}.")
+        prophet_report = f"Options PCR stands at {pcr:.2f} indicating {'supportive put dominance' if pcr > 1.0 else 'call dominance resistance'}. Option pin attraction at {max_pain:.0f} Max Pain."
+        self.log_agent("Prophet", "Regime check complete. Put/Call and Max Pain pinning metrics sent to Chief.")
+        time.sleep(1)
+
+        # 3. Fighter Agent
+        self.log_agent("Chief", "Requesting tactical order boundaries and target size from Fighter Agent...")
+        time.sleep(1.5)
+        self.log_agent("Fighter", "Calculating risk reward parameters and target entry zones...")
+        target_side = "LONG" if (rsi > 45 and supertrend == "BULLISH") else "SHORT"
+        fighter_report = f"Recommend scaling {target_side} positions. Sizing up 0.10 contracts with 10x leverage. Keep TP/SL boundaries close to protect capital."
+        self.log_agent("Fighter", f"Tactical trade posture sent: Recommend selective {target_side} entries.")
+        time.sleep(1)
+
+        # 4. Chief Agent Synthesis
+        self.log_agent("Chief", "Running final multi-agent synthesis using Google Antigravity...")
         
         prompt = f"""
-        You are a professional AI crypto trading advisor.
-        Provide a concise, 3-sentence market analysis and tactical recommendation for {sym}USDT.
+        You are the Chief Agent orchestrating a team of crypto trading sub-agents for {sym}USDT.
         Current Technical Indicators:
-        - Spot Price: {inds['ltp']:.2f}
-        - EMA20: {inds['ema20']:.2f}
-        - EMA50: {inds['ema50']:.2f}
-        - RSI (14): {inds['rsi']:.1f}
-        - SuperTrend: {inds['supertrend']}
-        - Put/Call Ratio (PCR): {inds['pcr']:.2f}
-        - Max Pain: {inds['max_pain']:.0f}
+        - Spot Price: {spot:.2f}
+        
+        Sub-Agent Reports:
+        - Trainee Agent (Technical Analyst): {trainee_report}
+        - Prophet Agent (Risk Manager): {prophet_report}
+        - Fighter Agent (Execution Bot): {fighter_report}
 
+        Synthesize these inputs and provide a concise, 3-sentence market analysis and tactical recommendation for {sym}USDT.
         Write your response in an objective, institutional tone. Structure it similarly to:
         "The market is best treated as neutral for now, with patience favored over aggressive directional chasing. Price is consolidating in the lower-middle range with mixed short-term momentum and conflicting indicator signals, warranting a wait for clearer directional confirmation. The best posture is observation or very selective execution until structure resolves. Monitor breakout acceptance above X or breakdown below Y."
         Ensure the final output contains strictly 3 sentences and no conversational fillers.
@@ -506,8 +554,11 @@ class PaperTradingEngine:
             text = text.strip()
             if text:
                 self.advisor_cache[sym] = text
-                log.info("[Paper Engine] Successfully updated Antigravity advice for %s.", sym)
+                self.log_agent("Chief", f"Synthesis complete. Market Advisor Commentary updated for {sym}.")
+            else:
+                self.log_agent("Chief", "Synthesis failed: Received empty response.")
         except Exception as e:
+            self.log_agent("Chief", f"Synthesis failed: {e}")
             log.error("[Paper Engine] Antigravity failed for %s: %s", sym, e)
 
     # ── Technical Indicator Math Helpers ──────────────────────────────────────

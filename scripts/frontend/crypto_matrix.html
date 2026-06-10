@@ -220,9 +220,20 @@
         
         <!-- AI Advisor -->
         <div class="panel-card">
-          <div class="panel-title">AI Advisor Commentary <span class="panel-badge">LLM</span></div>
+          <div class="panel-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>AI Advisor</span>
+            <div class="advisor-tabs">
+              <button class="adv-tab active" id="adv-tab-commentary" onclick="switchAdvisorTab('commentary')">Brief</button>
+              <button class="adv-tab" id="adv-tab-logs" onclick="switchAdvisorTab('logs')">Thoughts</button>
+            </div>
+          </div>
+          
           <div class="advisor-text" id="advisor-text-content">
             Loading market commentary...
+          </div>
+          
+          <div class="agent-thoughts-log" id="agent-thoughts-log" style="display: none;">
+            Loading agent thoughts...
           </div>
         </div>
         
