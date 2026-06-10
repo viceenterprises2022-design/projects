@@ -85,7 +85,7 @@ def serve_dashboard():
     index = FRONTEND_DIR / "dashboard.html"
     if not index.exists():
         raise HTTPException(status_code=404, detail="dashboard.html not found")
-    return FileResponse(str(index))
+    return FileResponse(str(index), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.get("/market", include_in_schema=False)
@@ -93,7 +93,7 @@ def serve_market():
     f = FRONTEND_DIR / "market.html"
     if not f.exists():
         raise HTTPException(status_code=404, detail="market.html not found")
-    return FileResponse(str(f))
+    return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.get("/portfolio", include_in_schema=False)
@@ -101,7 +101,7 @@ def serve_portfolio():
     f = FRONTEND_DIR / "portfolio.html"
     if not f.exists():
         raise HTTPException(status_code=404, detail="portfolio.html not found")
-    return FileResponse(str(f))
+    return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.get("/holdings", include_in_schema=False)
@@ -109,7 +109,7 @@ def serve_holdings():
     f = FRONTEND_DIR / "holdings.html"
     if not f.exists():
         raise HTTPException(status_code=404, detail="holdings.html not found")
-    return FileResponse(str(f))
+    return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.get("/positions", include_in_schema=False)
@@ -117,7 +117,7 @@ def serve_positions():
     f = FRONTEND_DIR / "positions.html"
     if not f.exists():
         raise HTTPException(status_code=404, detail="positions.html not found")
-    return FileResponse(str(f))
+    return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.get("/pixi", include_in_schema=False)
@@ -125,7 +125,7 @@ def serve_pixi():
     f = FRONTEND_DIR / "pixi_dashboard.html"
     if not f.exists():
         raise HTTPException(status_code=404, detail="pixi_dashboard.html not found")
-    return FileResponse(str(f))
+    return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 if FRONTEND_DIR.exists():
@@ -659,7 +659,7 @@ def serve_crypto_matrix():
     f = FRONTEND_DIR / "crypto_matrix.html"
     if not f.exists():
         raise HTTPException(status_code=404, detail="crypto_matrix.html not found")
-    return FileResponse(str(f))
+    return FileResponse(str(f), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 # ── Paper Trading Routes ──────────────────────────────────────────────────────

@@ -655,14 +655,14 @@ canvas#matrix-canvas:active {
 .open-pos-item {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
-  padding: 10px 12px;
+  padding: 12px;
   border-radius: 8px;
   font-family: var(--mono);
   font-size: 0.7rem;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: stretch;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  align-items: stretch !important;
 }
 
 .open-pos-info {
@@ -676,6 +676,7 @@ canvas#matrix-canvas:active {
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 .side-badge {
@@ -683,11 +684,15 @@ canvas#matrix-canvas:active {
   padding: 1px 4px;
   border-radius: 3px;
   font-weight: 800;
+  white-space: nowrap;
 }
 
 .side-badge.long { background: rgba(16, 185, 129, 0.15); color: var(--primary); }
 .side-badge.short { background: rgba(239, 68, 68, 0.15); color: var(--error); }
 
+.open-pos-pnl {
+  white-space: nowrap;
+}
 .open-pos-pnl.up { color: var(--primary); font-weight: 700; }
 .open-pos-pnl.dn { color: var(--error); font-weight: 700; }
 
@@ -781,27 +786,36 @@ canvas#matrix-canvas:active {
 
 .pos-item-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 4px;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 8px 12px;
+  margin-top: 6px;
 }
 
 .grid-cell {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
+}
+
+.grid-cell.liq-cell {
+  grid-column: span 2;
+  border-top: 1px dashed rgba(255, 255, 255, 0.05);
+  padding-top: 6px;
+  margin-top: 2px;
 }
 
 .cell-lbl {
   font-size: 0.55rem;
   color: var(--muted);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .cell-val {
   font-size: 0.68rem;
   font-weight: 600;
   color: var(--text);
+  white-space: nowrap;
 }
 
 .liq-color {
@@ -809,24 +823,25 @@ canvas#matrix-canvas:active {
 }
 
 .pos-sltp-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
   align-items: flex-end;
-  gap: 6px;
+  gap: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-top: 6px;
+  padding-top: 8px;
   margin-top: 4px;
 }
 
 .pos-sltp-col {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .sltp-lbl {
   font-size: 0.55rem;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .pos-sltp-input {
@@ -836,7 +851,7 @@ canvas#matrix-canvas:active {
   color: var(--text);
   font-family: var(--mono);
   font-size: 0.65rem;
-  padding: 3px 6px;
+  padding: 4px 6px;
   border-radius: 4px;
 }
 
@@ -849,14 +864,14 @@ canvas#matrix-canvas:active {
   background: var(--accent);
   color: var(--text);
   border: none;
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 4px;
   font-family: var(--mono);
   font-size: 0.65rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s;
-  height: 22px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;

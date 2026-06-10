@@ -241,19 +241,19 @@ function renderUI(data) {
                 <span class="cell-val">${p.size} ${p.symbol}</span>
               </div>
               <div class="grid-cell">
-                <span class="cell-lbl">Entry</span>
+                <span class="cell-lbl">Margin</span>
+                <span class="cell-val">${p.margin.toFixed(1)} USDT</span>
+              </div>
+              <div class="grid-cell">
+                <span class="cell-lbl">Entry Price</span>
                 <span class="cell-val">${p.entry_price.toFixed(2)}</span>
               </div>
               <div class="grid-cell">
-                <span class="cell-lbl">LTP</span>
+                <span class="cell-lbl">Mark Price</span>
                 <span class="cell-val">${ltp.toFixed(2)}</span>
               </div>
-              <div class="grid-cell">
-                <span class="cell-lbl">Margin</span>
-                <span class="cell-val">${p.margin.toFixed(1)}</span>
-              </div>
-              <div class="grid-cell">
-                <span class="cell-lbl">Liq Price</span>
+              <div class="grid-cell liq-cell">
+                <span class="cell-lbl">Liquidation Price</span>
                 <span class="cell-val liq-color">${liqPrice}</span>
               </div>
             </div>
