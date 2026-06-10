@@ -92,7 +92,7 @@ def extract_strings_from_code(code_str):
             if isinstance(node, ast.Constant) and isinstance(node.value, str):
                 strings.append(node.value)
     except SyntaxError:
-        # Fallback to simple regex if AST parsing fails (e.g. syntax differences)
+        # Fallback to simple regex if AST parsing fails
         strings = re.findall(r"['\"](.*?)['\"]", code_str)
     return strings
 
@@ -109,7 +109,8 @@ def analyze_script(file_path):
         "size_bytes": file_path.stat().st_size,
         "databases": [],
         "apis": [],
-        "outputs": [],
+        "messaging": [],
+        "htmls": [],
         "imports": [],
         "cron_timings": [],
         "systemd_services": []
@@ -136,7 +137,7 @@ def analyze_script(file_path):
         for imp in re.findall(r"^\s*(?:import|from)\s+(\w+)", content, re.MULTILINE):
             metadata["imports"].append(imp)
             
-    # Remove standard library and external imports for visual clarity (keep local helper imports)
+    # Keep local helper imports
     local_imports = []
     for imp in set(metadata["imports"]):
         helper_py = SCRIPTS_DIR / f"{imp}.py"
@@ -147,14 +148,14 @@ def analyze_script(file_path):
     # Find string literals
     all_strings = extract_strings_from_code(content)
     
-    # 1. Look for SQLite Databases (.db reference)
+    # 1. Look for SQLite Databases (.db reference) -> group "db"
     for s in all_strings:
         db_match = re.search(r"(\w+\.db)", s)
         if db_match:
             metadata["databases"].append(db_match.group(1))
     metadata["databases"] = list(set(metadata["databases"]))
     
-    # 2. Look for external API URLs and Polling Domains
+    # 2. Look for external API URLs and Polling Domains -> group "api"
     api_patterns = [
         (r"api\.upstox\.com", "Upstox API"),
         (r"binance\.com", "Binance API"),
@@ -176,7 +177,7 @@ def analyze_script(file_path):
             metadata["apis"].append(name_api)
     metadata["apis"] = list(set(metadata["apis"]))
     
-    # 3. Look for Outputs
+    # 3. Look for Messaging Outputs -> group "messaging"
     output_patterns = [
         (r"SLACK_WEBHOOK|send_to_slack|send_slack", "Slack Workspace"),
         (r"telegram.*send|send_telegram|tg\.send", "Telegram Channel"),
@@ -186,8 +187,15 @@ def analyze_script(file_path):
     ]
     for pattern, name_out in output_patterns:
         if re.search(pattern, content, re.IGNORECASE):
-            metadata["outputs"].append(name_out)
-    metadata["outputs"] = list(set(metadata["outputs"]))
+            metadata["messaging"].append(name_out)
+    metadata["messaging"] = list(set(metadata["messaging"]))
+
+    # 4. Look for references to HTML files -> group "html"
+    for s in all_strings:
+        html_match = re.search(r"(\w+\.html)", s)
+        if html_match:
+            metadata["htmls"].append(html_match.group(1))
+    metadata["htmls"] = list(set(metadata["htmls"]))
 
     return metadata
 
@@ -215,7 +223,6 @@ def parse_cron_jobs():
             script_match = re.search(r"(\w+\.py)", cmd)
             script_name = script_match.group(1) if script_match else None
             
-            # Also handle subdirectories
             if not script_name:
                 sub_match = re.search(r"(\w+/\w+\.py)", cmd)
                 if sub_match:
@@ -234,9 +241,7 @@ def parse_systemd_services():
     """Inspects repo and systemd directory for service definitions."""
     services = []
     
-    # Check local repo service files
     local_services = list(SCRIPTS_DIR.glob("*.service"))
-    # Check ~/.config/systemd/user
     user_services = []
     if SYSTEMD_USER_DIR.exists():
         user_services = list(SYSTEMD_USER_DIR.glob("*.service"))
@@ -269,7 +274,7 @@ def parse_systemd_services():
     return services
 
 def main():
-    print("Starting Scripts Universe analysis...")
+    print("Starting rearranged Scripts Universe analysis...")
     
     # 1. Scan scripts
     scripts = []
@@ -298,22 +303,8 @@ def main():
     # 4. Construct nodes and edges for network graph
     nodes = []
     edges = []
-    
-    # Track unique items to avoid duplicate nodes
     seen_nodes = set()
     
-    # Add Product group nodes
-    products = list(set(s["product"] for s in scripts))
-    for prod in products:
-        p_id = f"prod_{prod.lower().replace(' ', '_')}"
-        nodes.append({
-            "id": p_id,
-            "label": prod,
-            "group": "product",
-            "title": f"Product Suite: {prod}"
-        })
-        seen_nodes.add(p_id)
-        
     # Helper to safely add node
     def add_node(nid, label, group, title=""):
         if nid not in seen_nodes:
@@ -325,7 +316,17 @@ def main():
             })
             seen_nodes.add(nid)
             
-    # Add all scripts, databases, apis, outputs, services
+    # Scan and Add HTML files in frontend/ directory first -> group "html"
+    frontend_dir = SCRIPTS_DIR / "frontend"
+    detected_htmls = []
+    if frontend_dir.exists():
+        html_files = list(frontend_dir.glob("*.html"))
+        for hf in html_files:
+            html_id = f"html_{hf.name}"
+            add_node(html_id, hf.name, "html", f"HTML Dashboard Page: {hf.name}<br>Path: frontend/{hf.name}")
+            detected_htmls.append(hf.name)
+
+    # Add all scripts, databases, apis, messaging, HTML links
     for s in scripts:
         # Script Node
         script_title = f"Script: {s['name']}<br>Product: {s['product']}<br>Size: {s['size_bytes']:,} bytes"
@@ -336,19 +337,10 @@ def main():
             
         add_node(s["name"], s["name"], "script", script_title)
         
-        # Link script to product
-        p_id = f"prod_{s['product'].lower().replace(' ', '_')}"
-        edges.append({
-            "from": s["name"],
-            "to": p_id,
-            "relation": "belongs_to",
-            "label": "belongs to"
-        })
-        
-        # Database Nodes & Links
+        # Database Nodes & Links -> group "db"
         for db in s["databases"]:
             db_id = f"db_{db}"
-            add_node(db_id, db, "database", f"SQLite Database: {db}")
+            add_node(db_id, db, "db", f"SQLite Database: {db}")
             edges.append({
                 "from": s["name"],
                 "to": db_id,
@@ -356,10 +348,10 @@ def main():
                 "label": "uses"
             })
             
-        # API/DataSource Nodes & Links
+        # API/DataSource Nodes & Links -> group "api"
         for api in s["apis"]:
             api_id = f"api_{api.lower().replace(' ', '_')}"
-            add_node(api_id, api, "datasource", f"External Data Source: {api}")
+            add_node(api_id, api, "api", f"External Data Source: {api}")
             edges.append({
                 "from": s["name"],
                 "to": api_id,
@@ -367,15 +359,26 @@ def main():
                 "label": "polls"
             })
             
-        # Output Nodes & Links
-        for out in s["outputs"]:
-            out_id = f"out_{out.lower().replace(' ', '_')}"
-            add_node(out_id, out, "output", f"Builds Output: {out}")
+        # Output/Messaging Nodes & Links -> group "messaging"
+        for msg in s["messaging"]:
+            msg_id = f"msg_{msg.lower().replace(' ', '_')}"
+            add_node(msg_id, msg, "messaging", f"Messaging Output: {msg}")
             edges.append({
                 "from": s["name"],
-                "to": out_id,
+                "to": msg_id,
                 "relation": "builds",
                 "label": "builds"
+            })
+            
+        # HTML file references inside scripts -> group "html"
+        for h in s["htmls"]:
+            html_id = f"html_{h}"
+            add_node(html_id, h, "html", f"HTML Dashboard Page: {h}")
+            edges.append({
+                "from": s["name"],
+                "to": html_id,
+                "relation": "serves" if s["name"] == "api_server.py" else "references",
+                "label": "serves" if s["name"] == "api_server.py" else "references"
             })
             
         # Local Imports Links (Script dependencies)
@@ -387,7 +390,7 @@ def main():
                 "label": "imports"
             })
             
-        # Systemd service nodes & links
+        # Systemd service nodes & links -> group "daemon"
         for svc_name in s["systemd_services"]:
             svc_id = f"svc_{svc_name.replace('.', '_')}"
             svc_desc = next((x["description"] for x in services if x["name"] == svc_name), svc_name)
@@ -399,12 +402,12 @@ def main():
                 "label": "executes"
             })
             
-    # Include cron jobs that run scripts
+    # Include cron jobs that run scripts -> group "daemon"
     for cron in cron_jobs:
         if cron["script_name"]:
             cron_id = f"cron_{cron['schedule'].replace(' ', '_').replace('*', 'x')}"
             cron_title = f"Cron Trigger: {cron['schedule']}<br>Command: {cron['command']}"
-            add_node(cron_id, f"Cron: {cron['schedule']}", "trigger", cron_title)
+            add_node(cron_id, f"Cron: {cron['schedule']}", "daemon", cron_title)
             edges.append({
                 "from": cron_id,
                 "to": cron["script_name"],

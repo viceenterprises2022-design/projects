@@ -15,13 +15,12 @@
             --text-primary: #f3f4f6;
             --text-secondary: #9ca3af;
             
-            --color-product: #a855f7;
+            --color-db: #06b6d4;
+            --color-api: #f97316;
+            --color-messaging: #10b981;
+            --color-html: #a855f7;
             --color-script: #3b82f6;
-            --color-database: #06b6d4;
-            --color-datasource: #f97316;
-            --color-output: #10b981;
             --color-daemon: #eab308;
-            --color-trigger: #ef4444;
             
             --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.3);
         }
@@ -73,25 +72,25 @@
 
         .stats-banner {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.25rem;
         }
 
         .stat-item {
             text-align: center;
             background: rgba(255, 255, 255, 0.03);
-            padding: 0.4rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .stat-value {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #60a5fa;
         }
 
         .stat-label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: var(--text-secondary);
@@ -117,12 +116,12 @@
             position: absolute;
             top: 1.5rem;
             left: 1.5rem;
-            width: 320px;
+            width: 300px;
             background: var(--bg-panel);
             backdrop-filter: blur(16px);
             border: 1px solid var(--border-panel);
             border-radius: 16px;
-            padding: 1.5rem;
+            padding: 1.25rem;
             z-index: 5;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             display: flex;
@@ -152,7 +151,7 @@
         }
 
         .filter-section h3 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -163,7 +162,7 @@
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
         .filter-item {
@@ -172,7 +171,7 @@
             gap: 0.75rem;
             font-size: 0.85rem;
             cursor: pointer;
-            padding: 0.25rem;
+            padding: 0.3rem 0.5rem;
             border-radius: 6px;
             transition: background 0.2s ease;
         }
@@ -265,6 +264,7 @@
             border-radius: 100px;
             display: inline-block;
             margin-top: 0.4rem;
+            color: #ffffff;
         }
 
         .btn-close {
@@ -330,18 +330,6 @@
             color: var(--text-secondary);
         }
 
-        .code-block {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0.75rem;
-            font-family: monospace;
-            font-size: 0.8rem;
-            overflow-x: auto;
-            color: #38bdf8;
-            max-height: 200px;
-        }
-
         /* Legend helper overlay */
         .legend-indicator {
             position: absolute;
@@ -373,24 +361,28 @@
     <header>
         <div class="logo-section">
             <h1>🌌 Scripts Universe Mapper</h1>
-            <p>Interactive graph of products, daemons, databases, and APIs</p>
+            <p>Grouped view of Databases, APIs, Messaging channels, and HTML pages</p>
         </div>
         <div class="stats-banner">
-            <div class="stat-item">
-                <div class="stat-value" id="stat-products">0</div>
-                <div class="stat-label">Products</div>
-            </div>
             <div class="stat-item">
                 <div class="stat-value" id="stat-scripts">0</div>
                 <div class="stat-label">Scripts</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value" id="stat-dbs">0</div>
-                <div class="stat-label">Databases</div>
+                <div class="stat-label">DBs</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value" id="stat-apis">0</div>
-                <div class="stat-label">Data Sources</div>
+                <div class="stat-label">APIs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-msg">0</div>
+                <div class="stat-label">Messaging</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="stat-htmls">0</div>
+                <div class="stat-label">HTML Views</div>
             </div>
         </div>
     </header>
@@ -399,46 +391,41 @@
         <!-- Control Panel (Left) -->
         <div class="controls-panel">
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search script, database, or API...">
+                <input type="text" id="search-input" placeholder="Search script, database, API...">
             </div>
 
             <div class="filter-section">
-                <h3>Toggle Nodes</h3>
+                <h3>Toggle Groups</h3>
                 <div class="filter-group">
-                    <label class="filter-item">
-                        <input type="checkbox" id="chk-product" checked>
-                        <span class="dot-indicator" style="background-color: var(--color-product)"></span>
-                        Products
-                    </label>
                     <label class="filter-item">
                         <input type="checkbox" id="chk-script" checked>
                         <span class="dot-indicator" style="background-color: var(--color-script)"></span>
-                        Scripts
+                        Scripts (Python)
                     </label>
                     <label class="filter-item">
-                        <input type="checkbox" id="chk-database" checked>
-                        <span class="dot-indicator" style="background-color: var(--color-database)"></span>
-                        Databases
+                        <input type="checkbox" id="chk-db" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-db)"></span>
+                        DB (Databases)
                     </label>
                     <label class="filter-item">
-                        <input type="checkbox" id="chk-datasource" checked>
-                        <span class="dot-indicator" style="background-color: var(--color-datasource)"></span>
-                        Data Sources
+                        <input type="checkbox" id="chk-api" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-api)"></span>
+                        API (Data Sources)
                     </label>
                     <label class="filter-item">
-                        <input type="checkbox" id="chk-output" checked>
-                        <span class="dot-indicator" style="background-color: var(--color-output)"></span>
-                        Outputs
+                        <input type="checkbox" id="chk-messaging" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-messaging)"></span>
+                        Messaging (Slack/TG)
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" id="chk-html" checked>
+                        <span class="dot-indicator" style="background-color: var(--color-html)"></span>
+                        HTML (Web Views)
                     </label>
                     <label class="filter-item">
                         <input type="checkbox" id="chk-daemon" checked>
                         <span class="dot-indicator" style="background-color: var(--color-daemon)"></span>
-                        Daemons (Systemd)
-                    </label>
-                    <label class="filter-item">
-                        <input type="checkbox" id="chk-trigger" checked>
-                        <span class="dot-indicator" style="background-color: var(--color-trigger)"></span>
-                        Triggers (Cron)
+                        Daemons (Cron/Svc)
                     </label>
                 </div>
             </div>
@@ -488,43 +475,40 @@
         let allEdges = [];
         let rawData = null;
 
-        // Colors Mapping
+        // Color values parsed from computed styles
         const colors = {
-            product: varStyle('--color-product'),
+            db: varStyle('--color-db'),
+            api: varStyle('--color-api'),
+            messaging: varStyle('--color-messaging'),
+            html: varStyle('--color-html'),
             script: varStyle('--color-script'),
-            database: varStyle('--color-database'),
-            datasource: varStyle('--color-datasource'),
-            output: varStyle('--color-output'),
-            daemon: varStyle('--color-daemon'),
-            trigger: varStyle('--color-trigger')
+            daemon: varStyle('--color-daemon')
         };
 
         function varStyle(varName) {
             return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
         }
 
-        // Fetch graph data from backend
+        // Fetch graph data
         async function fetchGraphData() {
             try {
-                // Determine if we should query relative or hardcoded path
-                // When served from FastAPI server, api route serves this JSON
                 const res = await fetch('/universe/data');
                 if (!res.ok) throw new Error("FastAPI fetch failed");
                 const data = await res.json();
                 loadGraph(data);
             } catch (err) {
-                console.warn("Direct fetch failed, falling back to static load or universe_data.json path", err);
+                console.warn("FastAPI fetch failed, falling back to universe_data.json relative path", err);
                 try {
                     const res = await fetch('universe_data.json');
                     const data = await res.json();
                     loadGraph(data);
                 } catch (err2) {
-                    alert("Could not load universe_data.json. Make sure the analyzer script has generated it!");
+                    alert("Could not load universe_data.json.");
                 }
             }
         }
 
-        // Re-analyze trigger
+        // Trigger Reanalyze
         document.getElementById('btn-reanalyze').addEventListener('click', async () => {
             const btn = document.getElementById('btn-reanalyze');
             btn.disabled = true;
@@ -544,17 +528,18 @@
             }
         });
 
-        // Initialize Vis.js network graph
+        // Initialize Graph
         function loadGraph(data) {
             rawData = data;
             allNodes = data.nodes;
             allEdges = data.edges;
 
             // Update Statistics
-            document.getElementById('stat-products').innerText = allNodes.filter(n => n.group === 'product').length;
             document.getElementById('stat-scripts').innerText = allNodes.filter(n => n.group === 'script').length;
-            document.getElementById('stat-dbs').innerText = allNodes.filter(n => n.group === 'database').length;
-            document.getElementById('stat-apis').innerText = allNodes.filter(n => n.group === 'datasource').length;
+            document.getElementById('stat-dbs').innerText = allNodes.filter(n => n.group === 'db').length;
+            document.getElementById('stat-apis').innerText = allNodes.filter(n => n.group === 'api').length;
+            document.getElementById('stat-msg').innerText = allNodes.filter(n => n.group === 'messaging').length;
+            document.getElementById('stat-htmls').innerText = allNodes.filter(n => n.group === 'html').length;
 
             updateNetwork();
         }
@@ -564,13 +549,12 @@
             
             // Gather checkbox states
             const activeGroups = {
-                product: document.getElementById('chk-product').checked,
                 script: document.getElementById('chk-script').checked,
-                database: document.getElementById('chk-database').checked,
-                datasource: document.getElementById('chk-datasource').checked,
-                output: document.getElementById('chk-output').checked,
-                daemon: document.getElementById('chk-daemon').checked,
-                trigger: document.getElementById('chk-trigger').checked
+                db: document.getElementById('chk-db').checked,
+                api: document.getElementById('chk-api').checked,
+                messaging: document.getElementById('chk-messaging').checked,
+                html: document.getElementById('chk-html').checked,
+                daemon: document.getElementById('chk-daemon').checked
             };
 
             // Filter nodes
@@ -583,19 +567,21 @@
             // Format nodes for Vis.js
             const visNodes = new vis.DataSet(filteredNodes.map(node => {
                 let size = 25;
-                let fontColor = '#f3f4f6';
                 let shape = 'dot';
                 
-                if (node.group === 'product') {
-                    size = 40;
-                    shape = 'hexagon';
-                } else if (node.group === 'script') {
+                if (node.group === 'script') {
                     size = 28;
-                } else if (node.group === 'database') {
+                } else if (node.group === 'db') {
                     size = 25;
                     shape = 'database';
-                } else if (node.group === 'trigger') {
-                    size = 20;
+                } else if (node.group === 'html') {
+                    size = 28;
+                    shape = 'square';
+                } else if (node.group === 'api') {
+                    size = 26;
+                    shape = 'triangle';
+                } else if (node.group === 'daemon') {
+                    size = 22;
                     shape = 'diamond';
                 }
 
@@ -615,7 +601,7 @@
                     size: size,
                     shape: shape,
                     font: {
-                        color: fontColor,
+                        color: '#f3f4f6',
                         size: 14,
                         face: 'Inter'
                     },
@@ -642,6 +628,8 @@
                     color = '#22d3ee'; // cyan
                 } else if (edge.relation === 'builds') {
                     color = '#34d399'; // green
+                } else if (edge.relation === 'serves') {
+                    color = '#a855f7'; // purple
                 }
 
                 return {
@@ -676,12 +664,12 @@
                 physics: {
                     enabled: document.getElementById('chk-physics').checked,
                     barnesHut: {
-                        gravitationalConstant: -10000,
-                        centralGravity: 0.3,
-                        springLength: 120,
+                        gravitationalConstant: -12000,
+                        centralGravity: 0.35,
+                        springLength: 130,
                         springConstant: 0.04,
                         damping: 0.09,
-                        avoidOverlap: 0.5
+                        avoidOverlap: 0.6
                     },
                     stabilization: {
                         iterations: 150,
@@ -698,7 +686,7 @@
             const visData = { nodes: visNodes, edges: visEdges };
             network = new vis.Network(container, visData, options);
 
-            // Node Click Event (Populate details panel)
+            // Node Click Event
             network.on("click", function (params) {
                 if (params.nodes.length > 0) {
                     const nodeId = params.nodes[0];
@@ -763,7 +751,7 @@
                             <div class="details-section">
                                 <h4>Connected Databases</h4>
                                 <ul>
-                                    ${scriptInfo.databases.map(db => `<li onclick="focusNode('db_${db}')"><span class="badge" style="background-color: var(--color-database)">DB</span> ${db}</li>`).join('')}
+                                    ${scriptInfo.databases.map(db => `<li onclick="focusNode('db_${db}')"><span class="badge" style="background-color: var(--color-db)">DB</span> ${db}</li>`).join('')}
                                 </ul>
                             </div>
                         `;
@@ -776,22 +764,33 @@
                                 <ul>
                                     ${scriptInfo.apis.map(api => {
                                         const apiId = `api_${api.toLowerCase().replace(' ', '_')}`;
-                                        return `<li onclick="focusNode('${apiId}')"><span class="badge" style="background-color: var(--color-datasource)">API</span> ${api}</li>`;
+                                        return `<li onclick="focusNode('${apiId}')"><span class="badge" style="background-color: var(--color-api)">API</span> ${api}</li>`;
                                     }).join('')}
                                 </ul>
                             </div>
                         `;
                     }
 
-                    if (scriptInfo.outputs.length > 0) {
+                    if (scriptInfo.messaging.length > 0) {
                         html += `
                             <div class="details-section">
-                                <h4>Outputs & Deliveries</h4>
+                                <h4>Outputs & Messaging</h4>
                                 <ul>
-                                    ${scriptInfo.outputs.map(out => {
-                                        const outId = `out_${out.toLowerCase().replace(' ', '_')}`;
-                                        return `<li onclick="focusNode('${outId}')"><span class="badge" style="background-color: var(--color-output)">OUT</span> ${out}</li>`;
+                                    ${scriptInfo.messaging.map(msg => {
+                                        const msgId = `msg_${msg.toLowerCase().replace(' ', '_')}`;
+                                        return `<li onclick="focusNode('${msgId}')"><span class="badge" style="background-color: var(--color-messaging)">MSG</span> ${msg}</li>`;
                                     }).join('')}
+                                </ul>
+                            </div>
+                        `;
+                    }
+
+                    if (scriptInfo.htmls.length > 0) {
+                        html += `
+                            <div class="details-section">
+                                <h4>HTML Dashboard Pages</h4>
+                                <ul>
+                                    ${scriptInfo.htmls.map(h => `<li onclick="focusNode('html_${h}')"><span class="badge" style="background-color: var(--color-html)">HTML</span> ${h}</li>`).join('')}
                                 </ul>
                             </div>
                         `;
@@ -799,7 +798,7 @@
                 }
             } 
             // Handle Database Info
-            else if (node.group === 'database') {
+            else if (node.group === 'db') {
                 const scriptsUsing = rawData.raw_scripts.filter(s => s.databases.includes(node.label));
                 html += `
                     <div class="details-section">
@@ -814,8 +813,8 @@
                     </div>
                 `;
             }
-            // Handle DataSource Info
-            else if (node.group === 'datasource') {
+            // Handle DataSource/API Info
+            else if (node.group === 'api') {
                 const scriptsUsing = rawData.raw_scripts.filter(s => s.apis.some(api => `api_${api.toLowerCase().replace(' ', '_')}` === node.id));
                 html += `
                     <div class="details-section">
@@ -830,29 +829,29 @@
                     </div>
                 `;
             }
-            // Handle Product Suite Info
-            else if (node.group === 'product') {
-                const prodScripts = rawData.raw_scripts.filter(s => s.product === node.label);
+            // Handle HTML views Info
+            else if (node.group === 'html') {
+                const scriptsUsing = rawData.raw_scripts.filter(s => s.htmls.includes(node.label) || s.name === "api_server.py");
                 html += `
                     <div class="details-section">
-                        <h4>Product Suite Overview</h4>
-                        <p>Aggregated functional group of scripts and databases in the pipeline.</p>
+                        <h4>HTML Web View Dashboard</h4>
+                        <p>Interactive client-side frontend served by the local API web server.</p>
                     </div>
                     <div class="details-section">
-                        <h4>Contained Scripts</h4>
+                        <h4>Referenced / Served By</h4>
                         <ul>
-                            ${prodScripts.map(s => `<li onclick="focusNode('${s.name}')"><span class="badge" style="background-color: var(--color-script)">SCRIPT</span> ${s.name}</li>`).join('')}
+                            ${scriptsUsing.map(s => `<li onclick="focusNode('${s.name}')"><span class="badge" style="background-color: var(--color-script)">SCRIPT</span> ${s.name}</li>`).join('')}
                         </ul>
                     </div>
                 `;
             }
             // Handle Output Info
-            else if (node.group === 'output') {
-                const scriptsUsing = rawData.raw_scripts.filter(s => s.outputs.some(out => `out_${out.toLowerCase().replace(' ', '_')}` === node.id));
+            else if (node.group === 'messaging') {
+                const scriptsUsing = rawData.raw_scripts.filter(s => s.messaging.some(msg => `msg_${msg.toLowerCase().replace(' ', '_')}` === node.id));
                 html += `
                     <div class="details-section">
-                        <h4>Deliverables & Views</h4>
-                        <p>End products pushed to messaging services or saved locally.</p>
+                        <h4>Messaging Deliverables</h4>
+                        <p>End products pushed to Slack alerts, Telegram bots, or formatted files.</p>
                     </div>
                     <div class="details-section">
                         <h4>Generated By</h4>
@@ -912,8 +911,8 @@
 
         // Checkbox events to update network filters
         const checkboxes = [
-            'chk-product', 'chk-script', 'chk-database', 'chk-datasource', 
-            'chk-output', 'chk-daemon', 'chk-trigger', 'chk-physics'
+            'chk-script', 'chk-db', 'chk-api', 'chk-messaging', 
+            'chk-html', 'chk-daemon', 'chk-physics'
         ];
         checkboxes.forEach(id => {
             document.getElementById(id).addEventListener('change', updateNetwork);
