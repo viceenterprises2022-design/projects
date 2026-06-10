@@ -7,13 +7,18 @@ Handles SQLite schema definition and CRUD operations for simulated BTC/ETH tradi
 import sqlite3
 import datetime
 from pathlib import Path
+import contextlib
 
 DB_PATH = Path(__file__).parent / "paper_trading.db"
 
-def get_conn() -> sqlite3.Connection:
+@contextlib.contextmanager
+def get_conn():
     conn = sqlite3.connect(str(DB_PATH), check_same_thread=False)
     conn.row_factory = sqlite3.Row
-    return conn
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 def init_db():
     """Initializes tables and populates starting account values if empty."""
