@@ -175,7 +175,7 @@ function renderUI(data) {
     totalVal.textContent = (acc.total_pnl >= 0 ? "+" : "") + formatUSDT(acc.total_pnl);
   }
   if (totalSub) {
-    const totalPct = 100000.0 > 0 ? (acc.total_pnl / 100000.0 * 100) : 0.0;
+    const totalPct = 500000.0 > 0 ? (acc.total_pnl / 500000.0 * 100) : 0.0;
     totalSub.textContent = `ROI: ${totalPct.toFixed(2)}% Cumulative`;
   }
 
@@ -481,7 +481,7 @@ async function closePosition(symbol, side) {
 }
 
 async function resetAccount() {
-  if (!confirm("Are you sure you want to reset your paper account balance to 100,000 USDT? This will close all open positions and clear trade history.")) {
+  if (!confirm("Are you sure you want to reset your paper account balance to 500,000 USDT? This will close all open positions and clear trade history.")) {
     return;
   }
   try {

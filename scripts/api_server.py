@@ -743,7 +743,7 @@ def api_paper_reset():
     try:
         import paper_trading_db as ptdb
         ptdb.reset_db()
-        engine._recalculate_account_state(100000.0)
+        engine._recalculate_account_state(500000.0)
         return {"success": True}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

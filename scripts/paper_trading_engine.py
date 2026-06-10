@@ -244,7 +244,7 @@ class PaperTradingEngine:
         equity = balance + sum(p["margin"] for p in positions) + unrealized
         
         # Calc total and today's PnL
-        total_pnl = equity - 100000.0
+        total_pnl = equity - 500000.0
         
         # Today's PnL is compared to daily close or seed baseline
         today_pnl = total_pnl
@@ -334,7 +334,7 @@ class PaperTradingEngine:
                         total_margin += margin
                         
                 equity = balance + total_margin + total_unrealized
-                total_pnl = equity - 100000.0
+                total_pnl = equity - 500000.0
                 today_pnl = total_pnl # Simplification for dashboard real-time glow
                 
                 db.update_account(balance, equity, today_pnl, total_pnl)

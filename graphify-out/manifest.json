@@ -9520,8 +9520,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1781066959.6484904,
-    "ast_hash": "c0c80f9e7c5965078aa7509a079001fb",
+    "mtime": 1781069283.4913177,
+    "ast_hash": "094af909a2d112a6ba930e82a7a715f8",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_trending.py": {
@@ -42540,13 +42540,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/paper_trading_engine.py": {
-    "mtime": 1781064117.317071,
-    "ast_hash": "69f92f1cbe7d4a92623c88ee0350cda0",
+    "mtime": 1781069275.4822907,
+    "ast_hash": "87b4e66401330070df04cfdb0e6b7771",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/paper_trading_db.py": {
-    "mtime": 1781064919.5397289,
-    "ast_hash": "f3d4a8c78fb1d8b27fcbf0a8476b403d",
+    "mtime": 1781069252.7932143,
+    "ast_hash": "90c5b894880121913b44de50c25bf8bf",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/scratch/test_paper_trading.py": {
@@ -42555,13 +42555,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.js": {
-    "mtime": 1781066940.825427,
-    "ast_hash": "362536674e90f9b0699edec7980cf5cd",
+    "mtime": 1781069236.420159,
+    "ast_hash": "ada853f81681873c7075a9316d44be2d",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.html": {
-    "mtime": 1781067037.935754,
-    "ast_hash": "3d6b8473ab7fb3bf0c9ea3048e35f476",
+    "mtime": 1781069219.1001008,
+    "ast_hash": "edd1c90c9760577aabfc0b5bab933e2a",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-10.txt": {

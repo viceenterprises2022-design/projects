@@ -96,7 +96,7 @@ def init_db():
             now_str = datetime.datetime.utcnow().isoformat()
             conn.execute("""
                 INSERT INTO paper_account (id, balance, equity, today_pnl, total_pnl, start_date, last_update)
-                VALUES (1, 100000.0, 100000.0, 0.0, 0.0, ?, ?)
+                VALUES (1, 500000.0, 500000.0, 0.0, 0.0, ?, ?)
             """, (now_str, now_str))
             
             # Seed some dummy daily PnLs to show chart progression (matching visual month PnL)
@@ -202,7 +202,7 @@ def reset_db():
         now_str = datetime.datetime.utcnow().isoformat()
         conn.execute("""
             UPDATE paper_account
-            SET balance = 100000.0, equity = 100000.0, today_pnl = 0.0, total_pnl = 0.0, last_update = ?
+            SET balance = 500000.0, equity = 500000.0, today_pnl = 0.0, total_pnl = 0.0, last_update = ?
             WHERE id = 1
         """, (now_str,))
         
