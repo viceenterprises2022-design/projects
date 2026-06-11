@@ -52,31 +52,21 @@ def test_calculate_max_pain():
     # Both 50000 and 60000 result in same loss in this balanced mock
     assert calculate_max_pain(options_data) in [50000, 60000]
 
-def test_aggregate_liquidation_bins_with_data():
-    from crypto_dashboard import liq_collector, aggregate_liquidation_bins
-    import time
-    
-    now = time.time()
-    # Manually seed the global collector
-    liq_collector.buffer["BTC"] = [
-        {"price": 60001, "qty": 0.1, "timestamp": now},
-        {"price": 60049, "qty": 0.1, "timestamp": now},
-        {"price": 60099, "qty": 0.1, "timestamp": now}
-    ]
-    
-    # Result for BTC (bin size 100)
-    # 60001 -> 60000
-    # 60049 -> 60000
-    # 60099 -> 60100
-    result = aggregate_liquidation_bins("BTC")
-    
-    assert len(result) == 2
-    assert result[0][0] == 60000
-    assert result[0][1] == pytest.approx(12005.0)
-    assert result[1][0] == 60100
-    assert result[1][1] == pytest.approx(6009.9)
+def test_generate_liquidation_map_with_data():
+    from crypto_dashboard import generate_liquidation_map
+    depth_data = {
+        "bids": [["60005.0", "1.5"], ["60012.0", "2.0"]],
+        "asks": [["60050.0", "0.5"], ["60060.0", "1.0"]]
+    }
+    res = generate_liquidation_map(depth_data, "BTC")
+    assert len(res) > 0
+    prices = [r[0] for r in res]
+    assert 60000 in prices
+    assert 60010 in prices
+    assert 60050 in prices
+    assert 60060 in prices
 
-def test_aggregate_liquidation_bins_empty():
-    from crypto_dashboard import liq_collector, aggregate_liquidation_bins
-    liq_collector.buffer["SOL"] = []
-    assert aggregate_liquidation_bins("SOL") == []
+def test_generate_liquidation_map_empty():
+    from crypto_dashboard import generate_liquidation_map
+    assert generate_liquidation_map({}, "BTC") == []
+

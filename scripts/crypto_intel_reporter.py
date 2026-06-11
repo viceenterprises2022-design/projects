@@ -46,20 +46,34 @@ def execute_skill(name, params):
     return call_mcp("tools/call", {"name": "execute_skill", "arguments": {"unique_name": name, "parameters": params}})
 
 def parse_output(raw):
-    txt = raw["content"][0]["text"]
-    obj = json.loads(txt)
-    r = obj.get("result", {})
-    out = r.get("output")
-    if isinstance(out, str):
-        inner = json.loads(out)
-        r = inner.get("result", inner)
-    d = r
-    if d.get("ok") is True and "data" in d:
-        d = d["data"]
-    if "data" in d and isinstance(d["data"], dict) and "type" in d:
-        d = d["data"]
-    dr = d.get("decision_report", d.get("report", {}))
-    return d, dr
+    try:
+        if not isinstance(raw, dict) or "content" not in raw or not raw["content"]:
+            return {}, {}
+        txt = raw["content"][0].get("text", "")
+        if not txt:
+            return {}, {}
+        obj = json.loads(txt)
+        r = obj.get("result", {})
+        out = r.get("output")
+        if isinstance(out, str):
+            try:
+                inner = json.loads(out)
+                r = inner.get("result", inner)
+            except:
+                pass
+        d = r
+        if isinstance(d, dict):
+            if d.get("ok") is True and "data" in d:
+                d = d["data"]
+            if isinstance(d, dict) and "data" in d and isinstance(d["data"], dict) and "type" in d:
+                d = d["data"]
+        else:
+            d = {}
+        dr = d.get("decision_report", d.get("report", {})) if isinstance(d, dict) else {}
+        return d, dr
+    except Exception as e:
+        print(f"Error parsing skill output: {e}")
+        return {}, {}
 
 def fval(v, fmt=""):
     if v is None:
