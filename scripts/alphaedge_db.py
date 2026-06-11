@@ -120,7 +120,7 @@ def insert_metric(recorded_at: str, symbol: str, quote: dict, analysis: dict, oi
         quote.get("ltp"), quote.get("open"), quote.get("high"),
         quote.get("low"), quote.get("change_pct"),
         analysis.get("signal"), analysis.get("score"), analysis.get("factors"),
-        s("trend"), s("dow_jones"), s("india_vix"), s("oi"), s("vwap"),
+        s("trend"), s("dow_jones"), s("vix"), s("oi"), s("vwap"),
         s("supertrend"), s("rsi"), s("dxy"), s("crude"), s("pcr"),
         oi_data.get("total_call_oi"), oi_data.get("total_put_oi"),
         oi_data.get("total_pcr"), oi_data.get("max_pain"), oi_data.get("expiry"),

@@ -381,7 +381,7 @@ function animateMacro() {
     const cy=by+fy;
     const d=S.macro?.[def.key],chg=d?.chg??0,val=d?.value??null;
     const clr=chg>0.0001?C.bull:chg<-0.0001?C.bear:0x94a3b8;
-    const r=26+Math.min(Math.abs(chg*120),12);
+    const r=26+Math.min(Math.abs(chg*1.2),12);
     orb.g.clear();
     orb.g.beginFill(clr,0.06); orb.g.drawCircle(bx,cy,r+16); orb.g.endFill();
     orb.g.beginFill(clr,0.20); orb.g.drawCircle(bx,cy,r); orb.g.endFill();
@@ -390,7 +390,7 @@ function animateMacro() {
     const vs=val!=null?`${def.pre}${fmtMacro(def,val)}`:'—';
     if(orb.vT.text!==vs) orb.vT.text=vs;
     orb.vT.position.set(bx-orb.vT.width/2,cy-9);
-    const cs=chg!=null?`${chg>=0?'+':''}${(chg*100).toFixed(2)}%`:'';
+    const cs=chg!=null?`${chg>=0?'+':''}${chg.toFixed(2)}%`:'';
     if(orb.cT.text!==cs) orb.cT.text=cs;
     orb.cTs.fill=clr; orb.cT.position.set(bx-orb.cT.width/2,cy+7);
   });

@@ -47,7 +47,7 @@ OI_INSTRUMENTS = {
     "SENSEX":    "BSE_INDEX|SENSEX",
 }
 OI_RANGE = 1000
-YAHOO_SYM = {"DXY": "DX-Y.NYB", "VIX": "^VIX"}
+YAHOO_SYM = {"DXY": "DX-Y.NYB", "US_VIX": "^VIX"}
 YAHOO_IDX = {"NIFTY": "^NSEI", "SENSEX": "^BSESN", "BANKNIFTY": "^NSEBANK"}
 YH = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
@@ -336,7 +336,7 @@ def analyze(sym, quote, uc, oi_raw, gd, yc):
         res["trend"] = {"label": "N/A", "score": 0, "detail": f"{len(c)} bars"}
 
     # 2 US VIX
-    v = gd.get("VIX")
+    v = gd.get("US_VIX")
     if v:
         vv = v["ltp"]
         if vv < 13:      s, lb = 1,  f"Low ({vv:.2f}) — Calm"

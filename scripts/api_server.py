@@ -388,7 +388,7 @@ def api_pixi_signal(
 
 # ── Live Macro Fetcher (Yahoo Finance, 5-min cache) ───────────────────────────
 _MACRO_SYMBOLS = {
-    "vix":   "^VIX",          # CBOE Volatility Index
+    "vix":   "^INDIAVIX",     # India Volatility Index
     "dxy":   "DX-Y.NYB",     # US Dollar Index
     "crude": "CL=F",         # WTI Crude Oil Futures
     "gold":  "GC=F",         # Gold Futures
@@ -414,7 +414,7 @@ def _yahoo_quote(ticker: str) -> dict | None:
         meta   = result["meta"]
         ltp    = meta.get("regularMarketPrice") or meta.get("previousClose")
         prev   = meta.get("previousClose") or meta.get("chartPreviousClose")
-        chg_pct = ((ltp - prev) / prev) if prev and ltp else 0.0
+        chg_pct = ((ltp - prev) / prev * 100.0) if prev and ltp else 0.0
         return {"ltp": ltp, "chg": chg_pct}
     except Exception as exc:
         print(f"[Macro Yahoo] {ticker}: {exc}")
