@@ -220,3 +220,142 @@ def save_to_obsidian(
         pass
         
     return note_file_path
+
+
+def append_youtube_summary_to_wiki(
+    video: dict,
+    notebook_id: str,
+    report_path: Path,
+    mindmap_path: Path = None,
+    processed_date: str = None
+) -> Path:
+    """Append a YouTube summary entry to the centralized wiki note."""
+    if not processed_date:
+        processed_date = datetime.now().strftime("%Y-%m-%d")
+
+    vault_name, vault_path = get_obsidian_vault_info()
+    wiki_dir = vault_path / "wiki" / "projects"
+    
+    # Ensure directory exists or use local fallback
+    if not vault_path.exists():
+        print(f"  [OBSIDIAN WARN] Vault directory does not exist: {vault_path}")
+        wiki_dir = Path(__file__).parent / "obsidian_vault_fallback" / "wiki" / "projects"
+    
+    wiki_dir.mkdir(parents=True, exist_ok=True)
+    
+    # We prefer the existing case-sensitive file if it matches
+    note_file_path = wiki_dir / "Youtube_notebooklm.md"
+    if not note_file_path.exists():
+        alternative = wiki_dir / "youtube_notebooklm.md"
+        if alternative.exists():
+            note_file_path = alternative
+            
+    # Initialize note if empty or non-existent
+    if not note_file_path.exists() or note_file_path.stat().st_size == 0:
+        init_content = f"""---
+title: "YouTube to NotebookLM Logs"
+tags:
+  - "project"
+  - "youtube"
+  - "notebooklm"
+date: "{processed_date}"
+---
+
+# YouTube to NotebookLM Logs
+
+This note tracks the historical feed of YouTube videos processed by the NotebookLM pipeline.
+
+---
+"""
+        note_file_path.write_text(init_content, encoding="utf-8")
+        print(f"  [OBSIDIAN] Initialized centralized note: {note_file_path.name}")
+
+    # Read briefing report content
+    report_content = "No report content found."
+    if report_path and report_path.exists():
+        try:
+            report_content = report_path.read_text(encoding="utf-8").strip()
+        except Exception as e:
+            report_content = f"Error reading report: {e}"
+
+    # Generate mindmap tree text if path exists
+    mindmap_section = ""
+    if mindmap_path and mindmap_path.exists():
+        try:
+            import json
+            mm_data = json.loads(mindmap_path.read_text(encoding="utf-8"))
+            
+            # Simple local recursive helper to avoid dependency on caller
+            def local_mm_to_text(data, indent=0) -> list[str]:
+                prefix = "  " * indent
+                lines = []
+                if isinstance(data, dict):
+                    title = data.get("title") or data.get("label") or data.get("name", "")
+                    if title:
+                        marker = "•" if indent == 0 else "─"
+                        lines.append(f"{prefix}{marker} {title}")
+                    children = data.get("children") or data.get("items") or data.get("nodes") or []
+                    for child in children:
+                        lines.extend(local_mm_to_text(child, indent + 1))
+                elif isinstance(data, list):
+                    for item in data:
+                        lines.extend(local_mm_to_text(item, indent))
+                elif isinstance(data, str):
+                    lines.append(f"{prefix}  {data}")
+                return lines
+
+            tree_lines = local_mm_to_text(mm_data)
+            if tree_lines:
+                mindmap_section = "\n### Mind Map\n```\n" + "\n".join(tree_lines) + "\n```\n"
+        except Exception as e:
+            mindmap_section = f"\n### Mind Map\n*Error reading mind map: {e}*\n"
+
+    title = video.get("title", "Untitled Video")
+    channel = video.get("channel_handle", "Unknown Channel")
+    url = video.get("url", "")
+    nb_link = f"https://notebooklm.google.com/notebook/{notebook_id}"
+
+    # Build entry string
+    entry = f"""
+## [[{processed_date}]] - {title}
+- **Channel**: {channel}
+- **Video Link**: [Watch on YouTube]({url})
+- **NotebookLM**: [Open Notebook]({nb_link})
+
+### Summary & Briefing Report
+{report_content}
+{mindmap_section}
+---
+"""
+
+    # Append entry to the file
+    try:
+        with open(note_file_path, "a", encoding="utf-8") as f:
+            f.write(entry)
+        print(f"  [OBSIDIAN] Appended summary entry to: {note_file_path.name}")
+    except Exception as e:
+        print(f"  [OBSIDIAN ERROR] Failed to append to vault note {note_file_path}: {e}")
+
+    # Sync with CLI if applicable
+    try:
+        # For wiki/projects, relative path inside vault is:
+        rel_path = f"wiki/projects/{note_file_path.name}"
+        # Read full content to sync
+        full_content = note_file_path.read_text(encoding="utf-8")
+        cmd = [
+            "obsidian",
+            f"vault={vault_name}",
+            "create",
+            f"name=wiki/projects/{note_file_path.stem}",
+            f"content={full_content}",
+            f"path={rel_path}",
+            "overwrite",
+            "silent"
+        ]
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=8)
+        if res.returncode == 0:
+            print(f"  [OBSIDIAN] Centralized note synced via CLI.")
+    except Exception:
+        pass
+
+    return note_file_path
