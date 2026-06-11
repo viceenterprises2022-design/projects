@@ -383,14 +383,6 @@ def process_video(video: dict, state: dict):
     slack_ok = _send_slack(video, nb_id, report_path, mm_path)
     p(f"  {'OK' if slack_ok else 'FAILED'}")
 
-    # ── Update Obsidian wiki project note ───────────────────────────
-    p(f"\n[7.5/7] Updating wiki/projects/Youtube_notebooklm.md...")
-    try:
-        from obsidian_integration import append_youtube_summary_to_wiki
-        append_youtube_summary_to_wiki(video, nb_id, report_path, mm_path)
-    except Exception as obs_err:
-        p(f"  [OBSIDIAN ERROR] Failed to update wiki project note: {obs_err}")
-
     # ── Delete notebook (only after Slack confirms OK) ──────────────
     if slack_ok:
         _delete_notebook(nb_id)
