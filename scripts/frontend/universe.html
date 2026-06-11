@@ -395,6 +395,14 @@
             </div>
 
             <div class="filter-section">
+                <h3>Layout Mode</h3>
+                <label class="filter-item">
+                    <input type="checkbox" id="chk-hierarchy" checked>
+                    Arrange in Pipeline Columns
+                </label>
+            </div>
+
+            <div class="filter-section">
                 <h3>Toggle Groups</h3>
                 <div class="filter-group">
                     <label class="filter-item">
@@ -430,7 +438,7 @@
                 </div>
             </div>
 
-            <div class="filter-section">
+            <div class="filter-section" id="physics-container" style="display: none;">
                 <h3>Physics Mode</h3>
                 <label class="filter-item">
                     <input type="checkbox" id="chk-physics" checked>
@@ -546,6 +554,15 @@
 
         function updateNetwork() {
             const container = document.getElementById('network-container');
+            const useHierarchy = document.getElementById('chk-hierarchy').checked;
+            
+            // Toggle physics checkbox visibility based on hierarchy mode
+            const physicsContainer = document.getElementById('physics-container');
+            if (useHierarchy) {
+                physicsContainer.style.display = 'none';
+            } else {
+                physicsContainer.style.display = 'block';
+            }
             
             // Gather checkbox states
             const activeGroups = {
@@ -568,7 +585,25 @@
             const visNodes = new vis.DataSet(filteredNodes.map(node => {
                 let size = 25;
                 let shape = 'dot';
+                let level = undefined;
                 
+                if (useHierarchy) {
+                    // Assign levels to align columns left-to-right (Pipeline View)
+                    if (node.group === 'api') {
+                        level = 1; // External Data feeds
+                    } else if (node.group === 'daemon') {
+                        level = 2; // Cron triggers / Systemd services
+                    } else if (node.group === 'script') {
+                        level = 3; // Processing Core Scripts
+                    } else if (node.group === 'db') {
+                        level = 4; // Local Databases
+                    } else if (node.group === 'messaging') {
+                        level = 5; // Alerting Channels / Deliverables
+                    } else if (node.group === 'html') {
+                        level = 6; // Front-end Web Dashboards
+                    }
+                }
+
                 if (node.group === 'script') {
                     size = 28;
                 } else if (node.group === 'db') {
@@ -589,6 +624,7 @@
                     id: node.id,
                     label: node.label,
                     title: node.title,
+                    level: level,
                     color: {
                         background: colors[node.group] || '#94a3b8',
                         border: '#ffffff',
@@ -644,11 +680,25 @@
                     width: 1.5,
                     dashes: dashes,
                     smooth: {
-                        type: 'continuous',
+                        type: useHierarchy ? 'cubicBezier' : 'continuous',
                         roundness: 0.5
                     }
                 };
             }));
+
+            // Hierarchy configuration
+            const hierarchyConfig = useHierarchy ? {
+                enabled: true,
+                direction: 'LR', // Left-to-Right layout
+                sortMethod: 'directed',
+                nodeSpacing: 160,
+                levelSeparation: 320,
+                parentCentralization: true,
+                blockShifting: true,
+                edgeMinimization: true
+            } : {
+                enabled: false
+            };
 
             const options = {
                 nodes: {
@@ -661,8 +711,11 @@
                     hoverWidth: 1.5,
                     selectionWidth: 1.5
                 },
+                layout: {
+                    hierarchical: hierarchyConfig
+                },
                 physics: {
-                    enabled: document.getElementById('chk-physics').checked,
+                    enabled: !useHierarchy && document.getElementById('chk-physics').checked,
                     barnesHut: {
                         gravitationalConstant: -12000,
                         centralGravity: 0.35,
@@ -813,7 +866,7 @@
                     </div>
                 `;
             }
-            // Handle DataSource/API Info
+            // Handle API Info
             else if (node.group === 'api') {
                 const scriptsUsing = rawData.raw_scripts.filter(s => s.apis.some(api => `api_${api.toLowerCase().replace(' ', '_')}` === node.id));
                 html += `
@@ -912,7 +965,7 @@
         // Checkbox events to update network filters
         const checkboxes = [
             'chk-script', 'chk-db', 'chk-api', 'chk-messaging', 
-            'chk-html', 'chk-daemon', 'chk-physics'
+            'chk-html', 'chk-daemon', 'chk-physics', 'chk-hierarchy'
         ];
         checkboxes.forEach(id => {
             document.getElementById(id).addEventListener('change', updateNetwork);

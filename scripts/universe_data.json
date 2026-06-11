@@ -1,64 +1,52 @@
 {
   "nodes": [
     {
-      "id": "prod_pkscreener_nse_scanner",
-      "label": "PKScreener NSE Scanner",
-      "group": "product",
-      "title": "Product Suite: PKScreener NSE Scanner"
+      "id": "html_crypto_matrix.html",
+      "label": "crypto_matrix.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: crypto_matrix.html<br>Path: frontend/crypto_matrix.html"
     },
     {
-      "id": "prod_notebooklm_research_pipelines",
-      "label": "NotebookLM Research Pipelines",
-      "group": "product",
-      "title": "Product Suite: NotebookLM Research Pipelines"
+      "id": "html_positions.html",
+      "label": "positions.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: positions.html<br>Path: frontend/positions.html"
     },
     {
-      "id": "prod_other_utilities",
-      "label": "Other Utilities",
-      "group": "product",
-      "title": "Product Suite: Other Utilities"
+      "id": "html_market.html",
+      "label": "market.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: market.html<br>Path: frontend/market.html"
     },
     {
-      "id": "prod_alphaedge_crypto",
-      "label": "AlphaEdge Crypto",
-      "group": "product",
-      "title": "Product Suite: AlphaEdge Crypto"
+      "id": "html_portfolio.html",
+      "label": "portfolio.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: portfolio.html<br>Path: frontend/portfolio.html"
     },
     {
-      "id": "prod_portfolio_p&l_dashboard",
-      "label": "Portfolio P&L Dashboard",
-      "group": "product",
-      "title": "Product Suite: Portfolio P&L Dashboard"
+      "id": "html_dashboard.html",
+      "label": "dashboard.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: dashboard.html<br>Path: frontend/dashboard.html"
     },
     {
-      "id": "prod_crypto_daily_news_scanner",
-      "label": "Crypto Daily News Scanner",
-      "group": "product",
-      "title": "Product Suite: Crypto Daily News Scanner"
+      "id": "html_universe.html",
+      "label": "universe.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: universe.html<br>Path: frontend/universe.html"
     },
     {
-      "id": "prod_crypto_intel_reporter",
-      "label": "Crypto Intel Reporter",
-      "group": "product",
-      "title": "Product Suite: Crypto Intel Reporter"
+      "id": "html_holdings.html",
+      "label": "holdings.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: holdings.html<br>Path: frontend/holdings.html"
     },
     {
-      "id": "prod_exa_event_search",
-      "label": "Exa Event Search",
-      "group": "product",
-      "title": "Product Suite: Exa Event Search"
-    },
-    {
-      "id": "prod_system_monitoring_&_alerting",
-      "label": "System Monitoring & Alerting",
-      "group": "product",
-      "title": "Product Suite: System Monitoring & Alerting"
-    },
-    {
-      "id": "prod_alphaedge_market_intelligence",
-      "label": "AlphaEdge Market Intelligence",
-      "group": "product",
-      "title": "Product Suite: AlphaEdge Market Intelligence"
+      "id": "html_pixi_dashboard.html",
+      "label": "pixi_dashboard.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: pixi_dashboard.html<br>Path: frontend/pixi_dashboard.html"
     },
     {
       "id": "collector.py",
@@ -69,19 +57,19 @@
     {
       "id": "db_alphaedge.db",
       "label": "alphaedge.db",
-      "group": "database",
+      "group": "db",
       "title": "SQLite Database: alphaedge.db"
     },
     {
       "id": "api_fyers_api",
       "label": "Fyers API",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: Fyers API"
     },
     {
       "id": "api_upstox_api",
       "label": "Upstox API",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: Upstox API"
     },
     {
@@ -99,7 +87,7 @@
     {
       "id": "api_binance_api",
       "label": "Binance API",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: Binance API"
     },
     {
@@ -111,14 +99,14 @@
     {
       "id": "api_toddle_school_portal",
       "label": "Toddle School Portal",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: Toddle School Portal"
     },
     {
-      "id": "out_notebooklm_reports",
+      "id": "msg_notebooklm_reports",
       "label": "NotebookLM Reports",
-      "group": "output",
-      "title": "Builds Output: NotebookLM Reports"
+      "group": "messaging",
+      "title": "Messaging Output: NotebookLM Reports"
     },
     {
       "id": "cryptopanic_cli.py",
@@ -129,14 +117,14 @@
     {
       "id": "api_cryptopanic_api",
       "label": "CryptoPanic API",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: CryptoPanic API"
     },
     {
-      "id": "out_cli_rich_terminal_ui",
+      "id": "msg_cli_rich_terminal_ui",
       "label": "CLI Rich Terminal UI",
-      "group": "output",
-      "title": "Builds Output: CLI Rich Terminal UI"
+      "group": "messaging",
+      "title": "Messaging Output: CLI Rich Terminal UI"
     },
     {
       "id": "toddle_all_inventory.py",
@@ -153,7 +141,7 @@
     {
       "id": "db_intraday_oi.db",
       "label": "intraday_oi.db",
-      "group": "database",
+      "group": "db",
       "title": "SQLite Database: intraday_oi.db"
     },
     {
@@ -169,10 +157,10 @@
       "title": "Script: report_and_send.py<br>Product: AlphaEdge Market Intelligence<br>Size: 1,659 bytes"
     },
     {
-      "id": "out_telegram_channel",
+      "id": "msg_telegram_channel",
       "label": "Telegram Channel",
-      "group": "output",
-      "title": "Builds Output: Telegram Channel"
+      "group": "messaging",
+      "title": "Messaging Output: Telegram Channel"
     },
     {
       "id": "telegram_to_notebooklm.py",
@@ -183,14 +171,14 @@
     {
       "id": "api_telegram_api",
       "label": "Telegram API",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: Telegram API"
     },
     {
-      "id": "out_slack_workspace",
+      "id": "msg_slack_workspace",
       "label": "Slack Workspace",
-      "group": "output",
-      "title": "Builds Output: Slack Workspace"
+      "group": "messaging",
+      "title": "Messaging Output: Slack Workspace"
     },
     {
       "id": "toddle_bulk_convert.py",
@@ -225,7 +213,7 @@
     {
       "id": "db_intraday_options_cli.db",
       "label": "intraday_options_cli.db",
-      "group": "database",
+      "group": "db",
       "title": "SQLite Database: intraday_options_cli.db"
     },
     {
@@ -238,7 +226,7 @@
       "id": "api_server.py",
       "label": "api_server.py",
       "group": "script",
-      "title": "Script: api_server.py<br>Product: AlphaEdge Market Intelligence<br>Size: 27,308 bytes<br>Systemd: alphaedge-api.service"
+      "title": "Script: api_server.py<br>Product: AlphaEdge Market Intelligence<br>Size: 28,840 bytes<br>Systemd: alphaedge-api.service"
     },
     {
       "id": "svc_alphaedge-api_service",
@@ -267,7 +255,7 @@
     {
       "id": "api_youtube_api",
       "label": "YouTube API",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: YouTube API"
     },
     {
@@ -309,7 +297,7 @@
     {
       "id": "api_deribit_api",
       "label": "Deribit API",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: Deribit API"
     },
     {
@@ -352,12 +340,12 @@
       "id": "universe_analyzer.py",
       "label": "universe_analyzer.py",
       "group": "script",
-      "title": "Script: universe_analyzer.py<br>Product: Other Utilities<br>Size: 16,051 bytes"
+      "title": "Script: universe_analyzer.py<br>Product: Other Utilities<br>Size: 16,559 bytes"
     },
     {
       "id": "api_yahoo_finance",
       "label": "Yahoo Finance",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: Yahoo Finance"
     },
     {
@@ -405,7 +393,7 @@
     {
       "id": "db_paper_trading.db",
       "label": "paper_trading.db",
-      "group": "database",
+      "group": "db",
       "title": "SQLite Database: paper_trading.db"
     },
     {
@@ -437,6 +425,12 @@
       "label": "youtube_video_search.py",
       "group": "script",
       "title": "Script: youtube_video_search.py<br>Product: Other Utilities<br>Size: 14,814 bytes"
+    },
+    {
+      "id": "html__dashboard.html",
+      "label": "_dashboard.html",
+      "group": "html",
+      "title": "HTML Dashboard Page: _dashboard.html"
     },
     {
       "id": "monitor_upstox.py",
@@ -471,7 +465,7 @@
     {
       "id": "api_coinmarketcap_hub",
       "label": "CoinMarketCap Hub",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: CoinMarketCap Hub"
     },
     {
@@ -501,7 +495,7 @@
     {
       "id": "db_usage_tracker.db",
       "label": "usage_tracker.db",
-      "group": "database",
+      "group": "db",
       "title": "SQLite Database: usage_tracker.db"
     },
     {
@@ -531,7 +525,7 @@
     {
       "id": "api_arxiv_rss/html",
       "label": "arXiv RSS/HTML",
-      "group": "datasource",
+      "group": "api",
       "title": "External Data Source: arXiv RSS/HTML"
     },
     {
@@ -621,95 +615,89 @@
     {
       "id": "db_strategies.db",
       "label": "strategies.db",
-      "group": "database",
+      "group": "db",
       "title": "SQLite Database: strategies.db"
     },
     {
       "id": "cron_30_1_x_x_x",
       "label": "Cron: 30 1 * * *",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 30 1 * * *<br>Command: /home/vreddy1/Desktop/Projects/scripts/venv/bin/python /home/vreddy1/Desktop/Projects/scripts/market_engine.py >> /home/vreddy1/Desktop/Projects/scripts/logs/cron.log 2>&1"
     },
     {
       "id": "cron_0_8_x_x_x",
       "label": "Cron: 0 8 * * *",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 0 8 * * *<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && /home/vreddy1/Desktop/Projects/scripts/venv/bin/python crypto_to_notebooklm.py --telegram >> logs/crypto_news_cron.log 2>&1"
     },
     {
       "id": "cron_15_17_x_x_x",
       "label": "Cron: 15 17 * * *",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 15 17 * * *<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && /home/vreddy1/Desktop/Projects/scripts/venv/bin/python youtube_to_notebooklm.py >> logs/youtube_nlm_cron.log 2>&1"
     },
     {
       "id": "cron_15_x_x_x_x",
       "label": "Cron: 15 * * * *",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 15 * * * *<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 /home/vreddy1/Desktop/Projects/scripts/venv/bin/python /home/vreddy1/Desktop/Projects/scripts/cron_watchdog.py >> /home/vreddy1/Desktop/Projects/scripts/logs/watchdog_cron.log 2>&1"
     },
     {
       "id": "cron_x/5_x_x_x_x",
       "label": "Cron: */5 * * * *",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: */5 * * * *<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 /home/vreddy1/Desktop/Projects/scripts/venv/bin/python /home/vreddy1/Desktop/Projects/scripts/alert_dashboard_alive.py >> /home/vreddy1/Desktop/Projects/scripts/logs/alert_dashboard.log 2>&1"
     },
     {
       "id": "cron_0_3_x_x_1-5",
       "label": "Cron: 0 3 * * 1-5",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 0 3 * * 1-5<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && /home/vreddy1/Desktop/Projects/scripts/venv/bin/python strategies/nifty200_momentum.py >> /home/vreddy1/Desktop/Projects/scripts/strategies/cron.log 2>&1"
     },
     {
       "id": "cron_0_13_x_x_1-5",
       "label": "Cron: 0 13 * * 1-5",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 0 13 * * 1-5<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && /home/vreddy1/Desktop/Projects/scripts/venv/bin/python strategies/nifty200_momentum.py >> /home/vreddy1/Desktop/Projects/scripts/strategies/cron.log 2>&1"
     },
     {
       "id": "cron_25_9_x_x_1-5",
       "label": "Cron: 25 9 * * 1-5",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 25 9 * * 1-5<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 /home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python /home/vreddy1/Desktop/Projects/scripts/pkscreener_runner.py >> /home/vreddy1/Desktop/Projects/scripts/pkscreener_output/cron.log 2>&1"
     },
     {
       "id": "cron_30_12_x_x_1-5",
       "label": "Cron: 30 12 * * 1-5",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 30 12 * * 1-5<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 /home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python /home/vreddy1/Desktop/Projects/scripts/pkscreener_runner.py >> /home/vreddy1/Desktop/Projects/scripts/pkscreener_output/cron.log 2>&1"
     },
     {
       "id": "cron_35_15_x_x_1-5",
       "label": "Cron: 35 15 * * 1-5",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 35 15 * * 1-5<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && PYTHONUNBUFFERED=1 /home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python /home/vreddy1/Desktop/Projects/scripts/pkscreener_runner.py >> /home/vreddy1/Desktop/Projects/scripts/pkscreener_output/cron.log 2>&1"
     },
     {
       "id": "cron_0_5_x_x_x",
       "label": "Cron: 0 5 * * *",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 0 5 * * *<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && /home/vreddy1/Desktop/Projects/scripts/venv/bin/python crypto_intel_reporter.py --daily >> logs/crypto_intel_cron.log 2>&1"
     },
     {
       "id": "cron_0_5_x_x_1",
       "label": "Cron: 0 5 * * 1",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 0 5 * * 1<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && /home/vreddy1/Desktop/Projects/scripts/venv/bin/python crypto_intel_reporter.py --weekly >> logs/crypto_intel_cron.log 2>&1"
     },
     {
       "id": "cron_30_8_x_x_x",
       "label": "Cron: 30 8 * * *",
-      "group": "trigger",
+      "group": "daemon",
       "title": "Cron Trigger: 30 8 * * *<br>Command: cd /home/vreddy1/Desktop/Projects/scripts && /home/vreddy1/Desktop/Projects/scripts/venv/bin/python arxiv_to_notebooklm.py >> logs/arxiv_nlm_cron.log 2>&1"
     }
   ],
   "edges": [
-    {
-      "from": "collector.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
     {
       "from": "collector.py",
       "to": "db_alphaedge.db",
@@ -730,13 +718,13 @@
     },
     {
       "from": "collector.py",
-      "to": "alphaedge_db.py",
+      "to": "fyers_client.py",
       "relation": "imports",
       "label": "imports"
     },
     {
       "from": "collector.py",
-      "to": "fyers_client.py",
+      "to": "alphaedge_db.py",
       "relation": "imports",
       "label": "imports"
     },
@@ -748,21 +736,9 @@
     },
     {
       "from": "test_exception.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "test_exception.py",
       "to": "api_binance_api",
       "relation": "polls",
       "label": "polls"
-    },
-    {
-      "from": "toddle_convert.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "toddle_convert.py",
@@ -772,15 +748,9 @@
     },
     {
       "from": "toddle_convert.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "cryptopanic_cli.py",
-      "to": "prod_alphaedge_crypto",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "cryptopanic_cli.py",
@@ -790,27 +760,15 @@
     },
     {
       "from": "cryptopanic_cli.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "toddle_all_inventory.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "toddle_all_inventory.py",
       "to": "api_toddle_school_portal",
       "relation": "polls",
       "label": "polls"
-    },
-    {
-      "from": "market_analysis_v3.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "market_analysis_v3.py",
@@ -832,7 +790,7 @@
     },
     {
       "from": "market_analysis_v3.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
@@ -844,33 +802,15 @@
     },
     {
       "from": "toddle_deep_inventory.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_deep_inventory.py",
       "to": "api_toddle_school_portal",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "report_and_send.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "report_and_send.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "report_and_send.py",
-      "to": "send_telegram_msg.py",
-      "relation": "imports",
-      "label": "imports"
     },
     {
       "from": "report_and_send.py",
@@ -879,10 +819,10 @@
       "label": "imports"
     },
     {
-      "from": "telegram_to_notebooklm.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
+      "from": "report_and_send.py",
+      "to": "send_telegram_msg.py",
+      "relation": "imports",
+      "label": "imports"
     },
     {
       "from": "telegram_to_notebooklm.py",
@@ -892,13 +832,13 @@
     },
     {
       "from": "telegram_to_notebooklm.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "telegram_to_notebooklm.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
     },
@@ -910,33 +850,15 @@
     },
     {
       "from": "toddle_bulk_convert.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_bulk_convert.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "patch_market_no_claude.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "patch_market_no_claude.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "oi_collector_daemon.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "oi_collector_daemon.py",
@@ -958,12 +880,6 @@
     },
     {
       "from": "options_cli.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "options_cli.py",
       "to": "db_intraday_options_cli.db",
       "relation": "reads_writes",
       "label": "uses"
@@ -982,7 +898,7 @@
     },
     {
       "from": "options_cli.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
@@ -1000,18 +916,6 @@
     },
     {
       "from": "api_server.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "api_server.py",
-      "to": "db_alphaedge.db",
-      "relation": "reads_writes",
-      "label": "uses"
-    },
-    {
-      "from": "api_server.py",
       "to": "db_intraday_options_cli.db",
       "relation": "reads_writes",
       "label": "uses"
@@ -1024,21 +928,63 @@
     },
     {
       "from": "api_server.py",
+      "to": "db_alphaedge.db",
+      "relation": "reads_writes",
+      "label": "uses"
+    },
+    {
+      "from": "api_server.py",
       "to": "api_upstox_api",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "api_server.py",
-      "to": "paper_trading_engine.py",
-      "relation": "imports",
-      "label": "imports"
+      "to": "html_positions.html",
+      "relation": "serves",
+      "label": "serves"
     },
     {
       "from": "api_server.py",
-      "to": "paper_trading_db.py",
-      "relation": "imports",
-      "label": "imports"
+      "to": "html_dashboard.html",
+      "relation": "serves",
+      "label": "serves"
+    },
+    {
+      "from": "api_server.py",
+      "to": "html_crypto_matrix.html",
+      "relation": "serves",
+      "label": "serves"
+    },
+    {
+      "from": "api_server.py",
+      "to": "html_pixi_dashboard.html",
+      "relation": "serves",
+      "label": "serves"
+    },
+    {
+      "from": "api_server.py",
+      "to": "html_market.html",
+      "relation": "serves",
+      "label": "serves"
+    },
+    {
+      "from": "api_server.py",
+      "to": "html_portfolio.html",
+      "relation": "serves",
+      "label": "serves"
+    },
+    {
+      "from": "api_server.py",
+      "to": "html_holdings.html",
+      "relation": "serves",
+      "label": "serves"
+    },
+    {
+      "from": "api_server.py",
+      "to": "html_universe.html",
+      "relation": "serves",
+      "label": "serves"
     },
     {
       "from": "api_server.py",
@@ -1048,7 +994,19 @@
     },
     {
       "from": "api_server.py",
+      "to": "paper_trading_engine.py",
+      "relation": "imports",
+      "label": "imports"
+    },
+    {
+      "from": "api_server.py",
       "to": "pnl_poller.py",
+      "relation": "imports",
+      "label": "imports"
+    },
+    {
+      "from": "api_server.py",
+      "to": "paper_trading_db.py",
       "relation": "imports",
       "label": "imports"
     },
@@ -1060,27 +1018,15 @@
     },
     {
       "from": "substack_to_slack.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "substack_to_slack.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "substack_to_slack.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "patch_market_trending.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "patch_market_trending.py",
@@ -1090,27 +1036,15 @@
     },
     {
       "from": "astro_report.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "astro_report.py",
       "to": "api_youtube_api",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "astro_report.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "toddle_download.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "toddle_download.py",
@@ -1120,21 +1054,9 @@
     },
     {
       "from": "toddle_upload_physics.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_upload_physics.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "pkscreener_runner.py",
-      "to": "prod_pkscreener_nse_scanner",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "pkscreener_runner.py",
@@ -1144,27 +1066,15 @@
     },
     {
       "from": "pkscreener_runner.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "exa_ai_agents.py",
-      "to": "prod_exa_event_search",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "exa_ai_agents.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "toddle_extractor.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "toddle_extractor.py",
@@ -1180,12 +1090,6 @@
     },
     {
       "from": "paper_trading_engine.py",
-      "to": "prod_alphaedge_crypto",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "paper_trading_engine.py",
       "to": "api_deribit_api",
       "relation": "polls",
       "label": "polls"
@@ -1204,21 +1108,9 @@
     },
     {
       "from": "toddle_explore.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_explore.py",
       "to": "api_toddle_school_portal",
       "relation": "polls",
       "label": "polls"
-    },
-    {
-      "from": "market_analysis_v2.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "market_analysis_v2.py",
@@ -1234,27 +1126,15 @@
     },
     {
       "from": "toddle_notebooklm_sync.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_notebooklm_sync.py",
       "to": "api_toddle_school_portal",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "toddle_notebooklm_sync.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "report_and_summary.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "report_and_summary.py",
@@ -1264,15 +1144,9 @@
     },
     {
       "from": "report_and_summary.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "fo_breakout_scanner.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "fo_breakout_scanner.py",
@@ -1288,7 +1162,7 @@
     },
     {
       "from": "fo_breakout_scanner.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
@@ -1300,33 +1174,9 @@
     },
     {
       "from": "ai_news_reporter.py",
-      "to": "prod_exa_event_search",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "ai_news_reporter.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "universe_analyzer.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "universe_analyzer.py",
-      "to": "api_telegram_api",
-      "relation": "polls",
-      "label": "polls"
-    },
-    {
-      "from": "universe_analyzer.py",
-      "to": "api_toddle_school_portal",
-      "relation": "polls",
-      "label": "polls"
     },
     {
       "from": "universe_analyzer.py",
@@ -1342,27 +1192,33 @@
     },
     {
       "from": "universe_analyzer.py",
-      "to": "out_notebooklm_reports",
+      "to": "api_toddle_school_portal",
+      "relation": "polls",
+      "label": "polls"
+    },
+    {
+      "from": "universe_analyzer.py",
+      "to": "api_telegram_api",
+      "relation": "polls",
+      "label": "polls"
+    },
+    {
+      "from": "universe_analyzer.py",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "universe_analyzer.py",
-      "to": "out_slack_workspace",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "universe_analyzer.py",
-      "to": "out_telegram_channel",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "pnl_poller.py",
-      "to": "prod_portfolio_p&l_dashboard",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "pnl_poller.py",
@@ -1378,25 +1234,13 @@
     },
     {
       "from": "cron_watchdog.py",
-      "to": "prod_system_monitoring_&_alerting",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "cron_watchdog.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "metals_dashboard.py",
-      "to": "prod_alphaedge_crypto",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "metals_dashboard.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
@@ -1408,21 +1252,9 @@
     },
     {
       "from": "test_engine_v2.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "test_engine_v2.py",
       "to": "market_engine.py",
       "relation": "imports",
       "label": "imports"
-    },
-    {
-      "from": "youtube_to_notebooklm.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "youtube_to_notebooklm.py",
@@ -1432,13 +1264,13 @@
     },
     {
       "from": "youtube_to_notebooklm.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "youtube_to_notebooklm.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
     },
@@ -1453,12 +1285,6 @@
       "to": "send_slack.py",
       "relation": "imports",
       "label": "imports"
-    },
-    {
-      "from": "alphaedge_pro.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "alphaedge_pro.py",
@@ -1474,15 +1300,9 @@
     },
     {
       "from": "alphaedge_pro.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "paper_trading_db.py",
-      "to": "prod_alphaedge_crypto",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "paper_trading_db.py",
@@ -1492,25 +1312,13 @@
     },
     {
       "from": "send_slack.py",
-      "to": "prod_system_monitoring_&_alerting",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "send_slack.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "run_analysis_headless.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "run_analysis_headless.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
@@ -1519,12 +1327,6 @@
       "to": "market_analysis_v3.py",
       "relation": "imports",
       "label": "imports"
-    },
-    {
-      "from": "run_and_send_v2.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "run_and_send_v2.py",
@@ -1534,13 +1336,13 @@
     },
     {
       "from": "run_and_send_v2.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "run_and_send_v2.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
     },
@@ -1552,21 +1354,9 @@
     },
     {
       "from": "fyers_client.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "fyers_client.py",
       "to": "api_fyers_api",
       "relation": "polls",
       "label": "polls"
-    },
-    {
-      "from": "youtube_video_search.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "youtube_video_search.py",
@@ -1575,10 +1365,10 @@
       "label": "polls"
     },
     {
-      "from": "monitor_upstox.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
+      "from": "youtube_video_search.py",
+      "to": "html__dashboard.html",
+      "relation": "references",
+      "label": "references"
     },
     {
       "from": "monitor_upstox.py",
@@ -1588,27 +1378,15 @@
     },
     {
       "from": "monitor_upstox.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "exa_ai_search.py",
-      "to": "prod_exa_event_search",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "exa_ai_search.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "crypto_market_dashboard.py",
-      "to": "prod_alphaedge_crypto",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "crypto_market_dashboard.py",
@@ -1624,21 +1402,9 @@
     },
     {
       "from": "crypto_market_dashboard.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "market_engine.py",
-      "to": "prod_alphaedge_crypto",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "market_engine.py",
-      "to": "api_deribit_api",
-      "relation": "polls",
-      "label": "polls"
     },
     {
       "from": "market_engine.py",
@@ -1648,15 +1414,15 @@
     },
     {
       "from": "market_engine.py",
-      "to": "api_binance_api",
+      "to": "api_deribit_api",
       "relation": "polls",
       "label": "polls"
     },
     {
-      "from": "crypto_intel_reporter.py",
-      "to": "prod_crypto_intel_reporter",
-      "relation": "belongs_to",
-      "label": "belongs to"
+      "from": "market_engine.py",
+      "to": "api_binance_api",
+      "relation": "polls",
+      "label": "polls"
     },
     {
       "from": "crypto_intel_reporter.py",
@@ -1666,7 +1432,7 @@
     },
     {
       "from": "crypto_intel_reporter.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
     },
@@ -1678,33 +1444,21 @@
     },
     {
       "from": "crypto_news_search.py",
-      "to": "prod_crypto_daily_news_scanner",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "crypto_news_search.py",
       "to": "api_telegram_api",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "crypto_news_search.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "crypto_news_search.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "toddle_inventory.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "toddle_inventory.py",
@@ -1714,27 +1468,15 @@
     },
     {
       "from": "debug_telegram.py",
-      "to": "prod_system_monitoring_&_alerting",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "debug_telegram.py",
       "to": "api_telegram_api",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "debug_telegram.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "usage_tracker.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "usage_tracker.py",
@@ -1750,21 +1492,9 @@
     },
     {
       "from": "toddle_bulk_download.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_bulk_download.py",
       "to": "api_toddle_school_portal",
       "relation": "polls",
       "label": "polls"
-    },
-    {
-      "from": "alphaedge_db.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "alphaedge_db.py",
@@ -1774,25 +1504,19 @@
     },
     {
       "from": "arxiv_to_notebooklm.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "arxiv_to_notebooklm.py",
       "to": "api_arxiv_rss/html",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "arxiv_to_notebooklm.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "arxiv_to_notebooklm.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
     },
@@ -1810,51 +1534,27 @@
     },
     {
       "from": "send_telegram_msg.py",
-      "to": "prod_system_monitoring_&_alerting",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "send_telegram_msg.py",
       "to": "api_telegram_api",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "send_telegram_msg.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "obsidian_integration.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "obsidian_integration.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "patch_market.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "patch_market.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "live_market_dashboard.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "live_market_dashboard.py",
@@ -1864,27 +1564,15 @@
     },
     {
       "from": "live_market_dashboard.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "toddle_upload_all.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_upload_all.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "toddle_auth.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "toddle_auth.py",
@@ -1894,25 +1582,19 @@
     },
     {
       "from": "crypto_to_notebooklm.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "crypto_to_notebooklm.py",
       "to": "api_telegram_api",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "crypto_to_notebooklm.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "crypto_to_notebooklm.py",
-      "to": "out_telegram_channel",
+      "to": "msg_telegram_channel",
       "relation": "builds",
       "label": "builds"
     },
@@ -1924,57 +1606,27 @@
     },
     {
       "from": "toddle_config.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_config.py",
       "to": "api_toddle_school_portal",
       "relation": "polls",
       "label": "polls"
     },
     {
       "from": "toddle_config.py",
-      "to": "out_notebooklm_reports",
+      "to": "msg_notebooklm_reports",
       "relation": "builds",
       "label": "builds"
     },
     {
       "from": "alert_dashboard_alive.py",
-      "to": "prod_system_monitoring_&_alerting",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "alert_dashboard_alive.py",
-      "to": "out_slack_workspace",
+      "to": "msg_slack_workspace",
       "relation": "builds",
       "label": "builds"
-    },
-    {
-      "from": "scaffold_agent.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "toddle_physics_inventory.py",
-      "to": "prod_notebooklm_research_pipelines",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "toddle_physics_inventory.py",
       "to": "api_toddle_school_portal",
       "relation": "polls",
       "label": "polls"
-    },
-    {
-      "from": "probe_pcr_pain.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "probe_pcr_pain.py",
@@ -1984,21 +1636,9 @@
     },
     {
       "from": "test_fetch.py",
-      "to": "prod_other_utilities",
-      "relation": "belongs_to",
-      "label": "belongs to"
-    },
-    {
-      "from": "test_fetch.py",
       "to": "market_engine.py",
       "relation": "imports",
       "label": "imports"
-    },
-    {
-      "from": "nifty200_momentum.py",
-      "to": "prod_alphaedge_market_intelligence",
-      "relation": "belongs_to",
-      "label": "belongs to"
     },
     {
       "from": "nifty200_momentum.py",
@@ -2014,7 +1654,7 @@
     },
     {
       "from": "nifty200_momentum.py",
-      "to": "out_cli_rich_terminal_ui",
+      "to": "msg_cli_rich_terminal_ui",
       "relation": "builds",
       "label": "builds"
     },
@@ -2117,10 +1757,11 @@
         "Fyers API",
         "Upstox API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [
-        "alphaedge_db.py",
-        "fyers_client.py"
+        "fyers_client.py",
+        "alphaedge_db.py"
       ],
       "cron_timings": [],
       "systemd_services": [
@@ -2137,7 +1778,8 @@
       "apis": [
         "Binance API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2152,9 +1794,10 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2169,9 +1812,10 @@
       "apis": [
         "CryptoPanic API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2186,7 +1830,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2204,9 +1849,10 @@
         "Fyers API",
         "Upstox API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [
         "fyers_client.py"
       ],
@@ -2223,7 +1869,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2236,12 +1883,13 @@
       "size_bytes": 1659,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [
-        "send_telegram_msg.py",
-        "market_analysis_v3.py"
+        "market_analysis_v3.py",
+        "send_telegram_msg.py"
       ],
       "cron_timings": [],
       "systemd_services": []
@@ -2256,10 +1904,11 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports",
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [
         "obsidian_integration.py"
       ],
@@ -2274,9 +1923,10 @@
       "size_bytes": 2708,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2289,9 +1939,10 @@
       "size_bytes": 5052,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2306,7 +1957,8 @@
         "intraday_oi.db"
       ],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [
         "market_analysis_v3.py"
       ],
@@ -2328,9 +1980,10 @@
         "Fyers API",
         "Upstox API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [
         "fyers_client.py"
       ],
@@ -2344,21 +1997,31 @@
       "name": "api_server.py",
       "path": "api_server.py",
       "product": "AlphaEdge Market Intelligence",
-      "size_bytes": 27308,
+      "size_bytes": 28840,
       "databases": [
-        "alphaedge.db",
         "intraday_options_cli.db",
-        "intraday_oi.db"
+        "intraday_oi.db",
+        "alphaedge.db"
       ],
       "apis": [
         "Upstox API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [
+        "positions.html",
+        "dashboard.html",
+        "crypto_matrix.html",
+        "pixi_dashboard.html",
+        "market.html",
+        "portfolio.html",
+        "holdings.html",
+        "universe.html"
+      ],
       "imports": [
-        "paper_trading_engine.py",
-        "paper_trading_db.py",
         "alphaedge_db.py",
-        "pnl_poller.py"
+        "paper_trading_engine.py",
+        "pnl_poller.py",
+        "paper_trading_db.py"
       ],
       "cron_timings": [],
       "systemd_services": [
@@ -2373,10 +2036,11 @@
       "size_bytes": 17731,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports",
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2391,7 +2055,8 @@
         "intraday_oi.db"
       ],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2406,9 +2071,10 @@
       "apis": [
         "YouTube API"
       ],
-      "outputs": [
+      "messaging": [
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2423,7 +2089,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2436,9 +2103,10 @@
       "size_bytes": 2337,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2453,9 +2121,10 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [
         "25 9 * * 1-5",
@@ -2472,9 +2141,10 @@
       "size_bytes": 5453,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2489,7 +2159,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [
         "toddle_config.py"
       ],
@@ -2507,7 +2178,8 @@
         "Deribit API",
         "Binance API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [
         "paper_trading_db.py"
       ],
@@ -2524,7 +2196,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2540,7 +2213,8 @@
         "YouTube API",
         "Upstox API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2555,9 +2229,10 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2572,9 +2247,10 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2590,9 +2266,10 @@
         "Fyers API",
         "Upstox API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [
         "fyers_client.py"
       ],
@@ -2607,9 +2284,10 @@
       "size_bytes": 5180,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2619,19 +2297,20 @@
       "name": "universe_analyzer.py",
       "path": "universe_analyzer.py",
       "product": "Other Utilities",
-      "size_bytes": 16051,
+      "size_bytes": 16559,
       "databases": [],
       "apis": [
-        "Telegram API",
-        "Toddle School Portal",
         "Yahoo Finance",
-        "Fyers API"
+        "Fyers API",
+        "Toddle School Portal",
+        "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports",
-        "Slack Workspace",
-        "Telegram Channel"
+        "Telegram Channel",
+        "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2647,7 +2326,8 @@
         "Fyers API",
         "Upstox API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2660,9 +2340,10 @@
       "size_bytes": 7987,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [
         "15 * * * *"
@@ -2677,9 +2358,10 @@
       "size_bytes": 7590,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [
         "market_engine.py"
       ],
@@ -2694,7 +2376,8 @@
       "size_bytes": 1844,
       "databases": [],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [
         "market_engine.py"
       ],
@@ -2711,10 +2394,11 @@
       "apis": [
         "YouTube API"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports",
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [
         "obsidian_integration.py",
         "send_slack.py"
@@ -2736,9 +2420,10 @@
       "apis": [
         "Upstox API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2753,7 +2438,8 @@
         "paper_trading.db"
       ],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2766,9 +2452,10 @@
       "size_bytes": 10312,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2781,9 +2468,10 @@
       "size_bytes": 1995,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [
         "market_analysis_v3.py"
       ],
@@ -2800,10 +2488,11 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI",
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [
         "market_analysis_v3.py"
       ],
@@ -2820,7 +2509,8 @@
       "apis": [
         "Fyers API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2835,7 +2525,10 @@
       "apis": [
         "YouTube API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [
+        "_dashboard.html"
+      ],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2850,9 +2543,10 @@
       "apis": [
         "Upstox API"
       ],
-      "outputs": [
+      "messaging": [
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [
         "*/5 * * * *"
@@ -2867,9 +2561,10 @@
       "size_bytes": 8572,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2885,9 +2580,10 @@
         "Deribit API",
         "Binance API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2900,11 +2596,12 @@
       "size_bytes": 16619,
       "databases": [],
       "apis": [
-        "Deribit API",
         "Yahoo Finance",
+        "Deribit API",
         "Binance API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [
         "30 1 * * *"
@@ -2921,9 +2618,10 @@
       "apis": [
         "CoinMarketCap Hub"
       ],
-      "outputs": [
+      "messaging": [
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [
         "send_telegram_msg.py"
       ],
@@ -2943,10 +2641,11 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI",
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2961,7 +2660,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2976,9 +2676,10 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -2993,7 +2694,8 @@
         "usage_tracker.db"
       ],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": [
@@ -3010,7 +2712,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3025,7 +2728,8 @@
         "alphaedge.db"
       ],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3040,10 +2744,11 @@
       "apis": [
         "arXiv RSS/HTML"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports",
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [
         "obsidian_integration.py",
         "send_slack.py"
@@ -3063,9 +2768,10 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3078,9 +2784,10 @@
       "size_bytes": 7841,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3093,9 +2800,10 @@
       "size_bytes": 8284,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3110,9 +2818,10 @@
       "apis": [
         "Upstox API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3125,9 +2834,10 @@
       "size_bytes": 3644,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3142,7 +2852,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3157,10 +2868,11 @@
       "apis": [
         "Telegram API"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports",
         "Telegram Channel"
       ],
+      "htmls": [],
       "imports": [
         "obsidian_integration.py"
       ],
@@ -3179,9 +2891,10 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [
+      "messaging": [
         "NotebookLM Reports"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3194,9 +2907,10 @@
       "size_bytes": 4438,
       "databases": [],
       "apis": [],
-      "outputs": [
+      "messaging": [
         "Slack Workspace"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [
         "*/5 * * * *"
@@ -3211,7 +2925,8 @@
       "size_bytes": 4928,
       "databases": [],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3226,7 +2941,8 @@
       "apis": [
         "Toddle School Portal"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3241,7 +2957,8 @@
       "apis": [
         "Upstox API"
       ],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [],
       "cron_timings": [],
       "systemd_services": []
@@ -3254,7 +2971,8 @@
       "size_bytes": 274,
       "databases": [],
       "apis": [],
-      "outputs": [],
+      "messaging": [],
+      "htmls": [],
       "imports": [
         "market_engine.py"
       ],
@@ -3273,9 +2991,10 @@
       "apis": [
         "Upstox API"
       ],
-      "outputs": [
+      "messaging": [
         "CLI Rich Terminal UI"
       ],
+      "htmls": [],
       "imports": [],
       "cron_timings": [
         "0 3 * * 1-5",
@@ -3363,45 +3082,9 @@
   ],
   "raw_services": [
     {
-      "name": "clawdi-serve-codex.service",
-      "description": "clawdi daemon (codex)",
-      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs daemon run --agent codex",
-      "script_name": null
-    },
-    {
       "name": "agentmemory-backend.service",
       "description": "AgentMemory Backend (iii)",
       "command": "/home/vreddy1/.local/bin/iii --config /home/vreddy1/.npm-global/lib/node_modules/@agentmemory/agentmemory/dist/iii-config.yaml",
-      "script_name": null
-    },
-    {
-      "name": "clawdi-serve-gemini.service",
-      "description": "clawdi serve daemon (gemini)",
-      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs serve --agent gemini",
-      "script_name": null
-    },
-    {
-      "name": "clawdi-serve-claude_code.service",
-      "description": "clawdi daemon (claude_code)",
-      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs daemon run --agent claude_code",
-      "script_name": null
-    },
-    {
-      "name": "slack-notifier@.service",
-      "description": "Slack Notifier for %i",
-      "command": "/home/vreddy1/Desktop/Projects/scripts/slack_alert.sh %i",
-      "script_name": null
-    },
-    {
-      "name": "multica-daemon.service",
-      "description": "Multica Agent Runtime Daemon",
-      "command": "/usr/local/bin/multica daemon start --foreground",
-      "script_name": null
-    },
-    {
-      "name": "clawdi-serve-hermes.service",
-      "description": "clawdi daemon (hermes)",
-      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs daemon run --agent hermes",
       "script_name": null
     },
     {
@@ -3411,15 +3094,15 @@
       "script_name": "oi_collector_daemon.py"
     },
     {
-      "name": "alphaedge-collector.service",
-      "description": "AlphaEdge Market Intelligence Collector",
-      "command": "/home/vreddy1/Desktop/Projects/scripts/venv/bin/python collector.py --loop --interval 1",
-      "script_name": "collector.py"
+      "name": "clawdi-serve-codex.service",
+      "description": "clawdi daemon (codex)",
+      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs daemon run --agent codex",
+      "script_name": null
     },
     {
-      "name": "agentmemory-ui.service",
-      "description": "AgentMemory UI/CLI",
-      "command": "/home/vreddy1/.npm-global/bin/agentmemory",
+      "name": "slack-notifier@.service",
+      "description": "Slack Notifier for %i",
+      "command": "/home/vreddy1/Desktop/Projects/scripts/slack_alert.sh %i",
       "script_name": null
     },
     {
@@ -3429,9 +3112,15 @@
       "script_name": null
     },
     {
-      "name": "multica-daemon.service",
-      "description": "Multica Daemon",
-      "command": "/usr/local/bin/multica daemon start --foreground",
+      "name": "clawdi-serve-claude_code.service",
+      "description": "clawdi daemon (claude_code)",
+      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs daemon run --agent claude_code",
+      "script_name": null
+    },
+    {
+      "name": "projects-git-autosync.service",
+      "description": "Auto-sync Projects workspace to GitHub",
+      "command": "/home/vreddy1/Desktop/Projects/scripts/git-autosync.sh",
       "script_name": null
     },
     {
@@ -3441,10 +3130,34 @@
       "script_name": "options_cli.py"
     },
     {
+      "name": "agentmemory-ui.service",
+      "description": "AgentMemory UI/CLI",
+      "command": "/home/vreddy1/.npm-global/bin/agentmemory",
+      "script_name": null
+    },
+    {
       "name": "alphaedge-api.service",
       "description": "AlphaEdge Market Intelligence API",
       "command": "/home/vreddy1/Desktop/Projects/scripts/venv/bin/python api_server.py",
       "script_name": "api_server.py"
+    },
+    {
+      "name": "clawdi-serve-gemini.service",
+      "description": "clawdi serve daemon (gemini)",
+      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs serve --agent gemini",
+      "script_name": null
+    },
+    {
+      "name": "alphaedge-collector.service",
+      "description": "AlphaEdge Market Intelligence Collector",
+      "command": "/home/vreddy1/Desktop/Projects/scripts/venv/bin/python collector.py --loop --interval 1",
+      "script_name": "collector.py"
+    },
+    {
+      "name": "multica-daemon.service",
+      "description": "Multica Agent Runtime Daemon",
+      "command": "/usr/local/bin/multica daemon start --foreground",
+      "script_name": null
     },
     {
       "name": "usage-tracker.service",
@@ -3453,15 +3166,21 @@
       "script_name": "usage_tracker.py"
     },
     {
-      "name": "projects-git-autosync.service",
-      "description": "Auto-sync Projects workspace to GitHub",
-      "command": "/home/vreddy1/Desktop/Projects/scripts/git-autosync.sh",
+      "name": "multica-daemon.service",
+      "description": "Multica Daemon",
+      "command": "/usr/local/bin/multica daemon start --foreground",
       "script_name": null
     },
     {
       "name": "gbrain-autopilot.service",
       "description": "GBrain Autopilot",
       "command": "/home/vreddy1/.gbrain/autopilot-run.sh",
+      "script_name": null
+    },
+    {
+      "name": "clawdi-serve-hermes.service",
+      "description": "clawdi daemon (hermes)",
+      "command": "/home/vreddy1/.nvm/versions/node/v22.22.2/bin/node /home/vreddy1/.bun/install/global/node_modules/clawdi/bin/clawdi.mjs daemon run --agent hermes",
       "script_name": null
     }
   ]
