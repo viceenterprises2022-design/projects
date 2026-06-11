@@ -1,52 +1,52 @@
 [
   {
-    "title": "Google and Kaggle Free AI Agents Vibe Coding Course",
+    "title": "Google and Kaggle AI Agents Intensive (Vibe Coding & Production Deployment)",
     "url": "https://the-agent-report.com/2026/06/google-kaggle-free-ai-agents-vibe-coding-course-june-2026/",
     "highlights": [
-      "Google and Kaggle have opened registration for the second edition of their free AI Agents Intensive course, running June 15–19, 2026. The curriculum introduces vibe coding — building AI agents using natural language as the primary programming interface — alongside new content on production deployment and a hands-on capstone project. Features daily livestreams and certificates."
+      "Registration is open for the second edition of the free AI Agents Intensive course (June 15-19, 2026). The curriculum introduces vibe coding (building agents using natural language) alongside production deployment, security, and a hands-on capstone project."
     ],
-    "score": 1.0,
-    "published_date": "2026-06-01T08:00:00.000Z",
+    "score": null,
+    "published_date": "2026-06-15T00:00:00.000Z",
     "is_online": true
   },
   {
-    "title": "Agentic AI 2026 - Internshala Competitions",
+    "title": "Google Cloud: Agentic AI 2026 Immersive Enterprise Training",
     "url": "https://internshala.com/competitions/agentic-ai-2026/",
     "highlights": [
-      "An upcoming, immersive enterprise training program curated by Google Cloud experts and industry leaders. Running June 9–18, 2026. Focuses on transitioning from text UI to real-time agentic workflows using the Gemini Live API, prompt design for vocal interactions, and building production-grade persistence layers with Firebase Auth and Firestore."
+      "Curated by Google Cloud experts, this technical masterclass series runs June 9-18, 2026. Focuses on architecting compounding AI workflows, stateful secure applications (Firebase Auth/Firestore), Gemini Live API, context caching, and vector search."
     ],
-    "score": 1.0,
-    "published_date": "2026-06-02T12:45:05.000Z",
+    "score": null,
+    "published_date": "2026-06-09T00:00:00.000Z",
     "is_online": true
   },
   {
-    "title": "Build Agentic Apps Using Claude Code & Bootcamp Info Session",
+    "title": "localhost:2026 SF - Agentic Application Development Gathering",
+    "url": "https://luma.com/localhost-2026-sf",
+    "highlights": [
+      "A one-day gathering on June 18, 2026, for builders shaping agentic application development. Features hands-on workshops, technical talks, and demos from developers and leaders like Render's CEO and OpenAI DX team."
+    ],
+    "score": null,
+    "published_date": "2026-06-18T00:00:00.000Z",
+    "is_online": true
+  },
+  {
+    "title": "Google Cloud Security: Securing AI Agents & Workloads",
+    "url": "https://www.brighttalk.com/webcast/18282/668534",
+    "highlights": [
+      "A technical webinar on June 16, 2026, sharing how to secure AI agents and workloads. Learn to prevent prompt injection attacks, isolate agent credentials, and securely manage API keys and configurations."
+    ],
+    "score": null,
+    "published_date": "2026-06-16T00:00:00.000Z",
+    "is_online": true
+  },
+  {
+    "title": "Maven: Build Agentic Apps Using Claude Code & Bootcamp Session",
     "url": "https://maven.com/p/2ba2b2/build-agentic-apps-using-claude-code-bootcamp-info-session",
     "highlights": [
-      "Scheduled for Friday, July 31, 2026, 4:00 PM UTC. A free virtual session on Maven where attendees learn to assess if an agentic approach is appropriate, design agentic workflows, implement them using Claude Code, and leave with immediate workflow files."
+      "A free virtual bootcamp info session on July 31, 2026, showing how to design agentic workflows and implement them using Claude and Claude Code."
     ],
-    "score": 1.0,
-    "published_date": "2026-06-01T18:18:51.000Z",
-    "is_online": true
-  },
-  {
-    "title": "Detecting Compromised AI Agents - Google Cloud Community Webinar",
-    "url": "https://security.googlecloudcommunity.com/google-security-operations-2/free-john-stoner-virtual-secops-workshops-and-dave-nehoda-detecting-compromised-ai-agents-webinar-7628",
-    "highlights": [
-      "Wednesday, June 10, 2026 (7 AM PT). SecOps Webinar demonstrating how prompt injections can exploit Model Context Protocol (MCP) to compromise cloud infrastructure, and how to build YARA-L rules and SOAR playbooks to stop threats."
-    ],
-    "score": 1.0,
-    "published_date": "2026-06-01T16:02:20.000Z",
-    "is_online": true
-  },
-  {
-    "title": "Anthropic AI Fluency Courses on Coursera",
-    "url": "https://www.edtechinnovationhub.com/news/wek3tt2hevlai1govwxk6qf0t964ap",
-    "highlights": [
-      "Anthropic has launched five free AI fluency courses on Coursera (Community Impact courses). Includes general AI fluency framework, human-AI collaboration, generative AI, and specialized courses for educators, students, and nonprofits."
-    ],
-    "score": 1.0,
-    "published_date": "2026-06-02T23:15:59.000Z",
+    "score": null,
+    "published_date": "2026-07-31T00:00:00.000Z",
     "is_online": true
   }
 ]
