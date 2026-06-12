@@ -1,52 +1,27 @@
 [
   {
-    "title": "Google and Kaggle AI Agents Intensive (Vibe Coding & Production Deployment)",
+    "title": "Google & Kaggle: Free AI Agents Vibe Coding Course (June 15-19)",
     "url": "https://the-agent-report.com/2026/06/google-kaggle-free-ai-agents-vibe-coding-course-june-2026/",
-    "highlights": [
-      "Registration is open for the second edition of the free AI Agents Intensive course (June 15-19, 2026). The curriculum introduces vibe coding (building agents using natural language) alongside production deployment, security, and a hands-on capstone project."
-    ],
-    "score": null,
-    "published_date": "2026-06-15T00:00:00.000Z",
-    "is_online": true
+    "published_date": "2026-06-01"
   },
   {
-    "title": "Google Cloud: Agentic AI 2026 Immersive Enterprise Training",
-    "url": "https://internshala.com/competitions/agentic-ai-2026/",
-    "highlights": [
-      "Curated by Google Cloud experts, this technical masterclass series runs June 9-18, 2026. Focuses on architecting compounding AI workflows, stateful secure applications (Firebase Auth/Firestore), Gemini Live API, context caching, and vector search."
-    ],
-    "score": null,
-    "published_date": "2026-06-09T00:00:00.000Z",
-    "is_online": true
+    "title": "OpenAI Academy: Build, Govern, and Scale Workspace Agents",
+    "url": "https://academy.openai.com/",
+    "published_date": "2026-06-08"
   },
   {
-    "title": "localhost:2026 SF - Agentic Application Development Gathering",
-    "url": "https://luma.com/localhost-2026-sf",
-    "highlights": [
-      "A one-day gathering on June 18, 2026, for builders shaping agentic application development. Features hands-on workshops, technical talks, and demos from developers and leaders like Render's CEO and OpenAI DX team."
-    ],
-    "score": null,
-    "published_date": "2026-06-18T00:00:00.000Z",
-    "is_online": true
-  },
-  {
-    "title": "Google Cloud Security: Securing AI Agents & Workloads",
-    "url": "https://www.brighttalk.com/webcast/18282/668534",
-    "highlights": [
-      "A technical webinar on June 16, 2026, sharing how to secure AI agents and workloads. Learn to prevent prompt injection attacks, isolate agent credentials, and securely manage API keys and configurations."
-    ],
-    "score": null,
-    "published_date": "2026-06-16T00:00:00.000Z",
-    "is_online": true
-  },
-  {
-    "title": "Maven: Build Agentic Apps Using Claude Code & Bootcamp Session",
+    "title": "Build Agentic Apps Using Claude Code & Bootcamp Info Session (Maven)",
     "url": "https://maven.com/p/2ba2b2/build-agentic-apps-using-claude-code-bootcamp-info-session",
-    "highlights": [
-      "A free virtual bootcamp info session on July 31, 2026, showing how to design agentic workflows and implement them using Claude and Claude Code."
-    ],
-    "score": null,
-    "published_date": "2026-07-31T00:00:00.000Z",
-    "is_online": true
+    "published_date": "2026-06-01"
+  },
+  {
+    "title": "DeepLearning.AI: Fast & Efficient LLM Inference with vLLM",
+    "url": "https://www.deeplearning.ai/courses/fast-and-efficient-llm-inference-with-vllm",
+    "published_date": "2026-06-09"
+  },
+  {
+    "title": "Voxel51: Build Vision Data Agents with Tools, Skills, and MCP (June 17)",
+    "url": "https://dev.to/voxel51/june-17-build-vision-data-agents-with-tools-skills-and-mcp-3pbi",
+    "published_date": "2026-06-09"
   }
 ]
