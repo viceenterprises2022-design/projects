@@ -1,106 +1,111 @@
 {
-  "name": "Feedback Alignment in Self-Distillation",
+  "name": "Automated Reproducibility Assessments with LLMs",
   "children": [
     {
-      "name": "Self-Distillation Mechanism",
+      "name": "Problem Context",
       "children": [
         {
-          "name": "Student: question only"
+          "name": "Reproducibility Crisis"
         },
         {
-          "name": "Self-Teacher: question + context"
+          "name": "Manual Reanalysis Limitations"
         },
         {
-          "name": "Objective: match output distributions"
-        },
-        {
-          "name": "Benefits: dense credit assignment"
+          "name": "Scaling Challenges"
         }
       ]
     },
     {
-      "name": "Feedback Conditions Compared",
+      "name": "LLM Analysis Pipeline",
       "children": [
         {
-          "name": "GRPO: binary reward only"
-        },
-        {
-          "name": "RefSol: reference solution"
-        },
-        {
-          "name": "StepAlignFB: step-aligned critique"
-        }
-      ]
-    },
-    {
-      "name": "Step-Aligned Critique (StepAlignFB)",
-      "children": [
-        {
-          "name": "Largest performance gains"
-        },
-        {
-          "name": "Implicit process supervision"
-        },
-        {
-          "name": "Targets failure tokens"
-        },
-        {
-          "name": "Preserves correct behavior"
-        }
-      ]
-    },
-    {
-      "name": "Token-Level Credit Assignment",
-      "children": [
-        {
-          "name": "StepAlignFB Advantages",
+          "name": "Inputs",
           "children": [
             {
-              "name": "Concentrates signal at errors"
+              "name": "Statistical Claims"
             },
             {
-              "name": "Reinforces valid traces"
+              "name": "Original Datasets"
+            },
+            {
+              "name": "Article Text (OCR Markdown)"
             }
           ]
         },
         {
-          "name": "RefSol Disadvantages",
+          "name": "Agentic Workflow",
           "children": [
             {
-              "name": "Diffuse suppressive signal"
+              "name": "Code Generation"
             },
             {
-              "name": "Stylistic disagreement noise"
+              "name": "Isolated Sandbox Execution"
+            },
+            {
+              "name": "Analytical Specification"
+            }
+          ]
+        },
+        {
+          "name": "Model: Claude Opus 4.7"
+        }
+      ]
+    },
+    {
+      "name": "Key Findings",
+      "children": [
+        {
+          "name": "Reproducibility Metrics",
+          "children": [
+            {
+              "name": "41% Recovered Effect Sizes"
+            },
+            {
+              "name": "96% Conclusion Match Rate"
+            }
+          ]
+        },
+        {
+          "name": "Human Comparison",
+          "children": [
+            {
+              "name": "LLM Performance Comparable to Experts"
+            },
+            {
+              "name": "Higher Qualitative Consistency than Humans"
             }
           ]
         }
       ]
     },
     {
-      "name": "Mechanistic Findings",
+      "name": "Practical Applications",
       "children": [
         {
-          "name": "Faithful-scribe convention"
+          "name": "Journal Quality Control"
         },
         {
-          "name": "Induction-head copying behavior"
+          "name": "Scalable Literature Auditing"
         },
         {
-          "name": "Partial verbatim repetition is key"
+          "name": "First-pass Screening Tool"
         }
       ]
     },
     {
-      "name": "Experimental Setup",
+      "name": "Limitations",
       "children": [
         {
-          "name": "Model: Qwen3-1.7B"
+          "name": "Data Contamination Risks"
         },
         {
-          "name": "Critic: QwQ-32B"
+          "name": "Potential Code Errors"
         },
         {
-          "name": "Dataset: OpenMathReasoning"
+          "name": "Precision vs. Comparability Trade-offs"
+        },
+        {
+          "name": "Accessibility of Original Data"
         }
       ]
     }
