@@ -127,24 +127,23 @@ body.fullscreen-dash .footer-inner {
 </head>
 <body class="fullscreen-dash">
 
-<!-- ── Header ────────────────────────────────── -->
 <header>
   <div class="header-inner">
     <div class="logo">
-      <div class="logo-mark">AE</div>
-      <div>
-        <div class="logo-name">AlphaEdge Intelligence</div>
-        <nav class="nav-links">
-          <a href="/">Home</a>
-          <a href="/dashboard" class="active">Dashboard</a>
-          <a href="/universe">Universe</a>
-          <a href="/crypto-matrix">Crypto Matrix</a>
-          <a href="/market">Market</a>
-          <a href="/portfolio">Portfolio</a>
-          <a href="/holdings">Holdings</a>
-          <a href="/positions">Positions</a>
-        </nav>
-      </div>
+      <a href="/" class="logo-wrap">
+        <div class="logo-glow">AE</div>
+        <span class="logo-text">AlphaEdge</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/dashboard" class="active">Dashboard</a>
+        <a href="/universe">Universe</a>
+        <a href="/crypto-matrix">Crypto Matrix</a>
+        <a href="/market">Market</a>
+        <a href="/portfolio">Portfolio</a>
+        <a href="/holdings">Holdings</a>
+        <a href="/positions">Positions</a>
+      </nav>
     </div>
     <div class="sym-group">
       <button class="sym-btn active" id="btn-NIFTY" onclick="switchSym('NIFTY')">NIFTY</button>
@@ -219,7 +218,7 @@ body.fullscreen-dash .footer-inner {
 <script>
 'use strict';
 const API        = 'http://localhost:8765';
-const HDR_TOTAL  = 56 + 32;
+const HDR_TOTAL  = 72 + 32;
 const REFRESH_MS = 30_000;
 const MONO       = "'JetBrains Mono','Courier New',monospace";
 let currentTheme = 'dark';

@@ -50,39 +50,66 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
-            background: rgba(9, 13, 22, 0.8);
-            backdrop-filter: blur(12px);
+            height: 72px;
+            padding: 0 2rem;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px) saturate(180%);
             border-bottom: 1px solid var(--border-panel);
             z-index: 10;
         }
 
-        .logo-section h1 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #60a5fa, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.025em;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .nav-links {
             display: flex;
-            gap: 1.25rem;
-            margin-top: 0.5rem;
+            align-items: center;
+            gap: 0.75rem;
+            margin-left: 1.5rem;
+            margin-top: 0;
         }
         .nav-links a {
-            color: var(--text-secondary);
+            color: #64748b;
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: 500;
-            transition: color 0.2s ease;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
         }
-        .nav-links a:hover, .nav-links a.active {
+        .nav-links a:hover {
             color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .nav-links a.active {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+        .logo-glow {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        }
+        .logo-text {
+            font-size: 1.15rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
         }
 
         .stats-banner {
@@ -382,9 +409,11 @@
 <body>
 
     <header>
-        <div class="logo-section">
-            <h1>🌌 Scripts Universe Mapper</h1>
-            <p>Grouped view of Databases, APIs, Messaging channels, and HTML pages</p>
+        <div style="display: flex; align-items: center; gap: 24px;">
+            <a href="/" class="logo-wrap">
+                <div class="logo-glow">AE</div>
+                <span class="logo-text">AlphaEdge</span>
+            </a>
             <nav class="nav-links">
                 <a href="/">Home</a>
                 <a href="/dashboard">Dashboard</a>

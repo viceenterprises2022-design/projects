@@ -16,8 +16,12 @@
 
   <!-- ── Header ────────────────────────────────── -->
   <header>
-    <div class="brand">
-      <div class="logo-mark">AE</div>
+    <div class="header-inner" style="padding: 0 24px;">
+      <div class="logo">
+        <a href="/" class="logo-wrap">
+          <div class="logo-glow">AE</div>
+          <span class="logo-text">AlphaEdge</span>
+        </a>
         <nav class="nav-links">
           <a href="/">Home</a>
           <a href="/dashboard">Dashboard</a>
@@ -28,17 +32,17 @@
           <a href="/holdings">Holdings</a>
           <a href="/positions">Positions</a>
         </nav>
-    </div>
-    
-    <div class="sym-tabs">
-      <button class="sym-tab active" id="tab-eth" onclick="switchSymbol('ETH')">ETHUSDT</button>
-      <button class="sym-tab" id="tab-btc" onclick="switchSymbol('BTC')">BTCUSDT</button>
-    </div>
-    
-    <div class="header-right">
-      <div class="live-indicator">
-        <span class="dot"></span>
-        <span>LIVE FEEDS CONNECTED</span>
+      </div>
+      
+      <div class="sym-tabs">
+        <button class="sym-tab active" id="tab-eth" onclick="switchSymbol('ETH')">ETHUSDT</button>
+        <button class="sym-tab" id="tab-btc" onclick="switchSymbol('BTC')">BTCUSDT</button>
+      </div>
+      
+      <div class="header-right">
+        <div id="last-updated" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted); display:flex; align-items:center;">
+          <span class="live-dot"></span>LIVE FEEDS CONNECTED
+        </div>
       </div>
     </div>
   </header>
