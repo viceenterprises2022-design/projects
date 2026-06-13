@@ -47,15 +47,24 @@
 
         /* Glassmorphic Header */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 72px;
-            padding: 0 2rem;
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(16px) saturate(180%);
             border-bottom: 1px solid var(--border-panel);
             z-index: 10;
+        }
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+            padding: 0 24px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .nav-links {
@@ -409,42 +418,44 @@
 <body>
 
     <header>
-        <div style="display: flex; align-items: center; gap: 24px;">
-            <a href="/" class="logo-wrap">
-                <div class="logo-glow">AE</div>
-                <span class="logo-text">AlphaEdge</span>
-            </a>
-            <nav class="nav-links">
-                <a href="/">Home</a>
-                <a href="/dashboard">Dashboard</a>
-                <a href="/universe" class="active">Universe</a>
-                <a href="/crypto-matrix">Crypto Matrix</a>
-                <a href="/market">Market</a>
-                <a href="/portfolio">Portfolio</a>
-                <a href="/holdings">Holdings</a>
-                <a href="/positions">Positions</a>
-            </nav>
-        </div>
-        <div class="stats-banner">
-            <div class="stat-item">
-                <div class="stat-value" id="stat-scripts">0</div>
-                <div class="stat-label">Scripts</div>
+        <div class="header-inner">
+            <div class="logo">
+                <a href="/" class="logo-wrap">
+                    <div class="logo-glow">AE</div>
+                    <span class="logo-text">AlphaEdge</span>
+                </a>
+                <nav class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/universe" class="active">Universe</a>
+                    <a href="/crypto-matrix">Crypto Matrix</a>
+                    <a href="/market">Market</a>
+                    <a href="/portfolio">Portfolio</a>
+                    <a href="/holdings">Holdings</a>
+                    <a href="/positions">Positions</a>
+                </nav>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="stat-dbs">0</div>
-                <div class="stat-label">DBs</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="stat-apis">0</div>
-                <div class="stat-label">APIs</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="stat-msg">0</div>
-                <div class="stat-label">Messaging</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="stat-htmls">0</div>
-                <div class="stat-label">HTML Views</div>
+            <div class="stats-banner">
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-scripts">0</div>
+                    <div class="stat-label">Scripts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-dbs">0</div>
+                    <div class="stat-label">DBs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-apis">0</div>
+                    <div class="stat-label">APIs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-msg">0</div>
+                    <div class="stat-label">Messaging</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="stat-htmls">0</div>
+                    <div class="stat-label">HTML Views</div>
+                </div>
             </div>
         </div>
     </header>

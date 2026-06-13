@@ -80,7 +80,9 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 72px;
-  gap: 16px;
+  padding: 0 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .logo-wrap {
   display: flex;
