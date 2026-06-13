@@ -33430,7 +33430,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1781345951.9825869,
+    "mtime": 1781346000.971972,
     "ast_hash": "ef744c1cc0b4ddea09fb065daae4cdb9",
     "semantic_hash": ""
   },
@@ -38760,22 +38760,22 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
-    "mtime": 1781345353.7290957,
-    "ast_hash": "a056bf4f772a3792466d803068b18d14",
+    "mtime": 1781346034.5715504,
+    "ast_hash": "a098152015683f889d03ef2c4e4dc58c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/portfolio.html": {
-    "mtime": 1781345965.364419,
+    "mtime": 1781346000.972972,
     "ast_hash": "c8c9ed54d9db43a12fe88196f77d8498",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
-    "mtime": 1781345972.6043282,
+    "mtime": 1781346000.971972,
     "ast_hash": "3d31e7b0e7c0560b5c7226d63d68524f",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/market.html": {
-    "mtime": 1781345958.8735003,
+    "mtime": 1781346000.971972,
     "ast_hash": "932a973b4120002e0e4b3aa61efa14a5",
     "semantic_hash": ""
   },
@@ -42560,8 +42560,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.html": {
-    "mtime": 1781343046.192826,
-    "ast_hash": "61bc154d8378611cf8ae37674f4877a3",
+    "mtime": 1781346064.626173,
+    "ast_hash": "4fff83b1deefaab4593736488ae3afe3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-10.txt": {
@@ -42790,8 +42790,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/universe.html": {
-    "mtime": 1781345345.8811944,
-    "ast_hash": "56de033e8433d2afb4a8057e85b2e623",
+    "mtime": 1781346081.6569593,
+    "ast_hash": "dec2c6747981dd1077c2f8799a2a7668",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-11.txt": {
@@ -43245,8 +43245,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/index.html": {
-    "mtime": 1781342999.609397,
-    "ast_hash": "e9da81a429c3bb6144653a41717d55c9",
+    "mtime": 1781346087.6828837,
+    "ast_hash": "71b89867c0ae6f3b61a822df2afbdf92",
     "semantic_hash": ""
   }
 }
