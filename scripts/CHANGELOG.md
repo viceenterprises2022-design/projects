@@ -212,3 +212,19 @@ Dated history of work on this project. Source of truth: `AGENTS.md` Session Memo
 - Successfully verified end-to-end async execution and capabilities registration on the local control plane.
 - **Multica:** ALP-537 (done, assigned Vinod-AI-CEO)
 - **Multica:** logged via `/logwork` on 2026-06-09
+
+### 2026-06-13: Hermes Model Update
+- Updated default model in `~/.hermes/config.yaml` to `gemini-3.5-flash` using custom OpenAI-compatible Google API endpoint (`https://generativelanguage.googleapis.com/v1beta/openai/`) due to complete credit exhaustion of the Kimchi/CastAI provider.
+- Configured `GOOGLEAPIS_API_KEY` in `~/.hermes/.env` (derived automatically by Hermes from the host `generativelanguage.googleapis.com`) with the working Gemini API key to resolve the 400 invalid API key error.
+- Restarted the user-level daemon `clawdi-serve-hermes.service` to apply the configuration.
+- Verified all daemons are online, active, and test queries to Hermes with `gemini-3.5-flash` succeed.
+- **Multica:** ALP-514 (done, assigned Vinod-AI-CEO)
+- **Multica:** logged via `/logwork` on 2026-06-13
+
+### 2026-06-13: UI/UX Uniform Navigation Header & Binding Fixes
+- Redesigned and unified navigation headers across all 8 frontend pages (`index.html`, `dashboard.html`, `universe.html`, `crypto_matrix.html`, `market.html`, `portfolio.html`, `holdings.html`, `positions.html`) to be 100% consistent.
+- Unified header CSS to have a fixed height of 72px, the modern logo-glow badge, logo-text, and active link states styled in `style.css`.
+- Removed max-width container constraints from headers to prevent horizontal layouts shifting between boxed and fullscreen pages.
+- Changed uvicorn bind host to `0.0.0.0` in `api_server.py` and restarted the service to make the server accessible from external container/VM network interfaces.
+- **Multica:** ALP-515 (done, assigned Vinod-AI-CEO)
+- **Multica:** logged via `/logwork` on 2026-06-13

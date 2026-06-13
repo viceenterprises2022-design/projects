@@ -285,11 +285,3 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Integrated `/`, `/dashboard`, `/universe/data`, and `/universe/reanalyze` endpoints in FastAPI `api_server.py`.
 - Verified and fully active at `http://localhost:8765/`.
 
-### 2026-06-13: Hermes Model Update
-- Updated default model in `~/.hermes/config.yaml` to `gemini-3.5-flash` using custom OpenAI-compatible Google API endpoint (`https://generativelanguage.googleapis.com/v1beta/openai/`) due to complete credit exhaustion of the Kimchi/CastAI provider.
-- Configured `GOOGLEAPIS_API_KEY` in `~/.hermes/.env` (derived automatically by Hermes from the host `generativelanguage.googleapis.com`) with the working Gemini API key to resolve the 400 invalid API key error.
-- Restarted the user-level daemon `clawdi-serve-hermes.service` to apply the configuration.
-- Verified all daemons are online, active, and test queries to Hermes with `gemini-3.5-flash` succeed.
-
-
-
