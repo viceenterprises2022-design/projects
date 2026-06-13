@@ -65,9 +65,20 @@
             gap: 0.5rem;
         }
 
-        .logo-section p {
-            font-size: 0.75rem;
+        .nav-links {
+            display: flex;
+            gap: 1.25rem;
+            margin-top: 0.5rem;
+        }
+        .nav-links a {
             color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
         }
 
         .stats-banner {
@@ -362,6 +373,16 @@
         <div class="logo-section">
             <h1>🌌 Scripts Universe Mapper</h1>
             <p>Grouped view of Databases, APIs, Messaging channels, and HTML pages</p>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/universe" class="active">Universe</a>
+                <a href="/crypto-matrix">Crypto Matrix</a>
+                <a href="/market">Market</a>
+                <a href="/portfolio">Portfolio</a>
+                <a href="/holdings">Holdings</a>
+                <a href="/positions">Positions</a>
+            </nav>
         </div>
         <div class="stats-banner">
             <div class="stat-item">

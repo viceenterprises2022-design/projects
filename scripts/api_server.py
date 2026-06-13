@@ -82,9 +82,9 @@ SYMBOLS = ("NIFTY", "SENSEX", "BANKNIFTY")
 
 @app.get("/", include_in_schema=False)
 def serve_universe_root():
-    index = FRONTEND_DIR / "universe.html"
+    index = FRONTEND_DIR / "index.html"
     if not index.exists():
-        raise HTTPException(status_code=404, detail="universe.html not found")
+        index = FRONTEND_DIR / "universe.html"
     return FileResponse(str(index), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
