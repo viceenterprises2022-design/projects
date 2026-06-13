@@ -1,10 +1,10 @@
 /* AlphaEdge - Crypto Matrix Dashboard Stylesheet */
 
 :root {
-  --bg: #000208;
-  --surface: #070d19;
-  --comp: #0f182a;
-  --border: #1e2d4a;
+  --bg: #020617;
+  --surface: rgba(15, 23, 42, 0.7);
+  --comp: rgba(30, 41, 59, 0.45);
+  --border: rgba(255, 255, 255, 0.08);
   --text: #ffffff;
   --muted: #64748b;
   --primary: #10b981;
@@ -26,7 +26,11 @@
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font);
   overflow: hidden;

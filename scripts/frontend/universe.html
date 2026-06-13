@@ -8,9 +8,9 @@
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <style>
         :root {
-            --bg-primary: #090d16;
-            --bg-secondary: #111827;
-            --bg-panel: rgba(17, 24, 39, 0.75);
+            --bg-primary: #020617;
+            --bg-secondary: rgba(15, 23, 42, 0.7);
+            --bg-panel: rgba(15, 23, 42, 0.7);
             --border-panel: rgba(255, 255, 255, 0.08);
             --text-primary: #f3f4f6;
             --text-secondary: #9ca3af;
@@ -34,6 +34,10 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
@@ -138,6 +142,11 @@
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .controls-panel:hover {
+            border-color: rgba(139, 92, 246, 0.25);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.08), 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
         .search-box {
@@ -226,7 +235,6 @@
             transform: scale(0.98);
         }
 
-        /* Floating Details Panel (Right) */
         .details-panel {
             position: absolute;
             top: 1.5rem;
@@ -244,8 +252,12 @@
             flex-direction: column;
             gap: 1.5rem;
             transform: translateX(120%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
             overflow-y: auto;
+        }
+        .details-panel:hover {
+            border-color: rgba(139, 92, 246, 0.25);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.08), 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
         .details-panel.open {
