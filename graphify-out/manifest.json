@@ -35880,7 +35880,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/youtube_to_notebooklm_state.json": {
-    "mtime": 1781437842.5965526,
+    "mtime": 1781438108.3563955,
     "ast_hash": "86b993d9495d63631c42da8ae89097e3",
     "semantic_hash": ""
   },
@@ -43332,6 +43332,26 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-14/OYFucaSF9xQ/report.md": {
     "mtime": 1781437584.1500912,
     "ast_hash": "344aef276236f7e8266f755670f00432",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-14/Z-hU97WO30I/mindmap.json": {
+    "mtime": 1781437834.0291145,
+    "ast_hash": "837a29c7edec439ce0139f1c4608ad4f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-14/qlx40oVrXTY/mindmap.json": {
+    "mtime": 1781437767.8323534,
+    "ast_hash": "afd8c38b50f24eb57132210aa554d2c5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-14/Z-hU97WO30I/report.md": {
+    "mtime": 1781437831.5959413,
+    "ast_hash": "030dbbaa78d6d595206ce7d680b90497",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-14/qlx40oVrXTY/report.md": {
+    "mtime": 1781437765.3415685,
+    "ast_hash": "60fe8f23e13f1c354cebac7b5d00614e",
     "semantic_hash": ""
   }
 }
