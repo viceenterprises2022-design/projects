@@ -25600,8 +25600,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/eod_report.txt": {
-    "mtime": 1781352638.3934631,
-    "ast_hash": "11c0108a5cb71ecb5a6b350bb8b36546",
+    "mtime": 1781438769.9680464,
+    "ast_hash": "fb6e9843edf85d6a2be9676775c8f77e",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
@@ -43352,6 +43352,41 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-14/qlx40oVrXTY/report.md": {
     "mtime": 1781437765.3415685,
     "ast_hash": "60fe8f23e13f1c354cebac7b5d00614e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/list_agents.py": {
+    "mtime": 1781438751.7463326,
+    "ast_hash": "8caf67f9d44ae4a5851631a428d1fd16",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/issues.json": {
+    "mtime": 1781438713.9388063,
+    "ast_hash": "c780b914cf1decf11fdb93fb69b74a3d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/parse_workspace.py": {
+    "mtime": 1781438721.8837068,
+    "ast_hash": "c8df536288ea82c726e59c4b6b26186c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/projects.json": {
+    "mtime": 1781438661.7654603,
+    "ast_hash": "6b4b6abb72ce016e0e6892fac2fcad98",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/agents.json": {
+    "mtime": 1781438669.448364,
+    "ast_hash": "4fd4d79cfff714b200ba772080812420",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/generate_eod.py": {
+    "mtime": 1781438759.462236,
+    "ast_hash": "b349627e51eab70bb9201b7e472d6f70",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/squads.json": {
+    "mtime": 1781438667.9503827,
+    "ast_hash": "58e0494c51d30eb3494f7c9198986bb9",
     "semantic_hash": ""
   }
 }
