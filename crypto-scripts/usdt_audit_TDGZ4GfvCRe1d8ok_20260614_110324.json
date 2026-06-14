@@ -1,0 +1,32 @@
+{
+  "tx_hash": "TDGZ4GfvCRe1d8oksj8fBD77ZHw4bkCPBA",
+  "operator": "SYSTEM",
+  "started_at": "2026-06-14T11:03:24.819594+00:00",
+  "completed_at": "2026-06-14T11:03:43.037734+00:00",
+  "expected_amount": null,
+  "expected_to": null,
+  "checks": [
+    {
+      "section": "\u00a701",
+      "code": "01.1",
+      "name": "Transaction located on chain",
+      "status": "fail",
+      "detail": "Transaction NOT found on any provider.\nVerify the TX hash is correct and the transaction has been broadcast.",
+      "critical": true,
+      "raw_data": {
+        "tg_by_id": false,
+        "tg_info": false,
+        "tronscan": false
+      }
+    }
+  ],
+  "final_status": "REJECTED",
+  "actual_amount": null,
+  "actual_to": null,
+  "block_number": null,
+  "confirmations": null,
+  "contract_address": null,
+  "sender_address": null,
+  "sender_is_contract": false,
+  "provider_consensus": {}
+}
