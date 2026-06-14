@@ -285,3 +285,12 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Integrated `/`, `/dashboard`, `/universe/data`, and `/universe/reanalyze` endpoints in FastAPI `api_server.py`.
 - Verified and fully active at `http://localhost:8765/`.
 
+### 2026-06-14: Obsidian Trading Wiki and Strategy Extraction
+- Wrote python script `convert_excel.py` to read all sheets in `My-Trading-Bible.xlsx` and output 26 structured markdown wiki files detailing rules, setups, affirmations, and banking evaluation ratios.
+- Wrote python script `convert_pdf.py` to extract 151 trading strategies from the `ssrn-3247865.pdf` book, group them by chapter, and write 19 chapter notes and a master index.
+- Standardized chapter names and cross-links (e.g. ETFs, Foreign Exchange) in `151-Trading-Strategies-Index.md`.
+- Exported all generated files directly into the Obsidian vault folder `/home/vreddy1/Documents/Home-ubuntu-files/wiki/Trading-Strategies/`.
+- **Multica:** ALP-600 (done, assigned Vinod-AI-CEO)
+
+
+
