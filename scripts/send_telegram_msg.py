@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+import re
 
 import requests
 
@@ -10,16 +11,61 @@ TOKEN = os.environ.get(
 )
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "7246234100")
 
-def send_text(text, parse_mode="HTML"):
-    """Send a text message to the pre-configured Telegram chat."""
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+def detect_format(text):
+    """Detect if text is HTML or Markdown."""
+    has_markdown = False
+    if re.search(r"^\s*(?:#+\s|\-\s|\*\s|\+\s|\d+\.\s|\|.*?\|)", text, re.M):
+        has_markdown = True
+    elif re.search(r"\*\*.*?\*\*|__.*?__|\[.*?\]\(.*?\)", text):
+        has_markdown = True
+        
+    if has_markdown:
+        return "markdown"
+        
+    # Check for HTML tags
+    if re.search(r"<[a-z/]+[^>]*>", text, re.I):
+        return "html"
+        
+    return "html"
+
+def send_text(text, parse_mode="HTML", mode="auto"):
+    """Send a text message to the pre-configured Telegram chat.
+    Uses sendRichMessage for rich formatting support if HTML or Markdown is requested."""
+    # Determine formatting mode
+    if mode == "auto":
+        fmt = detect_format(text)
+    else:
+        fmt = mode.lower()
+
+    if parse_mode in ["Markdown", "MarkdownV2"]:
+        fmt = "markdown"
+
+    url = f"https://api.telegram.org/bot{TOKEN}/sendRichMessage"
+    rich_payload = {
+        "chat_id": CHAT_ID,
+        "rich_message": {
+            fmt: text
+        }
+    }
+    
+    try:
+        r = requests.post(url, json=rich_payload, timeout=15)
+        res = r.json()
+        if res.get("ok"):
+            return res
+        sys.stderr.write(f"sendRichMessage failed: {res.get('description')}\n")
+    except Exception as e:
+        sys.stderr.write(f"sendRichMessage error: {e}\n")
+        
+    # Fallback to standard sendMessage
+    fallback_url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     payload = {
         "chat_id": CHAT_ID,
         "text": text,
         "parse_mode": parse_mode
     }
     try:
-        r = requests.post(url, json=payload, timeout=15)
+        r = requests.post(fallback_url, json=payload, timeout=15)
         return r.json()
     except Exception as e:
         return {"ok": False, "error": str(e)}
@@ -48,6 +94,18 @@ if __name__ == "__main__":
     parser.add_argument("--token", type=str, help="Bot token override")
     parser.add_argument("--chat-id", type=str, help="Chat ID override")
     parser.add_argument(
+        "--mode",
+        choices=["html", "markdown", "auto"],
+        default="auto",
+        help="Formatting mode for rich messages (html, markdown, or auto)",
+    )
+    parser.add_argument(
+        "--parse-mode",
+        type=str,
+        default="HTML",
+        help="Parse mode fallback (HTML or Markdown)",
+    )
+    parser.add_argument(
         "rest", nargs=argparse.REMAINDER, help="Message text (fallback)"
     )
     args = parser.parse_args()
@@ -62,5 +120,5 @@ if __name__ == "__main__":
     if args.chat_id:
         CHAT_ID = args.chat_id
 
-    res = send_text(msg)
+    res = send_text(msg, parse_mode=args.parse_mode, mode=args.mode)
     print(f"Sent: {res.get('ok')}")
