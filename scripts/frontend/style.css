@@ -113,12 +113,9 @@ body {
   line-height: 1.5;
   color: var(--text);
   background: var(--bg);
-  overflow-x: hidden;
   min-height: 100vh;
   opacity: 0;
   transition: opacity 0.35s ease;
-  display: flex;
-  flex-direction: column;
 }
 
 body.loaded { opacity: 1; }
@@ -142,8 +139,7 @@ body::before {
   50% { opacity: 1; }
 }
 
-/* fullscreen modes override flex layout */
-body.fullscreen-dash { display: flex; flex-direction: column; }
+
 
 /* ── Typography ── */
 
@@ -174,8 +170,8 @@ a:hover { color: var(--text); }
 /* ── Layout ── */
 
 .main-content {
-  flex: 1 0 auto;
   margin-left: 200px;
+  min-height: calc(100vh - 32px);
   display: flex;
   flex-direction: column;
   transition: margin-left var(--transition-normal);
