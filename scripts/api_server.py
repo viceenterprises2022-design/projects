@@ -81,10 +81,10 @@ SYMBOLS = ("NIFTY", "SENSEX", "BANKNIFTY")
 # ── Static Files + Dashboard ──────────────────────────────────────────────────
 
 @app.get("/", include_in_schema=False)
-def serve_universe_root():
-    index = FRONTEND_DIR / "index.html"
+def serve_root():
+    index = FRONTEND_DIR / "dashboard.html"
     if not index.exists():
-        index = FRONTEND_DIR / "universe.html"
+        raise HTTPException(status_code=404, detail="dashboard.html not found")
     return FileResponse(str(index), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
