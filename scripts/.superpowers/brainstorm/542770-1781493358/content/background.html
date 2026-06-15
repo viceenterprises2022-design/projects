@@ -1,0 +1,45 @@
+<h2>Background Animation</h2>
+<p class="subtitle">What breathes life behind the data?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="grid" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>▦ Animated Grid</h3>
+      <div style="height:80px;border-radius:6px;margin:8px 0;background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(0,240,255,0.06) 19px,rgba(0,240,255,0.06) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(0,240,255,0.06) 19px,rgba(0,240,255,0.06) 20px);background-size:20px 20px;animation:pulse-grid 4s infinite"></div>
+      <p>Trading terminal grid. Subtle pulse animation. Feels like Bloomberg/Atom.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="gradient" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>🌈 Shifting Gradient</h3>
+      <div style="height:80px;border-radius:6px;margin:8px 0;background:linear-gradient(135deg,#020617,#0f172a,#1a0a2e);background-size:400% 400%;animation:gradient-shift 8s ease infinite"></div>
+      <p>Dark base colors that slowly shift. Subtle and premium. Low GPU usage.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="particles" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>✦ Data Particles</h3>
+      <div style="height:80px;border-radius:6px;margin:8px 0;background:radial-gradient(circle at 30% 40%,rgba(0,240,255,0.08) 0,transparent 3px),radial-gradient(circle at 70% 60%,rgba(0,255,136,0.06) 0,transparent 2px),radial-gradient(circle at 50% 20%,rgba(255,0,255,0.05) 0,transparent 4px);background-size:100% 100%"></div>
+      <p>Floating particles like data points. Most "dynamic" option. Higher GPU usage.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="scanlines" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>⚡ Scan Lines + Grid</h3>
+      <div style="height:80px;border-radius:6px;margin:8px 0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.015) 2px,rgba(255,255,255,0.015) 4px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(0,240,255,0.04) 19px,rgba(0,240,255,0.04) 20px);background-size:20px 4px"></div>
+      <p>CRT scan lines + terminal grid. Retro-futuristic. Most "terminal" feel.</p>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@keyframes pulse-grid { 0%,100%{opacity:1} 50%{opacity:0.6} }
+@keyframes gradient-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+</style>
+
+<p style="margin-top:24px;color:var(--text-secondary);font-size:0.85rem">Click to select. Tell me in terminal.</p>

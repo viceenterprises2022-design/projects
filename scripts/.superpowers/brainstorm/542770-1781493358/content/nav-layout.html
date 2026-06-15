@@ -1,0 +1,57 @@
+<h2>Navigation Layout</h2>
+<p class="subtitle">Terminal Fusion — how should navigation work?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="sidebar" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>📂 Left Sidebar</h3>
+      <p style="margin:8px 0;font-family:monospace;background:rgba(0,255,255,0.05);padding:12px;border-radius:6px;border:1px solid rgba(0,255,255,0.15)">
+        ┌─────────────────┐<br>
+        │  AE             │  ← logo<br>
+        │  ───────────    │<br>
+        │  ▸ Dashboard    │<br>
+        │  ▸ Market       │<br>
+        │  ▸ Portfolio    │<br>
+        │  ▸ Positions    │<br>
+        │  ▸ Holdings     │<br>
+        │  ▸ Crypto       │<br>
+        │  ▸ Universe     │<br>
+        │  ───────────    │<br>
+        │  LIVE ●         │<br>
+        └─────────────────┘
+      </p>
+      <p>Feels like a trading terminal (Bloomberg/Thinkorswim). More screen for content.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="horizontal" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>📐 Horizontal Top Bar</h3>
+      <p style="margin:8px 0;font-family:monospace;background:rgba(0,255,255,0.05);padding:12px;border-radius:6px;border:1px solid rgba(0,255,255,0.15)">
+        AE  |  Dashboard  Market  Portfolio  Positions  Holdings  Crypto  Universe  |  LIVE ●<br>
+        ─────────────────────────────────────────────────────────────────────────────<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTENT AREA<br>
+      </p>
+      <p>Current layout, but with neon styling. Familiar, minimal change.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>🔄 Collapsible Sidebar</h3>
+      <p style="margin:8px 0;font-family:monospace;background:rgba(0,255,255,0.05);padding:12px;border-radius:6px;border:1px solid rgba(0,255,255,0.15)">
+        ☰ │ CONTENT<br>
+        ───┤<br>
+        ▸ Dashboard<br>
+        ▸ Market<br>
+        ▸ Portfolio<br>
+        ▸ Positions<br>
+      </p>
+      <p>Sidebar hidden by default (hamburger icon). Pops out when needed. Best of both.</p>
+    </div>
+  </div>
+
+</div>
+
+<p style="margin-top:24px;color:var(--text-secondary);font-size:0.85rem">Click to select. Then tell me in terminal.</p>

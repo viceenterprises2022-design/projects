@@ -1,0 +1,40 @@
+<h2>Card Style</h2>
+<p class="subtitle">How should data panels look against the scan-line grid?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="glassy" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>🧊 Glass Panels</h3>
+      <div style="height:60px;border-radius:8px;margin:8px 0;background:rgba(15,23,42,0.6);backdrop-filter:blur(12px);border:1px solid rgba(0,240,255,0.15);box-shadow:0 0 20px rgba(0,240,255,0.05)"></div>
+      <p>Translucent with backdrop blur. Glowing border in page's accent color.<br><span style="color:var(--text-secondary)">Current style, upgraded with neon borders.</span></p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="solid" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>⬛ Solid Terminal Blocks</h3>
+      <div style="height:60px;border-radius:4px;margin:8px 0;background:#0a0e1a;border:1px solid rgba(0,240,255,0.2);border-left:3px solid #00f0ff;padding:8px"></div>
+      <p>Solid dark panels with accent left-border. Terminal-block aesthetic. No blur for performance.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="bordered" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>✨ Animated Border Glow</h3>
+      <div style="height:60px;border-radius:8px;margin:8px 0;background:rgba(15,23,42,0.7);border:1px solid rgba(0,240,255,0.3);box-shadow:0 0 15px rgba(0,240,255,0.1),inset 0 0 15px rgba(0,240,255,0.03)"></div>
+      <p>Glass panels with animated border glow (pulsing neon). Most visually striking.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>📄 Flat / No Borders</h3>
+      <div style="height:60px;border-radius:0;margin:8px 0;background:transparent;border-bottom:1px solid rgba(0,240,255,0.1)"></div>
+      <p>No card containers. Data separated by thin accent lines. Pure terminal aesthetic. Maximum data density.</p>
+    </div>
+  </div>
+
+</div>
+
+<p style="margin-top:24px;color:var(--text-secondary);font-size:0.85rem">Click to select. Tell me in terminal.</p>
