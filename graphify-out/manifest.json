@@ -9520,8 +9520,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1781360653.493474,
-    "ast_hash": "3d8212773d358f0693cd0421b13ec8e0",
+    "mtime": 1781492631.4673204,
+    "ast_hash": "6ec9b98cc056aa2ebb7f15eb480e340e",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_trending.py": {
@@ -33430,12 +33430,12 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1781346000.971972,
-    "ast_hash": "ef744c1cc0b4ddea09fb065daae4cdb9",
+    "mtime": 1781492632.1723113,
+    "ast_hash": "72316458dec7a98506e1f1be4050d8c7",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
-    "mtime": 1781492412.5801497,
+    "mtime": 1781492602.975153,
     "ast_hash": "8db6024ca321d250854283c3ef6bc790",
     "semantic_hash": ""
   },
@@ -38760,23 +38760,23 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
-    "mtime": 1781492292.2036922,
-    "ast_hash": "4a076bc3a1a91dee3ea1f9fa0d0fc1f4",
+    "mtime": 1781492633.433295,
+    "ast_hash": "a2b40d28fe614e9600e1cea916facb09",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/portfolio.html": {
-    "mtime": 1781492292.2036922,
-    "ast_hash": "0f1d7059f53f74d45a0a49910fc52308",
+    "mtime": 1781492634.0782866,
+    "ast_hash": "116855ee9e5b32572c03b9b589df686b",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
-    "mtime": 1781492292.202692,
-    "ast_hash": "aeb8559646fe1d32ef5b19a5928f3518",
+    "mtime": 1781492632.808303,
+    "ast_hash": "0faa2520e43ae494b63a78f463496c66",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/market.html": {
-    "mtime": 1781492292.2036922,
-    "ast_hash": "e5d759e295664cc432abbd53d5fc48f8",
+    "mtime": 1781492634.7282782,
+    "ast_hash": "354e351376f10e06d49df4d14b665d03",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/.opencode/package.json": {
@@ -42560,8 +42560,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.html": {
-    "mtime": 1781346064.626173,
-    "ast_hash": "4fff83b1deefaab4593736488ae3afe3",
+    "mtime": 1781492635.3672698,
+    "ast_hash": "74cc212beab2fc49c1b5fa59ac4004e3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-10.txt": {
@@ -42790,8 +42790,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/universe.html": {
-    "mtime": 1781492407.2862175,
-    "ast_hash": "3458cf51abd57777f963ff52964bb84e",
+    "mtime": 1781492635.9872618,
+    "ast_hash": "7d52c381b42c24a6a9f07cb28ea11515",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-11.txt": {
@@ -43242,11 +43242,6 @@
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_daily_2026-06-13.png": {
     "mtime": 1781317990.721055,
     "ast_hash": "9203a7c6692b4d30ac208d167d7c0938",
-    "semantic_hash": ""
-  },
-  "/home/vreddy1/Desktop/Projects/scripts/frontend/index.html": {
-    "mtime": 1781492292.2036922,
-    "ast_hash": "e2e5638eb6a6530590410b5481dae64c",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/youtube/2026-06-13/jcUqsNpDDDk/mindmap.json": {
