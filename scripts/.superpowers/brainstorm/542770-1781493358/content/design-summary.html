@@ -1,0 +1,54 @@
+<h2>Terminal Fusion — Design Complete ✅</h2>
+<p class="subtitle">Here's the full picture. Approve and I'll write the spec + implement.</p>
+
+<div class="section">
+  <h3>🏗️ Layout</h3>
+  <p><strong>Collapsible Sidebar</strong> — 200px fixed left sidebar with hamburger toggle. Logo at top, nav links with icons, LIVE indicator at bottom. Content fills remaining width.</p>
+</div>
+
+<div class="section">
+  <h3>🎨 Multi-Accent System</h3>
+  <p>Each page gets its own accent color, set via <code>--accent</code> CSS variable:</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0">
+    <div style="padding:6px 10px;background:rgba(0,240,255,0.08);border-left:3px solid #00f0ff;border-radius:4px">Dashboard → <strong style="color:#00f0ff">Cyan #00f0ff</strong></div>
+    <div style="padding:6px 10px;background:rgba(0,255,136,0.08);border-left:3px solid #00ff88;border-radius:4px">Market → <strong style="color:#00ff88">Emerald #00ff88</strong></div>
+    <div style="padding:6px 10px;background:rgba(255,0,255,0.08);border-left:3px solid #ff00ff;border-radius:4px">Portfolio → <strong style="color:#ff00ff">Fuchsia #ff00ff</strong></div>
+    <div style="padding:6px 10px;background:rgba(0,240,255,0.08);border-left:3px solid #00f0ff;border-radius:4px">Positions → <strong style="color:#00f0ff">Cyan #00f0ff</strong></div>
+    <div style="padding:6px 10px;background:rgba(0,255,136,0.08);border-left:3px solid #00ff88;border-radius:4px">Holdings → <strong style="color:#00ff88">Emerald #00ff88</strong></div>
+    <div style="padding:6px 10px;background:rgba(255,0,255,0.08);border-left:3px solid #ff00ff;border-radius:4px">Crypto Matrix → <strong style="color:#ff00ff">Fuchsia #ff00ff</strong></div>
+    <div style="padding:6px 10px;background:rgba(0,240,255,0.08);border-left:3px solid #00f0ff;border-radius:4px">Universe → <strong style="color:#00f0ff">Cyan #00f0ff</strong></div>
+    <div style="padding:6px 10px;background:rgba(0,255,136,0.08);border-left:3px solid #00ff88;border-radius:4px">Pixi → <strong style="color:#00ff88">Emerald #00ff88</strong></div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🖼️ Background</h3>
+  <p><strong>Scan Lines + Grid</strong> — Subtle CRT scan lines (2px repeating) overlaid on animated terminal grid. Both very transparent — pure atmosphere, never distracting.</p>
+</div>
+
+<div class="section">
+  <h3>🃏 Cards</h3>
+  <p><strong>Glass Panels</strong> — Translucent <code>rgba(15,23,42,0.6)</code> with <code>backdrop-filter:blur(12px)</code>. Accent-colored borders (<code>--accent</code>) with subtle glow via <code>box-shadow</code>. Active/hover states intensify the glow.</p>
+</div>
+
+<div class="section">
+  <h3>🔤 Typography</h3>
+  <p><strong>JetBrains Mono</strong> everywhere — UI, labels, numbers, nav links. Consistent terminal aesthetic. Weights: 400, 500, 700.</p>
+</div>
+
+<div class="section">
+  <h3>✨ Micro-interactions</h3>
+  <ul>
+    <li>Smooth page transitions (fade)</li>
+    <li>Sidebar slide animation on toggle</li>
+    <li>Number counting/ticker animations on price changes</li>
+    <li>Hover glow intensifies on cards and nav links</li>
+    <li>LIVE dot pulses</li>
+  </ul>
+</div>
+
+<div style="margin-top:24px;padding:16px;border-radius:8px;background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.15)">
+  <p style="margin:0"><strong>Files to change:</strong> style.css (complete rewrite), all HTML nav sections (sidebar conversion), each page gets an accent color set. <strong>Zero data loss.</strong></p>
+</div>
+
+<p style="margin-top:24px;color:var(--text-secondary);font-size:0.85rem">Reply "approve" to lock this in, or tell me what to change.</p>

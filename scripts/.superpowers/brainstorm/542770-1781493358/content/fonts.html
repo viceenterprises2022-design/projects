@@ -1,0 +1,38 @@
+<h2>Typography</h2>
+<p class="subtitle">What font matches the Terminal Fusion vibe?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="inter" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>Inter (keep current)</h3>
+      <div style="font-family:Inter;font-size:1.2rem;padding:12px;background:rgba(15,23,42,0.5);border-radius:6px;margin:8px 0;border:1px solid rgba(255,255,255,0.05)">
+        AlphaEdge Dashboard 1,234.56 ▲ 2.3%
+      </div>
+      <p>Clean, readable, professional. Familiar to users.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="mono" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>JetBrains Mono (terminal)</h3>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;padding:12px;background:rgba(15,23,42,0.5);border-radius:6px;margin:8px 0;border:1px solid rgba(0,240,255,0.15)">
+        AlphaEdge Dashboard 1,234.56 ▲ 2.3%
+      </div>
+      <p>Trading terminal feel. Numbers align perfectly. Distinctive.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hybridfont" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>Hybrid: Inter UI + Mono Numbers</h3>
+      <div style="padding:12px;background:rgba(15,23,42,0.5);border-radius:6px;margin:8px 0;border:1px solid rgba(255,255,255,0.05)">
+        <span style="font-family:Inter">AlphaEdge Dashboard </span><span style="font-family:'JetBrains Mono',monospace;color:#00f0ff">1,234.56</span><span style="font-family:Inter;color:#00ff88"> ▲ 2.3%</span>
+      </div>
+      <p>Inter for labels, monospace for numbers. Best readability + terminal flavor.</p>
+    </div>
+  </div>
+
+</div>
+
+<p style="margin-top:24px;color:var(--text-secondary);font-size:0.85rem">Click to select. Tell me in terminal.</p>
