@@ -9485,8 +9485,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/ai_events_results.json": {
-    "mtime": 1781407965.9724014,
-    "ast_hash": "c80251879448a65ceae676824ea2d1f6",
+    "mtime": 1781494465.5495014,
+    "ast_hash": "152ea7773d66e66f1bf3ede6fd9479b3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/git-autosync.sh": {
@@ -33430,13 +33430,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1781494248.451321,
+    "mtime": 1781494422.4750607,
     "ast_hash": "1c7dfecff85ea280c0615e9cd5bc36ce",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
-    "mtime": 1781494408.8592377,
-    "ast_hash": "b059be9999e29de0a66438517618c670",
+    "mtime": 1781494620.6234875,
+    "ast_hash": "f5937a1760c7b8042a418d603f5ec3b1",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/docs/superpowers/specs/2026-05-13-metals-intel-dashboard-design.md": {
@@ -38760,22 +38760,22 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
-    "mtime": 1781494138.6177473,
+    "mtime": 1781494422.4760609,
     "ast_hash": "5231e116410d1175e2be5e6327bf5e55",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/portfolio.html": {
-    "mtime": 1781494140.1297276,
+    "mtime": 1781494422.4760609,
     "ast_hash": "0215df4e02259022a8018b4101916e31",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
-    "mtime": 1781494084.2284536,
+    "mtime": 1781494422.4750607,
     "ast_hash": "1c7008a6bc1e2c85b1d4ef0c798c7412",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/market.html": {
-    "mtime": 1781494141.651708,
+    "mtime": 1781494422.4750607,
     "ast_hash": "faa00a3abb48d560c48afead67d58a78",
     "semantic_hash": ""
   },
@@ -42560,7 +42560,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.html": {
-    "mtime": 1781494275.1819737,
+    "mtime": 1781494422.4740608,
     "ast_hash": "8f7ecfffa4088aba7d7e1d64b5ef42e4",
     "semantic_hash": ""
   },
@@ -42790,7 +42790,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/universe.html": {
-    "mtime": 1781494345.460061,
+    "mtime": 1781494422.4770608,
     "ast_hash": "ccce6dc0c36e0576f7eb442f7e1800d8",
     "semantic_hash": ""
   },

@@ -886,6 +886,7 @@ function switchSym(s) {
 }
 
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('collapsed')}
+document.addEventListener('DOMContentLoaded',()=>{document.body.classList.add('loaded')})
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeStrike();
   if (e.key === '1') switchSym('NIFTY');

@@ -140,7 +140,7 @@ body::before {
 }
 
 /* fullscreen modes override flex layout */
-body.fullscreen-dash { display: block; }
+body.fullscreen-dash { display: flex; flex-direction: column; }
 
 /* ── Typography ── */
 
@@ -173,7 +173,6 @@ a:hover { color: var(--text); }
 .main-content {
   flex: 1;
   margin-left: 200px;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   transition: margin-left var(--transition-normal);
@@ -835,9 +834,4 @@ footer {
 
 /* dashboard fullscreen */
 body.fullscreen-dash .sidebar { display: flex; }
-body.fullscreen-dash .main-content { display: block; }
 
-body.fullscreen-dash footer {
-  display: none;
-}
-body.fullscreen-dash .footer-inner { display: none; }
