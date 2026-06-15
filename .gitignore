@@ -55,6 +55,10 @@ temp/
 cache/
 .cache/
 graphify-out/cache/
+scripts/notebooklm_output/
+scripts/pkscreener_output/
+scripts/results/
+scripts/output/
 
 # Local environments and nested repositories
 Jupiter/

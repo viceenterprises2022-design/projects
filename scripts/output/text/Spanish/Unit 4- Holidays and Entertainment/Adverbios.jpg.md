@@ -1,1 +1,0 @@
-*Image: Adverbios.jpg.jpeg*
