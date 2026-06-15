@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scripts Universe Mapper</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>:root{--accent:#00f0ff;--accent-dim:rgba(0,240,255,0.15);--accent-glow:0 0 20px rgba(0,240,255,0.25)}</style>
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <style>
@@ -33,7 +34,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'JetBrains Mono', 'Inter', sans-serif;
             background-color: var(--bg-primary);
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
@@ -409,7 +410,7 @@
             background-color: var(--bg-secondary) !important;
             border: 1px solid var(--border-panel) !important;
             color: var(--text-primary) !important;
-            font-family: 'Inter', sans-serif !important;
+            font-family: 'JetBrains Mono', 'Inter', sans-serif !important;
             padding: 8px 12px !important;
             border-radius: 8px !important;
             box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
@@ -418,47 +419,54 @@
 </head>
 <body>
 
-    <header>
-        <div class="header-inner">
-            <div class="logo">
-                <a href="/" class="logo-wrap">
-                    <div class="logo-glow">AE</div>
-                    <span class="logo-text">AlphaEdge</span>
-                </a>
-                <nav class="nav-links">
-                    <a href="/">Dashboard</a>
-                    <a href="/universe" class="active">Universe</a>
-                    <a href="/crypto-matrix">Crypto Matrix</a>
-                    <a href="/market">Market</a>
-                    <a href="/portfolio">Portfolio</a>
-                    <a href="/holdings">Holdings</a>
-                    <a href="/positions">Positions</a>
-                </nav>
-            </div>
-            <div class="stats-banner">
-                <div class="stat-item">
-                    <div class="stat-value" id="stat-scripts">0</div>
-                    <div class="stat-label">Scripts</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="stat-dbs">0</div>
-                    <div class="stat-label">DBs</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="stat-apis">0</div>
-                    <div class="stat-label">APIs</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="stat-msg">0</div>
-                    <div class="stat-label">Messaging</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="stat-htmls">0</div>
-                    <div class="stat-label">HTML Views</div>
-                </div>
-            </div>
-        </div>
-    </header>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <a href="/" class="sidebar-logo">AE</a>
+    <span class="sidebar-logo-text">AlphaEdge</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Dashboard</span></a>
+    <a href="/market" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Market</span></a>
+    <a href="/portfolio" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Portfolio</span></a>
+    <a href="/positions" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Positions</span></a>
+    <a href="/holdings" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Holdings</span></a>
+    <a href="/crypto-matrix" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Crypto</span></a>
+    <a href="/universe" class="sidebar-link active"><span class="sidebar-icon">◈</span><span class="sidebar-label">Universe</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <span class="live-dot"></span> <span class="sidebar-label">LIVE</span>
+  </div>
+</aside>
+
+<div class="main-content">
+
+<header>
+  <div class="header-inner" style="justify-content:flex-end;padding:0 24px">
+    <div class="stats-banner">
+      <div class="stat-item">
+        <div class="stat-value" id="stat-scripts">0</div>
+        <div class="stat-label">Scripts</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-dbs">0</div>
+        <div class="stat-label">DBs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-apis">0</div>
+        <div class="stat-label">APIs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-msg">0</div>
+        <div class="stat-label">Messaging</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-htmls">0</div>
+        <div class="stat-label">HTML Views</div>
+      </div>
+    </div>
+  </div>
+</header>
 
     <div class="main-container">
         <!-- Control Panel (Left) -->
@@ -712,7 +720,7 @@
                     font: {
                         color: '#f3f4f6',
                         size: 14,
-                        face: 'Inter'
+                        face: 'JetBrains Mono'
                     },
                     shadow: {
                         enabled: true,
@@ -1047,5 +1055,11 @@
         // Fetch first load
         fetchGraphData();
     </script>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('collapsed')}
+document.addEventListener('DOMContentLoaded',()=>{document.body.classList.add('loaded')})
+</script>
 </body>
 </html>

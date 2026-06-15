@@ -6,30 +6,39 @@
 <title>AEI · Market Scanner</title>
 <meta name="description" content="Gainers, Losers, and Nifty 200 Momentum Scanner.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>:root{--accent:#00ff88;--accent-dim:rgba(0,255,136,0.15);--accent-glow:0 0 20px rgba(0,255,136,0.25)}</style>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <a href="/" class="sidebar-logo">AE</a>
+    <span class="sidebar-logo-text">AlphaEdge</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Dashboard</span></a>
+    <a href="/market" class="sidebar-link active"><span class="sidebar-icon">◈</span><span class="sidebar-label">Market</span></a>
+    <a href="/portfolio" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Portfolio</span></a>
+    <a href="/positions" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Positions</span></a>
+    <a href="/holdings" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Holdings</span></a>
+    <a href="/crypto-matrix" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Crypto</span></a>
+    <a href="/universe" class="sidebar-link"><span class="sidebar-icon">◈</span><span class="sidebar-label">Universe</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <span class="live-dot"></span> <span class="sidebar-label">LIVE</span>
+  </div>
+</aside>
+
+<div class="main-content">
+
 <header>
   <div class="header-inner">
-    <div class="logo">
-      <a href="/" class="logo-wrap">
-        <div class="logo-glow">AE</div>
-        <span class="logo-text">AlphaEdge</span>
-      </a>
-      <nav class="nav-links">
-        <a href="/">Dashboard</a>
-        <a href="/universe">Universe</a>
-        <a href="/crypto-matrix">Crypto Matrix</a>
-        <a href="/market" class="active">Market</a>
-        <a href="/portfolio">Portfolio</a>
-        <a href="/holdings">Holdings</a>
-        <a href="/positions">Positions</a>
-      </nav>
-    </div>
-    <div style="display:flex;align-items:center;gap:16px">
-      <div id="last-updated" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted)">
+    <div style="display:flex;align-items:center;gap:12px"></div>
+    <div class="header-right">
+      <div id="last-updated">
         <span class="live-dot"></span>Connecting…
       </div>
     </div>
@@ -80,6 +89,8 @@
   </div>
 </main>
 
+</div>
+
 <footer>
   <div class="container footer-inner">
     <span>⚠ For informational purposes only · Not financial advice</span>
@@ -89,5 +100,9 @@
 </footer>
 
 <script src="/static/app.js?v=20260525"></script>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('collapsed')}
+document.addEventListener('DOMContentLoaded',()=>{document.body.classList.add('loaded')})
+</script>
 </body>
 </html>
