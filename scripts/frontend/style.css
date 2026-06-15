@@ -102,6 +102,8 @@ html {
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body {
@@ -172,11 +174,14 @@ a:hover { color: var(--text); }
 /* ── Layout ── */
 
 .main-content {
-  flex: 1;
+  flex: 1 0 auto;
   margin-left: 200px;
   display: flex;
   flex-direction: column;
   transition: margin-left var(--transition-normal);
+}
+body.fullscreen-dash .main-content {
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
 }
