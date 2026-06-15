@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 import subprocess
 import os
@@ -7,23 +8,51 @@ from datetime import datetime
 def run_cmd(cmd):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
-        print(f"Error running cmd: {cmd}\nStderr: {result.stderr}")
+        print(f"Error running cmd: {cmd}\nStderr: {result.stderr}", file=sys.stderr)
         return None
     return result.stdout.strip()
 
+def fetch_all_issues():
+    all_issues = []
+    offset = 0
+    limit = 100
+    while True:
+        print(f"Fetching issues offset {offset}...")
+        raw = run_cmd(f"multica issue list --limit {limit} --offset {offset} --output json")
+        if not raw:
+            break
+        try:
+            data = json.loads(raw)
+        except Exception as e:
+            print(f"JSON decode error for issues at offset {offset}: {e}", file=sys.stderr)
+            break
+        issues = data.get("issues", [])
+        if not issues:
+            break
+        all_issues.extend(issues)
+        if not data.get("has_more", False):
+            break
+        offset += len(issues)
+    return all_issues
+
 def main():
+    # Allow overriding the date via command line argument
+    if len(sys.argv) > 1:
+        today_str = sys.argv[1]
+    else:
+        today_str = datetime.now().strftime("%Y-%m-%d")
+    
+    print(f"Generating EOD Report for date: {today_str}")
+
     print("Fetching projects from Multica...")
     projects_raw = run_cmd("multica project list --output json")
     if not projects_raw:
         sys.exit("Failed to fetch projects")
     projects = json.loads(projects_raw)
 
-    print("Fetching issues from Multica...")
-    issues_raw = run_cmd("multica issue list --limit 1000 --output json")
-    if not issues_raw:
-        sys.exit("Failed to fetch issues")
-    issues_data = json.loads(issues_raw)
-    issues = issues_data.get("issues", [])
+    print("Fetching all issues from Multica...")
+    issues = fetch_all_issues()
+    print(f"Fetched {len(issues)} issues in total.")
 
     print("Fetching agents from Multica...")
     agents_raw = run_cmd("multica agent list --output json")
@@ -34,10 +63,6 @@ def main():
     # Maps
     project_map = {p["id"]: p for p in projects}
     agent_map = {a["id"]: a for a in agents}
-
-    today_str = datetime.now().strftime("%Y-%m-%d")
-    # We can hardcode today's date to match the timezone if needed, but local system time is 2026-06-14.
-    today_str = "2026-06-14"
 
     # 1. Projects and tasks summary
     project_summaries = []
@@ -51,8 +76,8 @@ def main():
     for i in issues:
         if i["status"] == "done":
             updated_at = i.get("updated_at", "")
-            completed_at = i.get("completed_at", "")
-            if (completed_at and completed_at.startswith(today_str)) or (updated_at and updated_at.startswith(today_str)):
+            # We check if updated_at matches today's date
+            if updated_at.startswith(today_str):
                 completed_today.append(i)
 
     completed_details = []
@@ -66,22 +91,25 @@ def main():
         comments_raw = run_cmd(f"multica issue comment list {i['id']} --output json")
         summary_text = "No detail comment found."
         if comments_raw:
-            comments = json.loads(comments_raw)
-            if comments:
-                # Get the latest comment
-                latest_comment = comments[-1].get("content", "")
-                # Clean up or extract key info
-                lines = latest_comment.split("\n")
-                summary_lines = []
-                for line in lines:
-                    if line.strip().startswith(("-", "*", "|", "#", "•")):
-                        summary_lines.append(line.strip())
-                    elif "Spot Price" in line or "Overall Signal" in line or "LTP" in line or "Price (USD)" in line:
-                        summary_lines.append(line.strip())
-                if summary_lines:
-                    summary_text = "\n    ".join(summary_lines[:8]) + ("\n    ..." if len(summary_lines) > 8 else "")
-                else:
-                    summary_text = latest_comment[:300] + ("..." if len(latest_comment) > 300 else "")
+            try:
+                comments = json.loads(comments_raw)
+                if comments:
+                    # Get the latest comment
+                    latest_comment = comments[-1].get("content", "")
+                    # Clean up or extract key info
+                    lines = latest_comment.split("\n")
+                    summary_lines = []
+                    for line in lines:
+                        if line.strip().startswith(("-", "*", "|", "#", "•")):
+                            summary_lines.append(line.strip())
+                        elif any(k in line for k in ["Spot Price", "Overall Signal", "LTP", "Price (USD)", "Asset"]):
+                            summary_lines.append(line.strip())
+                    if summary_lines:
+                        summary_text = "\n    ".join(summary_lines[:8]) + ("\n    ..." if len(summary_lines) > 8 else "")
+                    else:
+                        summary_text = latest_comment[:300] + ("..." if len(latest_comment) > 300 else "")
+            except Exception as e:
+                print(f"Error parsing comments for issue {i['id']}: {e}", file=sys.stderr)
 
         completed_details.append(
             f"• *{i.get('identifier')}*: {i['title']}\n"
