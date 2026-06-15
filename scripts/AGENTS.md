@@ -292,5 +292,13 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Exported all generated files directly into the Obsidian vault folder `/home/vreddy1/Documents/Home-ubuntu-files/wiki/Trading-Strategies/`.
 - **Multica:** ALP-600 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-15: Git Memory Leak and Pack-Objects RAM Exhaustion Fix
+- Diagnosed root cause of system memory/RAM exhaustion: projects-git-autosync.service timer ran every 5 minutes and committed a 68MB scripts/alphaedge.db (and other generated outputs), accumulating thousands of loose objects and triggering git gc which ran without memory limits, consuming 8GB+ RAM and 400% CPU.
+- Untracked scripts/alphaedge.db, scripts/intraday_oi.db, pkscreener_venv/, scripts/notebooklm_output/, scripts/pkscreener_output/, scripts/results/, and scripts/output/ from Git tracking.
+- Updated .gitignore to prevent tracking of generated output directories (notebooklm_output/, pkscreener_output/, results/, output/).
+- Configured global Git memory and thread limits (pack.windowMemory to 256m, pack.threads to 2, pack.packSizeLimit to 256m, core.packedGitLimit to 256m, core.packedGitWindowSize to 256m) to prevent runaway resource allocation.
+- Ran git gc --prune=now with the new memory limits, safely packaging all loose objects and shrinking the .git directory size from 6.1GB to 1.2GB.
+
+
 
 
