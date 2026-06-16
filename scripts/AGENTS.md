@@ -292,3 +292,13 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 - Exported all generated files directly into the Obsidian vault folder `/home/vreddy1/Documents/Home-ubuntu-files/wiki/Trading-Strategies/`.
 - **Multica:** ALP-600 (done, assigned Vinod-AI-CEO)
 
+### 2026-06-16: Commit of Traders (COT) Commodity and Index Positioning System
+- Built [cot_analyzer.py](file:///home/vreddy1/Desktop/Projects/scripts/cot_analyzer.py) to fetch, process, and analyze weekly CFTC Commitments of Traders (COT) Legacy Futures-Only positioning data for 8 target contracts (Gold, Silver, Copper, Oil, SP500, Nasdaq, Dow Jones, UST Bond).
+- Implemented premium terminal CLI dashboard utilizing `rich` Tables and KPI Columns, complete with color-coded net positions, divergence spreads (Speculator Net - Commercial Net), and trend signals.
+- Configured Gemini 2.5 Flash API integration for automated macro analyst reporting.
+- Integrated rich GFM markdown tables natively rendered as beautiful interactive data tables inside Telegram using [send_telegram_msg.py](file:///home/vreddy1/Desktop/Projects/scripts/send_telegram_msg.py).
+- Set up state tracking in `cot_analyzer_state.json` and deployed weekly Saturday 9:00 AM IST execution inside crontab.
+- Verified local rendering and Telegram output delivery successfully.
+- **Multica:** ALP-605 (done, assigned Vinod-AI-CEO)
+
+
