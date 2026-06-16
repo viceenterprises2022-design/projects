@@ -314,12 +314,28 @@ def generate_ascii_table(rows):
         lines.append(f"{name}| {nc_net}| {chg}| {sig}| {pct_l}")
     return "\n".join(lines)
 
+def generate_markdown_table(rows):
+    """Generate a GFM Markdown table for rich Telegram table rendering."""
+    lines = [
+        "| Contract | Spec Net | WoW Net | Signal | % L |",
+        "| :--- | :---: | :---: | :---: | :---: |"
+    ]
+    for row in rows:
+        name = f"**{row['Contract'].upper()}**"
+        nc_net = f"`{row['NC Net']/1000:+.1f}K`"
+        chg = f"`{row['Div Change']/1000:+.1f}K`"
+        emoji = "🟢" if row["Signal"] == "Bullish" else "🔴"
+        sig = f"{emoji} {row['Signal'].upper()}"
+        pct_l = f"{row['NC %Long']}%"
+        lines.append(f"| {name} | {nc_net} | {chg} | {sig} | {pct_l} |")
+    return "\n".join(lines)
+
 def get_ai_analysis(rows, report_date):
     """Generate professional analyst insights using Google Gemini API."""
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         console.print("[yellow]Warning: GEMINI_API_KEY missing from environment. Skipping AI analysis.[/yellow]")
-        return "<i>AI Analysis unavailable (GEMINI_API_KEY not set).</i>"
+        return "_AI Analysis unavailable (GEMINI_API_KEY not set)._"
         
     console.print("[cyan]Generating AI Analysis via Gemini...[/cyan]")
     
@@ -348,7 +364,7 @@ Focus on:
 5. Tactical takeaways (key reversal zones, trade confirmation signals, supply/demand interactions).
 
 Keep the report extremely professional, structured, and concise. Avoid generic introductions or meta-commentary.
-Use HTML tags suitable for Telegram (<b>...</b>, <i>...</i>, <code>...</code>, etc.) for beautiful structural formatting. Avoid markdown asterisks (*bold*) or backticks for code blocks inside the text body.
+Use Telegram-compatible Markdown (V1/V2 style, like *bold*, _italic_, `inline code`) for beautiful structural formatting. Do NOT use HTML tags.
 """
     
     url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={api_key}"
@@ -361,24 +377,24 @@ Use HTML tags suitable for Telegram (<b>...</b>, <i>...</i>, <code>...</code>, e
         return analysis.strip()
     except Exception as e:
         console.print(f"[red]Error calling Gemini API: {e}[/red]")
-        return f"<i>Error generating AI analysis: {e}</i>"
+        return f"_Error generating AI analysis: {e}_"
 
 def send_telegram_report(rows, report_date, analysis):
-    """Send the structured table + AI analysis to Telegram."""
+    """Send the structured GFM table + AI analysis to Telegram."""
     if not tg:
         console.print("[red]Error: send_telegram_msg.py utility not found. Cannot send report.[/red]")
         return False
         
-    table_str = generate_ascii_table(rows)
+    table_str = generate_markdown_table(rows)
     
-    message = f"<b>📊 CFTC Commitments of Traders (COT) Intelligence</b>\n"
-    message += f"<i>Report Date: {report_date} (Futures-Only Legacy)</i>\n\n"
-    message += f"<code>{table_str}</code>\n\n"
-    message += f"<b>🧠 AI Positioning Analysis & Market Intel</b>\n\n"
+    message = f"📊 *CFTC Commitments of Traders (COT) Intelligence*\n"
+    message += f"_Report Date: {report_date} (Futures-Only Legacy)_\n\n"
+    message += f"{table_str}\n\n"
+    message += f"🧠 *AI Positioning Analysis & Market Intel*\n\n"
     message += f"{analysis}"
     
     console.print("[cyan]Sending report to Telegram...[/cyan]")
-    res = tg.send_text(message, parse_mode="HTML")
+    res = tg.send_text(message, mode="markdown")
     
     if res and res.get("ok"):
         console.print("[green]Report sent successfully to Telegram![/green]")
