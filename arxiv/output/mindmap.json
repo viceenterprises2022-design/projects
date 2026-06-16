@@ -1,0 +1,110 @@
+{
+  "name": "Parallel-Synthesis Framework",
+  "children": [
+    {
+      "name": "Problem: Text-based Sequential Interface",
+      "children": [
+        {
+          "name": "Mismatch with DAG agent workflows"
+        },
+        {
+          "name": "Redundant prefill computation costs"
+        },
+        {
+          "name": "Artificial dependencies in serialized contexts"
+        }
+      ]
+    },
+    {
+      "name": "Proposed Solution: Cache-based Synthesis",
+      "children": [
+        {
+          "name": "Direct KV cache consumption"
+        },
+        {
+          "name": "Positional re-encoding for branching"
+        },
+        {
+          "name": "Learnable cache mapper calibration"
+        },
+        {
+          "name": "Synthesizer LoRA adaptation"
+        }
+      ]
+    },
+    {
+      "name": "Training Methodology",
+      "children": [
+        {
+          "name": "Track 1: General Adaptation",
+          "children": [
+            {
+              "name": "Continued-pretraining on dialogues"
+            },
+            {
+              "name": "SFT on parallel-context tasks"
+            }
+          ]
+        },
+        {
+          "name": "Track 2: Reasoning Distillation",
+          "children": [
+            {
+              "name": "Distilling from text-based synthesis"
+            },
+            {
+              "name": "Judgment over complex trajectories"
+            }
+          ]
+        },
+        {
+          "name": "Checkpoint merging (weighted averaging)"
+        }
+      ]
+    },
+    {
+      "name": "Performance Evaluation",
+      "children": [
+        {
+          "name": "Efficiency Gains",
+          "children": [
+            {
+              "name": "2.5x to 11x TTFT reduction"
+            },
+            {
+              "name": "Avoided re-prefill of worker outputs"
+            }
+          ]
+        },
+        {
+          "name": "Task Accuracy",
+          "children": [
+            {
+              "name": "Matches/Outperforms text in 7 of 9 datasets"
+            },
+            {
+              "name": "Strong in reasoning-heavy tasks"
+            },
+            {
+              "name": "Effective in GAIA and MARBLE benchmarks"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Key Advantages",
+      "children": [
+        {
+          "name": "Preserves rich latent reasoning states"
+        },
+        {
+          "name": "Reduces order-induced positional bias"
+        },
+        {
+          "name": "Plug-and-play synthesizer adapter"
+        }
+      ]
+    }
+  ]
+}
