@@ -1,52 +1,27 @@
 [
   {
-    "title": "Google and Kaggle Launch Free AI Agents Vibe Coding Course \u2014 Registration Now Open | The Agent Report",
+    "title": "Google & Kaggle: AI Agents Intensive (Second Edition)",
     "url": "https://the-agent-report.com/2026/06/google-kaggle-free-ai-agents-vibe-coding-course-june-2026/",
-    "highlights": [
-      "June 1, 2026 \u2014 Google and Kaggle have opened registration for the second edition of their free AI Agents Intensive course, running June 15\u201319, 2026. The updated curriculum introduces vibe coding \u2014 building AI agents using natural language as the primary programming interface \u2014 alongside new content on production deployment and a hands-on capstone project.\n[...]\nThe first edition in November 2025 drew over 1.5 million learners, making it one of the most popular AI courses ever offered. This year\u2019s version adds updated content, new speakers, and deeper coverage of agent quality, security, and deployment.\n[...]\nEach day includes whitepapers, companion podcasts, hands-on code labs, and a daily livestream on Kaggle\u2019s YouTube channel with course authors and Google engineers. Participants also get access to dedicated channels on Kaggle\u2019s Discord for discussion and Q&A.\n[...]\nThe capstone project opens at the end of Day 5 (June 19) with a submission deadline of June 30. Participants must build a working AI agent and submit a Kaggle writeup, video explanation, design rationale, and code link. Top submissions receive Kaggle swag and recognition across Kaggle and Google social channels. All participants who complete the capstone earn a badge and certificate on their Kaggle profile.\n[...]\n## How to Register\n[...]\nRegistration is free and open now at the Kaggle course overview page. Requirements:\n[...]\n- A Kaggle account (free, with phone verification)\n- A Google AI Studio account (free)\n- No programming experience necessary\n[...]\nAll livestreams and recordings are available to registrants, and the course is developed directly by Google researchers and engineers."
-    ],
-    "score": null,
-    "published_date": "2026-06-01T08:00:00.000Z",
-    "is_online": true
+    "published_date": "2026-06-15"
   },
   {
-    "title": "June 17 - Build Vision Data Agents with Tools, Skills, and MCP - DEV Community",
-    "url": "https://dev.to/voxel51/june-17-build-vision-data-agents-with-tools-skills-and-mcp-3pbi",
-    "highlights": [
-      "June 17 - Build Vision Data Agents with Tools, Skills, and MCP - DEV Community\n\nJoin us on June 17 for a virtual workshop to learn how to build production-ready AI agents. Register for the Zoom!\n\nLearn how to build production-ready AI agents that can reason over your data, automate complex tasks, and integrate seamlessly into your existing stack using tools, skills, and the Model Context Protocol (MCP).\n\nWe\u2019ll walk through how modern agentic systems move beyond simple prompts\u2014leveraging structured tools like dataset operations, embeddings, evaluation pipelines, and model execution to take real action. You\u2019ll see how these agents can tag data, run inference, evaluate performance, and surface insights automatically, all within a unified workflow.\n\nBy combining natural language interfaces with programmable building blocks, teams can dramatically reduce manual effort, accelerate experimentation, and unlock faster decision-making across the ML lifecycle.\n\nAre you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's permalink.\n\nHide child comments as well\n\nConfirm\n\nFor further actions, you may consider blocking this person and/or reporting abuse\n\nWe're a place where coders share, stay up-to-date and grow their careers.\n\nLog in Create account"
-    ],
-    "score": null,
-    "published_date": "2026-06-09T18:09:18.000Z",
-    "is_online": true
+    "title": "FastMCP Tutorial: Quick Tools, Live Agents, Real Results with LangGraph (Eventbrite)",
+    "url": "https://www.eventbrite.com/e/fastmcp-tutorial-quick-tools-live-agents-real-results-with-langgraph-tickets-1990919259098",
+    "published_date": "2026-06-17"
   },
   {
-    "title": "Build Agentic Apps Using Claude Code & Bootcamp Info Session",
-    "url": "https://maven.com/p/2ba2b2/build-agentic-apps-using-claude-code-bootcamp-info-session",
-    "highlights": [
-      "Build Agentic Apps Using Claude Code & Bootcamp Info Session\n[...]\n## Build Agentic Apps Using Claude Code & Bootcamp Info Session\n[...]\nFri, Jul 31, 2026\n[...]\n4:00 PM UTC (1 hour 30 minutes)\n[...]\nVirtual (Zoom)\n[...]\nFree to join\n[...]\nSign up to join this lesson\n[...]\nGo deeper with a course\n[...]\nAgentic Buildcamp - A Cognitive Gym for Building AI Agents \u2014 using AI Agents\n[...]\nFri, Jul 31, 2026\n[...]\n4:00 PM UTC (1 hour 30 minutes)\n[...]\nVirtual (Zoom)\n[...]\nFree to join\n[...]\nGo deeper with a course\n[...]\nAgentic Buildcamp - A Cognitive Gym for Building AI Agents \u2014 using AI Agents\n[...]\nWhat you'll learn\n[...]\nAssess if agentic approach is appropriate for your use case.\n[...]\nDesign agentic workflow for your use case.\n[...]\nImplement your agentic workflow using Claude\n[...]\nLeave with some workflow files you can immediately use\n[...]\nLearn more about our 7-week program to help you build\n[...]\nWhy this topic matters\n[...]\nUnderstanding LLM agentic systems is crucial for founders, engineers, PMs, and ML devs to build adaptive AI-driven products. These systems enable automation, personalization, and dynamic decision-making. Founders gain a competitive edge, engineers design scalable AI apps, PMs manage realistic roadmaps, and ML devs optimize behavior. Mastery ensures innovation, while ignorance risks falling behind.\n[...]\nYou'll learn from\n[...]\nSign up to join this lesson\n[...]\nSign up for free"
-    ],
-    "score": null,
-    "published_date": "2026-06-01T18:18:51.000Z",
-    "is_online": true
+    "title": "OpenAI Academy: Builder Bootcamp: Agents",
+    "url": "https://academy.openai.com/",
+    "published_date": "2026-06-18"
   },
   {
-    "title": "Fast & Efficient LLM Inference with vLLM - DeepLearning.AI",
-    "url": "https://www.deeplearning.ai/courses/fast-and-efficient-llm-inference-with-vllm",
-    "highlights": [
-      "# Fast & Efficient LLM Inference with vLLM - DeepLearning.AI\n[...]\nFast & Efficient LLM Inference with vLLM - DeepLearning.AI\n[...]\nShort CourseIntermediate1h38m\n[...]\n# Fast & Efficient LLM Inference with vLLM\n[...]\n- Intermediate\n- 1h38m\n- 9 Video Lessons\n- 3 Code Examples\n- 1 Graded Assignment PRO\n- Earn an accomplishment with PRO\n- Instructor: Cedric Clyburn\n- Red Hat\n- Learn more about Membership PRO Plan\n[...]\n## About this course\n[...]\nIntroducing Fast & Efficient LLM Inference with vLLM, a short course built in partnership with Red Hat and taught by Cedric Clyburn, Senior Developer Advocate at Red Hat.\n[...]\nServing open-source LLMs efficiently,\n[...]\nmany users at low\n[...]\nand reasonable cost, comes down mostly to memory management. Two things compete for that memory:\n[...]\ncache. A\n[...]\n70-billion-parameter model takes around 140\n[...]\nof memory just for the weights\n[...]\ncache grows with every request you serve. In this course,\n[...]\n'll learn to shrink the weights through quantization, and\n[...]\nthe model with\n[...]\nM, the widely adopted open-source serving system\n[...]\ntaking advantage of the memory management\n[...]\nit provides like PagedAttention\n[...]\nit with v\n[...]\nM, and\n[...]\n## Who should join?\n[...]\nengineers, platform engineers, and\n[...]\nwho need to deploy open-source LLMs efficiently.\n[...]\n) is recommended\n[...]\n## Course Outline\n[...]\n9 Lessons\u30fb3 Code Examples\n[...]\n- IntroductionVideo\u30fb3m\n- Why Efficient LLM Deployment MattersVideo\u30fb6m\n- Inference & Memory FundamentalsVideo\u30fb14m\n- LLM Optimization FundamentalsVideo\u30fb14m\n- Optimizing a Model with LLM CompressorVideo with Code Example\u30fb11m\n- Serving LLMs Efficiently with vLLM - Part IVideo\u30fb10m\n- Serving LLMs Efficiently with vLLM \u2013 Part IIVideo with Code Example\u30fb7m\n- Measuring What Matters: Benchmarking and EvaluationVideo with Code Example\u30fb15m\n- Conclusion: Putting it All TogetherVideo\u30fb4m\n- QuizGraded\u30fbQuiz\u30fb10m\n[...]\n## Fast & Efficient LLM Inference with vLLM\n[...]\n- Intermediate\n- 1h38m\n- 9 Video Lessons\n- 3 Code Examples\n- 1 Graded Assignment PRO\n- Earn an accomplishment with PRO\n- Instructor: Cedric Clyburn\n- Red Hat\n- Learn more about Membership PRO Plan\n[...]\nAdditional learning features, such as quizzes and projects, are included with DeepLearning.AI Pro. Explore it today\n[...]\n## Want to learn more about AI?\n[...]\nKeep learning with updates on curated AI news, courses, and events, as well as Andrew Ng\u2019s thoughts from DeepLearning.AI!"
-    ],
-    "score": null,
-    "published_date": "2026-06-09T16:35:02.000Z",
-    "is_online": true
+    "title": "Google Cloud: Agentic AI 2026 (via Internshala)",
+    "url": "https://internshala.com/competitions/agentic-ai-2026/",
+    "published_date": "2026-06-09"
   },
   {
-    "title": "Operationalizing Agentic AI Tickets, Thursday, August 13 \u00a0\u2022\u00a0 6 PM - 7 PM UTC | Eventbrite",
-    "url": "https://www.eventbrite.com/e/operationalizing-agentic-ai-tickets-1991191391052",
-    "highlights": [
-      "Operationalizing Agentic AI Tickets, Thursday, August 13 \u2022 6 PM - 7 PM UTC | Eventbrite\n[...]\n# Operationalizing Agentic AI\n[...]\nByData Science Connect\n[...]\nThursday, August 13 \u2022 2 PM - 3 PM EDT\n[...]\nLearn how to operationalize Agentic AI with governance, observability, and human control at scale.\n[...]\nAgentic AI is no longer theoretical. Systems that can reason, plan, and take action across workflows are entering production environments\u2014and with them comes a new operational reality. The question is no longer can AI act autonomously, but how do we stay in control when it does?This webinar focuses on the practical mechanics of deploying agentic AI responsibly. We\u2019ll examine how to design governance frameworks that go beyond static guardrails, implement observability that surfaces intent and intermediate reasoning, and maintain meaningful human-in-the-loop oversight without slowing down innovation. From dynamic policy enforcement to real-time monitoring and escalation paths, we\u2019ll explore how enterprises can operationalize autonomy without sacrificing accountability.If your organization is experimenting with AI agents\u2014or preparing to move from pilots to production\u2014this session will help you build systems that are not only capable, but controllable.\n[...]\nWhat You'll Learn:\n[...]\n1\ufe0f\u20e3 Governance for Autonomous Systems: How to design policy layers, permissioning models, and approval workflows that align agent behavior with organizational risk tolerance and regulatory requirements.2\ufe0f\u20e3 Observability Beyond Outputs: Why logging final responses isn\u2019t enough\u2014and how to instrument reasoning traces, tool usage, and memory state to create transparency in agent decision-making.\n[...]\n3\ufe0f\u20e3 Human-in-the-Loop by Design: Practical patterns for escalation, intervention, and override that preserve human authority while enabling agents to operate efficiently across complex workflows.4\ufe0f\u20e3 From Pilot to Production Control: The architectural considerations\u2014modular workflows, sandboxing, audit trails, and feedback loops\u2014that make agentic systems safe and sustainable at enterprise scale.\n[...]\n## Good to know\n[...]\n- Updates\n- 1 hour\n- Online\n[...]\n- 1 hour\n- Online\n[...]\n#### Online event\n[...]\nReport this event"
-    ],
-    "score": null,
-    "published_date": "2026-06-05T12:13:02.000Z",
-    "is_online": true
+    "title": "IANS & CSA Webinar: Emerging Reference Patterns for AI Agents and MCP in the Enterprise",
+    "url": "https://www.iansresearch.com/what-we-do/events/webinars/details/2026/06/15/2026-webinar/ians-emerging-issue-briefing--anthropic-releases-guardrailed-claude-fable-5-as-public-version-of-mythos",
+    "published_date": "2026-06-16"
   }
 ]
