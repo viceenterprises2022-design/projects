@@ -172,10 +172,17 @@ def render_cli(rows, report_date):
     console.print()
     
     # 1. Main Title Header Panel
-    title = Text("COMMITMENTS OF TRADERS (COT) WEEKLY INTELLIGENCE", style="bold cyan")
-    subtitle = Text(f"Report Date: {report_date} | Sourced from CFTC Legacy Futures-Only", style="italic grey70")
+    title = Text("COMMITMENTS OF TRADERS (COT) WEEKLY INTELLIGENCE\n", style="bold cyan")
+    subtitle = Text(f"Report Date: {report_date} | Sourced from CFTC Legacy Futures-Only\n\n", style="italic grey70")
+    legend = Text(
+        "Definitions:\n"
+        "• Spec  = Non-Commercial (Hedge Funds, Banks & Institutions)\n"
+        "• Hedg  = Commercial (Corporations Hedging)\n"
+        "• WoW ± = Week-over-Week Change (Divergence net positioning shift)",
+        style="dim white"
+    )
     header_panel = Panel(
-        Text.assemble(title, "\n", subtitle),
+        Text.assemble(title, subtitle, legend),
         border_style="cyan",
         expand=True,
         padding=(1, 2)
