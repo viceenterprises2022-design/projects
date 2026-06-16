@@ -315,19 +315,53 @@ def generate_ascii_table(rows):
     return "\n".join(lines)
 
 def generate_markdown_table(rows):
-    """Generate a GFM Markdown table for rich Telegram table rendering."""
+    """Generate a GFM Markdown table with all columns for rich Telegram rendering."""
     lines = [
-        "| Contract | Spec Net | WoW Net | Signal | % L |",
-        "| :--- | :---: | :---: | :---: | :---: |"
+        "| Contract | Spec L | Spec S | Spec Net | Spec %L | Hedg L | Hedg S | Hedg Net | Hedg %L | Div Net | Prev Div | WoW ± | % WoW | Signal |",
+        "| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :---: |"
     ]
     for row in rows:
-        name = f"**{row['Contract'].upper()}**"
-        nc_net = f"`{row['NC Net']/1000:+.1f}K`"
-        chg = f"`{row['Div Change']/1000:+.1f}K`"
-        emoji = "🟢" if row["Signal"] == "Bullish" else "🔴"
-        sig = f"{emoji} {row['Signal'].upper()}"
-        pct_l = f"{row['NC %Long']}%"
-        lines.append(f"| {name} | {nc_net} | {chg} | {sig} | {pct_l} |")
+        name = f"**{row['Contract']}**"
+        spec_l = f"{row['NC Long']:,}"
+        spec_s = f"{row['NC Short']:,}"
+        
+        nc_net = row['NC Net']
+        nc_net_str = f"{nc_net:+,.0f}"
+        nc_net_formatted = f"`{nc_net_str}`"
+        
+        spec_pct = f"{row['NC %Long']}%"
+        
+        hedg_l = f"{row['Com Long']:,}"
+        hedg_s = f"{row['Com Short']:,}"
+        
+        com_net = row['Com Net']
+        com_net_str = f"{com_net:+,.0f}"
+        com_net_formatted = f"`{com_net_str}`"
+        
+        hedg_pct = f"{row['Com %Long']}%"
+        
+        div = row['Divergence']
+        div_str = f"{div:+,.0f}"
+        div_formatted = f"`{div_str}`"
+        
+        p_div = row['Prev Divergence']
+        p_div_str = f"{p_div:+,.0f}"
+        
+        chg = row['Div Change']
+        chg_str = f"{chg:+,.0f}"
+        chg_formatted = f"`{chg_str}`"
+        
+        pct = row['Div %Chg']
+        pct_arrow = "▲" if pct >= 0 else "▼"
+        pct_formatted = f"{pct_arrow} {abs(pct)}%"
+        
+        sig = row['Signal']
+        
+        lines.append(
+            f"| {name} | {spec_l} | {spec_s} | {nc_net_formatted} | {spec_pct} | "
+            f"{hedg_l} | {hedg_s} | {com_net_formatted} | {hedg_pct} | "
+            f"{div_formatted} | {p_div_str} | {chg_formatted} | {pct_formatted} | {sig} |"
+        )
     return "\n".join(lines)
 
 def get_ai_analysis(rows, report_date):
