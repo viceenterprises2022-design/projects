@@ -3,6 +3,8 @@
 ## 2026-06-17
 * **Update**: Migrated Daily Crypto Brief pipeline (`crypto_to_notebooklm.py`) notification and file delivery system from Telegram to Slack using Slack Block Kit Webhooks and File Upload APIs.
 * **Update**: Migrated PKScreener scan reporter (`pkscreener_runner.py`) from Telegram alerts to Slack webhook alerts, parsing HTML tags to Slack mrkdwn.
+* **Update**: Converted `CLAUDE.md` and `GEMINI.md` to OKF-compliant formats with typed YAML frontmatter metadata.
+* **Creation**: Created OKF-compliant agent/tool rules for `OMP.md`, `HERMES.md`, `OPENCODE.md`, and `CODEX.md` in root directory.
 
 ## 2026-06-01
 * **Update**: Cleaned up crontab execution environment; fixed path issues by targeting local `notebooklm` binary explicitly and routing runners through python virtual environment.

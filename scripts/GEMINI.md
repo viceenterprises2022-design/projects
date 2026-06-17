@@ -1,3 +1,11 @@
+---
+type: Reference
+title: Gemini Assistant Rules
+description: Developer guidelines and session instructions for the Antigravity Gemini Code Assistant.
+tags: [rules, agent, gemini, system-settings]
+timestamp: 2026-06-17T23:45:00Z
+---
+
 # GEMINI.md
 
 This file provides guidance to Antigravity (Gemini Code Assistant) when working with code in this repository.

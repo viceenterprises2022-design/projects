@@ -1,3 +1,11 @@
+---
+type: Reference
+title: Claude Code Assistant Rules
+description: Developer guidelines, system commands, and environment setups for the Claude Code agent.
+tags: [rules, agent, claude, run-commands]
+timestamp: 2026-06-17T23:45:00Z
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.

@@ -27,6 +27,15 @@ One file per subsystem.
 * [Agent Scaffolder](projects/agent-scaffolder.md) - Automated scaffolding tool for new production agents.
 * [Utilities & Helpers](projects/utilities-helpers.md) - Standalone utilities for Slack webhooks, watchdogs, and rate limiters.
 
+# Agent Configurations & Guidelines
+
+* [Claude Code Rules](../CLAUDE.md) - System rules, commands, and workflows for Claude Code assistant.
+* [Gemini Assistant Rules](../GEMINI.md) - Session configuration, settings, and caveman ultra settings for Gemini.
+* [Codex Assistant Rules](../CODEX.md) - Programming guidelines and virtual environment mappings for Codex runtime.
+* [Hermes Orchestrator Rules](../HERMES.md) - LangGraph orchestrator layout and specialist reasoner mappings for Hermes.
+* [Oh-My-Pi (OMP) Rules](../OMP.md) - Model settings, Cloud Code Assist auth, and Gemini quota bypasses for OMP.
+* [OpenCode Plugin Rules](../OPENCODE.md) - Custom commands, tools, and hooks details for OpenCode goal plugins.
+
 ---
 
 [System Architecture](architecture.md) · [System Runbook](runbook.md) · [Update Log](log.md)
