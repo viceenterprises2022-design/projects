@@ -121,6 +121,135 @@ def step_download_infographic(nb_id: str) -> str:
     return ""
 
 
+def slack_upload_file(file_path: Path, token: str, channel: str, title: str = None) -> bool:
+    import requests
+    try:
+        fname = file_path.name
+        fsize = file_path.stat().st_size
+        headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+
+        # Step 1: get upload URL
+        r1 = requests.post(
+            "https://slack.com/api/files.getUploadURLExternal",
+            headers=headers,
+            json={"filename": fname, "length": fsize, "alt_text": fname},
+            timeout=30,
+        )
+        d1 = r1.json()
+        if not d1.get("ok"):
+            p(f"  [WARN] getUploadURL failed: {d1.get('error', 'unknown')}")
+            return False
+        upload_url = d1["upload_url"]
+        file_id = d1["file_id"]
+
+        # Step 2: PUT file bytes to upload_url
+        with open(file_path, "rb") as f:
+            r2 = requests.put(upload_url, data=f, timeout=120)
+        if r2.status_code != 200:
+            p(f"  [WARN] file PUT failed: HTTP {r2.status_code}")
+            return False
+
+        # Step 3: complete upload
+        r3 = requests.post(
+            "https://slack.com/api/files.completeUploadExternal",
+            headers=headers,
+            json={"files": [{"id": file_id, "title": title or fname}], "channel_id": channel},
+            timeout=30,
+        )
+        d3 = r3.json()
+        if d3.get("ok"):
+            p(f"  ✓ Uploaded {fname}")
+            return True
+        p(f"  [WARN] completeUpload failed: {d3.get('error', 'unknown')}")
+        return False
+    except Exception as e:
+        p(f"  [WARN] Slack upload exception: {e}")
+        return False
+
+
+def step_send_slack(info_path: str, nb_id: str, src_path: str):
+    slack_webhook = os.environ.get("SLACK_WEBHOOK_CRYPTO") or os.environ.get("SLACK_WEBHOOK_URL")
+    slack_token = os.environ.get("SLACK_TOKEN")
+    slack_channel = os.environ.get("SLACK_CHANNEL_CRYPTO") or os.environ.get("SLACK_CHANNEL", "#general")
+
+    if not slack_webhook:
+        p("\n[SLACK] No Slack webhook URL set. Cannot send notification.")
+        return
+
+    p(f"\n[SLACK] Sending to Slack...")
+    import requests
+
+    nb_link = f"https://notebooklm.google.com/notebook/{nb_id}"
+    title_text = f"📡 Crypto Daily Brief — {TODAY}"
+
+    # Build Block Kit payload
+    blocks = [
+        {
+            "type": "header",
+            "text": {"type": "plain_text", "text": title_text, "emoji": True},
+        },
+        {
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": f"*NotebookLM:* <{nb_link}|Open Notebook>"},
+        },
+        {"type": "divider"}
+    ]
+
+    if src_path and Path(src_path).exists():
+        raw_report = Path(src_path).read_text().strip()
+        if raw_report:
+            snippet = raw_report[:2500]
+            if len(raw_report) > 2500:
+                snippet += "\n\n... (truncated, see full infographic / notebook)"
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": f"*Briefing Report Summary*\n\n{snippet}"}
+            })
+
+    # Try import from send_slack first to reuse style or use direct webhook POST
+    try:
+        from send_slack import send_to_slack
+        res = send_to_slack(
+            slack_webhook,
+            f"New Crypto Daily Brief available — {TODAY}",
+            username="Crypto News → NotebookLM",
+            icon_emoji=":chart_with_upwards_trend:",
+            blocks=blocks
+        )
+    except Exception as e:
+        p(f"  [WARN] send_slack.py import failed, falling back to direct POST: {e}")
+        payload = {
+            "text": f"New Crypto Daily Brief available — {TODAY}",
+            "blocks": blocks,
+            "username": "Crypto News → NotebookLM",
+            "icon_emoji": ":chart_with_upwards_trend:"
+        }
+        try:
+            r = requests.post(slack_webhook, json=payload, timeout=15)
+            r.raise_for_status()
+            res = {"ok": True}
+        except Exception as err:
+            res = {"ok": False, "error": str(err)}
+
+    if res.get("ok"):
+        p("  ✓ Slack webhook notification sent")
+    else:
+        p(f"  ✗ Slack webhook notification failed: {res.get('error')}")
+
+    # 2. Upload infographic image using SLACK_TOKEN
+    if not slack_token:
+        p("  [SKIP] No SLACK_TOKEN set — cannot upload infographic image")
+        return
+
+    if info_path and Path(info_path).exists():
+        p(f"  Uploading infographic PNG to {slack_channel}...")
+        success = slack_upload_file(Path(info_path), slack_token, slack_channel, f"Crypto Daily Brief Infographic — {TODAY}")
+        if success:
+            p("  ✓ Infographic uploaded to Slack")
+        else:
+            p("  ✗ Infographic upload failed")
+
+
 def step_send_telegram(info_path: str, nb_id: str):
     if not info_path or not Path(info_path).exists():
         p("\n[TG] No infographic to send.")
@@ -190,7 +319,10 @@ def main():
 
     p(f"\n✓ Infographic ready: {info_path}")
 
-    if "--telegram" in sys.argv:
+    if "--slack" in sys.argv:
+        step_send_slack(info_path, nb_id, src_path)
+    elif "--telegram" in sys.argv:
+        p("\n[WARN] Telegram is blocked in India, sending to Telegram may fail.")
         step_send_telegram(info_path, nb_id)
 
     p(f"\nAll done.")
