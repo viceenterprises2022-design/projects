@@ -1,3 +1,11 @@
+---
+type: Reference
+title: Utilities & Helpers
+description: Shared standalone scripts, daemon status monitors, and notification utility helpers.
+tags: [utilities, monitors, watchdog, notifications, scripts]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 🛠️ Utilities & Helpers
 
 > Section group: **🚀 Script Index**

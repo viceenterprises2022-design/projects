@@ -1,3 +1,11 @@
+---
+type: Reference
+title: AI Search & Discovery
+description: Search tools powered by Exa AI to track agentic AI events and horoscopes.
+tags: [exa-ai, search, tracking, agentic]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 🤖 AI Search & Discovery
 
 > Section group: **🚀 Script Index**

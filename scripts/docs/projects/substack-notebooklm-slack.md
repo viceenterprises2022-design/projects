@@ -1,3 +1,11 @@
+---
+type: Pipeline
+title: Substack to NotebookLM & Slack Pipeline
+description: Monitors Substack RSS feeds, filters articles by keywords, summarizes using NotebookLM, and pushes alerts to Slack.
+tags: [rss, substack, notebooklm, pipeline]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # ✉️ Substack → NotebookLM → Slack
 
 > Section group: **🚀 Script Index**

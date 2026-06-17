@@ -1,3 +1,11 @@
+---
+type: Project
+title: Portfolio P&L Dashboard
+description: Unified multi-broker API aggregator and P&L monitoring daemon backend.
+tags: [portfolio, pnl, aggregation, brokers, api]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 💼 Portfolio P&L Dashboard
 
 > Section group: **🚀 Script Index**

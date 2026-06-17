@@ -1,3 +1,11 @@
+---
+type: Project
+title: Crypto Intelligence
+description: Real-time predictive mapping, Option depth charts, and CMC Skill Hub daily/weekly reports.
+tags: [crypto, binance, deribit, market-intelligence]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 🪙 Crypto Intelligence
 
 > Section group: **🚀 Script Index**

@@ -1,3 +1,11 @@
+---
+type: Playbook
+title: System Runbook
+description: Service configurations, user-level daemon collectors, log tracking, and troubleshooting.
+tags: [services, systemd, daemons, runbook, troubleshooting]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # Runbook
 
 ## 🖥️ System-Level Services (Requires sudo)

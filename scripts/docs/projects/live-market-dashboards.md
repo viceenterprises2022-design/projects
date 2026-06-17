@@ -1,3 +1,11 @@
+---
+type: Reference
+title: Live Market Dashboards
+description: Rich-based live terminal dashboards tracking pricing and parameters asynchronously.
+tags: [dashboards, live-pricing, terminal, command-line]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 📊 Live Market Dashboards
 
 > Section group: **🚀 Script Index**

@@ -1,3 +1,11 @@
+---
+type: Pipeline
+title: Toddle to NotebookLM Study Guides Sync
+description: Automated subject study guides creator sync from Toddle LMS subject notes to NotebookLM notebooks.
+tags: [toddle, studies, notebooklm, pipeline]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 🎓 Toddle → NotebookLM
 
 > Section group: **🚀 Script Index**

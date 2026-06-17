@@ -1,3 +1,11 @@
+---
+type: Project
+title: AlphaEdge Market Intelligence
+description: Decoupled 10-factor market intelligence system for Nifty, Sensex, and BankNifty.
+tags: [market-intelligence, alphaedge, options, signals]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 📈 AlphaEdge Market Intelligence
 
 > Section group: **🚀 Script Index**

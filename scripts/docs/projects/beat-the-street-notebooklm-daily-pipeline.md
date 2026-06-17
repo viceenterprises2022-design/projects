@@ -1,3 +1,11 @@
+---
+type: Pipeline
+title: Beat the Street — NotebookLM Daily Pipeline
+description: Telegram PDF intelligence extractor using NotebookLM with automated Slack briefings.
+tags: [telegram, pdf, notebooklm, slack, pipeline]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 📰 Beat the Street — NotebookLM Daily Pipeline
 
 > Section group: **🚀 Script Index**

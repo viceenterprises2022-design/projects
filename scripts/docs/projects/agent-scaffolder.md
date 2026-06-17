@@ -1,3 +1,11 @@
+---
+type: Utility
+title: Agent Scaffolder
+description: Automated tool for scaffolding production-ready agents using template presets.
+tags: [agents, templates, automation]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 🛠️ Agent Scaffolder
 
 > Section group: **🚀 Script Index**

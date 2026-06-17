@@ -1,3 +1,11 @@
+---
+type: Pipeline
+title: YouTube to NotebookLM Pipeline
+description: Ingests newly published videos from monitored YouTube channels to NotebookLM and posts details to Slack.
+tags: [youtube, videos, notebooklm, slack, pipeline]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 🤖 YouTube → NotebookLM
 
 > Section group: **🚀 Script Index**

@@ -1,3 +1,11 @@
+---
+type: Reference
+title: Strategies
+description: Technical scanner strategies deployed on schedules with live API endpoints.
+tags: [strategies, scanners, momentum, technical-analysis]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 📂 Strategies
 
 > Section group: **🚀 Script Index**

@@ -1,3 +1,11 @@
+---
+type: Pipeline
+title: Arxiv to NotebookLM Pipeline
+description: Monitors academic research papers, processes via NotebookLM, and outputs briefings to Slack.
+tags: [arxiv, academic, notebooklm, pipeline]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # 🎓 Arxiv → NotebookLM
 
 > Section group: **🚀 Script Index**

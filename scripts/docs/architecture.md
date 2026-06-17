@@ -1,3 +1,11 @@
+---
+type: Reference
+title: System Architecture
+description: Overview of Python environments, dependencies, and subsystem usage commands.
+tags: [setup, environment, dependencies, architecture]
+timestamp: 2026-06-17T23:30:00Z
+---
+
 # Architecture
 
 ## Python Environments
