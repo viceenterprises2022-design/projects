@@ -26,3 +26,7 @@ One file per subsystem.
 * [Live Market Dashboards](projects/live-market-dashboards.md) - Real-time rich terminal layouts for live pricing.
 * [Agent Scaffolder](projects/agent-scaffolder.md) - Automated scaffolding tool for new production agents.
 * [Utilities & Helpers](projects/utilities-helpers.md) - Standalone utilities for Slack webhooks, watchdogs, and rate limiters.
+
+---
+
+[System Architecture](architecture.md) · [System Runbook](runbook.md) · [Update Log](log.md)
