@@ -123,16 +123,17 @@ def step_download_infographic(nb_id: str) -> str:
 
 def slack_upload_file(file_path: Path, token: str, channel: str, title: str = None) -> bool:
     import requests
+    import json
     try:
         fname = file_path.name
         fsize = file_path.stat().st_size
-        headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+        headers = {"Authorization": f"Bearer {token}"}
 
         # Step 1: get upload URL
         r1 = requests.post(
             "https://slack.com/api/files.getUploadURLExternal",
             headers=headers,
-            json={"filename": fname, "length": fsize, "alt_text": fname},
+            data={"filename": fname, "length": fsize, "alt_text": fname},
             timeout=30,
         )
         d1 = r1.json()
@@ -153,14 +154,17 @@ def slack_upload_file(file_path: Path, token: str, channel: str, title: str = No
         r3 = requests.post(
             "https://slack.com/api/files.completeUploadExternal",
             headers=headers,
-            json={"files": [{"id": file_id, "title": title or fname}], "channel_id": channel},
+            data={"files": json.dumps([{"id": file_id, "title": title or fname}]), "channel_id": channel},
             timeout=30,
         )
         d3 = r3.json()
         if d3.get("ok"):
             p(f"  ✓ Uploaded {fname}")
             return True
-        p(f"  [WARN] completeUpload failed: {d3.get('error', 'unknown')}")
+        err = d3.get('error', 'unknown')
+        p(f"  [WARN] completeUpload failed: {err}")
+        if err == 'not_in_channel':
+            p(f"  [TIP] Please invite/add the Slack Bot to the channel '{channel}' in the Slack UI.")
         return False
     except Exception as e:
         p(f"  [WARN] Slack upload exception: {e}")
