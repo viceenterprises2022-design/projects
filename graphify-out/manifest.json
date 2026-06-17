@@ -25580,7 +25580,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/CLAUDE.md": {
-    "mtime": 1781720048.3834717,
+    "mtime": 1781720090.731932,
     "ast_hash": "e5e780a19d092df70ce10ff92a2bf98c",
     "semantic_hash": ""
   },
@@ -25640,7 +25640,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/GEMINI.md": {
-    "mtime": 1781720041.5785584,
+    "mtime": 1781720090.731932,
     "ast_hash": "1bcdc46a37d7fc3a4d0e40e06ed27b18",
     "semantic_hash": ""
   },
@@ -40860,7 +40860,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/docs/index.md": {
-    "mtime": 1781720077.8280964,
+    "mtime": 1781720090.731932,
     "ast_hash": "d5c0841a5c3ea7f618156a727e9254ab",
     "semantic_hash": ""
   },
@@ -43715,8 +43715,28 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/docs/log.md": {
-    "mtime": 1781719480.298714,
-    "ast_hash": "0df012d1354f5fc5aea118a4d49aa9af",
+    "mtime": 1781720090.7329319,
+    "ast_hash": "e492c5bc58bbca65a4a267a06902d459",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/CODEX.md": {
+    "mtime": 1781720068.1112201,
+    "ast_hash": "38fe10e47c96d66575ea007554b3d86a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/OPENCODE.md": {
+    "mtime": 1781720063.0842843,
+    "ast_hash": "2ebd792495365a224cb70325806adfb9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/OMP.md": {
+    "mtime": 1781720053.4874067,
+    "ast_hash": "db8380d4c2755bc7a704f6a192031ee2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/HERMES.md": {
+    "mtime": 1781720058.4193437,
+    "ast_hash": "c29214af4c542b3a945a142841bf21c1",
     "semantic_hash": ""
   }
 }
