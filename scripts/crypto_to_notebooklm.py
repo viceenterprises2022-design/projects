@@ -121,7 +121,7 @@ def step_download_infographic(nb_id: str) -> str:
     return ""
 
 
-def slack_upload_file(file_path: Path, token: str, channel: str, title: str = None) -> bool:
+def slack_upload_file(file_path: Path, token: str, channel: str, title: str = None) -> str:
     import requests
     import json
     try:
@@ -139,7 +139,7 @@ def slack_upload_file(file_path: Path, token: str, channel: str, title: str = No
         d1 = r1.json()
         if not d1.get("ok"):
             p(f"  [WARN] getUploadURL failed: {d1.get('error', 'unknown')}")
-            return False
+            return ""
         upload_url = d1["upload_url"]
         file_id = d1["file_id"]
 
@@ -148,7 +148,7 @@ def slack_upload_file(file_path: Path, token: str, channel: str, title: str = No
             r2 = requests.put(upload_url, data=f, timeout=120)
         if r2.status_code != 200:
             p(f"  [WARN] file PUT failed: HTTP {r2.status_code}")
-            return False
+            return ""
 
         # Step 3: complete upload
         r3 = requests.post(
@@ -159,16 +159,21 @@ def slack_upload_file(file_path: Path, token: str, channel: str, title: str = No
         )
         d3 = r3.json()
         if d3.get("ok"):
-            p(f"  ✓ Uploaded {fname}")
-            return True
+            files = d3.get("files", [])
+            if files:
+                permalink = files[0].get("permalink")
+                p(f"  ✓ Uploaded {fname}, permalink: {permalink}")
+                return permalink
+            p(f"  ✓ Uploaded {fname} but no file info in response")
+            return ""
         err = d3.get('error', 'unknown')
         p(f"  [WARN] completeUpload failed: {err}")
         if err == 'not_in_channel':
             p(f"  [TIP] Please invite/add the Slack Bot to the channel '{channel}' in the Slack UI.")
-        return False
+        return ""
     except Exception as e:
         p(f"  [WARN] Slack upload exception: {e}")
-        return False
+        return ""
 
 
 def step_send_slack(info_path: str, nb_id: str, src_path: str):
@@ -180,7 +185,13 @@ def step_send_slack(info_path: str, nb_id: str, src_path: str):
         p("\n[SLACK] No Slack webhook URL set. Cannot send notification.")
         return
 
-    p(f"\n[SLACK] Sending to Slack...")
+    p(f"\n[SLACK] Uploading infographic private file first...")
+    permalink = ""
+    if slack_token and info_path and Path(info_path).exists():
+        p(f"  Uploading infographic PNG to Slack storage...")
+        permalink = slack_upload_file(Path(info_path), slack_token, slack_channel, f"Crypto Daily Brief Infographic — {TODAY}")
+
+    p(f"\n[SLACK] Sending message to webhook...")
     import requests
 
     nb_link = f"https://notebooklm.google.com/notebook/{nb_id}"
@@ -195,9 +206,16 @@ def step_send_slack(info_path: str, nb_id: str, src_path: str):
         {
             "type": "section",
             "text": {"type": "mrkdwn", "text": f"*NotebookLM:* <{nb_link}|Open Notebook>"},
-        },
-        {"type": "divider"}
+        }
     ]
+
+    if permalink:
+        blocks.append({
+            "type": "section",
+            "text": {"type": "mrkdwn", "text": f"*Infographic:* <{permalink}|Open High-Res Infographic PNG>"},
+        })
+
+    blocks.append({"type": "divider"})
 
     if src_path and Path(src_path).exists():
         raw_report = Path(src_path).read_text().strip()
@@ -240,18 +258,13 @@ def step_send_slack(info_path: str, nb_id: str, src_path: str):
     else:
         p(f"  ✗ Slack webhook notification failed: {res.get('error')}")
 
-    # 2. Upload infographic image using SLACK_TOKEN
-    if not slack_token:
-        p("  [SKIP] No SLACK_TOKEN set — cannot upload infographic image")
-        return
-
-    if info_path and Path(info_path).exists():
-        p(f"  Uploading infographic PNG to {slack_channel}...")
-        success = slack_upload_file(Path(info_path), slack_token, slack_channel, f"Crypto Daily Brief Infographic — {TODAY}")
-        if success:
-            p("  ✓ Infographic uploaded to Slack")
-        else:
-            p("  ✗ Infographic upload failed")
+    # Also post the raw permalink as a separate text message to trigger unfurling!
+    if permalink:
+        try:
+            requests.post(slack_webhook, json={"text": permalink}, timeout=15)
+            p("  ✓ Posted permalink for unfurling")
+        except Exception as e:
+            p(f"  [WARN] Failed to post permalink for unfurling: {e}")
 
 
 def step_send_telegram(info_path: str, nb_id: str):
