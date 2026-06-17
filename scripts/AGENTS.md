@@ -96,7 +96,14 @@ Never add new secrets to source. Use environment variables for `EXA_API_KEY`, Te
 ### Parent Projects (~/Desktop/Projects/)
 Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), copy trading bots (Hyperliquid/Binance/Polymarket), BTC futures bot, CrewAI agents, open-codesign (Electron/TypeScript), tradingview-mcp (Node.js CDP bridge), crypto-trending-oi engine, and more.
 
-## Session Memory — Recent Work
+### Session Memory — Recent Work
+
+### 2026-06-17: Crypto Daily Brief Slack Webhook Migration
+- `crypto_to_notebooklm.py` — Rewrote the notification and delivery pipeline to migrate from Telegram to Slack. Implemented `step_send_slack()` and `slack_upload_file()` using Slack Block Kit Webhooks and the file upload API (`files.getUploadURLExternal` + `files.completeUploadExternal`), passing required parameter structure. Added CLI option `--slack`.
+- `.env` — Added `SLACK_WEBHOOK_CRYPTO` containing user's Slack webhook and set `SLACK_CHANNEL_CRYPTO` to `#ai-notebooklm-summary`.
+- `crontab` — Updated the daily 8:00 AM IST cron job for `crypto_to_notebooklm.py` to use the `--slack` flag instead of `--telegram`.
+- Verified and successfully tested end-to-end webhook delivery.
+- **Multica:** ALP-510 (done, assigned Vinod-AI-CEO)
 
 ### 2026-06-17: PKScreener Slack Webhook Migration
 - `.env` — Added `SLACK_WEBHOOK_PKSCREENER` with user's Slack webhook.
