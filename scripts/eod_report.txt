@@ -1,59 +1,100 @@
 *1. Projects and Tasks Summary*
 • *Deployment* (Status: planned) — 0/1 issues completed
-• *Tools* (Status: in_progress) — 72/78 issues completed
+• *Tools* (Status: in_progress) — 74/80 issues completed
 • *LLM Cost Optimization* (Status: in_progress) — 0/6 issues completed
-• *Agents* (Status: in_progress) — 37/70 issues completed
+• *Agents* (Status: in_progress) — 40/72 issues completed
 • *Alphaedge Journal* (Status: in_progress) — 9/10 issues completed
 • *Chief-of-staff* (Status: completed) — 4/4 issues completed
 
 *2. Tasks Completed Today*
-• *ALP-616*: Market Intelligence Analysis - 2026-06-16
+• *ALP-630*: PKScreener Slack Webhook Migration
+  - *Executed by*: None
+  - *Project*: Tools
+  - *Key Output*:
+    No detail comment found.
+• *ALP-627*: Market Intelligence Analysis - 2026-06-17
   - *Executed by*: Deep Researcher Agent
   - *Project*: None
   - *Key Output*:
-    # Market Intelligence Research & Analysis — 2026-06-16
-    ### **1. 10-Factor Analysis (NIFTY & BANKNIFTY)**
-    * **NIFTY 50:** Closed at **23,853.90** (+231.00 pts, +0.98%) on June 15. The index opened with a strong gap-up, printing an intraday high of **24,011** before profit-taking led to a pullback and left an upper wick on the daily candle.
-    * **BANKNIFTY:** Closed at **57,162.85** (+384.00 pts, +0.63%). It faced intraday selling pressure near its daily high of **57,804**.
-    * **Resistance:** Hurdles at **23,973**, **24,000** (psychological), and **24,089**.
-    * **Support:** Supports at **23,800–23,818**, **23,779**, and **23,702**.
-    * **Resistance:** Resistance at **57,804** and **58,000**.
-    * **Support:** Strong demand zone at **56,800–57,000**.
+    # ⚡ ALPHAEDGE MARKET INTELLIGENCE REPORT — 2026-06-17
+    **Executive Summary:** Market momentum is positive with key indices showing technical strength and a decline in global risk parameters. Both NIFTY and BANKNIFTY have triggered **BUY** signals (5/10) as major macro metrics stabilize.
+    ---
+    ## I. Global Macro Indicators Snapshot
+    | Indicator | LTP / Value | Daily Change | Sentiment & Market Impact |
+    | :--- | :--- | :--- | :--- |
+    | **India VIX** | 13.36 | Down ~7.00% | **Calm/Stable** — Cooling volatility ahead of key events. |
+    | **Crude Oil (WTI)** | $75.71 | -6.24% | **Bullish for India** — Slide in Brent (<$83) / WTI reduces inflation risk. |
     ...
-• *ALP-615*: Real-time Crypto Prices - 2026-06-16
+• *ALP-626*: Real-time Crypto Prices - 2026-06-17
   - *Executed by*: crypto-realtime-price
   - *Project*: None
   - *Key Output*:
-    | Asset | Price (USD) | 24h Change (%) |
-    |---|---|---|
-    | **BTC** | $66,252.51 | +1.17% |
-    | **ETH** | $1,790.58 | +4.37% |
-    | **SOL** | $74.10 | +4.61% |
-• *ALP-614*: Daily News Crawl - 2026-06-16
+    | Asset | Symbol | Price (USD) | 24h Change |
+    | :--- | :--- | :--- | :--- |
+    | **Bitcoin** | BTC | $65,627.04 | -0.92% |
+    | **Ethereum** | ETH | $1,784.34 | -0.37% |
+    | **Solana** | SOL | $73.39 | -0.98% |
+    *Data retrieved from PRISM API on 2026-06-17.*
+• *ALP-625*: Daily News Crawl - 2026-06-17
   - *Executed by*: daily-news-crawl
   - *Project*: None
   - *Key Output*:
-    # Daily News Briefing: Global Developments
-    **Date:** June 16, 2026
-    **Audience:** Founders, Investors, and Operators
-    **Scope:** Geopolitics, Global Macro, Technology, and Infrastructure
+    # ALPHAEDGE DAILY BRIEFING
+    **Date:** June 17, 2026
+    **Audience:** AlphaEdge LLP Investment Team & High-Frequency Decision-Makers
+    **Scope:** Global Geopolitics, Macroeconomics, Tech Infrastructure, and Digital Assets
+    **Tone:** Authoritative, Data-Centric, and Action-Oriented
     ---
-    ## Executive Summary
-    - **G7 Summit & Diplomatic Moves:** G7 leaders gather in France as a tentative U.S.-Iran MoU to keep the Strait of Hormuz open is announced, though regional tensions and strikes in Lebanon remain high.
-    - **UK Tech Regulation:** The UK PM announces plans to ban social media for children under 16, signaling an escalation in global tech safety laws.
+    ### **Executive Summary**
+    *   **Geopolitics & Trade**: A preliminary US-Iran ceasefire MOU has been announced at the G7 Summit in Évian-les-Bains, promising to reopen the critical Strait of Hormuz shipping lane. However, resistance from Israel and unresolved nuclear talks keep regional risks elevated.
     ...
+• *ALP-623*: Generate Daily Market Overview Report
+  - *Executed by*: CMC Agent
+  - *Project*: Agents
+  - *Key Output*:
+    **TL;DR**
+    - Sentiment Fear & Greed index is at an unusually low 24.00, showing extreme fear.
+    - Bitcoin fund flows turned negative at -$64.80M, reversing recent positive trend.
+    - USD/JPY currency proxy is at a high 160.24, squeezing global cash.
+    - Reopening a key Middle East shipping strait has lowered oil prices to ease inflation pressure.
+    - AI data center project announcements supported tech investment sentiment.
+    - High rates and dollar strength continue to pull cash out of crypto markets.
+    **Details**
+    ...
+• *ALP-608*: Generate Daily Market Overview & Send to Telegram
+  - *Executed by*: CMC Agent
+  - *Project*: Agents
+  - *Key Output*:
+    I will wait for the repository checkout task to finish.
+I will wait for the skill execution task to complete.
+Error: timed out waiting for response
+• *ALP-564*: Generate and Send Daily Market Overview Report
+  - *Executed by*: CMC Agent
+  - *Project*: Agents
+  - *Key Output*:
+    I will now wait for the repository checkout task to complete.
+I will wait for the execution of the test script to complete.
+I will wait for the execution to finish.
+I will wait for the task to finish.
+Error: timed out waiting for response
 
 *3. New Tasks Logged Today (Backlog)*
 • _No new backlog tasks created today._
 
 *4. Value-Add Workspace Insights*
-• *Active In-Review Tasks* (41):
+• *Active In-Review Tasks* (47):
   • *ALP-589*: Market Intelligence Report (Assignee: Deep Researcher Agent)
   • *ALP-577*: COS-Daily: Market Intel & Macros Research (Assignee: Deep Researcher Agent)
   • *ALP-568*: Market Intel: NIFTY/BANKNIFTY Analysis (Assignee: Deep Researcher Agent)
   • *ALP-588*: Crypto Realtime Price (Assignee: crypto-realtime-price)
   • *ALP-576*: COS-Daily: Crypto Realtime Price Retrieval (Assignee: crypto-realtime-price)
   • *ALP-567*: Crypto Realtime Price Task (Assignee: crypto-realtime-price)
+  • *ALP-632*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
+  • *ALP-631*: CMC Daily Market Overview Report & Slack Delivery (Assignee: CMC Agent)
+  • *ALP-629*: Curate AI Events and report to Slack (Assignee: Python-Agent)
+  • *ALP-628*: Run AI Agents Search & Send Slack Report (Assignee: Python-Agent)
+  • *ALP-624*: Orchestrate Daily Crypto and Macro Market Intelligence Report (Assignee: chief-of-staff)
+  • *ALP-621*: EOD Report to Management - Generating and Sending Report via Slack (Assignee: chief-of-staff)
   • *ALP-620*: Research & compile 4BHK Ready-to-Move Villa listings — East Bangalore / Sarjapura Road (Assignee: Real-Estate-Agent)
   • *ALP-619*: Generate Daily Market Overview and Send to Telegram (Assignee: CMC Agent)
   • *ALP-618*: Report Curated AI Events to Slack (Assignee: Python-Agent)
@@ -89,15 +130,13 @@
   • *ALP-556*: Daily Market Overview Report to Telegram (Assignee: CMC Agent)
   • *ALP-555*: Generate and Send EOD Report to Management - June 10, 2026 (Assignee: chief-of-staff)
   • *ALP-554*: Execute daily_market_overview CMC skill and report to Telegram (Assignee: CMC Agent)
-• *Active In-Progress Tasks* (9):
+• *Active In-Progress Tasks* (7):
   • *ALP-580*: Knowledge-Sync (Assignee: knowledge-agent)
   • *ALP-571*: Knowledge-Sync (Assignee: knowledge-agent)
   • *ALP-561*: Knowledge-Sync: Fix Crypto Intel Reporter & Update Stale Dashboard Unit Tests (Assignee: knowledge-agent)
-  • *ALP-621*: EOD Report to Management - Generating and Sending Report via Slack (Assignee: chief-of-staff)
+  • *ALP-633*: Generating and Sending EOD Report to Management (Assignee: chief-of-staff)
   • *ALP-613*: COS Daily Update Orchestration (Assignee: chief-of-staff)
-  • *ALP-608*: Generate Daily Market Overview & Send to Telegram (Assignee: CMC Agent)
   • *ALP-592*: COS-Daily-Update: News, Crypto, and NIFTY/BANKNIFTY Analysis [Completed] (Assignee: chief-of-staff)
-  • *ALP-564*: Generate and Send Daily Market Overview Report (Assignee: CMC Agent)
   • *ALP-203*: Month 1: Data Infrastructure & Connectivity (Assignee: CTO)
 • *Agent Operations Status*:
   - *Active Working*: chief-of-staff
