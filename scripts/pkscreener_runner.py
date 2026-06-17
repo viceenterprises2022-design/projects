@@ -25,8 +25,7 @@ VENV_PYTHON = "/home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python"
 PKS_DIR = "/home/vreddy1/Desktop/Projects/pkscreener"
 PKS_SCRIPT = os.path.join(PKS_DIR, "pkscreener", "pkscreenercli.py")
 LOG_DIR = Path("/home/vreddy1/Desktop/Projects/scripts/pkscreener_output")
-TOKEN = "8770565112:AAGy9q-BMWsgvU4RQUQDyeNXa282Vme9uG4"
-CHAT_ID = "7246234100"
+SLACK_WEBHOOK_PKSCREENER = os.getenv("SLACK_WEBHOOK_PKSCREENER", "https://hooks.slack.com/services/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")
 TIMEOUT_SEC = 300  # per scan
 PICKLE_PATH = os.path.join(PKS_DIR, "results", "Data", "last_screened_results.pkl")
 
@@ -58,21 +57,19 @@ def strip_markup(text: str) -> str:
     return "\n".join(lines)
 
 
-def send_telegram(text: str, parse_mode: str = "HTML") -> bool:
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    # Chunk into ≤4000 char messages
-    chunks = [text[i:i+4000] for i in range(0, len(text), 4000)]
-    ok = True
-    for chunk in chunks:
-        try:
-            r = requests.post(url, json={"chat_id": CHAT_ID, "text": chunk,
-                                         "parse_mode": parse_mode}, timeout=15)
-            if not r.json().get("ok"):
-                ok = False
-        except Exception as e:
-            print(f"[Telegram] Error: {e}")
-            ok = False
-    return ok
+def send_slack(text: str) -> bool:
+    if not SLACK_WEBHOOK_PKSCREENER:
+        print("[Slack] Error: No webhook URL configured")
+        return False
+    mrkdwn = text
+    mrkdwn = mrkdwn.replace("<b>", "*").replace("</b>", "*")
+    mrkdwn = mrkdwn.replace("<pre>", "```\n").replace("</pre>", "\n```")
+    try:
+        r = requests.post(SLACK_WEBHOOK_PKSCREENER, json={"text": mrkdwn}, timeout=15)
+        return r.status_code == 200
+    except Exception as e:
+        print(f"[Slack] Error: {e}")
+        return False
 
 
 def run_scan(label: str, options: str, log_file: Path) -> str:
@@ -286,7 +283,7 @@ def main():
     print(f"[PKScreener Runner] {date_str} {time_str} — starting {len(SCANS)} scans")
 
     header = f"<b>PKScreener NSE Scan — {date_str} {time_str} IST</b>\n"
-    send_telegram(header)
+    send_slack(header)
 
     total_hits = 0
 
@@ -320,10 +317,10 @@ def main():
             msg = f"<b>{label}</b> [{options}] — no results"
 
         print(f"    → {len(stocks)} stocks")
-        send_telegram(msg)
+        send_slack(msg)
 
     footer = f"\n<b>Done.</b> {total_hits} total hits across {len(SCANS)} scans."
-    send_telegram(footer)
+    send_slack(footer)
     print(f"[PKScreener Runner] complete — {total_hits} total hits")
 
 

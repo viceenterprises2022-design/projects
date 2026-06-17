@@ -2,6 +2,11 @@
 
 Dated history of work on this project. Source of truth: `AGENTS.md` Session Memory section.
 
+### 2026-06-17: PKScreener Slack Webhook Migration
+- `.env` — Added `SLACK_WEBHOOK_PKSCREENER` with user's Slack webhook.
+- `pkscreener_runner.py` — Replaced Telegram configurations (`TOKEN`, `CHAT_ID`) and `send_telegram()` helper with `send_slack()` which routes alerts through `SLACK_WEBHOOK_PKSCREENER` environment variable, converting HTML-style tags (`<b>`, `<pre>`) to Slack mrkdwn (`*`, ```` ``` `). Verified syntax and executed a test Slack alert.
+- **Multica:** ALP-499 (done, assigned Vinod-AI-CEO)
+
 ### 2026-05-23: YouTube & Telegram → NotebookLM Pipelines
 - `youtube_to_notebooklm.py` — maintained YouTube channel monitor pipeline. Tracks 4 channels, ingests to NotebookLM, delivers Block Kit reports to Slack. CLI channel management (`--add-channel`, `--remove-channel`, `--list-channels`). Notebook safety (regex-gated delete on successful Slack delivery).
 - `telegram_to_notebooklm.py` — maintained Telegram PDF ingestion pipeline. Fetches PDFs from `@btsreports`, uploads to dated NotebookLM notebook, generates briefing-doc + mind-map. Runs daily at 4PM IST.
