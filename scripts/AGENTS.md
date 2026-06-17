@@ -100,9 +100,9 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 
 ### 2026-06-17: Crypto Daily Brief Slack Webhook Migration
 - `crypto_to_notebooklm.py` — Rewrote the notification and delivery pipeline to migrate from Telegram to Slack. Implemented `step_send_slack()` and `slack_upload_file()` using Slack Block Kit Webhooks and the file upload API (`files.getUploadURLExternal` + `files.completeUploadExternal`), passing required parameter structure. Added CLI option `--slack`.
-- `.env` — Added `SLACK_WEBHOOK_CRYPTO` containing user's Slack webhook and set `SLACK_CHANNEL_CRYPTO` to `#ai-notebooklm-summary`.
+- `.env` — Added `SLACK_WEBHOOK_CRYPTO` containing user's Slack webhook and set `SLACK_CHANNEL_CRYPTO` to `C0BANKSRUBH` (channel ID).
 - `crontab` — Updated the daily 8:00 AM IST cron job for `crypto_to_notebooklm.py` to use the `--slack` flag instead of `--telegram`.
-- Verified and successfully tested end-to-end webhook delivery.
+- Verified and successfully tested end-to-end webhook delivery and file uploads.
 - **Multica:** ALP-510 (done, assigned Vinod-AI-CEO)
 
 ### 2026-06-17: PKScreener Slack Webhook Migration
