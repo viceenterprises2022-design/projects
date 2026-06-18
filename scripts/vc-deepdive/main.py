@@ -18,7 +18,7 @@ app = Agent(
     version="1.0.0",
     ai_config=AIConfig(
         # Default model recommended by doctor
-        model=os.getenv("AI_MODEL", "google/gemini-1.5-pro"),
+        model=os.getenv("AI_MODEL", "google/gemini-2.5-flash"),
     ),
     dev_mode=True,
 )
