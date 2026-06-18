@@ -1,52 +1,52 @@
 [
   {
-    "title": "Google and Kaggle Launch Free AI Agents Vibe Coding Course \u2014 Registration Now Open | The Agent Report",
+    "title": "Google and Kaggle Launch Free AI Agents Vibe Coding Course — Registration Now Open | The Agent Report",
     "url": "https://the-agent-report.com/2026/06/google-kaggle-free-ai-agents-vibe-coding-course-june-2026/",
     "highlights": [
-      "June 1, 2026 \u2014 Google and Kaggle have opened registration for the second edition of their free AI Agents Intensive course, running June 15\u201319, 2026. The updated curriculum introduces vibe coding \u2014 building AI agents using natural language as the primary programming interface \u2014 alongside new content on production deployment and a hands-on capstone project.\n[...]\nThe first edition in November 2025 drew over 1.5 million learners, making it one of the most popular AI courses ever offered. This year\u2019s version adds updated content, new speakers, and deeper coverage of agent quality, security, and deployment.\n[...]\nEach day includes whitepapers, companion podcasts, hands-on code labs, and a daily livestream on Kaggle\u2019s YouTube channel with course authors and Google engineers. Participants also get access to dedicated channels on Kaggle\u2019s Discord for discussion and Q&A.\n[...]\nThe capstone project opens at the end of Day 5 (June 19) with a submission deadline of June 30. Participants must build a working AI agent and submit a Kaggle writeup, video explanation, design rationale, and code link. Top submissions receive Kaggle swag and recognition across Kaggle and Google social channels. All participants who complete the capstone earn a badge and certificate on their Kaggle profile.\n[...]\n## How to Register\n[...]\nRegistration is free and open now at the Kaggle course overview page. Requirements:\n[...]\n- A Kaggle account (free, with phone verification)\n- A Google AI Studio account (free)\n- No programming experience necessary\n[...]\nAll livestreams and recordings are available to registrants, and the course is developed directly by Google researchers and engineers."
+      "Google and Kaggle have opened registration for the second edition of their free AI Agents Intensive course, running June 15–19, 2026. The updated curriculum introduces vibe coding — building AI agents using natural language as the primary programming interface — alongside new content on production deployment and a hands-on capstone project.\nThe first edition in November 2025 drew over 1.5 million learners, making it one of the most popular AI courses ever offered. This year’s version adds updated content, new speakers, and deeper coverage of agent quality, security, and deployment.\nEach day includes whitepapers, companion podcasts, hands-on code labs, and a daily livestream on Kaggle’s YouTube channel with course authors and Google engineers. Participants also get access to dedicated channels on Kaggle’s Discord for discussion and Q&A."
     ],
     "score": null,
     "published_date": "2026-06-01T08:00:00.000Z",
     "is_online": true
   },
   {
-    "title": "Anthropic Academy: Free Claude Courses, MCP & Claude Code [2026] | MeshWorld",
-    "url": "https://meshworld.in/blog/reference/learning/anthropic-academy/",
+    "title": "Agentic AI systems: from scruffy to neat | MIT CSAIL",
+    "url": "https://www.csail.mit.edu/event/agentic-ai-systems-scruffy-neat",
     "highlights": [
-      "Anthropic Academy\n[...]\nMCP & Claude Code\n[...]\n26] | MeshWorld\n[...]\nAnthropic\u2019s developer ecosystem has grown rapidly, driven by open-standard protocols and CLI-based agent environments. To help users navigate these systems, Anthropic hosts its official training paths on the Anthropic Academy (powered by Skilljar), alongside advanced developer modules built in partnership with DeepLearning.AI. This guide details every free course, certification path, and developer training resource available to help you master Claude.\n[...]\n## What Free Anthropic Academy Courses Can You Take?\n[...]\nThe official Anthropic Academy is a self-paced learning portal. It provides training paths spanning general usage, cloud integrations, and core developer tools like the Model Context Protocol (MCP) and Claude Code. You can access the main portal at anthropic.skilljar.com.\n[...]\n## What Are the DeepLearning.AI Anthropic Developer Courses?\n[...]\nDeepLearning.AI partners directly with Anthropic to provide technical short courses. These courses are free to audit and provide interactive code sandboxes to learn agentic workflows.\n[...]\n### 22.\n[...]\n### 24. MCP: Build\n[...]\nAI Apps with\n[...]\n## Summary: Which Claude Course Path is Right for You?\n[...]\n- For general users: Start with Claude 101 and Introduction to Claude Cowork on the Anthropic Academy portal.\n- For software developers: Take the Claude Code 101 and Introduction to Model Context Protocol (MCP) courses.\n- For advanced AI engineering: Audit the DeepLearning.AI courses, specifically MCP: Build Rich-Context AI Apps and Building toward Computer Use.\n[...]\n### Is the Anthropic Academy completely free?\n[...]\nYes. The courses hosted on the Anthropic Academy portal are free to access, requiring only a basic user registration.\n[...]\nLearning.AI developer short courses can\n[...]\nfor free, which\n[...]\ncoding sandboxes\n[...]\nCheatsheet 5 min read Complete Claude reference \u2014 Anthropic API, model IDs, Messages API params, Claude Code CLI commands, MCP setup, tool use, prompt caching, and Batch API. Vishnu Dec 24, 2025\n[...]\n: Claude Designs, Google Teaches, Meta\n[...]\n23, 20\n[...]\n. Jena Apr 23, 2"
+      "Agentic AI systems: from scruffy to neat\nGoogle Deepmind\nMIT CSAIL\n11:00A - 12:00P\nContact lpk@csail.mit.edu for Zoom password\nIn this talk I will outline various ways to build LLM-powered agents which use increasing degrees of formal reasoning, ranging from maximally \"scruffy\" or informal language-based methods up to maximally \"neat\" symbolic / probabilistic model-based methods.\nLevel 1 is a simple reactive agent, Level 2 uses \"chain of thought\" (and optional tool use), Level 3 uses the LLM to learn a policy in the form of code (AutoHarness), and Level 4 uses the LLM to learn an explicit world model and performs model-based planning and inference (Code World Models)."
     ],
     "score": null,
-    "published_date": "2026-06-03T00:00:00.000Z",
+    "published_date": "2026-06-07T11:45:45.000Z",
     "is_online": true
   },
   {
-    "title": "Build Agentic Apps Using Claude Code & Bootcamp Info Session",
-    "url": "https://maven.com/p/6c6a87/build-agentic-apps-using-claude-code-bootcamp-info-session",
+    "title": "Voice for AI Agents and Applications - DeepLearning.AI",
+    "url": "https://www.deeplearning.ai/courses/voice-for-ai-agents-and-applications",
     "highlights": [
-      "Build Agentic Apps Using Claude Code & Bootcamp Info Session\n[...]\n## Build Agentic Apps Using Claude Code & Bootcamp Info Session\n[...]\nFri, Sep 18, 2026\n[...]\n4:00 PM UTC (1 hour 30 minutes)\n[...]\nVirtual (Zoom)\n[...]\nFree to join\n[...]\nSign up to join this lesson\n[...]\nGo deeper with a course\n[...]\nAgentic Buildcamp - A Cognitive Gym for Building AI Agents \u2014 using AI Agents\n[...]\nFri, Sep 18, 2026\n[...]\n4:00 PM UTC (1 hour 30 minutes)\n[...]\nVirtual (Zoom)\n[...]\nFree to join\n[...]\nGo deeper with a course\n[...]\nAgentic Buildcamp - A Cognitive Gym for Building AI Agents \u2014 using AI Agents\n[...]\nWhat you'll learn\n[...]\nAssess if agentic approach is appropriate for your use case.\n[...]\nDesign agentic workflow for your use case.\n[...]\nImplement your agentic workflow using Claude\n[...]\nLeave with some workflow files you can immediately use\n[...]\nLearn more about our 7-week program to help you build\n[...]\nWhy this topic matters\n[...]\nUnderstanding LLM agentic systems is crucial for founders, engineers, PMs, and ML devs to build adaptive AI-driven products. These systems enable automation, personalization, and dynamic decision-making. Founders gain a competitive edge, engineers design scalable AI apps, PMs manage realistic roadmaps, and ML devs optimize behavior. Mastery ensures innovation, while ignorance risks falling behind.\n[...]\nYou'll learn from\n[...]\nSign up to join this lesson\n[...]\nSign up for free"
+      "Voice for AI Agents and Applications - DeepLearning.AI\nCourse Beginner 1h26m\nThis course covers three practical integration patterns that meet you where you are: voice embedded in an application, voice layered onto an existing agent without touching its logic, and voice as a tool your LLM can call when it decides a conversation is the right modality."
     ],
     "score": null,
-    "published_date": "2026-06-05T10:05:49.000Z",
-    "is_online": true
-  },
-  {
-    "title": "Advanced RAG with Vector Databases and Retrievers | Coursera",
-    "url": "https://www.coursera.org/learn/advanced-rag-with-vector-databases-and-retrievers",
-    "highlights": [
-      "Advanced RAG with Vector Databases and Retrievers | Coursera\n[...]\nAdvanced RAG with Vector Databases and Retrievers\n[...]\nAdvanced RAG with Vector Databases and Retrievers\n[...]\nEnroll for free\n[...]\nStarts Jun 14\n[...]\nReady to boost your AI career by mastering next-level retrieval techniques for intelligent search and summarization? This hands-on course takes you deep into the world of Retrieval-Augmented Generation (RAG), advanced retrievers, and vector databases such as FAISS and Chroma DB. You'll gain the cutting-edge skills businesses need to design and build scalable, high-performance RAG applications that drive smarter search and response capabilities.\n[...]\nIn this module, you will get a deep dive into advanced retrievers and retrieval patterns, equipping you with the skills to\n[...]\nand optimize advanced retrieval strategies within a RAG system. Participants\n[...]\nand hands-\n[...]\nlabs, including vector store-backed, multi-query, self-querying, and parent document retrievers. Learners\n[...]\napply these techniques\n[...]\nLlamaIndex, gaining practical\n[...]\nin building smarter search capabilities and enhancing retrieval efficiency in AI-driven applications.\n[...]\nIn this module, you will explore FAISS, a powerful vector database used for efficient similarity search. You will compare FAISS with Chroma DB to understand its unique advantages and applications. Through hands-on experience, you will build a semantic search engine using FAISS in a non-RAG setting, demonstrating its versatility beyond retrieval-augmented generation (RAG). Finally, you will develop a fully functional RAG application, integrating FAISS, an advanced retriever, and a front-end UI built with Gradio. This module reinforces key RAG concepts while guiding learners through the process of creating an end-to-end AI-powered application.\n[...]\nBy mastering advanced RAG techniques and vector databases such as FAISS and Chroma DB, and learning to integrate with LangChain and Gradio, you'll be well-prepared for roles such as AI Developer, Data Engineer, AI Application Architect, Search Algorithm Engineer, or Technical Product Manager. These roles involve developing intelligent, efficient search systems, optimizing retrieval methods, and designing AI-driven applications that utilize advanced retrieval techniques.\n[...]\ndriven AI applications\n[...]\ncourse dives deep\n[...]\nRetrieval-Augmented Generation (RAG) and advanced\n[...]\nas similarity search, vector databases, and AI\n[...]\naware search experiences.\n[...]\nperfect for developers looking to\n[...]\nmodern technologies for AI\n[...]\nenhanced search systems.\n[...]\nEnroll for free\n[...]\nStarts Jun 14"
-    ],
-    "score": null,
-    "published_date": "2026-06-02T00:00:00.000Z",
+    "published_date": "2026-06-17T09:13:37.000Z",
     "is_online": true
   },
   {
     "title": "Fast & Efficient LLM Inference with vLLM - DeepLearning.AI",
     "url": "https://www.deeplearning.ai/courses/fast-and-efficient-llm-inference-with-vllm",
     "highlights": [
-      "# Fast & Efficient LLM Inference with vLLM - DeepLearning.AI\n[...]\nFast & Efficient LLM Inference with vLLM - DeepLearning.AI\n[...]\n# Fast & Efficient LLM Inference with vLLM\n[...]\nIntroducing Fast & Efficient LLM Inference with vLLM, a short course built in partnership with Red Hat and taught by Cedric Clyburn, Senior Developer Advocate at Red Hat.\n[...]\n## Who should join?\n[...]\nML engineers, platform engineers, and developers who need to deploy open-source LLMs efficiently. Familiarity with Python and basic LLM concepts (tokens, inference, GPU usage) is recommended.\n[...]\n## Course Outline\n[...]\n- IntroductionVideo\u30fb3m\n- Why Efficient LLM Deployment MattersVideo\u30fb6m\n- Inference & Memory FundamentalsVideo\u30fb14m\n- LLM Optimization FundamentalsVideo\u30fb14m\n- Optimizing a Model with LLM CompressorVideo with Code Example\u30fb11m\n- Serving LLMs Efficiently with vLLM - Part IVideo\u30fb10m\n- Serving LLMs Efficiently with vLLM \u2013 Part IIVideo with Code Example\u30fb7m\n[...]\n- Measuring What Matters: Benchmarking and EvaluationVideo with Code Example\u30fb15m\n- Conclusion: Putting it All TogetherVideo\u30fb4m\n- QuizGraded\u30fbQuiz\u30fb10m\n[...]\n## Fast & Efficient LLM Inference with vLLM\n[...]\nAdditional learning features, such as quizzes and projects, are included with DeepLearning.AI Pro. Explore it today\n[...]\n## Want to learn more about AI?\n[...]\nKeep learning with updates on curated AI news, courses, and events, as well as Andrew Ng\u2019s thoughts from DeepLearning.AI!"
+      "Fast & Efficient LLM Inference with vLLM - DeepLearning.AI\nIntroducing Fast & Efficient LLM Inference with vLLM, a short course built in partnership with Red Hat.\nLearn serving LLMs efficiently with vLLM, optimization fundamentals, and measuring benchmarks and evaluations."
     ],
     "score": null,
     "published_date": "2026-06-09T16:35:02.000Z",
+    "is_online": true
+  },
+  {
+    "title": "RAG and Context Engineering program | MIT xPRO",
+    "url": "https://mit-xpro-education.emeritus.com/rag-and-context-engineering",
+    "highlights": [
+      "RAG and Context Engineering program | MIT xPRO\nAn eight-week learning journey that equips technical professionals to design, evaluate, and deploy retrieval-aware large language model (LLM) systems that perform reliably in real-world environments.\nCovers advanced retrieval, context engineering, RAG architectures, evaluation, cost, security, and agentic workflows."
+    ],
+    "score": null,
+    "published_date": "2026-06-11T12:57:35.000Z",
     "is_online": true
   }
 ]
