@@ -43780,8 +43780,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/main.py": {
-    "mtime": 1781762123.4530642,
-    "ast_hash": "d565e88783ef9ec3fa0552e55cb21214",
+    "mtime": 1781764377.0473392,
+    "ast_hash": "73ab82b8dc03d9038940c459b9281eb9",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/reasoners.py": {
@@ -43832,6 +43832,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/CLAUDE.md": {
     "mtime": 1781762781.02169,
     "ast_hash": "e2594deb490fc5f0c0a884756bd2199f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/scratch/run_live_deepdive.py": {
+    "mtime": 1781764374.3793733,
+    "ast_hash": "9e1f9040efb7e2aca24cf8df136b9b13",
     "semantic_hash": ""
   }
 }
