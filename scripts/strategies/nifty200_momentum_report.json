@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-06-17T21:30:01.541728+00:00",
+  "updated_at": "2026-06-18T07:30:01.503133+00:00",
   "total_scanned": 200,
   "bullish": [
     {
       "symbol": "CGPOWER",
       "name": "CG Power and Industrial Solutions Ltd.",
-      "ltp": 963.75,
+      "ltp": 952.2,
       "open": 941.0,
       "high": 965.6,
       "low": 937.0,
@@ -25,7 +25,7 @@
     {
       "symbol": "FEDERALBNK",
       "name": "Federal Bank Ltd.",
-      "ltp": 322.7,
+      "ltp": 320.55,
       "open": 320.65,
       "high": 323.6,
       "low": 319.3,
@@ -45,7 +45,7 @@
     {
       "symbol": "BHARATFORG",
       "name": "Bharat Forge Ltd.",
-      "ltp": 2034.5,
+      "ltp": 2016.3,
       "open": 2022.0,
       "high": 2039.0,
       "low": 2001.1,
@@ -65,7 +65,7 @@
     {
       "symbol": "KEI",
       "name": "KEI Industries Ltd.",
-      "ltp": 5643.5,
+      "ltp": 5606.5,
       "open": 5430.0,
       "high": 5673.0,
       "low": 5410.5,
@@ -85,7 +85,7 @@
     {
       "symbol": "PIDILITIND",
       "name": "Pidilite Industries Ltd.",
-      "ltp": 1578.2,
+      "ltp": 1570.1,
       "open": 1575.1,
       "high": 1584.5,
       "low": 1567.6,
@@ -105,7 +105,7 @@
     {
       "symbol": "POLYCAB",
       "name": "Polycab India Ltd.",
-      "ltp": 9926.5,
+      "ltp": 9962.5,
       "open": 9600.0,
       "high": 9987.5,
       "low": 9600.0,
@@ -125,7 +125,7 @@
     {
       "symbol": "ABCAPITAL",
       "name": "Aditya Birla Capital Ltd.",
-      "ltp": 372.45,
+      "ltp": 370.8,
       "open": 374.8,
       "high": 375.65,
       "low": 370.4,
@@ -145,7 +145,7 @@
     {
       "symbol": "GMRAIRPORT",
       "name": "GMR Airports Ltd.",
-      "ltp": 109.32,
+      "ltp": 109.28,
       "open": 107.96,
       "high": 109.56,
       "low": 107.17,
@@ -165,7 +165,7 @@
     {
       "symbol": "GVT&D",
       "name": "GE Vernova T&D India Ltd.",
-      "ltp": 5152.5,
+      "ltp": 5195.5,
       "open": 4900.0,
       "high": 5176.0,
       "low": 4898.5,
@@ -185,12 +185,12 @@
     {
       "symbol": "YESBANK",
       "name": "Yes Bank Ltd.",
-      "ltp": 25.11,
+      "ltp": 25.46,
       "open": 23.9,
       "high": 25.46,
       "low": 23.9,
       "close": 25.11,
-      "volume": 394351579,
+      "volume": 394351584,
       "high_52w": 25.46,
       "low_52w": 17.2,
       "pct_from_52wh": -1.37,
@@ -205,7 +205,7 @@
     {
       "symbol": "GRASIM",
       "name": "Grasim Industries Ltd.",
-      "ltp": 3150.4,
+      "ltp": 3127.4,
       "open": 3150.0,
       "high": 3200.0,
       "low": 3115.9,
@@ -225,7 +225,7 @@
     {
       "symbol": "ADANIPORTS",
       "name": "Adani Ports and Special Economic Zone Ltd.",
-      "ltp": 1828.6,
+      "ltp": 1837.8,
       "open": 1824.0,
       "high": 1833.0,
       "low": 1806.3,
@@ -245,7 +245,7 @@
     {
       "symbol": "NYKAA",
       "name": "FSN E-Commerce Ventures Ltd.",
-      "ltp": 280.95,
+      "ltp": 300.35,
       "open": 273.65,
       "high": 282.35,
       "low": 273.15,
@@ -268,7 +268,7 @@
     {
       "symbol": "FEDERALBNK",
       "name": "Federal Bank Ltd.",
-      "ltp": 322.7,
+      "ltp": 320.55,
       "open": 320.65,
       "high": 323.6,
       "low": 319.3,
@@ -288,7 +288,7 @@
     {
       "symbol": "CHOLAFIN",
       "name": "Cholamandalam Investment and Finance Company Ltd.",
-      "ltp": 1679.2,
+      "ltp": 1681.6,
       "open": 1680.4,
       "high": 1690.9,
       "low": 1672.6,
@@ -308,7 +308,7 @@
     {
       "symbol": "DLF",
       "name": "DLF Ltd.",
-      "ltp": 623.55,
+      "ltp": 637.0,
       "open": 633.05,
       "high": 633.75,
       "low": 618.2,
@@ -328,7 +328,7 @@
     {
       "symbol": "DIXON",
       "name": "Dixon Technologies (India) Ltd.",
-      "ltp": 12833.0,
+      "ltp": 12710.0,
       "open": 12325.0,
       "high": 12888.0,
       "low": 12325.0,
@@ -348,7 +348,7 @@
     {
       "symbol": "MOTILALOFS",
       "name": "Motilal Oswal Financial Services Ltd.",
-      "ltp": 942.85,
+      "ltp": 949.5,
       "open": 946.55,
       "high": 960.0,
       "low": 940.0,
@@ -368,7 +368,7 @@
     {
       "symbol": "PHOENIXLTD",
       "name": "Phoenix Mills Ltd.",
-      "ltp": 1869.1,
+      "ltp": 1852.9,
       "open": 1875.4,
       "high": 1906.6,
       "low": 1862.0,
@@ -388,7 +388,7 @@
     {
       "symbol": "SHRIRAMFIN",
       "name": "Shriram Finance Ltd.",
-      "ltp": 1007.5,
+      "ltp": 1002.5,
       "open": 1005.0,
       "high": 1015.75,
       "low": 1001.95,
@@ -408,7 +408,7 @@
     {
       "symbol": "TITAN",
       "name": "Titan Company Ltd.",
-      "ltp": 4380.5,
+      "ltp": 4350.0,
       "open": 4338.0,
       "high": 4395.0,
       "low": 4327.5,
@@ -428,12 +428,12 @@
     {
       "symbol": "YESBANK",
       "name": "Yes Bank Ltd.",
-      "ltp": 25.11,
+      "ltp": 25.46,
       "open": 23.9,
       "high": 25.46,
       "low": 23.9,
       "close": 25.11,
-      "volume": 394351579,
+      "volume": 394351584,
       "high_52w": 25.46,
       "low_52w": 17.2,
       "pct_from_52wh": -1.37,
@@ -450,7 +450,7 @@
     {
       "symbol": "360ONE",
       "name": "360 ONE WAM Ltd.",
-      "ltp": 1136.9,
+      "ltp": 1145.1,
       "open": 1160.0,
       "high": 1160.0,
       "low": 1127.0,
@@ -470,7 +470,7 @@
     {
       "symbol": "ABB",
       "name": "ABB India Ltd.",
-      "ltp": 7164.0,
+      "ltp": 7182.0,
       "open": 7021.0,
       "high": 7187.5,
       "low": 6980.0,
@@ -490,7 +490,7 @@
     {
       "symbol": "APLAPOLLO",
       "name": "APL Apollo Tubes Ltd.",
-      "ltp": 1854.6,
+      "ltp": 1854.2,
       "open": 1842.0,
       "high": 1871.8,
       "low": 1825.4,
@@ -510,7 +510,7 @@
     {
       "symbol": "AUBANK",
       "name": "AU Small Finance Bank Ltd.",
-      "ltp": 1020.85,
+      "ltp": 1026.9,
       "open": 1029.5,
       "high": 1029.5,
       "low": 1013.0,
@@ -530,7 +530,7 @@
     {
       "symbol": "ADANIENSOL",
       "name": "Adani Energy Solutions Ltd.",
-      "ltp": 1491.0,
+      "ltp": 1515.1,
       "open": 1494.7,
       "high": 1496.3,
       "low": 1470.0,
@@ -550,7 +550,7 @@
     {
       "symbol": "ADANIENT",
       "name": "Adani Enterprises Ltd.",
-      "ltp": 2951.9,
+      "ltp": 2958.6,
       "open": 2958.0,
       "high": 2974.5,
       "low": 2934.6,
@@ -570,7 +570,7 @@
     {
       "symbol": "ADANIGREEN",
       "name": "Adani Green Energy Ltd.",
-      "ltp": 1465.8,
+      "ltp": 1483.2,
       "open": 1489.7,
       "high": 1489.7,
       "low": 1456.3,
@@ -590,7 +590,7 @@
     {
       "symbol": "ADANIPORTS",
       "name": "Adani Ports and Special Economic Zone Ltd.",
-      "ltp": 1828.6,
+      "ltp": 1837.8,
       "open": 1824.0,
       "high": 1833.0,
       "low": 1806.3,
@@ -610,7 +610,7 @@
     {
       "symbol": "ADANIPOWER",
       "name": "Adani Power Ltd.",
-      "ltp": 220.4,
+      "ltp": 226.78,
       "open": 222.6,
       "high": 222.6,
       "low": 219.72,
@@ -630,7 +630,7 @@
     {
       "symbol": "ATGL",
       "name": "Adani Total Gas Ltd.",
-      "ltp": 702.65,
+      "ltp": 710.6,
       "open": 715.4,
       "high": 716.8,
       "low": 701.0,
@@ -650,7 +650,7 @@
     {
       "symbol": "ABCAPITAL",
       "name": "Aditya Birla Capital Ltd.",
-      "ltp": 372.45,
+      "ltp": 370.8,
       "open": 374.8,
       "high": 375.65,
       "low": 370.4,
@@ -670,21 +670,21 @@
     {
       "symbol": "ALKEM",
       "name": "Alkem Laboratories Ltd.",
-      "ltp": 5340.0,
+      "ltp": 5335.0,
       "open": 5347.5,
       "high": 5367.0,
       "low": 5332.5,
-      "close": 5340.0,
+      "close": 5347.5,
       "volume": 65106,
       "high_52w": 5933.5,
       "low_52w": 4716.2,
-      "pct_from_52wh": -10.0,
-      "pct_from_52wl": 13.23,
-      "rsi_14": 47.45,
-      "ema_20": 5354.46,
-      "ema_50": 5402.83,
-      "ema_100": 5437.87,
-      "ema_200": 5416.18,
+      "pct_from_52wh": -9.88,
+      "pct_from_52wl": 13.39,
+      "rsi_14": 48.04,
+      "ema_20": 5355.18,
+      "ema_50": 5403.12,
+      "ema_100": 5438.01,
+      "ema_200": 5416.25,
       "consecutive_high_days": 0
     },
     {
@@ -710,7 +710,7 @@
     {
       "symbol": "APOLLOHOSP",
       "name": "Apollo Hospitals Enterprise Ltd.",
-      "ltp": 8427.5,
+      "ltp": 8407.0,
       "open": 8390.5,
       "high": 8464.5,
       "low": 8385.0,
@@ -730,7 +730,7 @@
     {
       "symbol": "ASHOKLEY",
       "name": "Ashok Leyland Ltd.",
-      "ltp": 159.57,
+      "ltp": 157.8,
       "open": 159.9,
       "high": 160.25,
       "low": 158.07,
@@ -750,7 +750,7 @@
     {
       "symbol": "ASIANPAINT",
       "name": "Asian Paints Ltd.",
-      "ltp": 2738.0,
+      "ltp": 2743.2,
       "open": 2764.0,
       "high": 2768.9,
       "low": 2732.5,
@@ -770,7 +770,7 @@
     {
       "symbol": "ASTRAL",
       "name": "Astral Ltd.",
-      "ltp": 1565.2,
+      "ltp": 1570.4,
       "open": 1564.0,
       "high": 1575.0,
       "low": 1538.1,
@@ -790,7 +790,7 @@
     {
       "symbol": "AUROPHARMA",
       "name": "Aurobindo Pharma Ltd.",
-      "ltp": 1422.4,
+      "ltp": 1432.2,
       "open": 1400.0,
       "high": 1434.1,
       "low": 1400.0,
@@ -810,7 +810,7 @@
     {
       "symbol": "DMART",
       "name": "Avenue Supermarts Ltd.",
-      "ltp": 4287.5,
+      "ltp": 4345.7,
       "open": 4215.1,
       "high": 4307.0,
       "low": 4202.3,
@@ -830,7 +830,7 @@
     {
       "symbol": "AXISBANK",
       "name": "Axis Bank Ltd.",
-      "ltp": 1350.9,
+      "ltp": 1361.3,
       "open": 1364.1,
       "high": 1365.7,
       "low": 1349.3,
@@ -850,7 +850,7 @@
     {
       "symbol": "BSE",
       "name": "BSE Ltd.",
-      "ltp": 3999.2,
+      "ltp": 4024.0,
       "open": 4180.0,
       "high": 4219.9,
       "low": 3961.0,
@@ -870,7 +870,7 @@
     {
       "symbol": "BAJAJ-AUTO",
       "name": "Bajaj Auto Ltd.",
-      "ltp": 10042.0,
+      "ltp": 10032.0,
       "open": 9980.0,
       "high": 10074.0,
       "low": 9932.0,
@@ -890,7 +890,7 @@
     {
       "symbol": "BAJFINANCE",
       "name": "Bajaj Finance Ltd.",
-      "ltp": 958.4,
+      "ltp": 954.35,
       "open": 955.1,
       "high": 961.8,
       "low": 951.55,
@@ -910,7 +910,7 @@
     {
       "symbol": "BAJAJFINSV",
       "name": "Bajaj Finserv Ltd.",
-      "ltp": 1764.6,
+      "ltp": 1753.1,
       "open": 1792.0,
       "high": 1794.0,
       "low": 1751.6,
@@ -930,7 +930,7 @@
     {
       "symbol": "BAJAJHLDNG",
       "name": "Bajaj Holdings & Investment Ltd.",
-      "ltp": 10500.0,
+      "ltp": 10603.0,
       "open": 10500.0,
       "high": 10598.0,
       "low": 10414.0,
@@ -950,7 +950,7 @@
     {
       "symbol": "BANKBARODA",
       "name": "Bank of Baroda",
-      "ltp": 281.85,
+      "ltp": 283.0,
       "open": 277.0,
       "high": 282.4,
       "low": 274.0,
@@ -970,7 +970,7 @@
     {
       "symbol": "BANKINDIA",
       "name": "Bank of India",
-      "ltp": 147.14,
+      "ltp": 148.2,
       "open": 145.99,
       "high": 147.84,
       "low": 144.78,
@@ -990,7 +990,7 @@
     {
       "symbol": "BDL",
       "name": "Bharat Dynamics Ltd.",
-      "ltp": 1309.8,
+      "ltp": 1318.0,
       "open": 1236.5,
       "high": 1313.4,
       "low": 1232.1,
@@ -1010,7 +1010,7 @@
     {
       "symbol": "BEL",
       "name": "Bharat Electronics Ltd.",
-      "ltp": 419.85,
+      "ltp": 428.9,
       "open": 407.0,
       "high": 422.4,
       "low": 406.15,
@@ -1030,7 +1030,7 @@
     {
       "symbol": "BHARATFORG",
       "name": "Bharat Forge Ltd.",
-      "ltp": 2034.5,
+      "ltp": 2016.3,
       "open": 2022.0,
       "high": 2039.0,
       "low": 2001.1,
@@ -1050,7 +1050,7 @@
     {
       "symbol": "BHEL",
       "name": "Bharat Heavy Electricals Ltd.",
-      "ltp": 392.25,
+      "ltp": 404.65,
       "open": 384.2,
       "high": 394.05,
       "low": 381.9,
@@ -1070,7 +1070,7 @@
     {
       "symbol": "BPCL",
       "name": "Bharat Petroleum Corporation Ltd.",
-      "ltp": 317.95,
+      "ltp": 316.85,
       "open": 316.0,
       "high": 319.5,
       "low": 315.3,
@@ -1090,7 +1090,7 @@
     {
       "symbol": "BHARTIARTL",
       "name": "Bharti Airtel Ltd.",
-      "ltp": 1875.7,
+      "ltp": 1875.0,
       "open": 1853.0,
       "high": 1878.0,
       "low": 1841.5,
@@ -1110,7 +1110,7 @@
     {
       "symbol": "GROWW",
       "name": "Billionbrains Garage Ventures Ltd.",
-      "ltp": 198.97,
+      "ltp": 198.36,
       "open": 200.84,
       "high": 202.94,
       "low": 198.27,
@@ -1130,7 +1130,7 @@
     {
       "symbol": "BIOCON",
       "name": "Biocon Ltd.",
-      "ltp": 411.85,
+      "ltp": 412.65,
       "open": 416.45,
       "high": 417.7,
       "low": 406.75,
@@ -1150,7 +1150,7 @@
     {
       "symbol": "BLUESTARCO",
       "name": "Blue Star Ltd.",
-      "ltp": 1695.6,
+      "ltp": 1702.5,
       "open": 1634.0,
       "high": 1709.0,
       "low": 1632.1,
@@ -1170,47 +1170,47 @@
     {
       "symbol": "BOSCHLTD",
       "name": "Bosch Ltd.",
-      "ltp": 39095.0,
+      "ltp": 40170.0,
       "open": 39250.0,
       "high": 39470.0,
       "low": 38870.0,
-      "close": 39095.0,
+      "close": 39230.0,
       "volume": 26887,
       "high_52w": 41945.0,
       "low_52w": 28610.0,
-      "pct_from_52wh": -6.79,
-      "pct_from_52wl": 36.65,
-      "rsi_14": 63.74,
-      "ema_20": 37668.25,
-      "ema_50": 36729.87,
-      "ema_100": 36264.32,
-      "ema_200": 36860.48,
+      "pct_from_52wh": -6.47,
+      "pct_from_52wl": 37.12,
+      "rsi_14": 64.46,
+      "ema_20": 37681.11,
+      "ema_50": 36735.16,
+      "ema_100": 36266.99,
+      "ema_200": 36861.82,
       "consecutive_high_days": 0
     },
     {
       "symbol": "BRITANNIA",
       "name": "Britannia Industries Ltd.",
-      "ltp": 5230.5,
+      "ltp": 5236.0,
       "open": 5220.0,
       "high": 5239.0,
       "low": 5191.0,
-      "close": 5230.5,
+      "close": 5232.0,
       "volume": 270826,
       "high_52w": 6336.0,
       "low_52w": 5035.0,
-      "pct_from_52wh": -17.45,
-      "pct_from_52wl": 3.88,
-      "rsi_14": 46.23,
-      "ema_20": 5229.18,
-      "ema_50": 5398.96,
-      "ema_100": 5562.2,
-      "ema_200": 5691.21,
+      "pct_from_52wh": -17.42,
+      "pct_from_52wl": 3.91,
+      "rsi_14": 46.36,
+      "ema_20": 5229.32,
+      "ema_50": 5399.01,
+      "ema_100": 5562.23,
+      "ema_200": 5691.23,
       "consecutive_high_days": 0
     },
     {
       "symbol": "CGPOWER",
       "name": "CG Power and Industrial Solutions Ltd.",
-      "ltp": 963.75,
+      "ltp": 952.2,
       "open": 941.0,
       "high": 965.6,
       "low": 937.0,
@@ -1230,7 +1230,7 @@
     {
       "symbol": "CANBK",
       "name": "Canara Bank",
-      "ltp": 135.24,
+      "ltp": 135.38,
       "open": 133.16,
       "high": 136.3,
       "low": 132.11,
@@ -1250,7 +1250,7 @@
     {
       "symbol": "CHOLAFIN",
       "name": "Cholamandalam Investment and Finance Company Ltd.",
-      "ltp": 1679.2,
+      "ltp": 1681.6,
       "open": 1680.4,
       "high": 1690.9,
       "low": 1672.6,
@@ -1270,7 +1270,7 @@
     {
       "symbol": "CIPLA",
       "name": "Cipla Ltd.",
-      "ltp": 1350.8,
+      "ltp": 1349.8,
       "open": 1380.0,
       "high": 1381.7,
       "low": 1341.1,
@@ -1290,7 +1290,7 @@
     {
       "symbol": "COALINDIA",
       "name": "Coal India Ltd.",
-      "ltp": 455.75,
+      "ltp": 450.5,
       "open": 450.9,
       "high": 461.55,
       "low": 448.6,
@@ -1310,7 +1310,7 @@
     {
       "symbol": "COCHINSHIP",
       "name": "Cochin Shipyard Ltd.",
-      "ltp": 1500.2,
+      "ltp": 1499.1,
       "open": 1432.8,
       "high": 1515.0,
       "low": 1432.1,
@@ -1330,7 +1330,7 @@
     {
       "symbol": "COFORGE",
       "name": "Coforge Ltd.",
-      "ltp": 1465.7,
+      "ltp": 1488.0,
       "open": 1494.5,
       "high": 1497.8,
       "low": 1453.3,
@@ -1350,7 +1350,7 @@
     {
       "symbol": "COLPAL",
       "name": "Colgate Palmolive (India) Ltd.",
-      "ltp": 2034.2,
+      "ltp": 2030.0,
       "open": 2080.0,
       "high": 2092.6,
       "low": 2028.0,
@@ -1370,7 +1370,7 @@
     {
       "symbol": "CONCOR",
       "name": "Container Corporation of India Ltd.",
-      "ltp": 467.0,
+      "ltp": 465.35,
       "open": 467.85,
       "high": 468.5,
       "low": 462.55,
@@ -1390,7 +1390,7 @@
     {
       "symbol": "COROMANDEL",
       "name": "Coromandel International Ltd.",
-      "ltp": 2035.9,
+      "ltp": 2025.0,
       "open": 2059.7,
       "high": 2064.7,
       "low": 1996.8,
@@ -1410,7 +1410,7 @@
     {
       "symbol": "CUMMINSIND",
       "name": "Cummins India Ltd.",
-      "ltp": 5833.0,
+      "ltp": 5854.0,
       "open": 5758.0,
       "high": 5850.0,
       "low": 5725.0,
@@ -1430,7 +1430,7 @@
     {
       "symbol": "DLF",
       "name": "DLF Ltd.",
-      "ltp": 623.55,
+      "ltp": 637.0,
       "open": 633.05,
       "high": 633.75,
       "low": 618.2,
@@ -1450,7 +1450,7 @@
     {
       "symbol": "DABUR",
       "name": "Dabur India Ltd.",
-      "ltp": 429.0,
+      "ltp": 430.4,
       "open": 435.0,
       "high": 435.9,
       "low": 427.75,
@@ -1470,7 +1470,7 @@
     {
       "symbol": "DIVISLAB",
       "name": "Divi's Laboratories Ltd.",
-      "ltp": 6663.5,
+      "ltp": 6645.0,
       "open": 6730.0,
       "high": 6759.5,
       "low": 6641.0,
@@ -1490,7 +1490,7 @@
     {
       "symbol": "DIXON",
       "name": "Dixon Technologies (India) Ltd.",
-      "ltp": 12833.0,
+      "ltp": 12710.0,
       "open": 12325.0,
       "high": 12888.0,
       "low": 12325.0,
@@ -1510,7 +1510,7 @@
     {
       "symbol": "DRREDDY",
       "name": "Dr. Reddy's Laboratories Ltd.",
-      "ltp": 1269.0,
+      "ltp": 1262.5,
       "open": 1276.0,
       "high": 1277.4,
       "low": 1260.9,
@@ -1530,7 +1530,7 @@
     {
       "symbol": "EICHERMOT",
       "name": "Eicher Motors Ltd.",
-      "ltp": 7509.0,
+      "ltp": 7631.5,
       "open": 7560.5,
       "high": 7578.5,
       "low": 7452.5,
@@ -1550,7 +1550,7 @@
     {
       "symbol": "ETERNAL",
       "name": "Eternal Ltd.",
-      "ltp": 258.4,
+      "ltp": 257.5,
       "open": 254.0,
       "high": 262.5,
       "low": 253.2,
@@ -1570,7 +1570,7 @@
     {
       "symbol": "EXIDEIND",
       "name": "Exide Industries Ltd.",
-      "ltp": 388.4,
+      "ltp": 385.55,
       "open": 388.65,
       "high": 390.85,
       "low": 386.4,
@@ -1590,7 +1590,7 @@
     {
       "symbol": "NYKAA",
       "name": "FSN E-Commerce Ventures Ltd.",
-      "ltp": 280.95,
+      "ltp": 300.35,
       "open": 273.65,
       "high": 282.35,
       "low": 273.15,
@@ -1610,7 +1610,7 @@
     {
       "symbol": "FEDERALBNK",
       "name": "Federal Bank Ltd.",
-      "ltp": 322.7,
+      "ltp": 320.55,
       "open": 320.65,
       "high": 323.6,
       "low": 319.3,
@@ -1630,7 +1630,7 @@
     {
       "symbol": "FORTIS",
       "name": "Fortis Healthcare Ltd.",
-      "ltp": 949.65,
+      "ltp": 949.85,
       "open": 972.8,
       "high": 972.8,
       "low": 942.8,
@@ -1650,7 +1650,7 @@
     {
       "symbol": "GAIL",
       "name": "GAIL (India) Ltd.",
-      "ltp": 175.03,
+      "ltp": 175.22,
       "open": 176.32,
       "high": 177.1,
       "low": 174.51,
@@ -1670,7 +1670,7 @@
     {
       "symbol": "GVT&D",
       "name": "GE Vernova T&D India Ltd.",
-      "ltp": 5152.5,
+      "ltp": 5195.5,
       "open": 4900.0,
       "high": 5176.0,
       "low": 4898.5,
@@ -1690,7 +1690,7 @@
     {
       "symbol": "GMRAIRPORT",
       "name": "GMR Airports Ltd.",
-      "ltp": 109.32,
+      "ltp": 109.28,
       "open": 107.96,
       "high": 109.56,
       "low": 107.17,
@@ -1710,7 +1710,7 @@
     {
       "symbol": "GLENMARK",
       "name": "Glenmark Pharmaceuticals Ltd.",
-      "ltp": 2136.6,
+      "ltp": 2138.8,
       "open": 2128.0,
       "high": 2170.5,
       "low": 2101.0,
@@ -1730,7 +1730,7 @@
     {
       "symbol": "GODFRYPHLP",
       "name": "Godfrey Phillips India Ltd.",
-      "ltp": 2249.0,
+      "ltp": 2272.8,
       "open": 2246.0,
       "high": 2258.0,
       "low": 2238.5,
@@ -1750,7 +1750,7 @@
     {
       "symbol": "GODREJCP",
       "name": "Godrej Consumer Products Ltd.",
-      "ltp": 1020.0,
+      "ltp": 1012.6,
       "open": 1040.0,
       "high": 1041.3,
       "low": 1015.1,
@@ -1770,7 +1770,7 @@
     {
       "symbol": "GODREJPROP",
       "name": "Godrej Properties Ltd.",
-      "ltp": 1788.3,
+      "ltp": 1809.0,
       "open": 1750.0,
       "high": 1794.8,
       "low": 1739.2,
@@ -1790,7 +1790,7 @@
     {
       "symbol": "GRASIM",
       "name": "Grasim Industries Ltd.",
-      "ltp": 3150.4,
+      "ltp": 3127.4,
       "open": 3150.0,
       "high": 3200.0,
       "low": 3115.9,
@@ -1810,7 +1810,7 @@
     {
       "symbol": "HCLTECH",
       "name": "HCL Technologies Ltd.",
-      "ltp": 1166.8,
+      "ltp": 1157.1,
       "open": 1169.0,
       "high": 1173.6,
       "low": 1159.3,
@@ -1850,27 +1850,27 @@
     {
       "symbol": "HDFCBANK",
       "name": "HDFC Bank Ltd.",
-      "ltp": 787.1,
-      "open": 780.5,
-      "high": 787.7,
-      "low": 779.45,
-      "close": 784.9,
-      "volume": 27820970,
+      "ltp": 796.0,
+      "open": 787.65,
+      "high": 794.3,
+      "low": 783.1,
+      "close": 787.1,
+      "volume": 32405604,
       "high_52w": 1020.5,
       "low_52w": 726.65,
-      "pct_from_52wh": -23.09,
-      "pct_from_52wl": 8.02,
-      "rsi_14": 59.25,
-      "ema_20": 761.48,
-      "ema_50": 779.63,
-      "ema_100": 820.37,
-      "ema_200": 886.99,
-      "consecutive_high_days": 0
+      "pct_from_52wh": -22.87,
+      "pct_from_52wl": 8.32,
+      "rsi_14": 60.03,
+      "ema_20": 763.92,
+      "ema_50": 779.92,
+      "ema_100": 819.71,
+      "ema_200": 886.0,
+      "consecutive_high_days": 1
     },
     {
       "symbol": "HDFCLIFE",
       "name": "HDFC Life Insurance Company Ltd.",
-      "ltp": 581.8,
+      "ltp": 586.3,
       "open": 576.0,
       "high": 582.95,
       "low": 573.55,
@@ -1890,7 +1890,7 @@
     {
       "symbol": "HAVELLS",
       "name": "Havells India Ltd.",
-      "ltp": 1196.8,
+      "ltp": 1192.6,
       "open": 1187.7,
       "high": 1207.4,
       "low": 1183.4,
@@ -1910,7 +1910,7 @@
     {
       "symbol": "HEROMOTOCO",
       "name": "Hero MotoCorp Ltd.",
-      "ltp": 5016.4,
+      "ltp": 5002.5,
       "open": 5048.0,
       "high": 5048.0,
       "low": 4971.6,
@@ -1930,7 +1930,7 @@
     {
       "symbol": "HINDALCO",
       "name": "Hindalco Industries Ltd.",
-      "ltp": 1007.9,
+      "ltp": 1005.0,
       "open": 985.0,
       "high": 1011.6,
       "low": 971.2,
@@ -1950,7 +1950,7 @@
     {
       "symbol": "HAL",
       "name": "Hindustan Aeronautics Ltd.",
-      "ltp": 4460.5,
+      "ltp": 4430.0,
       "open": 4276.5,
       "high": 4485.0,
       "low": 4270.0,
@@ -1970,7 +1970,7 @@
     {
       "symbol": "HINDPETRO",
       "name": "Hindustan Petroleum Corporation Ltd.",
-      "ltp": 402.65,
+      "ltp": 400.2,
       "open": 406.5,
       "high": 410.5,
       "low": 401.2,
@@ -1990,7 +1990,7 @@
     {
       "symbol": "HINDUNILVR",
       "name": "Hindustan Unilever Ltd.",
-      "ltp": 2197.6,
+      "ltp": 2208.0,
       "open": 2201.1,
       "high": 2224.6,
       "low": 2183.0,
@@ -2010,7 +2010,7 @@
     {
       "symbol": "HINDZINC",
       "name": "Hindustan Zinc Ltd.",
-      "ltp": 572.55,
+      "ltp": 570.1,
       "open": 564.3,
       "high": 574.05,
       "low": 561.0,
@@ -2030,7 +2030,7 @@
     {
       "symbol": "POWERINDIA",
       "name": "Hitachi Energy India Ltd.",
-      "ltp": 35950.0,
+      "ltp": 36115.0,
       "open": 34745.0,
       "high": 36070.0,
       "low": 34740.0,
@@ -2050,7 +2050,7 @@
     {
       "symbol": "HUDCO",
       "name": "Housing & Urban Development Corporation Ltd.",
-      "ltp": 213.65,
+      "ltp": 212.5,
       "open": 214.0,
       "high": 216.88,
       "low": 213.0,
@@ -2070,7 +2070,7 @@
     {
       "symbol": "HYUNDAI",
       "name": "Hyundai Motor India Ltd.",
-      "ltp": 1976.7,
+      "ltp": 1980.8,
       "open": 1980.0,
       "high": 1987.8,
       "low": 1963.8,
@@ -2090,7 +2090,7 @@
     {
       "symbol": "ICICIBANK",
       "name": "ICICI Bank Ltd.",
-      "ltp": 1336.8,
+      "ltp": 1344.5,
       "open": 1342.0,
       "high": 1346.0,
       "low": 1333.4,
@@ -2110,7 +2110,7 @@
     {
       "symbol": "ICICIGI",
       "name": "ICICI Lombard General Insurance Company Ltd.",
-      "ltp": 1790.5,
+      "ltp": 1833.4,
       "open": 1771.1,
       "high": 1797.0,
       "low": 1771.1,
@@ -2130,7 +2130,7 @@
     {
       "symbol": "ICICIAMC",
       "name": "ICICI Prudential Asset Management Company Ltd.",
-      "ltp": 3250.5,
+      "ltp": 3357.8,
       "open": 3246.0,
       "high": 3316.9,
       "low": 3218.4,
@@ -2150,7 +2150,7 @@
     {
       "symbol": "IDFCFIRSTB",
       "name": "IDFC First Bank Ltd.",
-      "ltp": 77.38,
+      "ltp": 77.73,
       "open": 77.5,
       "high": 78.37,
       "low": 77.16,
@@ -2170,7 +2170,7 @@
     {
       "symbol": "ITC",
       "name": "ITC Ltd.",
-      "ltp": 290.75,
+      "ltp": 290.1,
       "open": 291.95,
       "high": 292.35,
       "low": 290.0,
@@ -2190,7 +2190,7 @@
     {
       "symbol": "INDIANB",
       "name": "Indian Bank",
-      "ltp": 876.35,
+      "ltp": 879.65,
       "open": 858.0,
       "high": 878.25,
       "low": 853.45,
@@ -2210,7 +2210,7 @@
     {
       "symbol": "INDHOTEL",
       "name": "Indian Hotels Co. Ltd.",
-      "ltp": 699.1,
+      "ltp": 703.5,
       "open": 696.3,
       "high": 700.6,
       "low": 691.65,
@@ -2230,7 +2230,7 @@
     {
       "symbol": "IOC",
       "name": "Indian Oil Corporation Ltd.",
-      "ltp": 145.42,
+      "ltp": 146.28,
       "open": 147.0,
       "high": 147.47,
       "low": 144.95,
@@ -2250,7 +2250,7 @@
     {
       "symbol": "IRCTC",
       "name": "Indian Railway Catering And Tourism Corporation Ltd.",
-      "ltp": 519.95,
+      "ltp": 522.85,
       "open": 525.0,
       "high": 525.0,
       "low": 519.1,
@@ -2270,7 +2270,7 @@
     {
       "symbol": "IRFC",
       "name": "Indian Railway Finance Corporation Ltd.",
-      "ltp": 100.44,
+      "ltp": 99.7,
       "open": 97.89,
       "high": 100.97,
       "low": 97.51,
@@ -2290,7 +2290,7 @@
     {
       "symbol": "IREDA",
       "name": "Indian Renewable Energy Development Agency Ltd.",
-      "ltp": 126.46,
+      "ltp": 127.65,
       "open": 126.26,
       "high": 127.0,
       "low": 124.72,
@@ -2310,7 +2310,7 @@
     {
       "symbol": "INDUSTOWER",
       "name": "Indus Towers Ltd.",
-      "ltp": 413.85,
+      "ltp": 413.45,
       "open": 411.95,
       "high": 418.0,
       "low": 409.0,
@@ -2330,7 +2330,7 @@
     {
       "symbol": "INDUSINDBK",
       "name": "IndusInd Bank Ltd.",
-      "ltp": 936.2,
+      "ltp": 933.85,
       "open": 926.0,
       "high": 938.4,
       "low": 920.2,
@@ -2350,7 +2350,7 @@
     {
       "symbol": "NAUKRI",
       "name": "Info Edge (India) Ltd.",
-      "ltp": 1017.05,
+      "ltp": 1002.2,
       "open": 1016.0,
       "high": 1027.0,
       "low": 1003.25,
@@ -2370,7 +2370,7 @@
     {
       "symbol": "INFY",
       "name": "Infosys Ltd.",
-      "ltp": 1157.7,
+      "ltp": 1132.0,
       "open": 1149.0,
       "high": 1162.5,
       "low": 1148.0,
@@ -2390,7 +2390,7 @@
     {
       "symbol": "INDIGO",
       "name": "InterGlobe Aviation Ltd.",
-      "ltp": 4878.4,
+      "ltp": 4938.2,
       "open": 4876.4,
       "high": 4899.0,
       "low": 4840.0,
@@ -2410,7 +2410,7 @@
     {
       "symbol": "JSWENERGY",
       "name": "JSW Energy Ltd.",
-      "ltp": 572.0,
+      "ltp": 577.9,
       "open": 564.0,
       "high": 573.35,
       "low": 555.6,
@@ -2430,7 +2430,7 @@
     {
       "symbol": "JSWSTEEL",
       "name": "JSW Steel Ltd.",
-      "ltp": 1287.2,
+      "ltp": 1290.9,
       "open": 1280.0,
       "high": 1289.5,
       "low": 1269.1,
@@ -2450,7 +2450,7 @@
     {
       "symbol": "JINDALSTEL",
       "name": "Jindal Steel Ltd.",
-      "ltp": 1135.8,
+      "ltp": 1131.3,
       "open": 1139.8,
       "high": 1142.3,
       "low": 1123.6,
@@ -2470,7 +2470,7 @@
     {
       "symbol": "JIOFIN",
       "name": "Jio Financial Services Ltd.",
-      "ltp": 242.98,
+      "ltp": 243.65,
       "open": 242.2,
       "high": 244.74,
       "low": 241.22,
@@ -2490,7 +2490,7 @@
     {
       "symbol": "JUBLFOOD",
       "name": "Jubilant Foodworks Ltd.",
-      "ltp": 423.15,
+      "ltp": 420.85,
       "open": 424.0,
       "high": 426.95,
       "low": 419.5,
@@ -2510,7 +2510,7 @@
     {
       "symbol": "KEI",
       "name": "KEI Industries Ltd.",
-      "ltp": 5643.5,
+      "ltp": 5606.5,
       "open": 5430.0,
       "high": 5673.0,
       "low": 5410.5,
@@ -2530,7 +2530,7 @@
     {
       "symbol": "KPITTECH",
       "name": "KPIT Technologies Ltd.",
-      "ltp": 752.0,
+      "ltp": 750.05,
       "open": 760.05,
       "high": 767.7,
       "low": 748.3,
@@ -2550,7 +2550,7 @@
     {
       "symbol": "KALYANKJIL",
       "name": "Kalyan Jewellers India Ltd.",
-      "ltp": 383.05,
+      "ltp": 382.05,
       "open": 379.0,
       "high": 386.0,
       "low": 378.15,
@@ -2570,7 +2570,7 @@
     {
       "symbol": "KOTAKBANK",
       "name": "Kotak Mahindra Bank Ltd.",
-      "ltp": 404.5,
+      "ltp": 402.3,
       "open": 407.85,
       "high": 408.75,
       "low": 402.55,
@@ -2590,7 +2590,7 @@
     {
       "symbol": "LTF",
       "name": "L&T Finance Ltd.",
-      "ltp": 294.15,
+      "ltp": 285.85,
       "open": 294.25,
       "high": 295.8,
       "low": 292.0,
@@ -2610,7 +2610,7 @@
     {
       "symbol": "LGEINDIA",
       "name": "LG Electronics India Ltd.",
-      "ltp": 1578.8,
+      "ltp": 1590.6,
       "open": 1580.4,
       "high": 1604.9,
       "low": 1568.0,
@@ -2630,7 +2630,7 @@
     {
       "symbol": "LICHSGFIN",
       "name": "LIC Housing Finance Ltd.",
-      "ltp": 551.05,
+      "ltp": 550.9,
       "open": 553.0,
       "high": 555.85,
       "low": 546.5,
@@ -2650,7 +2650,7 @@
     {
       "symbol": "LTM",
       "name": "LTM Ltd.",
-      "ltp": 3995.8,
+      "ltp": 3985.5,
       "open": 4045.0,
       "high": 4089.6,
       "low": 3985.1,
@@ -2670,7 +2670,7 @@
     {
       "symbol": "LT",
       "name": "Larsen & Toubro Ltd.",
-      "ltp": 4207.7,
+      "ltp": 4195.0,
       "open": 4200.1,
       "high": 4214.7,
       "low": 4172.0,
@@ -2690,7 +2690,7 @@
     {
       "symbol": "LAURUSLABS",
       "name": "Laurus Labs Ltd.",
-      "ltp": 1369.8,
+      "ltp": 1357.7,
       "open": 1376.0,
       "high": 1389.0,
       "low": 1357.1,
@@ -2710,7 +2710,7 @@
     {
       "symbol": "LENSKART",
       "name": "Lenskart Solutions Ltd.",
-      "ltp": 503.65,
+      "ltp": 505.75,
       "open": 500.8,
       "high": 506.9,
       "low": 499.85,
@@ -2730,7 +2730,7 @@
     {
       "symbol": "LODHA",
       "name": "Lodha Developers Ltd.",
-      "ltp": 914.8,
+      "ltp": 928.45,
       "open": 924.95,
       "high": 925.15,
       "low": 900.15,
@@ -2750,7 +2750,7 @@
     {
       "symbol": "LUPIN",
       "name": "Lupin Ltd.",
-      "ltp": 2272.0,
+      "ltp": 2296.4,
       "open": 2272.7,
       "high": 2284.3,
       "low": 2253.6,
@@ -2770,27 +2770,27 @@
     {
       "symbol": "MRF",
       "name": "MRF Ltd.",
-      "ltp": 129160.0,
+      "ltp": 129240.0,
       "open": 128940.0,
       "high": 129590.0,
       "low": 128205.0,
-      "close": 129160.0,
+      "close": 129245.0,
       "volume": 6926,
       "high_52w": 163600.0,
       "low_52w": 122000.0,
-      "pct_from_52wh": -21.05,
-      "pct_from_52wl": 5.87,
-      "rsi_14": 58.71,
-      "ema_20": 126252.08,
-      "ema_50": 128898.67,
-      "ema_100": 133359.6,
-      "ema_200": 140051.19,
+      "pct_from_52wh": -21.0,
+      "pct_from_52wl": 5.94,
+      "rsi_14": 58.94,
+      "ema_20": 126260.17,
+      "ema_50": 128902.0,
+      "ema_100": 133361.28,
+      "ema_200": 140052.03,
       "consecutive_high_days": 0
     },
     {
       "symbol": "M&MFIN",
       "name": "Mahindra & Mahindra Financial Services Ltd.",
-      "ltp": 297.5,
+      "ltp": 295.0,
       "open": 299.7,
       "high": 300.0,
       "low": 295.1,
@@ -2810,7 +2810,7 @@
     {
       "symbol": "M&M",
       "name": "Mahindra & Mahindra Ltd.",
-      "ltp": 3132.9,
+      "ltp": 3142.0,
       "open": 3145.0,
       "high": 3165.0,
       "low": 3090.0,
@@ -2830,7 +2830,7 @@
     {
       "symbol": "MANKIND",
       "name": "Mankind Pharma Ltd.",
-      "ltp": 2364.1,
+      "ltp": 2385.6,
       "open": 2352.6,
       "high": 2381.2,
       "low": 2352.6,
@@ -2850,7 +2850,7 @@
     {
       "symbol": "MARICO",
       "name": "Marico Ltd.",
-      "ltp": 805.0,
+      "ltp": 824.15,
       "open": 811.0,
       "high": 811.0,
       "low": 796.0,
@@ -2870,7 +2870,7 @@
     {
       "symbol": "MARUTI",
       "name": "Maruti Suzuki India Ltd.",
-      "ltp": 13630.0,
+      "ltp": 13503.0,
       "open": 13700.0,
       "high": 13740.0,
       "low": 13560.0,
@@ -2890,7 +2890,7 @@
     {
       "symbol": "MFSL",
       "name": "Max Financial Services Ltd.",
-      "ltp": 1631.8,
+      "ltp": 1659.4,
       "open": 1612.3,
       "high": 1640.0,
       "low": 1603.1,
@@ -2910,7 +2910,7 @@
     {
       "symbol": "MAXHEALTH",
       "name": "Max Healthcare Institute Ltd.",
-      "ltp": 1026.15,
+      "ltp": 1086.7,
       "open": 1025.4,
       "high": 1029.6,
       "low": 1017.2,
@@ -2930,7 +2930,7 @@
     {
       "symbol": "MAZDOCK",
       "name": "Mazagoan Dock Shipbuilders Ltd.",
-      "ltp": 2552.4,
+      "ltp": 2542.9,
       "open": 2474.0,
       "high": 2564.6,
       "low": 2471.4,
@@ -2950,7 +2950,7 @@
     {
       "symbol": "MOTILALOFS",
       "name": "Motilal Oswal Financial Services Ltd.",
-      "ltp": 942.85,
+      "ltp": 949.5,
       "open": 946.55,
       "high": 960.0,
       "low": 940.0,
@@ -2970,7 +2970,7 @@
     {
       "symbol": "MPHASIS",
       "name": "MphasiS Ltd.",
-      "ltp": 2340.2,
+      "ltp": 2341.5,
       "open": 2335.9,
       "high": 2361.8,
       "low": 2320.0,
@@ -2990,7 +2990,7 @@
     {
       "symbol": "MCX",
       "name": "Multi Commodity Exchange of India Ltd.",
-      "ltp": 2857.3,
+      "ltp": 2810.9,
       "open": 2885.0,
       "high": 2909.9,
       "low": 2810.0,
@@ -3010,7 +3010,7 @@
     {
       "symbol": "MUTHOOTFIN",
       "name": "Muthoot Finance Ltd.",
-      "ltp": 3190.6,
+      "ltp": 3157.1,
       "open": 3157.5,
       "high": 3201.2,
       "low": 3133.3,
@@ -3030,7 +3030,7 @@
     {
       "symbol": "NHPC",
       "name": "NHPC Ltd.",
-      "ltp": 74.41,
+      "ltp": 76.19,
       "open": 75.0,
       "high": 75.18,
       "low": 74.12,
@@ -3050,7 +3050,7 @@
     {
       "symbol": "NMDC",
       "name": "NMDC Ltd.",
-      "ltp": 88.0,
+      "ltp": 88.43,
       "open": 88.15,
       "high": 88.75,
       "low": 87.46,
@@ -3070,7 +3070,7 @@
     {
       "symbol": "NTPC",
       "name": "NTPC Ltd.",
-      "ltp": 355.55,
+      "ltp": 360.55,
       "open": 355.55,
       "high": 356.05,
       "low": 352.05,
@@ -3090,7 +3090,7 @@
     {
       "symbol": "NATIONALUM",
       "name": "National Aluminium Co. Ltd.",
-      "ltp": 370.0,
+      "ltp": 365.65,
       "open": 367.4,
       "high": 372.0,
       "low": 360.0,
@@ -3110,7 +3110,7 @@
     {
       "symbol": "NESTLEIND",
       "name": "Nestle India Ltd.",
-      "ltp": 1407.3,
+      "ltp": 1402.8,
       "open": 1392.0,
       "high": 1415.5,
       "low": 1387.1,
@@ -3130,7 +3130,7 @@
     {
       "symbol": "OBEROIRLTY",
       "name": "Oberoi Realty Ltd.",
-      "ltp": 1694.8,
+      "ltp": 1697.5,
       "open": 1668.4,
       "high": 1697.9,
       "low": 1650.6,
@@ -3150,7 +3150,7 @@
     {
       "symbol": "ONGC",
       "name": "Oil & Natural Gas Corporation Ltd.",
-      "ltp": 245.0,
+      "ltp": 244.5,
       "open": 246.0,
       "high": 247.75,
       "low": 244.0,
@@ -3170,7 +3170,7 @@
     {
       "symbol": "OIL",
       "name": "Oil India Ltd.",
-      "ltp": 417.05,
+      "ltp": 420.1,
       "open": 419.0,
       "high": 419.6,
       "low": 412.5,
@@ -3190,7 +3190,7 @@
     {
       "symbol": "PAYTM",
       "name": "One 97 Communications Ltd.",
-      "ltp": 1120.1,
+      "ltp": 1104.5,
       "open": 1108.5,
       "high": 1123.0,
       "low": 1106.1,
@@ -3210,7 +3210,7 @@
     {
       "symbol": "OFSS",
       "name": "Oracle Financial Services Software Ltd.",
-      "ltp": 9444.5,
+      "ltp": 9416.5,
       "open": 9545.0,
       "high": 9609.0,
       "low": 9380.0,
@@ -3230,7 +3230,7 @@
     {
       "symbol": "POLICYBZR",
       "name": "PB Fintech Ltd.",
-      "ltp": 1624.6,
+      "ltp": 1612.1,
       "open": 1600.0,
       "high": 1629.7,
       "low": 1587.5,
@@ -3250,7 +3250,7 @@
     {
       "symbol": "PIIND",
       "name": "PI Industries Ltd.",
-      "ltp": 2835.2,
+      "ltp": 2842.3,
       "open": 2878.0,
       "high": 2893.1,
       "low": 2821.7,
@@ -3270,7 +3270,7 @@
     {
       "symbol": "PAGEIND",
       "name": "Page Industries Ltd.",
-      "ltp": 39300.0,
+      "ltp": 39750.0,
       "open": 39065.0,
       "high": 39480.0,
       "low": 39000.0,
@@ -3290,7 +3290,7 @@
     {
       "symbol": "PATANJALI",
       "name": "Patanjali Foods Ltd.",
-      "ltp": 419.0,
+      "ltp": 425.5,
       "open": 426.95,
       "high": 426.95,
       "low": 416.3,
@@ -3310,7 +3310,7 @@
     {
       "symbol": "PERSISTENT",
       "name": "Persistent Systems Ltd.",
-      "ltp": 5045.0,
+      "ltp": 4979.0,
       "open": 5050.0,
       "high": 5105.0,
       "low": 5017.0,
@@ -3330,7 +3330,7 @@
     {
       "symbol": "PHOENIXLTD",
       "name": "Phoenix Mills Ltd.",
-      "ltp": 1869.1,
+      "ltp": 1852.9,
       "open": 1875.4,
       "high": 1906.6,
       "low": 1862.0,
@@ -3350,7 +3350,7 @@
     {
       "symbol": "PIDILITIND",
       "name": "Pidilite Industries Ltd.",
-      "ltp": 1578.2,
+      "ltp": 1570.1,
       "open": 1575.1,
       "high": 1584.5,
       "low": 1567.6,
@@ -3370,7 +3370,7 @@
     {
       "symbol": "POLYCAB",
       "name": "Polycab India Ltd.",
-      "ltp": 9926.5,
+      "ltp": 9962.5,
       "open": 9600.0,
       "high": 9987.5,
       "low": 9600.0,
@@ -3390,7 +3390,7 @@
     {
       "symbol": "PFC",
       "name": "Power Finance Corporation Ltd.",
-      "ltp": 431.75,
+      "ltp": 427.85,
       "open": 429.0,
       "high": 433.5,
       "low": 425.1,
@@ -3410,7 +3410,7 @@
     {
       "symbol": "POWERGRID",
       "name": "Power Grid Corporation of India Ltd.",
-      "ltp": 286.35,
+      "ltp": 286.5,
       "open": 286.2,
       "high": 286.65,
       "low": 283.25,
@@ -3430,7 +3430,7 @@
     {
       "symbol": "PREMIERENE",
       "name": "Premier Energies Ltd.",
-      "ltp": 1055.8,
+      "ltp": 1051.7,
       "open": 1058.0,
       "high": 1074.1,
       "low": 1051.1,
@@ -3450,7 +3450,7 @@
     {
       "symbol": "PRESTIGE",
       "name": "Prestige Estates Projects Ltd.",
-      "ltp": 1521.5,
+      "ltp": 1528.7,
       "open": 1510.0,
       "high": 1526.8,
       "low": 1492.0,
@@ -3470,7 +3470,7 @@
     {
       "symbol": "PNB",
       "name": "Punjab National Bank",
-      "ltp": 108.87,
+      "ltp": 109.8,
       "open": 108.3,
       "high": 109.2,
       "low": 107.43,
@@ -3490,7 +3490,7 @@
     {
       "symbol": "RECLTD",
       "name": "REC Ltd.",
-      "ltp": 358.75,
+      "ltp": 358.2,
       "open": 357.5,
       "high": 360.0,
       "low": 354.3,
@@ -3510,7 +3510,7 @@
     {
       "symbol": "RADICO",
       "name": "Radico Khaitan Ltd",
-      "ltp": 3572.2,
+      "ltp": 3701.0,
       "open": 3599.0,
       "high": 3620.0,
       "low": 3560.0,
@@ -3530,7 +3530,7 @@
     {
       "symbol": "RVNL",
       "name": "Rail Vikas Nigam Ltd.",
-      "ltp": 245.14,
+      "ltp": 247.54,
       "open": 242.2,
       "high": 246.48,
       "low": 240.06,
@@ -3550,7 +3550,7 @@
     {
       "symbol": "RELIANCE",
       "name": "Reliance Industries Ltd.",
-      "ltp": 1332.7,
+      "ltp": 1329.5,
       "open": 1333.0,
       "high": 1334.0,
       "low": 1317.0,
@@ -3570,7 +3570,7 @@
     {
       "symbol": "SBICARD",
       "name": "SBI Cards and Payment Services Ltd.",
-      "ltp": 625.7,
+      "ltp": 624.9,
       "open": 627.25,
       "high": 629.2,
       "low": 622.5,
@@ -3590,7 +3590,7 @@
     {
       "symbol": "SBILIFE",
       "name": "SBI Life Insurance Company Ltd.",
-      "ltp": 1793.6,
+      "ltp": 1794.0,
       "open": 1756.0,
       "high": 1803.1,
       "low": 1756.0,
@@ -3610,7 +3610,7 @@
     {
       "symbol": "SRF",
       "name": "SRF Ltd.",
-      "ltp": 2705.5,
+      "ltp": 2704.6,
       "open": 2750.9,
       "high": 2760.0,
       "low": 2651.2,
@@ -3630,7 +3630,7 @@
     {
       "symbol": "MOTHERSON",
       "name": "Samvardhana Motherson International Ltd.",
-      "ltp": 145.1,
+      "ltp": 143.94,
       "open": 147.51,
       "high": 147.59,
       "low": 142.63,
@@ -3650,27 +3650,27 @@
     {
       "symbol": "SHREECEM",
       "name": "Shree Cement Ltd.",
-      "ltp": 24990.0,
+      "ltp": 25200.0,
       "open": 24950.0,
       "high": 25455.0,
       "low": 24740.0,
-      "close": 24990.0,
+      "close": 24970.0,
       "volume": 22298,
       "high_52w": 32490.0,
       "low_52w": 22550.0,
-      "pct_from_52wh": -23.08,
-      "pct_from_52wl": 10.82,
-      "rsi_14": 55.77,
-      "ema_20": 24537.01,
-      "ema_50": 24715.61,
-      "ema_100": 25242.35,
-      "ema_200": 26765.45,
+      "pct_from_52wh": -23.15,
+      "pct_from_52wl": 10.73,
+      "rsi_14": 55.54,
+      "ema_20": 24535.11,
+      "ema_50": 24714.83,
+      "ema_100": 25241.96,
+      "ema_200": 26765.25,
       "consecutive_high_days": 0
     },
     {
       "symbol": "SHRIRAMFIN",
       "name": "Shriram Finance Ltd.",
-      "ltp": 1007.5,
+      "ltp": 1002.5,
       "open": 1005.0,
       "high": 1015.75,
       "low": 1001.95,
@@ -3690,7 +3690,7 @@
     {
       "symbol": "ENRIN",
       "name": "Siemens Energy India Ltd.",
-      "ltp": 3785.2,
+      "ltp": 3793.2,
       "open": 3615.0,
       "high": 3797.9,
       "low": 3610.0,
@@ -3710,7 +3710,7 @@
     {
       "symbol": "SIEMENS",
       "name": "Siemens Ltd.",
-      "ltp": 3725.4,
+      "ltp": 3735.0,
       "open": 3661.0,
       "high": 3737.8,
       "low": 3626.0,
@@ -3730,7 +3730,7 @@
     {
       "symbol": "SOLARINDS",
       "name": "Solar Industries India Ltd.",
-      "ltp": 17457.0,
+      "ltp": 17629.0,
       "open": 16899.0,
       "high": 17599.0,
       "low": 16832.0,
@@ -3750,7 +3750,7 @@
     {
       "symbol": "SBIN",
       "name": "State Bank of India",
-      "ltp": 1026.5,
+      "ltp": 1040.05,
       "open": 1017.0,
       "high": 1028.1,
       "low": 1013.45,
@@ -3770,7 +3770,7 @@
     {
       "symbol": "SAIL",
       "name": "Steel Authority of India Ltd.",
-      "ltp": 179.58,
+      "ltp": 181.45,
       "open": 181.79,
       "high": 182.7,
       "low": 177.67,
@@ -3790,7 +3790,7 @@
     {
       "symbol": "SUNPHARMA",
       "name": "Sun Pharmaceutical Industries Ltd.",
-      "ltp": 1820.4,
+      "ltp": 1820.2,
       "open": 1814.0,
       "high": 1823.4,
       "low": 1802.6,
@@ -3810,7 +3810,7 @@
     {
       "symbol": "SUPREMEIND",
       "name": "Supreme Industries Ltd.",
-      "ltp": 3517.5,
+      "ltp": 3518.0,
       "open": 3566.7,
       "high": 3587.3,
       "low": 3498.0,
@@ -3830,7 +3830,7 @@
     {
       "symbol": "SUZLON",
       "name": "Suzlon Energy Ltd.",
-      "ltp": 59.27,
+      "ltp": 58.63,
       "open": 58.38,
       "high": 59.5,
       "low": 57.3,
@@ -3850,7 +3850,7 @@
     {
       "symbol": "SWIGGY",
       "name": "Swiggy Ltd.",
-      "ltp": 259.45,
+      "ltp": 254.3,
       "open": 261.25,
       "high": 270.0,
       "low": 258.45,
@@ -3870,7 +3870,7 @@
     {
       "symbol": "TVSMOTOR",
       "name": "TVS Motor Company Ltd.",
-      "ltp": 3448.7,
+      "ltp": 3458.4,
       "open": 3454.9,
       "high": 3480.0,
       "low": 3415.5,
@@ -3890,7 +3890,7 @@
     {
       "symbol": "TATACAP",
       "name": "Tata Capital Ltd.",
-      "ltp": 337.1,
+      "ltp": 336.05,
       "open": 337.5,
       "high": 341.95,
       "low": 335.0,
@@ -3910,7 +3910,7 @@
     {
       "symbol": "TATACOMM",
       "name": "Tata Communications Ltd.",
-      "ltp": 1899.8,
+      "ltp": 1934.9,
       "open": 1920.0,
       "high": 1967.9,
       "low": 1894.1,
@@ -3930,7 +3930,7 @@
     {
       "symbol": "TCS",
       "name": "Tata Consultancy Services Ltd.",
-      "ltp": 2223.0,
+      "ltp": 2193.6,
       "open": 2209.0,
       "high": 2231.0,
       "low": 2200.7,
@@ -3950,7 +3950,7 @@
     {
       "symbol": "TATACONSUM",
       "name": "Tata Consumer Products Ltd.",
-      "ltp": 1124.5,
+      "ltp": 1112.6,
       "open": 1126.0,
       "high": 1134.2,
       "low": 1117.9,
@@ -3970,7 +3970,7 @@
     {
       "symbol": "TATAELXSI",
       "name": "Tata Elxsi Ltd.",
-      "ltp": 4094.6,
+      "ltp": 4137.1,
       "open": 4122.1,
       "high": 4157.0,
       "low": 4022.5,
@@ -3990,7 +3990,7 @@
     {
       "symbol": "TATAINVEST",
       "name": "Tata Investment Corporation Ltd.",
-      "ltp": 675.65,
+      "ltp": 694.65,
       "open": 672.95,
       "high": 677.15,
       "low": 671.35,
@@ -4010,7 +4010,7 @@
     {
       "symbol": "TMCV",
       "name": "Tata Motors Ltd.",
-      "ltp": 402.8,
+      "ltp": 402.25,
       "open": 406.7,
       "high": 408.35,
       "low": 397.65,
@@ -4030,7 +4030,7 @@
     {
       "symbol": "TMPV",
       "name": "Tata Motors Passenger Vehicles Ltd.",
-      "ltp": 360.95,
+      "ltp": 361.85,
       "open": 395.5,
       "high": 395.6,
       "low": 355.0,
@@ -4050,7 +4050,7 @@
     {
       "symbol": "TATAPOWER",
       "name": "Tata Power Co. Ltd.",
-      "ltp": 401.5,
+      "ltp": 401.0,
       "open": 402.25,
       "high": 403.45,
       "low": 399.35,
@@ -4070,7 +4070,7 @@
     {
       "symbol": "TATASTEEL",
       "name": "Tata Steel Ltd.",
-      "ltp": 199.01,
+      "ltp": 199.6,
       "open": 196.79,
       "high": 199.5,
       "low": 195.6,
@@ -4090,7 +4090,7 @@
     {
       "symbol": "TECHM",
       "name": "Tech Mahindra Ltd.",
-      "ltp": 1462.4,
+      "ltp": 1445.0,
       "open": 1455.0,
       "high": 1476.8,
       "low": 1454.0,
@@ -4110,7 +4110,7 @@
     {
       "symbol": "TITAN",
       "name": "Titan Company Ltd.",
-      "ltp": 4380.5,
+      "ltp": 4350.0,
       "open": 4338.0,
       "high": 4395.0,
       "low": 4327.5,
@@ -4130,7 +4130,7 @@
     {
       "symbol": "TORNTPHARM",
       "name": "Torrent Pharmaceuticals Ltd.",
-      "ltp": 4442.8,
+      "ltp": 4435.2,
       "open": 4475.0,
       "high": 4496.4,
       "low": 4414.8,
@@ -4150,7 +4150,7 @@
     {
       "symbol": "TRENT",
       "name": "Trent Ltd.",
-      "ltp": 3102.8,
+      "ltp": 3172.4,
       "open": 2905.0,
       "high": 3115.0,
       "low": 2905.0,
@@ -4170,7 +4170,7 @@
     {
       "symbol": "TIINDIA",
       "name": "Tube Investments of India Ltd.",
-      "ltp": 3267.7,
+      "ltp": 3237.8,
       "open": 3284.0,
       "high": 3284.0,
       "low": 3218.7,
@@ -4190,7 +4190,7 @@
     {
       "symbol": "UPL",
       "name": "UPL Ltd.",
-      "ltp": 614.4,
+      "ltp": 611.05,
       "open": 618.75,
       "high": 618.75,
       "low": 608.25,
@@ -4210,7 +4210,7 @@
     {
       "symbol": "ULTRACEMCO",
       "name": "UltraTech Cement Ltd.",
-      "ltp": 11373.0,
+      "ltp": 11410.0,
       "open": 11380.0,
       "high": 11420.0,
       "low": 11314.0,
@@ -4230,7 +4230,7 @@
     {
       "symbol": "UNIONBANK",
       "name": "Union Bank of India",
-      "ltp": 173.75,
+      "ltp": 176.14,
       "open": 171.5,
       "high": 174.15,
       "low": 169.4,
@@ -4250,7 +4250,7 @@
     {
       "symbol": "UNITDSPR",
       "name": "United Spirits Ltd.",
-      "ltp": 1308.0,
+      "ltp": 1358.2,
       "open": 1304.0,
       "high": 1309.9,
       "low": 1286.3,
@@ -4270,7 +4270,7 @@
     {
       "symbol": "VBL",
       "name": "Varun Beverages Ltd.",
-      "ltp": 544.05,
+      "ltp": 538.8,
       "open": 541.2,
       "high": 555.8,
       "low": 540.1,
@@ -4290,7 +4290,7 @@
     {
       "symbol": "VEDL",
       "name": "Vedanta Ltd.",
-      "ltp": 306.5,
+      "ltp": 304.4,
       "open": 299.0,
       "high": 308.2,
       "low": 297.3,
@@ -4310,7 +4310,7 @@
     {
       "symbol": "VMM",
       "name": "Vishal Mega Mart Ltd.",
-      "ltp": 118.77,
+      "ltp": 117.9,
       "open": 117.08,
       "high": 119.29,
       "low": 115.39,
@@ -4330,7 +4330,7 @@
     {
       "symbol": "IDEA",
       "name": "Vodafone Idea Ltd.",
-      "ltp": 14.92,
+      "ltp": 14.88,
       "open": 14.55,
       "high": 15.05,
       "low": 14.45,
@@ -4350,7 +4350,7 @@
     {
       "symbol": "VOLTAS",
       "name": "Voltas Ltd.",
-      "ltp": 1352.9,
+      "ltp": 1349.0,
       "open": 1326.3,
       "high": 1381.8,
       "low": 1325.3,
@@ -4370,7 +4370,7 @@
     {
       "symbol": "WAAREEENER",
       "name": "Waaree Energies Ltd.",
-      "ltp": 3078.6,
+      "ltp": 3063.0,
       "open": 3069.0,
       "high": 3103.6,
       "low": 3056.8,
@@ -4390,7 +4390,7 @@
     {
       "symbol": "WIPRO",
       "name": "Wipro Ltd.",
-      "ltp": 184.47,
+      "ltp": 182.4,
       "open": 184.0,
       "high": 185.25,
       "low": 183.58,
@@ -4410,12 +4410,12 @@
     {
       "symbol": "YESBANK",
       "name": "Yes Bank Ltd.",
-      "ltp": 25.11,
+      "ltp": 25.46,
       "open": 23.9,
       "high": 25.46,
       "low": 23.9,
       "close": 25.11,
-      "volume": 394351579,
+      "volume": 394351584,
       "high_52w": 25.46,
       "low_52w": 17.2,
       "pct_from_52wh": -1.37,
@@ -4430,7 +4430,7 @@
     {
       "symbol": "ZYDUSLIFE",
       "name": "Zydus Lifesciences Ltd.",
-      "ltp": 1061.4,
+      "ltp": 1068.4,
       "open": 1069.9,
       "high": 1077.8,
       "low": 1053.8,
