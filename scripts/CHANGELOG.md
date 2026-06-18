@@ -246,3 +246,10 @@ Dated history of work on this project. Source of truth: `AGENTS.md` Session Memo
 - `crypto_intel_reporter.py` — Fixed AttributeError: 'NoneType' object has no attribute 'get' when execute_skill returns a None response. Spaced check to prevent failure when skill execution fails.
 - Verified and ran tests.
 - **Multica:** logged via `/logwork` on 2026-06-18
+
+### 2026-06-18: Daily Venture Capital Deep Dive Pipeline
+- `vc-deepdive` — Scaffolded and implemented an AgentField multi-agent system (regional researchers, deal analyzer, metric estimator, synthesizer) for venture capital and seed fund deep dives across Asia, US, Europe, and Africa using Exa search and Gemini 2.5 Flash.
+- `daily_vc_deepdive_cron.sh` — Created execution script to run live VC research pipeline, compile a sector-grouped markdown report, and send it to Slack via `send_slack.py` webhook block integration.
+- `crontab` — Configured a daily cron job scheduled at 4:00 AM IST to automate execution.
+- Verified successful live run and report delivery of the synthesized output to the Slack webhook channel.
+- **Multica:** logged via `/logwork` on 2026-06-18
