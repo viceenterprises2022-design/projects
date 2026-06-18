@@ -43710,8 +43710,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_24_2026-06-17.txt": {
-    "mtime": 1781691929.2878175,
-    "ast_hash": "dba32ba286710437c9519fda9ebab822",
+    "mtime": 1781767245.6447914,
+    "ast_hash": "aef00aef16c91dd0dc81d504330d7480",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/docs/log.md": {
@@ -43740,7 +43740,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_13_2026-06-18.txt": {
-    "mtime": 1781755222.2162902,
+    "mtime": 1781766323.078721,
     "ast_hash": "00c9e8799a8126c2ba147353139bc00e",
     "semantic_hash": ""
   },
@@ -43770,8 +43770,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_1_2026-06-18.txt": {
-    "mtime": 1781755909.2949433,
-    "ast_hash": "953f2b2645e8fecb5daa2a3312fb0868",
+    "mtime": 1781766995.7404053,
+    "ast_hash": "fb8bc6ac3b82f86a9fb88e168f63370e",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_1_2026-06-18.txt": {
@@ -43842,6 +43842,11 @@
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/daily_vc_deepdive_report.md": {
     "mtime": 1781765331.1620333,
     "ast_hash": "8b6c401d940bfdc6bc351c05a1c7aea3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/daily_vc_deepdive_cron.sh": {
+    "mtime": 1781767009.7737603,
+    "ast_hash": "a7be71ab25b2ad83334c06b08abd108b",
     "semantic_hash": ""
   }
 }
