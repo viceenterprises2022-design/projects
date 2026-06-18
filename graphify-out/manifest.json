@@ -43805,28 +43805,33 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/reasoners/__init__.py": {
-    "mtime": 1781762119.7991107,
-    "ast_hash": "ab8469968ebc659987bdd8288f310e7c",
+    "mtime": 1781762927.4658227,
+    "ast_hash": "dc6fc4b61ea0d48eef9c89f7f1e20d0e",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/reasoners/helpers.py": {
-    "mtime": 1781762106.6832776,
-    "ast_hash": "dd0613dd7605d23d58811e4aac2f0628",
+    "mtime": 1781762844.942875,
+    "ast_hash": "fbd43bbf44090e9e498e7fd6627c1eca",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/docker-compose.yml": {
-    "mtime": 1781762080.725608,
-    "ast_hash": "27c41c6fcb9e8886c4a36483b4432eed",
+    "mtime": 1781762786.6466181,
+    "ast_hash": "d0b803f4b445514d86798fffa04cb4ca",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/README.md": {
-    "mtime": 1781762080.725608,
-    "ast_hash": "1bb39cf3ea3df3831e9580a81b684896",
+    "mtime": 1781762827.0321033,
+    "ast_hash": "0ad5e66ccd3a6d7e05b55c1d27b82fe1",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/requirements.txt": {
     "mtime": 1781762126.9660194,
     "ast_hash": "3ca38b1750ce57fb81159662bf9bbec4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/CLAUDE.md": {
+    "mtime": 1781762781.02169,
+    "ast_hash": "e2594deb490fc5f0c0a884756bd2199f",
     "semantic_hash": ""
   }
 }

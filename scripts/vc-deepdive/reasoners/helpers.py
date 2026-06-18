@@ -6,7 +6,7 @@ from .models import InvestmentDeal, StartupDetails, StartupFinancials, RegionalR
 def search_deals_exa(region: str, limit: int = 5) -> str:
     """
     Search recent startup funding and venture capital deals for a region using Exa.
-    Returns a concatenated text block of the results.
+    Targets Dealroom, Crunchbase, TechCrunch, Techbible, Glassnode, and Token Terminal.
     """
     api_key = os.getenv("EXA_API_KEY")
     if not api_key:
@@ -18,13 +18,24 @@ def search_deals_exa(region: str, limit: int = 5) -> str:
         "content-type": "application/json"
     }
 
+    # Targeted platforms requested by the user
+    target_domains = [
+        "dealroom.co", 
+        "crunchbase.com", 
+        "techcrunch.com", 
+        "techbible.ai", 
+        "glassnode.com", 
+        "tokenterminal.com"
+    ]
+
     # Format the query to fetch recent investment news
-    query = f"recent startup venture capital seed fund investments in {region} rounds ARR Profit CAGR"
+    query = f"recent startup venture capital seed fund investments in {region} rounds ARR Profit CAGR Web3 crypto infrastructure"
     
     payload = {
         "query": query,
         "useAutoprompt": True,
         "numResults": limit,
+        "includeDomains": target_domains,
         "contents": {
             "text": {
                 "maxCharacters": 3000
@@ -33,11 +44,22 @@ def search_deals_exa(region: str, limit: int = 5) -> str:
     }
 
     try:
+        # 1. Try search restricted to target platforms
+        print(f"Running targeted Exa search for {region} on specified domains: {target_domains}")
         response = requests.post("https://api.exa.ai/search", json=payload, headers=headers, timeout=20)
         response.raise_for_status()
         data = response.json()
         results = data.get("results", [])
         
+        # 2. Fallback to broad search if targeted search returns nothing
+        if not results:
+            print(f"No results found on target domains. Falling back to broad search for {region}.")
+            payload.pop("includeDomains", None)
+            response = requests.post("https://api.exa.ai/search", json=payload, headers=headers, timeout=20)
+            response.raise_for_status()
+            data = response.json()
+            results = data.get("results", [])
+            
         if not results:
             return f"No search results returned from Exa for region: {region}."
             
@@ -52,6 +74,7 @@ def search_deals_exa(region: str, limit: int = 5) -> str:
     except Exception as e:
         print(f"Exa search failed for {region}: {e}. Using mock data.")
         return get_mock_exa_data(region)
+
 
 def get_mock_exa_data(region: str) -> str:
     """Mock VC investment data for regions when Exa is missing or fails."""
