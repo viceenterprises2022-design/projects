@@ -124,7 +124,8 @@ def run_skills(skills):
         print(f"  [{label}] executing...", end=" ", flush=True)
         res = execute_skill(s["name"], s["params"])
         if not res or "error" in res:
-            print(f"FAILED: {res.get('error', 'no response')}")
+            err_msg = res.get("error", "no response") if res else "no response"
+            print(f"FAILED: {err_msg}")
             results[label] = None
         else:
             print("OK")
