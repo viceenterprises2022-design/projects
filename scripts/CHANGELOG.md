@@ -241,3 +241,8 @@ Dated history of work on this project. Source of truth: `AGENTS.md` Session Memo
 - Configured global Git memory and thread limits (pack.windowMemory to 256m, pack.threads to 2, pack.packSizeLimit to 256m, core.packedGitLimit to 256m, core.packedGitWindowSize to 256m) to prevent runaway resource allocation.
 - Ran git gc --prune=now with the new memory limits, safely packaging all loose objects and shrinking the .git directory size from 6.1GB to 1.2GB.
 - **Multica:** logged via `/logwork` on 2026-06-15
+
+### 2026-06-18: Crypto Intelligence Reporter AttributeError Fix
+- `crypto_intel_reporter.py` — Fixed AttributeError: 'NoneType' object has no attribute 'get' when execute_skill returns a None response. Spaced check to prevent failure when skill execution fails.
+- Verified and ran tests.
+- **Multica:** logged via `/logwork` on 2026-06-18
