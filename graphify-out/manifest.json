@@ -43835,8 +43835,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/scratch/run_live_deepdive.py": {
-    "mtime": 1781764374.3793733,
-    "ast_hash": "9e1f9040efb7e2aca24cf8df136b9b13",
+    "mtime": 1781765105.225053,
+    "ast_hash": "fba94214e5afa74cf65982263d831abe",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/vc-deepdive/daily_vc_deepdive_report.md": {
+    "mtime": 1781765169.551283,
+    "ast_hash": "8b6c401d940bfdc6bc351c05a1c7aea3",
     "semantic_hash": ""
   }
 }
