@@ -1,0 +1,41 @@
+{
+  "tx_hash": "aec05bdb582711e3226dd6076db7d18defd926718daf689063fa2df3181092e4",
+  "operator": "SYSTEM",
+  "started_at": "2026-06-19T07:22:03.283667+00:00",
+  "completed_at": "2026-06-19T07:22:05.929369+00:00",
+  "expected_amount": null,
+  "expected_to": null,
+  "checks": [
+    {
+      "section": "\u00a701",
+      "code": "01.1",
+      "name": "Transaction located on chain",
+      "status": "pass",
+      "detail": "Transaction located on: TronGrid/wallet, TronGrid/txinfo, TronScan",
+      "critical": true,
+      "raw_data": {
+        "tg_by_id": true,
+        "tg_info": true,
+        "tronscan": true
+      }
+    },
+    {
+      "section": "\u00a701",
+      "code": "01.2",
+      "name": "TRC20 transfer records extracted",
+      "status": "fail",
+      "detail": "No TRC20 Transfer events found in this transaction.\nThis may not be a TRC20 USDT transfer, or data is incomplete.",
+      "critical": true,
+      "raw_data": {}
+    }
+  ],
+  "final_status": "REJECTED",
+  "actual_amount": null,
+  "actual_to": null,
+  "block_number": null,
+  "confirmations": null,
+  "contract_address": null,
+  "sender_address": null,
+  "sender_is_contract": false,
+  "provider_consensus": {}
+}
