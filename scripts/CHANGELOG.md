@@ -253,3 +253,11 @@ Dated history of work on this project. Source of truth: `AGENTS.md` Session Memo
 - `crontab` — Configured a daily cron job scheduled at 4:00 AM IST to automate execution.
 - Verified successful live run and report delivery of the synthesized output to the Slack webhook channel.
 - **Multica:** logged via `/logwork` on 2026-06-18
+
+### 2026-06-19: VC Deep Dive Slack Migration and Weekly Schedule
+- `weekly_vc_deepdive_cron.sh` — Created weekly execution script to replace daily runner, updating target Slack webhook to `#vc-deepdive` channel (webhook: `https://hooks.slack.com/services/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`).
+- `crontab` — Updated the cron schedule from daily at 4:00 AM IST to weekly Mondays at 4:00 AM IST.
+- Removed old `daily_vc_deepdive_cron.sh` script to keep the repository clean.
+- Verified successful report delivery to the new webhook channel.
+- **Multica:** ALP-645 (done, assigned Vinod-AI-CEO)
+- **Multica:** logged via `/logwork` on 2026-06-19
