@@ -1,52 +1,27 @@
 [
   {
-    "title": "Google and Kaggle Launch Free AI Agents Vibe Coding Course — Registration Now Open | The Agent Report",
-    "url": "https://the-agent-report.com/2026/06/google-kaggle-free-ai-agents-vibe-coding-course-june-2026/",
-    "highlights": [
-      "Google and Kaggle have opened registration for the second edition of their free AI Agents Intensive course, running June 15–19, 2026. The updated curriculum introduces vibe coding — building AI agents using natural language as the primary programming interface — alongside new content on production deployment and a hands-on capstone project.\nThe first edition in November 2025 drew over 1.5 million learners, making it one of the most popular AI courses ever offered. This year’s version adds updated content, new speakers, and deeper coverage of agent quality, security, and deployment.\nEach day includes whitepapers, companion podcasts, hands-on code labs, and a daily livestream on Kaggle’s YouTube channel with course authors and Google engineers. Participants also get access to dedicated channels on Kaggle’s Discord for discussion and Q&A."
-    ],
-    "score": null,
-    "published_date": "2026-06-01T08:00:00.000Z",
-    "is_online": true
+    "title": "Navigating the Agentic Era: Data Analytics Innovation Roadmap (Google Cloud TechByte)",
+    "published_date": "2026-06-23T00:00:00Z",
+    "url": "https://cloud.google.com/events"
   },
   {
-    "title": "Agentic AI systems: from scruffy to neat | MIT CSAIL",
-    "url": "https://www.csail.mit.edu/event/agentic-ai-systems-scruffy-neat",
-    "highlights": [
-      "Agentic AI systems: from scruffy to neat\nGoogle Deepmind\nMIT CSAIL\n11:00A - 12:00P\nContact lpk@csail.mit.edu for Zoom password\nIn this talk I will outline various ways to build LLM-powered agents which use increasing degrees of formal reasoning, ranging from maximally \"scruffy\" or informal language-based methods up to maximally \"neat\" symbolic / probabilistic model-based methods.\nLevel 1 is a simple reactive agent, Level 2 uses \"chain of thought\" (and optional tool use), Level 3 uses the LLM to learn a policy in the form of code (AutoHarness), and Level 4 uses the LLM to learn an explicit world model and performs model-based planning and inference (Code World Models)."
-    ],
-    "score": null,
-    "published_date": "2026-06-07T11:45:45.000Z",
-    "is_online": true
+    "title": "AI Infrastructure in 2026: Architecting for Agentic AI (Google Cloud TechByte)",
+    "published_date": "2026-06-23T00:00:00Z",
+    "url": "https://cloud.google.com/events"
   },
   {
-    "title": "Voice for AI Agents and Applications - DeepLearning.AI",
-    "url": "https://www.deeplearning.ai/courses/voice-for-ai-agents-and-applications",
-    "highlights": [
-      "Voice for AI Agents and Applications - DeepLearning.AI\nCourse Beginner 1h26m\nThis course covers three practical integration patterns that meet you where you are: voice embedded in an application, voice layered onto an existing agent without touching its logic, and voice as a tool your LLM can call when it decides a conversation is the right modality."
-    ],
-    "score": null,
-    "published_date": "2026-06-17T09:13:37.000Z",
-    "is_online": true
+    "title": "Spec-Driven Development with Coding Agents (DeepLearning.AI)",
+    "published_date": "Upcoming",
+    "url": "https://www.deeplearning.ai"
   },
   {
-    "title": "Fast & Efficient LLM Inference with vLLM - DeepLearning.AI",
-    "url": "https://www.deeplearning.ai/courses/fast-and-efficient-llm-inference-with-vllm",
-    "highlights": [
-      "Fast & Efficient LLM Inference with vLLM - DeepLearning.AI\nIntroducing Fast & Efficient LLM Inference with vLLM, a short course built in partnership with Red Hat.\nLearn serving LLMs efficiently with vLLM, optimization fundamentals, and measuring benchmarks and evaluations."
-    ],
-    "score": null,
-    "published_date": "2026-06-09T16:35:02.000Z",
-    "is_online": true
+    "title": "Build Interactive Agents with Generative UI (DeepLearning.AI)",
+    "published_date": "Upcoming",
+    "url": "https://www.deeplearning.ai"
   },
   {
-    "title": "RAG and Context Engineering program | MIT xPRO",
-    "url": "https://mit-xpro-education.emeritus.com/rag-and-context-engineering",
-    "highlights": [
-      "RAG and Context Engineering program | MIT xPRO\nAn eight-week learning journey that equips technical professionals to design, evaluate, and deploy retrieval-aware large language model (LLM) systems that perform reliably in real-world environments.\nCovers advanced retrieval, context engineering, RAG architectures, evaluation, cost, security, and agentic workflows."
-    ],
-    "score": null,
-    "published_date": "2026-06-11T12:57:35.000Z",
-    "is_online": true
+    "title": "Building Effective AI Agents for Discovery & Innovation (Google Cloud Advanced Computing)",
+    "published_date": "2026-06-30T00:00:00Z",
+    "url": "https://cloud.google.com/events"
   }
 ]
