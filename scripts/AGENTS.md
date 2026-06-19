@@ -98,6 +98,14 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 
 ### Session Memory — Recent Work
 
+### 2026-06-19: Real-World Asset (RWA) & Stablecoin Daily Brief Pipeline
+- Built [rwa_daily_reporter.py](file:///home/vreddy1/Desktop/Projects/scripts/rwa_daily_reporter.py) — automated pipeline that searches Exa for H1 2026 updates, regenerates the structured RWA and stablecoins research report, and delivers the compiled intelligence to Slack.
+- Created curated global & African RWA report [rwa_stablecoin_deepdive_report.md](file:///home/vreddy1/Desktop/Projects/scripts/rwa_stablecoin_deepdive_report.md) with deep focus on case studies (Zone, Mansa, Kotani Pay, Yellow Card) and blockchain network trade-offs (Base, Celo, Stellar, private L1).
+- Configured `SLACK_WEBHOOK_RWA` in [.env](file:///home/vreddy1/Desktop/Projects/scripts/.env) targeting the user's correct Slack channel.
+- Deployed daily 6:00 AM IST execution for the pipeline inside crontab.
+- Verified successful immediate delivery and layout rendering of the report to the Slack channel.
+- **Multica:** ALP-610 (done, assigned Vinod-AI-CEO)
+
 ### 2026-06-17: Crypto Daily Brief Slack Webhook Migration
 - `crypto_to_notebooklm.py` — Rewrote the notification and delivery pipeline to migrate from Telegram to Slack. Implemented `step_send_slack()` and `slack_upload_file()` using Slack Block Kit Webhooks and the file upload API (`files.getUploadURLExternal` + `files.completeUploadExternal`), passing required parameter structure. Added CLI option `--slack`.
 - `.env` — Added `SLACK_WEBHOOK_CRYPTO` containing user's Slack webhook and set `SLACK_CHANNEL_CRYPTO` to `C0BANKSRUBH` (channel ID).
