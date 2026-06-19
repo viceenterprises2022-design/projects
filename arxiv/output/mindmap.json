@@ -1,108 +1,128 @@
 {
-  "name": "Parallel-Synthesis Framework",
+  "name": "Toward Calibrated Mixture-of-Experts Under Distribution Shift",
   "children": [
     {
-      "name": "Problem: Text-based Sequential Interface",
+      "name": "Background",
       "children": [
         {
-          "name": "Mismatch with DAG agent workflows"
+          "name": "Mixture-of-Experts (MoE)"
         },
         {
-          "name": "Redundant prefill computation costs"
+          "name": "Calibration and Proper Scoring"
         },
         {
-          "name": "Artificial dependencies in serialized contexts"
+          "name": "Routing Mechanisms"
+        },
+        {
+          "name": "Distribution Shift"
         }
       ]
     },
     {
-      "name": "Proposed Solution: Cache-based Synthesis",
+      "name": "Hard Routing Robustness",
       "children": [
         {
-          "name": "Direct KV cache consumption"
+          "name": "Expert-Confidence Statistic"
         },
         {
-          "name": "Positional re-encoding for branching"
+          "name": "Routing Region Reweighting"
         },
         {
-          "name": "Learnable cache mapper calibration"
-        },
-        {
-          "name": "Synthesizer LoRA adaptation"
+          "name": "Information Bottleneck"
         }
       ]
     },
     {
-      "name": "Training Methodology",
+      "name": "Soft Routing Fragility",
       "children": [
         {
-          "name": "Track 1: General Adaptation",
-          "children": [
-            {
-              "name": "Continued-pretraining on dialogues"
-            },
-            {
-              "name": "SFT on parallel-context tasks"
-            }
-          ]
+          "name": "Aggregation Collapse"
         },
         {
-          "name": "Track 2: Reasoning Distillation",
-          "children": [
-            {
-              "name": "Distilling from text-based synthesis"
-            },
-            {
-              "name": "Judgment over complex trajectories"
-            }
-          ]
+          "name": "Marginal Constraints"
         },
         {
-          "name": "Checkpoint merging (weighted averaging)"
+          "name": "Configuration Reweighting"
+        },
+        {
+          "name": "Expert Reliability vs Mixture Reliability"
         }
       ]
     },
     {
-      "name": "Performance Evaluation",
+      "name": "Proposed Robust Training",
       "children": [
         {
-          "name": "Efficiency Gains",
+          "name": "Adversarial Reweighting",
           "children": [
             {
-              "name": "2.5x to 11x TTFT reduction"
+              "name": "Entropy Balancing"
             },
             {
-              "name": "Avoided re-prefill of worker outputs"
+              "name": "Exponential Tilting"
+            },
+            {
+              "name": "High-Loss Proxy"
             }
           ]
         },
         {
-          "name": "Task Accuracy",
+          "name": "Objectives",
           "children": [
             {
-              "name": "Matches/Outperforms text in 7 of 9 datasets"
+              "name": "Robust MoE (Full Minibatch)"
             },
             {
-              "name": "Strong in reasoning-heavy tasks"
-            },
-            {
-              "name": "Effective in GAIA and MARBLE benchmarks"
+              "name": "Robust Filtered (Routing-Relevant)"
             }
           ]
         }
       ]
     },
     {
-      "name": "Key Advantages",
+      "name": "Experiments and Evaluation",
       "children": [
         {
-          "name": "Preserves rich latent reasoning states"
+          "name": "Benchmarks",
+          "children": [
+            {
+              "name": "CIFAR-10H (Ambiguity Shift)"
+            },
+            {
+              "name": "PACS (Domain Shift)"
+            },
+            {
+              "name": "CivilComments (Subpopulation Shift)"
+            }
+          ]
         },
         {
-          "name": "Reduces order-induced positional bias"
+          "name": "Key Findings",
+          "children": [
+            {
+              "name": "Reduced Hard-Subset ECE"
+            },
+            {
+              "name": "Improved Accuracy-Calibration Tradeoff"
+            },
+            {
+              "name": "Expert Calibration Insufficiency"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Related Work",
+      "children": [
+        {
+          "name": "Distributionally Robust Optimization"
         },
         {
-          "name": "Plug-and-play synthesizer adapter"
+          "name": "Multicalibration and Multiaccuracy"
+        },
+        {
+          "name": "Focal Loss Variants"
         }
       ]
     }
