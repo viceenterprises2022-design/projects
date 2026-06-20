@@ -1,27 +1,52 @@
 [
   {
-    "title": "Navigating the Agentic Era: Data Analytics Innovation Roadmap (Google Cloud TechByte)",
-    "published_date": "2026-06-23T00:00:00Z",
-    "url": "https://cloud.google.com/events"
+    "title": "5-Day AI Agents: Intensive Vibe Coding Course (Google & Kaggle)",
+    "url": "https://www.kaggle.com/markups/ai-agents-course",
+    "highlights": [
+      "A free, intensive course focusing on building AI agents from foundational concepts to production-ready systems using natural language interface (vibe coding). Self-paced learning and Capstone project open until July 6, 2026."
+    ],
+    "score": null,
+    "published_date": "2026-06-15T00:00:00.000Z",
+    "is_online": true
   },
   {
-    "title": "AI Infrastructure in 2026: Architecting for Agentic AI (Google Cloud TechByte)",
-    "published_date": "2026-06-23T00:00:00Z",
-    "url": "https://cloud.google.com/events"
+    "title": "AI Engineer World's Fair 2026 (San Francisco & Online)",
+    "url": "https://www.ai.engineer/worlds-fair",
+    "highlights": [
+      "One of the largest technical AI conferences, featuring agent development workshops and sessions on deploying AI systems at scale."
+    ],
+    "score": null,
+    "published_date": "2026-06-29T00:00:00.000Z",
+    "is_online": true
   },
   {
-    "title": "Spec-Driven Development with Coding Agents (DeepLearning.AI)",
-    "published_date": "Upcoming",
-    "url": "https://www.deeplearning.ai"
+    "title": "No Python, No Excuses: Build AI Agents with Mastra Hackathon",
+    "url": "https://unstop.com/hackathons/no-python-no-excuses-build-ai-agents-with-mastra-hidevs-1629853",
+    "highlights": [
+      "A specialized TypeScript AI agents hackathon using Mastra, Qdrant, and Enkrypt AI. Architecture Challenge ends July 4, Build Sprint July 4-11, 2026."
+    ],
+    "score": null,
+    "published_date": "2026-06-20T00:00:00.000Z",
+    "is_online": true
   },
   {
-    "title": "Build Interactive Agents with Generative UI (DeepLearning.AI)",
-    "published_date": "Upcoming",
-    "url": "https://www.deeplearning.ai"
+    "title": "India Agentic AI Open Hackathon (Online & Hybrid)",
+    "url": "https://www.openhackathons.org/",
+    "highlights": [
+      "A collaborative hackathon for developers to optimize and deploy multi-agent applications. Online kickoff on July 16, 2026."
+    ],
+    "score": null,
+    "published_date": "2026-07-16T00:00:00.000Z",
+    "is_online": true
   },
   {
-    "title": "Building Effective AI Agents for Discovery & Innovation (Google Cloud Advanced Computing)",
-    "published_date": "2026-06-30T00:00:00Z",
-    "url": "https://cloud.google.com/events"
+    "title": "Agentic AI Specialization with AgentOps",
+    "url": "https://krishnaik.in/",
+    "highlights": [
+      "A production-focused 5-month program covering modern Agentic AI frameworks (LangChain, LangGraph, CrewAI, AutoGen) and Model Context Protocol (MCP)."
+    ],
+    "score": null,
+    "published_date": "2026-06-10T00:00:00.000Z",
+    "is_online": true
   }
 ]
