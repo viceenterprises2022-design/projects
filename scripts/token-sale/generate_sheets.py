@@ -91,19 +91,20 @@ def build_excel_model():
     ws1["D4"] = "Current Inventory State"
     ws1["D4"].font = font_section
     
-    inv_data = [
-        ("Total Base Stock (Tokens):", "=B5*1000000000"),
-        ("Total Sold (Tokens):", "=B6*1000000000"),
-        ("Remaining Inventory (Tokens):", "=B12-B13"),
-        ("Remaining Inventory (1B packs):", "=B5-B6"),
-        ("Total Landing Cost (Remaining):", "=B15*B7*1000")
-    ]
-    
+    # We will write these formulas to column B in row 12 to 16 to keep the sheet organized
     ws1["B12"] = "=B5*1000000000"
     ws1["B13"] = "=B6*1000000000"
     ws1["B14"] = "=B12-B13"
     ws1["B15"] = "=B5-B6"
     ws1["B16"] = "=B15*B7*1000"
+
+    inv_data = [
+        ("Total Base Stock (Tokens):", "=B12"),
+        ("Total Sold (Tokens):", "=B13"),
+        ("Remaining Inventory (Tokens):", "=B14"),
+        ("Remaining Inventory (1B packs):", "=B15"),
+        ("Total Landing Cost (Remaining):", "=B16")
+    ]
 
     for idx, (label, formula) in enumerate(inv_data, 5):
         ws1.cell(row=idx, column=4, value=label).font = font_bold
@@ -132,23 +133,10 @@ def build_excel_model():
         cell.alignment = align_center
     ws1.row_dimensions[16].height = 25
 
-    ws1["B17"] = "=B14/1000000"
-    ws1["C17"] = "=B9"
-    ws1["D17"] = "=B17*C17"
-    ws1["E17"] = "=B17*B7"
-    ws1["F17"] = "=D17-E17"
-    ws1["G17"] = "=F17/D17"
-
-    ws1["B18"] = "=B14/100000"
-    ws1["C18"] = "=B9"
-    ws1["D18"] = "=B18*C18"
-    ws1["E18"] = "=B18*(B7/10)"
-    ws1["F18"] = "=D18-E18"
-    ws1["G18"] = "=F18/D18"
-
+    # Direct formula definitions for rows 17 and 18 to prevent circular referencing
     scenarios = [
-        ("Scenario A (1 Block = 1M Tokens)", "=B17", "=C17", "=D17", "=E17", "=F17", "=G17"),
-        ("Scenario B (1 Block = 100k Tokens)", "=B18", "=C18", "=D18", "=E18", "=F18", "=G18")
+        ("Scenario A (1 Block = 1M Tokens)", "=B14/1000000", "=B9", "=B17*C17", "=B17*B7", "=D17-E17", "=F17/D17"),
+        ("Scenario B (1 Block = 100k Tokens)", "=B14/100000", "=B9", "=B18*C18", "=B18*(B7/10)", "=D18-E18", "=F18/D18")
     ]
 
     for r_idx, (label, blk, prc, rev, cogs, prof, pct) in enumerate(scenarios, 17):
@@ -274,22 +262,18 @@ def build_excel_model():
         cell.alignment = align_center
     ws3.row_dimensions[4].height = 25
 
-    # Models data from the specified URLs
     official_models = [
-        # OpenAI Models
         ("OpenAI", "GPT-5.5 Standard", 5.00, 30.00, "=C5*0.8+D5*0.2", 3.00, "=1-('Executive Dashboard'!B7/F5)"),
         ("OpenAI", "GPT-5.5 Pro", 30.00, 180.00, "=C6*0.8+D6*0.2", 20.00, "=1-('Executive Dashboard'!B7/F6)"),
         ("OpenAI", "GPT-5.4 Standard", 2.50, 15.00, "=C7*0.8+D7*0.2", 2.00, "=1-('Executive Dashboard'!B7/F7)"),
         ("OpenAI", "GPT-5.4 Mini", 0.75, 4.50, "=C8*0.8+D8*0.2", 0.60, "=1-('Executive Dashboard'!B7/F8)"),
         ("OpenAI", "GPT-5.4 Nano", 0.20, 1.25, "=C9*0.8+D9*0.2", 0.16, "=1-('Executive Dashboard'!B7/F9)"),
         
-        # Claude Models
         ("Anthropic", "Claude Fable 5", 10.00, 50.00, "=C10*0.8+D10*0.2", 8.00, "=1-('Executive Dashboard'!B7/F10)"),
         ("Anthropic", "Claude Opus 4.8", 5.00, 25.00, "=C11*0.8+D11*0.2", 4.00, "=1-('Executive Dashboard'!B7/F11)"),
         ("Anthropic", "Claude Sonnet 4.6", 3.00, 15.00, "=C12*0.8+D12*0.2", 2.40, "=1-('Executive Dashboard'!B7/F12)"),
         ("Anthropic", "Claude Haiku 4.5", 1.00, 5.00, "=C13*0.8+D13*0.2", 0.80, "=1-('Executive Dashboard'!B7/F13)"),
         
-        # Gemini Models
         ("Google", "Gemini 3.1 Pro Preview", 2.00, 12.00, "=C14*0.8+D14*0.2", 1.60, "=1-('Executive Dashboard'!B7/F14)"),
         ("Google", "Gemini 3.5 Flash", 1.50, 9.00, "=C15*0.8+D15*0.2", 1.20, "=1-('Executive Dashboard'!B7/F15)"),
         ("Google", "Gemini 3.1 Flash-Lite", 0.25, 1.50, "=C16*0.8+D16*0.2", 0.20, "=1-('Executive Dashboard'!B7/F16)"),
