@@ -1,128 +1,128 @@
 {
-  "name": "Toward Calibrated Mixture-of-Experts Under Distribution Shift",
+  "name": "Cross-Attention Attribution in Style-Captioned TTS",
   "children": [
     {
-      "name": "Background",
+      "name": "Core Methodology",
       "children": [
         {
-          "name": "Mixture-of-Experts (MoE)"
-        },
-        {
-          "name": "Calibration and Proper Scoring"
-        },
-        {
-          "name": "Routing Mechanisms"
-        },
-        {
-          "name": "Distribution Shift"
-        }
-      ]
-    },
-    {
-      "name": "Hard Routing Robustness",
-      "children": [
-        {
-          "name": "Expert-Confidence Statistic"
-        },
-        {
-          "name": "Routing Region Reweighting"
-        },
-        {
-          "name": "Information Bottleneck"
-        }
-      ]
-    },
-    {
-      "name": "Soft Routing Fragility",
-      "children": [
-        {
-          "name": "Aggregation Collapse"
-        },
-        {
-          "name": "Marginal Constraints"
-        },
-        {
-          "name": "Configuration Reweighting"
-        },
-        {
-          "name": "Expert Reliability vs Mixture Reliability"
-        }
-      ]
-    },
-    {
-      "name": "Proposed Robust Training",
-      "children": [
-        {
-          "name": "Adversarial Reweighting",
+          "name": "DAAM Adaptation",
           "children": [
             {
-              "name": "Entropy Balancing"
+              "name": "Temporal Heatmaps"
             },
             {
-              "name": "Exponential Tilting"
+              "name": "25 Transformer Layers"
             },
             {
-              "name": "High-Loss Proxy"
+              "name": "24 ODE Steps"
             }
           ]
         },
         {
-          "name": "Objectives",
+          "name": "Model: CapSpeech",
           "children": [
             {
-              "name": "Robust MoE (Full Minibatch)"
+              "name": "T5 Caption Encoder"
             },
             {
-              "name": "Robust Filtered (Routing-Relevant)"
+              "name": "Flow-Matching DiT"
+            },
+            {
+              "name": "HiFi-GAN Vocoder"
+            }
+          ]
+        },
+        {
+          "name": "Token Categorization",
+          "children": [
+            {
+              "name": "Style Tokens"
+            },
+            {
+              "name": "Content Tokens"
+            },
+            {
+              "name": "Function Tokens"
             }
           ]
         }
       ]
     },
     {
-      "name": "Experiments and Evaluation",
+      "name": "Key Findings",
       "children": [
         {
-          "name": "Benchmarks",
+          "name": "Global vs Local Conditioning",
           "children": [
             {
-              "name": "CIFAR-10H (Ambiguity Shift)"
+              "name": "Style tokens: Low temporal variance"
             },
             {
-              "name": "PACS (Domain Shift)"
+              "name": "Style tokens: Global modulators"
             },
             {
-              "name": "CivilComments (Subpopulation Shift)"
+              "name": "Function tokens: High temporal variance"
             }
           ]
         },
         {
-          "name": "Key Findings",
+          "name": "Acoustic Grounding",
           "children": [
             {
-              "name": "Reduced Hard-Subset ECE"
+              "name": "Style attention correlates with F0"
             },
             {
-              "name": "Improved Accuracy-Calibration Tradeoff"
+              "name": "Style attention correlates with energy"
             },
             {
-              "name": "Expert Calibration Insufficiency"
+              "name": "Semantic coherence: 'loud' correlates with energy"
+            }
+          ]
+        },
+        {
+          "name": "Layer and Step Dynamics",
+          "children": [
+            {
+              "name": "Style peaks in early ODE steps"
+            },
+            {
+              "name": "Style peaks in deep transformer layers"
+            },
+            {
+              "name": "Selective attention: Layer 17 entropy minimum"
             }
           ]
         }
       ]
     },
     {
-      "name": "Related Work",
+      "name": "Analysis Metrics",
       "children": [
         {
-          "name": "Distributionally Robust Optimization"
+          "name": "Temporal Variance"
         },
         {
-          "name": "Multicalibration and Multiaccuracy"
+          "name": "Peak-to-Mean Ratio (PMR)"
         },
         {
-          "name": "Focal Loss Variants"
+          "name": "Temporal Entropy"
+        },
+        {
+          "name": "Pearson Correlation"
+        }
+      ]
+    },
+    {
+      "name": "Significance",
+      "children": [
+        {
+          "name": "First TTS cross-attention study"
+        },
+        {
+          "name": "Hierarchical conditioning evidence"
+        },
+        {
+          "name": "Interpretable style pathways"
         }
       ]
     }
