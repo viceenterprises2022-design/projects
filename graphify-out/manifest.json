@@ -36165,8 +36165,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/results/Data/large_deals.json": {
-    "mtime": 1782186910.5411477,
-    "ast_hash": "2615e5d229e146b933e8a62fbf2e250e",
+    "mtime": 1782273306.6111217,
+    "ast_hash": "c981da9059b5ef754eaeb9674f11a155",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_1_2026-05-25.txt": {
@@ -43996,6 +43996,146 @@
   },
   "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_24_2026-06-23.txt": {
     "mtime": 1782209122.7479532,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/opencode.json": {
+    "mtime": 1782275229.5456445,
+    "ast_hash": "1551b9a5d6f2483ae79aba123b25793e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/hooks/ponytail-config.js": {
+    "mtime": 1782275164.266475,
+    "ast_hash": "3ac89777a8d68777f07e8b89d7d2897b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/hooks/ponytail-subagent.js": {
+    "mtime": 1782275174.5013447,
+    "ast_hash": "1beb87a7964c5e4bbd24290f949617d5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/hooks/ponytail-activate.js": {
+    "mtime": 1782275173.7213547,
+    "ast_hash": "c0ad11a6a488b64a6800272dda890026",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/hooks/ponytail-instructions.js": {
+    "mtime": 1782275159.6505337,
+    "ast_hash": "efa7ad2aa9649121476a317baef81917",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/hooks/ponytail-mode-tracker.js": {
+    "mtime": 1782275169.5674074,
+    "ast_hash": "1760de5480a74798418a1f7510619b9d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/hooks/ponytail-runtime.js": {
+    "mtime": 1782275166.8954415,
+    "ast_hash": "2173e5c4371ff30f52d96122f151118d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/plugins/ponytail.mjs": {
+    "mtime": 1782275134.5928524,
+    "ast_hash": "bb0b21fe3aaa02b04cb1e488c3cb39aa",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/skills/ponytail/SKILL.md": {
+    "mtime": 1782275195.9040725,
+    "ast_hash": "d8efb23f9f0c9ac549d9d24ee3ac534c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/skills/ponytail-help/SKILL.md": {
+    "mtime": 1782275215.7338202,
+    "ast_hash": "80f1b99576cb83ed738d7be3adca24a5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/skills/ponytail-audit/SKILL.md": {
+    "mtime": 1782275203.6179743,
+    "ast_hash": "2a757432defa9d63639a3aca3bbbf23a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/skills/ponytail-debt/SKILL.md": {
+    "mtime": 1782275207.09593,
+    "ast_hash": "33f49652fe513cf08082e9bcf8e2ecf2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/skills/ponytail-gain/SKILL.md": {
+    "mtime": 1782275210.8458824,
+    "ast_hash": "e0090358fafc0a4b01716b88399e8405",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/skills/ponytail-review/SKILL.md": {
+    "mtime": 1782275200.3330162,
+    "ast_hash": "438e2414888145bc0108fa63f64314fd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/command/ponytail-debt.md": {
+    "mtime": 1782275139.8997848,
+    "ast_hash": "a23bd5acee5a039b652967807017577b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/command/ponytail-audit.md": {
+    "mtime": 1782275138.2688057,
+    "ast_hash": "a0ef3e7017d40d8933f92f2069dc3abb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/command/ponytail-help.md": {
+    "mtime": 1782275144.063732,
+    "ast_hash": "eaf3a8458ae326aca900e386898f436b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/command/ponytail.md": {
+    "mtime": 1782275135.6248393,
+    "ast_hash": "b7041a180625953799d0eb63d53c9ec7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/command/ponytail-review.md": {
+    "mtime": 1782275136.8568237,
+    "ast_hash": "8232fafb655acddc8449d84f8687430f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/.opencode/command/ponytail-gain.md": {
+    "mtime": 1782275141.8407602,
+    "ast_hash": "ef5577d3bd8411b8e5638ae5999176b8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_44_2026-06-24.txt": {
+    "mtime": 1782273314.8720164,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_13_2026-06-24.txt": {
+    "mtime": 1782273310.8780673,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_1_2026-06-24.txt": {
+    "mtime": 1782273319.1789615,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_13_2026-06-24.txt": {
+    "mtime": 1782273335.634752,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_1_1_2026-06-24.txt": {
+    "mtime": 1782273306.9911168,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_24_2026-06-24.txt": {
+    "mtime": 1782273323.21791,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_23_2026-06-24.txt": {
+    "mtime": 1782273331.378806,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/pkscreener/actions-data-scan/X_12_44_2026-06-24.txt": {
+    "mtime": 1782273327.306858,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
   }
