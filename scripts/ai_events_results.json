@@ -1,52 +1,27 @@
 [
   {
-    "title": "Mastra Live Workshop: Patterns for Production AI Agents",
-    "url": "https://lu.ma/mastra",
-    "highlights": [
-      "Live hands-on workshop focused on building and deploying production-ready AI agents. Covers multi-step reasoning, tool delegation, and reliable error-recovery patterns."
-    ],
-    "score": null,
-    "published_date": "2026-06-30T10:00:00.000Z",
-    "is_online": true
+    "title": "Google I/O Connect 2026 (Bengaluru) - Deep Dive into Gemini & AI Studio",
+    "url": "https://io.google",
+    "published_date": "2026-07-14"
   },
   {
-    "title": "Mastra Live Workshop: Build a Software Factory with Mastra",
-    "url": "https://lu.ma/mastra",
-    "highlights": [
-      "Learn to design and orchestrate a multi-agent system that automates software development tasks from specification to code generation and testing."
-    ],
-    "score": null,
-    "published_date": "2026-07-02T10:00:00.000Z",
-    "is_online": true
+    "title": "AMD Advancing AI 2026 Developer Event - Enterprise AI & Model Deployment",
+    "url": "https://www.amd.com",
+    "published_date": "2026-07-22"
   },
   {
-    "title": "Mastra Live Workshop: Build a Co-Working Agent with Mastra",
-    "url": "https://lu.ma/mastra",
-    "highlights": [
-      "Explores design patterns for collaborative AI agents that work alongside human developers in shared workspaces, managing state and context dynamically."
-    ],
-    "score": null,
-    "published_date": "2026-07-09T10:00:00.000Z",
-    "is_online": true
+    "title": "DeepLearning.AI Short Course: Building Agentic AI Systems with Andrew Ng",
+    "url": "https://www.deeplearning.ai/",
+    "published_date": "2026-06-24"
   },
   {
-    "title": "Mastra Live Workshop: Building Long-Running Agents with Mastra",
-    "url": "https://lu.ma/mastra",
-    "highlights": [
-      "Master state persistence, signal handling, notification triggers, and user-in-the-loop steering mechanisms for long-running asynchronous agent processes."
-    ],
-    "score": null,
-    "published_date": "2026-07-30T10:00:00.000Z",
-    "is_online": true
+    "title": "AI for Good Global Summit 2026 - Workshops & Virtual Keynotes",
+    "url": "https://aiforgood.itu.int/summit26/",
+    "published_date": "2026-07-07"
   },
   {
-    "title": "OpenAI Academy: Self-Paced AI Workflows and Agents Program",
-    "url": "https://academy.openai.com/",
-    "highlights": [
-      "Comprehensive, self-paced learning path focused on building automated AI workflows, leveraging prompt engineering, and deploying custom workspace agents."
-    ],
-    "score": null,
-    "published_date": "2026-06-23T00:00:00.000Z",
-    "is_online": true
+    "title": "A3 Webinar: Industrial AI in Action - Case Studies of Automation Innovation",
+    "url": "https://www.automate.org",
+    "published_date": "2026-09-17"
   }
 ]
