@@ -44138,5 +44138,25 @@
     "mtime": 1782273327.306858,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/kesarcloud-faq/build.sh": {
+    "mtime": 1782295195.462177,
+    "ast_hash": "846bf80f19c9dab798cf9e0f32d39e00",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/kesarcloud-faq/faq.md": {
+    "mtime": 1782295168.0595248,
+    "ast_hash": "097470a50fa4f7e4295ed6c6eb0e5906",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/kesarcloud-faq/faq.html": {
+    "mtime": 1782295191.0292335,
+    "ast_hash": "185b9aadcd420fc28ba9b4476639e0ef",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/kesarcloud-faq/internal_prep.md": {
+    "mtime": 1782295176.5114174,
+    "ast_hash": "18a80e513f010b6c7e569950decbf7e0",
+    "semantic_hash": ""
   }
 }
