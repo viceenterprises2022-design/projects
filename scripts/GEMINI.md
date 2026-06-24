@@ -18,5 +18,7 @@ Always enable the following modes at the start of every session:
 3. **rtk** — Runtime-contract enforcement and rapid test validation.
 4. **graphify** — Dynamic knowledge graph creation.
 5. **mempalace** — Memory palace structured indexing.
+6. **ponytail** — Switch to ponytail mode to think lazy senior dev style (YAGNI).
 
 Never revert these modes unless user explicitly requests "stop caveman" or "normal mode".
+
