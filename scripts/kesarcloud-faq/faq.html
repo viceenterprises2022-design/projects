@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KesarCloud Unified API Access — Customer FAQ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        @page {
+            size: A4;
+            margin: 20mm 15mm 20mm 15mm;
+            @bottom-right {
+                content: counter(page);
+                font-family: 'Inter', sans-serif;
+                font-size: 9px;
+                color: #64748B;
+            }
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #334155;
+            line-height: 1.6;
+            font-size: 11.5pt;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF;
+            -webkit-print-color-adjust: exact;
+        }
+
+        h1, h2, h3, h4 {
+            color: #0F172A;
+            font-weight: 600;
+            page-break-after: avoid;
+        }
+
+        /* Cover Page Styling */
+        .cover-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            page-break-after: always;
+            box-sizing: border-box;
+            padding: 40px 0;
+        }
+
+        .brand-logo-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            border-radius: 8px;
+            display: inline-block;
+            margin-right: 12px;
+            box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.2);
+        }
+
+        .logo-text {
+            font-size: 20pt;
+            font-weight: 700;
+            color: #0F172A;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #D97706;
+        }
+
+        .cover-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tagline {
+            font-size: 11pt;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #D97706;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .cover-title {
+            font-size: 32pt;
+            line-height: 1.2;
+            color: #0F172A;
+            margin: 0 0 24px 0;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .cover-subtitle {
+            font-size: 14pt;
+            color: #475569;
+            max-width: 90%;
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            border-top: 1px solid #E2E8F0;
+            padding-top: 32px;
+            max-width: 600px;
+        }
+
+        .meta-item {
+            font-size: 10pt;
+        }
+
+        .meta-label {
+            color: #64748B;
+            text-transform: uppercase;
+            font-size: 8pt;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .meta-val {
+            color: #1E293B;
+            font-weight: 500;
+        }
+
+        .footer-banner {
+            border-top: 1px solid #E2E8F0;
+            padding-top: 20px;
+            font-size: 9pt;
+            color: #94A3B8;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Document Layout */
+        .header-running {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+            font-size: 8.5pt;
+            color: #64748B;
+        }
+
+        .header-running .brand {
+            font-weight: 600;
+            color: #0F172A;
+        }
+
+        .content-section {
+            page-break-after: always;
+        }
+
+        .content-section:last-child {
+            page-break-after: avoid;
+        }
+
+        h2.section-title {
+            font-size: 16pt;
+            border-bottom: 2px solid #F1F5F9;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 24px;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+        }
+
+        h2.section-title::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background-color: #D97706;
+            margin-right: 10px;
+            display: inline-block;
+            border-radius: 2px;
+        }
+
+        .faq-item {
+            margin-bottom: 28px;
+            page-break-inside: avoid;
+        }
+
+        .faq-question {
+            font-size: 12pt;
+            font-weight: 600;
+            color: #1E293B;
+            margin-bottom: 8px;
+            display: flex;
+        }
+
+        .faq-question .q-prefix {
+            color: #D97706;
+            margin-right: 8px;
+            font-weight: 700;
+        }
+
+        .faq-answer {
+            color: #475569;
+            padding-left: 28px;
+            font-size: 11pt;
+            text-align: justify;
+        }
+
+        /* Pricing Table Styling */
+        table.pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            font-size: 10pt;
+        }
+
+        table.pricing-table th {
+            background-color: #0F172A;
+            color: #FFFFFF;
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 12px;
+            border: 1px solid #1E293B;
+        }
+
+        table.pricing-table td {
+            padding: 8px 12px;
+            border: 1px solid #E2E8F0;
+        }
+
+        table.pricing-table tr:nth-child(even) {
+            background-color: #F8FAFC;
+        }
+
+        table.pricing-table td.reseller-price {
+            font-weight: 600;
+            color: #D97706;
+            background-color: #FFFBEB;
+        }
+
+        table.pricing-table td.savings {
+            font-weight: 600;
+            color: #10B981;
+            background-color: #ECFDF5;
+        }
+
+        .table-note {
+            font-size: 8.5pt;
+            color: #64748B;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .callout-box {
+            background-color: #F8FAFC;
+            border-left: 4px solid #475569;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+            font-size: 10.5pt;
+        }
+
+        .callout-box.pilot {
+            border-left-color: #D97706;
+            background-color: #FFFBEB;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: #1E293B;
+            margin-bottom: 4px;
+        }
+
+        .footer-running {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8pt;
+            color: #94A3B8;
+            border-top: 1px solid #F1F5F9;
+            padding-top: 8px;
+            background-color: #FFFFFF;
+        }
+
+        .page-num::after {
+            content: counter(page);
+        }
+        
+        .visible-print-header {
+            display: none;
+        }
+
+        @media print {
+            .cover-page {
+                height: 95vh;
+            }
+            .visible-print-header {
+                display: flex;
+            }
+            .no-print {
+                display: none;
+            }
+            body {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="brand-logo-section">
+            <div class="logo-icon"></div>
+            <div class="logo-text">Kesar<span>Cloud</span></div>
+        </div>
+        
+        <div class="cover-content">
+            <div class="tagline">Enterprise Intelligence Gateway</div>
+            <h1 class="cover-title">Unified API Access<br>Customer FAQ</h1>
+            <p class="cover-subtitle">Operational, legal, security, and financial documentation regarding proxy API access to leading frontier Large Language Models.</p>
+            
+            <div class="metadata-grid">
+                <div class="meta-item">
+                    <div class="meta-label">Version</div>
+                    <div class="meta-val">1.0 (Enterprise Release)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Date</div>
+                    <div class="meta-val">June 24, 2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Classification</div>
+                    <div class="meta-val">Commercial in Confidence</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Audience</div>
+                    <div class="meta-val">Procurement &amp; Engineering</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-banner">
+            <div>© 2026 KesarCloud Technologies. All rights reserved.</div>
+            <div>kesarcloud.in</div>
+        </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="content-section">
+        <div class="header-running">
+            <div class="brand">KesarCloud</div>
+            <div>Unified API Access — Customer FAQ</div>
+        </div>
+
+        <h2 class="section-title">1. Access &amp; Verification</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q1.</span>
+                <span>Whose API keys are these, and can I verify usage directly in OpenAI/Anthropic/Google’s own billing dashboard under my own account?</span>
+            </div>
+            <div class="faq-answer">
+                These are proxy API keys issued and managed directly through KesarCloud's gateway routing system. Because the keys map to upstream corporate developer accounts subsidized under our corporate benefit structures, direct access to the upstream provider (OpenAI, Anthropic, Google) billing dashboards is not possible. All telemetry, consumption logs, and billing meters are integrated and transparently visible in real-time inside the secure KesarCloud Unified Console.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q2.</span>
+                <span>What is the exact mechanism by which “tokens” are transferred - is this literally an OpenAI/Anthropic/Google enterprise agreement assigned to me, or are you acting as a reseller proxy?</span>
+            </div>
+            <div class="faq-answer">
+                KesarCloud acts as a reseller proxy and API gateway. There is no direct enterprise agreement assigned from the upstream providers to your organization. Instead, token allocation and request routing are managed by KesarCloud's proxy layer, which translates standard API payloads and forwards them to provider endpoints. This reseller structure allows us to bundle volumes and pass significant cost savings down to our clients.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q3.</span>
+                <span>Can you provide the underlying enterprise contract or reseller agreement with these three providers?</span>
+            </div>
+            <div class="faq-answer">
+                No. KesarCloud does not disclose internal partner contracts or corporate benefit allocation agreements, as these contain proprietary pricing and relationship details. Access is delivered on a white-labeled basis via our proxy endpoints, legally backed by our Master Services Agreement (MSA) and Service Level Agreements (SLAs).
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q4.</span>
+                <span>Who is the legal entity behind this offer, and what jurisdiction/license do they operate under?</span>
+            </div>
+            <div class="faq-answer">
+                The service is operated by KesarCloud (kesarcloud.in). The specific legal entity details, licenses, and governing jurisdictions are disclosed in detail during the Master Services Agreement (MSA) draft phase, aligned to mutually acceptable terms with your legal team.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q5.</span>
+                <span>What happens technically when I “use” a token - am I given API keys, a dashboard, or something else?</span>
+            </div>
+            <div class="faq-answer">
+                Technically, your engineering team is provisioned with secure KesarCloud API keys and access to our Customer Dashboard. You integrate the service by simply updating the API base URL in your existing client libraries (OpenAI/Anthropic compatible SDKs) to point to KesarCloud. The dashboard provides comprehensive usage charts, request logging, cost alerts, and key management interfaces.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q6.</span>
+                <span>Can I pay only after a small test transaction is verified independently?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. KesarCloud provides a complimentary trial credit of 1 Million Token Context to let your engineering team verify API compatibility, connection speeds, model output integrity, and latency before committing to a paid contract.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="content-section">
+        <div class="header-running">
+            <div class="brand">KesarCloud</div>
+            <div>Unified API Access — Customer FAQ</div>
+        </div>
+
+        <h2 class="section-title">2. Technical Operation &amp; Reliability</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q7.</span>
+                <span>Where is the proxy hosted?</span>
+            </div>
+            <div class="faq-answer">
+                The KesarCloud proxy layer is hosted on high-availability, distributed cloud servers within secure USA-based data centers (primarily AWS and GCP). High-throughput connection tunnels ensure minimal latency overhead. Detailed hosting regions and IP ranges are available under NDA for client whitelisting.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q8.</span>
+                <span>What is the uptime SLA, and how do we monitor it?</span>
+            </div>
+            <div class="faq-answer">
+                We guarantee a monthly service uptime SLA of 99.5%. Historical and live uptime monitoring can be tracked at our Platform Status Page: <a href="https://www.kesarcloud.in/status" style="color: #D97706; text-decoration: none; font-weight: 500;">kesarcloud.in/status</a> (currently in staging and final build phase, launching Q3 2026).
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q9.</span>
+                <span>What happens technically if the proxy goes down mid-request?</span>
+            </div>
+            <div class="faq-answer">
+                If a network or proxy failure occurs mid-request, our gateway will return a standard HTTP <code>503 Service Unavailable</code> error accompanied by a <code>Retry-After</code> header. KesarCloud does not queue or buffer dropped requests. Standard client-side retry logic (e.g., exponential backoff) should be implemented on your application layer.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q10.</span>
+                <span>Are there rate limits enforced on the API keys?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. To safeguard upstream accounts and ensure platform stability, KesarCloud enforces default limits of 60 Requests Per Minute (RPM) and 100,000 Tokens Per Minute (TPM) per API key. These thresholds are flexible and can be scaled according to your volume tier and contract terms.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q11.</span>
+                <span>How does the proxy handle upstream provider outages (e.g., OpenAI or Anthropic downtime)?</span>
+            </div>
+            <div class="faq-answer">
+                We run automated health checks on all upstream providers every 30 seconds. If an upstream provider suffers an outage, the KesarCloud gateway can automatically failover and route requests to equivalent models from alternative providers (e.g., routing from Claude to Gemini) based on failover preferences configured in your dashboard.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="content-section">
+        <div class="header-running">
+            <div class="brand">KesarCloud</div>
+            <div>Unified API Access — Customer FAQ</div>
+        </div>
+
+        <h2 class="section-title">3. Billing &amp; Pricing</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q12.</span>
+                <span>How is usage metered?</span>
+            </div>
+            <div class="faq-answer">
+                Usage is metered exactly at the token level returned by the upstream provider's API headers (input tokens + output tokens). KesarCloud does not inject any metering overhead, markups, or artificial latency.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q13.</span>
+                <span>Do unused tokens roll over?</span>
+            </div>
+            <div class="faq-answer">
+                Standard token blocks are valid for 12 months from the date of purchase. For custom enterprise agreements, custom rollover parameters can be structured in the MSA.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q14.</span>
+                <span>What payment methods do you accept?</span>
+            </div>
+            <div class="faq-answer">
+                We accept bank transfers, ACH, and corporate wire transfers. For international clients, settlement in USDT/USDC is preferred for faster clearance.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q15.</span>
+                <span>Are there volume discounts?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. Tiered volume discounts are available starting at monthly commitments of 10M, 100M, and 1B tokens. Please refer to Appendix B for standard catalog rates or request a custom quote from our sales team.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="content-section">
+        <div class="header-running">
+            <div class="brand">KesarCloud</div>
+            <div>Unified API Access — Customer FAQ</div>
+        </div>
+
+        <h2 class="section-title">4. Security &amp; Compliance</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q16.</span>
+                <span>Do you log prompts and response completions?</span>
+            </div>
+            <div class="faq-answer">
+                No. We log only transaction metadata (token counts, model identifiers, timestamps, and error codes) for billing and rate-limiting purposes. Prompts and responses are processed transiently in-memory and are never written to disk. A Zero-Retention policy is standard for all enterprise plans.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q17.</span>
+                <span>Is data sent to upstream providers subject to their training policies?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. Because requests are forwarded to the official enterprise APIs of OpenAI, Anthropic, and Google, they are governed by their respective developer terms. These terms explicitly state that data submitted through API endpoints is not used for model training.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q18.</span>
+                <span>Do you offer Single Sign-On (SSO) or SAML integration?</span>
+            </div>
+            <div class="faq-answer">
+                SSO and SAML integration for the customer dashboard is on our product roadmap for Q4 2026. Currently, dashboard access is secured via email verification and token-based credentials.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="content-section">
+        <div class="header-running">
+            <div class="brand">KesarCloud</div>
+            <div>Unified API Access — Customer FAQ</div>
+        </div>
+
+        <h2 class="section-title">5. Compatibility &amp; Catalog</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q19.</span>
+                <span>Which models are supported in the KesarCloud catalog?</span>
+            </div>
+            <div class="faq-answer">
+                We support leading frontier and custom model architectures, including:
+                <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+                    <li><strong>Omega Plus</strong> (<code>omega-plus</code>): KesarCloud flagship frontier model (May 2026, 1M token context, high reasoning).</li>
+                    <li><strong>Claude Opus 4.7</strong> (<code>claude-opus-4-7</code>): Max reasoning tier from Anthropic.</li>
+                    <li><strong>Claude Opus 4.8</strong> (<code>claude-opus-4-8</code>): High reasoning tier from Anthropic.</li>
+                    <li><strong>Claude Sonnet 4.6</strong> (<code>claude-sonnet-4-6</code>): High reasoning tier from Anthropic.</li>
+                    <li><strong>GPT 5.5</strong> (<code>gpt-5.5</code>): Max reasoning flagship from OpenAI.</li>
+                    <li><strong>Gemini 3.1 Pro</strong> (<code>gemini-3.1-pro</code>): High reasoning tier from Google.</li>
+                    <li><strong>KesarCloud Technologies V4 Pro</strong> (<code>Omega Plus</code>): Medium reasoning tier.</li>
+                    <li><strong>Qwen 3.7 Plus</strong> (<code>qwen-3.7-plus</code>): Medium reasoning tier from Alibaba.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q20.</span>
+                <span>Can I use the same key across multiple models and providers?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. A single unified API key issued by KesarCloud allows you to interact with all supported models and providers, eliminating the need to manage multiple API credentials.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q21.</span>
+                <span>Can I "Bring Your Own Key" (BYOK)?</span>
+            </div>
+            <div class="faq-answer">
+                No. BYOK is not supported, as our reseller model and volume discounts are bound directly to the developer accounts managed under KesarCloud's allocation.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q22.</span>
+                <span>Is there a free tier?</span>
+            </div>
+            <div class="faq-answer">
+                We do not offer a permanent free tier. However, we provide a 1 Million Token credit for verification during the test phase (per Q6).
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q23.</span>
+                <span>What happens if I hit my quota mid-month?</span>
+            </div>
+            <div class="faq-answer">
+                Once quota is exhausted, requests return an HTTP <code>429 Too Many Requests</code> error. You can set up auto-recharge rules in the dashboard to automatically buy top-ups or upgrade your plan.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q24.</span>
+                <span>Can I set spending and budget limits?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. You can configure soft warning thresholds (email alerts) and hard spending caps in your KesarCloud dashboard.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q25.</span>
+                <span>Do you support streaming responses?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. Server-Sent Events (SSE) streaming is fully supported across all models and is compatible with standard SDK libraries.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q26.</span>
+                <span>Can I use this for fine-tuning?</span>
+            </div>
+            <div class="faq-answer">
+                Fine-tuning endpoints are not currently supported. Only inference (chat and text completions) is available.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q27.</span>
+                <span>Is there a proprietary SDK, or can I use standard libraries?</span>
+            </div>
+            <div class="faq-answer">
+                Our API is fully compatible with the standard OpenAI API specification. You can use standard OpenAI SDKs (Python, Node.js, etc.) by replacing the API key and changing the <code>base_url</code> to KesarCloud's endpoint.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q28.</span>
+                <span>What's your refund policy?</span>
+            </div>
+            <div class="faq-answer">
+                Unused tokens are refundable within 14 days of purchase, minus a 5% administrative fee. Used tokens are non-refundable.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="content-section">
+        <div class="header-running">
+            <div class="brand">KesarCloud</div>
+            <div>Unified API Access — Customer FAQ</div>
+        </div>
+
+        <h2 class="section-title">6. Support &amp; Agreements</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q29.</span>
+                <span>What is the support SLA and response time?</span>
+            </div>
+            <div class="faq-answer">
+                We offer 24/7 technical monitoring. Standard email ticket response SLA is 24 hours. Enterprise clients (>100M tokens/month) receive a dedicated Slack channel with a 4-hour SLA.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="q-prefix">Q30.</span>
+                <span>Can I get a custom Master Services Agreement (MSA) or custom SLA terms?</span>
+            </div>
+            <div class="faq-answer">
+                Yes. Custom MSAs and customized SLAs can be drafted for accounts with monthly commitments exceeding $10,000.
+            </div>
+        </div>
+    </div>
+
+    <!-- Appendix A & B -->
+    <div class="content-section">
+        <div class="header-running">
+            <div class="brand">KesarCloud</div>
+            <div>Unified API Access — Customer FAQ</div>
+        </div>
+
+        <h2 class="section-title">Appendix A: Test Transaction Process</h2>
+        <div class="faq-answer" style="padding-left: 0; text-align: left;">
+            To verify API routing, performance, and compatibility:
+            <ol style="margin: 12px 0; padding-left: 20px;">
+                <li style="margin-bottom: 8px;"><strong>Request Trial Key:</strong> Contact KesarCloud sales to request a test API key.</li>
+                <li style="margin-bottom: 8px;"><strong>Allocation:</strong> A credit of 1 Million Tokens will be allocated to your test credential.</li>
+                <li style="margin-bottom: 8px;"><strong>Integration:</strong> Update the base URL of your API client to point to <code>https://api.kesarcloud.in/v1</code> and use the test key.</li>
+                <li style="margin-bottom: 8px;"><strong>Telemetry Check:</strong> Execute model queries and monitor latency, completion logs, and token counts in the Customer Dashboard.</li>
+                <li style="margin-bottom: 8px;"><strong>Exhaustion/Expiry:</strong> The trial balance is valid for 7 days or until token depletion.</li>
+            </ol>
+        </div>
+
+        <h2 class="section-title" style="margin-top: 40px;">Appendix B: Pricing Schedule (June 2026)</h2>
+        <div class="faq-answer" style="padding-left: 0;">
+            <p style="margin-bottom: 16px;">The following catalog details pricing per 1 Million (1M) tokens. All prices are listed in USD.</p>
+            
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>AI Provider</th>
+                        <th>Model Name</th>
+                        <th>Input Cost ($/1M)</th>
+                        <th>Output Cost ($/1M)</th>
+                        <th>Blended Cost ($/1M)*</th>
+                        <th>KesarCloud Reseller Price ($/1M)</th>
+                        <th>Net Savings %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>OpenAI</strong></td>
+                        <td>GPT-5.5 Standard</td>
+                        <td>$5.00</td>
+                        <td>$30.00</td>
+                        <td>$10.00</td>
+                        <td class="reseller-price">$3.00</td>
+                        <td class="savings">70.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI</strong></td>
+                        <td>GPT-5.5 Pro</td>
+                        <td>$30.00</td>
+                        <td>$180.00</td>
+                        <td>$60.00</td>
+                        <td class="reseller-price">$20.00</td>
+                        <td class="savings">66.7%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI</strong></td>
+                        <td>GPT-5.4 Standard</td>
+                        <td>$2.50</td>
+                        <td>$15.00</td>
+                        <td>$5.00</td>
+                        <td class="reseller-price">$2.00</td>
+                        <td class="savings">60.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI</strong></td>
+                        <td>GPT-5.4 Mini</td>
+                        <td>$0.75</td>
+                        <td>$4.50</td>
+                        <td>$1.50</td>
+                        <td class="reseller-price">$0.60</td>
+                        <td class="savings">60.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenAI</strong></td>
+                        <td>GPT-5.4 Nano</td>
+                        <td>$0.20</td>
+                        <td>$1.25</td>
+                        <td>$0.41</td>
+                        <td class="reseller-price">$0.16</td>
+                        <td class="savings">61.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anthropic</strong></td>
+                        <td>Claude Fable 5</td>
+                        <td>$10.00</td>
+                        <td>$50.00</td>
+                        <td>$18.00</td>
+                        <td class="reseller-price">$8.00</td>
+                        <td class="savings">55.6%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anthropic</strong></td>
+                        <td>Claude Opus 4.8</td>
+                        <td>$5.00</td>
+                        <td>$25.00</td>
+                        <td>$9.00</td>
+                        <td class="reseller-price">$4.00</td>
+                        <td class="savings">55.6%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anthropic</strong></td>
+                        <td>Claude Sonnet 4.6</td>
+                        <td>$3.00</td>
+                        <td>$15.00</td>
+                        <td>$5.40</td>
+                        <td class="reseller-price">$2.40</td>
+                        <td class="savings">55.6%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anthropic</strong></td>
+                        <td>Claude Haiku 4.5</td>
+                        <td>$1.00</td>
+                        <td>$5.00</td>
+                        <td>$1.80</td>
+                        <td class="reseller-price">$0.80</td>
+                        <td class="savings">55.6%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google</strong></td>
+                        <td>Gemini 3.1 Pro Preview</td>
+                        <td>$2.00</td>
+                        <td>$12.00</td>
+                        <td>$4.00</td>
+                        <td class="reseller-price">$1.60</td>
+                        <td class="savings">60.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google</strong></td>
+                        <td>Gemini 3.5 Flash</td>
+                        <td>$1.50</td>
+                        <td>$9.00</td>
+                        <td>$3.00</td>
+                        <td class="reseller-price">$1.20</td>
+                        <td class="savings">60.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google</strong></td>
+                        <td>Gemini 3.1 Flash-Lite</td>
+                        <td>$0.25</td>
+                        <td>$1.50</td>
+                        <td>$0.50</td>
+                        <td class="reseller-price">$0.20</td>
+                        <td class="savings">60.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google</strong></td>
+                        <td>Gemini 2.5 Flash-Lite</td>
+                        <td>$0.10</td>
+                        <td>$0.40</td>
+                        <td>$0.16</td>
+                        <td class="reseller-price">$0.08</td>
+                        <td class="savings">50.0%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p class="table-note">* Blended Cost assumes an 80% input and 20% output token split. KesarCloud Reseller Price is calculated at a substantial discount compared to direct blended cost. Model availability and pricing are subject to upstream provider changes. Confirm with sales before contract execution.</p>
+        </div>
+    </div>
+
+</body>
+</html>
