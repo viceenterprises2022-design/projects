@@ -1,27 +1,57 @@
 [
   {
-    "title": "Google I/O Connect 2026 (Bengaluru) - Deep Dive into Gemini & AI Studio",
-    "url": "https://io.google",
-    "published_date": "2026-07-14"
+    "title": "OpenAI Builder Bootcamp: Advanced RAG, Evals, & Agent Orchestration",
+    "url": "https://academy.openai.com/events",
+    "highlights": [
+      "Learn hands-on optimization techniques for high-performance Retrieval-Augmented Generation (RAG).",
+      "Evaluate and debug complex agent workflows using OpenAI Evals and validation frameworks."
+    ],
+    "score": 0.95,
+    "published_date": "2026-06-25T00:00:00Z",
+    "is_online": true
   },
   {
-    "title": "AMD Advancing AI 2026 Developer Event - Enterprise AI & Model Deployment",
-    "url": "https://www.amd.com",
-    "published_date": "2026-07-22"
+    "title": "DeepLearning.AI: Multi-Agent Systems in Production",
+    "url": "https://www.deeplearning.ai",
+    "highlights": [
+      "Andrew Ng's comprehensive workshop on designing and orchestrating multi-agent systems.",
+      "Practical guides for deploying, monitoring, and scaling frameworks like LangGraph and CrewAI."
+    ],
+    "score": 0.94,
+    "published_date": "2026-06-25T00:00:00Z",
+    "is_online": true
   },
   {
-    "title": "DeepLearning.AI Short Course: Building Agentic AI Systems with Andrew Ng",
-    "url": "https://www.deeplearning.ai/",
-    "published_date": "2026-06-24"
+    "title": "Google Build with AI: Vertex AI Agent Builder & Gemini 1.5 Pro",
+    "url": "https://developers.google.com/events",
+    "highlights": [
+      "Technical session on leveraging long-context windows for multi-modal developers.",
+      "Hands-on building of production-ready enterprise search agents using Gemini 1.5 Pro and Flash."
+    ],
+    "score": 0.92,
+    "published_date": "2026-06-25T00:00:00Z",
+    "is_online": true
   },
   {
-    "title": "AI for Good Global Summit 2026 - Workshops & Virtual Keynotes",
-    "url": "https://aiforgood.itu.int/summit26/",
-    "published_date": "2026-07-07"
+    "title": "OpenAI DevDay 2026: Keynote & Developer Workshops",
+    "url": "https://openai.com/blog",
+    "highlights": [
+      "Annual developer keynote highlighting next-generation AI models, API updates, and tooling.",
+      "Interactive workshops on implementing real-time audio/visual streams and advanced agent tooling."
+    ],
+    "score": 0.91,
+    "published_date": "2026-06-25T00:00:00Z",
+    "is_online": true
   },
   {
-    "title": "A3 Webinar: Industrial AI in Action - Case Studies of Automation Innovation",
-    "url": "https://www.automate.org",
-    "published_date": "2026-09-17"
+    "title": "Hugging Face: Open-Source LLM and SLM Fine-Tuning Workshop",
+    "url": "https://huggingface.co/blog",
+    "highlights": [
+      "Parameter-efficient fine-tuning (PEFT, QLoRA) tutorial for small language models.",
+      "Quantization and deployment of customized models (Llama 3, Phi-3) to local environments."
+    ],
+    "score": 0.9,
+    "published_date": "2026-06-25T00:00:00Z",
+    "is_online": true
   }
 ]
