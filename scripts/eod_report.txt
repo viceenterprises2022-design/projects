@@ -2,28 +2,42 @@
 • *Deployment* (Status: planned) — 0/1 issues completed
 • *Tools* (Status: in_progress) — 79/85 issues completed
 • *LLM Cost Optimization* (Status: in_progress) — 0/6 issues completed
-• *Agents* (Status: in_progress) — 40/84 issues completed
+• *Agents* (Status: in_progress) — 40/88 issues completed
 • *Alphaedge Journal* (Status: in_progress) — 9/10 issues completed
 • *Chief-of-staff* (Status: completed) — 4/4 issues completed
 
 *2. Tasks Completed Today*
-• *ALP-684*: Crypto Realtime Prices for 2026-06-23
+• *ALP-704*: Retrieve real-time crypto prices (BTC, ETH, SOL) with last-day changes
   - *Executed by*: crypto-realtime-price
   - *Project*: None
   - *Key Output*:
-    ### Real-Time Cryptocurrency Prices (2026-06-23)
-    | Asset | Current Price (USD) | Previous Day Price (USD) | 24h Change (USD) | 24h Change (%) | Confidence | Sources Used |
-    | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-    | **BTC** | $64,221.53 | $64,145.28 | +$76.25 | +0.12% | 92% | coinbase, okx |
-    | **ETH** | $1,733.71 | $1,734.91 | -$1.20 | -0.07% | 92% | coinbase, okx |
-    | **SOL** | $71.97 | $73.83 | -$1.86 | -2.52% | 92% | coinbase, okx |
-    *Consensus API confidence score: 92% (aggregated from Coinbase and OKX).*
+    ### Real-Time Cryptocurrency Prices
+    | Symbol | Current Price (USD) | 24h Change |
+    |--------|---------------------|------------|
+    | **BTC** | $60,786.25 | -3.19% |
+    | **ETH** | $1,617.57 | -2.99% |
+    | **SOL** | $67.55 | -3.21% |
+    *Note: No code changes were committed to the repository because the `realtime-crypto-price-api` library is configured locally in workspace customizations (`.agents/skills/`), which are not tracked by the git repository.*
+• *ALP-703*: Crawl daily news and compile 10 detailed news points with 'Why It matters'
+  - *Executed by*: daily-news-crawl
+  - *Project*: None
+  - *Key Output*:
+    # AlphaEdge LLP — Daily News Briefing
+    **Date:** June 25, 2026
+    **Audience:** AlphaEdge Investment & Trading Teams
+    **Scope:** Global Macro, Crypto, Tech, and Financial Markets
+    ---
+    ## Executive Summary
+    - **Crypto Carnage:** Bitcoin fell below $60k and Ethereum hit ~$1.6k, driving the Fear & Greed index to 17/100 (Extreme Fear) as market cap dropped to $2.02T.
+    - **TradFi Resilience:** Large US banks successfully passed the Federal Reserve stress tests (absorbing $708B in simulated losses), leading to immediate dividend hikes from Citigroup and BNY Mellon.
+    ...
 
 *3. New Tasks Logged Today (Backlog)*
 • _No new backlog tasks created today._
 
 *4. Value-Add Workspace Insights*
-• *Active In-Review Tasks* (73):
+• *Active In-Review Tasks* (80):
+  • *ALP-705*: Generate Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
   • *ALP-685*: Market Intelligence 10-Factor Analysis for 2026-06-23 (Assignee: Deep Researcher Agent)
   • *ALP-589*: Market Intelligence Report (Assignee: Deep Researcher Agent)
   • *ALP-577*: COS-Daily: Market Intel & Macros Research (Assignee: Deep Researcher Agent)
@@ -32,6 +46,12 @@
   • *ALP-588*: Crypto Realtime Price (Assignee: crypto-realtime-price)
   • *ALP-576*: COS-Daily: Crypto Realtime Price Retrieval (Assignee: crypto-realtime-price)
   • *ALP-567*: Crypto Realtime Price Task (Assignee: crypto-realtime-price)
+  • *ALP-709*: 4BHK Villa Listings Research - East Bangalore/Sarjapura (Assignee: Real-Estate-Agent)
+  • *ALP-707*: Collect and Report Curated AI Events to Slack (Assignee: Python-Agent)
+  • *ALP-706*: Crawl AI Agents using Exa and Report to Slack (Assignee: Python-Agent)
+  • *ALP-697*: Run AI Search, Curate Top 5 Events, and Send Report to Slack (Assignee: Python-Agent)
+  • *ALP-696*: Daily AI Agent Tracking and Slack Reporting via Exa (Assignee: Python-Agent)
+  • *ALP-692*: COS-Daily-Update: Triggering news crawl, crypto prices, and market intelligence analysis (Assignee: chief-of-staff)
   • *ALP-689*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
   • *ALP-687*: Curate and send upcoming online AI events & news report (Assignee: Python-Agent)
   • *ALP-686*: Gather and Report Latest AI Agents and News via Exa and Slack (Assignee: Python-Agent)
@@ -97,10 +117,17 @@
   • *ALP-556*: Daily Market Overview Report to Telegram (Assignee: CMC Agent)
   • *ALP-555*: Generate and Send EOD Report to Management - June 10, 2026 (Assignee: chief-of-staff)
   • *ALP-554*: Execute daily_market_overview CMC skill and report to Telegram (Assignee: CMC Agent)
-• *Active In-Progress Tasks* (19):
+• *Active In-Progress Tasks* (26):
   • *ALP-580*: Knowledge-Sync (Assignee: knowledge-agent)
   • *ALP-571*: Knowledge-Sync (Assignee: knowledge-agent)
   • *ALP-561*: Knowledge-Sync: Fix Crypto Intel Reporter & Update Stale Dashboard Unit Tests (Assignee: knowledge-agent)
+  • *ALP-710*: EOD Report to Management (Assignee: chief-of-staff)
+  • *ALP-708*: Generate and send daily market overview report to Slack (Assignee: CMC Agent)
+  • *ALP-702*: COS - Orchestrate Daily News, Crypto, and Market Intel Reports (Assignee: chief-of-staff)
+  • *ALP-701*: Generate Daily Market Overview Telegram Report & Send to Slack (Assignee: CMC Agent)
+  • *ALP-700*: Generating and Sending EOD Report to Management via Slack (Assignee: chief-of-staff)
+  • *ALP-698*: Daily Market Overview Report to Slack (Assignee: CMC Agent)
+  • *ALP-691*: Generate Daily Market Overview Report & Send to Slack (Assignee: CMC Agent)
   • *ALP-690*: EOD Report to Management (Assignee: chief-of-staff)
   • *ALP-688*: Generate Daily Market Overview Report & Send to Slack (Assignee: CMC Agent)
   • *ALP-682*: COS Daily Update - 2026-06-23 (Assignee: chief-of-staff)
