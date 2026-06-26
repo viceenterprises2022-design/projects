@@ -1,0 +1,44 @@
+Liquid Hectere
+
+marketing happen in dubai https://luma.com/ZoniqxTokenizeConnect | Tuesday, April 29, 2025
+https://www.ainvest.com/news/zanzibar-launches-world-automated-digital-sez-2502/  | Thursday, Feb 27, 2025
+https://www.cvvc.com/blogs/from-dust-to-trust-how-blockchain-in-africa-is-powering-regenerative-farming-feeding-the-world | April 29, 2026 at DIFC, Dubai
+
+Africa’s First Tokenized Land Registry Platform
+This $70M issuance unlocks fractional ownership of Zanzibar’s SEZ-zoned land parcels—tokenized using Zoniqx’s regulatory-grade platform on the XRP Ledger. With direct land registry integration, smart contract-based compliance, and legal-grade title sync, it’s a first-of-its-kind African real estate offering.
+
+"This $70M issuance unlocks fractional ownership of Zanzibar's SEZ-zoned land parcels — tokenized using Zoniqx's regulatory-grade platform on the XRP Ledger. With direct land registry integration, smart contract-based compliance, and legal-grade title sync, it's a first-of-its-kind African real estate offering."
+
+| Component             | Detail                                                                             |
+| --------------------- | ---------------------------------------------------------------------------------- |
+| Blockchain            | XRP Ledger (natively integrated)                                                   |
+| Tokenization platform | Zoniqx TPaaS (Tokenization Platform-as-a-Service) luma                             |
+| Compliance protocol   | DyCIST (ERC-7518) — investor eligibility, KYC/AML enforced via smart contract luma |
+| Land integration      | Direct registry sync — legal-grade title on-chain luma                             |
+| Deal size             | $70M fractional issuance                                                           |
+| Asset                 | Zanzibar SEZ-zoned land parcels luma                                               |
+| Secondary liquidity   | Fractional trading, comparable to StegX marketplace model on XRPL luma             |
+
+Why the $70M Zanzibar Deal Is NOT Yet Visible On-Chain
+
+The LiquidHectare website describes a custodial "Vault" model — all real estate assets are acquired and locked into trusts within the Vault, then tokenized. This means:
+The trust/SPV structure is off-chain legal first — title sits with the Vault entity before tokens are minted on XRPL
+No XRPL issuer address, token ticker, or trust line is publicly disclosed on their website
+The $70M deal was announced as a showcase at the Zoniqx DIFC event (April 2026) — it may be in issuance/legal structuring phase, not yet live on-chain
+Zoniqx's DyCIST/TPaaS deployments are permissioned — token holders must pass KYC; the tokens won't be publicly visible on a block explorer without knowing the specific issuer wallet address
+The $70M Zanzibar XRPL land token is a real, structured deal but operates in a permissioned, KYC-gated environment — there is no public wallet address to look up on a block explorer without insider access. The on-chain token exists (or is imminent), but it's deliberately not broadcast to public RWA trackers.
+
+| Reason                           | Detail                                                                                                                                                          |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Permissioned issuance            | Zoniqx's DyCIST/ERC-7518 model restricts token visibility to KYC-verified investors only — trust lines are not publicly visible without the issuer address luma |
+| Government wallet is the issuer  | The Zanzibar sovereign zone/RWorld government wallet issues the token — this is a sovereign-controlled address, not a commercial one disclosed publicly youtube |
+| Internal ecosystem first         | First 200 units were designated for internal ecosystem participants only youtube                                                                                |
+| $10M raise target, not $70M live | The immediate goal was raising $10M (not full $70M) with a 30% early-investor discount — $70M is the total issuance ceiling youtube                             |
+
+
+How to Actually Find / Access This
+
+These are your three real paths to get the issuer wallet:
+Contact Joshua Johnson directly — joshua@liquidhectare.com. As a builder in the Africa RWA space, you have a genuine peer reason to connect.
+Zoniqx investor dashboard — The issuance is deployed via Zoniqx TPaaS; contact prashant@zoniqx.com or through zoniqx.com. As an accredited investor / RWA platform builder, they can grant you access to see the live token details.
+XRPL Explorer brute-force search — If you ever obtain the issuer address, paste it directly into livenet.xrpl.org or xrpl.to to see all trust lines, token holders, and transfer history.
