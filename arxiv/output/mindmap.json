@@ -1,128 +1,120 @@
 {
-  "name": "Cross-Attention Attribution in Style-Captioned TTS",
+  "name": "Language-Based Digital Twins for Elderly Cognitive Assistance",
   "children": [
     {
-      "name": "Core Methodology",
+      "name": "Core Concept",
       "children": [
         {
-          "name": "DAAM Adaptation",
+          "name": "Digital Twin Definition"
+        },
+        {
+          "name": "Personalized Conversational Behavior"
+        },
+        {
+          "name": "Mild Cognitive Impairment (MCI) Monitoring"
+        },
+        {
+          "name": "Non-invasive Biomarkers"
+        }
+      ]
+    },
+    {
+      "name": "Methodology",
+      "children": [
+        {
+          "name": "Large Language Model (LLM)",
           "children": [
             {
-              "name": "Temporal Heatmaps"
+              "name": "GPT-4.1-mini Base"
             },
             {
-              "name": "25 Transformer Layers"
-            },
-            {
-              "name": "24 ODE Steps"
+              "name": "Supervised Fine-Tuning (SFT)"
             }
           ]
         },
         {
-          "name": "Model: CapSpeech",
+          "name": "Data Augmentation",
           "children": [
             {
-              "name": "T5 Caption Encoder"
+              "name": "Stylometric Features"
             },
             {
-              "name": "Flow-Matching DiT"
+              "name": "Pause Tokens"
             },
             {
-              "name": "HiFi-GAN Vocoder"
-            }
-          ]
-        },
-        {
-          "name": "Token Categorization",
-          "children": [
-            {
-              "name": "Style Tokens"
+              "name": "Tempo Tokens"
             },
             {
-              "name": "Content Tokens"
-            },
-            {
-              "name": "Function Tokens"
+              "name": "Contextual Metadata"
             }
           ]
         }
       ]
     },
     {
-      "name": "Key Findings",
+      "name": "Evaluation Framework",
       "children": [
         {
-          "name": "Global vs Local Conditioning",
+          "name": "cVAE-Based Evaluator",
           "children": [
             {
-              "name": "Style tokens: Low temporal variance"
+              "name": "Multi-head Architecture"
             },
             {
-              "name": "Style tokens: Global modulators"
+              "name": "Reconstruction Quality"
             },
             {
-              "name": "Function tokens: High temporal variance"
+              "name": "MoCA Score Prediction"
             }
           ]
         },
         {
-          "name": "Acoustic Grounding",
+          "name": "Identity Preservation",
           "children": [
             {
-              "name": "Style attention correlates with F0"
+              "name": "SVM Classifier"
             },
             {
-              "name": "Style attention correlates with energy"
+              "name": "Embedding Features"
             },
             {
-              "name": "Semantic coherence: 'loud' correlates with energy"
-            }
-          ]
-        },
-        {
-          "name": "Layer and Step Dynamics",
-          "children": [
-            {
-              "name": "Style peaks in early ODE steps"
-            },
-            {
-              "name": "Style peaks in deep transformer layers"
-            },
-            {
-              "name": "Selective attention: Layer 17 entropy minimum"
+              "name": "Sentiment Features"
             }
           ]
         }
       ]
     },
     {
-      "name": "Analysis Metrics",
+      "name": "Experimental Results",
       "children": [
         {
-          "name": "Temporal Variance"
+          "name": "I-CONECT Dataset"
         },
         {
-          "name": "Peak-to-Mean Ratio (PMR)"
+          "name": "Low Reconstruction Error"
         },
         {
-          "name": "Temporal Entropy"
+          "name": "Accurate MoCA Estimation"
         },
         {
-          "name": "Pearson Correlation"
+          "name": "Outperforms Raw GPT"
         }
       ]
     },
     {
-      "name": "Significance",
+      "name": "Future Directions",
       "children": [
         {
-          "name": "First TTS cross-attention study"
+          "name": "Multimodal Integration"
         },
         {
-          "name": "Hierarchical conditioning evidence"
+          "name": "Vocal Features"
         },
         {
-          "name": "Interpretable style pathways"
+          "name": "Facial Expressions"
+        },
+        {
+          "name": "Larger Sample Sizes"
         }
       ]
     }
