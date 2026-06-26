@@ -98,6 +98,12 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 
 ### Session Memory — Recent Work
 
+### 2026-06-27: DocSend PDF Downloader and Compiler
+- Built `scratch/download_docsend_slides.py`, `scratch/download_docsend_2.py`, and `scratch/download_docsend_3.py` to automate downloading secured presentation slides from DocSend.
+- Developed keyboard-navigated page advancement in Playwright to dynamically trigger lazy-loading of hidden CloudFront slide images.
+- Implemented HTML to PDF compilation using WeasyPrint to bypass Pillow missing JPEG library issues.
+- Successfully downloaded and compiled three PDF reports: `scratch/CV_VC_African_Blockchain_Report.pdf` (76 pages, 51MB), `scratch/DocSend_Report_2.pdf` (125 pages, 78MB), and `scratch/DocSend_Report_3.pdf` (27 pages, 20MB).
+
 ### 2026-06-19: Real-World Asset (RWA) & Stablecoin Daily Brief Pipeline
 - Built [rwa_daily_reporter.py](file:///home/vreddy1/Desktop/Projects/scripts/rwa_daily_reporter.py) — automated pipeline that searches Exa for H1 2026 updates, regenerates the structured RWA and stablecoins research report, and delivers the compiled intelligence to Slack.
 - Created curated global & African RWA report [rwa_stablecoin_deepdive_report.md](file:///home/vreddy1/Desktop/Projects/scripts/rwa_stablecoin_deepdive_report.md) with deep focus on case studies (Zone, Mansa, Kotani Pay, Yellow Card) and blockchain network trade-offs (Base, Celo, Stellar, private L1).
