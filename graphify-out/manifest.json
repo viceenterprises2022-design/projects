@@ -25605,8 +25605,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/AGENTS.md": {
-    "mtime": 1781841169.8502586,
-    "ast_hash": "5bfaffacce24bfd47d740abf6d7175a7",
+    "mtime": 1782501496.5093684,
+    "ast_hash": "787d4fe71cff4adbc85a4fbb2a8ac4ac",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/market_report.txt": {
@@ -44202,6 +44202,56 @@
   "/home/vreddy1/Desktop/Projects/scripts/RWA-Liquid-Hectere.txt": {
     "mtime": 1782469109.162946,
     "ast_hash": "0d97d2b4d1f0454f123fc22e10c896f4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/download_docsend_slides.py": {
+    "mtime": 1782499003.6580324,
+    "ast_hash": "5426306cde03e709ffb1ea4a07229443",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_docsend_dom.py": {
+    "mtime": 1782498896.9573894,
+    "ast_hash": "fad5c4c6a224b6672668f82f0f00de2b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/download_docsend_3.py": {
+    "mtime": 1782500222.947528,
+    "ast_hash": "ecbe9f3887eecc82a3cf8af68d4f8892",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/test_navigation.py": {
+    "mtime": 1782499063.3902729,
+    "ast_hash": "65a35403f4f1ef5e80f7f96781f5a817",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/download_docsend_keyboard.py": {
+    "mtime": 1782499094.8888724,
+    "ast_hash": "ada309e0fc0c9cef25c207a0b1797d63",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/extract_img_urls.py": {
+    "mtime": 1782498962.6875534,
+    "ast_hash": "74071503181e36d221ba0fdc36d6e837",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/test_screenshot.py": {
+    "mtime": 1782498871.2247164,
+    "ast_hash": "76d05aa08eff4b3115a2717aecc3de38",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/compile_pdf.py": {
+    "mtime": 1782499180.5827827,
+    "ast_hash": "593e45da565a14408e3394110b18064f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/download_docsend_2.py": {
+    "mtime": 1782499540.8630302,
+    "ast_hash": "242154df502128289f5fc4b3cf4717cd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/docsend_initial.png": {
+    "mtime": 1782498886.0458708,
+    "ast_hash": "6f33d6f4a6071cdccc9befd5e3d91708",
     "semantic_hash": ""
   }
 }
