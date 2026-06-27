@@ -44258,5 +44258,15 @@
     "mtime": 1782541004.931533,
     "ast_hash": "03fcf5786c1429bd64fcc60118a908ef",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_downloads_pdf.py": {
+    "mtime": 1782542272.5194218,
+    "ast_hash": "66be176fe2b74ab7151e67738f54cefe",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/scan_all_files.py": {
+    "mtime": 1782542315.423876,
+    "ast_hash": "9833950538e07f5803f276ae5fe1e8ae",
+    "semantic_hash": ""
   }
 }
