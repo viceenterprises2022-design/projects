@@ -2,9 +2,11 @@
 import argparse
 import json
 import os
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+import bs4
 import feedparser
 import requests
 from dotenv import load_dotenv
@@ -46,7 +48,76 @@ def parse_pubdate(entry) -> datetime:
     # Fallback to current time if no date is found
     return datetime.now(timezone.utc)
 
-def build_slack_payload(entry, title: str, link: str, pub_date: datetime, description: str) -> dict:
+def get_article_text(url: str) -> str:
+    """Fetches article HTML and extracts body text for summarization."""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+    }
+    try:
+        response = requests.get(url, headers=headers, timeout=25)
+        response.raise_for_status()
+        soup = bs4.BeautifulSoup(response.text, "html.parser")
+        
+        # Remove scripts, styles, metadata
+        for s in soup(["script", "style", "meta", "link", "noscript", "header", "footer", "nav"]):
+            s.decompose()
+            
+        # Target main content area
+        content_area = soup.find("article") or soup.find("main") or soup.find("body")
+        if not content_area:
+            return ""
+            
+        # Extract text elements
+        text_elements = []
+        for elem in content_area.find_all(["h1", "h2", "h3", "h4", "p", "li"]):
+            text_elements.append(elem.get_text().strip())
+            
+        # Join elements with newlines
+        article_text = "\n".join([t for t in text_elements if t])
+        return article_text.strip()
+    except Exception as e:
+        log(f"Error fetching article text from {url}: {e}")
+        return ""
+
+def get_ai_summary(text: str) -> str:
+    """Uses the agy CLI to generate a bulleted summary of the text."""
+    if not text:
+        return ""
+    
+    # Truncate text to avoid excessively long prompts
+    max_char_len = 15000
+    if len(text) > max_char_len:
+        text = text[:max_char_len] + "..."
+        
+    prompt = (
+        "You are a technical assistant. Summarize the following blog post in 3-5 concise, high-value bullet points "
+        "appropriate for a Slack notification. Output ONLY the bullet points. Use standard Slack markdown format (e.g. *bold*, * bullet points). "
+        "Do not include intro/outro text.\n\n"
+        f"Article Content:\n{text}"
+    )
+    
+    cmd = [
+        "/home/vreddy1/.local/bin/agy",
+        "--dangerously-skip-permissions",
+        "--print",
+        prompt
+    ]
+    
+    log("Running agy CLI for summarization...")
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=90, check=True)
+        summary = result.stdout.strip()
+        if not summary:
+            log(f"Warning: agy returned empty output. Stderr: {result.stderr}")
+        return summary
+    except subprocess.TimeoutExpired:
+        log("Error: agy execution timed out.")
+        return ""
+    except Exception as e:
+        log(f"Error running agy CLI: {e}")
+        return ""
+
+def build_slack_payload(entry, title: str, link: str, pub_date: datetime, description: str, summary: str = "") -> dict:
     """Builds a beautiful Slack Block Kit message for a post."""
     # Format categories/tags if present safely
     categories = []
@@ -91,7 +162,15 @@ def build_slack_payload(entry, title: str, link: str, pub_date: datetime, descri
         }
     ]
     
-    if desc_clean:
+    if summary:
+        blocks.append({
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": summary
+            }
+        })
+    elif desc_clean:
         blocks.append({
             "type": "section",
             "text": {
@@ -223,7 +302,25 @@ def main():
         
         log(f"Processing post: '{title}' ({pub_dt.isoformat()})")
         
-        payload = build_slack_payload(entry, title, link, pub_dt, description)
+        # 1. Fetch full article text
+        article_text = ""
+        if link:
+            log(f"Fetching full content for {link}...")
+            article_text = get_article_text(link)
+            
+        # 2. Summarize using agy CLI
+        summary = ""
+        if article_text:
+            summary = get_ai_summary(article_text)
+            if summary:
+                log("Successfully generated summary.")
+            else:
+                log("Failed to generate summary, falling back to excerpt.")
+        else:
+            log("No full content fetched, falling back to excerpt.")
+            
+        # 3. Build payload with summary
+        payload = build_slack_payload(entry, title, link, pub_dt, description, summary=summary)
         
         if args.dry_run:
             log(f"[DRY-RUN] Would send Slack payload for: '{title}'")
