@@ -44288,5 +44288,10 @@
     "mtime": 1782545798.6875577,
     "ast_hash": "425c591ea22d6f15c050e58135bdc8d4",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/tech_news_summarizer.py": {
+    "mtime": 1782549117.7831523,
+    "ast_hash": "779fba390b1ddef44ccb0fcd8f593dc5",
+    "semantic_hash": ""
   }
 }
