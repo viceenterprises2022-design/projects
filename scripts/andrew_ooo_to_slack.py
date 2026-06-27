@@ -248,6 +248,14 @@ def main():
         entries.append((pub_dt, entry))
     entries.sort(key=lambda x: x[0])
     
+    # Filter entries to only keep posts from the last 5 days
+    now = datetime.now(timezone.utc)
+    recent_entries = []
+    for pub_dt, entry in entries:
+        diff = now - pub_dt
+        if diff.days <= 5:
+            recent_entries.append((pub_dt, entry))
+    
     state = load_state()
     last_processed_str = state.get("last_processed_pubdate")
     
@@ -262,15 +270,16 @@ def main():
     new_entries = []
     
     if last_processed_dt is None:
-        # Initial run: state is empty
-        # Initialize state with the latest entry to avoid spamming the channel
-        latest_dt, latest_entry = entries[-1]
-        log(f"No existing state. Initializing state with the latest post: '{latest_entry.title}' ({latest_dt.isoformat()})")
-        
-        # To verify the integration, let's send the single latest post
-        new_entries.append((latest_dt, latest_entry))
+        if recent_entries:
+            latest_dt, latest_entry = recent_entries[-1]
+            log(f"No existing state. Initializing state with latest recent post: '{latest_entry.title}' ({latest_dt.isoformat()})")
+            new_entries.append((latest_dt, latest_entry))
+        else:
+            log("No existing state and no recent posts (<= 5 days) found. Initializing state to current time.")
+            state["last_processed_pubdate"] = now.isoformat()
+            save_state(state)
     else:
-        for pub_dt, entry in entries:
+        for pub_dt, entry in recent_entries:
             if pub_dt > last_processed_dt:
                 new_entries.append((pub_dt, entry))
 

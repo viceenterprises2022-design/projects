@@ -19,7 +19,7 @@ FEEDS = {
     "Anthropic": "https://raw.githubusercontent.com/alan-turing-institute/ai-rss-feeds/main/feeds/anthropic-news.xml",
     "OpenAI": "https://openai.com/news/rss.xml",
     "Latent Space": "https://www.latent.space/feed",
-    "Ahead of AI": "https://sebastianraschka.com/feed.xml",
+    "Ahead of AI": "https://magazine.sebastianraschka.com/feed",
     "The Pragmatic Engineer": "https://newsletter.pragmaticengineer.com/feed"
 }
 
@@ -224,6 +224,14 @@ def main():
             entries.append((pub_dt, entry))
         entries.sort(key=lambda x: x[0])
         
+        # Filter entries to only keep posts from the last 5 days
+        now = datetime.now(timezone.utc)
+        recent_entries = []
+        for pub_dt, entry in entries:
+            diff = now - pub_dt
+            if diff.days <= 5:
+                recent_entries.append((pub_dt, entry))
+        
         last_processed_str = last_processed_dates.get(feed_name)
         if last_processed_str:
             try:
@@ -235,19 +243,28 @@ def main():
             
         new_entries = []
         if last_processed_dt is None:
-            # Warm up: initialize with the latest post date and process it
-            latest_dt, latest_entry = entries[-1]
-            log(f"No existing state for '{feed_name}'. Initializing with latest post: '{latest_entry.title}' ({latest_dt.isoformat()})")
-            new_entries.append((latest_dt, latest_entry))
+            if recent_entries:
+                latest_dt, latest_entry = recent_entries[-1]
+                log(f"No existing state for '{feed_name}'. Initializing with latest recent post: '{latest_entry.title}' ({latest_dt.isoformat()})")
+                new_entries.append((latest_dt, latest_entry))
+            else:
+                log(f"No existing state and no recent posts (<= 5 days) found for '{feed_name}'. Initializing state to current time.")
+                last_processed_dates[feed_name] = now.isoformat()
+                save_state(state)
         else:
-            for pub_dt, entry in entries:
+            for pub_dt, entry in recent_entries:
                 if pub_dt > last_processed_dt:
                     new_entries.append((pub_dt, entry))
                     
         if args.force and not new_entries:
-            latest_dt, latest_entry = entries[-1]
-            log(f"Forced run for '{feed_name}'. Adding latest post: '{latest_entry.title}'")
-            new_entries.append((latest_dt, latest_entry))
+            if recent_entries:
+                latest_dt, latest_entry = recent_entries[-1]
+                log(f"Forced run for '{feed_name}'. Adding latest recent post: '{latest_entry.title}'")
+                new_entries.append((latest_dt, latest_entry))
+            elif entries:
+                latest_dt, latest_entry = entries[-1]
+                log(f"Forced run for '{feed_name}' but no recent posts found. Adding latest post anyway: '{latest_entry.title}'")
+                new_entries.append((latest_dt, latest_entry))
             
         if not new_entries:
             log(f"No new posts found for '{feed_name}' since last check.")
