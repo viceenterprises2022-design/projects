@@ -44403,5 +44403,15 @@
     "mtime": 1782580828.97203,
     "ast_hash": "300aa32c2022cd51da381de395bae247",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/fetch_mining_licences.py": {
+    "mtime": 1782582986.337017,
+    "ast_hash": "1635c7e1707ab13fc4df15f5eb54ac91",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/read_mining_excel_summary.py": {
+    "mtime": 1782583026.4514942,
+    "ast_hash": "c58752237fc677487a9a42958714aac0",
+    "semantic_hash": ""
   }
 }
