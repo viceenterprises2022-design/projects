@@ -44298,5 +44298,110 @@
     "mtime": 1782574599.7673616,
     "ast_hash": "47e9a7e1362f03af97ec30ef7fe6f0d8",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/list_all_urls.py": {
+    "mtime": 1782580883.824246,
+    "ast_hash": "812002e858be08750376fd167f9d7233",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_arcgis.py": {
+    "mtime": 1782580982.3119817,
+    "ast_hash": "a98675c27bbadb788ccb7092c30065be",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/debug_queries.py": {
+    "mtime": 1782581502.6113026,
+    "ast_hash": "62f319899e3a19910eeb70e599c736e1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/query_layers.py": {
+    "mtime": 1782581069.8978572,
+    "ast_hash": "8b030e88163b0ef4fc3ba473a4469b45",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_regions.py": {
+    "mtime": 1782581678.09005,
+    "ast_hash": "e797849fb90d70e90f433c80062a3c05",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/check_libs.py": {
+    "mtime": 1782580707.3175094,
+    "ast_hash": "4ffa6045783ef37fc3ae54d835b9c58d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/check_resp.py": {
+    "mtime": 1782581458.41387,
+    "ast_hash": "4c05e9ab706236f1044ad8df4663eaf2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/check_excel_libs.py": {
+    "mtime": 1782581655.7613368,
+    "ast_hash": "10c7aed7e07f11d61a3b1edea18395cd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/fetch_sample_pl.py": {
+    "mtime": 1782581286.8310726,
+    "ast_hash": "ffcb3635363f3652e7a926cc9e66fb0a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/probe_fields.py": {
+    "mtime": 1782581230.5887945,
+    "ast_hash": "bab3c7d6eba6e570daac0eaf1c8fda34",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/read_excel_summary.py": {
+    "mtime": 1782581786.966648,
+    "ast_hash": "cb5a0ff0579d4e3471c36e08aa5e98cb",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/check_outfields_star.py": {
+    "mtime": 1782581542.0827959,
+    "ast_hash": "01116ff8b4fe5ea4b15c12101a5d7b7a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_admin_layers.py": {
+    "mtime": 1782581618.88881,
+    "ast_hash": "9d4c766b81c7310e396e866e5b6d3d0b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/check_count.py": {
+    "mtime": 1782581580.1363075,
+    "ast_hash": "a9d6671b1fd1bd884fb848dfdfc9ffc8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/find_requests.py": {
+    "mtime": 1782580772.177679,
+    "ast_hash": "6ec2c4a01a516322942a7a475d64ade7",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/test_queries.py": {
+    "mtime": 1782581323.6615999,
+    "ast_hash": "bbc1b704622e26a9530018fc3df3960e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_sw_console.py": {
+    "mtime": 1782580940.917513,
+    "ast_hash": "57016f0162ab4cbb265b5fbaa29da6f2",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_dom.py": {
+    "mtime": 1782580803.034283,
+    "ast_hash": "5b0de268441597bd33e645ac81e6b7c5",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/inspect_requests_all.py": {
+    "mtime": 1782580834.0748844,
+    "ast_hash": "09bb88a11a649bf0439b4fee0e5ddc78",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/fetch_all_licenses.py": {
+    "mtime": 1782581742.5682223,
+    "ast_hash": "236b2fa9c883abc50e63ece81af7ad79",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/scratch/portal_screenshot.png": {
+    "mtime": 1782580828.97203,
+    "ast_hash": "300aa32c2022cd51da381de395bae247",
+    "semantic_hash": ""
   }
 }
