@@ -44413,5 +44413,15 @@
     "mtime": 1782583026.4514942,
     "ast_hash": "c58752237fc677487a9a42958714aac0",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/validation_config_clean.json": {
+    "mtime": 1782640830.3375807,
+    "ast_hash": "027a2be1c65206884d1be42bfef7db7c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/validation_config.json": {
+    "mtime": 1782640652.375489,
+    "ast_hash": "64f4bc9187151d806b399d5235b4aea4",
+    "semantic_hash": ""
   }
 }
