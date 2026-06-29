@@ -1,120 +1,124 @@
 {
-  "name": "Language-Based Digital Twins for Elderly Cognitive Assistance",
+  "name": "Agent-Native Immune System (ANIS)",
   "children": [
     {
-      "name": "Core Concept",
+      "name": "Core Goals",
       "children": [
         {
-          "name": "Digital Twin Definition"
+          "name": "Secure: Protection from external threats"
         },
         {
-          "name": "Personalized Conversational Behavior"
+          "name": "Healthy: Internal integrity and goal stability"
         },
         {
-          "name": "Mild Cognitive Impairment (MCI) Monitoring"
+          "name": "Orderly: Governance of multi-agent interactions"
         },
         {
-          "name": "Non-invasive Biomarkers"
+          "name": "Evolving: Continuous adaptation of defenses"
         }
       ]
     },
     {
-      "name": "Methodology",
+      "name": "Immune Tower (L0-L5)",
       "children": [
         {
-          "name": "Large Language Model (LLM)",
+          "name": "L0 Hardware Trust Root: Chip-level identity and TEE"
+        },
+        {
+          "name": "L1 Barrier Immunity: Input sanitization and sandboxing"
+        },
+        {
+          "name": "L2 Innate Cognitive Defense: Rule engines and signatures"
+        },
+        {
+          "name": "L3 Adaptive Tool Defense: Dynamic vaccines and steering vectors"
+        },
+        {
+          "name": "L4 Ecological Governance: Multi-agent protocol auditing"
+        },
+        {
+          "name": "L5 Collective Immunity: Cross-agent vaccine synchronization"
+        }
+      ]
+    },
+    {
+      "name": "Agent Viruses (Pathogens)",
+      "children": [
+        {
+          "name": "Cognitive: Goal hijacking and reasoning manipulation"
+        },
+        {
+          "name": "Memory: Poisoning and structured record injection"
+        },
+        {
+          "name": "Tool: Metadata attacks and MCP exploits"
+        },
+        {
+          "name": "Multi-Agent: Thought viruses and protocol spoofing"
+        }
+      ]
+    },
+    {
+      "name": "Agent Vaccines",
+      "children": [
+        {
+          "name": "Non-Parametric",
           "children": [
             {
-              "name": "GPT-4.1-mini Base"
+              "name": "Prompt templates"
             },
             {
-              "name": "Supervised Fine-Tuning (SFT)"
+              "name": "Audit rules"
+            },
+            {
+              "name": "Access-control lists"
             }
           ]
         },
         {
-          "name": "Data Augmentation",
+          "name": "Parametric",
           "children": [
             {
-              "name": "Stylometric Features"
+              "name": "Steering vectors"
             },
             {
-              "name": "Pause Tokens"
+              "name": "LoRA adapters"
             },
             {
-              "name": "Tempo Tokens"
-            },
-            {
-              "name": "Contextual Metadata"
+              "name": "Defensive embeddings"
             }
           ]
         }
       ]
     },
     {
-      "name": "Evaluation Framework",
+      "name": "Harness Triad",
       "children": [
         {
-          "name": "cVAE-Based Evaluator",
-          "children": [
-            {
-              "name": "Multi-head Architecture"
-            },
-            {
-              "name": "Reconstruction Quality"
-            },
-            {
-              "name": "MoCA Score Prediction"
-            }
-          ]
+          "name": "Self-Harness: Detects anomalies and failure patterns"
         },
         {
-          "name": "Identity Preservation",
-          "children": [
-            {
-              "name": "SVM Classifier"
-            },
-            {
-              "name": "Embedding Features"
-            },
-            {
-              "name": "Sentiment Features"
-            }
-          ]
+          "name": "Meta-Harness: Evaluates vaccines via Thymus Simulator"
+        },
+        {
+          "name": "Auto-Harness: Synthesizes and deploys defensive code"
         }
       ]
     },
     {
-      "name": "Experimental Results",
+      "name": "Key Engineering Concepts",
       "children": [
         {
-          "name": "I-CONECT Dataset"
+          "name": "Continual Immune Learning (CIL)"
         },
         {
-          "name": "Low Reconstruction Error"
+          "name": "Thymus Simulator: Autoimmunity Rate (AIR) testing"
         },
         {
-          "name": "Accurate MoCA Estimation"
+          "name": "Cognitive Consistency Score (CCS)"
         },
         {
-          "name": "Outperforms Raw GPT"
-        }
-      ]
-    },
-    {
-      "name": "Future Directions",
-      "children": [
-        {
-          "name": "Multimodal Integration"
-        },
-        {
-          "name": "Vocal Features"
-        },
-        {
-          "name": "Facial Expressions"
-        },
-        {
-          "name": "Larger Sample Sizes"
+          "name": "Behavioral Legitimacy Index (BLI)"
         }
       ]
     }
