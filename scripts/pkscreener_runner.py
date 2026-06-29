@@ -14,6 +14,7 @@ import subprocess
 import datetime
 import requests
 import pickle
+import resource
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -91,6 +92,10 @@ def run_scan(label: str, options: str, log_file: Path) -> str:
     env["TF_CPP_MIN_LOG_LEVEL"] = "3"
     env["COLUMNS"] = "220"
     env["LINES"] = "50"
+
+    # ponytail: per-process address space limit — 4GB. Prevents runaway scans
+    # from OOM-killing the host. Upgrade to cgroup v2 limits if Dockerized.
+    resource.setrlimit(resource.RLIMIT_AS, (4 << 30, 4 << 30))
 
     output_bytes = b""
     proc = None

@@ -1,5 +1,43 @@
 # Repository Guidelines
 
+## Agent Convention (filesystem-first)
+
+Inspired by [eve](https://eve.dev). Each agent is a directory under `agents/`,
+names derive from paths, and the tree tells you what the agent can do.
+
+```
+agents/<name>/
+├── instructions.md    # identity + standing rules (always-on prompt)
+├── tools/             # executable capabilities (name = filename)
+├── skills/            # on-demand procedures (SKILL.md convention)
+└── channels/          # message routing targets
+```
+
+Root-level `.py` scripts stay at root (moving them would break imports,
+systemd services, and crontab). Agent descriptors in `agents/` document the
+interface. See `agents/README.md` and `agents/_template/`.
+
+## Sandbox Pattern
+
+High-risk agents (shell executors, subprocess launchers) use a three-layer
+defense instead of full Docker sandboxing:
+1. **flock lockfile** — crash-safe mutual exclusion for cron-driven agents
+2. **Process group isolation** (`start_new_session=True` + `os.killpg`) —
+   children live in their own session; cleanup kills the group, not the leader
+3. **RLIMIT_AS** — per-process address space ceiling to prevent runaway OOM
+
+Documented per-agent under `agents/<name>/tools/sandbox.md`. Upgrade to Docker
+`--memory` limits when the agent needs network isolation or a reproducible
+runtime environment.
+
+## Skills Landscape
+
+Skills are distributed across 3 harness directories plus the repo's own
+`skills/`. There is zero triple-overlap across all three, and only minor
+pairwise overlap (8 skills total). Details in `agents/README.md` under Skills
+Inventory. The repo-local `skills/` holds 6 ponytail skills only — no overlap
+with any harness directory.
+
 ## Project Structure & Module Organization
 
 This repository contains multiple root-level script systems. AlphaEdge market intelligence is the primary app: `collector.py` fetches Upstox/Yahoo Finance data, `market_engine.py` and `market_analysis_v*.py` hold analysis logic, `alphaedge_db.py` manages SQLite storage, and `api_server.py` serves the FastAPI API and dashboard. Static dashboard files live in `frontend/` (`dashboard.html`, `app.js`, `style.css`). Exa-powered search/agents scripts live in `exa_ai_search.py`, `exa_ai_agents.py`, and `crypto_news_search.py`. Runtime artifacts include `*.db`, `logs/`, `*_report.txt`, and `ai_events_results.json`; do not treat these as source unless the task is explicitly data-related. `everything-claude-code/` is a separate embedded project/reference tree.
