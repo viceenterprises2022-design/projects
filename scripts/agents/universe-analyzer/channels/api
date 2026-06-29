@@ -1,0 +1,3 @@
+Serves JSON data via FastAPI at /universe/data and /universe/reanalyze
+Integrated into api_server.py on port 8765
+Frontend: frontend/universe.html

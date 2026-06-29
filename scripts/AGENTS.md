@@ -8,14 +8,17 @@ names derive from paths, and the tree tells you what the agent can do.
 ```
 agents/<name>/
 ├── instructions.md    # identity + standing rules (always-on prompt)
-├── tools/             # executable capabilities (name = filename)
+├── tools/             # symlinks to root-level .py scripts
 ├── skills/            # on-demand procedures (SKILL.md convention)
-└── channels/          # message routing targets
+└── channels/          # routing descriptors (ref channels/ package)
 ```
 
 Root-level `.py` scripts stay at root (moving them would break imports,
 systemd services, and crontab). Agent descriptors in `agents/` document the
-interface. See `agents/README.md` and `agents/_template/`.
+interface. Each agent's `tools/` directory contains symlinks to the root-level
+scripts; `channels/` contains routing descriptors referencing the
+shared `channels/` package (`channels/slack.py`, `channels/telegram.py`).
+See `agents/README.md` and `agents/_template/`.
 
 ## Sandbox Pattern
 

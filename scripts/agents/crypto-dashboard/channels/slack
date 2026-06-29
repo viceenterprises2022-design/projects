@@ -1,0 +1,3 @@
+Intel report delivery via channels.slack
+Import: from channels.slack import send_to_slack
+Webhook: SLACK_WEBHOOK_CRYPTO env var

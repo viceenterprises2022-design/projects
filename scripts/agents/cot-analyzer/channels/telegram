@@ -1,0 +1,3 @@
+Delivery: formatted COT reports via channels.telegram
+Import: from channels.telegram import send_text, send_file
+Vars: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID

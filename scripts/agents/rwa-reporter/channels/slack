@@ -1,0 +1,3 @@
+Delivery: RWA research report via channels.slack
+Webhook: SLACK_WEBHOOK_RWA env var
+Import: from channels.slack import send_to_slack

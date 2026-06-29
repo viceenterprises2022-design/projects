@@ -7,14 +7,17 @@ Inspired by [eve](https://eve.dev)'s filesystem-first approach: each agent is a 
 ```
 agents/<name>/
 ├── instructions.md    # identity + standing rules (always-on prompt)
-├── tools/             # executable capabilities (name = filename)
+├── tools/             # symlinks to root-level .py scripts
 ├── skills/            # on-demand procedures (SKILL.md convention)
-└── channels/          # message routing targets
+└── channels/          # routing descriptors (ref channels/ package)
 ```
 
 Root-level `.py` scripts stay at root (moving them would break imports,
 systemd services, and crontab). Agent descriptors in `agents/` document the
-interface. See `agents/_template/` for the reference layout.
+interface. Each agent's `tools/` contains symlinks to root-level scripts;
+`channels/` contains routing descriptors referencing the shared
+`channels/` package (`channels/slack.py`, `channels/telegram.py`).
+See `agents/_template/` for the reference layout.
 
 ## Path-Derived Naming
 
@@ -22,9 +25,9 @@ A file's path determines its identity — no config fields needed:
 
 | Path | Resolves to |
 |---|---|
-| `agents/alphaedge/tools/get_quote.py` | tool `get_quote` |
+| `agents/alphaedge/tools/collector` → `collector.py` | tool `collector` |
 | `agents/pkscreener/skills/scan_breakout.md` | skill `scan_breakout` |
-| `agents/cot-analyzer/channels/telegram.py` | channel `telegram` |
+| `agents/cot-analyzer/channels/telegram` | channel `telegram` → `channels.telegram` |
 
 ## Agents
 
@@ -38,6 +41,14 @@ A file's path determines its identity — no config fields needed:
 | Crypto Dashboard | `agents/crypto-dashboard/` | BTC/ETH/SOL live monitoring |
 | COT Analyzer | `agents/cot-analyzer/` | CFTC positioning analysis |
 | RWA Reporter | `agents/rwa-reporter/` | RWA/stablecoin research → Slack |
+| Metals Dashboard | `agents/metals-dashboard/` | Gold/Silver live monitoring |
+| F&O Breakout Scanner | `agents/fo-breakout-scanner/` | NSE F&O breakout signals |
+| P&L Poller | `agents/pnl-poller/` | Portfolio P&L tracking |
+| Cron Watchdog | `agents/cron-watchdog/` | Cron job health monitoring |
+| CryptoPanic CLI | `agents/cryptopanic-cli/` | Crypto news reader (TUI) |
+| Universe Analyzer | `agents/universe-analyzer/` | Codebase dependency visualizer |
+| Upstox Monitor | `agents/monitor-upstox/` | Upstox API health → Slack alerts |
+| Replicate All | `agents/replicate-all/` | Multica workspace replication |
 
 ## Skills Inventory
 

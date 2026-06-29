@@ -1,0 +1,3 @@
+Rich terminal dashboard (15s polling)
+Run: python3 crypto_market_dashboard.py
+Requires: Binance/Deribit API access (no auth keys needed for public endpoints)

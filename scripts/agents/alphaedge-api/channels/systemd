@@ -1,0 +1,3 @@
+systemd user service: alphaedge-api.service
+journalctl --user -u alphaedge-api -f
+sudo journalctl --user -u alphaedge-api --since today

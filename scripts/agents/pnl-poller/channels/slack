@@ -1,0 +1,3 @@
+Reports via channels.slack
+Webhook: SLACK_WEBHOOK_URL env var
+Import: from channels.slack import send_to_slack

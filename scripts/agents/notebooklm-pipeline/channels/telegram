@@ -1,0 +1,2 @@
+Source: PDFs from @btsreports Telegram channel (telegram_to_notebooklm.py)
+Uses Telethon client, not direct API.

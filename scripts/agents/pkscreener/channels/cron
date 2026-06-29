@@ -1,0 +1,2 @@
+Schedule: 9:25, 12:30, 15:35 IST weekdays (3:55, 7:00, 10:05 UTC)
+Lock: /tmp/pkscreener_runner.lock (flock) prevents overlap

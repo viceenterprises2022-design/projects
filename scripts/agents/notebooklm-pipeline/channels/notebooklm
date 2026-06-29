@@ -1,0 +1,3 @@
+Source/sink: Google NotebookLM
+CLI: ~/.local/bin/notebooklm
+Workflow: notebooks new → sources add → artifacts create → download → delete

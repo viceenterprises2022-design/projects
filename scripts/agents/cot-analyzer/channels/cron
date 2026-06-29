@@ -1,0 +1,2 @@
+Schedule: Saturday 9:00 AM IST (3:30 UTC)
+Run: python3 cot_analyzer.py --cron

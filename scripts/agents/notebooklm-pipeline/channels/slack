@@ -1,0 +1,3 @@
+Delivery: briefing reports + mind maps via channels.slack
+Webhook: SLACK_WEBHOOK_URL env var
+Import: from channels.slack import send_to_slack, compose_blocks, build_header

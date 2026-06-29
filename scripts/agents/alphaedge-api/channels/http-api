@@ -1,0 +1,3 @@
+REST API on port 8765 (FastAPI/uvicorn)
+Routes: GET /api/latest | /api/history | /api/symbols | /api/gainers-losers | /api/pixi/*
+Systemd: alphaedge-api.service

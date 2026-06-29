@@ -1,0 +1,2 @@
+systemd user service: alphaedge-collector.service
+journalctl --user -u alphaedge-collector -f

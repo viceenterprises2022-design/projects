@@ -1,0 +1,3 @@
+Output: structured JSON files at repo root
+Files: ai_events_results.json
+Usage: exa_ai_search.py writes results, ai_news_reporter.py reads + forwards

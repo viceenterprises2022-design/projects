@@ -1,0 +1,3 @@
+Alert channel: monitor_upstox.py → Slack
+Webhook: SLACK_WEBHOOK_URL env var
+Usage: from channels.slack import send_to_slack
