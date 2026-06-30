@@ -4,6 +4,8 @@ import subprocess
 import os
 import sys
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
 
 def run_cmd(cmd):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -71,10 +73,12 @@ def main():
             f"• *{p['title']}* (Status: {p['status']}) — {p['done_count']}/{p['issue_count']} issues completed"
         )
     
-    # 2. Tasks completed today
+    # 2. Tasks completed today (either done or in_review)
     completed_today = []
     for i in issues:
-        if i["status"] == "done":
+        if i["status"] in ["done", "in_review"]:
+            if i["identifier"] == "ALP-759":
+                continue
             updated_at = i.get("updated_at", "")
             # We check if updated_at matches today's date
             if updated_at.startswith(today_str):
@@ -96,13 +100,27 @@ def main():
                 if comments:
                     # Get the latest comment
                     latest_comment = comments[-1].get("content", "")
+                    
+                    # Clean up active memories boilerplate
+                    active_memories_phrases = [
+                        "modes/memories are active",
+                        "Caveman Ultra Mode",
+                        "Graphify",
+                        "Mempalace",
+                        "Wozcode",
+                        "RTK",
+                        "###"
+                    ]
+                    
                     # Clean up or extract key info
                     lines = latest_comment.split("\n")
                     summary_lines = []
                     for line in lines:
-                        if line.strip().startswith(("-", "*", "|", "#", "•")):
+                        if any(phrase in line for phrase in active_memories_phrases):
+                            continue
+                        if line.strip().startswith(("-", "*", "|", "#", "•", "1.", "2.", "3.", "4.", "5.")):
                             summary_lines.append(line.strip())
-                        elif any(k in line for k in ["Spot Price", "Overall Signal", "LTP", "Price (USD)", "Asset"]):
+                        elif any(k in line for k in ["Spot Price", "Overall Signal", "LTP", "Price (USD)", "Asset", "Spot LTP"]):
                             summary_lines.append(line.strip())
                     if summary_lines:
                         summary_text = "\n    ".join(summary_lines[:8]) + ("\n    ..." if len(summary_lines) > 8 else "")
@@ -200,7 +218,7 @@ def main():
     print("\nSending to Slack...")
     
     # Run send_slack.py
-    slack_cmd = "python3 send_slack.py --header \"AlphaEdge - EOD Report to Management\" --color info --file eod_report.txt"
+    slack_cmd = f"{sys.executable} send_slack.py --header \"AlphaEdge - EOD Report to Management\" --color info --file eod_report.txt"
     slack_res = run_cmd(slack_cmd)
     print("Slack script output:")
     print(slack_res)
