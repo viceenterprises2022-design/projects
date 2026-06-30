@@ -2,76 +2,100 @@
 • *Deployment* (Status: planned) — 0/1 issues completed
 • *Tools* (Status: in_progress) — 81/87 issues completed
 • *LLM Cost Optimization* (Status: in_progress) — 0/6 issues completed
-• *Agents* (Status: in_progress) — 67/94 issues completed
+• *Agents* (Status: in_progress) — 67/97 issues completed
 • *Alphaedge Journal* (Status: in_progress) — 9/10 issues completed
 • *Chief-of-staff* (Status: completed) — 4/4 issues completed
 
 *2. Tasks Completed Today*
-• *ALP-740*: Replicate Multica Agents and Skills to Target Workspaces
-  - *Executed by*: None
-  - *Project*: Tools
-  - *Key Output*:
-    No detail comment found.
-• *ALP-736*: Deep Market Intelligence Research
+• *ALP-754*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-30
   - *Executed by*: Deep Researcher Agent
   - *Project*: None
   - *Key Output*:
-    ### Market Intelligence Report: NIFTY 10-Factor Analysis
-    **LTP:** 24,056.00 (+0.00%)
-    **Overall Signal:** NEUTRAL (Score: 1/10)
-    | # | Factor | Status | Data / Insight | Bias |
-    |---|--------|--------|----------------|------|
-    | 1 | Trend / Technicals | 🔴 Bearish | STRONG DOWNTREND / EMA20=23,533 / EMA50=23,660 / EMA200=23,764 | Negative |
-    | 2 | Global Sentiment (DOW) | 🟡 Neutral | FLAT (-0.09%) / DJIA Fut: 51,876 | Neutral |
-    | 3 | Volatility (VIX) | 🟢 Bullish | NORMAL (13.05) — Stable / Chg: +0.00% | Positive |
+    ## Market Intelligence Report - 2026-06-30
+    | Indicator | Symbol | LTP / Current | Change (%) | Status |
+    |---|---|---|---|---|
+    | US VIX | ^VIX | 17.65 | -4.13% | Stable |
+    | India VIX | INDIA_VIX | 13.61 | +0.00% | Local Volatility |
+    | Crude Oil (WTI) | CL=F | $70.32 | +1.57% | Energy |
+    | Dow Jones (US30) | ^DJI | 52,182.74 | +0.59% | Global Sentiment |
+    | US Dollar Index | DX-Y.NYB | 101.246 | +0.13% | Currency Strength |
     ...
-• *ALP-735*: Crypto Realtime Price
+• *ALP-753*: Crypto Prices - 2026-06-30
   - *Executed by*: crypto-realtime-price
   - *Project*: None
   - *Key Output*:
-    ### Real-time Crypto Prices (24h Change)
-    * **BTC**: $60,046.43 (+0.15%)
-    * **ETH**: $1,571.18 (-0.24%)
-    * **SOL**: $70.57 (-1.55%)
-    ### Technical Fixes
-    * Updated `realtime-crypto-price-api` SDK methods to match the current **PRISM OpenAPI endpoints** (e.g., using `/assets/all` for top coins, `/assets/{symbol}/prices` for history).
-    * Corrected internal key mapping in `src/index.js` to align with the active API response schemas (e.g., mapping `price_usd` and `change_24h_pct`).
-    * Verified that the `realtime-crypto-price-api` CLI and local examples now run successfully.
-• *ALP-741*: Real-Estate-Listings
+    - BTC: $59,843.88 (24h: +1.03%)
+    - ETH: $1,592.58 (24h: +2.02%)
+    - SOL: $74.19 (24h: +4.49%)
+• *ALP-758*: Real-Estate-Listings
   - *Executed by*: Real-Estate-Agent
   - *Project*: None
   - *Key Output*:
-    ## 4BHK Villa Report - East Bangalore / Sarjapur Road
-    ### 1. Whitehill Heritage Pelican Square
-    - **Location:** NH-207, Sarjapur
-    - **Type:** 4 BHK | 4 Bath
-    - **Built-up:** 2262-2606 sqft
-    - **Land/Plot:** 175-728 sqft private garden
-    - **Price:** From ₹1.67 Cr
-    - **Status:** Ready to Move (completed Feb 2026)
+    1. **BSR Daintree** — 4 BHK, 5 bath, 2400 sq ft, 1800 sq ft land, garden, ₹1.45 Cr
+    2. **NVT Arcot Vaksana** — 4 BHK, 3 bath, 2050 sq ft, garden, ₹1.25 Cr (best value)
+    3. **Shriram Malhaar** — 4 BHK, 4 bath, 2275 sq ft, common garden, ₹1.35 Cr
+    4. **Ecotech Serene Villas** — 4 BHK, 5 bath, 2700 sq ft, 2400 sq ft land, private garden, ₹1.60 Cr (largest)
+    5. **JRC Palladio** — 4 BHK, 4 bath, 2500 sq ft, garden, ₹1.50 Cr
+• *ALP-756*: Curate and Report Top 5 AI Events to Slack
+  - *Executed by*: Python-Agent
+  - *Project*: None
+  - *Key Output*:
+    1. **Executed Search**: Ran `python3 exa_ai_search.py --all` in `/home/vreddy1/Desktop/Projects/scripts`.
+    2. **Curated Top 5 Events**: Verified `ai_events_results.json` populated with the top 5 upcoming high-density AI online events & classes.
+    3. **Sent Slack Report**: Ran `python3 ai_news_reporter.py` to compile the report (combining the latest AI agent launches and curated online events) and successfully dispatched it to the AI News Slack channel.
+    **Delivered Report Content:**
+    • *vercel/eve: Open-source AI agent framework* (GitHub)
+    • *amd/gaia: AMD Ryzen AI agent framework* (GitHub)
+    • *narenaryan/kiss-sorcar: Simple AI agent framework* (GitHub)
+    • *ServiceNow Integrates AI Agents with Cognizant Neuro®* (News)
     ...
-• *ALP-734*: Daily News Crawl
+• *ALP-755*: Crawl and Search for AI Agents, and Report to Slack
+  - *Executed by*: Python-Agent
+  - *Project*: None
+  - *Key Output*:
+    1. **Exa Search for AI Agent Launches (`exa_ai_agents.py`):**
+    - Executed the script. Since the Exa API credit limit was exceeded, the script automatically fell back to loading pre-fetched launches.
+    - Identified 13 unique launches across GitHub, Research Papers, News, Web, and HuggingFace.
+    2. **Slack Report Delivery (`ai_news_reporter.py`):**
+    - Fetched the latest news (via fallback pre-fetched data) and parsed 5 upcoming AI online events from `ai_events_results.json`.
+    - Formatted and successfully delivered the daily report to the designated Slack channel (`SLACK_WEBHOOK_AI_NEWS`).
+    * **Latest AI Agent Launches (Last 24h):**
+    - `vercel/eve` (GitHub)
+    ...
+• *ALP-752*: Daily News Crawl - 2026-06-30
   - *Executed by*: daily-news-crawl
   - *Project*: None
   - *Key Output*:
-    # AlphaEdge Daily News Briefing — June 28, 2026
-    ### 📰 Global News & Macro Indicators (10 Points + "Why It Matters")
-    - **Why it matters**: Quantitative and HFT strategies relying on cap-weighted tech proxies face severe tracking errors. The divergence between equal-weight and cap-weight indexes highlights a structural rotation away from AI hype toward value and defensive yield.
-    - **Why it matters**: This shift signals that the market is transitioning from "multiple expansion" (speculative valuations) to "earnings quality" (return on invested capital). Companies must now prove that AI CapEx generates free cash flow to sustain their valuations.
-    - **Why it matters**: Unchanged capital requirements are a positive liquidity signal for the banking sector, preventing forced capital retention. However, it indicates a regulatory standstill while the Fed overhauls its stress-test models.
-    - **Why it matters**: Lower energy import costs from the US-Iran peace deal reduce structural inflation pressures. This gives the Reserve Bank of India (RBI) headroom to cut rates independently, making Indian equities and sovereign debt highly attractive for EM macro strategies.
-    - **Why it matters**: While the geopolitical risk premium has collapsed, the August 21 waiver expiry is a hard deadline. HFT energy models must factor in a sharp volatility spike as August approaches, or sooner if persistent ceasefire violations escalate in the Strait of Hormuz.
-    - **Why it matters**: Spot ETFs have been the primary liquidity engine for crypto. The persistent redemptions remove critical institutional bid support, leaving Bitcoin highly vulnerable to spot liquidations if it drops below the $58,000 support.
+    # AlphaEdge Market Intelligence Digest
+    **Date:** June 30, 2026
+    **Audience:** AlphaEdge LLP (Technical, Data-Centric, Actionable Insights for High-Frequency Decision-Making)
+    **Scope:** Global Macro, Crypto Liquidity, Frontier AI, and Trading Infrastructure
+    ---
+    ## Executive Summary
+    *   **USDT Premium Spikes to 8.5% in India:** Bengaluru enforcement raids on crypto remittance pipelines trigger a domestic supply shock, doubling Tether premiums.
+    *   **MiCA Transition Expires July 1, 2026:** The European Union enters full Markets in Crypto-Assets compliance phase, creating significant regulatory friction and liquidity segmentation risks.
     ...
 
 *3. New Tasks Logged Today (Backlog)*
 • _No new backlog tasks created today._
 
 *4. Value-Add Workspace Insights*
-• *Active In-Review Tasks* (16):
+• *Active In-Review Tasks* (28):
+  • *ALP-754*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-30 (Assignee: Deep Researcher Agent)
+  • *ALP-747*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-29 (Assignee: Deep Researcher Agent)
   • *ALP-722*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-27 (Assignee: Deep Researcher Agent)
+  • *ALP-753*: Crypto Prices - 2026-06-30 (Assignee: crypto-realtime-price)
   • *ALP-725*: Retrieve real-time crypto prices (BTC, ETH, SOL) with last-day changes (Assignee: crypto-realtime-price)
   • *ALP-721*: Crypto Prices - 2026-06-27 (Assignee: crypto-realtime-price)
+  • *ALP-758*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
+  • *ALP-756*: Curate and Report Top 5 AI Events to Slack (Assignee: Python-Agent)
+  • *ALP-755*: Crawl and Search for AI Agents, and Report to Slack (Assignee: Python-Agent)
+  • *ALP-752*: Daily News Crawl - 2026-06-30 (Assignee: daily-news-crawl)
+  • *ALP-749*: Run Exa AI search and report curated events to Slack (Assignee: Python-Agent)
+  • *ALP-748*: AI Agents Daily Tracker and Slack Report (Assignee: Python-Agent)
+  • *ALP-745*: Daily News Crawl - 2026-06-29 (Assignee: daily-news-crawl)
+  • *ALP-743*: Generate Daily Market Overview and Send to Slack (Assignee: CMC Agent)
+  • *ALP-742*: Generate and Send EOD Report to Management via Slack (Assignee: chief-of-staff)
   • *ALP-738*: Curate and Report Top AI Events to Slack (Assignee: Python-Agent)
   • *ALP-737*: Crawl AI Agents and Send Slack Report (Assignee: Python-Agent)
   • *ALP-733*: COS-Daily-Update: News, Crypto, and Market Intel (Assignee: chief-of-staff)
@@ -85,8 +109,12 @@
   • *ALP-716*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
   • *ALP-713*: AI Agents Tracker - Search launches & send Slack report (Assignee: Python-Agent)
   • *ALP-702*: COS-Daily-Update: Completed Market Intelligence Aggregation (Assignee: chief-of-staff)
-• *Active In-Progress Tasks* (7):
-  • *ALP-742*: Generate and Send EOD Report to Management via Slack (Assignee: chief-of-staff)
+• *Active In-Progress Tasks* (11):
+  • *ALP-759*: Send EOD Report to Management via Slack (Assignee: chief-of-staff)
+  • *ALP-757*: Daily Market Overview Report & Slack Delivery (Assignee: CMC Agent)
+  • *ALP-751*: COS-Daily-Update: Run 2026-06-30 (Assignee: chief-of-staff)
+  • *ALP-750*: Generate Daily Market Overview Report (Preview) (Assignee: CMC Agent)
+  • *ALP-744*: COS Daily Update - 2026-06-29 (Assignee: chief-of-staff)
   • *ALP-739*: Generate and send daily market overview report to Slack (Assignee: CMC Agent)
   • *ALP-729*: Generate Daily Market Overview and Send to Slack (Assignee: CMC Agent)
   • *ALP-723*: COS-Daily-Update: Triggering Sub-issues (Assignee: chief-of-staff)
