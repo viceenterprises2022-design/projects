@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 from exa_py import Exa
 from rich.console import Console
@@ -198,7 +198,7 @@ def run(
 
     # Only pages published in last 60 days — catches upcoming event announcements
     today = datetime.now(timezone.utc)
-    sixty_days_ago = today.replace(day=max(1, today.day - 60) if today.month > 1 else 1)
+    sixty_days_ago = today - timedelta(days=60)
     start_date = sixty_days_ago.strftime("%Y-%m-%dT00:00:00Z")
 
     console.print(Panel(
