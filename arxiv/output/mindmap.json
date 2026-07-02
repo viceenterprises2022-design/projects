@@ -1,0 +1,111 @@
+{
+  "name": "AUTOMEM: Automated Learning of Memory",
+  "children": [
+    {
+      "name": "Core Concept",
+      "children": [
+        {
+          "name": "Metamemory as a learned skill"
+        },
+        {
+          "name": "File-system operations as first-class actions"
+        },
+        {
+          "name": "Decoupled memory and task proficiency"
+        }
+      ]
+    },
+    {
+      "name": "System Architecture",
+      "children": [
+        {
+          "name": "Inner-Loop Agent",
+          "children": [
+            {
+              "name": "LOG Routine: What to record"
+            },
+            {
+              "name": "PLAN Routine: What to recall"
+            },
+            {
+              "name": "External File System Memory"
+            }
+          ]
+        },
+        {
+          "name": "Outer-Loop 1: Scaffold Optimizer",
+          "children": [
+            {
+              "name": "Meta-LLM reviews episode traces"
+            },
+            {
+              "name": "Revises code, prompts, and schemas"
+            },
+            {
+              "name": "Structural optimization"
+            }
+          ]
+        },
+        {
+          "name": "Outer-Loop 2: Proficiency Optimizer",
+          "children": [
+            {
+              "name": "Trains dedicated Memory Specialist"
+            },
+            {
+              "name": "Curates data from agent experience"
+            },
+            {
+              "name": "LoRA finetuning orchestration"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Memory Operations",
+      "children": [
+        {
+          "name": "READ / WRITE"
+        },
+        {
+          "name": "SEARCH / APPEND"
+        },
+        {
+          "name": "CREATE / UPSERT_MAP"
+        }
+      ]
+    },
+    {
+      "name": "Evaluation Environments",
+      "children": [
+        {
+          "name": "Crafter: Open-world survival"
+        },
+        {
+          "name": "MiniHack: Focused puzzles"
+        },
+        {
+          "name": "NetHack: Complex long-horizon roguelike"
+        }
+      ]
+    },
+    {
+      "name": "Key Results",
+      "children": [
+        {
+          "name": "2x-4x performance improvement"
+        },
+        {
+          "name": "Competitive with frontier models (Claude/Gemini)"
+        },
+        {
+          "name": "Reduced unproductive actions (stuck/oscillation)"
+        },
+        {
+          "name": "Improved context compression/efficiency"
+        }
+      ]
+    }
+  ]
+}
