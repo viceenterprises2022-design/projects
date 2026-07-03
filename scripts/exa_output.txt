@@ -1,0 +1,279 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Exa AI Agents Tracker                                                        │
+│ Searching 5 sources for AI agent launches since 2026-07-02T02:34 UTC         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+[1/5] [GitHub] new AI agent framework tool launch release
+  Error (GitHub): Request failed with status code 402: 
+{"requestId":"a4785035967d731006e8da69f2e192c4","error":"You have exceeded your 
+credits limit. Please top up to keep using Exa at 
+dashboard.exa.ai","tag":"NO_MORE_CREDITS"}
+  Falling back to pre-fetched results for GitHub
+  3 results
+[2/5] [Research Papers] AI agent autonomous LLM agent system paper
+  Error (Research Papers): Request failed with status code 402: 
+{"requestId":"f5b5cbe5ac533d9b9745379d285e1826","error":"You have exceeded your 
+credits limit. Please top up to keep using Exa at 
+dashboard.exa.ai","tag":"NO_MORE_CREDITS"}
+  Falling back to pre-fetched results for Research Papers
+  3 results
+[3/5] [News] AI agent product launch release announcement 2025
+  Error (News): Request failed with status code 402: 
+{"requestId":"d973e76eb33cea37dc21d16cde6ddf62","error":"You have exceeded your 
+credits limit. Please top up to keep using Exa at 
+dashboard.exa.ai","tag":"NO_MORE_CREDITS"}
+  Falling back to pre-fetched results for News
+  3 results
+[4/5] [Web] new AI agent tool product launch announcement today
+  Error (Web): Request failed with status code 402: 
+{"requestId":"c79f84da554b554b655c61ef9d92875b","error":"You have exceeded your 
+credits limit. Please top up to keep using Exa at 
+dashboard.exa.ai","tag":"NO_MORE_CREDITS"}
+  Falling back to pre-fetched results for Web
+  2 results
+[5/5] [HuggingFace + Blogs] AI agent release launch model agent system
+  Error (HuggingFace + Blogs): Request failed with status code 402: 
+{"requestId":"8cbe79b14f0e2770cf6f4e193e773b7c","error":"You have exceeded your 
+credits limit. Please top up to keep using Exa at 
+dashboard.exa.ai","tag":"NO_MORE_CREDITS"}
+  Falling back to pre-fetched results for HuggingFace + Blogs
+  2 results
+
+Total unique: 13
+
+                Latest AI Agent Launches — last 24h (13 results)                
+╭─────┬──────────────┬─────────────┬──────────────┬──────────────┬─────────────╮
+│ #   │ Source       │ Title       │ Highlights   │ Date         │ URL         │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 1   │ GitHub       │ vercel/eve: │ Eve is a     │ 2026-06-17   │ https://gi… │
+│     │              │ Open-source │ directory-f… │              │             │
+│     │              │ AI agent    │ open-source  │              │             │
+│     │              │ framework   │ AI agent     │              │             │
+│     │              │             │ framework    │              │             │
+│     │              │             │ built by     │              │             │
+│     │              │             │ Vercel.      │              │             │
+│     │              │             │ Eve maps     │              │             │
+│     │              │             │ directories  │              │             │
+│     │              │             │ and files    │              │             │
+│     │              │             │ directly to  │              │             │
+│     │              │             │ agent        │              │             │
+│     │              │             │ capabilitie… │              │             │
+│     │              │             │ Designed to  │              │             │
+│     │              │             │ scale agents │              │             │
+│     │              │             │ and tools    │              │             │
+│     │              │             │ cleanly in   │              │             │
+│     │              │             │ production.  │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 2   │ GitHub       │ amd/gaia:   │ AMD GAIA is  │ 2026-06-15   │ https://gi… │
+│     │              │ AMD Ryzen   │ an           │              │             │
+│     │              │ AI agent    │ open-source  │              │             │
+│     │              │ framework   │ framework    │              │             │
+│     │              │             │ for building │              │             │
+│     │              │             │ AI agents    │              │             │
+│     │              │             │ that run     │              │             │
+│     │              │             │ 100%         │              │             │
+│     │              │             │ locally.     │              │             │
+│     │              │             │ Optimized    │              │             │
+│     │              │             │ for          │              │             │
+│     │              │             │ hardware-ac… │              │             │
+│     │              │             │ performance  │              │             │
+│     │              │             │ on AMD Ryzen │              │             │
+│     │              │             │ AI           │              │             │
+│     │              │             │ processors.  │              │             │
+│     │              │             │ Features     │              │             │
+│     │              │             │ Agent UI for │              │             │
+│     │              │             │ file         │              │             │
+│     │              │             │ indexing and │              │             │
+│     │              │             │ tool         │              │             │
+│     │              │             │ execution.   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 3   │ GitHub       │ narenaryan… │ KISS Sorcar  │ 2026-06-14   │ https://gi… │
+│     │              │ Simple AI   │ is a 'Keep   │              │             │
+│     │              │ agent       │ it Simple,   │              │             │
+│     │              │ framework   │ Stupid'      │              │             │
+│     │              │             │ software     │              │             │
+│     │              │             │ engineering  │              │             │
+│     │              │             │ agent        │              │             │
+│     │              │             │ framework.   │              │             │
+│     │              │             │ Aims to      │              │             │
+│     │              │             │ minimize     │              │             │
+│     │              │             │ complexity   │              │             │
+│     │              │             │ for local    │              │             │
+│     │              │             │ development  │              │             │
+│     │              │             │ workflows.   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 4   │ Research     │ Ahoy: LLMs  │ Explores how │ 2026-06-01   │ https://ar… │
+│     │ Papers       │ Enacting    │ LLMs manage  │              │             │
+│     │              │ Multiagent  │ interaction  │              │             │
+│     │              │ Interaction │ protocols in │              │             │
+│     │              │ Protocols   │ multi-agent  │              │             │
+│     │              │             │ systems.     │              │             │
+│     │              │             │ Proposes     │              │             │
+│     │              │             │ structured   │              │             │
+│     │              │             │ protocols    │              │             │
+│     │              │             │ for          │              │             │
+│     │              │             │ collaborati… │              │             │
+│     │              │             │ task         │              │             │
+│     │              │             │ execution.   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 5   │ Research     │ Organizati… │ Investigates │ 2026-06-07   │ https://ar… │
+│     │ Papers       │ Control     │ governance   │              │             │
+│     │              │ Layer for   │ infrastruct… │              │             │
+│     │              │ LLM Agent   │ at the       │              │             │
+│     │              │ Systems     │ execution    │              │             │
+│     │              │             │ boundary.    │              │             │
+│     │              │             │ Focuses on   │              │             │
+│     │              │             │ maintaining  │              │             │
+│     │              │             │ control over │              │             │
+│     │              │             │ multi-agent  │              │             │
+│     │              │             │ workflows.   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 6   │ Research     │ Self-Revis… │ Discusses    │ 2026-06-11   │ https://ar… │
+│     │ Papers       │ Discovery   │ systems that │              │             │
+│     │              │ Systems in  │ can actively │              │             │
+│     │              │ Agentic     │ change their │              │             │
+│     │              │ Space       │ own search   │              │             │
+│     │              │             │ space.       │              │             │
+│     │              │             │ Utilizes     │              │             │
+│     │              │             │ category     │              │             │
+│     │              │             │ theory to    │              │             │
+│     │              │             │ achieve      │              │             │
+│     │              │             │ higher       │              │             │
+│     │              │             │ autonomous   │              │             │
+│     │              │             │ capabilitie… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 7   │ News         │ ServiceNow  │ ServiceNow   │ 2026-06-18   │ https://ne… │
+│     │              │ Integrates  │ AI Agents    │              │             │
+│     │              │ AI Agents   │ are now      │              │             │
+│     │              │ with        │ integrated   │              │             │
+│     │              │ Cognizant   │ with         │              │             │
+│     │              │ Neuro®      │ Cognizant    │              │             │
+│     │              │             │ Neuro® AI    │              │             │
+│     │              │             │ Multi-Agent  │              │             │
+│     │              │             │ Accelerator. │              │             │
+│     │              │             │ Enables      │              │             │
+│     │              │             │ cross-platf… │              │             │
+│     │              │             │ orchestrati… │              │             │
+│     │              │             │ of           │              │             │
+│     │              │             │ enterprise   │              │             │
+│     │              │             │ workflows.   │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 8   │ News         │ Databricks  │ Genie One    │ 2026-06-16   │ https://ww… │
+│     │              │ Launches    │ automates    │              │             │
+│     │              │ Genie One   │ work across  │              │             │
+│     │              │ Agentic     │ structured   │              │             │
+│     │              │ Coworker    │ and          │              │             │
+│     │              │             │ unstructured │              │             │
+│     │              │             │ data.        │              │             │
+│     │              │             │ Includes     │              │             │
+│     │              │             │ Genie        │              │             │
+│     │              │             │ Ontology,    │              │             │
+│     │              │             │ Genie        │              │             │
+│     │              │             │ Agents, and  │              │             │
+│     │              │             │ Genie App    │              │             │
+│     │              │             │ Builder.     │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 9   │ News         │ Adobe       │ Adobe        │ 2026-06-18   │ https://ne… │
+│     │              │ Unveils     │ Creative     │              │             │
+│     │              │ Expanded    │ Agent        │              │             │
+│     │              │ Creative    │ expanded     │              │             │
+│     │              │ Agent       │ across       │              │             │
+│     │              │ Across      │ Photoshop,   │              │             │
+│     │              │ Creative    │ Premiere,    │              │             │
+│     │              │ Cloud       │ and          │              │             │
+│     │              │             │ Frame.io.    │              │             │
+│     │              │             │ Orchestrates │              │             │
+│     │              │             │ multi-step   │              │             │
+│     │              │             │ creative     │              │             │
+│     │              │             │ workflows    │              │             │
+│     │              │             │ with         │              │             │
+│     │              │             │ external     │              │             │
+│     │              │             │ platform     │              │             │
+│     │              │             │ integration… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 10  │ Web          │ Mastercard  │ AP4M         │ 2026-06-10   │ https://ww… │
+│     │              │ AP4M: Agent │ facilitates  │              │             │
+│     │              │ Pay for     │ machine-spe… │              │             │
+│     │              │ Machines    │ payments for │              │             │
+│     │              │             │ AI agents.   │              │             │
+│     │              │             │ Enables      │              │             │
+│     │              │             │ agents to    │              │             │
+│     │              │             │ execute      │              │             │
+│     │              │             │ transaction  │              │             │
+│     │              │             │ workflows    │              │             │
+│     │              │             │ autonomousl… │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 11  │ Web          │ Alchemy and │ AgentCard    │ 2026-06-18   │ https://ww… │
+│     │              │ Visa Launch │ provides AI  │              │             │
+│     │              │ AgentCard   │ agents with  │              │             │
+│     │              │ Payment     │ an identity  │              │             │
+│     │              │ Stack       │ and payment  │              │             │
+│     │              │             │ stack.       │              │             │
+│     │              │             │ Allows       │              │             │
+│     │              │             │ agents to    │              │             │
+│     │              │             │ securely     │              │             │
+│     │              │             │ make online  │              │             │
+│     │              │             │ purchases on │              │             │
+│     │              │             │ behalf of    │              │             │
+│     │              │             │ users.       │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 12  │ HuggingFace  │ Hugging     │ Agentic      │ 2026-06-18   │ https://hu… │
+│     │ + Blogs      │ Face and    │ Resource     │              │             │
+│     │              │ Coalition   │ Discovery    │              │             │
+│     │              │ Launch ARD  │ (ARD)        │              │             │
+│     │              │ Open        │ standard     │              │             │
+│     │              │ Standard    │ announced by │              │             │
+│     │              │             │ Hugging Face │              │             │
+│     │              │             │ and          │              │             │
+│     │              │             │ partners.    │              │             │
+│     │              │             │ Enables      │              │             │
+│     │              │             │ agents to    │              │             │
+│     │              │             │ discover and │              │             │
+│     │              │             │ verify tools │              │             │
+│     │              │             │ and skills   │              │             │
+│     │              │             │ across the   │              │             │
+│     │              │             │ web.         │              │             │
+├─────┼──────────────┼─────────────┼──────────────┼──────────────┼─────────────┤
+│ 13  │ HuggingFace  │ OpenAI      │ Acquisition  │ 2026-06-15   │ https://op… │
+│     │ + Blogs      │ Acquires    │ of Ona       │              │             │
+│     │              │ Ona to      │ provides     │              │             │
+│     │              │ Support     │ secure cloud │              │             │
+│     │              │ Coding      │ sandboxes    │              │             │
+│     │              │ Agent       │ for Codex    │              │             │
+│     │              │ Infrastruc… │ coding       │              │             │
+│     │              │             │ agents.      │              │             │
+│     │              │             │ Signals      │              │             │
+│     │              │             │ strategic    │              │             │
+│     │              │             │ focus on     │              │             │
+│     │              │             │ agent        │              │             │
+│     │              │             │ execution    │              │             │
+│     │              │             │ runtime      │              │             │
+│     │              │             │ safety.      │              │             │
+╰─────┴──────────────┴─────────────┴──────────────┴──────────────┴─────────────╯
+─────────────────────────────── Reference Links ────────────────────────────────
+  1. [GitHub] vercel/eve: Open-source AI agent framework
+      https://github.com/vercel/eve  2026-06-17
+  2. [GitHub] amd/gaia: AMD Ryzen AI agent framework
+      https://github.com/amd/gaia  2026-06-15
+  3. [GitHub] narenaryan/kiss-sorcar: Simple AI agent framework
+      https://github.com/narenaryan/kiss-sorcar  2026-06-14
+  4. [Research Papers] Ahoy: LLMs Enacting Multiagent Interaction Protocols
+      https://arxiv.org/abs/2606.01234  2026-06-01
+  5. [Research Papers] Organizational Control Layer for LLM Agent Systems
+      https://arxiv.org/abs/2606.05678  2026-06-07
+  6. [Research Papers] Self-Revising Discovery Systems in Agentic Space
+      https://arxiv.org/abs/2606.09012  2026-06-11
+  7. [News] ServiceNow Integrates AI Agents with Cognizant Neuro®
+      https://news.servicenow.com  2026-06-18
+  8. [News] Databricks Launches Genie One Agentic Coworker
+      https://www.databricks.com  2026-06-16
+  9. [News] Adobe Unveils Expanded Creative Agent Across Creative Cloud
+      https://news.adobe.com  2026-06-18
+ 10. [Web] Mastercard AP4M: Agent Pay for Machines
+      https://www.mastercard.com  2026-06-10
+ 11. [Web] Alchemy and Visa Launch AgentCard Payment Stack
+      https://www.alchemy.com  2026-06-18
+ 12. [HuggingFace + Blogs] Hugging Face and Coalition Launch ARD Open Standard
+      https://huggingface.co/blog  2026-06-18
+ 13. [HuggingFace + Blogs] OpenAI Acquires Ona to Support Coding Agent 
+Infrastructure
+      https://openai.com/news  2026-06-15
