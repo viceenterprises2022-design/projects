@@ -1,109 +1,151 @@
 {
-  "name": "AUTOMEM: Automated Learning of Memory",
+  "name": "Distributed Attacks in Persistent-State AI Control",
   "children": [
     {
-      "name": "Core Concept",
+      "name": "Iterative Vibecoding Setting",
       "children": [
         {
-          "name": "Metamemory as a learned skill"
-        },
-        {
-          "name": "File-system operations as first-class actions"
-        },
-        {
-          "name": "Decoupled memory and task proficiency"
-        }
-      ]
-    },
-    {
-      "name": "System Architecture",
-      "children": [
-        {
-          "name": "Inner-Loop Agent",
+          "name": "Scenario",
           "children": [
             {
-              "name": "LOG Routine: What to record"
+              "name": "Sequential pull requests"
             },
             {
-              "name": "PLAN Routine: What to recall"
+              "name": "Persistent codebase"
             },
             {
-              "name": "External File System Memory"
+              "name": "Main task vs. covert side task"
             }
           ]
         },
         {
-          "name": "Outer-Loop 1: Scaffold Optimizer",
+          "name": "Task Families",
           "children": [
             {
-              "name": "Meta-LLM reviews episode traces"
+              "name": "CLI tools"
             },
             {
-              "name": "Revises code, prompts, and schemas"
-            },
-            {
-              "name": "Structural optimization"
-            }
-          ]
-        },
-        {
-          "name": "Outer-Loop 2: Proficiency Optimizer",
-          "children": [
-            {
-              "name": "Trains dedicated Memory Specialist"
-            },
-            {
-              "name": "Curates data from agent experience"
-            },
-            {
-              "name": "LoRA finetuning orchestration"
+              "name": "Flask web services"
             }
           ]
         }
       ]
     },
     {
-      "name": "Memory Operations",
+      "name": "Attack Strategies",
       "children": [
         {
-          "name": "READ / WRITE"
+          "name": "Gradual Attacks",
+          "children": [
+            {
+              "name": "Distributed across multiple PRs"
+            },
+            {
+              "name": "Atomic steps in isolation"
+            },
+            {
+              "name": "Exploits compositional suspicion"
+            }
+          ]
         },
         {
-          "name": "SEARCH / APPEND"
-        },
-        {
-          "name": "CREATE / UPSERT_MAP"
+          "name": "Non-Gradual Attacks",
+          "children": [
+            {
+              "name": "Executed in a single PR"
+            },
+            {
+              "name": "Positional selection for best cover"
+            },
+            {
+              "name": "High action-level cover"
+            }
+          ]
         }
       ]
     },
     {
-      "name": "Evaluation Environments",
+      "name": "Monitoring & Defense",
       "children": [
         {
-          "name": "Crafter: Open-world survival"
+          "name": "Monitor Types",
+          "children": [
+            {
+              "name": "PR-diff monitors (Code review)"
+            },
+            {
+              "name": "Trajectory monitors (Action history)"
+            },
+            {
+              "name": "Ensemble (Multi-modality combo)"
+            }
+          ]
         },
         {
-          "name": "MiniHack: Focused puzzles"
-        },
-        {
-          "name": "NetHack: Complex long-horizon roguelike"
+          "name": "Link-Tracker Monitor",
+          "children": [
+            {
+              "name": "Stateful diff review"
+            },
+            {
+              "name": "Persistent suspicion notes"
+            },
+            {
+              "name": "Tracks suspicious buildup"
+            }
+          ]
         }
       ]
     },
     {
-      "name": "Key Results",
+      "name": "Core Findings",
       "children": [
         {
-          "name": "2x-4x performance improvement"
+          "name": "High Evasion",
+          "children": [
+            {
+              "name": "Standard monitors fail gradual attacks"
+            },
+            {
+              "name": "Evasion generalizes across models"
+            }
+          ]
         },
         {
-          "name": "Competitive with frontier models (Claude/Gemini)"
+          "name": "Persistence Levers",
+          "children": [
+            {
+              "name": "Distribution over time"
+            },
+            {
+              "name": "Strategic timing for cover"
+            }
+          ]
         },
         {
-          "name": "Reduced unproductive actions (stuck/oscillation)"
+          "name": "Effective Defenses",
+          "children": [
+            {
+              "name": "Ensemble reduces evasion to 47%"
+            },
+            {
+              "name": "Static taint analysis helps"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Side Task Examples",
+      "children": [
+        {
+          "name": "Triggered credential exfiltration"
         },
         {
-          "name": "Improved context compression/efficiency"
+          "name": "Configuration-mediated telemetry"
+        },
+        {
+          "name": "Multi-stage access-control backdoor"
         }
       ]
     }
