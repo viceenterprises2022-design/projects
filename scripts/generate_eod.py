@@ -32,7 +32,7 @@ def fetch_all_issues():
         if not issues:
             break
         all_issues.extend(issues)
-        if not data.get("has_more", False):
+        if len(issues) < limit:
             break
         offset += len(issues)
     return all_issues
