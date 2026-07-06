@@ -2,84 +2,79 @@
 • *Deployment* (Status: planned) — 0/1 issues completed
 • *Tools* (Status: in_progress) — 81/87 issues completed
 • *LLM Cost Optimization* (Status: in_progress) — 0/6 issues completed
-• *Agents* (Status: in_progress) — 67/107 issues completed
+• *Agents* (Status: in_progress) — 67/109 issues completed
 • *Alphaedge Journal* (Status: in_progress) — 9/10 issues completed
 • *Chief-of-staff* (Status: completed) — 4/4 issues completed
 
 *2. Tasks Completed Today*
-• *ALP-804*: Market intelligence NIFTY/BANKNIFTY 10-Factor Analysis 2026-07-05
+• *ALP-814*: Market Intelligence & Macro Analysis - 2026-07-06
   - *Executed by*: Deep Researcher Agent
   - *Project*: None
   - *Key Output*:
-    ## Market Intelligence Report - 2026-07-05
-    **LTP:** 24,270.85 (+0.00%)
-    **Overall Signal:** NEUTRAL (Score: 1/10)
-    | # | Factor | Status | Data / Insight | Bias |
-    |---|--------|--------|----------------|------|
-    | 1 | Trend / Technicals | 🔴 Bearish | MILD DOWNTREND — EMA20=23,873 ; EMA50=23,849 ; EMA200=23,846 | Negative |
-    | 2 | Global Sentiment (DOW) | 🟢 Bullish | BULLISH (+1.14%) — DJIA Fut: 52,900 | Positive |
-    | 3 | Volatility (VIX) | 🟢 Bullish | LOW (11.80) — Calm — Chg: +0.00% | Positive |
+    ---
+    | Macro Indicator | Current Value / Range | Reference Close / Date | Market Implications & Context |
+    | :--- | :--- | :--- | :--- |
+    | **CBOE Volatility Index (VIX)** | **16.15** | July 2, 2026 | Moderate level; reflects steady risk expectations in U.S. equities (markets closed on July 3). |
+    | **India VIX** | **11.80** | July 3, 2026 | Low level; suggests domestic investor complacency/stability but open to volatility spikes. |
+    | **WTI Crude Oil** | **$68.08 – $68.47 / barrel** | July 3–6, 2026 | Bullish for India; declining oil prices (due to U.S.-Iran Doha talks) support lower domestic inflation and trade deficit. |
+    | **Brent Crude Oil** | **$71.32 – $72.17 / barrel** | July 3–6, 2026 | Bullish for India; Brent has retracted most of its war premium. |
+    | **US30 (Dow Jones)** | **52,900.07** | July 2, 2026 | Neutral-Positive; U.S. markets closed on Friday, July 3; seeing rotation from tech to value. |
     ...
-• *ALP-803*: Crypto price check 2026-07-05
+• *ALP-813*: Real-time Crypto Price Pull - 2026-07-06
   - *Executed by*: crypto-realtime-price
   - *Project*: None
   - *Key Output*:
-    | Asset | Price (USD) | 24h Change (%) | Confidence | Sources Used |
-    | :--- | :--- | :--- | :--- | :--- |
-    | **BTC** | $62,873.84 | +0.60% | 92% | Coinbase, OKX |
-    | **ETH** | $1,765.72 | +0.92% | 92% | Coinbase, OKX |
-    | **SOL** | $80.86 | -1.57% | 92% | Coinbase, OKX |
-• *ALP-808*: Real-Estate-Listings
+    | Symbol | Price (USD) | 24h Change | Sources |
+    | :--- | :--- | :--- | :--- |
+    | **BTC** | $63,781.57 | +1.45% | coinbase, okx |
+    | **ETH** | $1,791.87 | +1.49% | coinbase, okx |
+    | **SOL** | $82.02 | +1.43% | coinbase, okx |
+    *Prices retrieved using Real-time Crypto Price API via PRISM.*
+• *ALP-818*: Real-Estate-Listings
   - *Executed by*: Real-Estate-Agent
   - *Project*: None
   - *Key Output*:
-    **Report sent** to `@my_mutilac_bot` (Telegram) — full HTML-formatted report with 13 properties including: bedrooms, bathrooms, built-up area, land area, garden details, price, and occupancy status.
-    **Key picks by budget:**
-    - ~₹2.5–3 Cr → Genurise MJR Divine Meadows (63% green, garden), Shriram Malhaar, Sri Urban Retreat
-    - ~₹3.5–5 Cr → Soulace Villas (private elevator), BSR Daintree, Natura Vanaa, Assetz 18
-    - ~₹5–7 Cr+ → Nambiar Bellezea / Ellegenza
-    - Garden preference → Genurise MJR Divine Meadows, KRK Urban Ville Ph1 (private garden)
-• *ALP-806*: Run and Send Curated AI Events Report to Slack
+    **Garden-preference picks:**
+    - KRK Urban Ville (1.5B, phase-1) — private garden in each villa
+    - Saiven Mulberry Groves — backyard + terrace garden
+    - NVT Arcot Vaksana — mature gardens, clubhouse
+    - Genurise MJR Divine Meadows — 63% green / open spaces
+    **Excluded (Under Construction):** Aiikya Village Sarjapur, KRK Urban Ville Phase-2, Earthen Ambience (Dec 2026), Geown Oasis Phase 3.
+• *ALP-816*: Capture and Report Curated AI Online Events to Slack
   - *Executed by*: Python-Agent
   - *Project*: None
   - *Key Output*:
-    **Summary of execution steps:**
-    1. Ran `exa_ai_search.py --all` in `/home/vreddy1/Desktop/Projects/scripts` to fetch upcoming events. Due to Exa API credits being exhausted, the script activated its curated fallback mechanism, resulting in 5 high-quality upcoming events:
-    - *OpenAI Builder Bootcamp: Advanced RAG, Evals, & Agent Orchestration* (https://academy.openai.com/events)
-    - *DeepLearning.AI: Multi-Agent Systems in Production* (https://www.deeplearning.ai)
-    - *Google Build with AI: Vertex AI Agent Builder & Gemini 1.5 Pro* (https://developers.google.com/events)
-    - *OpenAI DevDay 2026: Keynote & Developer Workshops* (https://openai.com/blog)
-    - *Hugging Face: Open-Source LLM and SLM Fine-Tuning Workshop* (https://huggingface.co/blog)
-    2. Saved the curated list to `ai_events_results.json`.
-    ...
-• *ALP-805*: Fetch daily AI agent news and send report to Slack
+    1. Updated the issue title to reflect the task accurately ("Capture and Report Curated AI Online Events to Slack").
+    2. Executed `python3 exa_ai_search.py --all` in `/home/vreddy1/Desktop/Projects/scripts` to search for and curate the top 5 AI online events, saving them to `ai_events_results.json`.
+    3. Executed `python3 ai_news_reporter.py` to compile the AI news and upcoming events, sending the final report successfully to the Slack channel.
+• *ALP-815*: Run Exa AI Agents Tracker and Send Daily AI News Report to Slack
   - *Executed by*: Python-Agent
   - *Project*: None
   - *Key Output*:
-    1. Ran `python3 exa_ai_agents.py` in `/home/vreddy1/Desktop/Projects/scripts` to fetch and display the latest AI Agent product launches.
-    2. Ran `python3 ai_news_reporter.py` which consolidated the launches with upcoming AI events and posted the final report to Slack (via webhook).
-• *ALP-802*: Daily news crawl 2026-07-05
+    1. Changed working directory to `/home/vreddy1/Desktop/Projects/scripts`.
+    2. Ran `python3 exa_ai_agents.py` using the virtual environment interpreter (`./venv/bin/python3`). The tracker printed the latest AI agent launches (such as `vercel/eve`, `amd/gaia`, `narenaryan/kiss-sorcar`, etc.) and reference links.
+    3. Ran `python3 ai_news_reporter.py` to compile the report (including recent launches and upcoming events) and successfully transmitted the report to Slack (indicated by `Part 1/1 sent to Slack`).
+    4. Renamed the issue from "AI Agents - Whats Happening !" to "Run Exa AI Agents Tracker and Send Daily AI News Report to Slack".
+• *ALP-812*: Daily News Crawl & Digest - 2026-07-06
   - *Executed by*: daily-news-crawl
   - *Project*: None
   - *Key Output*:
-    # AlphaEdge Market Intelligence Brief
-    **Date:** July 5, 2026
-    **Audience:** Founders, Investors, and High-Frequency Operators
-    **Scope:** Global Macro, Frontier AI Infrastructure, and Digital Asset Regulation
-    ---
-    ## Executive Summary
-    *   **U.S. Digital Asset Harmonization:** The SEC and CFTC have expanded "Project Crypto" to establish a unified token taxonomy, while the newly enacted GENIUS Act begins active OCC/Fed/FDIC supervision of payment stablecoin reserves.
-    *   **Frontier AI State Integration:** OpenAI proposes an unprecedented 5% equity stake to the U.S. government to align national security interests, while Anthropic tightens global geo-blocking export control enforcement.
-    ...
+    1. Revolut begins a phased delisting of Tether's USDT stablecoin for European Economic Area (EEA) users, with July 6, 2026, marking the last day to buy the token. - Why it matters: The move aligns with the EU's Markets in Crypto-Assets (MiCA) regulation, illustrating increased regulatory enforcement and accelerating the market share shift toward fully compliant stablecoins like USDC.
+    2. SpaceX (ticker: SPCX), valued at over $2 trillion following its June IPO, is set to join the Nasdaq-100 index before the market opens on Monday, July 7, 2026. - Why it matters: The high-profile inclusion is expected to drive massive passive inflows of $4.3 billion to $27 billion, creating significant buying pressure and rebalancing adjustments for index-tracking funds.
+    3. U.S. spot Bitcoin ETFs snapped a 10-day streak of consecutive net outflows on July 2, 2026, recording $221.7 million in net inflows. - Why it matters: The influx of fresh institutional capital reverses the June trend where approximately $4.5 billion was withdrawn, boosting market confidence and signaling a potential bottoming of selling pressure.
+    4. Bitcoin (BTC) surged over the weekend, climbing back toward the $64,000 mark in thin, holiday-shortened trading volumes. - Why it matters: A weekend short squeeze drove the sudden upward price momentum, showing a temporary shift in trader sentiment but warning of potential volatility due to lower holiday liquidity.
+    5. The U.S. economy added only 57,000 jobs in June, coming in substantially lower than consensus forecasts. - Why it matters: The cool labor market report raises expectations that the Federal Reserve will adopt a more dovish stance, reducing the likelihood of future rate hikes and providing a favorable macro backdrop for risk assets.
 
 *3. New Tasks Logged Today (Backlog)*
 • _No new backlog tasks created today._
 
 *4. Value-Add Workspace Insights*
-• *Active In-Review Tasks* (66):
+• *Active In-Review Tasks* (73):
+  • *ALP-814*: Market Intelligence & Macro Analysis - 2026-07-06 (Assignee: Deep Researcher Agent)
   • *ALP-804*: Market intelligence NIFTY/BANKNIFTY 10-Factor Analysis 2026-07-05 (Assignee: Deep Researcher Agent)
   • *ALP-794*: Market Intelligence Deep Research (Assignee: Deep Researcher Agent)
   • *ALP-784*: Market Intelligence Report Task (Assignee: Deep Researcher Agent)
+  • *ALP-813*: Real-time Crypto Price Pull - 2026-07-06 (Assignee: crypto-realtime-price)
   • *ALP-803*: Crypto price check 2026-07-05 (Assignee: crypto-realtime-price)
   • *ALP-793*: Crypto Realtime Prices (Assignee: crypto-realtime-price)
   • *ALP-783*: Crypto Price Report Task (Assignee: crypto-realtime-price)
@@ -87,6 +82,11 @@
   • *ALP-754*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-30 (Assignee: Deep Researcher Agent)
   • *ALP-747*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-29 (Assignee: Deep Researcher Agent)
   • *ALP-722*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-27 (Assignee: Deep Researcher Agent)
+  • *ALP-818*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
+  • *ALP-816*: Capture and Report Curated AI Online Events to Slack (Assignee: Python-Agent)
+  • *ALP-815*: Run Exa AI Agents Tracker and Send Daily AI News Report to Slack (Assignee: Python-Agent)
+  • *ALP-810*: Generate Daily Market Overview and send to Slack (Assignee: CMC Agent)
+  • *ALP-809*: Generate and send EOD Report to Slack (Assignee: chief-of-staff)
   • *ALP-808*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
   • *ALP-806*: Run and Send Curated AI Events Report to Slack (Assignee: Python-Agent)
   • *ALP-805*: Fetch daily AI agent news and send report to Slack (Assignee: Python-Agent)
@@ -143,8 +143,10 @@
   • *ALP-716*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
   • *ALP-713*: AI Agents Tracker - Search launches & send Slack report (Assignee: Python-Agent)
   • *ALP-702*: COS-Daily-Update: Completed Market Intelligence Aggregation (Assignee: chief-of-staff)
-• *Active In-Progress Tasks* (17):
-  • *ALP-809*: Generate and send EOD Report to Slack (Assignee: chief-of-staff)
+• *Active In-Progress Tasks* (19):
+  • *ALP-819*: Send EOD Report to Management via Slack (Assignee: chief-of-staff)
+  • *ALP-817*: Generate Daily Market Overview Report & Send to Slack (Assignee: CMC Agent)
+  • *ALP-811*: Daily Market & Crypto Intelligence Report - 2026-07-06 (Assignee: chief-of-staff)
   • *ALP-807*: Daily Market Overview - Generation and Slack Dispatch (Assignee: CMC Agent)
   • *ALP-801*: COS-Daily-Update-2026-07-05 (Assignee: chief-of-staff)
   • *ALP-791*: Orchestrate Daily Crypto & News Market Intelligence Report (Assignee: chief-of-staff)
