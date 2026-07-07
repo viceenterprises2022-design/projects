@@ -8,7 +8,7 @@ This growth is driven by two parallel forces:
 1. **Institutional Demand for Efficiency:** Major asset managers (e.g., BlackRock, Franklin Templeton) are leveraging public and private blockchains to optimize back-office operations, reduce settlement times, and unlock yield for treasury products.
 2. **Emerging Market Economic Realities:** In frontier economies—specifically across Africa, Latin America (LATAM), and parts of Asia—stablecoins are serving as crucial alternatives to volatile local fiat currencies, enabling basic cross-border trade finance and protecting wealth against high inflation.
 
-*Report generated at: 2026-07-06 06:00 AM IST*
+*Report generated at: 2026-07-07 06:00 AM IST*
 
 ---
 
