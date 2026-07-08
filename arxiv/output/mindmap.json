@@ -1,151 +1,178 @@
 {
-  "name": "Distributed Attacks in Persistent-State AI Control",
+  "name": "Indic AI and Cultural Heritage Preservation",
   "children": [
     {
-      "name": "Iterative Vibecoding Setting",
+      "name": "Characteristics of Indic Languages",
       "children": [
         {
-          "name": "Scenario",
+          "name": "Akshara System",
           "children": [
             {
-              "name": "Sequential pull requests"
+              "name": "Phonetic nature"
             },
             {
-              "name": "Persistent codebase"
+              "name": "Alpha-syllabic scripts"
             },
             {
-              "name": "Main task vs. covert side task"
+              "name": "Diacritics and ligatures"
             }
           ]
         },
         {
-          "name": "Task Families",
+          "name": "Morphology and Grammar",
           "children": [
             {
-              "name": "CLI tools"
+              "name": "Paninian framework"
             },
             {
-              "name": "Flask web services"
+              "name": "Agglutinative nature"
+            },
+            {
+              "name": "Free word order"
+            },
+            {
+              "name": "Kaaraka relations"
+            },
+            {
+              "name": "Sandhi rules"
+            }
+          ]
+        },
+        {
+          "name": "Diglossia",
+          "children": [
+            {
+              "name": "Formal vs Colloquial"
+            },
+            {
+              "name": "Regional dialects"
+            },
+            {
+              "name": "Social variations"
             }
           ]
         }
       ]
     },
     {
-      "name": "Attack Strategies",
+      "name": "Evolution of Indic NLP",
       "children": [
         {
-          "name": "Gradual Attacks",
+          "name": "Rule-based Era",
           "children": [
             {
-              "name": "Distributed across multiple PRs"
+              "name": "Machine Translation (Anusaaraka)"
             },
             {
-              "name": "Atomic steps in isolation"
+              "name": "Dependency parsing"
             },
             {
-              "name": "Exploits compositional suspicion"
+              "name": "WordNet creation"
             }
           ]
         },
         {
-          "name": "Non-Gradual Attacks",
+          "name": "Corpus-based Era",
           "children": [
             {
-              "name": "Executed in a single PR"
+              "name": "Statistical MT"
             },
             {
-              "name": "Positional selection for best cover"
+              "name": "Hidden Markov Models"
             },
             {
-              "name": "High action-level cover"
+              "name": "Parallel corpora (ILCI)"
+            }
+          ]
+        },
+        {
+          "name": "Deep Learning Phase",
+          "children": [
+            {
+              "name": "IndicFT and FastText"
+            },
+            {
+              "name": "IndicBERT"
+            },
+            {
+              "name": "MuRIL representations"
+            }
+          ]
+        },
+        {
+          "name": "Generative AI Phase",
+          "children": [
+            {
+              "name": "IndicTrans2"
+            },
+            {
+              "name": "BharatGen and Sarvam AI"
+            },
+            {
+              "name": "Bhashini initiative"
+            },
+            {
+              "name": "Instruction tuning (Airavata)"
             }
           ]
         }
       ]
     },
     {
-      "name": "Monitoring & Defense",
+      "name": "Key Challenges",
       "children": [
         {
-          "name": "Monitor Types",
+          "name": "Resource Scarcity",
           "children": [
             {
-              "name": "PR-diff monitors (Code review)"
+              "name": "Digital divide"
             },
             {
-              "name": "Trajectory monitors (Action history)"
-            },
-            {
-              "name": "Ensemble (Multi-modality combo)"
+              "name": "Small digital footprint"
             }
           ]
         },
         {
-          "name": "Link-Tracker Monitor",
+          "name": "Technical Gaps",
           "children": [
             {
-              "name": "Stateful diff review"
+              "name": "Tokenization fertility"
             },
             {
-              "name": "Persistent suspicion notes"
+              "name": "Subword fragmentation"
+            }
+          ]
+        },
+        {
+          "name": "Biases",
+          "children": [
+            {
+              "name": "Algorithmic homogenization"
             },
             {
-              "name": "Tracks suspicious buildup"
+              "name": "Anglocentric pivot"
             }
           ]
         }
       ]
     },
     {
-      "name": "Core Findings",
+      "name": "Culture Sensing Research",
       "children": [
         {
-          "name": "High Evasion",
-          "children": [
-            {
-              "name": "Standard monitors fail gradual attacks"
-            },
-            {
-              "name": "Evasion generalizes across models"
-            }
-          ]
+          "name": "Hermeneutic reasoning"
         },
         {
-          "name": "Persistence Levers",
-          "children": [
-            {
-              "name": "Distribution over time"
-            },
-            {
-              "name": "Strategic timing for cover"
-            }
-          ]
+          "name": "Indigenous knowledge systems"
         },
         {
-          "name": "Effective Defenses",
-          "children": [
-            {
-              "name": "Ensemble reduces evasion to 47%"
-            },
-            {
-              "name": "Static taint analysis helps"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Side Task Examples",
-      "children": [
-        {
-          "name": "Triggered credential exfiltration"
+          "name": "Oral tradition preservation"
         },
         {
-          "name": "Configuration-mediated telemetry"
+          "name": "Community-driven AI"
         },
         {
-          "name": "Multi-stage access-control backdoor"
+          "name": "Reflecting diverse worldviews"
         }
       ]
     }
