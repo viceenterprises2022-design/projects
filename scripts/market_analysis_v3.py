@@ -658,7 +658,8 @@ def run_analysis(sym):
     yc = fetch_yahoo(YAHOO_IDX.get(sym, "^NSEI"))
     gd = {"DXY":fetch_yahoo(YAHOO_SYM["DXY"], 5), 
           "VIX":fetch_yahoo(YAHOO_SYM["VIX"], 5),
-          "US30":fetch_yahoo("^DJI", 5)}
+          "US30":fetch_yahoo("^DJI", 5),
+          "CRUDE_OIL":fetch_yahoo("CL=F", 5)}
     vix = fetch_quote(INSTRUMENTS["INDIA_VIX"])
     if vix: gd["VIX"] = {"ltp":vix.get("ltp",15), "change_pct":0}
     oi = build_oi_data(sym, q["ltp"])
