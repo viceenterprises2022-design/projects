@@ -858,3 +858,124 @@ canvas#matrix-canvas:active {
   gap: 4px;
 }
 
+/* ─── Responsive Media Queries ─── */
+
+@media (max-width: 1400px) {
+  .pnl-row {
+    grid-template-columns: 200px 1fr 200px 320px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .pnl-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  .pnl-card {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+  }
+  .pnl-card:nth-child(2) {
+    border-right: none;
+  }
+  .pnl-card:nth-child(3) {
+    border-bottom: none;
+  }
+  .pnl-card:nth-child(4) {
+    border-bottom: none;
+    border-right: none;
+  }
+  .matrix-row {
+    grid-template-columns: 280px 1fr 280px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-rows: auto auto 32px;
+    overflow-y: auto;
+  }
+  .matrix-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    overflow: visible;
+  }
+  .sidebar-col {
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    background: rgba(7, 13, 25, 0.1);
+  }
+  .sidebar-right {
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+  .center-matrix {
+    height: 520px;
+    overflow: hidden;
+  }
+  .order-panel {
+    top: 12px;
+    right: 12px;
+    width: 240px;
+    padding: 12px;
+  }
+  .canvas-overlay-top {
+    top: 12px;
+    left: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pnl-row {
+    grid-template-columns: 1fr;
+  }
+  .pnl-card {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .pnl-card:last-child {
+    border-bottom: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .center-matrix {
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+  }
+  .canvas-wrap {
+    flex: 1;
+  }
+  .canvas-overlay-top {
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    pointer-events: auto;
+    background: rgba(7, 13, 25, 0.2);
+    border-bottom: 1px solid var(--border);
+  }
+  .canvas-overlay-item {
+    margin: 0;
+  }
+  .order-panel {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(7, 13, 25, 0.5);
+    margin: 0;
+  }
+}
+
+
