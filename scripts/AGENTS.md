@@ -139,6 +139,14 @@ Monorepo of ~40 independent projects including: AlphaEdge tickers (tkinter), cop
 
 ### Session Memory — Recent Work
 
+### 2026-07-11: Troubleshoot PKScreener scan failures and Slack webhook
+- Diagnosed root cause: `SLACK_WEBHOOK_PKSCREENER` webhook in `.env` returned `404: no_service`.
+- Fixed data caching bug in [AssetsManager.py](file:///home/vreddy1/Desktop/Projects/pkscreener/pkscreener/classes/AssetsManager.py#L1251-L1282): in `download_fresh_pkl_from_github`, candidates downloaded from GitHub were written directly to `output_path` and then deleted by subsequent loop iterations if they didn't have strictly higher average rows, wiping out the successfully downloaded `stock_data_10072026.pkl` file and causing 0 stocks to be screened.
+- Updated loop in `download_fresh_pkl_from_github` to use unique temporary files, keep the best one, copy it to `output_path` at the end, and clean up temporary files.
+- Reconfigured `SLACK_WEBHOOK_PKSCREENER` in [.env](file:///home/vreddy1/Desktop/Projects/scripts/.env#L23) and [pkscreener_runner.py](file:///home/vreddy1/Desktop/Projects/scripts/pkscreener_runner.py#L29) to use the new working webhook URL provided by the user.
+- Verified successful cache download and start notification on the new Slack channel.
+- **Multica:** ALP-721 (done, assigned Vinod-AI-CEO)
+
 ### 2026-06-28: Replicate Multica Agents and Skills to Target Workspaces
 - Developed a concurrent replication script [replicate_all.py](file:///home/vreddy1/.gemini/antigravity-cli/brain/ce8e45c7-b84b-4d84-a2f2-eef9963b8b6d/scratch/replicate_all.py) using `ThreadPoolExecutor` to migrate skills and agents concurrently.
 - Replicated all 59 skills (along with their files) and 16 agents from `AlphaEdge LLP` to the newly created target workspaces: `AFIP`, `RWA`, and `Exchange`.
