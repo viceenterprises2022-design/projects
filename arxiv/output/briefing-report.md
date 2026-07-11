@@ -1,120 +1,129 @@
-# Rethinking Indic AI: From Linguistic Diversity to Cultural Heritage Preservation
+# Ideas Have Genomes: Benchmarking Scientific Lineage Reasoning and Lineage-Grounded Idea Generation
 
-## Executive Summary
+Scientific progress rarely occurs in a vacuum. Much like biological organisms, scientific ideas inherit mechanisms, repair inherited limitations, and recombine elements of prior work. However, current AI evaluations often fail to measure whether LLM-based "scientists" truly understand this inheritance structure or are merely producing topically relevant text. 
 
-As Artificial Intelligence (AI) permeates the Indian subcontinent—a region representing more than a fifth of the world's population—it acts as a "double-edged sword." While AI offers unprecedented potential for inclusion and economic growth, current trajectories risk "algorithmic homogenization," where dominant Western worldviews and English-centric linguistic patterns erode the subcontinent's rich hermeneutic and cultural foundations. 
-
-This briefing document synthesizes extensive research into Indic Natural Language Processing (NLP), tracing its evolution from early rule-based systems to modern Large Language Models (LLMs). It highlights the unique structural challenges of Indic languages—such as complex morphology, free word order, and diglossia—and introduces **Culture Sensing**, a new research direction aimed at building pluralistic AI models that preserve indigenous knowledge and diverse worldviews.
+The **IdeaGene-Bench (IG-Bench)** framework introduces a shift from paper-centric literature search to a genome-centric view of scientific evolution. By representing research papers as sets of "Idea Genomes" and tracking their evolution through "GenomeDiff" alignments, this benchmark exposes a critical "compositional bottleneck" in modern AI systems. Even the most advanced models struggle to maintain the internal consistency required to verify and extend scientific lineages, with the strongest systems reaching only 27.3% exact accuracy on lineage reasoning tasks.
 
 ---
 
-## 1. The Linguistic Landscape: Characteristics of Indic Languages
+### Executive Summary
 
-The Indian subcontinent hosts 22 official literary languages, 121 other major languages, and over 19,000 minor languages, dialects, and creoles. Building effective AI requires understanding the structural nuances that differentiate these languages from Western counterparts.
+The document outlines the development and deployment of **IdeaGene-Bench (IG-Bench)**, a comprehensive benchmark designed to evaluate two primary capabilities in AI models: **scientific lineage reasoning** and **lineage-grounded idea generation**. 
 
-### 1.1 The Akshara System
-Unlike English, which uses lexical concatenation of letters, Indic languages are predominantly phonetic and based on the **Akshara** system.
-*   **Structure:** An individual letter (akshara) consists of a vowel and zero or more consonants.
-*   **Phonetic Precision:** Letters are pronounced exactly as written. The alphabet typically contains 33 consonants and 15 vowels, categorized by the vocal system part (throat, tongue, lips, etc.) used for articulation.
-*   **Scripts:** Wide variability exists in scripts (e.g., Devanagari uses the *Shirorekha* horizontal line, while others do not), making visual and digital representation complex.
+Central to this framework is the concept of the **Idea Genome**—a minimal, typed, and evidence-grounded unit of a scientific idea. By comparing these genomes across predecessors and successors, the framework identifies six operational evolutionary dynamics (e.g., Mutation, Hybridization, Speciation). 
 
-### 1.2 Panini’s Framework (Astadhyayi)
-Most Indic languages are influenced by the 6th-century BCE framework of Panini, which establishes a sophisticated computational grammar.
-*   **Kaaraka Relations:** Syntactico-semantic relations that link verbs to nouns via invariants (*vibhaktis* or suffixes).
-*   **Free Word Order:** Because role modifiers (*kaaraka*) are attached to words, the position of words in a sentence can change without altering the primary meaning.
-*   **Agglutination and Sandhi:** Indic languages frequently join words or morphemes, resulting in phonological and orthographic changes (e.g., *mane* + *inda* = *maneyinda*). This complicates tokenization and word boundary identification for AI.
-
-### 1.3 Diglossia and Diachronic Variation
-*   **Diglossia:** A significant gap exists between formal (literary) language used in education/media and colloquial (spoken) dialects used in daily life.
-*   **Diachronic Evolution:** Languages evolve over time (e.g., Kannada’s transition from *Halegannada* to *Hosagannada*). Most LLMs are trained on formal, modern text, often failing to understand regional dialects or historical variations.
+**Key Findings Include:**
+*   **The Compositional Bottleneck:** Models often identify local signals (like the right parent paper) but fail to keep parent choice, mechanism assignment, and verification flags jointly consistent.
+*   **Plausibility vs. Coherence:** Generated ideas frequently sound fluent and useful but lack "Heredity"—the ability to correctly build upon or repair specific mechanisms of parent work.
+*   **Tool Scaffolding Limits:** CLI harnesses and research agents improve information retrieval (tracing) but show negligible gains in complex evolutionary reasoning or lineage verification.
 
 ---
 
-## 2. The Evolution of Indic NLP
+### The IdeaGene Framework: A New Paradigm
 
-The development of language technology for Indic languages has progressed through four distinct paradigms.
+The framework moves beyond document-level citation topology to focus on functional idea structures.
 
-### 2.1 Timeline of Methodological Shifts
+#### 1. The Idea Genome
+An **Idea Genome** is the minimal auditable structure extracted from a paper. Each genome $gi$ is represented as:
+$$G(p) = \{gi = (ti, zi, ei, ci)\}$$
+*   **$ti$ (Role Type):** Niche (problem environment), Mechanism (inheritable method), Observation (empirical pattern), Limitation (defect/bottleneck), Delta (design change), or Claim (asserted outcome).
+*   **$zi$ (Content):** Semantic description.
+*   **$ei$ (Evidence Pointer):** Direct link to text, figures, or equations in the source.
+*   **$ci$ (Constraints):** Optional conditions.
 
-| Paradigm | Primary Focus | Notable Models/Systems |
-| :--- | :--- | :--- |
-| **Rule-Based** | Manual linguistic rules, CFG patterns, and Paninian grammar. | Anglabharti, Anusaaraka, Sanskrit WordNet. |
-| **Corpus-Based** | Statistical patterns derived from large datasets (SMT). | Shata-Anuvadak, IndoWordNet, ILCI Corpus. |
-| **Deep Learning** | Embeddings, attention mechanisms, and NMT. | IndicFT, IndicBERT v1, MuRIL, BERT-Te. |
-| **Foundation Models** | Generative AI, instruction-tuning, and massive scale. | IndicTrans2, Sarvam-1, BharatGen, Bhashini. |
+#### 2. GenomeDiff
+A **GenomeDiff** ($\Delta s \rightarrow t$) aligns genomes between a predecessor and successor. It records whether a source object was **Inherited**, **Mutated**, or **Lost**, and identifies unaligned target objects as **Novel** or **External**.
 
-### 2.2 Modern Breakthroughs (2020–2025)
-*   **MuRIL (Multilingual Representations for Indian Languages):** A BERT-based model that addresses code-mixing and transliteration by training on native scripts and Latin-scripted native languages.
-*   **IndicTrans2:** The first model to support all 22 scheduled Indian languages natively for machine translation.
-*   **Sarvam AI & BharatGen:** Initiatives producing India-centric generative models (e.g., *Sarvam-M*, *Param*) optimized for regional nuances and dialects.
+#### 3. Operational Evolutionary Dynamics
+The framework uses six categories to classify how ideas evolve across papers:
 
----
-
-## 3. Core Challenges in Current AI Models
-
-Despite advancements, significant bottlenecks remain in the quest for truly representative Indic AI.
-
-### 3.1 The "Internal Pivot" Problem
-Research indicates that multilingual models often "think" in English. In intermediate layers, the model's "concept space" shows embeddings closer to English tokens than the input language, revealing a hidden Anglocentric bias that can distort semantic meaning.
-
-### 3.2 Tokenization Inefficiencies
-Standard tokenizers often fragment a single Indic word into numerous meaningless subwords.
-*   **Consequence:** Increased computational cost, higher latency, and degraded semantic understanding.
-*   **Example:** A sentence with 'n' tokens in English may have significantly more fragments in an Indic language, making the model slower and more expensive to run.
-
-### 3.3 Algorithmic Homogenization
-Current LLMs are prone to "lopsided representation."
-*   **Western Norms:** Writing assistants tend to nudge Indian users toward Western professional norms, diminishing subtle cultural markers.
-*   **Data Scarcity:** Training data is often scraped from Wikipedia or news sites, excluding the worldviews of non-urban populations, senior citizens, and those without formal education.
+| Dynamics | Lineage? | GenomeDiff Criterion | Canonical Example |
+| :--- | :--- | :--- | :--- |
+| **Mutation** | Yes | Driver mechanism is inherited/mutated; niche remains same. | YOLO $\rightarrow$ YOLOv2 |
+| **Adaptive Radiation** | Yes | Driver mechanism persists but moves to a new task/domain. | Transformer $\rightarrow$ ViT |
+| **Hybridization** | Yes | Successor imports driver objects from multiple distinct lineages. | CLIP + LLM $\rightarrow$ LLaVA |
+| **Speciation** | Yes | Niche remains; predecessor's driver mechanism is replaced. | Faster R-CNN $\rightarrow$ DETR |
+| **Niche Competition** | No | Shared ecology/niche but no driver inheritance. | Faster R-CNN vs. YOLO |
+| **Isolation** | No | Neither shared ecology nor driver inheritance. | BERT vs. YOLO |
 
 ---
 
-## 4. The Culture Sensing Paradigm
+### IG-Bench: Dataset and Methodology
 
-To move beyond mere translation and toward cultural preservation, the paper proposes **Culture Sensing**—a framework that reimagines AI based on hermeneutic reasoning.
+IG-Bench comprises **1,961 golden lineage traces** across 10 scientific domains (NLP, CV, Biology, Chemistry, Physics, Materials, Medicine, Math, Climate, Neuroscience). It is split into two evaluation modules:
 
-### 4.1 Methodology
-Culture Sensing focuses on gathering knowledge from native discourses, prioritizing unscripted, spontaneous audio data from rural and indigenous communities.
+#### IG-Exam: Lineage Understanding
+This closed-form benchmark tests four capability axes across 42 task types (1,029 instances). Scoring is based on **exact accuracy**, requiring all fields in a complex reasoning task to be correct simultaneously.
 
-### 4.2 Reference Architecture
-The proposed architecture utilizes:
-1.  **ASR (Automatic Speech Recognition):** Converting colloquial, often noisy speech from community radio or oral traditions into text.
-2.  **RAG (Retrieval Augmented Generation):** Using these community-specific transcripts to ground LLM responses in local worldviews.
-3.  **Hermeneutic Analysis:** Comparing community worldviews (which are often symbiotic and holistic) with mainstream worldviews (which tend to be reductionist and individualistic).
+*   **T1: Genome Abstraction:** Identifying types and roles of individual genomes.
+*   **T2: Inheritance Tracing:** Reconstructing ordered lineages and aligning objects across multiple papers.
+*   **T3: Evolutionary Reasoning:** Inferring dynamics, fates, and hybrid provenances.
+*   **T4: Lineage Verification:** Detecting intruders, parent mismatches, or missing links.
 
-### 4.3 Practical Applications
-*   **Graama Kannada:** An application utilizing fuzzy search on n-grams to perform keyword searches in low-resource, colloquial Kannada audio.
-*   **Parichaya:** An interface for rural knowledge management (e.g., sandalwood cultivation) that allows users to query oral histories and listen to relevant audio fragments.
+#### IG-Arena: Lineage-Grounded Generation
+This module evaluates open-ended proposals generated under three settings: **Question** (parametric knowledge), **Library** (unordered summaries), and **Lineage** (ordered genomes and GenomeDiff evidence).
 
----
+Proposals are scored using the **Population-Evolution Score (PES)**, which decomposes insertion quality into three dimensions:
+1.  **Heredity (H):** Does the proposal build on the correct parent genomes and repair stated limitations?
+2.  **Variation (V):** Does the proposal introduce meaningful novelty vs. cosmetic recombination?
+3.  **Selection (S):** Is the proposal feasible and viable within the research environment?
 
-## 5. Important Quotes with Context
-
-> **"AI is seen as a 'double-edged sword' where on the one hand, it can enable access and inclusion... on the other, it can homogenize worldviews."**
-*   *Context:* The introductory argument highlighting the existential risk AI poses to the subcontinent's linguistic and cultural plurality.
-
-> **"English is used as the internal pivot language in multilingual models trained on unbalanced, English-dominated corpora."**
-*   *Context:* Discussing the "internal representation bias" where models map Indic concepts through an English-centric semantic lens.
-
-> **"The native communities are at a disadvantage due to their limited digital presence, ultimately leading to the marginalization of their pluralistic discourse."**
-*   *Context:* Explaining why traditional web-scraping methods for training AI fail to capture the lived experiences of rural and indigenous populations.
+**The PES Formula:**
+$$PES(x | L, P) = \frac{1}{3} (H(x | L) + V(x | P) + S(x | L, P))$$
 
 ---
 
-## 6. Actionable Insights for Future Research
+### Experimental Results and Leaderboard
 
-Based on the analysis, the following strategic directions are recommended for the next phase of Indic NLP:
+The benchmark evaluated 14 LLM-based systems, including direct LLMs, research agents (e.g., AI Scientist v2), and CLI harnesses (e.g., Claude Code).
 
-### For Data Collection
-*   **Move Beyond the Web:** Prioritize unconventional sources such as community radio, public broadcasting, and oral epics.
-*   **Embrace Spontaneity:** Focus on unscripted speech rather than formal text to capture the authentic "lived experience."
-*   **Normalization:** Use tokenizers trained on normalized corpora to standardize Unicode and script-specific characters, reducing "token fertility" and increasing efficiency.
+#### IG-Bench Main Leaderboard (Total Exact Accuracy %)
 
-### For Model Development
-*   **Monolingual vs. Multilingual:** Invest in language-specific pre-training (like *BERT-Te* for Telugu) for tasks requiring deep morphological understanding, as "concentrated language instruction" outperforms diluted multilingual models.
-*   **Implicit Stemming:** Utilize subword tokenizers (like *SentencePiece*) to learn root-affix relationships directly from data, bypassing the need for handcrafted, language-specific stemmers.
-*   **Interpretation Frameworks:** Deploy tools like *Indic-TunedLens* to monitor and mitigate the "English pivot" bias in intermediate layers.
+| System | T1 (Abs) | T2 (Trace) | T3 (Evolve) | T4 (Verify) | Total Exam | IG-Arena PES |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Claude Code (GPT-5.5)** | 31.5 | **37.9** | **25.3** | 12.7 | **27.3** | 86.1 |
+| **Codex (GPT-5.5)** | 31.8 | 30.3 | 23.6 | 13.7 | 24.6 | **86.7** |
+| **GPT-5.5 (Direct)** | 27.5 | 25.7 | 23.3 | 16.0 | 23.1 | 86.5 |
+| **AI Scientist v2** | 28.1 | 26.9 | 22.3 | 15.1 | 23.0 | 80.6 |
+| **Claude Opus 4.7** | 28.5 | 21.9 | 17.1 | 14.5 | 19.3 | 82.6 |
+| **Qwen3.6-Max-Preview** | 26.9 | 22.5 | 18.8 | **17.4** | 20.6 | 79.8 |
+| **Gemini-3.1-pro-preview**| 32.4 | 24.6 | 17.8 | 10.7 | 20.1 | 82.1 |
+| **DeepSeek-V4-Pro** | 23.9 | 20.6 | 18.6 | 8.5 | 17.9 | 82.7 |
 
-### For Community Engagement
-*   **Human-in-the-Loop:** Incorporate native speakers to validate the cultural fidelity of generative outputs, ensuring AI does not erase culturally specific markers in its attempt to be "neutral."
-*   **Incentivize Digitization:** Create easily usable platforms for rural communities to contribute their oral knowledge, transforming them from passive consumers of AI into active contributors to its knowledge base.
+---
+
+### Critical Analysis and Breakthrough Insights
+
+#### 1. The Compositional Bottleneck
+The data reveals a steep performance drop from simple abstraction (T1) to verification (T4). While systems can identify individual ideas, they fail to maintain "structural integrity" when tracing those ideas through a chain of development. This is why **Lineage Verification** remains the most difficult task for all participants.
+
+#### 2. Retrieval Does Not Equal Reasoning
+CLI harnesses and agents significantly boosted scores in **T2 (Inheritance Tracing)** because they could use tools to retrieve and compare information. However, these gains did not translate to **T3 (Evolutionary Reasoning)** or **T4 (Verification)**. This suggests that "more text" or better retrieval does not solve the underlying lack of compositional reasoning capability.
+
+#### 3. The Plausibility-Coherence Gap
+In the **IG-Arena** generation tasks, systems consistently scored higher on **Variation** and **Selection** than on **Heredity**. Models are adept at generating "novel-sounding" and "plausible" ideas but struggle to anchor those ideas in the actual mechanisms of the works they claim to extend. 
+*   **Finding:** "Generated ideas often sound useful before they preserve the exact parent mechanism or limitation-delta relation."
+
+#### 4. The Value of Lineage Context
+Structured lineage context (GenomeDiff) separates systems rather than helping them uniformly. While some models (like Kimi-K2-Thinking) saw a PES gain of +6.9 when moved from a simple Question to a Lineage setting, others saw minimal improvement. This proves that the ability to *operationalize* lineage evidence is a distinct capability from parametric knowledge.
+
+---
+
+### Important Quotes
+
+> "Scientific ideas rarely start from a blank page. They inherit mechanisms, repair known limitations, and recombine pieces of earlier work, much like biological genomes."
+
+> "A proposal can be fluent and literature-aware, yet still fail to inherit the parent mechanism or repair the stated limitation of the work it claims to extend."
+
+> "Plausible research text is not the same as lineage competence."
+
+> "Auto-research systems need compositional verification modules, not only better retrieval."
+
+---
+
+### Actionable Insights for AI Research
+
+1.  **Shift Evaluation Focus:** Move from paper-centric metrics (retrieval quality, citation counts) to **genome-centric** metrics. Evaluations should prioritize whether a model understands *how* a specific mechanism was modified or why a limitation was repaired.
+2.  **Develop Verification Modules:** Current "AI Scientists" are bottlenecked by verification. Future research should prioritize building agentic systems that can perform cross-paper consistency checks and reject "topically relevant but lineage-incoherent" proposals.
+3.  **Heredity-Aware Training:** Models should be trained to prioritize **Heredity**—the structural continuity of ideas. Benchmarks like IG-Bench provide the "lineage substrate" necessary to audit these connections.
+4.  **Beyond Surface Appeal:** When using LLMs as judges (LLM-as-judge), distinguish between **Pairwise ELO** (which favors fluency and surface appeal) and **PES** (which measures grounded population insertion). A proposal that "wins" a popularity contest may still be scientifically incoherent.

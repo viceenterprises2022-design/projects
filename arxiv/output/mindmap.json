@@ -1,178 +1,141 @@
 {
-  "name": "Indic AI and Cultural Heritage Preservation",
+  "name": "IdeaGene-Bench (IG-Bench)",
   "children": [
     {
-      "name": "Characteristics of Indic Languages",
+      "name": "IdeaGene Framework",
       "children": [
         {
-          "name": "Akshara System",
+          "name": "Idea Genome",
           "children": [
             {
-              "name": "Phonetic nature"
+              "name": "Typed"
             },
             {
-              "name": "Alpha-syllabic scripts"
+              "name": "Evidence-grounded"
             },
             {
-              "name": "Diacritics and ligatures"
+              "name": "Minimally self-contained"
+            },
+            {
+              "name": "Lineage-relevant"
             }
           ]
         },
         {
-          "name": "Morphology and Grammar",
+          "name": "GenomeDiff",
           "children": [
             {
-              "name": "Paninian framework"
+              "name": "Inheritance"
             },
             {
-              "name": "Agglutinative nature"
+              "name": "Mutation"
             },
             {
-              "name": "Free word order"
+              "name": "Loss"
             },
             {
-              "name": "Kaaraka relations"
+              "name": "External import"
             },
             {
-              "name": "Sandhi rules"
+              "name": "Novel insertion"
             }
           ]
         },
         {
-          "name": "Diglossia",
+          "name": "Evolutionary Dynamics",
           "children": [
             {
-              "name": "Formal vs Colloquial"
+              "name": "Mutation"
             },
             {
-              "name": "Regional dialects"
+              "name": "Adaptive Radiation"
             },
             {
-              "name": "Social variations"
+              "name": "Hybridization"
+            },
+            {
+              "name": "Speciation"
+            },
+            {
+              "name": "Niche Competition"
+            },
+            {
+              "name": "Isolation"
             }
           ]
         }
       ]
     },
     {
-      "name": "Evolution of Indic NLP",
+      "name": "Evaluation Components",
       "children": [
         {
-          "name": "Rule-based Era",
+          "name": "IG-Exam (Understanding)",
           "children": [
             {
-              "name": "Machine Translation (Anusaaraka)"
+              "name": "T1: Genome Abstraction"
             },
             {
-              "name": "Dependency parsing"
+              "name": "T2: Inheritance Tracing"
             },
             {
-              "name": "WordNet creation"
+              "name": "T3: Evolutionary Reasoning"
+            },
+            {
+              "name": "T4: Lineage Verification"
             }
           ]
         },
         {
-          "name": "Corpus-based Era",
+          "name": "IG-Arena (Generation)",
           "children": [
             {
-              "name": "Statistical MT"
+              "name": "Heredity (Continuity)"
             },
             {
-              "name": "Hidden Markov Models"
+              "name": "Variation (Novelty)"
             },
             {
-              "name": "Parallel corpora (ILCI)"
-            }
-          ]
-        },
-        {
-          "name": "Deep Learning Phase",
-          "children": [
-            {
-              "name": "IndicFT and FastText"
+              "name": "Selection (Viability)"
             },
             {
-              "name": "IndicBERT"
-            },
-            {
-              "name": "MuRIL representations"
-            }
-          ]
-        },
-        {
-          "name": "Generative AI Phase",
-          "children": [
-            {
-              "name": "IndicTrans2"
-            },
-            {
-              "name": "BharatGen and Sarvam AI"
-            },
-            {
-              "name": "Bhashini initiative"
-            },
-            {
-              "name": "Instruction tuning (Airavata)"
+              "name": "PES (Population-Evolution Score)"
             }
           ]
         }
       ]
     },
     {
-      "name": "Key Challenges",
+      "name": "Empirical Findings",
       "children": [
         {
-          "name": "Resource Scarcity",
-          "children": [
-            {
-              "name": "Digital divide"
-            },
-            {
-              "name": "Small digital footprint"
-            }
-          ]
+          "name": "Compositional bottleneck in reasoning"
         },
         {
-          "name": "Technical Gaps",
-          "children": [
-            {
-              "name": "Tokenization fertility"
-            },
-            {
-              "name": "Subword fragmentation"
-            }
-          ]
+          "name": "Retrieval tools vs. consistency"
         },
         {
-          "name": "Biases",
-          "children": [
-            {
-              "name": "Algorithmic homogenization"
-            },
-            {
-              "name": "Anglocentric pivot"
-            }
-          ]
+          "name": "Plausibility-coherence gap"
+        },
+        {
+          "name": "Lineage context as diagnostic"
         }
       ]
     },
     {
-      "name": "Culture Sensing Research",
+      "name": "Benchmark Scope",
       "children": [
         {
-          "name": "Hermeneutic reasoning"
+          "name": "10 Scientific Domains"
         },
         {
-          "name": "Indigenous knowledge systems"
+          "name": "1,961 Golden Lineage Traces"
         },
         {
-          "name": "Oral tradition preservation"
+          "name": "1,085 Curated Genome Objects"
         },
         {
-          "name": "Community-driven AI"
-        },
-        {
-          "name": "Reflecting diverse worldviews"
+          "name": "920 GenomeDiff Records"
         }
       ]
     }
