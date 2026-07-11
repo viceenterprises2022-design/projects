@@ -49,6 +49,11 @@ A file's path determines its identity — no config fields needed:
 | Universe Analyzer | `agents/universe-analyzer/` | Codebase dependency visualizer |
 | Upstox Monitor | `agents/monitor-upstox/` | Upstox API health → Slack alerts |
 | Replicate All | `agents/replicate-all/` | Multica workspace replication |
+| Chief Bot | `agents/chief-bot/` | Central workflow coordinator & risk supervisor |
+| Training Camp | `agents/training-camp/` | Technical screeners & PKScreener runner |
+| Prediction Forest | `agents/prediction-forest/` | PCR, Max Pain & sentiment indicators calculator |
+| Battlefield | `agents/battlefield/` | Order execution, margin watcher & SL/TP trigger |
+
 
 ## Skills Inventory
 
