@@ -9520,8 +9520,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/api_server.py": {
-    "mtime": 1781492631.4673204,
-    "ast_hash": "6ec9b98cc056aa2ebb7f15eb480e340e",
+    "mtime": 1783765454.0607672,
+    "ast_hash": "d84e5385ab2f744bd44c54f3c27b75cd",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/patch_market_trending.py": {
@@ -33430,13 +33430,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/dashboard.html": {
-    "mtime": 1783764899.200478,
+    "mtime": 1783764913.1055353,
     "ast_hash": "c01d16a887efe152fd960347ff98029b",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/pixi_dashboard.html": {
-    "mtime": 1781494773.277505,
-    "ast_hash": "f5937a1760c7b8042a418d603f5ec3b1",
+    "mtime": 1783764950.2376885,
+    "ast_hash": "b448d9e2d0ee7a2967e7a197240f28d3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/docs/superpowers/specs/2026-05-13-metals-intel-dashboard-design.md": {
@@ -38760,23 +38760,23 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/positions.html": {
-    "mtime": 1781494422.4760609,
-    "ast_hash": "5231e116410d1175e2be5e6327bf5e55",
+    "mtime": 1783764916.143548,
+    "ast_hash": "d12c0b4ed7f931958bba7ae22ad7d1e0",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/portfolio.html": {
-    "mtime": 1781494422.4760609,
-    "ast_hash": "0215df4e02259022a8018b4101916e31",
+    "mtime": 1783764913.1065354,
+    "ast_hash": "18346ac31f24f80922e6708a3c961c71",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/holdings.html": {
-    "mtime": 1781494422.4750607,
-    "ast_hash": "1c7008a6bc1e2c85b1d4ef0c798c7412",
+    "mtime": 1783764921.3375692,
+    "ast_hash": "2524c1c09a64f5c5171b494ff2615fd3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/market.html": {
-    "mtime": 1781494422.4750607,
-    "ast_hash": "faa00a3abb48d560c48afead67d58a78",
+    "mtime": 1783764913.1055353,
+    "ast_hash": "b915176148bafe19b9f4059370123a3d",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/.opencode/package.json": {
@@ -42555,13 +42555,13 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.js": {
-    "mtime": 1781069393.0656867,
-    "ast_hash": "ada853f81681873c7075a9316d44be2d",
+    "mtime": 1783765548.7401547,
+    "ast_hash": "dbd504c07846cb9ff6ee1a0d8542cb8a",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/crypto_matrix.html": {
-    "mtime": 1781494422.4740608,
-    "ast_hash": "8f7ecfffa4088aba7d7e1d64b5ef42e4",
+    "mtime": 1783765527.7110686,
+    "ast_hash": "a7f7cf1782a3c8eeadc91c0590de6ec1",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-10.txt": {
@@ -42790,8 +42790,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/frontend/universe.html": {
-    "mtime": 1783764338.8071623,
-    "ast_hash": "54be5e00a564c8fac1d765f94ff5e589",
+    "mtime": 1783764926.5315907,
+    "ast_hash": "1e2f8bc644a8a841744ba41548515729",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/notebooklm_output/crypto_news/crypto_report_2026-06-11.txt": {
@@ -45530,8 +45530,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/agents/alphaedge-api/tools/api_server": {
-    "mtime": 1781492631.4673204,
-    "ast_hash": "6ec9b98cc056aa2ebb7f15eb480e340e",
+    "mtime": 1783765454.0607672,
+    "ast_hash": "d84e5385ab2f744bd44c54f3c27b75cd",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/agents/exa-search/tools/exa_ai_agents": {

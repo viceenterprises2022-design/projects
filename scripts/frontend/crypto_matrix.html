@@ -247,16 +247,8 @@
           </div>
         </div>
         
-        <!-- Active open positions list -->
-        <div class="panel-card" style="flex: 1;">
-          <div class="panel-title">Active Paper Positions <span class="panel-badge" id="open-pos-count">0 POS</span></div>
-          <div class="open-pos-list" id="open-positions-list">
-            <!-- Open positions -->
-          </div>
-        </div>
-        
         <!-- Ratio Grid stats -->
-        <div class="panel-card">
+        <div class="panel-card" style="flex: 1;">
           <div class="panel-title">Cross Asset Ratios <span class="panel-badge">Stats</span></div>
           <div class="ratio-info">
             <div class="ratio-row">
@@ -273,26 +265,55 @@
             </div>
           </div>
         </div>
-        
-        <!-- Account reset -->
-        <div class="reset-btn-wrap">
-          <button class="btn-reset-acct" onclick="resetAccount()">RESET PAPER BALANCE</button>
-        </div>
       </div>
 
     </div>
 
-    <!-- Row 3: Bottom Ticker -->
-    <div class="bottom-ticker">
-      <span class="ticker-title">Trade LEDGER Hist</span>
-      <div class="ticks-container" id="ticks-wrap">
-        <!-- Outcomes -->
+    <!-- Row 3: Bottom Panel -->
+    <div class="bottom-panel">
+      <div class="bottom-panel-left">
+        <div class="bottom-panel-header">
+          <span class="bottom-panel-title">Active Paper Positions</span>
+          <span class="bottom-panel-badge" id="open-pos-count">0 POS</span>
+        </div>
+        <div class="positions-table-wrap">
+          <table class="positions-table">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Side & Leverage</th>
+                <th>Size</th>
+                <th>Entry Price</th>
+                <th>Mark Price</th>
+                <th>Margin (USDT)</th>
+                <th>Liq. Price</th>
+                <th>TP / SL Target</th>
+                <th>Unrealized PnL</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="open-positions-list">
+              <!-- Open positions -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="bottom-panel-right">
+        <div class="bottom-panel-header">
+          <span class="bottom-panel-title">Trade LEDGER Hist</span>
+        </div>
+        <div class="ledger-tools-wrap">
+          <div class="ticks-container" id="ticks-wrap">
+            <!-- Outcomes -->
+          </div>
+          <button class="btn-reset-acct" onclick="resetAccount()">RESET BALANCE</button>
+        </div>
       </div>
     </div>
 
   </div>
 
-  <script src="/static/crypto_matrix.js?v=20260610_4"></script>
+  <script src="/static/crypto_matrix.js?v=20260711"></script>
 <script>
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('collapsed')}
 document.addEventListener('DOMContentLoaded',()=>{document.body.classList.add('loaded')})

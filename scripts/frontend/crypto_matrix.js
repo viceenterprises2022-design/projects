@@ -218,60 +218,33 @@ function renderUI(data) {
   const posList = document.getElementById("open-positions-list");
   if (posList) {
     if (activePositions.length === 0) {
-      posList.innerHTML = `<div style="text-align:center;padding:12px;color:var(--muted);font-size:0.7rem;">No open positions active.</div>`;
+      posList.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--muted);font-size:0.75rem;">No active paper positions.</td></tr>`;
     } else {
       posList.innerHTML = activePositions.map(p => {
         const pnlCls = p.unrealized_pnl >= 0 ? "up" : "dn";
         const liqPrice = p.liq_price ? p.liq_price.toFixed(2) : "—";
+        const sideCls = p.side.toLowerCase();
         return `
-          <div class="open-pos-item">
-            <div class="pos-item-header">
-              <div class="open-pos-sym-side">
-                ${p.symbol} 
-                <span class="side-badge ${p.side.toLowerCase()}">${p.side} ${p.leverage}x</span>
+          <tr>
+            <td class="bold font-mono">${p.symbol}</td>
+            <td><span class="side-badge ${sideCls}">${p.side} ${p.leverage}x</span></td>
+            <td class="font-mono">${p.size} ${p.symbol}</td>
+            <td class="font-mono">${p.entry_price.toFixed(2)}</td>
+            <td class="font-mono">${ltp.toFixed(2)}</td>
+            <td class="font-mono">${p.margin.toFixed(1)}</td>
+            <td class="font-mono liq-color">${liqPrice}</td>
+            <td>
+              <div class="pos-table-sltp">
+                <input type="number" class="pos-sltp-input" id="pos-tp-${p.symbol}-${p.side}" value="${p.tp_price ? p.tp_price.toFixed(2) : ''}" placeholder="TP" step="0.01">
+                <input type="number" class="pos-sltp-input" id="pos-sl-${p.symbol}-${p.side}" value="${p.sl_price ? p.sl_price.toFixed(2) : ''}" placeholder="SL" step="0.01">
+                <button class="btn-save-sltp" onclick="savePositionSLTP('${p.symbol}', '${p.side}')">Save</button>
               </div>
-              <div class="open-pos-pnl ${pnlCls}">
-                ${p.unrealized_pnl >= 0 ? "+" : ""}${p.unrealized_pnl.toFixed(2)} USDT
-              </div>
-            </div>
-            
-            <div class="pos-item-grid">
-              <div class="grid-cell">
-                <span class="cell-lbl">Size</span>
-                <span class="cell-val">${p.size} ${p.symbol}</span>
-              </div>
-              <div class="grid-cell">
-                <span class="cell-lbl">Margin</span>
-                <span class="cell-val">${p.margin.toFixed(1)} USDT</span>
-              </div>
-              <div class="grid-cell">
-                <span class="cell-lbl">Entry Price</span>
-                <span class="cell-val">${p.entry_price.toFixed(2)}</span>
-              </div>
-              <div class="grid-cell">
-                <span class="cell-lbl">Mark Price</span>
-                <span class="cell-val">${ltp.toFixed(2)}</span>
-              </div>
-              <div class="grid-cell liq-cell">
-                <span class="cell-lbl">Liquidation Price</span>
-                <span class="cell-val liq-color">${liqPrice}</span>
-              </div>
-            </div>
-            
-            <div class="pos-sltp-row">
-              <div class="pos-sltp-col">
-                <span class="sltp-lbl">TP Price</span>
-                <input type="number" class="pos-sltp-input" id="pos-tp-${p.symbol}-${p.side}" value="${p.tp_price ? p.tp_price.toFixed(2) : ''}" placeholder="None" step="0.01">
-              </div>
-              <div class="pos-sltp-col">
-                <span class="sltp-lbl">SL Price</span>
-                <input type="number" class="pos-sltp-input" id="pos-sl-${p.symbol}-${p.side}" value="${p.sl_price ? p.sl_price.toFixed(2) : ''}" placeholder="None" step="0.01">
-              </div>
-              <button class="btn-save-sltp" onclick="savePositionSLTP('${p.symbol}', '${p.side}')">Save</button>
-            </div>
-            
-            <button class="btn-close-pos-full" onclick="closePosition('${p.symbol}', '${p.side}')">CLOSE POSITION</button>
-          </div>
+            </td>
+            <td class="${pnlCls} bold font-mono">${p.unrealized_pnl >= 0 ? "+" : ""}${p.unrealized_pnl.toFixed(2)} USDT</td>
+            <td>
+              <button class="btn-close-pos" onclick="closePosition('${p.symbol}', '${p.side}')">CLOSE</button>
+            </td>
+          </tr>
         `;
       }).join("");
     }
