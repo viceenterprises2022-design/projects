@@ -627,30 +627,170 @@ canvas#matrix-canvas:active {
   box-shadow: 0 0 6px var(--error-glow);
 }
 
-/* --- Row 3: Bottom Ticks History Ticker --- */
-.bottom-ticker {
-  background: var(--surface);
+/* --- Row 3: Bottom Panel --- */
+.bottom-panel {
+  background: rgba(7, 13, 25, 0.4);
   border-top: 1px solid var(--border);
-  height: 32px;
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
+  height: 240px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
   overflow: hidden;
 }
 
-.ticker-title {
-  font-size: 0.6rem;
+.bottom-panel-left {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.bottom-panel-right {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  overflow: hidden;
+  background: rgba(7, 13, 25, 0.2);
+}
+
+.bottom-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.bottom-panel-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-right: 16px;
+}
+
+.bottom-panel-badge {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  background: var(--comp);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.positions-table-wrap {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.positions-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.7rem;
+}
+
+.positions-table th, .positions-table td {
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   white-space: nowrap;
 }
 
-.ticks-container {
+.positions-table th {
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
+  background: rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.positions-table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.positions-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.pos-table-sltp {
   display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pos-table-sltp .pos-sltp-input {
+  width: 65px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.pos-table-sltp .pos-sltp-input:focus {
+  border-color: var(--accent);
+}
+
+.pos-table-sltp .btn-save-sltp {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: var(--font);
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.pos-table-sltp .btn-save-sltp:hover {
+  opacity: 0.85;
+}
+
+.positions-table td .btn-close-pos {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: var(--error);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.positions-table td .btn-close-pos:hover {
+  background: var(--error);
+  color: #fff;
+  box-shadow: 0 0 6px var(--error-glow);
+}
+
+.ledger-tools-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.ledger-tools-wrap .ticks-container {
+  display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   align-items: center;
+  max-height: 80px;
+  overflow-y: auto;
 }
 
 .tick-square {
@@ -661,13 +801,6 @@ canvas#matrix-canvas:active {
 
 .tick-square.up { background: var(--primary); box-shadow: 0 0 4px var(--primary-glow); }
 .tick-square.dn { background: var(--error); box-shadow: 0 0 4px var(--error-glow); }
-
-/* --- Account Reset Section --- */
-.reset-btn-wrap {
-  margin-top: auto;
-  padding: 16px;
-  border-top: 1px solid var(--border);
-}
 
 .btn-reset-acct {
   width: 100%;
