@@ -26,7 +26,7 @@ VENV_PYTHON = "/home/vreddy1/Desktop/Projects/pkscreener_venv/bin/python"
 PKS_DIR = "/home/vreddy1/Desktop/Projects/pkscreener"
 PKS_SCRIPT = os.path.join(PKS_DIR, "pkscreener", "pkscreenercli.py")
 LOG_DIR = Path("/home/vreddy1/Desktop/Projects/scripts/pkscreener_output")
-SLACK_WEBHOOK_PKSCREENER = os.getenv("SLACK_WEBHOOK_PKSCREENER", "https://hooks.slack.com/services/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")
+SLACK_WEBHOOK_PKSCREENER = os.getenv("SLACK_WEBHOOK_PKSCREENER", "https://hooks.slack.com/services/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")
 TIMEOUT_SEC = 300  # per scan
 PICKLE_PATH = os.path.join(PKS_DIR, "results", "Data", "last_screened_results.pkl")
 
