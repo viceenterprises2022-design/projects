@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphaedge Quant - Polymarket High-Frequency Bot Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="main-header">
+            <div class="header-brand">
+                <div class="brand-logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>ALPHAEDGE <span class="accent-text">QUANT</span></h1>
+                    <span class="sub-brand">FABLE-5 SHORT-TERM PREDICTION ENGINE</span>
+                </div>
+            </div>
+            <div class="header-status">
+                <div class="status-indicator">
+                    <span class="indicator-dot blinking"></span>
+                    <span class="indicator-label">LIVE TRADING SIMULATOR</span>
+                </div>
+                <div class="engine-pill">
+                    <span class="pill-label">MODEL</span>
+                    <span class="pill-value">CLAUDE-FABLE-5</span>
+                </div>
+                <div class="time-widget">
+                    <span id="live-time">00:00:00 UTC</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- KPI SUMMARY BAR -->
+        <section class="kpi-container">
+            <div class="kpi-card" id="kpi-profit">
+                <div class="kpi-info">
+                    <span class="kpi-title">NET PROFIT (PnL)</span>
+                    <h3 class="kpi-value positive" id="stat-pnl">$0.00</h3>
+                    <span class="kpi-subtext" id="stat-pnl-pct">+0.00% ROI</span>
+                </div>
+                <div class="kpi-icon positive">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                </div>
+            </div>
+            
+            <div class="kpi-card" id="kpi-winrate">
+                <div class="kpi-info">
+                    <span class="kpi-title">WIN RATE</span>
+                    <h3 class="kpi-value" id="stat-winrate">0.00%</h3>
+                    <span class="kpi-subtext" id="stat-winrate-ratio">0 / 0 predictions</span>
+                </div>
+                <div class="kpi-icon info">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card" id="kpi-volume">
+                <div class="kpi-info">
+                    <span class="kpi-title">TRADING VOLUME</span>
+                    <h3 class="kpi-value" id="stat-volume">$0.00</h3>
+                    <span class="kpi-subtext" id="stat-trades-per-hour">0.0 trades / hr</span>
+                </div>
+                <div class="kpi-icon volume">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                </div>
+            </div>
+
+            <div class="kpi-card" id="kpi-position">
+                <div class="kpi-info">
+                    <span class="kpi-title">ACTIVE POSITION</span>
+                    <h3 class="kpi-value flat" id="stat-position">FLAT</h3>
+                    <span class="kpi-subtext" id="stat-position-details">No contracts held</span>
+                </div>
+                <div class="kpi-icon position">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN DASHBOARD GRID -->
+        <main class="dashboard-grid">
+            
+            <!-- LEFT GRID: LIVE MARKET & ORDER BOOK -->
+            <div class="grid-column left-column">
+                
+                <!-- LIVE CHART CARD -->
+                <div class="dashboard-card chart-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m18.7 8-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                            </span>
+                            <h2>BTC UP/DOWN 5M RESOLUTION</h2>
+                        </div>
+                        <div class="card-actions">
+                            <div class="countdown-widget">
+                                <span class="countdown-label">EXPIRY COUNTDOWN</span>
+                                <span class="countdown-timer" id="round-countdown">05:00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content chart-container">
+                        <!-- Strike Price & Price info overlay -->
+                        <div class="chart-overlay-info">
+                            <div class="overlay-item">
+                                <span class="overlay-label">STRIKE PRICE (T<sub>0</sub>)</span>
+                                <span class="overlay-value" id="chart-strike-price">$0.00</span>
+                            </div>
+                            <div class="overlay-item">
+                                <span class="overlay-label">CURRENT PRICE</span>
+                                <span class="overlay-value" id="chart-current-price">$0.00</span>
+                            </div>
+                            <div class="overlay-item">
+                                <span class="overlay-label">DEVIATION</span>
+                                <span class="overlay-value" id="chart-price-deviation">0.00%</span>
+                            </div>
+                        </div>
+                        <canvas id="live-btc-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- POLYMARKET ORDER BOOK CARD -->
+                <div class="dashboard-card orderbook-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </span>
+                            <h2>POLYMARKET CLOB (CONTRACTS)</h2>
+                        </div>
+                        <span class="latency-indicator" id="book-latency">FEED LATENCY: 22ms</span>
+                    </div>
+                    <div class="card-content orderbook-tables">
+                        <!-- YES Contract Book -->
+                        <div class="book-half">
+                            <div class="book-title-header">
+                                <h3>YES Contract (UP)</h3>
+                                <span class="contract-price-pill yes" id="yes-contract-mid">0.50¢</span>
+                            </div>
+                            <div class="book-grid-header">
+                                <span>SIZE</span>
+                                <span>BID</span>
+                                <span>ASK</span>
+                                <span>SIZE</span>
+                            </div>
+                            <div class="book-rows" id="yes-book-rows">
+                                <!-- Dynamic rows -->
+                            </div>
+                        </div>
+                        
+                        <!-- Separator line -->
+                        <div class="book-divider"></div>
+
+                        <!-- NO Contract Book -->
+                        <div class="book-half">
+                            <div class="book-title-header">
+                                <h3>NO Contract (DOWN)</h3>
+                                <span class="contract-price-pill no" id="no-contract-mid">0.50¢</span>
+                            </div>
+                            <div class="book-grid-header">
+                                <span>SIZE</span>
+                                <span>BID</span>
+                                <span>ASK</span>
+                                <span>SIZE</span>
+                            </div>
+                            <div class="book-rows" id="no-book-rows">
+                                <!-- Dynamic rows -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-tip"><span class="highlight">Highlight</span> indicates simulated stale-pricing execution edge.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT GRID: DECISION ENGINE & CONFIGS -->
+            <div class="grid-column right-column">
+                
+                <!-- BAYESIAN DECISION ENGINE / LIVE LOGS -->
+                <div class="dashboard-card console-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 15 16 22 9"/><polyline points="22 16 22 9 15 9"/></svg>
+                            </span>
+                            <h2>BAYESIAN MODEL ENGINE & LOGS</h2>
+                        </div>
+                        <button class="clear-btn" id="btn-clear-console">CLEAR</button>
+                    </div>
+                    <div class="card-content console-stream" id="console-stream">
+                        <!-- Live log rows with different styling (info, signal, edge, trade) -->
+                    </div>
+                </div>
+
+                <!-- CONFIGURATION PANEL -->
+                <div class="dashboard-card config-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            </span>
+                            <h2>BOT CONFIGURATION</h2>
+                        </div>
+                    </div>
+                    <div class="card-content config-forms">
+                        <div class="config-group">
+                            <label for="slider-speed">Simulation Speed (Multiplier)</label>
+                            <div class="input-with-value">
+                                <input type="range" id="slider-speed" min="1" max="15" value="5">
+                                <span class="val-display" id="val-speed">5x</span>
+                            </div>
+                        </div>
+
+                        <div class="config-group">
+                            <label for="slider-size">Trade Size per Bet ($)</label>
+                            <div class="input-with-value">
+                                <input type="range" id="slider-size" min="100" max="5000" step="100" value="1000">
+                                <span class="val-display" id="val-size">$1,000</span>
+                            </div>
+                        </div>
+
+                        <div class="config-group">
+                            <label for="slider-edge">Min Executable Edge Threshold (%)</label>
+                            <div class="input-with-value">
+                                <input type="range" id="slider-edge" min="1.0" max="8.0" step="0.5" value="3.5">
+                                <span class="val-display" id="val-edge">3.5%</span>
+                            </div>
+                        </div>
+
+                        <div class="config-group">
+                            <label for="slider-volatility">Simulated BTC Volatility</label>
+                            <div class="input-with-value">
+                                <input type="range" id="slider-volatility" min="10" max="100" step="5" value="45">
+                                <span class="val-display" id="val-volatility">Medium</span>
+                            </div>
+                        </div>
+
+                        <div class="config-row-actions">
+                            <button class="primary-btn" id="btn-toggle-engine">PAUSE ENGINE</button>
+                            <button class="secondary-btn" id="btn-reset-sim">RESET STATS</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- BOTTOM PANEL: HISTORICAL LOG -->
+        <section class="dashboard-card trade-history-card">
+            <div class="card-header">
+                <div class="card-title-group">
+                    <span class="card-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                    </span>
+                    <h2>HISTORICAL PREDICTIONS LOG</h2>
+                </div>
+                <div class="card-actions">
+                    <button class="export-btn" id="btn-export-csv">EXPORT CSV</button>
+                </div>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>ROUND ID</th>
+                            <th>TIMESTAMP</th>
+                            <th>STRIKE PRICE</th>
+                            <th>EXPIRY PRICE</th>
+                            <th>SIDE</th>
+                            <th>QUANTITY</th>
+                            <th>AVG ENTRY</th>
+                            <th>AVG EXIT</th>
+                            <th>OUTCOME</th>
+                            <th>NET P&L</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trade-history-body">
+                        <!-- Dynamic rows loaded from javascript -->
+                        <tr class="empty-row-placeholder">
+                            <td colspan="10">Waiting for first round settlement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
