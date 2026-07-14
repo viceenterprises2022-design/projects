@@ -46345,8 +46345,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/next-env.d.ts": {
-    "mtime": 1784001952.1590166,
-    "ast_hash": "d0f8375ae1199dc7acd3977fc33b78b8",
+    "mtime": 1784005229.4392056,
+    "ast_hash": "2a74d3909800ca5467fa83b0ab4a4890",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/package.json": {
@@ -46435,18 +46435,18 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/api/dashboard/instances/route.ts": {
-    "mtime": 1784001094.1096263,
-    "ast_hash": "8c24b8b182a0dbf224876d8f33c4bb26",
+    "mtime": 1784004981.894174,
+    "ast_hash": "e5bdc589c5699e1c67c93d434383d3d9",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/api/dashboard/connection/route.ts": {
-    "mtime": 1784001091.3966157,
-    "ast_hash": "5b7ae03e2800cda5aadf4acaaa984a2f",
+    "mtime": 1784004974.7141442,
+    "ast_hash": "2369b37997ce714b5f6563b6685034a3",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/api/dashboard/info/route.ts": {
-    "mtime": 1784001089.1006067,
-    "ast_hash": "9df7bf0c9fee92eef1ea5b2a2eb48b53",
+    "mtime": 1784004959.4740806,
+    "ast_hash": "ea7925a76bedfd10e8eba091d5c3a617",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/api/test/route.ts": {
@@ -46505,8 +46505,18 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/lib/dispatcher.ts": {
-    "mtime": 1784004377.4016547,
-    "ast_hash": "dfef34c7ebb27064dbe3135329c1c9ca",
+    "mtime": 1784004966.7041109,
+    "ast_hash": "a41177fd23741246ad972814cda0dd9b",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/.vercel/project.json": {
+    "mtime": 1784004732.4451344,
+    "ast_hash": "20475bec805e42a4377a6adf1ffca38a",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/.vercel/README.txt": {
+    "mtime": 1784004732.4451344,
+    "ast_hash": "2b13c79d37d6ed82a3255b83b6815034",
     "semantic_hash": ""
   }
 }
