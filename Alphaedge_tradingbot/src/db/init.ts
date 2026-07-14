@@ -9,10 +9,21 @@ export async function initDb() {
   if (isInitialized) return;
 
   try {
-    console.log('Running database migrations...');
-    const migrationsFolder = path.join(process.cwd(), 'drizzle');
-    await migrate(db, { migrationsFolder });
-    console.log('Database migrated successfully.');
+    let exists = false;
+    try {
+      // Try querying the users table. If it succeeds, the schema is already created.
+      await db.select().from(users).limit(1);
+      exists = true;
+      console.log('Database tables already exist. Skipping migrations.');
+    } catch (err) {
+      console.log('Database tables do not exist. Running database migrations...');
+    }
+
+    if (!exists) {
+      const migrationsFolder = path.join(process.cwd(), 'drizzle');
+      await migrate(db, { migrationsFolder });
+      console.log('Database migrated successfully.');
+    }
 
     // Auto-seed default user if not exists
     const userList = await db.select().from(users);
@@ -60,7 +71,7 @@ export async function initDb() {
 
     isInitialized = true;
   } catch (error) {
-    console.error('Database migration/seeding failed:', error);
+    console.error('Database initialization/seeding failed:', error);
     throw error;
   }
 }
