@@ -185,9 +185,11 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div style={styles.centeredContainer}>
+        <div className="ambient-field" />
+        <div className="noise-layer" />
         <div style={styles.loader}>
           <RefreshCw style={styles.spinIcon} size={40} />
-          <p style={{ marginTop: '16px', color: '#94a3b8' }}>Decrypted vault... Syncing with Hyperliquid L1...</p>
+          <p style={{ marginTop: '16px', color: 'rgba(239, 246, 255, 0.66)' }}>Decrypted vault... Syncing with Hyperliquid L1...</p>
         </div>
       </div>
     );
@@ -195,11 +197,17 @@ export default function Dashboard() {
 
   return (
     <div style={styles.container}>
+      <div className="ambient-field" />
+      <div className="noise-layer" />
       {/* Top Glassmorphic Navigation */}
       <header style={styles.header}>
         <div style={styles.logoRow}>
-          <Link href="/" style={styles.logoLink}>
-            <span style={styles.logoSymbol}>▲</span> AlphaEdge
+          <Link href="/" className="brand-lockup" style={{ fontSize: '1.2rem', fontWeight: 800, textDecoration: 'none', gap: '10px', display: 'flex', alignItems: 'center' }}>
+            <span className="brand-mark" style={{ display: 'grid', placeItems: 'center', width: '32px', height: '32px', borderRadius: '12px', color: '#051016', background: 'conic-gradient(from 160deg, #58f0ff, #bfff6a, #9d7dff, #58f0ff)', boxShadow: '0 0 20px rgba(88, 240, 255, 0.25)', fontWeight: 'bold', fontSize: '0.9rem' }}>P</span>
+            <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', color: '#fff', lineHeight: 1 }}>
+              Prospera
+              <small style={{ fontSize: '0.5rem', letterSpacing: '0.12em', color: 'rgba(239, 246, 255, 0.56)', marginTop: '2px', fontWeight: 700 }}>WEALTH AUTOMATION DESK</small>
+            </span>
           </Link>
           <span style={styles.divider}>/</span>
           <span style={styles.panelTitle}>Trading Desk</span>
@@ -235,7 +243,7 @@ export default function Dashboard() {
           <div style={styles.analyticCard}>
             <div style={styles.cardHeader}>
               <span style={styles.cardTitle}>USDC EQUITY</span>
-              <Coins size={16} style={{ color: '#fbbf24' }} />
+              <Coins size={16} style={{ color: '#58f0ff' }} />
             </div>
             <div style={styles.cardValue}>${data?.balances?.equity?.toFixed(2)}</div>
             <div style={styles.cardSubText}>Available: ${data?.balances?.available?.toFixed(2)}</div>
@@ -265,8 +273,8 @@ export default function Dashboard() {
         {/* AI Advisory Panel */}
         <section style={styles.advisoryCard}>
           <div style={styles.advisoryHeader}>
-            <Shield size={18} style={{ color: '#c084fc' }} />
-            <span style={styles.advisoryTitle}>AlphaEdge AI Risk Advisory</span>
+            <Shield size={18} style={{ color: '#9d7dff' }} />
+            <span style={styles.advisoryTitle}>Prospera AI Risk Advisory</span>
           </div>
           <p style={styles.advisoryBody}>{data?.aiMetrics?.advisoryText}</p>
         </section>
@@ -612,26 +620,32 @@ export default function Dashboard() {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    backgroundColor: '#080c14',
-    color: '#f1f5f9',
+    backgroundColor: '#050711',
+    color: '#ffffff',
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
+    position: 'relative',
+    zIndex: 1,
   },
   centeredContainer: {
-    backgroundColor: '#080c14',
-    color: '#f1f5f9',
+    backgroundColor: '#050711',
+    color: '#ffffff',
     minHeight: '100vh',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
+    zIndex: 1,
   },
   loader: {
     textAlign: 'center',
+    position: 'relative',
+    zIndex: 2,
   },
   spinIcon: {
     animation: 'spin 1.5s linear infinite',
-    color: '#fbbf24',
+    color: '#58f0ff',
   },
   spinAnimation: {
     animation: 'spin 1s linear infinite',
@@ -640,10 +654,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '16px 24px',
-    borderBottom: '1px solid #1f2b45',
-    backgroundColor: 'rgba(8, 12, 20, 0.8)',
-    backdropFilter: 'blur(12px)',
+    padding: '20px 24px',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(5, 7, 17, 0.65)',
+    backdropFilter: 'blur(20px)',
     position: 'sticky',
     top: 0,
     zIndex: 100,
@@ -656,22 +670,22 @@ const styles: { [key: string]: React.CSSProperties } = {
   logoLink: {
     fontSize: '18px',
     fontWeight: 'bold',
-    color: '#f1f5f9',
+    color: '#ffffff',
     textDecoration: 'none',
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
   },
   logoSymbol: {
-    color: '#fbbf24',
+    color: '#58f0ff',
   },
   divider: {
-    color: '#1f2b45',
+    color: 'rgba(255, 255, 255, 0.14)',
     fontWeight: 300,
   },
   panelTitle: {
     fontSize: '14px',
-    color: '#94a3b8',
+    color: 'rgba(239, 246, 255, 0.82)',
     fontWeight: 500,
   },
   headerRight: {
@@ -680,9 +694,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '16px',
   },
   ledgerBadgeVerified: {
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
-    border: '1px solid rgba(52, 211, 153, 0.3)',
-    color: '#34d399',
+    backgroundColor: 'rgba(191, 255, 106, 0.1)',
+    border: '1px solid rgba(191, 255, 106, 0.3)',
+    color: '#bfff6a',
     fontSize: '12px',
     fontWeight: 600,
     padding: '6px 12px',
@@ -692,9 +706,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '6px',
   },
   ledgerBadgeCompromised: {
-    backgroundColor: 'rgba(248, 113, 113, 0.1)',
-    border: '1px solid rgba(248, 113, 113, 0.3)',
-    color: '#f87171',
+    backgroundColor: 'rgba(255, 111, 179, 0.1)',
+    border: '1px solid rgba(255, 111, 179, 0.3)',
+    color: '#ff6fb3',
     fontSize: '12px',
     fontWeight: 600,
     padding: '6px 12px',
@@ -705,8 +719,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   refreshButton: {
     backgroundColor: 'transparent',
-    border: '1px solid #1f2b45',
-    color: '#94a3b8',
+    border: '1px solid rgba(255, 255, 255, 0.14)',
+    color: 'rgba(239, 246, 255, 0.66)',
     padding: '6px 12px',
     borderRadius: '4px',
     cursor: 'pointer',
@@ -726,24 +740,26 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     flexDirection: 'column',
     gap: '24px',
+    position: 'relative',
+    zIndex: 2,
   },
   bannerSuccess: {
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
-    border: '1px solid rgba(52, 211, 153, 0.3)',
-    color: '#34d399',
+    backgroundColor: 'rgba(191, 255, 106, 0.1)',
+    border: '1px solid rgba(191, 255, 106, 0.3)',
+    color: '#bfff6a',
     padding: '12px 16px',
-    borderRadius: '6px',
+    borderRadius: '12px',
     fontSize: '14px',
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
   },
   bannerError: {
-    backgroundColor: 'rgba(248, 113, 113, 0.1)',
-    border: '1px solid rgba(248, 113, 113, 0.3)',
-    color: '#f87171',
+    backgroundColor: 'rgba(255, 111, 179, 0.1)',
+    border: '1px solid rgba(255, 111, 179, 0.3)',
+    color: '#ff6fb3',
     padding: '12px 16px',
-    borderRadius: '6px',
+    borderRadius: '12px',
     fontSize: '14px',
     display: 'flex',
     alignItems: 'center',
@@ -755,13 +771,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '16px',
   },
   analyticCard: {
-    backgroundColor: '#0e1524',
-    border: '1px solid #1f2b45',
-    borderRadius: '8px',
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025))',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    borderRadius: '24px',
     padding: '20px',
     display: 'flex',
     flexDirection: 'column',
     gap: '8px',
+    backdropFilter: 'blur(20px)',
+    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)',
   },
   cardHeader: {
     display: 'flex',
@@ -771,7 +789,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   cardTitle: {
     fontSize: '11px',
     fontWeight: 600,
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.54)',
     letterSpacing: '1px',
   },
   cardValue: {
@@ -780,16 +798,17 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   cardSubText: {
     fontSize: '12px',
-    color: '#94a3b8',
+    color: 'rgba(239, 246, 255, 0.66)',
   },
   advisoryCard: {
-    backgroundColor: 'rgba(192, 132, 252, 0.05)',
-    border: '1px solid rgba(192, 132, 252, 0.25)',
-    borderRadius: '8px',
+    backgroundColor: 'rgba(157, 125, 255, 0.06)',
+    border: '1px solid rgba(157, 125, 255, 0.22)',
+    borderRadius: '20px',
     padding: '16px 20px',
     display: 'flex',
     flexDirection: 'column',
     gap: '8px',
+    backdropFilter: 'blur(20px)',
   },
   advisoryHeader: {
     display: 'flex',
@@ -799,11 +818,11 @@ const styles: { [key: string]: React.CSSProperties } = {
   advisoryTitle: {
     fontSize: '14px',
     fontWeight: 600,
-    color: '#c084fc',
+    color: '#9d7dff',
   },
   advisoryBody: {
     fontSize: '13px',
-    color: '#94a3b8',
+    color: 'rgba(239, 246, 255, 0.7)',
     lineHeight: 1.5,
   },
   gridTwoCol: {
@@ -817,10 +836,15 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '24px',
   },
   panelCard: {
-    backgroundColor: '#0e1524',
-    border: '1px solid #1f2b45',
-    borderRadius: '8px',
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025))',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    borderRadius: '24px',
     padding: '24px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    backdropFilter: 'blur(20px)',
+    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)',
   },
   panelHeader: {
     fontSize: '16px',
@@ -829,7 +853,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
-    borderBottom: '1px solid #1f2b45',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.14)',
     paddingBottom: '12px',
   },
   form: {
@@ -850,40 +874,42 @@ const styles: { [key: string]: React.CSSProperties } = {
   label: {
     fontSize: '12px',
     fontWeight: 500,
-    color: '#94a3b8',
+    color: 'rgba(239, 246, 255, 0.66)',
   },
   input: {
-    backgroundColor: '#080c14',
-    border: '1px solid #1f2b45',
-    color: '#f1f5f9',
-    padding: '10px 12px',
-    borderRadius: '6px',
+    backgroundColor: 'rgba(5, 7, 17, 0.64)',
+    border: '1px solid rgba(255, 255, 255, 0.14)',
+    color: '#ffffff',
+    padding: '12px 14px',
+    borderRadius: '14px',
     fontSize: '14px',
     outline: 'none',
   },
   select: {
-    backgroundColor: '#080c14',
-    border: '1px solid #1f2b45',
-    color: '#f1f5f9',
-    padding: '10px 12px',
-    borderRadius: '6px',
+    backgroundColor: 'rgba(5, 7, 17, 0.64)',
+    border: '1px solid rgba(255, 255, 255, 0.14)',
+    color: '#ffffff',
+    padding: '12px 14px',
+    borderRadius: '14px',
     fontSize: '14px',
     outline: 'none',
   },
   helperText: {
     fontSize: '11px',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.5)',
   },
   buttonAction: {
-    backgroundColor: '#fbbf24',
-    color: '#080c14',
+    background: 'linear-gradient(135deg, #58f0ff, #bfff6a)',
+    color: '#051016',
     border: 'none',
-    padding: '12px',
-    borderRadius: '6px',
-    fontWeight: 600,
+    padding: '14px 22px',
+    borderRadius: '16px',
+    fontWeight: 820,
     cursor: 'pointer',
     fontSize: '14px',
     transition: 'all 0.2s',
+    boxShadow: '0 8px 24px rgba(88, 240, 255, 0.2)',
+    letterSpacing: '-0.02em',
   },
   radioRow: {
     display: 'flex',
@@ -898,16 +924,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: 'pointer',
   },
   radio: {
-    accentColor: '#fbbf24',
+    accentColor: '#58f0ff',
   },
   connectionList: {
     marginTop: '20px',
-    borderTop: '1px solid #1f2b45',
+    borderTop: '1px solid rgba(255, 255, 255, 0.14)',
     paddingTop: '16px',
   },
   subTitle: {
     fontSize: '13px',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.5)',
     marginBottom: '12px',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
@@ -916,10 +942,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#080c14',
+    backgroundColor: 'rgba(5, 7, 17, 0.5)',
     padding: '12px',
-    borderRadius: '6px',
-    border: '1px solid #1f2b45',
+    borderRadius: '16px',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
   },
   connInfo: {
     display: 'flex',
@@ -927,8 +953,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '12px',
   },
   connLogo: {
-    backgroundColor: '#fbbf24',
-    color: '#080c14',
+    backgroundColor: '#58f0ff',
+    color: '#051016',
     width: '28px',
     height: '28px',
     borderRadius: '50px',
@@ -944,13 +970,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   connSub: {
     fontSize: '11px',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.5)',
   },
   statusIndicatorGreen: {
     fontSize: '10px',
     fontWeight: 600,
-    color: '#34d399',
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    color: '#bfff6a',
+    backgroundColor: 'rgba(191, 255, 106, 0.1)',
     padding: '2px 6px',
     borderRadius: '4px',
   },
@@ -960,9 +986,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '12px',
   },
   simCard: {
-    backgroundColor: '#080c14',
-    border: '1px solid #1f2b45',
-    borderRadius: '6px',
+    backgroundColor: 'rgba(5, 7, 17, 0.5)',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    borderRadius: '16px',
     padding: '14px',
     display: 'flex',
     justifyContent: 'space-between',
@@ -977,12 +1003,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   statusGreen: {
     fontSize: '10px',
-    color: '#34d399',
+    color: '#bfff6a',
     fontWeight: 600,
   },
   statusAmber: {
     fontSize: '10px',
-    color: '#fbbf24',
+    color: '#ffd166',
     fontWeight: 600,
   },
   simActions: {
@@ -990,28 +1016,28 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '8px',
   },
   simButtonLong: {
-    backgroundColor: 'rgba(52, 211, 153, 0.15)',
-    border: '1px solid rgba(52, 211, 153, 0.3)',
-    color: '#34d399',
+    backgroundColor: 'rgba(191, 255, 106, 0.12)',
+    border: '1px solid rgba(191, 255, 106, 0.3)',
+    color: '#bfff6a',
     padding: '6px 12px',
-    borderRadius: '4px',
+    borderRadius: '12px',
     fontSize: '12px',
     fontWeight: 600,
     cursor: 'pointer',
   },
   simButtonShort: {
-    backgroundColor: 'rgba(248, 113, 113, 0.15)',
-    border: '1px solid rgba(248, 113, 113, 0.3)',
-    color: '#f87171',
+    backgroundColor: 'rgba(255, 111, 179, 0.12)',
+    border: '1px solid rgba(255, 111, 179, 0.3)',
+    color: '#ff6fb3',
     padding: '6px 12px',
-    borderRadius: '4px',
+    borderRadius: '12px',
     fontSize: '12px',
     fontWeight: 600,
     cursor: 'pointer',
   },
   emptyState: {
     textAlign: 'center',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.5)',
     padding: '24px 0',
     fontSize: '14px',
   },
@@ -1021,9 +1047,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '12px',
   },
   botCard: {
-    backgroundColor: '#080c14',
-    border: '1px solid #1f2b45',
-    borderRadius: '6px',
+    backgroundColor: 'rgba(5, 7, 17, 0.5)',
+    border: '1px solid rgba(255, 255, 255, 0.12)',
+    borderRadius: '20px',
     padding: '16px',
     display: 'flex',
     flexDirection: 'column',
@@ -1040,16 +1066,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginRight: '8px',
   },
   badgeLive: {
-    backgroundColor: 'rgba(52, 211, 153, 0.15)',
-    color: '#34d399',
+    backgroundColor: 'rgba(191, 255, 106, 0.15)',
+    color: '#bfff6a',
     fontSize: '9px',
     fontWeight: 600,
     padding: '2px 6px',
     borderRadius: '4px',
   },
   badgePaper: {
-    backgroundColor: 'rgba(59, 130, 246, 0.15)',
-    color: '#3b82f6',
+    backgroundColor: 'rgba(157, 125, 255, 0.15)',
+    color: '#9d7dff',
     fontSize: '9px',
     fontWeight: 600,
     padding: '2px 6px',
@@ -1058,30 +1084,30 @@ const styles: { [key: string]: React.CSSProperties } = {
   botStatusActive: {
     fontSize: '11px',
     fontWeight: 600,
-    color: '#34d399',
+    color: '#bfff6a',
     padding: '4px 8px',
     borderRadius: '20px',
-    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+    backgroundColor: 'rgba(191, 255, 106, 0.1)',
   },
   botStatusPaused: {
     fontSize: '11px',
     fontWeight: 600,
-    color: '#fbbf24',
+    color: '#ffd166',
     padding: '4px 8px',
     borderRadius: '20px',
-    backgroundColor: 'rgba(251, 191, 36, 0.1)',
+    backgroundColor: 'rgba(255, 209, 102, 0.1)',
   },
   botStatusKilled: {
     fontSize: '11px',
     fontWeight: 600,
-    color: '#f87171',
+    color: '#ff6fb3',
     padding: '4px 8px',
     borderRadius: '20px',
-    backgroundColor: 'rgba(248, 113, 113, 0.1)',
+    backgroundColor: 'rgba(255, 111, 179, 0.1)',
   },
   botCardBody: {
     fontSize: '12px',
-    color: '#94a3b8',
+    color: 'rgba(239, 246, 255, 0.66)',
     display: 'flex',
     gap: '16px',
   },
@@ -1092,10 +1118,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   botButtonPause: {
     backgroundColor: 'transparent',
-    border: '1px solid #fbbf24',
-    color: '#fbbf24',
+    border: '1px solid #ffd166',
+    color: '#ffd166',
     padding: '4px 8px',
-    borderRadius: '4px',
+    borderRadius: '12px',
     fontSize: '11px',
     cursor: 'pointer',
     display: 'flex',
@@ -1104,10 +1130,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   botButtonResume: {
     backgroundColor: 'transparent',
-    border: '1px solid #34d399',
-    color: '#34d399',
+    border: '1px solid #bfff6a',
+    color: '#bfff6a',
     padding: '4px 8px',
-    borderRadius: '4px',
+    borderRadius: '12px',
     fontSize: '11px',
     cursor: 'pointer',
     display: 'flex',
@@ -1116,10 +1142,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   botButtonKill: {
     backgroundColor: 'transparent',
-    border: '1px solid #f87171',
-    color: '#f87171',
+    border: '1px solid #ff6fb3',
+    color: '#ff6fb3',
     padding: '4px 8px',
-    borderRadius: '4px',
+    borderRadius: '12px',
     fontSize: '11px',
     cursor: 'pointer',
     display: 'flex',
@@ -1133,25 +1159,25 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   th: {
     textAlign: 'left',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.54)',
     fontWeight: 600,
     padding: '8px 12px',
-    borderBottom: '1px solid #1f2b45',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.14)',
   },
   tr: {
-    borderBottom: '1px solid #1f2b45',
+    borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
   },
   td: {
     padding: '10px 12px',
   },
   tdGreen: {
     padding: '10px 12px',
-    color: '#34d399',
+    color: '#bfff6a',
     fontWeight: 500,
   },
   tdRed: {
     padding: '10px 12px',
-    color: '#f87171',
+    color: '#ff6fb3',
     fontWeight: 500,
   },
   journalContainer: {
@@ -1164,7 +1190,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '12px',
   },
   timelineItem: {
-    borderLeft: '2px solid #1f2b45',
+    borderLeft: '2px solid rgba(255, 255, 255, 0.14)',
     paddingLeft: '16px',
     marginLeft: '6px',
     display: 'flex',
@@ -1177,18 +1203,18 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
   },
   buyTag: {
-    color: '#34d399',
+    color: '#bfff6a',
     fontSize: '11px',
     fontWeight: 'bold',
   },
   sellTag: {
-    color: '#f87171',
+    color: '#ff6fb3',
     fontSize: '11px',
     fontWeight: 'bold',
   },
   timelineTime: {
     fontSize: '11px',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.5)',
   },
   timelineBody: {
     fontSize: '13px',
@@ -1197,7 +1223,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   timelineHash: {
     fontSize: '10px',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.5)',
   },
   auditContainer: {
     display: 'flex',
@@ -1207,20 +1233,21 @@ const styles: { [key: string]: React.CSSProperties } = {
     overflowY: 'auto',
   },
   auditRow: {
-    backgroundColor: '#080c14',
-    borderLeft: '3px solid #f87171',
+    backgroundColor: 'rgba(5, 7, 17, 0.5)',
+    borderLeft: '3px solid #ff6fb3',
     padding: '10px 12px',
-    borderRadius: '4px',
+    borderRadius: '12px',
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
   },
   auditTime: {
     fontSize: '10px',
-    color: '#64748b',
+    color: 'rgba(239, 246, 255, 0.5)',
   },
   auditDetail: {
     fontSize: '12px',
-    color: '#f1f5f9',
+    color: '#ffffff',
   },
 };
+
