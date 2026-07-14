@@ -2,9 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { botInstances } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import { initDb } from '@/db/init';
+
 
 export async function POST(req: NextRequest) {
   try {
+    await initDb();
     const { botTemplateId, exchangeConnectionId, mode, riskCeilingPct, maxNotional } = await req.json();
 
     if (!botTemplateId || !exchangeConnectionId || !riskCeilingPct || !maxNotional) {
@@ -32,6 +35,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
+    await initDb();
     const { instanceId, status, riskCeilingPct, maxNotional } = await req.json();
 
     if (!instanceId) {

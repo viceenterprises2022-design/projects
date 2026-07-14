@@ -5,9 +5,11 @@ import { eq, desc } from 'drizzle-orm';
 import { verifyLedgerChain } from '@/lib/ledger';
 import { getBalances, getPositions } from '@/lib/hyperliquid';
 import { decrypt } from '@/lib/encryption';
+import { initDb } from '@/db/init';
 
 export async function GET(req: NextRequest) {
   try {
+    await initDb();
     const userId = 'user_1'; // Default demo user
 
     // 1. Fetch DB data

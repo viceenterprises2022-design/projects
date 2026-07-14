@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { exchangeConnections } from '@/db/schema';
 import { encrypt } from '@/lib/encryption';
+import { initDb } from '@/db/init';
 
 export async function POST(req: NextRequest) {
   try {
+    await initDb();
     const { exchange, apiKey } = await req.json();
 
     if (!exchange || !apiKey) {

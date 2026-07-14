@@ -5,6 +5,7 @@ import { validateRisk } from './risk';
 import { placeOrder } from './hyperliquid';
 import { decrypt } from './encryption';
 import { appendToLedger } from './ledger';
+import { initDb } from '../db/init';
 
 export interface SignalInput {
   botCode: string;
@@ -17,6 +18,7 @@ export interface SignalInput {
 }
 
 export async function dispatchSignal(input: SignalInput) {
+  await initDb();
   const { botCode, direction, price, sl, tp, qty: payloadQty, source } = input;
 
   const templates = await db.select().from(botTemplates).where(eq(botTemplates.code, botCode));
