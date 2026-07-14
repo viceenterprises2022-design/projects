@@ -1,141 +1,157 @@
 {
-  "name": "IdeaGene-Bench (IG-Bench)",
+  "name": "ConceptSMILE Framework",
   "children": [
     {
-      "name": "IdeaGene Framework",
+      "name": "Core Purpose",
       "children": [
         {
-          "name": "Idea Genome",
+          "name": "Audit Trustworthiness"
+        },
+        {
+          "name": "Evaluate Reliability"
+        },
+        {
+          "name": "Model-Agnostic Framework"
+        },
+        {
+          "name": "Bridge Reliability Gap"
+        }
+      ]
+    },
+    {
+      "name": "Methodology",
+      "children": [
+        {
+          "name": "Perturbation Process",
           "children": [
             {
-              "name": "Typed"
+              "name": "Superpixel Masking"
             },
             {
-              "name": "Evidence-grounded"
+              "name": "Input Region Shifts"
             },
             {
-              "name": "Minimally self-contained"
-            },
-            {
-              "name": "Lineage-relevant"
+              "name": "Concept-Response Measurement"
             }
           ]
         },
         {
-          "name": "GenomeDiff",
+          "name": "Locality Weighting",
           "children": [
             {
-              "name": "Inheritance"
+              "name": "Cosine Distance"
             },
             {
-              "name": "Mutation"
+              "name": "Wasserstein Distance"
             },
             {
-              "name": "Loss"
-            },
-            {
-              "name": "External import"
-            },
-            {
-              "name": "Novel insertion"
+              "name": "DINOv2 Embeddings"
             }
           ]
         },
         {
-          "name": "Evolutionary Dynamics",
+          "name": "Surrogate Modeling",
           "children": [
             {
-              "name": "Mutation"
+              "name": "XGBoost Regressor"
             },
             {
-              "name": "Adaptive Radiation"
+              "name": "Non-linear Approximation"
             },
             {
-              "name": "Hybridization"
-            },
-            {
-              "name": "Speciation"
-            },
-            {
-              "name": "Niche Competition"
-            },
-            {
-              "name": "Isolation"
+              "name": "Weighted Optimization"
             }
           ]
         }
       ]
     },
     {
-      "name": "Evaluation Components",
+      "name": "Reliability Metrics",
       "children": [
         {
-          "name": "IG-Exam (Understanding)",
+          "name": "Attribution Accuracy"
+        },
+        {
+          "name": "Surrogate Fidelity"
+        },
+        {
+          "name": "Faithfulness"
+        },
+        {
+          "name": "Stability"
+        },
+        {
+          "name": "Consistency"
+        }
+      ]
+    },
+    {
+      "name": "Evaluation Pathways",
+      "children": [
+        {
+          "name": "Visual Concepts (MedSAM)",
           "children": [
             {
-              "name": "T1: Genome Abstraction"
+              "name": "Segmentation-Guided"
             },
             {
-              "name": "T2: Inheritance Tracing"
+              "name": "Spatial Grounding"
             },
             {
-              "name": "T3: Evolutionary Reasoning"
-            },
-            {
-              "name": "T4: Lineage Verification"
+              "name": "High Fidelity"
             }
           ]
         },
         {
-          "name": "IG-Arena (Generation)",
+          "name": "Semantic Concepts (VLM)",
           "children": [
             {
-              "name": "Heredity (Continuity)"
+              "name": "Language-Guided"
             },
             {
-              "name": "Variation (Novelty)"
+              "name": "Qwen2.5-VL Support"
             },
             {
-              "name": "Selection (Viability)"
-            },
-            {
-              "name": "PES (Population-Evolution Score)"
+              "name": "Strong Vessel Faithfulness"
             }
           ]
         }
       ]
     },
     {
-      "name": "Empirical Findings",
+      "name": "Retinal Case Study",
       "children": [
         {
-          "name": "Compositional bottleneck in reasoning"
+          "name": "Lesions"
         },
         {
-          "name": "Retrieval tools vs. consistency"
+          "name": "Blood Vessels"
         },
         {
-          "name": "Plausibility-coherence gap"
+          "name": "Optic Disc"
         },
         {
-          "name": "Lineage context as diagnostic"
+          "name": "HRF/APTOS/ODIR/IDRiD Datasets"
         }
       ]
     },
     {
-      "name": "Benchmark Scope",
+      "name": "Challenges in C-XAI",
       "children": [
         {
-          "name": "10 Scientific Domains"
+          "name": "Spurious Correlation"
         },
         {
-          "name": "1,961 Golden Lineage Traces"
+          "name": "Label Leakage"
         },
         {
-          "name": "1,085 Curated Genome Objects"
+          "name": "Concept Entanglement"
         },
         {
-          "name": "920 GenomeDiff Records"
+          "name": "Instability"
+        },
+        {
+          "name": "Uncertainty"
         }
       ]
     }

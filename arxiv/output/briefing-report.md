@@ -1,129 +1,105 @@
-# Ideas Have Genomes: Benchmarking Scientific Lineage Reasoning and Lineage-Grounded Idea Generation
+# ConceptSMILE: A New Standard for Auditing Trustworthiness in Concept-Based AI
 
-Scientific progress rarely occurs in a vacuum. Much like biological organisms, scientific ideas inherit mechanisms, repair inherited limitations, and recombine elements of prior work. However, current AI evaluations often fail to measure whether LLM-based "scientists" truly understand this inheritance structure or are merely producing topically relevant text. 
+## Executive Summary
 
-The **IdeaGene-Bench (IG-Bench)** framework introduces a shift from paper-centric literature search to a genome-centric view of scientific evolution. By representing research papers as sets of "Idea Genomes" and tracking their evolution through "GenomeDiff" alignments, this benchmark exposes a critical "compositional bottleneck" in modern AI systems. Even the most advanced models struggle to maintain the internal consistency required to verify and extend scientific lineages, with the strongest systems reaching only 27.3% exact accuracy on lineage reasoning tasks.
+The rapid advancement of Concept-Based Explainable AI (C-XAI) promises a future where machine reasoning is aligned with human-understandable abstractions—such as clinical biomarkers or semantic attributes—rather than opaque high-dimensional features. However, "human-readable" does not inherently mean "trustworthy." Current C-XAI models, including Concept Bottleneck Models (CBMs), often suffer from reliability gaps such as spurious correlations, concept leakage, and instability.
 
----
-
-### Executive Summary
-
-The document outlines the development and deployment of **IdeaGene-Bench (IG-Bench)**, a comprehensive benchmark designed to evaluate two primary capabilities in AI models: **scientific lineage reasoning** and **lineage-grounded idea generation**. 
-
-Central to this framework is the concept of the **Idea Genome**—a minimal, typed, and evidence-grounded unit of a scientific idea. By comparing these genomes across predecessors and successors, the framework identifies six operational evolutionary dynamics (e.g., Mutation, Hybridization, Speciation). 
-
-**Key Findings Include:**
-*   **The Compositional Bottleneck:** Models often identify local signals (like the right parent paper) but fail to keep parent choice, mechanism assignment, and verification flags jointly consistent.
-*   **Plausibility vs. Coherence:** Generated ideas frequently sound fluent and useful but lack "Heredity"—the ability to correctly build upon or repair specific mechanisms of parent work.
-*   **Tool Scaffolding Limits:** CLI harnesses and research agents improve information retrieval (tracing) but show negligible gains in complex evolutionary reasoning or lineage verification.
+To address this, **ConceptSMILE** (Concept-level Statistical Model-agnostic Interpretability with Local Explanations) has been introduced as a rigorous, perturbation-based auditing framework. By systematically perturbing input data and measuring the response shifts in concept-level outputs, ConceptSMILE provides an independent layer of verification. Through a high-stakes case study in retinal fundus imaging, the framework evaluates and compares two distinct pathways: a **MedSAM-based visual pathway** and a **Vision-Language Model (VLM) semantic pathway**. The results demonstrate that reliability is multidimensional; while segmentation models excel in spatial attribution, VLM-based semantic concepts can exhibit superior faithfulness and stability under specific conditions.
 
 ---
 
-### The IdeaGene Framework: A New Paradigm
+## The Critical Reliability Gap in Concept-Based XAI
 
-The framework moves beyond document-level citation topology to focus on functional idea structures.
+While traditional XAI methods like LIME and SHAP identify "where" a model is looking, C-XAI aims to explain "what" the model is recognizing. Despite this progress, several fundamental challenges compromise the integrity of these explanations:
 
-#### 1. The Idea Genome
-An **Idea Genome** is the minimal auditable structure extracted from a paper. Each genome $gi$ is represented as:
-$$G(p) = \{gi = (ti, zi, ei, ci)\}$$
-*   **$ti$ (Role Type):** Niche (problem environment), Mechanism (inheritable method), Observation (empirical pattern), Limitation (defect/bottleneck), Delta (design change), or Claim (asserted outcome).
-*   **$zi$ (Content):** Semantic description.
-*   **$ei$ (Evidence Pointer):** Direct link to text, figures, or equations in the source.
-*   **$ci$ (Constraints):** Optional conditions.
-
-#### 2. GenomeDiff
-A **GenomeDiff** ($\Delta s \rightarrow t$) aligns genomes between a predecessor and successor. It records whether a source object was **Inherited**, **Mutated**, or **Lost**, and identifies unaligned target objects as **Novel** or **External**.
-
-#### 3. Operational Evolutionary Dynamics
-The framework uses six categories to classify how ideas evolve across papers:
-
-| Dynamics | Lineage? | GenomeDiff Criterion | Canonical Example |
-| :--- | :--- | :--- | :--- |
-| **Mutation** | Yes | Driver mechanism is inherited/mutated; niche remains same. | YOLO $\rightarrow$ YOLOv2 |
-| **Adaptive Radiation** | Yes | Driver mechanism persists but moves to a new task/domain. | Transformer $\rightarrow$ ViT |
-| **Hybridization** | Yes | Successor imports driver objects from multiple distinct lineages. | CLIP + LLM $\rightarrow$ LLaVA |
-| **Speciation** | Yes | Niche remains; predecessor's driver mechanism is replaced. | Faster R-CNN $\rightarrow$ DETR |
-| **Niche Competition** | No | Shared ecology/niche but no driver inheritance. | Faster R-CNN vs. YOLO |
-| **Isolation** | No | Neither shared ecology nor driver inheritance. | BERT vs. YOLO |
+### Key Reliability Challenges
+| Challenge | Description | Impact on Trust |
+| :--- | :--- | :--- |
+| **Spurious Correlation** | Associating concepts with irrelevant shortcuts (e.g., camera logos or borders). | The explanation appears correct, but the reasoning is driven by noise. |
+| **Concept Leakage** | The concept layer encodes hidden information about the final label rather than the intended concept. | The model "cheats" by using information outside the stated explanation. |
+| **Instability** | Explanations change significantly under small perturbations or different probe data. | Reduces reproducibility and confidence in clinical settings. |
+| **Concept Uncertainty** | Treating ambiguous or overlapping visual evidence as fixed binary labels. | Fails to reflect the inherent ambiguity of real-world data. |
 
 ---
 
-### IG-Bench: Dataset and Methodology
+## Methodology: The ConceptSMILE Auditing Pipeline
 
-IG-Bench comprises **1,961 golden lineage traces** across 10 scientific domains (NLP, CV, Biology, Chemistry, Physics, Materials, Medicine, Math, Climate, Neuroscience). It is split into two evaluation modules:
+ConceptSMILE reformulates the logic of local model-agnostic explanations (like SMILE or LIME) specifically for concept-level outputs. It functions through a multi-stage perturbation and surrogate modeling process.
 
-#### IG-Exam: Lineage Understanding
-This closed-form benchmark tests four capability axes across 42 task types (1,029 instances). Scoring is based on **exact accuracy**, requiring all fields in a complex reasoning task to be correct simultaneously.
+### 1. Perturbation-Based Sampling
+The input image ($I^{(0)}$) is divided into $M$ non-overlapping superpixel regions. A set of $K$ perturbed samples is generated by creating binary vectors $z^{(k)} \in \{0, 1\}^M$, where $0$ indicates a masked region and $1$ indicates a preserved region.
 
-*   **T1: Genome Abstraction:** Identifying types and roles of individual genomes.
-*   **T2: Inheritance Tracing:** Reconstructing ordered lineages and aligning objects across multiple papers.
-*   **T3: Evolutionary Reasoning:** Inferring dynamics, fates, and hybrid provenances.
-*   **T4: Lineage Verification:** Detecting intruders, parent mismatches, or missing links.
+### 2. Concept-Response Shift Measurement
+For each concept $c_i$, the framework measures the shift in response between the original and perturbed images:
+$$\Delta y^{(k)}_i = y^{(0)}_i - y^{(k)}_i$$
+This shift reveals how much the model’s "confidence" in a concept depends on specific visual evidence.
 
-#### IG-Arena: Lineage-Grounded Generation
-This module evaluates open-ended proposals generated under three settings: **Question** (parametric knowledge), **Library** (unordered summaries), and **Lineage** (ordered genomes and GenomeDiff evidence).
+### 3. Locality Weighting
+To keep the explanation local, ConceptSMILE applies distance-based weighting. It compares the original image embedding ($e^{(0)}$) with the perturbed embedding ($e^{(k)}$) using **Wasserstein Distance** (WD) or **Cosine Distance**. The weight is assigned via an exponential kernel:
+$$w^{(k)} = \exp\left( - \frac{(d^{(k)})^2}{\sigma^2} \right)$$
 
-Proposals are scored using the **Population-Evolution Score (PES)**, which decomposes insertion quality into three dimensions:
-1.  **Heredity (H):** Does the proposal build on the correct parent genomes and repair stated limitations?
-2.  **Variation (V):** Does the proposal introduce meaningful novelty vs. cosmetic recombination?
-3.  **Selection (S):** Is the proposal feasible and viable within the research environment?
-
-**The PES Formula:**
-$$PES(x | L, P) = \frac{1}{3} (H(x | L) + V(x | P) + S(x | L, P))$$
+### 4. Surrogate Modeling (XGBoost)
+A local **XGBoost surrogate** is fitted to capture the potentially non-linear relationship between the perturbation patterns and the concept shifts. This model approximates the "local behavior" of the concept-extraction pathway.
 
 ---
 
-### Experimental Results and Leaderboard
+## Comparative Analysis: MedSAM vs. VLM Pathways
 
-The benchmark evaluated 14 LLM-based systems, including direct LLMs, research agents (e.g., AI Scientist v2), and CLI harnesses (e.g., Claude Code).
+The study evaluates two pathways for extracting concepts from retinal images (Lesions, Blood Vessels, Optic Disc).
 
-#### IG-Bench Main Leaderboard (Total Exact Accuracy %)
-
-| System | T1 (Abs) | T2 (Trace) | T3 (Evolve) | T4 (Verify) | Total Exam | IG-Arena PES |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Claude Code (GPT-5.5)** | 31.5 | **37.9** | **25.3** | 12.7 | **27.3** | 86.1 |
-| **Codex (GPT-5.5)** | 31.8 | 30.3 | 23.6 | 13.7 | 24.6 | **86.7** |
-| **GPT-5.5 (Direct)** | 27.5 | 25.7 | 23.3 | 16.0 | 23.1 | 86.5 |
-| **AI Scientist v2** | 28.1 | 26.9 | 22.3 | 15.1 | 23.0 | 80.6 |
-| **Claude Opus 4.7** | 28.5 | 21.9 | 17.1 | 14.5 | 19.3 | 82.6 |
-| **Qwen3.6-Max-Preview** | 26.9 | 22.5 | 18.8 | **17.4** | 20.6 | 79.8 |
-| **Gemini-3.1-pro-preview**| 32.4 | 24.6 | 17.8 | 10.7 | 20.1 | 82.1 |
-| **DeepSeek-V4-Pro** | 23.9 | 20.6 | 18.6 | 8.5 | 17.9 | 82.7 |
+### Performance Comparison Summary
+| Metric | MedSAM (Visual Pathway) | VLM (Semantic Pathway) |
+| :--- | :--- | :--- |
+| **Primary Mechanism** | Segmentation-guided visual masks. | Prompt-based semantic generation. |
+| **Attribution Accuracy** | High for well-defined structures (vessels, optic disc). | Variable; less spatially precise. |
+| **Surrogate Fidelity** | Stronger ($R^2$ up to 0.8503). | Moderate ($R^2 \approx 0.5127$). |
+| **Faithfulness** | Concept-dependent (strong for lesions). | Exceptional for vessels (statistically significant). |
+| **Stability** | Robust for the optic disc. | Robust for lesions and vessels. |
 
 ---
 
-### Critical Analysis and Breakthrough Insights
+## Five Dimensions of Reliability Evaluation
 
-#### 1. The Compositional Bottleneck
-The data reveals a steep performance drop from simple abstraction (T1) to verification (T4). While systems can identify individual ideas, they fail to maintain "structural integrity" when tracing those ideas through a chain of development. This is why **Lineage Verification** remains the most difficult task for all participants.
+ConceptSMILE assesses trustworthiness through five complementary metrics:
 
-#### 2. Retrieval Does Not Equal Reasoning
-CLI harnesses and agents significantly boosted scores in **T2 (Inheritance Tracing)** because they could use tools to retrieve and compare information. However, these gains did not translate to **T3 (Evolutionary Reasoning)** or **T4 (Verification)**. This suggests that "more text" or better retrieval does not solve the underlying lack of compositional reasoning capability.
-
-#### 3. The Plausibility-Coherence Gap
-In the **IG-Arena** generation tasks, systems consistently scored higher on **Variation** and **Selection** than on **Heredity**. Models are adept at generating "novel-sounding" and "plausible" ideas but struggle to anchor those ideas in the actual mechanisms of the works they claim to extend. 
-*   **Finding:** "Generated ideas often sound useful before they preserve the exact parent mechanism or limitation-delta relation."
-
-#### 4. The Value of Lineage Context
-Structured lineage context (GenomeDiff) separates systems rather than helping them uniformly. While some models (like Kimi-K2-Thinking) saw a PES gain of +6.9 when moved from a simple Question to a Lineage setting, others saw minimal improvement. This proves that the ability to *operationalize* lineage evidence is a distinct capability from parametric knowledge.
+1.  **Attribution Accuracy:** Measures if the regions identified as important by the audit align with ground-truth clinical evidence (e.g., pixels actually containing a lesion).
+2.  **Fidelity:** Evaluates how well the XGBoost surrogate approximates the actual concept-response shifts. High fidelity suggests the audit is a reliable proxy for the audited model.
+3.  **Faithfulness:** Calculated using the Pearson correlation between perturbation strength and response shift. It proves whether the concept response actually "cares" about the relevant visual evidence.
+4.  **Stability:** Tests whether explanations remain consistent when non-clinical artefacts (like an "NHS logo" or a "date stamp") are added to the image.
+5.  **Consistency:** Measures reproducibility across repeated runs of the audit on the same image.
 
 ---
 
-### Important Quotes
+## Key Breakthroughs and Results
 
-> "Scientific ideas rarely start from a blank page. They inherit mechanisms, repair known limitations, and recombine pieces of earlier work, much like biological genomes."
+### Breakthrough 1: Pathway-Dependent Reliability
+The audit revealed that **MedSAM** achieved significantly higher surrogate fidelity ($R^2 = 0.8503, R^2_w = 0.8465$) compared to the VLM pathway ($R^2 \approx 0.5$). This indicates that segmentation-based models are more locally predictable under spatial perturbation.
 
-> "A proposal can be fluent and literature-aware, yet still fail to inherit the parent mechanism or repair the stated limitation of the work it claims to extend."
+### Breakthrough 2: The VLM Faithfulness Paradox
+Despite having lower spatial precision, the **VLM pathway** showed remarkably strong and statistically significant faithfulness for the "vessel" concept across all datasets (Pearson $r$ up to 0.7133). This suggests that semantic models can be highly sensitive to specific clinical evidence even if they struggle with visual grounding.
 
-> "Plausible research text is not the same as lineage competence."
-
-> "Auto-research systems need compositional verification modules, not only better retrieval."
+### Breakthrough 3: Robustness Under Acquisition Artefacts
+In tests involving contrast variation and simulated blink-related occlusion, the "blood vessel" and "lesion" concepts retained positive surrogate fidelity. Conversely, the "optic disc" concept became highly unreliable under low-contrast conditions, demonstrating ConceptSMILE's ability to identify "failure zones" in AI reasoning.
 
 ---
 
-### Actionable Insights for AI Research
+## Important Quotes with Context
 
-1.  **Shift Evaluation Focus:** Move from paper-centric metrics (retrieval quality, citation counts) to **genome-centric** metrics. Evaluations should prioritize whether a model understands *how* a specific mechanism was modified or why a limitation was repaired.
-2.  **Develop Verification Modules:** Current "AI Scientists" are bottlenecked by verification. Future research should prioritize building agentic systems that can perform cross-paper consistency checks and reject "topically relevant but lineage-incoherent" proposals.
-3.  **Heredity-Aware Training:** Models should be trained to prioritize **Heredity**—the structural continuity of ideas. Benchmarks like IG-Bench provide the "lineage substrate" necessary to audit these connections.
-4.  **Beyond Surface Appeal:** When using LLMs as judges (LLM-as-judge), distinguish between **Pairwise ELO** (which favors fluency and surface appeal) and **PES** (which measures grounded population insertion). A proposal that "wins" a popularity contest may still be scientifically incoherent.
+> *"The presence of concepts does not automatically guarantee trustworthy explanations. A model may produce concept-level outputs that appear plausible while still relying on spurious correlations, unstable features, label leakage, concept entanglement, or incomplete representations."*
+*   **Context:** This quote establishes the core problem: human-readability is often mistaken for accuracy. ConceptSMILE is designed specifically to dismantle this assumption.
+
+> *"Concept-based explanations should not be accepted as inherently self-explanatory. They require independent auditing."*
+*   **Context:** This highlights the "Research Gap" identified by the authors. Even "explainable-by-design" models like CBMs need a third-party verification layer like ConceptSMILE.
+
+> *"Reliability varies across concepts and pathways: MedSAM achieves stronger spatial attribution and the highest surrogate fidelity... while the VLM pathway shows stronger vessel faithfulness and stronger stability."*
+*   **Context:** This summary of the results underscores that no single AI architecture is a "silver bullet" for trustworthy medical explanations.
+
+---
+
+## Actionable Insights for AI Researchers and Clinicians
+
+*   **Move Beyond Saliency Maps:** For high-stakes decisions, use concept-level audits rather than simple heatmaps. Heatmaps show *where* a model looks, but audits like ConceptSMILE show *if* the model is actually recognizing the concept it claims to see.
+*   **Audit Individual Concepts:** Trust should be evaluated on a per-concept basis. A model might be 95% reliable for "optic disc" detection but only 40% reliable for "lesion" identification.
+*   **Account for Locality Weighting:** When auditing, use **Wasserstein Distance** for visual-grounded models. It provides a more principled way to compare distributional shifts between original and perturbed representations.
+*   **Be Wary of Semantic Plausibility:** VLMs can generate very "convincing" clinical reports that may have zero spatial grounding in the image. Always use an independent audit layer to verify if the VLM response shifts when the relevant pixels are removed.
+*   **Implement "Artefact Checks":** Before deploying a model, use ConceptSMILE’s stability metrics to ensure the model isn't "hallucinating" concepts based on non-clinical features like image timestamps or logos.
