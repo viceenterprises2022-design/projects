@@ -2,98 +2,91 @@
 • *Deployment* (Status: planned) — 0/1 issues completed
 • *Tools* (Status: in_progress) — 83/89 issues completed
 • *LLM Cost Optimization* (Status: in_progress) — 0/6 issues completed
-• *Agents* (Status: in_progress) — 67/123 issues completed
+• *Agents* (Status: in_progress) — 67/125 issues completed
 • *Alphaedge Journal* (Status: in_progress) — 9/10 issues completed
 • *Chief-of-staff* (Status: completed) — 4/4 issues completed
 
 *2. Tasks Completed Today*
-• *ALP-887*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis)
+• *ALP-897*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis)
   - *Executed by*: Deep Researcher Agent
   - *Project*: None
   - *Key Output*:
-    ## Market Intelligence Report - 2026-07-13
-    **LTP:** 24,206.90 (+0.00%)
-    **Overall Signal:** NEUTRAL (Score: 2/10)
-    | # | Factor | Status | Data / Insight | Bias |
-    |---|--------|--------|----------------|------|
-    | 1 | Trend / Technicals | 🟢 Bullish | STRONG UPTREND; EMA20=24,123 | EMA50=23,964 | EMA200=23,896 | Positive |
-    | 2 | Global Sentiment (DOW) | 🟡 Neutral | FLAT (+0.29%); DJIA Fut: 52,637 | Neutral |
-    | 3 | Volatility (VIX) | 🟢 Bullish | LOW (12.25) — Calm; Chg: +0.00% | Positive |
+    # 📊 Market Intelligence Report - 2026-07-14 06:49:07
+    ## 🎯 Executive Summary
+    - **Last Traded Price (LTP):** 24,211.00 (+0.00%)
+    - **Overall Signal:** **BUY** (4/10)
+    - **Put-Call Ratio (PCR):** 1.39
+    - **Max Pain Strike:** 24,200.0
+    - **Last Traded Price (LTP):** 58,131.45 (+0.00%)
+    - **Overall Signal:** **NEUTRAL** (1/10)
     ...
-• *ALP-886*: Fetch Crypto Real-time Prices
+• *ALP-896*: Crypto Realtime Prices and Changes
   - *Executed by*: crypto-realtime-price
   - *Project*: None
   - *Key Output*:
-    | Token | Current Price (USD) | 24h Change |
-    | :--- | :--- | :--- |
-    | **BTC** (Bitcoin) | $63,771.23 | -0.27% |
-    | **ETH** (Ethereum) | $1,819.80 | +1.20% |
-    | **SOL** (Solana) | $77.19 | +1.03% |
-    *Data source: PRISM API (aggregated from 50+ exchanges).*
-• *ALP-891*: Real-Estate-Listings
+    | Cryptocurrency | Symbol | Current Price (USD) | 24h Change (%) |
+    | :--- | :---: | :---: | :---: |
+    | **Bitcoin** | BTC | $62,529.21 | -1.90% |
+    | **Ethereum** | ETH | $1,787.72 | -1.73% |
+    | **Solana** | SOL | $75.39 | -2.18% |
+    *(Prices are powered by PRISM API, aggregated from 50+ exchanges)*
+• *ALP-901*: Research 4BHK Villa listings in East Bangalore / Sarjapura Road
   - *Executed by*: Real-Estate-Agent
   - *Project*: None
   - *Key Output*:
-    ---
-    **🏆 TOP PICKS (Garden/Open Space Preference)**
-    **1. Genurise Divine Meadows — Sarjapur Main Road**
-    - 4BHK | 4 Bath | 3195-3350 sqft built-up | 1800-2400 sqft plot
-    - Price: ₹2.85 Cr onwards
-    - Ready to Occupy: Yes
-    - 63% green open spaces, 30+ amenities, gated community
-    - 3 & 4 BHK standalone villas with private garden/terrace
-    ...
-• *ALP-890*: Execute daily_market_overview CMC skill and report to Slack
+    **4BHK Villa Research — Complete & Sent to Telegram**
+    **Report sent to Telegram** @my_mutilac_bot ✅
+    **Key findings:**
+    - **Top picks with private gardens:** NVT Arcot Vaksana (Sarjapur Rd, ₹2.45-5.90Cr), NVT Orchid Garden (₹2.94-3.10Cr), KRK Urban Ville (₹3.80-5.34Cr), Saiven Mulberry Groves (₹2.99Cr+)
+    - **Budget option:** Ahad Opus (₹1.66Cr, 3,050 sqft)
+    - **Price range:** ₹1.66Cr — ₹5.90Cr
+    - **Under-construction excluded:** Aiikya Village Sarjapur
+• *ALP-900*: Generate Daily Market Overview Report and Send to Slack
   - *Executed by*: CMC Agent
   - *Project*: Agents
   - *Key Output*:
     **TL;DR**
-    - Fear & Greed index is at 29.00 (fear regime).
-    - VANRY funding fee is extremely negative at -0.18695%.
-    - Geopolitical conflicts pushed oil up over 3%, triggering stock selloffs.
-    - 10-year Treasury yields rose to 4.56%, raising borrowing costs.
-    - Watch Fed signals and tech stock performance next.
+    - Bitcoin investment fund outflows hit $424.70 million on July 13.
+    - Market sentiment dropped to 29 out of 100.
+    - KORU active futures surged 90.21% in 24 hours despite zero spot market activity.
+    - Hormuz shipping surcharge proposal of 20% could pressure oil and inflation.
+    - Rising inflation risks weigh on global financial markets and digital assets.
+    - Watch oil price moves, US Dollar strength, and surcharge updates.
     **Details**
-    **🏛 Macro**
     ...
-• *ALP-889*: Run AI Events Search and Send Curated Report to Slack
+• *ALP-899*: Run Exa AI search and report top AI events to Slack
   - *Executed by*: Python-Agent
   - *Project*: None
   - *Key Output*:
-    1. Ran `python3 exa_ai_search.py --all` to fetch and curate the top 5 upcoming online events and classes. Due to the Exa API credit limit being reached, the script automatically activated the curated fallback of high-quality upcoming AI events.
-    2. Verified the curated list was saved to `ai_events_results.json`.
-    3. Ran `python3 ai_news_reporter.py` which fetched daily AI agent launches (utilizing fallbacks where API limits were reached) and loaded the curated event list, successfully sending the unified report to Slack.
-    - **OpenAI Builder Bootcamp: Advanced RAG, Evals, & Agent Orchestration**
-    - **DeepLearning.AI: Multi-Agent Systems in Production**
-    - **Google Build with AI: Vertex AI Agent Builder & Gemini 1.5 Pro**
-    - **OpenAI DevDay 2026: Keynote & Developer Workshops**
-    - **Hugging Face: Open-Source LLM and SLM Fine-Tuning Workshop**
-• *ALP-888*: Exa Search and Send AI Agents Report to Slack
+    1. **Exa Search Run:** Ran `python3 exa_ai_search.py --all` in `/home/vreddy1/Desktop/Projects/scripts`. Due to the Exa API credits limit being exceeded, the script gracefully activated its built-in fallback containing a curated list of the top 5 premium AI events for 2026. The results were saved to `ai_events_results.json`.
+    2. **Slack Reporting:** Ran `python3 ai_news_reporter.py` which successfully loaded the curated events, compiled the daily AI news & events report, and posted it to Slack.
+    3. **Issue Renamed:** Updated the issue title to *"Run Exa AI search and report top AI events to Slack"* as requested.
+• *ALP-898*: Crawl and Search AI Agents with Exa and Report to Slack
   - *Executed by*: Python-Agent
   - *Project*: None
   - *Key Output*:
-    - Executed `exa_ai_agents.py` to search for latest AI agent launches.
-    - Executed `ai_news_reporter.py` to compile the report and successfully send it to the designated Slack channel (`Part 1/1 sent to Slack`).
-    - Renamed this issue to "Exa Search and Send AI Agents Report to Slack" to reflect the operations.
-• *ALP-885*: Crawl Daily News Briefing
+    1. Ran `python3 exa_ai_agents.py` in `/home/vreddy1/Desktop/Projects/scripts` to compile the latest AI agent product launches. Since the Exa API returned a billing limit error (402), it fell back to pre-fetched agent data as intended by the script's fallback logic.
+    2. Ran `python3 ai_news_reporter.py` in the same directory to fetch the daily report, load upcoming AI events from `ai_events_results.json`, and send the combined report to the configured Slack webhook channel. The report was sent successfully.
+• *ALP-895*: Daily News Crawl and Analysis
   - *Executed by*: daily-news-crawl
   - *Project*: None
   - *Key Output*:
-    # AlphaEdge Daily Market Intelligence Briefing
-    **Date:** July 13, 2026
-    **Audience:** High-Frequency Traders and Portfolio Managers, AlphaEdge LLP
-    **Scope:** Global Macroeconomics, Central Bank Policy, and Crypto-Asset Markets
-    **Tone:** Analytical, Data-centric, and Authoritative
+    # Daily Crypto & Market Intelligence Briefing
+    **Date:** July 14, 2026
+    **Audience:** AlphaEdge LLP Partners and Operators
+    **Scope:** Global Crypto Assets & Macro Markets
+    **Tone:** Authoritative, Data-Centric, and Analytical
     ---
     ## Executive Summary
-    *   **Macro Stall:** Global disinflation has stalled. The IMF projects global headline inflation to hit **4.7% in 2026** (up from 4.1% in 2025), driven by Middle East energy supply shocks.
+    - **OCC Circle Approval:** Circle has received final approval from the OCC for Circle National Trust, N.A., making it the first stablecoin issuer under direct federal bank supervision.
     ...
 
 *3. New Tasks Logged Today (Backlog)*
 • _No new backlog tasks created today._
 
 *4. Value-Add Workspace Insights*
-• *Active In-Review Tasks* (128):
+• *Active In-Review Tasks* (136):
+  • *ALP-897*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
   • *ALP-887*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
   • *ALP-878*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
   • *ALP-864*: Market Intel: NIFTY/BANKNIFTY Analysis (Assignee: Deep Researcher Agent)
@@ -103,6 +96,7 @@
   • *ALP-804*: Market intelligence NIFTY/BANKNIFTY 10-Factor Analysis 2026-07-05 (Assignee: Deep Researcher Agent)
   • *ALP-794*: Market Intelligence Deep Research (Assignee: Deep Researcher Agent)
   • *ALP-784*: Market Intelligence Report Task (Assignee: Deep Researcher Agent)
+  • *ALP-896*: Crypto Realtime Prices and Changes (Assignee: crypto-realtime-price)
   • *ALP-886*: Fetch Crypto Real-time Prices (Assignee: crypto-realtime-price)
   • *ALP-877*: Fetch Crypto Real-time Prices (Assignee: crypto-realtime-price)
   • *ALP-875*: Crawl and Slack Report: Latest AI Agent Launches & News (Assignee: Python-Agent)
@@ -117,6 +111,12 @@
   • *ALP-754*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-30 (Assignee: Deep Researcher Agent)
   • *ALP-747*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-29 (Assignee: Deep Researcher Agent)
   • *ALP-722*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-27 (Assignee: Deep Researcher Agent)
+  • *ALP-901*: Research 4BHK Villa listings in East Bangalore / Sarjapura Road (Assignee: Real-Estate-Agent)
+  • *ALP-900*: Generate Daily Market Overview Report and Send to Slack (Assignee: CMC Agent)
+  • *ALP-899*: Run Exa AI search and report top AI events to Slack (Assignee: Python-Agent)
+  • *ALP-898*: Crawl and Search AI Agents with Exa and Report to Slack (Assignee: Python-Agent)
+  • *ALP-895*: Daily News Crawl and Analysis (Assignee: daily-news-crawl)
+  • *ALP-892*: EOD Report to Management - Generating and Sending Report (Assignee: chief-of-staff)
   • *ALP-891*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
   • *ALP-890*: Execute daily_market_overview CMC skill and report to Slack (Assignee: CMC Agent)
   • *ALP-889*: Run AI Events Search and Send Curated Report to Slack (Assignee: Python-Agent)
@@ -222,7 +222,10 @@
   • *ALP-716*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
   • *ALP-713*: AI Agents Tracker - Search launches & send Slack report (Assignee: Python-Agent)
   • *ALP-702*: COS-Daily-Update: Completed Market Intelligence Aggregation (Assignee: chief-of-staff)
-• *Active In-Progress Tasks* (29):
+• *Active In-Progress Tasks* (32):
+  • *ALP-902*: Generating and Sending EOD Report to Management (Assignee: chief-of-staff)
+  • *ALP-894*: Orchestrate Daily Crypto and News Analysis Pipelines (Assignee: chief-of-staff)
+  • *ALP-893*: Generate Daily Crypto Market Overview and Send to Slack (Assignee: CMC Agent)
   • *ALP-884*: COS-Daily-Update: Orchestrating crawls and reports for 2026-07-13 (Assignee: chief-of-staff)
   • *ALP-874*: Daily Market Intelligence and News Aggregation (2026-07-12) (Assignee: chief-of-staff)
   • *ALP-861*: Daily Market Update & Analysis Synthesis (Assignee: chief-of-staff)
