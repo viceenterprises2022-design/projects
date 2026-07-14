@@ -40,9 +40,11 @@ export async function GET(req: NextRequest) {
 
   // Test 2: Risk Engine
   await runTest('Risk Engine Validation Checks', async () => {
-    // 1. Setup mock bot instance with low limits
     const testBotId = 'test_inst_risk';
-    
+    // Clean up any orphaned records from prior failed runs to avoid constraint errors
+    await db.delete(botInstances).where(eq(botInstances.id, testBotId));
+    await db.delete(exchangeConnections).where(eq(exchangeConnections.id, 'test_conn'));
+
     // Check if user and connection exist
     await db.insert(users).values({
       id: 'test_user',
@@ -51,16 +53,17 @@ export async function GET(req: NextRequest) {
       createdAt: Date.now()
     }).onConflictDoNothing();
 
+    const mockKey = encrypt('mock_hyperliquid_key');
     await db.insert(exchangeConnections).values({
       id: 'test_conn',
       userId: 'test_user',
       exchange: 'hyperliquid',
-      encryptedApiKey: 'dummy',
-      encryptionIv: 'dummy',
-      encryptionTag: 'dummy',
+      encryptedApiKey: mockKey.encrypted,
+      encryptionIv: mockKey.iv,
+      encryptionTag: mockKey.tag,
       status: 'active',
       lastVerifiedAt: Date.now()
-    }).onConflictDoNothing();
+    });
 
     await db.insert(botTemplates).values({
       id: 'test_tmpl_btc',
