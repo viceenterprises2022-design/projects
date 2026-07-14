@@ -4,11 +4,13 @@ import { dispatchSignal } from '@/lib/dispatcher';
 export async function POST(req: NextRequest) {
   try {
     const payload = await req.json();
-    const { passphrase, botCode, direction, price, sl, tp, qty } = payload;
+    const { botCode, direction, price, sl, tp, qty, source } = payload;
 
-    const secret = process.env.TRADINGVIEW_WEBHOOK_SECRET || 'supersecret';
-    if (passphrase !== secret) {
-      return NextResponse.json({ error: 'Unauthorized passphrase' }, { status: 401 });
+    const authHeader = req.headers.get('Authorization');
+    const internalKey = process.env.INTERNAL_API_KEY || 'internal_secret_key';
+    
+    if (authHeader !== `Bearer ${internalKey}`) {
+      return NextResponse.json({ error: 'Unauthorized internal signal source' }, { status: 401 });
     }
 
     if (!botCode || !direction || !price) {
@@ -22,7 +24,7 @@ export async function POST(req: NextRequest) {
       sl: sl ? parseFloat(sl) : null,
       tp: tp ? parseFloat(tp) : null,
       qty: qty ? parseFloat(qty) : null,
-      source: 'tradingview'
+      source: source || 'internal_breakout'
     });
 
     return NextResponse.json({
@@ -30,7 +32,7 @@ export async function POST(req: NextRequest) {
       ...result
     });
   } catch (error: any) {
-    console.error('Webhook error:', error);
+    console.error('Internal signal endpoint error:', error);
     return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
   }
 }
