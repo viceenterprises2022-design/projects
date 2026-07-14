@@ -9485,7 +9485,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/ai_events_results.json": {
-    "mtime": 1783913527.5371408,
+    "mtime": 1783999910.2422814,
     "ast_hash": "61018e36dfe10d745ea350366b357824",
     "semantic_hash": ""
   },
@@ -46255,7 +46255,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/scripts/saas_db.py": {
-    "mtime": 1783999430.0400689,
+    "mtime": 1783999644.476911,
     "ast_hash": "62a74b7de9a56bc66dac5fed54c7ae06",
     "semantic_hash": ""
   },
@@ -46282,6 +46282,16 @@
   "/home/vreddy1/Desktop/Projects/scripts/frontend/saas_dashboard.html": {
     "mtime": 1783998993.7613578,
     "ast_hash": "7f0674aa56a4acb08a10eb88fffb1d5f",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/crypto_utils.py": {
+    "mtime": 1783999396.8649387,
+    "ast_hash": "9b255e40f0aae20a86e849ae2c28677c",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/scripts/docs/intent/tradingview_integration_guide.md": {
+    "mtime": 1783999452.1081555,
+    "ast_hash": "34667dae9dbdd68d5be4073cac439d87",
     "semantic_hash": ""
   }
 }
