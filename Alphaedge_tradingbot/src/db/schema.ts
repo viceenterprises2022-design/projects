@@ -79,3 +79,13 @@ export const riskEvents = sqliteTable('risk_events', {
   detail: text('detail').notNull(),
   timestamp: integer('timestamp').notNull()
 });
+
+export const earlyAccessLeads = sqliteTable('early_access_leads', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  email: text('email').notNull().unique(),
+  role: text('role').notNull().default('capital-builder'),
+  capitalBand: text('capital_band').notNull().default('exploring'),
+  marketFocus: text('market_focus').notNull().default('multi-asset'),
+  createdAt: integer('created_at').notNull()
+});
+
