@@ -46328,5 +46328,80 @@
     "mtime": 1784000038.4304578,
     "ast_hash": "3f11abd09061ba932179552b93942d79",
     "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/next.config.ts": {
+    "mtime": 1784000875.2580023,
+    "ast_hash": "9b77af189a21a7a64e4bd7a426f64176",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/eslint.config.mjs": {
+    "mtime": 1784000875.2580316,
+    "ast_hash": "dfa1f5f6a7037bf39dc510f30b180002",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/tsconfig.json": {
+    "mtime": 1784000875.2607617,
+    "ast_hash": "ee17fd1c97c735e9f3564e3f5251f125",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/next-env.d.ts": {
+    "mtime": 1784000875.2579744,
+    "ast_hash": "2a74d3909800ca5467fa83b0ab4a4890",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/package.json": {
+    "mtime": 1784001005.3252757,
+    "ast_hash": "95bd10ce5413a59bc6b99e54106bd25d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/page.tsx": {
+    "mtime": 1784001102.7836607,
+    "ast_hash": "5a354357b7d2023caa4d683e889b9474",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/layout.tsx": {
+    "mtime": 1784001122.7687397,
+    "ast_hash": "0289c9bc0dccd03c531b75f4d95ec1e4",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/CLAUDE.md": {
+    "mtime": 1784000902.2718685,
+    "ast_hash": "5c27369b226fcf2be8a6cfe52224e767",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/AGENTS.md": {
+    "mtime": 1784000902.2718685,
+    "ast_hash": "9e09241799026ac05be315a2f0b50055",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/README.md": {
+    "mtime": 1784000875.2579474,
+    "ast_hash": "f15aaa42d5d299d091b1171097ea56ad",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/public/window.svg": {
+    "mtime": 1784000875.2591524,
+    "ast_hash": "a2760511c65806022ad20adf74370ff3",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/public/file.svg": {
+    "mtime": 1784000875.2578912,
+    "ast_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/public/globe.svg": {
+    "mtime": 1784000875.2582557,
+    "ast_hash": "2aaafa6a49b6563925fe440891e32717",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/public/next.svg": {
+    "mtime": 1784000875.2591312,
+    "ast_hash": "8e061864f388b47f33a1c3780831193e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/public/vercel.svg": {
+    "mtime": 1784000875.2592032,
+    "ast_hash": "c0af2f507b369b085b35ef4bbe3bcf1e",
+    "semantic_hash": ""
   }
 }
