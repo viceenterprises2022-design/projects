@@ -1,0 +1,16 @@
+[Unit]
+Description=Hyperliquid SaaS Controller API
+After=network.target
+
+[Service]
+Type=simple
+User=vreddy1
+WorkingDirectory=/home/vreddy1/Desktop/Projects/scripts
+ExecStart=/home/vreddy1/Desktop/Projects/scripts/venv/bin/python saas_api.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

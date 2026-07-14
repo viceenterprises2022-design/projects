@@ -8,6 +8,7 @@ import sqlite3
 import datetime
 from pathlib import Path
 import contextlib
+import crypto_utils as crypto
 
 DB_PATH = Path(__file__).parent / "saas_trading.db"
 
@@ -104,18 +105,24 @@ def init_db():
 
 def add_user(email: str, hl_wallet: str = None, hl_api_key: str = None, hl_api_secret: str = None, risk_mult: float = 1.0, max_lev: int = 10) -> int:
     now_str = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    encrypted_secret = crypto.encrypt_secret(hl_api_secret)
     with get_conn() as conn:
         cursor = conn.execute("""
             INSERT INTO users (email, hl_wallet, hl_api_key, hl_api_secret, risk_multiplier, max_leverage, is_active, created_at)
             VALUES (?, ?, ?, ?, ?, ?, 1, ?)
-        """, (email, hl_wallet, hl_api_key, hl_api_secret, risk_mult, max_lev, now_str))
+        """, (email, hl_wallet, hl_api_key, encrypted_secret, risk_mult, max_lev, now_str))
         conn.commit()
         return cursor.lastrowid
 
 def get_user(user_id: int):
     with get_conn() as conn:
         row = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
-        return dict(row) if row else None
+        if not row:
+            return None
+        res = dict(row)
+        if res.get("hl_api_secret"):
+            res["hl_api_secret"] = crypto.decrypt_secret(res["hl_api_secret"])
+        return res
 
 def get_active_users():
     with get_conn() as conn:
@@ -146,7 +153,16 @@ def get_strategy_configs_for_symbol(symbol: str):
             JOIN users u ON sc.user_id = u.id
             WHERE sc.symbol = ? AND sc.active = 1 AND u.is_active = 1
         """, (symbol.upper(),)).fetchall()
-        return [dict(r) for r in rows]
+        configs = []
+        for r in rows:
+            cfg = dict(r)
+            if cfg.get("hl_api_secret"):
+                try:
+                    cfg["hl_api_secret"] = crypto.decrypt_secret(cfg["hl_api_secret"])
+                except Exception:
+                    pass
+            configs.append(cfg)
+        return configs
 
 # --- Positions ---
 
