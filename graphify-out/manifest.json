@@ -46415,8 +46415,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/db/index.ts": {
-    "mtime": 1784001013.8643093,
-    "ast_hash": "abff451b60330434608c2992416d419d",
+    "mtime": 1784005597.7056742,
+    "ast_hash": "b9fefb59de44f2baf88a005c2d21b3e9",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/db/schema.ts": {
@@ -46517,6 +46517,26 @@
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/.vercel/README.txt": {
     "mtime": 1784004732.4451344,
     "ast_hash": "2b13c79d37d6ed82a3255b83b6815034",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/db/init.ts": {
+    "mtime": 1784005269.0343707,
+    "ast_hash": "acfcdaa2cfbeb417a4e475e2f4cb2776",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/drizzle/0000_moaning_gravity.sql": {
+    "mtime": 1784004953.317055,
+    "ast_hash": "537024d6e8a6d002af63c8af35e01edd",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/drizzle/meta/_journal.json": {
+    "mtime": 1784004953.316055,
+    "ast_hash": "7c2e2e1cbcd47c34b805901247ab8c9e",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/drizzle/meta/0000_snapshot.json": {
+    "mtime": 1784004953.316055,
+    "ast_hash": "d69eb5eeb7fe6ade4c1d78ce96a67daf",
     "semantic_hash": ""
   }
 }
