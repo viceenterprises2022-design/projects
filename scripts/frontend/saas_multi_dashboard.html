@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaEdge Multi-Asset Controller (Gold, BTC, ETH)</title>
+    <meta name="description" content="Multi-user commercial controller dashboard for Gold, BTC, and ETH automated trading bots.">
+    <link rel="stylesheet" href="/frontend/saas_multi_dashboard.css">
+</head>
+<body>
+
+    <!-- Auth Overlay Modal -->
+    <div id="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>AlphaEdge Gateway</h2>
+                <p id="auth-sub-msg">Secure client verification portal</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="client@alphaedge.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn" style="margin-bottom: 1rem;">Authenticate Account</button>
+                <button type="button" id="btn-show-register" class="btn btn-secondary">Create New SaaS Account</button>
+            </form>
+
+            <!-- Register Form (Hidden initially) -->
+            <form id="register-form" style="display: none;">
+                <div class="form-group">
+                    <label for="reg-email">Email Address</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="client@alphaedge.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-tier">Subscription Tier</label>
+                    <select id="reg-tier" class="form-control">
+                        <option value="free">Free Trial (Max 5x leverage, 3 trades)</option>
+                        <option value="pro">Pro Suite (Max 15x leverage, 10 trades)</option>
+                        <option value="enterprise">Enterprise (Unlimited, Max 20x leverage)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="margin-bottom: 1rem; background: var(--accent-green);">Register & Create Vault</button>
+                <button type="button" id="btn-show-login" class="btn btn-secondary">Return to Authentication</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Authenticated Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-dot"></div>
+            <h1 class="logo-text">AlphaEdge Multi-Asset Controller</h1>
+        </div>
+        <div class="user-profile">
+            <span id="header-user-email">guest@alphaedge.com</span>
+            <span id="header-user-tier" class="tier-badge tier-free">Free</span>
+            <button type="button" id="btn-logout" class="btn btn-secondary" style="width: auto; padding: 0.25rem 0.75rem;">Logout</button>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- Metrics -->
+        <section class="card metric-box">
+            <h2 class="card-title">Billing Limits</h2>
+            <div class="metric-value" id="metric-lev-limit">5x</div>
+            <div class="metric-sub" id="metric-lev-sub">Max leverage allowed</div>
+        </section>
+
+        <section class="card metric-box">
+            <h2 class="card-title">Open Positions</h2>
+            <div class="metric-value" id="metric-positions-count">0</div>
+            <div class="metric-sub">Active market contracts</div>
+        </section>
+
+        <section class="card metric-box">
+            <h2 class="card-title">Total Trade logs</h2>
+            <div class="metric-value" id="metric-trades-count">0</div>
+            <div class="metric-sub">Total database audit executions</div>
+        </section>
+
+        <section class="card metric-box">
+            <h2 class="card-title">Compliance Multiplier</h2>
+            <div class="metric-value" id="metric-risk-mult">1.0x</div>
+            <div class="metric-sub">Gemini volatility throttle</div>
+        </section>
+
+        <!-- Left Panels: Tables -->
+        <div class="panel-left">
+            <section class="card">
+                <h2 class="card-title">Active Market Positions</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client ID</th>
+                                <th>Symbol</th>
+                                <th>Side</th>
+                                <th>Size</th>
+                                <th>Entry Price</th>
+                                <th>Leverage</th>
+                                <th>Stop Loss / Take Profit Target</th>
+                            </tr>
+                        </thead>
+                        <tbody id="positions-body">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: var(--text-secondary);">No open positions found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2 class="card-title">Execution Trade Log Ledger</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Log ID</th>
+                                <th>User ID</th>
+                                <th>Symbol</th>
+                                <th>Side</th>
+                                <th>Price</th>
+                                <th>Size</th>
+                                <th>Trigger Source</th>
+                                <th>Execution Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trades-body">
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: var(--text-secondary);">No execution records</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Right Panels: Forms & Admin controls -->
+        <div class="panel-right">
+            <!-- Add Keys Section -->
+            <section class="card">
+                <h2 class="card-title">Exchange Credentials Vault</h2>
+                <form id="credentials-form">
+                    <div class="form-group">
+                        <label for="cred-broker">Platform Selector</label>
+                        <select id="cred-broker" class="form-control">
+                            <option value="hyperliquid">Hyperliquid (BTC, ETH)</option>
+                            <option value="upstox">Upstox MCX Broker (Gold)</option>
+                            <option value="mock">Simulator Mode (Paper Trading)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cred-key">API Account Key</label>
+                        <input type="text" id="cred-key" class="form-control" placeholder="0x... or API string" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cred-secret">API Private Key / Secret (Encrypted at rest)</label>
+                        <input type="password" id="cred-secret" class="form-control" placeholder="Private Secret Key" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cred-wallet">Wallet Address (Optional)</label>
+                        <input type="text" id="cred-wallet" class="form-control" placeholder="0x...">
+                    </div>
+                    <button type="submit" class="btn">Update Platform Keys</button>
+                </form>
+            </section>
+
+            <!-- Map Strategy Config -->
+            <section class="card">
+                <h2 class="card-title">Deploy Robot Strategy Mapping</h2>
+                <form id="strategy-form">
+                    <div class="form-group">
+                        <label for="strat-symbol">Symbol Target</label>
+                        <select id="strat-symbol" class="form-control">
+                            <option value="BTC-PERP">BTC-PERP (Crypto)</option>
+                            <option value="ETH-PERP">ETH-PERP (Crypto)</option>
+                            <option value="GOLD-MCX">GOLD-MCX (Commodity - Mon-Fri)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-leverage">Execution Leverage</label>
+                        <input type="number" id="strat-leverage" class="form-control" value="5" min="1" max="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-size">Trade Sizing (% of Balance)</label>
+                        <input type="number" step="0.1" id="strat-size" class="form-control" value="5.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-sl">Hard Stop Loss (%)</label>
+                        <input type="number" step="0.1" id="strat-sl" class="form-control" value="2.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-tp">Hard Take Profit (%)</label>
+                        <input type="number" step="0.1" id="strat-tp" class="form-control" value="6.0" required>
+                    </div>
+                    <button type="submit" class="btn">Deploy Strategy Parameters</button>
+                </form>
+            </section>
+
+            <!-- Webhook Simulator Tester -->
+            <section class="card">
+                <h2 class="card-title">Signal Ingestion Simulator</h2>
+                <div class="form-group">
+                    <label for="web-symbol">Signal Asset</label>
+                    <select id="web-symbol" class="form-control">
+                        <option value="BTC-PERP">BTC-PERP</option>
+                        <option value="ETH-PERP">ETH-PERP</option>
+                        <option value="GOLD-MCX">GOLD-MCX</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="web-action">Signal Action</label>
+                    <select id="web-action" class="form-control">
+                        <option value="BUY">BUY (Long Alert)</option>
+                        <option value="SELL">SELL (Short Alert)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="web-size">Alert Sizing</label>
+                    <input type="number" step="0.01" id="web-size" class="form-control" value="0.02">
+                </div>
+                <div class="form-group">
+                    <label for="web-price">Alert Price</label>
+                    <input type="number" step="0.1" id="web-price" class="form-control" value="60000">
+                </div>
+                <button type="button" id="btn-fire-webhook" class="btn" style="background: var(--accent-green); color: #000;">Ingest TV Alert Webhook</button>
+            </section>
+        </div>
+
+        <!-- Admin Only Panels -->
+        <section class="card admin-section" id="admin-panel">
+            <h2 class="card-title">Administrative Portal <span class="tier-badge" style="color: var(--accent-cyan); border-color: var(--accent-cyan);">ROOT ADMIN</span></h2>
+            <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5rem; margin-top: 1rem;">
+                <div style="grid-column: span 8;">
+                    <h3 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-secondary);">Registered Users Vault</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Email Address</th>
+                                    <th>Subscription Level</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-body">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div style="grid-column: span 4;">
+                    <h3 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-secondary);">Compliance Control Center</h3>
+                    <button type="button" id="btn-trigger-audit" class="btn btn-secondary" style="margin-bottom: 1rem;">Run Gemini Offline Risk Audit</button>
+                    <div class="ai-audit-log" id="audit-log-container">
+                        No report generated yet. Trigger review to query Gemini 3.5 Flash.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/frontend/saas_multi_dashboard.js"></script>
+</body>
+</html>
