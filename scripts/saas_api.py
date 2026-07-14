@@ -8,8 +8,11 @@ and performs offline risk reviews using Gemini.
 import os
 import asyncio
 import logging
+from pathlib import Path
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, Header, Depends, BackgroundTasks
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -28,6 +31,15 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 app = FastAPI(title="Hyperliquid Commercial SaaS Trading Bot API")
 executor = HyperliquidExecutor(use_testnet=True)
+
+# Mount frontend directory
+FRONTEND_DIR = Path(__file__).parent / "frontend"
+app.mount("/frontend", StaticFiles(directory=str(FRONTEND_DIR)), name="frontend")
+
+@app.get("/dashboard", response_class=HTMLResponse)
+def serve_dashboard():
+    dashboard_path = FRONTEND_DIR / "saas_dashboard.html"
+    return HTMLResponse(content=dashboard_path.read_text(), status_code=200)
 
 # --- Pydantic Schemas ---
 

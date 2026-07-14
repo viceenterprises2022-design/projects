@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaEdge Hyperliquid SaaS Controller</title>
+    <meta name="description" content="Commercial administration dashboard for multi-user Hyperliquid automated trading bots.">
+    <link rel="stylesheet" href="/frontend/saas_dashboard.css">
+    <!-- ChartJS for visual performance rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo-dot"></div>
+            <h1 class="logo-text">AlphaEdge SaaS</h1>
+        </div>
+        <div class="system-status">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Hyperliquid Testnet Connected</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- Metric Box: Active Clients -->
+        <section class="card metric-box" id="metric-clients">
+            <h2 class="card-title">Active Clients <span style="color: var(--accent-cyan);">●</span></h2>
+            <div class="metric-value" id="val-clients">0</div>
+            <div class="metric-sub">Registered API key vaults</div>
+        </section>
+
+        <!-- Metric Box: Open Positions -->
+        <section class="card metric-box" id="metric-positions">
+            <h2 class="card-title">Open Positions</h2>
+            <div class="metric-value" id="val-positions">0</div>
+            <div class="metric-sub">Across all client accounts</div>
+        </section>
+
+        <!-- Metric Box: Trades Executed -->
+        <section class="card metric-box" id="metric-trades">
+            <h2 class="card-title">Trades Executed</h2>
+            <div class="metric-value" id="val-trades">0</div>
+            <div class="metric-sub">Total webhook actions</div>
+        </section>
+
+        <!-- Metric Box: Risk Multiplier -->
+        <section class="card metric-box" id="metric-risk">
+            <h2 class="card-title">AI Volatility Mult</h2>
+            <div class="metric-value" id="val-risk">1.0x</div>
+            <div class="metric-sub">Gemini compliance governor</div>
+        </section>
+
+        <!-- Main Workspace Panels -->
+        <div class="panel-left">
+            <!-- Active Positions Panel -->
+            <section class="card" id="active-positions-panel">
+                <h2 class="card-title">Active client positions</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client / Wallet</th>
+                                <th>Asset</th>
+                                <th>Side</th>
+                                <th>Size</th>
+                                <th>Entry Price</th>
+                                <th>Leverage</th>
+                                <th>TP / SL Prices</th>
+                            </tr>
+                        </thead>
+                        <tbody id="positions-body">
+                            <!-- Populated dynamically -->
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: var(--text-secondary);">No active positions</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Recent Trades Panel -->
+            <section class="card" id="recent-trades-panel">
+                <h2 class="card-title">Recent execution logs</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User ID</th>
+                                <th>Symbol</th>
+                                <th>Side</th>
+                                <th>Execution Price</th>
+                                <th>Size</th>
+                                <th>Trigger Type</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trades-body">
+                            <!-- Populated dynamically -->
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: var(--text-secondary);">No execution logs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <div class="panel-right">
+            <!-- Configuration & Registration Panel -->
+            <section class="card" id="client-setup-panel">
+                <h2 class="card-title">Add Client Account</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="reg-email">Client Email</label>
+                        <input type="email" id="reg-email" class="form-control" placeholder="client@domain.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-wallet">Hyperliquid Wallet Address</label>
+                        <input type="text" id="reg-wallet" class="form-control" placeholder="0x..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-apikey">API Key / Agent Wallet</label>
+                        <input type="text" id="reg-apikey" class="form-control" placeholder="Key string" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-secret">Agent Private Key (HEX)</label>
+                        <input type="password" id="reg-secret" class="form-control" placeholder="Private key hex" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-risk">Risk Sizing Multiplier</label>
+                        <input type="number" step="0.1" id="reg-risk" class="form-control" value="1.0" required>
+                    </div>
+                    <button type="submit" class="btn">Deploy Account Vault</button>
+                </form>
+            </section>
+
+            <!-- Strategy Mapping Form -->
+            <section class="card" id="strategy-setup-panel">
+                <h2 class="card-title">Map User Strategy</h2>
+                <form id="strategy-form">
+                    <div class="form-group">
+                        <label for="strat-userid">User ID</label>
+                        <input type="number" id="strat-userid" class="form-control" placeholder="e.g. 1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-symbol">Trading Pair</label>
+                        <input type="text" id="strat-symbol" class="form-control" value="BTC-PERP" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-size">Order Size %</label>
+                        <input type="number" step="0.1" id="strat-size" class="form-control" value="5.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-sl">Hard Stop Loss %</label>
+                        <input type="number" step="0.1" id="strat-sl" class="form-control" value="2.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="strat-tp">Hard Take Profit %</label>
+                        <input type="number" step="0.1" id="strat-tp" class="form-control" value="6.0" required>
+                    </div>
+                    <button type="submit" class="btn">Activate Strategy Mapping</button>
+                </form>
+            </section>
+
+            <!-- Mock Webhook Trigger Box -->
+            <section class="card" id="webhook-tester-panel">
+                <h2 class="card-title">Simulator Webhook Sender</h2>
+                <div class="form-group">
+                    <label for="web-symbol">Symbol</label>
+                    <input type="text" id="web-symbol" class="form-control" value="BTC-PERP">
+                </div>
+                <div class="form-group">
+                    <label for="web-action">Action</label>
+                    <select id="web-action" class="form-control">
+                        <option value="BUY">BUY (Long Entry)</option>
+                        <option value="SELL">SELL (Short Entry)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="web-size">Base Signal Size</label>
+                    <input type="number" step="0.01" id="web-size" class="form-control" value="0.02">
+                </div>
+                <div class="form-group">
+                    <label for="web-price">Current Price</label>
+                    <input type="number" step="1.0" id="web-price" class="form-control" value="68500">
+                </div>
+                <button type="button" id="btn-fire-webhook" class="btn" style="background: var(--accent-green); color: #000;">Fire Mock TV Alert</button>
+            </section>
+
+            <!-- AI Risk Auditor Panel -->
+            <section class="card" id="ai-auditor-panel">
+                <h2 class="card-title">Gemini Compliance Audit</h2>
+                <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+                    <button type="button" id="btn-trigger-audit" class="btn btn-secondary">Run Gemini Review</button>
+                </div>
+                <div class="ai-audit-log" id="audit-log-container">
+                    No reports generated yet. Click "Run Gemini Review" to analyze recent trades.
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/frontend/saas_dashboard.js"></script>
+</body>
+</html>
