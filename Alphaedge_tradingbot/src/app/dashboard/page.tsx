@@ -1111,9 +1111,63 @@ export default function Dashboard() {
         </div>
       </>
     ) : (
-      <div style={styles.gridTwoCol}>
-        {/* Column Left: Live Price Chart & Polymarket CLOB */}
-        <div style={styles.gridCol}>
+      <>
+        {/* Simulator KPIs Row */}
+        <section style={{ ...styles.analyticsRow, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', marginBottom: '24px' }}>
+          {/* KPI 1: Net Profit */}
+          <div style={styles.analyticCard}>
+            <div style={styles.cardHeader}>
+              <span style={styles.cardTitle}>NET PROFIT (PnL)</span>
+              <TrendingUp size={16} style={{ color: simPnl >= 0 ? '#bfff6a' : '#ff6fb3' }} />
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: simPnl >= 0 ? '#bfff6a' : '#ff6fb3', fontFamily: 'monospace' }}>
+              {simPnl >= 0 ? '+' : ''}${simPnl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+            <div style={styles.cardSubText}>ROI: {((simPnl / 100000) * 100).toFixed(3)}%</div>
+          </div>
+
+          {/* KPI 2: Win Rate */}
+          <div style={styles.analyticCard}>
+            <div style={styles.cardHeader}>
+              <span style={styles.cardTitle}>WIN RATE</span>
+              <Shield size={16} style={{ color: '#58f0ff' }} />
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace' }}>
+              {simWinRate.toFixed(1)}%
+            </div>
+            <div style={styles.cardSubText}>{simWins} wins / {simLosses} losses</div>
+          </div>
+
+          {/* KPI 3: Trading Volume */}
+          <div style={styles.analyticCard}>
+            <div style={styles.cardHeader}>
+              <span style={styles.cardTitle}>TRADING VOLUME</span>
+              <Coins size={16} style={{ color: 'rgba(239, 246, 255, 0.6)' }} />
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#ffffff', fontFamily: 'monospace' }}>
+              ${simVolume.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            </div>
+            <div style={styles.cardSubText}>Total volume traded</div>
+          </div>
+
+          {/* KPI 4: Active Position */}
+          <div style={styles.analyticCard}>
+            <div style={styles.cardHeader}>
+              <span style={styles.cardTitle}>ACTIVE POSITION</span>
+              <Activity size={16} style={{ color: simPosition ? '#bfff6a' : 'rgba(239, 246, 255, 0.4)' }} />
+            </div>
+            <div style={{ fontSize: '22px', fontWeight: 'bold', color: simPosition ? '#bfff6a' : 'rgba(239, 246, 255, 0.4)', fontFamily: 'monospace', minHeight: '36px', display: 'flex', alignItems: 'center' }}>
+              {simPosition ? `${simPosition.side} ${simPosition.size.toLocaleString()}` : 'FLAT'}
+            </div>
+            <div style={styles.cardSubText}>
+              {simPosition ? `Entry: ${Math.round(simPosition.entryPrice * 100)}¢ | Cost: $${simPosition.costUsd.toFixed(2)}` : 'No contracts held'}
+            </div>
+          </div>
+        </section>
+
+        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+          {/* Column Left: Live Price Chart & Polymarket CLOB (Wide) */}
+          <div style={{ flex: '1.6 1 600px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           <div style={styles.panelCard}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '20px' }}>
               <h2 style={{ margin: 0, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><TrendingUp size={16} style={{ color: '#58f0ff' }} /> {simAsset} UP/DOWN 5M RESOLUTION</h2>
@@ -1205,58 +1259,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Column Right: KPIs, Bayesian Logs & Config panel */}
-        <div style={styles.gridCol}>
-          {/* KPIs */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div style={styles.analyticCard}>
-              <div style={styles.cardHeader}>
-                <span style={styles.cardTitle}>NET PROFIT (PnL)</span>
-                <TrendingUp size={16} style={{ color: simPnl >= 0 ? '#bfff6a' : '#ff6fb3' }} />
-              </div>
-              <div style={{ fontSize: '24px', fontWeight: 'bold', color: simPnl >= 0 ? '#bfff6a' : '#ff6fb3', fontFamily: 'monospace' }}>
-                {simPnl >= 0 ? '+' : ''}${simPnl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </div>
-              <div style={styles.cardSubText}>ROI: {((simPnl / 100000) * 100).toFixed(3)}%</div>
-            </div>
-
-            <div style={styles.analyticCard}>
-              <div style={styles.cardHeader}>
-                <span style={styles.cardTitle}>WIN RATE</span>
-                <Shield size={16} style={{ color: '#58f0ff' }} />
-              </div>
-              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace' }}>
-                {simWinRate.toFixed(1)}%
-              </div>
-              <div style={styles.cardSubText}>{simWins} wins / {simLosses} losses</div>
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div style={styles.analyticCard}>
-              <div style={styles.cardHeader}>
-                <span style={styles.cardTitle}>TRADING VOLUME</span>
-                <Coins size={16} style={{ color: 'rgba(239, 246, 255, 0.6)' }} />
-              </div>
-              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#ffffff', fontFamily: 'monospace' }}>
-                ${simVolume.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-              </div>
-              <div style={styles.cardSubText}>Total volume traded</div>
-            </div>
-
-            <div style={styles.analyticCard}>
-              <div style={styles.cardHeader}>
-                <span style={styles.cardTitle}>ACTIVE POSITION</span>
-                <Activity size={16} style={{ color: simPosition ? '#bfff6a' : 'rgba(239, 246, 255, 0.4)' }} />
-              </div>
-              <div style={{ fontSize: '20px', fontWeight: 'bold', color: simPosition ? '#bfff6a' : 'rgba(239, 246, 255, 0.4)', fontFamily: 'monospace', minHeight: '30px', display: 'flex', alignItems: 'center' }}>
-                {simPosition ? `${simPosition.side} ${simPosition.size.toLocaleString()}` : 'FLAT'}
-              </div>
-              <div style={styles.cardSubText}>
-                {simPosition ? `Entry: ${Math.round(simPosition.entryPrice * 100)}¢ | Cost: $${simPosition.costUsd.toFixed(2)}` : 'No contracts held'}
-              </div>
-            </div>
-          </div>
+        {/* Column Right: Bayesian Logs & Config panel (Narrow) */}
+        <div style={{ flex: '1 1 380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
           {/* Bayesian Model Engine & Logs */}
           <div style={styles.panelCard}>
@@ -1365,6 +1369,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
 
         {/* Historical Predictions Log */}
         <div style={{ ...styles.panelCard, marginTop: '24px' }}>
@@ -1472,7 +1477,7 @@ export default function Dashboard() {
             </table>
           </div>
         </div>
-      </div>
+      </>
     )}
       </div>
     </div>
