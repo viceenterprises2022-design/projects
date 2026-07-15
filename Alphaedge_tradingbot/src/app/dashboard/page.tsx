@@ -1,7 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+
+// Math Helper: Standard Normal Cumulative Distribution Function (normCDF)
+function normCDF(x: number) {
+  const a1 =  0.254829592;
+  const a2 = -0.284496736;
+  const a3 =  1.421413741;
+  const a4 = -1.453152027;
+  const a5 =  1.061405429;
+  const p  =  0.3275911;
+
+  const sign = x < 0 ? -1 : 1;
+  const absX = Math.abs(x) / Math.sqrt(2.0);
+
+  const t = 1.0 / (1.0 + p * absX);
+  const y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-absX * absX);
+
+  return 0.5 * (1.0 + sign * y);
+}
 import { 
   Shield, 
   ShieldAlert, 
@@ -38,6 +56,428 @@ export default function Dashboard() {
 
   // Webhook Simulator state
   const [simulatingSignal, setSimulatingSignal] = useState(false);
+
+  // Active Tab & Simulator Configs
+  const [activeTab, setActiveTab] = useState<'cockpit' | 'simulator'>('cockpit');
+  const [simAsset, setSimAsset] = useState<'BTC-PERP' | 'ETH-PERP' | 'GOLD-MCX'>('BTC-PERP');
+
+  // Simulator Metrics
+  const [simPnl, setSimPnl] = useState(0);
+  const [simWinRate, setSimWinRate] = useState(0);
+  const [simVolume, setSimVolume] = useState(0);
+  const [simWins, setSimWins] = useState(0);
+  const [simLosses, setSimLosses] = useState(0);
+  const [simPosition, setSimPosition] = useState<any>(null);
+  const [simLogs, setSimLogs] = useState<Array<{ time: string; type: string; msg: string }>>([]);
+  const [simCountdown, setSimCountdown] = useState('05:00');
+  
+  // Sliders
+  const [simSpeed, setSimSpeed] = useState(5);
+  const [simTradeSize, setSimTradeSize] = useState(1000);
+  const [simEdgeThreshold, setSimEdgeThreshold] = useState(3.5);
+  const [simVolatility, setSimVolatility] = useState(45);
+  const [simRunning, setSimRunning] = useState(true);
+
+  // Order Books
+  const [yesBook, setYesBook] = useState<any>({ mid: 0.50, bids: [], asks: [] });
+  const [noBook, setNoBook] = useState<any>({ mid: 0.50, bids: [], asks: [] });
+
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const simStateRef = useRef({
+    isRunning: true,
+    speedMultiplier: 5,
+    volatility: 45,
+    tradeSizeUsd: 1000,
+    minEdgeThreshold: 3.5,
+    
+    asset: 'BTC-PERP',
+    price: 65420.00,
+    strikePrice: 65420.00,
+    priceHistory: [] as Array<{ price: number; trade?: 'YES' | 'NO' }>,
+    roundSecondsRemaining: 300,
+    roundId: 101,
+    tickCount: 0,
+    
+    yesContract: {
+      midPrice: 0.50,
+      bids: [] as Array<{ price: number; size: number }>,
+      asks: [] as Array<{ price: number; size: number }>
+    },
+    noContract: {
+      midPrice: 0.50,
+      bids: [] as Array<{ price: number; size: number }>,
+      asks: [] as Array<{ price: number; size: number }>
+    },
+    laggedFairValueYes: 0.50,
+    
+    activePosition: null as any,
+    wins: 0,
+    losses: 0,
+    totalProfit: 0,
+    totalVolume: 0,
+    tradesCount: 0,
+    initialBalance: 100000,
+  });
+
+  // Setup Simulator Loop
+  useEffect(() => {
+    if (activeTab !== 'simulator') return;
+
+    const startPrice = 
+      simAsset === 'BTC-PERP' ? 64850.00 :
+      simAsset === 'ETH-PERP' ? 1875.00 : 4035.00;
+      
+    simStateRef.current = {
+      isRunning: simRunning,
+      speedMultiplier: simSpeed,
+      volatility: simVolatility,
+      tradeSizeUsd: simTradeSize,
+      minEdgeThreshold: simEdgeThreshold,
+      asset: simAsset,
+      price: startPrice,
+      strikePrice: startPrice,
+      priceHistory: [{ price: startPrice }],
+      roundSecondsRemaining: 300,
+      roundId: 101,
+      tickCount: 0,
+      yesContract: { midPrice: 0.50, bids: [], asks: [] },
+      noContract: { midPrice: 0.50, bids: [], asks: [] },
+      laggedFairValueYes: 0.50,
+      activePosition: null,
+      wins: 0,
+      losses: 0,
+      totalProfit: 0,
+      totalVolume: 0,
+      tradesCount: 0,
+      initialBalance: 100000,
+    };
+
+    setSimLogs([]);
+    const addSimLog = (type: string, msg: string) => {
+      const time = new Date().toLocaleTimeString() + '.' + String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+      setSimLogs(prev => {
+        const updated = [...prev, { time, type, msg }];
+        if (updated.length > 50) updated.shift();
+        return updated;
+      });
+    };
+
+    addSimLog('info', `Simulation started for ${simAsset}. Initial Strike locked at $${startPrice.toFixed(2)}`);
+
+    let timer: NodeJS.Timeout | null = null;
+
+    const generateSimBookSides = (midPrice: number, side: 'bid' | 'ask') => {
+      const levels = 5;
+      const rows = [];
+      const step = 0.01;
+      
+      for (let i = 0; i < levels; i++) {
+        let price;
+        if (side === 'bid') {
+          price = midPrice - (i * step) - 0.005;
+        } else {
+          price = midPrice + (i * step) + 0.005;
+        }
+        
+        price = Math.min(Math.max(price, 0.01), 0.99);
+        const baseSize = 800 + (i * 1200);
+        const noiseSize = Math.floor(Math.random() * 500) - 250;
+        const size = Math.max(100, baseSize + noiseSize);
+        rows.push({ price, size });
+      }
+      return rows;
+    };
+
+    const drawSimChart = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const w = canvas.width;
+      const h = canvas.height;
+      const state = simStateRef.current;
+      
+      ctx.clearRect(0, 0, w, h);
+      if (state.priceHistory.length === 0) return;
+      
+      const prices = state.priceHistory.map(p => p.price);
+      prices.push(state.strikePrice);
+      let minPrice = Math.min(...prices);
+      let maxPrice = Math.max(...prices);
+      
+      const range = maxPrice - minPrice;
+      const padding = range === 0 ? 10 : range * 0.15;
+      minPrice -= padding;
+      maxPrice += padding;
+      
+      const getX = (index: number) => (index / 300) * w;
+      const getY = (price: number) => h - ((price - minPrice) / (maxPrice - minPrice)) * h;
+      
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 6; i++) {
+        const y = (i / 6) * h;
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        const x = (i / 6) * w;
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      
+      const strikeY = getY(state.strikePrice);
+      ctx.strokeStyle = 'rgba(255, 209, 102, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(0, strikeY); ctx.lineTo(w, strikeY); ctx.stroke();
+      ctx.setLineDash([]);
+      
+      ctx.fillStyle = 'rgba(255, 209, 102, 0.8)';
+      ctx.font = '10px monospace';
+      ctx.fillText(`STRIKE: $${state.strikePrice.toFixed(2)}`, 10, strikeY - 6);
+      
+      ctx.beginPath();
+      ctx.moveTo(getX(0), getY(state.priceHistory[0].price));
+      for (let i = 1; i < state.priceHistory.length; i++) {
+        ctx.lineTo(getX(i), getY(state.priceHistory[i].price));
+      }
+      ctx.strokeStyle = '#58f0ff';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      
+      const gradient = ctx.createLinearGradient(0, 0, 0, h);
+      gradient.addColorStop(0, 'rgba(88, 240, 255, 0.12)');
+      gradient.addColorStop(1, 'rgba(88, 240, 255, 0)');
+      ctx.fillStyle = gradient;
+      ctx.lineTo(getX(state.priceHistory.length - 1), h);
+      ctx.lineTo(getX(0), h);
+      ctx.closePath();
+      ctx.fill();
+      
+      state.priceHistory.forEach((pt, index) => {
+        if (pt.trade) {
+          const tx = getX(index);
+          const ty = getY(pt.price);
+          ctx.beginPath();
+          if (pt.trade === 'YES') {
+            ctx.fillStyle = '#bfff6a';
+            ctx.moveTo(tx, ty - 8);
+            ctx.lineTo(tx - 5, ty + 2);
+            ctx.lineTo(tx + 5, ty + 2);
+            ctx.fill();
+          } else {
+            ctx.fillStyle = '#ff6fb3';
+            ctx.moveTo(tx, ty + 8);
+            ctx.lineTo(tx - 5, ty - 2);
+            ctx.lineTo(tx + 5, ty - 2);
+            ctx.fill();
+          }
+        }
+      });
+      
+      const lastIdx = state.priceHistory.length - 1;
+      const lastPt = state.priceHistory[lastIdx];
+      const lastX = getX(lastIdx);
+      const lastY = getY(lastPt.price);
+      ctx.beginPath(); ctx.arc(lastX, lastY, 4, 0, Math.PI * 2); ctx.fillStyle = '#58f0ff'; ctx.fill();
+    };
+
+    const runStep = () => {
+      const state = simStateRef.current;
+      if (!state.isRunning) {
+        timer = setTimeout(runStep, 1000 / state.speedMultiplier);
+        return;
+      }
+      
+      // 1. Tick price
+      state.tickCount++;
+      const volatilityFactor = state.volatility / 100.0;
+      const trendBias = (Math.random() - 0.5) * 2.0;
+      if (!(state as any).trendVelocity) (state as any).trendVelocity = 0;
+      (state as any).trendVelocity = ((state as any).trendVelocity * 0.9) + (trendBias * 0.25);
+      
+      const assetScale = state.asset === 'BTC-PERP' ? 10.0 : state.asset === 'ETH-PERP' ? 0.6 : 0.4;
+      const priceChange = (Math.random() - 0.5) * volatilityFactor * assetScale + (state as any).trendVelocity;
+      state.price += priceChange;
+      if (state.price < 0.1) state.price = 0.1;
+      
+      state.priceHistory.push({ price: state.price });
+      if (state.priceHistory.length > 300) {
+        state.priceHistory.shift();
+      }
+      
+      state.roundSecondsRemaining -= 1;
+      
+      if (state.tickCount % 6 === 0) {
+        const diff = state.price - state.strikePrice;
+        const diffPct = (diff / state.strikePrice) * 100;
+        const sign = diff >= 0 ? '+' : '';
+        addSimLog('signal', `${state.asset} Price update: $${state.price.toFixed(2)} (${sign}${diffPct.toFixed(3)}% vs Strike)`);
+      }
+      
+      // 2. Compute Fair Value
+      const stdDev = (state.volatility / 100.0) * Math.sqrt(state.roundSecondsRemaining);
+      let fairValueYes = 0.5;
+      if (stdDev <= 0) {
+        fairValueYes = state.price > state.strikePrice ? 1.0 : 0.0;
+      } else {
+        const diff = state.price - state.strikePrice;
+        const z = diff / Math.max(0.1, stdDev);
+        fairValueYes = normCDF(z);
+      }
+      fairValueYes = Math.min(Math.max(fairValueYes, 0.01), 0.99);
+      
+      // 3. Update Order Book
+      const alpha = 0.35;
+      state.laggedFairValueYes = (state.laggedFairValueYes * (1 - alpha)) + (fairValueYes * alpha);
+      const laggedYes = state.laggedFairValueYes;
+      
+      state.yesContract.midPrice = laggedYes;
+      state.yesContract.bids = generateSimBookSides(laggedYes, 'bid');
+      state.yesContract.asks = generateSimBookSides(laggedYes, 'ask');
+      
+      const laggedNo = 1.0 - laggedYes;
+      state.noContract.midPrice = laggedNo;
+      state.noContract.bids = generateSimBookSides(laggedNo, 'bid');
+      state.noContract.asks = generateSimBookSides(laggedNo, 'ask');
+      
+      // 4. Run Strategy
+      if (state.roundSecondsRemaining >= 15) {
+        const fairValueYesPct = fairValueYes * 100;
+        const fairValueNoPct = (1.0 - fairValueYes) * 100;
+        const bestYesAsk = state.yesContract.asks[0];
+        const bestNoAsk = state.noContract.asks[0];
+        
+        if (bestYesAsk && bestNoAsk) {
+          const yesAskPct = bestYesAsk.price * 100;
+          const noAskPct = bestNoAsk.price * 100;
+          const edgeYes = fairValueYesPct - yesAskPct;
+          const edgeNo = fairValueNoPct - noAskPct;
+          
+          if (!state.activePosition) {
+            if (edgeYes >= state.minEdgeThreshold) {
+              const contracts = Math.floor(state.tradeSizeUsd / bestYesAsk.price);
+              state.activePosition = { side: 'YES', size: contracts, entryPrice: bestYesAsk.price, costUsd: contracts * bestYesAsk.price };
+              state.priceHistory[state.priceHistory.length - 1].trade = 'YES';
+              state.totalVolume += state.activePosition.costUsd;
+              state.tradesCount++;
+              addSimLog('edge', `Arb edge detected! P(YES) model: ${Math.round(fairValueYes*100)}¢ vs Market: ${Math.round(bestYesAsk.price*100)}¢ (Edge: +${edgeYes.toFixed(1)}%)`);
+              addSimLog('trade', `EXECUTE: BUY YES ${contracts.toLocaleString()} contracts @ ${Math.round(bestYesAsk.price*100)}¢. Total cost: $${state.activePosition.costUsd.toFixed(2)}`);
+            } else if (edgeNo >= state.minEdgeThreshold) {
+              const contracts = Math.floor(state.tradeSizeUsd / bestNoAsk.price);
+              state.activePosition = { side: 'NO', size: contracts, entryPrice: bestNoAsk.price, costUsd: contracts * bestNoAsk.price };
+              state.priceHistory[state.priceHistory.length - 1].trade = 'NO';
+              state.totalVolume += state.activePosition.costUsd;
+              state.tradesCount++;
+              addSimLog('edge', `Arb edge detected! P(NO) model: ${Math.round((1-fairValueYes)*100)}¢ vs Market: ${Math.round(bestNoAsk.price*100)}¢ (Edge: +${edgeNo.toFixed(1)}%)`);
+              addSimLog('trade', `EXECUTE: BUY NO ${contracts.toLocaleString()} contracts @ ${Math.round(bestNoAsk.price*100)}¢. Total cost: $${state.activePosition.costUsd.toFixed(2)}`);
+            }
+          }
+        }
+      }
+      
+      // 5. Draw Chart
+      drawSimChart();
+      
+      // 6. Expiry Settlement
+      if (state.roundSecondsRemaining <= 0) {
+        const isWin = state.price > state.strikePrice;
+        const winOutcome = isWin ? 'YES' : 'NO';
+        addSimLog('settle', `ROUND #${state.roundId} EXPIRED. Final Price: $${state.price.toFixed(2)} | Strike: $${state.strikePrice.toFixed(2)} | Outcome: ${winOutcome}`);
+        
+        if (state.activePosition) {
+          const pos = state.activePosition;
+          let payout = 0;
+          let netPnl = 0;
+          if (pos.side === winOutcome) {
+            payout = pos.size * 1.00;
+            netPnl = payout - pos.costUsd;
+            state.wins++;
+            state.totalProfit += netPnl;
+            addSimLog('trade', `ROUND SETTLEMENT: WIN! Position ${pos.side} pays out $${payout.toFixed(2)} (Net PnL: +$${netPnl.toFixed(2)})`);
+          } else {
+            payout = 0;
+            netPnl = -pos.costUsd;
+            state.losses++;
+            state.totalProfit += netPnl;
+            addSimLog('error', `ROUND SETTLEMENT: LOSS. Position ${pos.side} pays out $0.00 (Net PnL: -$${Math.abs(netPnl).toFixed(2)})`);
+          }
+          state.activePosition = null;
+        }
+        
+        state.roundId++;
+        state.strikePrice = state.price;
+        state.priceHistory = [{ price: state.price }];
+        state.roundSecondsRemaining = 300;
+        addSimLog('info', `ROUND #${state.roundId} STARTED. New Strike locked at $${state.strikePrice.toFixed(2)}`);
+      }
+      
+      // 7. Update UI React states
+      setSimPnl(state.totalProfit);
+      setSimWinRate(state.wins + state.losses > 0 ? (state.wins / (state.wins + state.losses)) * 100 : 0);
+      setSimWins(state.wins);
+      setSimLosses(state.losses);
+      setSimVolume(state.totalVolume);
+      setSimPosition(state.activePosition);
+      
+      const mins = Math.floor(state.roundSecondsRemaining / 60);
+      const secs = state.roundSecondsRemaining % 60;
+      setSimCountdown(`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`);
+      
+      setYesBook({
+        mid: state.yesContract.midPrice,
+        bids: [...state.yesContract.bids],
+        asks: [...state.yesContract.asks]
+      });
+      setNoBook({
+        mid: state.noContract.midPrice,
+        bids: [...state.noContract.bids],
+        asks: [...state.noContract.asks]
+      });
+      
+      timer = setTimeout(runStep, 1000 / state.speedMultiplier);
+    };
+
+    timer = setTimeout(runStep, 1000 / simSpeed);
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [activeTab, simAsset]);
+
+  const handleSpeedChange = (val: number) => {
+    setSimSpeed(val);
+    simStateRef.current.speedMultiplier = val;
+  };
+  
+  const handleSizeChange = (val: number) => {
+    setSimTradeSize(val);
+    simStateRef.current.tradeSizeUsd = val;
+  };
+  
+  const handleEdgeChange = (val: number) => {
+    setSimEdgeThreshold(val);
+    simStateRef.current.minEdgeThreshold = val;
+  };
+  
+  const handleVolatilityChange = (val: number) => {
+    setSimVolatility(val);
+    simStateRef.current.volatility = val;
+  };
+
+  const handleToggleSimRunning = () => {
+    const nextState = !simRunning;
+    setSimRunning(nextState);
+    simStateRef.current.isRunning = nextState;
+  };
+
+  useEffect(() => {
+    if (activeTab === 'simulator') {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        canvas.width = canvas.parentElement?.clientWidth || 600;
+        canvas.height = 240;
+      }
+    }
+  }, [activeTab]);
 
   // Fetch all dashboard data
   const fetchData = async () => {
@@ -212,6 +652,43 @@ export default function Dashboard() {
           <span style={styles.divider}>/</span>
           <span style={styles.panelTitle}>Trading Desk</span>
         </div>
+
+        {/* Tab Switcher */}
+        <div style={{ display: 'flex', gap: '4px', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '14px', padding: '4px', backgroundColor: 'rgba(255, 255, 255, 0.03)' }}>
+          <button 
+            style={{ 
+              backgroundColor: activeTab === 'cockpit' ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+              color: activeTab === 'cockpit' ? '#fff' : 'rgba(239, 246, 255, 0.66)',
+              border: 'none',
+              padding: '6px 16px',
+              borderRadius: '10px',
+              fontSize: '12px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            onClick={() => setActiveTab('cockpit')}
+          >
+            Live Cockpit
+          </button>
+          <button 
+            style={{ 
+              backgroundColor: activeTab === 'simulator' ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
+              color: activeTab === 'simulator' ? '#fff' : 'rgba(239, 246, 255, 0.66)',
+              border: 'none',
+              padding: '6px 16px',
+              borderRadius: '10px',
+              fontSize: '12px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            onClick={() => setActiveTab('simulator')}
+          >
+            Live Quant Simulator
+          </button>
+        </div>
+
         <div style={styles.headerRight}>
           {data?.ledgerValid ? (
             <div style={styles.ledgerBadgeVerified}>
@@ -238,8 +715,10 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Top Analytics row */}
-        <section style={styles.analyticsRow}>
+        {activeTab === 'cockpit' ? (
+          <>
+            {/* Top Analytics row */}
+            <section style={styles.analyticsRow}>
           <div style={styles.analyticCard}>
             <div style={styles.cardHeader}>
               <span style={styles.cardTitle}>USDC EQUITY</span>
@@ -441,14 +920,14 @@ export default function Dashboard() {
                     <div style={styles.simActions}>
                       <button 
                         style={styles.simButtonLong} 
-                        onClick={() => handleSimulateSignal(tmpl.code, 'LONG', tmpl.assetClass === 'BTC' ? 62450.00 : tmpl.assetClass === 'ETH' ? 3420.00 : 2350.00)}
+                        onClick={() => handleSimulateSignal(tmpl.code, 'LONG', tmpl.assetClass === 'BTC' ? 64850.00 : tmpl.assetClass === 'ETH' ? 1875.00 : 4035.00)}
                         disabled={simulatingSignal}
                       >
                         LONG Signal
                       </button>
                       <button 
                         style={styles.simButtonShort} 
-                        onClick={() => handleSimulateSignal(tmpl.code, 'SHORT', tmpl.assetClass === 'BTC' ? 62450.00 : tmpl.assetClass === 'ETH' ? 3420.00 : 2350.00)}
+                        onClick={() => handleSimulateSignal(tmpl.code, 'SHORT', tmpl.assetClass === 'BTC' ? 64850.00 : tmpl.assetClass === 'ETH' ? 1875.00 : 4035.00)}
                         disabled={simulatingSignal}
                       >
                         SHORT Signal
@@ -613,6 +1092,264 @@ export default function Dashboard() {
             )}
           </div>
         </div>
+      </>
+    ) : (
+      <div style={styles.gridTwoCol}>
+        {/* Column Left: Live Price Chart & Polymarket CLOB */}
+        <div style={styles.gridCol}>
+          <div style={styles.panelCard}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '20px' }}>
+              <h2 style={{ margin: 0, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><TrendingUp size={16} style={{ color: '#58f0ff' }} /> {simAsset} UP/DOWN 5M RESOLUTION</h2>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <select 
+                  value={simAsset} 
+                  onChange={(e) => setSimAsset(e.target.value as any)}
+                  style={{ ...styles.select, padding: '4px 8px', borderRadius: '8px', fontSize: '12px', height: '30px' }}
+                >
+                  <option value="BTC-PERP">BTC-PERP</option>
+                  <option value="ETH-PERP">ETH-PERP</option>
+                  <option value="GOLD-MCX">GOLD-MCX</option>
+                </select>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#ff6fb3', fontFamily: 'monospace' }}>{simCountdown}</div>
+              </div>
+            </div>
+
+            {/* Chart values row */}
+            <div style={{ display: 'flex', gap: '24px', marginBottom: '16px' }}>
+              <div>
+                <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>STRIKE PRICE (T0)</small>
+                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#ffd166', fontFamily: 'monospace', marginTop: '2px' }}>${simStateRef.current.strikePrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+              </div>
+              <div>
+                <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CURRENT PRICE</small>
+                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace', marginTop: '2px' }}>${simStateRef.current.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+              </div>
+              <div>
+                <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DEVIATION</small>
+                <div style={{ fontSize: '16px', fontWeight: 'bold', color: simStateRef.current.price >= simStateRef.current.strikePrice ? '#bfff6a' : '#ff6fb3', fontFamily: 'monospace', marginTop: '2px' }}>
+                  {simStateRef.current.price >= simStateRef.current.strikePrice ? '+' : ''}
+                  {simStateRef.current.strikePrice > 0 ? ((simStateRef.current.price - simStateRef.current.strikePrice) / simStateRef.current.strikePrice * 100).toFixed(3) : '0.000'}%
+                </div>
+              </div>
+            </div>
+
+            {/* Canvas element wrapper */}
+            <div style={{ height: '240px', width: '100%', position: 'relative', background: 'rgba(5, 7, 17, 0.4)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)', overflow: 'hidden' }}>
+              <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+            </div>
+          </div>
+
+          {/* Polymarket CLOB book sides */}
+          <div style={styles.panelCard}>
+            <h2 style={styles.panelHeader}><Coins size={16} style={{ color: '#58f0ff' }} /> Polymarket CLOB (Contracts)</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              {/* YES Contract Side */}
+              <div style={{ border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px', backgroundColor: 'rgba(5, 7, 17, 0.3)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
+                  <strong style={{ fontSize: '13px', color: '#fff' }}>YES Contract (UP)</strong>
+                  <span style={{ color: '#bfff6a', fontWeight: 'bold', fontSize: '14px', fontFamily: 'monospace' }}>{Math.round(yesBook.mid * 100)}¢</span>
+                </div>
+                <div style={{ display: 'grid', gap: '6px', fontSize: '11px', fontFamily: 'monospace' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', color: 'rgba(239, 246, 255, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '4px', fontWeight: 600 }}>
+                    <span>SIZE</span><span style={{ textAlign: 'right', paddingRight: '8px' }}>ASK</span><span style={{ textAlign: 'left', paddingLeft: '8px' }}>BID</span><span style={{ textAlign: 'right' }}>SIZE</span>
+                  </div>
+                  {yesBook.asks.slice(0, 4).reverse().map((ask: any, idx: number) => (
+                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', alignItems: 'center' }}>
+                      <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>{ask.size}</span>
+                      <span style={{ color: '#ff6fb3', textAlign: 'right', paddingRight: '8px', fontWeight: 600 }}>{Math.round(ask.price * 100)}¢</span>
+                      <span style={{ color: '#bfff6a', textAlign: 'left', paddingLeft: '8px', fontWeight: 600 }}>{Math.round(yesBook.bids[idx]?.price * 100)}¢</span>
+                      <span style={{ color: 'rgba(239, 246, 255, 0.5)', textAlign: 'right' }}>{yesBook.bids[idx]?.size}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* NO Contract Side */}
+              <div style={{ border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px', backgroundColor: 'rgba(5, 7, 17, 0.3)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
+                  <strong style={{ fontSize: '13px', color: '#fff' }}>NO Contract (DOWN)</strong>
+                  <span style={{ color: '#ff6fb3', fontWeight: 'bold', fontSize: '14px', fontFamily: 'monospace' }}>{Math.round(noBook.mid * 100)}¢</span>
+                </div>
+                <div style={{ display: 'grid', gap: '6px', fontSize: '11px', fontFamily: 'monospace' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', color: 'rgba(239, 246, 255, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '4px', fontWeight: 600 }}>
+                    <span>SIZE</span><span style={{ textAlign: 'right', paddingRight: '8px' }}>ASK</span><span style={{ textAlign: 'left', paddingLeft: '8px' }}>BID</span><span style={{ textAlign: 'right' }}>SIZE</span>
+                  </div>
+                  {noBook.asks.slice(0, 4).reverse().map((ask: any, idx: number) => (
+                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', alignItems: 'center' }}>
+                      <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>{ask.size}</span>
+                      <span style={{ color: '#ff6fb3', textAlign: 'right', paddingRight: '8px', fontWeight: 600 }}>{Math.round(ask.price * 100)}¢</span>
+                      <span style={{ color: '#bfff6a', textAlign: 'left', paddingLeft: '8px', fontWeight: 600 }}>{Math.round(noBook.bids[idx]?.price * 100)}¢</span>
+                      <span style={{ color: 'rgba(239, 246, 255, 0.5)', textAlign: 'right' }}>{noBook.bids[idx]?.size}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Column Right: KPIs, Bayesian Logs & Config panel */}
+        <div style={styles.gridCol}>
+          {/* KPIs */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={styles.analyticCard}>
+              <div style={styles.cardHeader}>
+                <span style={styles.cardTitle}>NET PROFIT (PnL)</span>
+                <TrendingUp size={16} style={{ color: simPnl >= 0 ? '#bfff6a' : '#ff6fb3' }} />
+              </div>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: simPnl >= 0 ? '#bfff6a' : '#ff6fb3', fontFamily: 'monospace' }}>
+                {simPnl >= 0 ? '+' : ''}${simPnl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
+              <div style={styles.cardSubText}>ROI: {((simPnl / 100000) * 100).toFixed(3)}%</div>
+            </div>
+
+            <div style={styles.analyticCard}>
+              <div style={styles.cardHeader}>
+                <span style={styles.cardTitle}>WIN RATE</span>
+                <Shield size={16} style={{ color: '#58f0ff' }} />
+              </div>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace' }}>
+                {simWinRate.toFixed(1)}%
+              </div>
+              <div style={styles.cardSubText}>{simWins} wins / {simLosses} losses</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={styles.analyticCard}>
+              <div style={styles.cardHeader}>
+                <span style={styles.cardTitle}>TRADING VOLUME</span>
+                <Coins size={16} style={{ color: 'rgba(239, 246, 255, 0.6)' }} />
+              </div>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#ffffff', fontFamily: 'monospace' }}>
+                ${simVolume.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </div>
+              <div style={styles.cardSubText}>Total volume traded</div>
+            </div>
+
+            <div style={styles.analyticCard}>
+              <div style={styles.cardHeader}>
+                <span style={styles.cardTitle}>ACTIVE POSITION</span>
+                <Activity size={16} style={{ color: simPosition ? '#bfff6a' : 'rgba(239, 246, 255, 0.4)' }} />
+              </div>
+              <div style={{ fontSize: '20px', fontWeight: 'bold', color: simPosition ? '#bfff6a' : 'rgba(239, 246, 255, 0.4)', fontFamily: 'monospace', minHeight: '30px', display: 'flex', alignItems: 'center' }}>
+                {simPosition ? `${simPosition.side} ${simPosition.size.toLocaleString()}` : 'FLAT'}
+              </div>
+              <div style={styles.cardSubText}>
+                {simPosition ? `Entry: ${Math.round(simPosition.entryPrice * 100)}¢ | Cost: $${simPosition.costUsd.toFixed(2)}` : 'No contracts held'}
+              </div>
+            </div>
+          </div>
+
+          {/* Bayesian Model Engine & Logs */}
+          <div style={styles.panelCard}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
+              <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><FileText size={16} style={{ color: '#9d7dff' }} /> Bayesian Model Engine & Logs</h2>
+              <button 
+                onClick={() => setSimLogs([])}
+                style={{ ...styles.refreshButton, padding: '4px 10px', fontSize: '10px' }}
+              >
+                Clear
+              </button>
+            </div>
+            
+            <div style={{ height: '220px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px', fontFamily: 'monospace', fontSize: '11px', backgroundColor: 'rgba(5, 7, 17, 0.64)', padding: '12px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              {simLogs.length === 0 ? (
+                <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>Waiting for engine telemetry...</span>
+              ) : (
+                simLogs.map((log: any, idx: number) => {
+                  let color = '#fff';
+                  if (log.type === 'signal') color = '#58f0ff';
+                  if (log.type === 'edge') color = '#9d7dff';
+                  if (log.type === 'trade') color = '#bfff6a';
+                  if (log.type === 'error') color = '#ff6fb3';
+                  if (log.type === 'settle') color = '#ffd166';
+                  return (
+                    <div key={idx} style={{ display: 'flex', gap: '8px', lineHeight: '1.4' }}>
+                      <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>[{log.time}]</span>
+                      <span style={{ color, fontWeight: 'bold' }}>[{log.type.toUpperCase()}]</span>
+                      <span style={{ color: '#f1f5f9' }}>{log.msg}</span>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* Config Panel */}
+          <div style={styles.panelCard}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
+              <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><Lock size={16} style={{ color: '#ffd166' }} /> Bot Configuration</h2>
+              <button 
+                onClick={handleToggleSimRunning}
+                style={{ 
+                  background: simRunning ? 'rgba(255, 111, 179, 0.12)' : 'linear-gradient(135deg, #58f0ff, #bfff6a)',
+                  border: 'none',
+                  color: simRunning ? '#ff6fb3' : '#051016',
+                  padding: '4px 12px',
+                  borderRadius: '8px',
+                  fontSize: '11px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                {simRunning ? 'Pause Engine' : 'Resume Engine'}
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '12px' }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span>Simulation Speed (Multiplier)</span>
+                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simSpeed}x</span>
+                </div>
+                <input 
+                  type="range" min="1" max="20" step="1" 
+                  value={simSpeed} onChange={(e) => handleSpeedChange(parseInt(e.target.value))} 
+                  style={{ width: '100%', accentColor: '#58f0ff' }}
+                />
+              </div>
+
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span>Trade Size per Bet ($)</span>
+                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>${simTradeSize.toLocaleString()}</span>
+                </div>
+                <input 
+                  type="range" min="100" max="5000" step="100" 
+                  value={simTradeSize} onChange={(e) => handleSizeChange(parseInt(e.target.value))} 
+                  style={{ width: '100%', accentColor: '#58f0ff' }}
+                />
+              </div>
+
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span>Min Executable Edge Threshold (%)</span>
+                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simEdgeThreshold}%</span>
+                </div>
+                <input 
+                  type="range" min="0.5" max="10.0" step="0.5" 
+                  value={simEdgeThreshold} onChange={(e) => handleEdgeChange(parseFloat(e.target.value))} 
+                  style={{ width: '100%', accentColor: '#58f0ff' }}
+                />
+              </div>
+
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                  <span>Simulated Volatility</span>
+                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simVolatility}</span>
+                </div>
+                <input 
+                  type="range" min="10" max="100" step="5" 
+                  value={simVolatility} onChange={(e) => handleVolatilityChange(parseInt(e.target.value))} 
+                  style={{ width: '100%', accentColor: '#58f0ff' }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
       </div>
     </div>
   );
