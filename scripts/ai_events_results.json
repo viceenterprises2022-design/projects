@@ -1,57 +1,57 @@
 [
   {
-    "title": "Microsoft Webinar: Automating Communication with Microsoft 365 Copilot & AI Agents",
-    "url": "https://events.microsoft.com",
+    "title": "OpenAI Builder Bootcamp: Advanced RAG, Evals, & Agent Orchestration",
+    "url": "https://academy.openai.com/events",
     "highlights": [
-      "Focuses on improving organizational efficiency and collaboration through Microsoft 365 Copilot.",
-      "Hands-on demonstration of building custom communication workflows using AI agents."
+      "Learn hands-on optimization techniques for high-performance Retrieval-Augmented Generation (RAG).",
+      "Evaluate and debug complex agent workflows using OpenAI Evals and validation frameworks."
     ],
     "score": 0.95,
-    "published_date": "2026-07-15T00:00:00Z",
+    "published_date": "2026-06-25T00:00:00Z",
     "is_online": true
   },
   {
-    "title": "DeepLearning.AI Coimbatore: AI Agents for Everyone",
-    "url": "https://www.deeplearning.ai/events",
+    "title": "DeepLearning.AI: Multi-Agent Systems in Production",
+    "url": "https://www.deeplearning.ai",
     "highlights": [
-      "Community session on understanding the next generation of AI and autonomous agents.",
-      "Practical advice on using lightweight frameworks for day-to-day productivity."
+      "Andrew Ng's comprehensive workshop on designing and orchestrating multi-agent systems.",
+      "Practical guides for deploying, monitoring, and scaling frameworks like LangGraph and CrewAI."
     ],
-    "score": 0.93,
-    "published_date": "2026-07-18T00:00:00Z",
+    "score": 0.94,
+    "published_date": "2026-06-25T00:00:00Z",
     "is_online": true
   },
   {
-    "title": "DeepLearning.AI Abuja: Bridging Innovation, Talent & Opportunity",
-    "url": "https://www.deeplearning.ai/events",
+    "title": "Google Build with AI: Vertex AI Agent Builder & Gemini 1.5 Pro",
+    "url": "https://developers.google.com/events",
     "highlights": [
-      "Interactive workshop on democratizing AI models and building local tech talent.",
-      "Showcasing localized solutions built using open-source models and agents."
+      "Technical session on leveraging long-context windows for multi-modal developers.",
+      "Hands-on building of production-ready enterprise search agents using Gemini 1.5 Pro and Flash."
     ],
     "score": 0.92,
-    "published_date": "2026-07-25T00:00:00Z",
+    "published_date": "2026-06-25T00:00:00Z",
     "is_online": true
   },
   {
-    "title": "Beyond the Prompt: Building Enterprise Solutions with Specification-Driven Design",
-    "url": "https://globalai.community/events",
+    "title": "OpenAI DevDay 2026: Keynote & Developer Workshops",
+    "url": "https://openai.com/blog",
     "highlights": [
-      "Technical session focusing on architectural standards and specifications for enterprise AI.",
-      "Explores how specification-driven design mitigates agent drift and runtime errors."
+      "Annual developer keynote highlighting next-generation AI models, API updates, and tooling.",
+      "Interactive workshops on implementing real-time audio/visual streams and advanced agent tooling."
     ],
     "score": 0.91,
-    "published_date": "2026-07-22T00:00:00Z",
+    "published_date": "2026-06-25T00:00:00Z",
     "is_online": true
   },
   {
-    "title": "The Widening AI Gap: Why AI-First MedTech Companies Are Pulling Ahead",
-    "url": "https://www.advamed.org/events",
+    "title": "Hugging Face: Open-Source LLM and SLM Fine-Tuning Workshop",
+    "url": "https://huggingface.co/blog",
     "highlights": [
-      "Webinar exploring compliance, security, and clinical efficacy of AI in medical devices.",
-      "Strategic discussion on how to run agentic validation workflows in regulated markets."
+      "Parameter-efficient fine-tuning (PEFT, QLoRA) tutorial for small language models.",
+      "Quantization and deployment of customized models (Llama 3, Phi-3) to local environments."
     ],
-    "score": 0.89,
-    "published_date": "2026-07-28T00:00:00Z",
+    "score": 0.9,
+    "published_date": "2026-06-25T00:00:00Z",
     "is_online": true
   }
 ]
