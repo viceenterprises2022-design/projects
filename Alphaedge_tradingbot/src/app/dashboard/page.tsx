@@ -80,6 +80,30 @@ export default function Dashboard() {
         const data = await res.json();
         if (data && data.history) {
           setSimHistory(data.history);
+          
+          let totalProfit = 0;
+          let wins = 0;
+          let losses = 0;
+          let totalVolume = 0;
+          
+          data.history.forEach((h: any) => {
+            totalProfit += Number(h.pnl);
+            if (h.outcome === 'WIN') wins++;
+            if (h.outcome === 'LOSS') losses++;
+            totalVolume += Number(h.entryPrice) * Number(h.size);
+          });
+          
+          setSimPnl(totalProfit);
+          setSimWins(wins);
+          setSimLosses(losses);
+          setSimWinRate(wins + losses > 0 ? (wins / (wins + losses)) * 100 : 0);
+          setSimVolume(totalVolume);
+
+          // Synchronize physics engine state reference
+          simStateRef.current.wins = wins;
+          simStateRef.current.losses = losses;
+          simStateRef.current.totalProfit = totalProfit;
+          simStateRef.current.totalVolume = totalVolume;
         }
       } catch (err) {
         console.error('Failed to load predictions history from DB:', err);
@@ -1455,6 +1479,15 @@ export default function Dashboard() {
                     const result = await res.json();
                     if (res.ok) {
                       setSimHistory([]);
+                      setSimPnl(0);
+                      setSimWins(0);
+                      setSimLosses(0);
+                      setSimWinRate(0);
+                      setSimVolume(0);
+                      simStateRef.current.wins = 0;
+                      simStateRef.current.losses = 0;
+                      simStateRef.current.totalProfit = 0;
+                      simStateRef.current.totalVolume = 0;
                       alert('Database cleared successfully.');
                     } else {
                       alert(`Error: ${result.error || 'Failed to clear database'}`);
