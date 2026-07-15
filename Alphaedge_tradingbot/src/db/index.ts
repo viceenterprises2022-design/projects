@@ -15,6 +15,7 @@ const getDatabaseUrl = () => {
 
 const client = createClient({
   url: getDatabaseUrl(),
+  authToken: process.env.DATABASE_AUTH_TOKEN,
 });
 
 export const db = drizzle(client, { schema });

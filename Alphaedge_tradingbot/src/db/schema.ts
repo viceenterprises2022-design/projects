@@ -89,3 +89,19 @@ export const earlyAccessLeads = sqliteTable('early_access_leads', {
   createdAt: integer('created_at').notNull()
 });
 
+export const simulatorTrades = sqliteTable('simulator_trades', {
+  id: text('id').primaryKey(),
+  roundId: integer('round_id').notNull(),
+  asset: text('asset').notNull(),
+  timestamp: text('timestamp').notNull(),
+  strikePrice: real('strike_price').notNull(),
+  expiryPrice: real('expiry_price').notNull(),
+  side: text('side').notNull(),
+  size: integer('size').notNull(),
+  entryPrice: real('entry_price').notNull(),
+  exitPrice: real('exit_price').notNull(),
+  outcome: text('outcome').notNull(),
+  pnl: real('pnl').notNull(),
+  createdAt: integer('created_at').notNull()
+});
+

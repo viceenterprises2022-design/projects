@@ -71,6 +71,22 @@ export default function Dashboard() {
   const [simLogs, setSimLogs] = useState<Array<{ time: string; type: string; msg: string }>>([]);
   const [simCountdown, setSimCountdown] = useState('05:00');
   const [simHistory, setSimHistory] = useState<Array<any>>([]);
+
+  // Load predictions log from database on mount
+  useEffect(() => {
+    async function loadHistory() {
+      try {
+        const res = await fetch('/api/dashboard/predictions');
+        const data = await res.json();
+        if (data && data.history) {
+          setSimHistory(data.history);
+        }
+      } catch (err) {
+        console.error('Failed to load predictions history from DB:', err);
+      }
+    }
+    loadHistory();
+  }, []);
   
   // Sliders
   const [simSpeed, setSimSpeed] = useState(5);
@@ -417,6 +433,26 @@ export default function Dashboard() {
           };
 
           setSimHistory(prev => [settledTrade, ...prev].slice(0, 100));
+
+          // Save trade prediction to database
+          fetch('/api/dashboard/predictions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              roundId: state.roundId,
+              asset: state.asset,
+              timestamp: settledTrade.timestamp,
+              strikePrice: state.strikePrice,
+              expiryPrice: state.price,
+              side: pos.side,
+              size: pos.size,
+              entryPrice: pos.entryPrice,
+              exitPrice: settledTrade.exitPrice,
+              outcome: settledTrade.outcome,
+              pnl: netPnl
+            })
+          }).catch(err => console.error('Failed to save prediction to DB:', err));
+
           state.activePosition = null;
         }
         
@@ -1377,36 +1413,69 @@ export default function Dashboard() {
             <h2 style={{ margin: 0, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}>
               <FileText size={16} style={{ color: '#58f0ff' }} /> HISTORICAL PREDICTIONS LOG
             </h2>
-            <button 
-              onClick={() => {
-                const headers = ['Round ID', 'Timestamp', 'Strike Price', 'Expiry Price', 'Side', 'Quantity', 'Avg Entry', 'Avg Exit', 'Outcome', 'Net PnL'];
-                const rows = simHistory.map(h => [
-                  `#${h.roundId}`,
-                  h.timestamp,
-                  h.strikePrice.toFixed(2),
-                  h.expiryPrice.toFixed(2),
-                  h.side,
-                  h.size,
-                  `${Math.round(h.entryPrice * 100)}¢`,
-                  `${Math.round(h.exitPrice * 100)}¢`,
-                  h.outcome,
-                  `${h.pnl >= 0 ? '+' : ''}${h.pnl.toFixed(2)}`
-                ]);
-                const csvContent = "data:text/csv;charset=utf-8," 
-                  + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", `predictions_log_${simAsset}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-              }}
-              style={{ ...styles.refreshButton, padding: '4px 12px', fontSize: '11px', gap: '4px' }}
-              disabled={simHistory.length === 0}
-            >
-              EXPORT CSV
-            </button>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button 
+                onClick={() => {
+                  const headers = ['Round ID', 'Timestamp', 'Strike Price', 'Expiry Price', 'Side', 'Quantity', 'Avg Entry', 'Avg Exit', 'Outcome', 'Net PnL'];
+                  const rows = simHistory.map(h => [
+                    `#${h.roundId}`,
+                    h.timestamp,
+                    h.strikePrice.toFixed(2),
+                    h.expiryPrice.toFixed(2),
+                    h.side,
+                    h.size,
+                    `${Math.round(h.entryPrice * 100)}¢`,
+                    `${Math.round(h.exitPrice * 100)}¢`,
+                    h.outcome,
+                    `${h.pnl >= 0 ? '+' : ''}${h.pnl.toFixed(2)}`
+                  ]);
+                  const csvContent = "data:text/csv;charset=utf-8," 
+                    + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+                  const encodedUri = encodeURI(csvContent);
+                  const link = document.createElement("a");
+                  link.setAttribute("href", encodedUri);
+                  link.setAttribute("download", `predictions_log_${simAsset}.csv`);
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                style={{ ...styles.refreshButton, padding: '4px 12px', fontSize: '11px', gap: '4px' }}
+                disabled={simHistory.length === 0}
+              >
+                EXPORT CSV
+              </button>
+              <button 
+                onClick={async () => {
+                  const secret = prompt('Enter Admin Passcode to Clear Database:');
+                  if (!secret) return;
+                  try {
+                    const res = await fetch(`/api/dashboard/predictions?secret=${encodeURIComponent(secret)}`, {
+                      method: 'DELETE'
+                    });
+                    const result = await res.json();
+                    if (res.ok) {
+                      setSimHistory([]);
+                      alert('Database cleared successfully.');
+                    } else {
+                      alert(`Error: ${result.error || 'Failed to clear database'}`);
+                    }
+                  } catch (err: any) {
+                    alert(`Request failed: ${err.message}`);
+                  }
+                }}
+                style={{ 
+                  ...styles.refreshButton, 
+                  padding: '4px 12px', 
+                  fontSize: '11px', 
+                  gap: '4px', 
+                  backgroundColor: 'rgba(255, 111, 179, 0.1)', 
+                  borderColor: 'rgba(255, 111, 179, 0.4)',
+                  color: '#ff6fb3'
+                }}
+              >
+                CLEAR DATABASE
+              </button>
+            </div>
           </div>
 
           <div style={{ overflowX: 'auto' }}>
