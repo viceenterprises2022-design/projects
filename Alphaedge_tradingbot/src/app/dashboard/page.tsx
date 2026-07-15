@@ -70,6 +70,7 @@ export default function Dashboard() {
   const [simPosition, setSimPosition] = useState<any>(null);
   const [simLogs, setSimLogs] = useState<Array<{ time: string; type: string; msg: string }>>([]);
   const [simCountdown, setSimCountdown] = useState('05:00');
+  const [simHistory, setSimHistory] = useState<Array<any>>([]);
   
   // Sliders
   const [simSpeed, setSimSpeed] = useState(5);
@@ -387,7 +388,8 @@ export default function Dashboard() {
           const pos = state.activePosition;
           let payout = 0;
           let netPnl = 0;
-          if (pos.side === winOutcome) {
+          const isWinTrade = pos.side === winOutcome;
+          if (isWinTrade) {
             payout = pos.size * 1.00;
             netPnl = payout - pos.costUsd;
             state.wins++;
@@ -400,6 +402,21 @@ export default function Dashboard() {
             state.totalProfit += netPnl;
             addSimLog('error', `ROUND SETTLEMENT: LOSS. Position ${pos.side} pays out $0.00 (Net PnL: -$${Math.abs(netPnl).toFixed(2)})`);
           }
+
+          const settledTrade = {
+            roundId: state.roundId,
+            timestamp: new Date().toLocaleTimeString(),
+            strikePrice: state.strikePrice,
+            expiryPrice: state.price,
+            side: pos.side,
+            size: pos.size,
+            entryPrice: pos.entryPrice,
+            exitPrice: isWinTrade ? 1.00 : 0.00,
+            outcome: isWinTrade ? 'WIN' : 'LOSS',
+            pnl: netPnl
+          };
+
+          setSimHistory(prev => [settledTrade, ...prev].slice(0, 100));
           state.activePosition = null;
         }
         
@@ -685,7 +702,7 @@ export default function Dashboard() {
             }}
             onClick={() => setActiveTab('simulator')}
           >
-            Live Quant Simulator
+            Live Quant Engine
           </button>
         </div>
 
@@ -1346,6 +1363,113 @@ export default function Dashboard() {
                 />
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Historical Predictions Log */}
+        <div style={{ ...styles.panelCard, marginTop: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
+            <h2 style={{ margin: 0, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}>
+              <FileText size={16} style={{ color: '#58f0ff' }} /> HISTORICAL PREDICTIONS LOG
+            </h2>
+            <button 
+              onClick={() => {
+                const headers = ['Round ID', 'Timestamp', 'Strike Price', 'Expiry Price', 'Side', 'Quantity', 'Avg Entry', 'Avg Exit', 'Outcome', 'Net PnL'];
+                const rows = simHistory.map(h => [
+                  `#${h.roundId}`,
+                  h.timestamp,
+                  h.strikePrice.toFixed(2),
+                  h.expiryPrice.toFixed(2),
+                  h.side,
+                  h.size,
+                  `${Math.round(h.entryPrice * 100)}¢`,
+                  `${Math.round(h.exitPrice * 100)}¢`,
+                  h.outcome,
+                  `${h.pnl >= 0 ? '+' : ''}${h.pnl.toFixed(2)}`
+                ]);
+                const csvContent = "data:text/csv;charset=utf-8," 
+                  + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", `predictions_log_${simAsset}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              style={{ ...styles.refreshButton, padding: '4px 12px', fontSize: '11px', gap: '4px' }}
+              disabled={simHistory.length === 0}
+            >
+              EXPORT CSV
+            </button>
+          </div>
+
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', fontFamily: 'monospace' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: 'rgba(239, 246, 255, 0.4)', height: '32px' }}>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>ROUND ID</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>TIMESTAMP</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>STRIKE PRICE</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>EXPIRY PRICE</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>SIDE</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>QUANTITY</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>AVG ENTRY</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>AVG EXIT</th>
+                  <th style={{ textAlign: 'left', padding: '8px' }}>OUTCOME</th>
+                  <th style={{ textAlign: 'right', padding: '8px' }}>NET P&L</th>
+                </tr>
+              </thead>
+              <tbody>
+                {simHistory.length === 0 ? (
+                  <tr>
+                    <td colSpan={10} style={{ padding: '24px', textAlign: 'center', color: 'rgba(239, 246, 255, 0.3)' }}>
+                      Waiting for first round settlement...
+                    </td>
+                  </tr>
+                ) : (
+                  simHistory.map((trade: any, index: number) => (
+                    <tr 
+                      key={index} 
+                      style={{ 
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.05)', 
+                        backgroundColor: trade.outcome === 'WIN' ? 'rgba(191, 255, 106, 0.02)' : 'rgba(255, 111, 179, 0.02)'
+                      }}
+                    >
+                      <td style={{ padding: '10px 8px', color: 'rgba(239, 246, 255, 0.8)' }}>#{trade.roundId}</td>
+                      <td style={{ padding: '10px 8px', color: 'rgba(239, 246, 255, 0.5)' }}>{trade.timestamp}</td>
+                      <td style={{ padding: '10px 8px', color: '#ffd166' }}>${trade.strikePrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                      <td style={{ padding: '10px 8px', color: '#58f0ff' }}>${trade.expiryPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                      <td style={{ padding: '10px 8px' }}>
+                        <span 
+                          style={{ 
+                            backgroundColor: trade.side === 'YES' ? 'rgba(191, 255, 106, 0.15)' : 'rgba(255, 111, 179, 0.15)',
+                            color: trade.side === 'YES' ? '#bfff6a' : '#ff6fb3',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontWeight: 'bold',
+                            fontSize: '10px'
+                          }}
+                        >
+                          {trade.side}
+                        </span>
+                      </td>
+                      <td style={{ padding: '10px 8px', color: '#fff' }}>{trade.size.toLocaleString()}</td>
+                      <td style={{ padding: '10px 8px', color: 'rgba(239, 246, 255, 0.8)' }}>{Math.round(trade.entryPrice * 100)}¢</td>
+                      <td style={{ padding: '10px 8px', color: 'rgba(239, 246, 255, 0.8)' }}>{Math.round(trade.exitPrice * 100)}¢</td>
+                      <td style={{ padding: '10px 8px' }}>
+                        <span style={{ color: trade.outcome === 'WIN' ? '#bfff6a' : '#ff6fb3', fontWeight: 'bold' }}>
+                          {trade.outcome}
+                        </span>
+                      </td>
+                      <td style={{ padding: '10px 8px', textAlign: 'right', fontWeight: 'bold', color: trade.pnl >= 0 ? '#bfff6a' : '#ff6fb3' }}>
+                        {trade.pnl >= 0 ? '+' : ''}${trade.pnl.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

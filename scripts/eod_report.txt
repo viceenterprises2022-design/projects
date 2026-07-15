@@ -2,259 +2,97 @@
 • *Deployment* (Status: planned) — 0/1 issues completed
 • *Tools* (Status: in_progress) — 83/89 issues completed
 • *LLM Cost Optimization* (Status: in_progress) — 0/6 issues completed
-• *Agents* (Status: in_progress) — 67/125 issues completed
+• *Agents* (Status: in_progress) — 101/127 issues completed
 • *Alphaedge Journal* (Status: in_progress) — 9/10 issues completed
 • *Chief-of-staff* (Status: completed) — 4/4 issues completed
 
 *2. Tasks Completed Today*
-• *ALP-897*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis)
+• *ALP-907*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis)
   - *Executed by*: Deep Researcher Agent
   - *Project*: None
   - *Key Output*:
-    # 📊 Market Intelligence Report - 2026-07-14 06:49:07
-    ## 🎯 Executive Summary
-    - **Last Traded Price (LTP):** 24,211.00 (+0.00%)
-    - **Overall Signal:** **BUY** (4/10)
-    - **Put-Call Ratio (PCR):** 1.39
-    - **Max Pain Strike:** 24,200.0
-    - **Last Traded Price (LTP):** 58,131.45 (+0.00%)
-    - **Overall Signal:** **NEUTRAL** (1/10)
+    ## Market Intelligence Report - 2026-07-15
+    **LTP:** 24,052.05 (+0.00%)
+    **Overall Signal:** NEUTRAL (Score: 2/10)
+    | # | Factor | Status | Data / Insight | Bias |
+    |---|--------|--------|----------------|------|
+    | 1 | Trend / Technicals | 🟢 Bullish | STRONG UPTREND; EMA20=24,112 | EMA50=23,963 | EMA200=23,895 | Positive |
+    | 2 | Global Sentiment (DOW) | 🟡 Neutral | FLAT (+0.02%); DJIA Fut: 52,508 | Neutral |
+    | 3 | Volatility (VIX) | 🟢 Bullish | NORMAL (13.75) — Stable; Chg: +0.00% | Positive |
     ...
-• *ALP-896*: Crypto Realtime Prices and Changes
+• *ALP-906*: Crypto Realtime Prices and Changes
   - *Executed by*: crypto-realtime-price
   - *Project*: None
   - *Key Output*:
-    | Cryptocurrency | Symbol | Current Price (USD) | 24h Change (%) |
-    | :--- | :---: | :---: | :---: |
-    | **Bitcoin** | BTC | $62,529.21 | -1.90% |
-    | **Ethereum** | ETH | $1,787.72 | -1.73% |
-    | **Solana** | SOL | $75.39 | -2.18% |
-    *(Prices are powered by PRISM API, aggregated from 50+ exchanges)*
-• *ALP-901*: Research 4BHK Villa listings in East Bangalore / Sarjapura Road
+    | Asset | Price (USD) | 24h Change |
+    | :--- | :--- | :--- |
+    | **BTC** | $64,687.37 | +3.43% |
+    | **ETH** | $1,874.31 | +4.84% |
+    | **SOL** | $77.55 | +2.81% |
+    *Data sourced via PRISM API (aggregated from 50+ exchanges).*
+• *ALP-911*: Ready-to-Occupy 4BHK Villas — Sarjapur Road, East Bangalore
   - *Executed by*: Real-Estate-Agent
   - *Project*: None
   - *Key Output*:
-    **4BHK Villa Research — Complete & Sent to Telegram**
-    **Report sent to Telegram** @my_mutilac_bot ✅
-    **Key findings:**
-    - **Top picks with private gardens:** NVT Arcot Vaksana (Sarjapur Rd, ₹2.45-5.90Cr), NVT Orchid Garden (₹2.94-3.10Cr), KRK Urban Ville (₹3.80-5.34Cr), Saiven Mulberry Groves (₹2.99Cr+)
-    - **Budget option:** Ahad Opus (₹1.66Cr, 3,050 sqft)
-    - **Price range:** ₹1.66Cr — ₹5.90Cr
-    - **Under-construction excluded:** Aiikya Village Sarjapur
-• *ALP-900*: Generate Daily Market Overview Report and Send to Slack
-  - *Executed by*: CMC Agent
-  - *Project*: Agents
-  - *Key Output*:
-    **TL;DR**
-    - Bitcoin investment fund outflows hit $424.70 million on July 13.
-    - Market sentiment dropped to 29 out of 100.
-    - KORU active futures surged 90.21% in 24 hours despite zero spot market activity.
-    - Hormuz shipping surcharge proposal of 20% could pressure oil and inflation.
-    - Rising inflation risks weigh on global financial markets and digital assets.
-    - Watch oil price moves, US Dollar strength, and surcharge updates.
-    **Details**
+    **Results:**
+    - Collected 10 ready-to-occupy listings from 99acres, Magicbricks, Housing.com, CommonFloor, SquareYards
+    - Filtered out all under-construction properties
+    - Compiled report with bedroom count, bathroom count, built-up area, land area, price, garden/green specifics, and occupancy status
+    - Report sent to Telegram bot @my_mutilac_bot successfully
+    **Top Picks with Garden/Green Preference:**
+    1. **Genurise Divine Meadows** — ₹2.85 Cr, 63% green cover, 25-acre community
+    2. **Urban Retreat** — ₹2.69 Cr+, private garden
     ...
-• *ALP-899*: Run Exa AI search and report top AI events to Slack
+• *ALP-909*: Curate and Send Top 5 AI Online Events and Agent Launches to Slack
   - *Executed by*: Python-Agent
   - *Project*: None
   - *Key Output*:
-    1. **Exa Search Run:** Ran `python3 exa_ai_search.py --all` in `/home/vreddy1/Desktop/Projects/scripts`. Due to the Exa API credits limit being exceeded, the script gracefully activated its built-in fallback containing a curated list of the top 5 premium AI events for 2026. The results were saved to `ai_events_results.json`.
-    2. **Slack Reporting:** Ran `python3 ai_news_reporter.py` which successfully loaded the curated events, compiled the daily AI news & events report, and posted it to Slack.
-    3. **Issue Renamed:** Updated the issue title to *"Run Exa AI search and report top AI events to Slack"* as requested.
-• *ALP-898*: Crawl and Search AI Agents with Exa and Report to Slack
+    1. **Captured AI Online Events**: Ran `python3 exa_ai_search.py --all` in `/home/vreddy1/Desktop/Projects/scripts` which curated the top 5 high-impact AI online events and bootcamp classes and saved them to `ai_events_results.json`.
+    2. **Renamed the Issue**: Updated the issue title to *Curate and Send Top 5 AI Online Events and Agent Launches to Slack* to match the exact scope of the task.
+    3. **Sent Slack Report**: Ran `python3 ai_news_reporter.py` to compile the report (combining the curated top 5 events and the latest 24h AI Agent Launches) and posted it to the Slack workspace successfully.
+• *ALP-908*: Daily AI News and Agents Tracker: Crawl, Search, and Report
   - *Executed by*: Python-Agent
   - *Project*: None
   - *Key Output*:
-    1. Ran `python3 exa_ai_agents.py` in `/home/vreddy1/Desktop/Projects/scripts` to compile the latest AI agent product launches. Since the Exa API returned a billing limit error (402), it fell back to pre-fetched agent data as intended by the script's fallback logic.
-    2. Ran `python3 ai_news_reporter.py` in the same directory to fetch the daily report, load upcoming AI events from `ai_events_results.json`, and send the combined report to the configured Slack webhook channel. The report was sent successfully.
-• *ALP-895*: Daily News Crawl and Analysis
+    1. Checked out the scripts directory at `/home/vreddy1/Desktop/Projects/scripts`.
+    2. Verified the `exa_ai_agents.py` script. Noticed that the Exa API credit limit has been exceeded (`NO_MORE_CREDITS` error).
+    3. Conducted manual web searches using the internal search engine to retrieve real, up-to-date AI agent framework launches and upcoming events for **July 15, 2026**.
+    4. Updated the pre-fetched/fallback mock data in both `exa_ai_agents.py` and `ai_news_reporter.py` with real-time July 2026 agent developments (e.g., Oracle's AI Agent Studio, OpenAI's ChatGPT Work with GPT-5.6, Meta's Muse Spark 1.1, Microsoft's Agent Framework, and the Agentic Resource Discovery standard).
+    5. Overwrote `/home/vreddy1/Desktop/Projects/scripts/ai_events_results.json` with actual upcoming online events for the remainder of July 2026.
+    • **Microsoft/Agent-Framework: Unified Autogen & Semantic Kernel SDK** (GitHub)
+    • **mastra-ai/mastra: TypeScript AI agent framework** (GitHub)
+    • **pydantic/pydantic-ai: Python Agent Framework** (GitHub)
+    ...
+• *ALP-905*: Daily News Crawl and Analysis
   - *Executed by*: daily-news-crawl
   - *Project*: None
   - *Key Output*:
-    # Daily Crypto & Market Intelligence Briefing
-    **Date:** July 14, 2026
-    **Audience:** AlphaEdge LLP Partners and Operators
-    **Scope:** Global Crypto Assets & Macro Markets
-    **Tone:** Authoritative, Data-Centric, and Analytical
+    # AlphaEdge Crypto & Market Intelligence Daily Briefing
+    **Date:** July 15, 2026
+    **Audience:** High-Frequency Crypto Operators and Investors (AlphaEdge LLP)
+    **Scope:** Global Crypto Regulation, Institutional Capital Flows, DeFi Security, and Protocol Upgrades
     ---
     ## Executive Summary
-    - **OCC Circle Approval:** Circle has received final approval from the OCC for Circle National Trust, N.A., making it the first stablecoin issuer under direct federal bank supervision.
+    - **Macro Winds Turn Favorable:** June CPI inflation cooled to 3.5% YoY (down from 4.2%), the largest monthly decline since 2020, boosting market confidence in upcoming Federal Reserve rate cuts and initiating a mid-July crypto market rebound.
+    - **Regulatory Climax Near:** The U.S. stablecoin market approaches a major milestone as the July 18 GENIUS Act implementing regulations deadline nears, while the CLARITY Act market structure bill faces a critical, time-sensitive Senate vote before the August recess.
     ...
 
 *3. New Tasks Logged Today (Backlog)*
 • _No new backlog tasks created today._
 
 *4. Value-Add Workspace Insights*
-• *Active In-Review Tasks* (136):
-  • *ALP-897*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
-  • *ALP-887*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
-  • *ALP-878*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
-  • *ALP-864*: Market Intel: NIFTY/BANKNIFTY Analysis (Assignee: Deep Researcher Agent)
-  • *ALP-854*: Market Intelligence (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
-  • *ALP-834*: Compile Market Intelligence Report (Part of ALP-831) (Assignee: Deep Researcher Agent)
-  • *ALP-814*: Market Intelligence & Macro Analysis - 2026-07-06 (Assignee: Deep Researcher Agent)
-  • *ALP-804*: Market intelligence NIFTY/BANKNIFTY 10-Factor Analysis 2026-07-05 (Assignee: Deep Researcher Agent)
-  • *ALP-794*: Market Intelligence Deep Research (Assignee: Deep Researcher Agent)
-  • *ALP-784*: Market Intelligence Report Task (Assignee: Deep Researcher Agent)
-  • *ALP-896*: Crypto Realtime Prices and Changes (Assignee: crypto-realtime-price)
-  • *ALP-886*: Fetch Crypto Real-time Prices (Assignee: crypto-realtime-price)
-  • *ALP-877*: Fetch Crypto Real-time Prices (Assignee: crypto-realtime-price)
-  • *ALP-875*: Crawl and Slack Report: Latest AI Agent Launches & News (Assignee: Python-Agent)
-  • *ALP-863*: Crypto Price Report Task (Assignee: crypto-realtime-price)
-  • *ALP-853*: Crypto Realtime Price & Macros Fetch (Assignee: crypto-realtime-price)
-  • *ALP-843*: Fetch Cryptocurrency Real-time Prices (Part of ALP-841) (Assignee: crypto-realtime-price)
-  • *ALP-813*: Real-time Crypto Price Pull - 2026-07-06 (Assignee: crypto-realtime-price)
-  • *ALP-803*: Crypto price check 2026-07-05 (Assignee: crypto-realtime-price)
-  • *ALP-793*: Crypto Realtime Prices (Assignee: crypto-realtime-price)
-  • *ALP-783*: Crypto Price Report Task (Assignee: crypto-realtime-price)
-  • *ALP-764*: Market Intel: NIFTY/BANKNIFTY 10-Factor Analysis (Assignee: Deep Researcher Agent)
-  • *ALP-754*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-30 (Assignee: Deep Researcher Agent)
-  • *ALP-747*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-29 (Assignee: Deep Researcher Agent)
-  • *ALP-722*: Market Intel: NIFTY/BANKNIFTY Analysis - 2026-06-27 (Assignee: Deep Researcher Agent)
-  • *ALP-901*: Research 4BHK Villa listings in East Bangalore / Sarjapura Road (Assignee: Real-Estate-Agent)
-  • *ALP-900*: Generate Daily Market Overview Report and Send to Slack (Assignee: CMC Agent)
-  • *ALP-899*: Run Exa AI search and report top AI events to Slack (Assignee: Python-Agent)
-  • *ALP-898*: Crawl and Search AI Agents with Exa and Report to Slack (Assignee: Python-Agent)
-  • *ALP-895*: Daily News Crawl and Analysis (Assignee: daily-news-crawl)
-  • *ALP-892*: EOD Report to Management - Generating and Sending Report (Assignee: chief-of-staff)
-  • *ALP-891*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-890*: Execute daily_market_overview CMC skill and report to Slack (Assignee: CMC Agent)
-  • *ALP-889*: Run AI Events Search and Send Curated Report to Slack (Assignee: Python-Agent)
-  • *ALP-888*: Exa Search and Send AI Agents Report to Slack (Assignee: Python-Agent)
-  • *ALP-885*: Crawl Daily News Briefing (Assignee: daily-news-crawl)
-  • *ALP-883*: Generate and Slack Daily Market Overview Report (Assignee: CMC Agent)
-  • *ALP-882*: Generate and send EOD report to management via Slack (Assignee: chief-of-staff)
-  • *ALP-881*: Research 4BHK Villa listings in East Bangalore & Sarjapura (Assignee: Real-Estate-Agent)
-  • *ALP-880*: Daily Market Overview Report Generation and Slack Dispatch (Assignee: CMC Agent)
-  • *ALP-879*: Automate Curated AI Events Search & Reporting (Assignee: Python-Agent)
-  • *ALP-876*: Crawl Daily News Briefing (Assignee: daily-news-crawl)
-  • *ALP-873*: Generate daily_market_overview and Slack report (Assignee: CMC Agent)
-  • *ALP-870*: Generate and Send EOD Project/Task Progress Report to Management via Slack (Assignee: chief-of-staff)
-  • *ALP-869*: Researched & sent 4BHK villa report — Sarjapura/East Bangalore via Telegram (Assignee: Real-Estate-Agent)
-  • *ALP-867*: Run daily market overview and report to Slack (Assignee: CMC Agent)
-  • *ALP-866*: Report AI Events to Slack (Assignee: Python-Agent)
-  • *ALP-865*: Run AI agents Exa search and report to Slack (Assignee: Python-Agent)
-  • *ALP-862*: Daily News Report Task (Assignee: daily-news-crawl)
-  • *ALP-860*: Generate and send Daily Market Overview report to Slack (Assignee: CMC Agent)
-  • *ALP-859*: Generate and Send EOD Project & Task Summary via Slack (Assignee: chief-of-staff)
-  • *ALP-858*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-857*: Generate Daily Market Overview Report & Slack Alert (Assignee: CMC Agent)
-  • *ALP-856*: Curate and Send Weekly AI Events Report to Slack (Assignee: Python-Agent)
-  • *ALP-855*: Crawl and search internet for latest AI Agents and send report to Slack (Assignee: Python-Agent)
-  • *ALP-852*: Daily News Crawl (Assignee: daily-news-crawl)
-  • *ALP-850*: Daily Market Overview Briefing and Slack Delivery (Assignee: CMC Agent)
-  • *ALP-849*: Generate and Send EOD Project & Task Summary via Slack (Assignee: chief-of-staff)
-  • *ALP-847*: Generate and Slack Daily Market Overview Report (Assignee: CMC Agent)
-  • *ALP-846*: Fetch, Curate, and Report Upcoming AI Events to Slack (Assignee: Python-Agent)
-  • *ALP-845*: Track latest AI agent launches and send daily report to Slack (Assignee: Python-Agent)
-  • *ALP-842*: Crawl Daily News for Briefing (Part of ALP-841) (Assignee: daily-news-crawl)
-  • *ALP-839*: Send EOD Projects and Tasks Progress Report to Slack (Assignee: chief-of-staff)
-  • *ALP-836*: Search, Curate, and Slack Report AI Events (Assignee: Python-Agent)
-  • *ALP-835*: Crawl latest AI agent launches and post report to Slack (Assignee: Python-Agent)
-  • *ALP-832*: Crawl Daily News for Briefing (Part of ALP-831) (Assignee: daily-news-crawl)
-  • *ALP-830*: Generate and send daily market overview report to Slack (Assignee: CMC Agent)
-  • *ALP-829*: Generate and Send EOD Report to Management via Slack (Assignee: chief-of-staff)
-  • *ALP-828*: 4BHK Villa Research - Sarjapur/East Bangalore - Report Sent to Telegram (Assignee: Real-Estate-Agent)
-  • *ALP-827*: Generate and send Daily Market Overview report to Slack (Assignee: CMC Agent)
-  • *ALP-826*: Fetch and Report Premium AI Events (Assignee: Python-Agent)
-  • *ALP-825*: Exa Search: AI Agents and Slack Report (Assignee: Python-Agent)
-  • *ALP-822*: Crawl Daily News for Briefing (Part of ALP-821) (Assignee: daily-news-crawl)
-  • *ALP-820*: Execute daily_market_overview skill and send report to Slack (Assignee: CMC Agent)
-  • *ALP-819*: Send EOD Report to Management via Slack (Assignee: chief-of-staff)
-  • *ALP-818*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-816*: Capture and Report Curated AI Online Events to Slack (Assignee: Python-Agent)
-  • *ALP-815*: Run Exa AI Agents Tracker and Send Daily AI News Report to Slack (Assignee: Python-Agent)
-  • *ALP-810*: Generate Daily Market Overview and send to Slack (Assignee: CMC Agent)
-  • *ALP-809*: Generate and send EOD Report to Slack (Assignee: chief-of-staff)
-  • *ALP-808*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-806*: Run and Send Curated AI Events Report to Slack (Assignee: Python-Agent)
-  • *ALP-805*: Fetch daily AI agent news and send report to Slack (Assignee: Python-Agent)
-  • *ALP-802*: Daily news crawl 2026-07-05 (Assignee: daily-news-crawl)
-  • *ALP-800*: Generate Daily Market Overview Report via CMC Skill Hub (Assignee: CMC Agent)
-  • *ALP-799*: Send EOD Progress and Status Report to Management via Slack (Assignee: chief-of-staff)
-  • *ALP-798*: 4BHK Villa Listings — Sarjapur / East Bangalore Research Report Sent to Telegram (Assignee: Real-Estate-Agent)
-  • *ALP-797*: Generate and deliver daily crypto market overview report to Slack (Assignee: CMC Agent)
-  • *ALP-796*: Fetch AI Online Events and Report to Slack (Assignee: Python-Agent)
-  • *ALP-795*: Run Exa AI Agents Tracker and Send Report to Slack (Assignee: Python-Agent)
-  • *ALP-792*: Daily News Crawl (Assignee: daily-news-crawl)
-  • *ALP-790*: Invoke daily_market_overview and Send Slack Report (Assignee: CMC Agent)
-  • *ALP-789*: Generate and deliver EOD report to management via Slack (July 3, 2026) (Assignee: chief-of-staff)
-  • *ALP-788*: 4BHK Villa Listings Research - East Bangalore/Sarjapura (Assignee: Real-Estate-Agent)
-  • *ALP-786*: Curated AI Events and Launches reported to Slack (Assignee: Python-Agent)
-  • *ALP-785*: Fetch latest AI agent launches and post Slack report (Assignee: Python-Agent)
-  • *ALP-780*: Daily Market Overview: Execute daily_market_overview & Send to Slack (Assignee: CMC Agent)
-  • *ALP-779*: Generate and Send EOD Report to Slack (Assignee: chief-of-staff)
-  • *ALP-778*: 4BHK Villa Research - East Bangalore/Sarjapura (Assignee: Real-Estate-Agent)
-  • *ALP-777*: Execute daily_market_overview CMC skill and report to Slack (Assignee: CMC Agent)
-  • *ALP-776*: Search AI Events and Report to Slack (Assignee: Python-Agent)
-  • *ALP-775*: Run Exa AI Agents search and send report to Slack (Assignee: Python-Agent)
-  • *ALP-770*: Generate and send Daily Market Overview report (Assignee: CMC Agent)
-  • *ALP-769*: Generate and deliver EOD report to management via Slack (Assignee: chief-of-staff)
-  • *ALP-768*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-763*: Crypto Realtime Price (Assignee: crypto-realtime-price)
-  • *ALP-753*: Crypto Prices - 2026-06-30 (Assignee: crypto-realtime-price)
-  • *ALP-725*: Retrieve real-time crypto prices (BTC, ETH, SOL) with last-day changes (Assignee: crypto-realtime-price)
-  • *ALP-721*: Crypto Prices - 2026-06-27 (Assignee: crypto-realtime-price)
-  • *ALP-766*: Automate AI Events Search and Slack Reporting (Assignee: Python-Agent)
-  • *ALP-765*: Crawl AI Agents and news via Exa and report to Slack (Assignee: Python-Agent)
-  • *ALP-762*: Daily News Crawl (Assignee: daily-news-crawl)
-  • *ALP-760*: Generate and send Daily Market Overview report to Slack (Assignee: CMC Agent)
-  • *ALP-759*: Send EOD Report to Management via Slack (Assignee: chief-of-staff)
-  • *ALP-758*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-756*: Curate and Report Top 5 AI Events to Slack (Assignee: Python-Agent)
-  • *ALP-755*: Crawl and Search for AI Agents, and Report to Slack (Assignee: Python-Agent)
-  • *ALP-752*: Daily News Crawl - 2026-06-30 (Assignee: daily-news-crawl)
-  • *ALP-749*: Run Exa AI search and report curated events to Slack (Assignee: Python-Agent)
-  • *ALP-748*: AI Agents Daily Tracker and Slack Report (Assignee: Python-Agent)
-  • *ALP-745*: Daily News Crawl - 2026-06-29 (Assignee: daily-news-crawl)
-  • *ALP-743*: Generate Daily Market Overview and Send to Slack (Assignee: CMC Agent)
-  • *ALP-742*: Generate and Send EOD Report to Management via Slack (Assignee: chief-of-staff)
-  • *ALP-738*: Curate and Report Top AI Events to Slack (Assignee: Python-Agent)
-  • *ALP-737*: Crawl AI Agents and Send Slack Report (Assignee: Python-Agent)
-  • *ALP-733*: COS-Daily-Update: News, Crypto, and Market Intel (Assignee: chief-of-staff)
-  • *ALP-732*: Coin Market Cap - Daily Market Overview (Assignee: CMC Agent)
-  • *ALP-731*: Delivered EOD Management Report - June 27, 2026 (Assignee: chief-of-staff)
-  • *ALP-730*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-728*: Curate and Report Top AI Events to Slack (Assignee: Python-Agent)
-  • *ALP-727*: Exa Search & Slack Report: Latest AI Agents Tracker (Assignee: Python-Agent)
-  • *ALP-724*: Crawl daily news and compile 10 detailed news points with 'Why It matters' (Assignee: daily-news-crawl)
-  • *ALP-720*: Daily News Crawl - 2026-06-27 (Assignee: daily-news-crawl)
-  • *ALP-716*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-713*: AI Agents Tracker - Search launches & send Slack report (Assignee: Python-Agent)
-  • *ALP-702*: COS-Daily-Update: Completed Market Intelligence Aggregation (Assignee: chief-of-staff)
-• *Active In-Progress Tasks* (32):
-  • *ALP-902*: Generating and Sending EOD Report to Management (Assignee: chief-of-staff)
-  • *ALP-894*: Orchestrate Daily Crypto and News Analysis Pipelines (Assignee: chief-of-staff)
-  • *ALP-893*: Generate Daily Crypto Market Overview and Send to Slack (Assignee: CMC Agent)
-  • *ALP-884*: COS-Daily-Update: Orchestrating crawls and reports for 2026-07-13 (Assignee: chief-of-staff)
-  • *ALP-874*: Daily Market Intelligence and News Aggregation (2026-07-12) (Assignee: chief-of-staff)
-  • *ALP-861*: Daily Market Update & Analysis Synthesis (Assignee: chief-of-staff)
-  • *ALP-851*: COS Daily Update & Market Intelligence Orchestration (Assignee: chief-of-staff)
-  • *ALP-848*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-841*: Market Intelligence & Daily Report - Orchestration [2026-07-09] (Assignee: chief-of-staff)
-  • *ALP-840*: Generate and Send Daily Market Overview Report to Slack (Assignee: CMC Agent)
-  • *ALP-838*: Real-Estate-Listings (Assignee: Real-Estate-Agent)
-  • *ALP-837*: Generate Daily Crypto Market Overview Report and Send to Slack (Assignee: CMC Agent)
-  • *ALP-831*: Market Intelligence & Daily Report - Orchestration [2026-07-08] (Assignee: chief-of-staff)
-  • *ALP-821*: Daily Market Summary and Intelligence Orchestration (Assignee: chief-of-staff)
-  • *ALP-817*: Generate Daily Market Overview Report & Send to Slack (Assignee: CMC Agent)
-  • *ALP-811*: Daily Market & Crypto Intelligence Report - 2026-07-06 (Assignee: chief-of-staff)
-  • *ALP-807*: Daily Market Overview - Generation and Slack Dispatch (Assignee: CMC Agent)
-  • *ALP-801*: COS-Daily-Update-2026-07-05 (Assignee: chief-of-staff)
-  • *ALP-791*: Orchestrate Daily Crypto & News Market Intelligence Report (Assignee: chief-of-staff)
-  • *ALP-787*: CMC - Daily Market Overview (Assignee: CMC Agent)
-  • *ALP-781*: COS-Daily-Update: Crawling news, crypto prices, and compiling market report (Assignee: chief-of-staff)
-  • *ALP-761*: COS-Daily-Update: Triggering Crawlers & Market Analysis (Assignee: chief-of-staff)
-  • *ALP-757*: Daily Market Overview Report & Slack Delivery (Assignee: CMC Agent)
-  • *ALP-751*: COS-Daily-Update: Run 2026-06-30 (Assignee: chief-of-staff)
-  • *ALP-750*: Generate Daily Market Overview Report (Preview) (Assignee: CMC Agent)
-  • *ALP-744*: COS Daily Update - 2026-06-29 (Assignee: chief-of-staff)
-  • *ALP-739*: Generate and send daily market overview report to Slack (Assignee: CMC Agent)
-  • *ALP-729*: Generate Daily Market Overview and Send to Slack (Assignee: CMC Agent)
-  • *ALP-723*: COS-Daily-Update: Triggering Sub-issues (Assignee: chief-of-staff)
-  • *ALP-717*: Generate and Send EOD Project/Task Progress Report to Management via Slack (Assignee: chief-of-staff)
-  • *ALP-715*: Generate Daily Market Overview and send to Slack (Assignee: CMC Agent)
-  • *ALP-712*: COS Daily Update - 2026-06-27 (Assignee: chief-of-staff)
+• *Active In-Review Tasks* (7):
+  • *ALP-907*: Market Intelligence Report (NIFTY/BANKNIFTY 10-Factor Analysis) (Assignee: Deep Researcher Agent)
+  • *ALP-906*: Crypto Realtime Prices and Changes (Assignee: crypto-realtime-price)
+  • *ALP-911*: Ready-to-Occupy 4BHK Villas — Sarjapur Road, East Bangalore (Assignee: Real-Estate-Agent)
+  • *ALP-909*: Curate and Send Top 5 AI Online Events and Agent Launches to Slack (Assignee: Python-Agent)
+  • *ALP-908*: Daily AI News and Agents Tracker: Crawl, Search, and Report (Assignee: Python-Agent)
+  • *ALP-905*: Daily News Crawl and Analysis (Assignee: daily-news-crawl)
+  • *ALP-903*: Daily Market Overview report and Slack notification (Assignee: CMC Agent)
+• *Active In-Progress Tasks* (3):
+  • *ALP-912*: Prepare and Send EOD Slack Report to Management (Assignee: chief-of-staff)
+  • *ALP-910*: Execute daily_market_overview Skill and Send Report to Slack (Assignee: CMC Agent)
+  • *ALP-904*: COS-Daily-Update: Spawning Agent Sub-tasks (Assignee: chief-of-staff)
 • *Agent Operations Status*:
   - *Active Working*: chief-of-staff
   - *Idle/Standby*: 19 agents (including daily-news-crawl, crypto-realtime-price, knowledge-agent, Deep Researcher Agent)
