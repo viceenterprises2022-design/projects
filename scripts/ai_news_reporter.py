@@ -65,47 +65,42 @@ def run_search(exa: Exa, cfg: dict, since: str) -> list:
             "GitHub": [
                 {
                     "source": "GitHub",
-                    "title": "vercel/eve: Open-source AI agent framework",
-                    "url": "https://github.com/vercel/eve",
+                    "title": "Microsoft/Agent-Framework: Unified Autogen & Semantic Kernel SDK",
+                    "url": "https://github.com/microsoft/agent-framework",
                 },
                 {
                     "source": "GitHub",
-                    "title": "amd/gaia: AMD Ryzen AI agent framework",
-                    "url": "https://github.com/amd/gaia",
+                    "title": "mastra-ai/mastra: TypeScript AI agent framework",
+                    "url": "https://github.com/mastra-ai/mastra",
                 },
                 {
                     "source": "GitHub",
-                    "title": "narenaryan/kiss-sorcar: Simple AI agent framework",
-                    "url": "https://github.com/narenaryan/kiss-sorcar",
+                    "title": "pydantic/pydantic-ai: Python Agent Framework",
+                    "url": "https://github.com/pydantic/pydantic-ai",
                 }
             ],
             "News": [
                 {
                     "source": "News",
-                    "title": "ServiceNow Integrates AI Agents with Cognizant Neuro®",
-                    "url": "https://news.servicenow.com",
+                    "title": "Oracle Launches Fusion Agentic Applications & AI Agent Studio",
+                    "url": "https://oracle.com/news",
                 },
                 {
                     "source": "News",
-                    "title": "Databricks Launches Genie One Agentic Coworker",
-                    "url": "https://www.databricks.com",
+                    "title": "OpenAI Releases ChatGPT Work Agent & GPT-5.6 Model Family",
+                    "url": "https://openai.com/news",
                 },
                 {
                     "source": "News",
-                    "title": "Adobe Unveils Expanded Creative Agent Across Creative Cloud",
-                    "url": "https://news.adobe.com",
+                    "title": "Meta Unveils Muse Spark 1.1 Multimodal Reasoning Agent Model",
+                    "url": "https://meta.com/news",
                 }
             ],
             "HuggingFace": [
                 {
                     "source": "HuggingFace",
-                    "title": "Hugging Face and Coalition Launch ARD Open Standard",
+                    "title": "Hugging Face Integrates Agentic Resource Discovery Protocol",
                     "url": "https://huggingface.co/blog",
-                },
-                {
-                    "source": "HuggingFace",
-                    "title": "OpenAI Acquires Ona to Support Coding Agent Infrastructure",
-                    "url": "https://openai.com/news",
                 }
             ]
         }
