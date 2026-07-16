@@ -1275,15 +1275,15 @@ export default function Dashboard() {
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
               <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>STRATEGIES: </span>
-              <span style={{ color: '#fff', fontWeight: 'bold' }}>12,408</span>
+              <span style={{ color: '#fff', fontWeight: 'bold' }}>8</span>
             </div>
             <div>
               <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>DEPLOYED: </span>
-              <span style={{ color: '#bfff6a', fontWeight: 'bold' }}>3,842</span>
+              <span style={{ color: '#bfff6a', fontWeight: 'bold' }}>3</span>
             </div>
             <div>
               <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>LIVE %: </span>
-              <span style={{ color: '#ff6fb3', fontWeight: 'bold' }}>31.0%</span>
+              <span style={{ color: '#ff6fb3', fontWeight: 'bold' }}>37.5%</span>
             </div>
             <div style={{ color: 'rgba(239, 246, 255, 0.6)' }}>
               17:03:50 • 11ms
