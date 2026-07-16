@@ -186,11 +186,11 @@ export default function Dashboard() {
       noContract: { midPrice: 0.50, bids: [], asks: [] },
       laggedFairValueYes: 0.50,
       activePosition: null,
-      wins: 0,
-      losses: 0,
-      totalProfit: 0,
-      totalVolume: 0,
-      tradesCount: 0,
+      wins: simStateRef.current.wins,
+      losses: simStateRef.current.losses,
+      totalProfit: simStateRef.current.totalProfit,
+      totalVolume: simStateRef.current.totalVolume,
+      tradesCount: simStateRef.current.tradesCount,
       initialBalance: 100000,
     };
 
