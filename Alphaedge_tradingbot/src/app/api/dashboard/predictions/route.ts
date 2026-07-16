@@ -1,17 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { simulatorTrades } from '@/db/schema';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 
 export async function GET(req: NextRequest) {
   try {
     await initDb();
     
-    // Fetch latest 100 simulator trades ordered by creation time
-    const history = await db
+    const asset = req.nextUrl.searchParams.get('asset');
+    
+    let query = db
       .select()
-      .from(simulatorTrades)
+      .from(simulatorTrades);
+      
+    if (asset) {
+      query = query.where(eq(simulatorTrades.asset, asset)) as any;
+    }
+    
+    const history = await query
       .orderBy(desc(simulatorTrades.createdAt))
       .limit(100);
 
@@ -69,8 +76,13 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized: Admin access required' }, { status: 401 });
     }
 
-    // Delete all simulator trades
-    await db.delete(simulatorTrades);
+    // Delete trades (optionally filtered by asset)
+    const asset = req.nextUrl.searchParams.get('asset');
+    if (asset) {
+      await db.delete(simulatorTrades).where(eq(simulatorTrades.asset, asset));
+    } else {
+      await db.delete(simulatorTrades);
+    }
 
     return NextResponse.json({ success: true, message: 'Simulator trades cleared successfully' });
   } catch (error: any) {
