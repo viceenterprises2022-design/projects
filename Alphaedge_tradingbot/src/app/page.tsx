@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { earlyAccessLeads } from "@/db/schema";
 import { sql } from "drizzle-orm";
 import { WaitlistForm } from "./waitlist-form";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -167,11 +168,11 @@ export default async function HomePage() {
           <a href="#engine">Engine</a>
           <a href="#bots">Bots</a>
           <a href="#pricing">Pricing</a>
-          <a href="#launch">Access</a>
+          <Link href="/login">Access</Link>
         </div>
-        <a className="nav-cta" href="#launch">
+        <Link className="nav-cta" href="/login">
           Open capital cockpit
-        </a>
+        </Link>
       </nav>
 
       <section id="top" className="hero-section">
@@ -189,9 +190,9 @@ export default async function HomePage() {
             command center designed for wealth creation instead of chart watching.
           </p>
           <div className="hero-actions">
-            <a href="#launch" className="primary-action">
-              Request private launch <span>↗</span>
-            </a>
+            <Link href="/login" className="primary-action">
+              Access platform <span>↗</span>
+            </Link>
             <a href="#engine" className="secondary-action">
               See the wealth engine
             </a>
