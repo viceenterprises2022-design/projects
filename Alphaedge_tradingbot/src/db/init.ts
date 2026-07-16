@@ -9,20 +9,12 @@ export async function initDb() {
   if (isInitialized) return;
 
   try {
-    let exists = false;
     try {
-      // Try querying the users table. If it succeeds, the schema is already created.
-      await db.select().from(users).limit(1);
-      exists = true;
-      console.log('Database tables already exist. Skipping migrations.');
-    } catch (err) {
-      console.log('Database tables do not exist. Running database migrations...');
-    }
-
-    if (!exists) {
       const migrationsFolder = path.join(process.cwd(), 'drizzle');
       await migrate(db, { migrationsFolder });
       console.log('Database migrated successfully.');
+    } catch (err) {
+      console.log('Database migration failed:', err);
     }
 
     // Auto-seed default user if not exists
