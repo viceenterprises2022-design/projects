@@ -20,6 +20,25 @@ function normCDF(x: number) {
 
   return 0.5 * (1.0 + sign * y);
 }
+
+const hypotheses = [
+  "Design an S&P 500 stat-arb mean-reversion model using 15m Z-score",
+  "Arbitrage orderbook latency imbalance on BTC-PERP between Deribit and Hyperliquid",
+  "Build multi-asset momentum overlay with Bayesian probability volatility filter",
+  "Analyze liquidity sweep FVG gaps on ETH-PERP 5m candles with order flows",
+  "Z-score mean-reversion on S&P 500 stat-arb with GARCH volatility modeling"
+];
+
+const pipelineSteps = [
+  { id: 1, name: 'Parse', range: [75, 90] },
+  { id: 2, name: 'IR Build', range: [65, 75] },
+  { id: 3, name: 'Compile', range: [55, 65] },
+  { id: 4, name: 'Backtest', range: [30, 55] },
+  { id: 5, name: 'Validate', range: [18, 30] },
+  { id: 6, name: 'Approve', range: [8, 18] },
+  { id: 7, name: 'Deploy', range: [0, 8] }
+];
+
 import { 
   Shield, 
   ShieldAlert, 
@@ -69,7 +88,8 @@ export default function Dashboard() {
   const [simLosses, setSimLosses] = useState(0);
   const [simPosition, setSimPosition] = useState<any>(null);
   const [simLogs, setSimLogs] = useState<Array<{ time: string; type: string; msg: string }>>([]);
-  const [simCountdown, setSimCountdown] = useState('05:00');
+  const [simCountdown, setSimCountdown] = useState('01:30');
+  const [simSecondsRemaining, setSimSecondsRemaining] = useState(90);
   const [simHistory, setSimHistory] = useState<Array<any>>([]);
 
   // Load predictions log from database on mount
@@ -136,7 +156,7 @@ export default function Dashboard() {
     price: 65420.00,
     strikePrice: 65420.00,
     priceHistory: [] as Array<{ price: number; trade?: 'YES' | 'NO' }>,
-    roundSecondsRemaining: 300,
+    roundSecondsRemaining: 90,
     roundId: 101,
     tickCount: 0,
     
@@ -179,7 +199,7 @@ export default function Dashboard() {
       price: startPrice,
       strikePrice: startPrice,
       priceHistory: [{ price: startPrice }],
-      roundSecondsRemaining: 300,
+      roundSecondsRemaining: 90,
       roundId: 101,
       tickCount: 0,
       yesContract: { midPrice: 0.50, bids: [], asks: [] },
@@ -252,7 +272,7 @@ export default function Dashboard() {
       minPrice -= padding;
       maxPrice += padding;
       
-      const getX = (index: number) => (index / 300) * w;
+      const getX = (index: number) => (index / 90) * w;
       const getY = (price: number) => h - ((price - minPrice) / (maxPrice - minPrice)) * h;
       
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
@@ -341,7 +361,7 @@ export default function Dashboard() {
       if (state.price < 0.1) state.price = 0.1;
       
       state.priceHistory.push({ price: state.price });
-      if (state.priceHistory.length > 300) {
+      if (state.priceHistory.length > 90) {
         state.priceHistory.shift();
       }
       
@@ -483,7 +503,7 @@ export default function Dashboard() {
         state.roundId++;
         state.strikePrice = state.price;
         state.priceHistory = [{ price: state.price }];
-        state.roundSecondsRemaining = 300;
+        state.roundSecondsRemaining = 90;
         addSimLog('info', `ROUND #${state.roundId} STARTED. New Strike locked at $${state.strikePrice.toFixed(2)}`);
       }
       
