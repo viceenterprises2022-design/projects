@@ -108,7 +108,10 @@ export default function Dashboard() {
         if (data && data.success && data.prices) {
           setRealPrices(data.prices);
           setPriceSyncError(null);
-          console.log('Real-world Hyperliquid prices synchronized successfully:', data.prices);
+          // console.log('Real-world Hyperliquid prices synchronized successfully:', data.prices);
+          if (simStateRef.current && data.prices[simStateRef.current.asset]) {
+            simStateRef.current.price = data.prices[simStateRef.current.asset];
+          }
         } else {
           throw new Error(data.error || 'Failed to fetch prices from Hyperliquid endpoint');
         }
@@ -119,7 +122,7 @@ export default function Dashboard() {
     }
     
     syncPrices();
-    const interval = setInterval(syncPrices, 15 * 60 * 1000); // 15 minutes
+    const interval = setInterval(syncPrices, 2000); // Poll every 2 seconds for live data
     return () => clearInterval(interval);
   }, []);
 
@@ -403,15 +406,7 @@ export default function Dashboard() {
       
       // 1. Tick price
       state.tickCount++;
-      const volatilityFactor = state.volatility / 100.0;
-      const trendBias = (Math.random() - 0.5) * 2.0;
-      if (!(state as any).trendVelocity) (state as any).trendVelocity = 0;
-      (state as any).trendVelocity = ((state as any).trendVelocity * 0.9) + (trendBias * 0.25);
-      
-      const assetScale = state.asset === 'BTC-PERP' ? 10.0 : state.asset === 'ETH-PERP' ? 0.6 : 0.4;
-      const priceChange = (Math.random() - 0.5) * volatilityFactor * assetScale + (state as any).trendVelocity;
-      state.price += priceChange;
-      if (state.price < 0.1) state.price = 0.1;
+      // Live price is updated asynchronously by the syncPrices interval polling Hyperliquid via Vercel function
       
       state.priceHistory.push({ price: state.price });
       if (state.priceHistory.length > 90) {
