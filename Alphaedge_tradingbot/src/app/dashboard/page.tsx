@@ -1227,10 +1227,10 @@ export default function Dashboard() {
       </>
     ) : (
       <>
-        {/* Horizon Top Banner */}
+        {/* Alphaedge Top Banner */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0e1524', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '12px 20px', marginBottom: '16px', fontSize: '11px', fontFamily: 'monospace' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <span style={{ fontWeight: 'bold', color: '#58f0ff', fontSize: '12px' }}>HORIZON - AI QUANT AGENT</span>
+            <span style={{ fontWeight: 'bold', color: '#58f0ff', fontSize: '12px' }}>ALPHAEDGE - AI QUANT AGENT</span>
             <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>V4.0 • ENGLISH • CODE • DEPLOY • 90S PIPELINE</span>
           </div>
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
@@ -1319,10 +1319,10 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Horizon Pipeline Flow */}
+        {/* Alphaedge Pipeline Flow */}
         <div style={{ ...styles.panelCard, marginBottom: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'rgba(239, 246, 255, 0.6)' }}>HORIZON PIPELINE: ENGLISH ➜ DEPLOYED</span>
+            <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'rgba(239, 246, 255, 0.6)' }}>ALPHAEDGE PIPELINE: ENGLISH ➜ DEPLOYED</span>
             <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace' }}>
               ETA SECONDS REMAINING: {simSecondsRemaining}s
             </span>
@@ -1532,11 +1532,11 @@ export default function Dashboard() {
 
           {/* Column Right: Agent Status, Sliders, CLOB, Telemetry Logs (Narrow) */}
           <div style={{ flex: '1 1 380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {/* Horizon Agent Status Card */}
+            {/* Alphaedge Agent Status Card */}
             <div style={styles.panelCard}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
                 <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}>
-                  <Activity size={16} style={{ color: '#bfff6a' }} /> HORIZON AGENT v4.0
+                  <Activity size={16} style={{ color: '#bfff6a' }} /> ALPHAEDGE AGENT v4.0
                 </h2>
                 <span style={{ fontSize: '10px', backgroundColor: 'rgba(191, 255, 106, 0.15)', color: '#bfff6a', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold' }}>ONLINE</span>
               </div>
@@ -1556,7 +1556,7 @@ export default function Dashboard() {
                     <span style={{ color: '#ff6fb3' }}>7 weeks</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', fontWeight: 'bold' }}>
-                    <span>Horizon Agent:</span>
+                    <span>Alphaedge Agent:</span>
                     <span style={{ color: '#bfff6a' }}>90 seconds</span>
                   </div>
                 </div>
@@ -1568,7 +1568,7 @@ export default function Dashboard() {
                   <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: 'rgba(239, 246, 255, 0.4)', height: '24px' }}>
                     <th style={{ textAlign: 'left' }}>METRIC</th>
                     <th style={{ textAlign: 'left' }}>JUNIOR QUANT</th>
-                    <th style={{ textAlign: 'right' }}>HORIZON AGENT</th>
+                    <th style={{ textAlign: 'right' }}>ALPHAEDGE AGENT</th>
                   </tr>
                 </thead>
                 <tbody>
