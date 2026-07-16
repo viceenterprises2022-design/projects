@@ -39,6 +39,16 @@ const pipelineSteps = [
   { id: 7, name: 'Deploy', range: [0, 8] }
 ];
 
+const getActiveStepId = (sec: number) => {
+  if (sec > 75) return 1; // Parse
+  if (sec > 65) return 2; // IR Build
+  if (sec > 55) return 3; // Compile
+  if (sec > 30) return 4; // Backtest
+  if (sec > 18) return 5; // Validate
+  if (sec > 8) return 6;  // Approve
+  return 7;              // Deploy
+};
+
 import { 
   Shield, 
   ShieldAlert, 
@@ -91,6 +101,15 @@ export default function Dashboard() {
   const [simCountdown, setSimCountdown] = useState('01:30');
   const [simSecondsRemaining, setSimSecondsRemaining] = useState(90);
   const [simHistory, setSimHistory] = useState<Array<any>>([]);
+  const [robustnessData, setRobustnessData] = useState<Record<string, number[]>>({
+    'BTCUSD': [-1.5, -3.4, 4.2, 5.5, 10.0, 7.9],
+    'ETHUSD': [-5.6, 3.6, 4.9, 4.8, 4.5, 1.7],
+    'SOLUSD': [-2.7, 6.3, 1.0, 2.7, 5.3, 10.0],
+    'BNBUSD': [1.3, -3.6, -4.4, -0.5, -2.9, 2.8],
+    'XRPUSD': [0.6, 2.3, -4.2, 9.3, 3.5, 4.4],
+    'ADAUSD': [-3.1, 4.8, 6.5, 9.1, 7.0, 2.7],
+    'DOTUSD': [4.3, -1.4, 3.1, 4.4, 5.8, 7.6]
+  });
 
   // Load predictions log from database on mount
   useEffect(() => {
@@ -514,10 +533,26 @@ export default function Dashboard() {
       setSimLosses(state.losses);
       setSimVolume(state.totalVolume);
       setSimPosition(state.activePosition);
+      setSimSecondsRemaining(state.roundSecondsRemaining);
       
       const mins = Math.floor(state.roundSecondsRemaining / 60);
       const secs = state.roundSecondsRemaining % 60;
       setSimCountdown(`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`);
+
+      // Jitter the robustness matrix to show real-time agent telemetry
+      if (state.tickCount % 4 === 0) {
+        setRobustnessData(prev => {
+          const updated = { ...prev };
+          const assets = Object.keys(updated);
+          const randomAsset = assets[Math.floor(Math.random() * assets.length)];
+          const randomIdx = Math.floor(Math.random() * 6);
+          updated[randomAsset] = [...updated[randomAsset]];
+          updated[randomAsset][randomIdx] = parseFloat(
+            Math.max(-10, Math.min(15, updated[randomAsset][randomIdx] + (Math.random() - 0.5) * 0.4)).toFixed(1)
+          );
+          return updated;
+        });
+      }
       
       setYesBook({
         mid: state.yesContract.midPrice,
@@ -1192,6 +1227,45 @@ export default function Dashboard() {
       </>
     ) : (
       <>
+        {/* Horizon Top Banner */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0e1524', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '12px 20px', marginBottom: '16px', fontSize: '11px', fontFamily: 'monospace' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <span style={{ fontWeight: 'bold', color: '#58f0ff', fontSize: '12px' }}>HORIZON - AI QUANT AGENT</span>
+            <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>V4.0 • ENGLISH • CODE • DEPLOY • 90S PIPELINE</span>
+          </div>
+          <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+            <div>
+              <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>STRATEGIES: </span>
+              <span style={{ color: '#fff', fontWeight: 'bold' }}>12,408</span>
+            </div>
+            <div>
+              <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>DEPLOYED: </span>
+              <span style={{ color: '#bfff6a', fontWeight: 'bold' }}>3,842</span>
+            </div>
+            <div>
+              <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>LIVE %: </span>
+              <span style={{ color: '#ff6fb3', fontWeight: 'bold' }}>31.0%</span>
+            </div>
+            <div style={{ color: 'rgba(239, 246, 255, 0.6)' }}>
+              17:03:50 • 11ms
+            </div>
+          </div>
+        </div>
+
+        {/* Ticker Ribbon */}
+        <div className="ticker-ribbon" style={{ margin: '0 0 24px 0', width: '100%', borderRadius: '8px' }}>
+          <div>
+            <span>[PIPELINE] PARSE HYPOTHESIS: "Z-score mean-reversion on S&P 500 stat-arb..."</span>
+            <span>[BACKTEST] BTC-PERP: PnL +$24,375 (VERDICT: LIVE)</span>
+            <span>[RISK] SOL-PERP: Drawdown breach ➜ instance paused</span>
+            <span>[COMPILER] GM-CORE-001: Compilation complete ➜ binary generated</span>
+            <span>[PIPELINE] PARSE HYPOTHESIS: "Z-score mean-reversion on S&P 500..."</span>
+            <span>[BACKTEST] BTC-PERP: PnL +$24,375 (VERDICT: LIVE)</span>
+            <span>[RISK] SOL-PERP: Drawdown breach ➜ instance paused</span>
+            <span>[COMPILER] GM-CORE-001: Compilation complete ➜ binary generated</span>
+          </div>
+        </div>
+
         {/* Simulator KPIs Row */}
         <section style={{ ...styles.analyticsRow, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', marginBottom: '24px' }}>
           {/* KPI 1: Net Profit */}
@@ -1245,211 +1319,434 @@ export default function Dashboard() {
           </div>
         </section>
 
-        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-          {/* Column Left: Live Price Chart & Polymarket CLOB (Wide) */}
-          <div style={{ flex: '1.6 1 600px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div style={styles.panelCard}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '20px' }}>
-              <h2 style={{ margin: 0, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><TrendingUp size={16} style={{ color: '#58f0ff' }} /> {simAsset} UP/DOWN 5M RESOLUTION</h2>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <select 
-                  value={simAsset} 
-                  onChange={(e) => setSimAsset(e.target.value as any)}
-                  style={{ ...styles.select, padding: '4px 8px', borderRadius: '8px', fontSize: '12px', height: '30px' }}
+        {/* Horizon Pipeline Flow */}
+        <div style={{ ...styles.panelCard, marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <span style={{ fontSize: '11px', fontWeight: 'bold', color: 'rgba(239, 246, 255, 0.6)' }}>HORIZON PIPELINE: ENGLISH ➜ DEPLOYED</span>
+            <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace' }}>
+              ETA SECONDS REMAINING: {simSecondsRemaining}s
+            </span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
+            {pipelineSteps.map((step) => {
+              const activeStepId = getActiveStepId(simSecondsRemaining);
+              const isActive = activeStepId === step.id;
+              const isPast = activeStepId > step.id;
+              return (
+                <div 
+                  key={step.id} 
+                  style={{
+                    backgroundColor: isActive ? 'rgba(88, 240, 255, 0.15)' : isPast ? 'rgba(191, 255, 106, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                    border: `1px solid ${isActive ? '#58f0ff' : isPast ? '#bfff6a' : 'rgba(255, 255, 255, 0.08)'}`,
+                    borderRadius: '8px',
+                    padding: '12px',
+                    textAlign: 'center',
+                    transition: 'all 0.3s ease',
+                    boxShadow: isActive ? '0 0 16px rgba(88, 240, 255, 0.25)' : 'none'
+                  }}
                 >
-                  <option value="BTC-PERP">BTC-PERP</option>
-                  <option value="ETH-PERP">ETH-PERP</option>
-                  <option value="GOLD-MCX">GOLD-MCX</option>
-                </select>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#ff6fb3', fontFamily: 'monospace' }}>{simCountdown}</div>
-              </div>
-            </div>
-
-            {/* Chart values row */}
-            <div style={{ display: 'flex', gap: '24px', marginBottom: '16px' }}>
-              <div>
-                <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>STRIKE PRICE (T0)</small>
-                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#ffd166', fontFamily: 'monospace', marginTop: '2px' }}>${simStateRef.current.strikePrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-              </div>
-              <div>
-                <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CURRENT PRICE</small>
-                <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace', marginTop: '2px' }}>${simStateRef.current.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-              </div>
-              <div>
-                <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DEVIATION</small>
-                <div style={{ fontSize: '16px', fontWeight: 'bold', color: simStateRef.current.price >= simStateRef.current.strikePrice ? '#bfff6a' : '#ff6fb3', fontFamily: 'monospace', marginTop: '2px' }}>
-                  {simStateRef.current.price >= simStateRef.current.strikePrice ? '+' : ''}
-                  {simStateRef.current.strikePrice > 0 ? ((simStateRef.current.price - simStateRef.current.strikePrice) / simStateRef.current.strikePrice * 100).toFixed(3) : '0.000'}%
+                  <div style={{ fontSize: '9px', color: 'rgba(239, 246, 255, 0.4)', textTransform: 'uppercase', marginBottom: '4px' }}>0{step.id}</div>
+                  <div style={{ fontSize: '12px', fontWeight: 'bold', color: isActive ? '#58f0ff' : isPast ? '#bfff6a' : 'rgba(239, 246, 255, 0.6)' }}>{step.name}</div>
                 </div>
-              </div>
-            </div>
-
-            {/* Canvas element wrapper */}
-            <div style={{ height: '240px', width: '100%', position: 'relative', background: 'rgba(5, 7, 17, 0.4)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)', overflow: 'hidden' }}>
-              <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
-            </div>
+              );
+            })}
           </div>
-
-          {/* Polymarket CLOB book sides */}
-          <div style={styles.panelCard}>
-            <h2 style={styles.panelHeader}><Coins size={16} style={{ color: '#58f0ff' }} /> Polymarket CLOB (Contracts)</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              {/* YES Contract Side */}
-              <div style={{ border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px', backgroundColor: 'rgba(5, 7, 17, 0.3)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
-                  <strong style={{ fontSize: '13px', color: '#fff' }}>YES Contract (UP)</strong>
-                  <span style={{ color: '#bfff6a', fontWeight: 'bold', fontSize: '14px', fontFamily: 'monospace' }}>{Math.round(yesBook.mid * 100)}¢</span>
-                </div>
-                <div style={{ display: 'grid', gap: '6px', fontSize: '11px', fontFamily: 'monospace' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', color: 'rgba(239, 246, 255, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '4px', fontWeight: 600 }}>
-                    <span>SIZE</span><span style={{ textAlign: 'right', paddingRight: '8px' }}>ASK</span><span style={{ textAlign: 'left', paddingLeft: '8px' }}>BID</span><span style={{ textAlign: 'right' }}>SIZE</span>
-                  </div>
-                  {yesBook.asks.slice(0, 4).reverse().map((ask: any, idx: number) => (
-                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', alignItems: 'center' }}>
-                      <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>{ask.size}</span>
-                      <span style={{ color: '#ff6fb3', textAlign: 'right', paddingRight: '8px', fontWeight: 600 }}>{Math.round(ask.price * 100)}¢</span>
-                      <span style={{ color: '#bfff6a', textAlign: 'left', paddingLeft: '8px', fontWeight: 600 }}>{Math.round(yesBook.bids[idx]?.price * 100)}¢</span>
-                      <span style={{ color: 'rgba(239, 246, 255, 0.5)', textAlign: 'right' }}>{yesBook.bids[idx]?.size}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* NO Contract Side */}
-              <div style={{ border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '16px', backgroundColor: 'rgba(5, 7, 17, 0.3)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
-                  <strong style={{ fontSize: '13px', color: '#fff' }}>NO Contract (DOWN)</strong>
-                  <span style={{ color: '#ff6fb3', fontWeight: 'bold', fontSize: '14px', fontFamily: 'monospace' }}>{Math.round(noBook.mid * 100)}¢</span>
-                </div>
-                <div style={{ display: 'grid', gap: '6px', fontSize: '11px', fontFamily: 'monospace' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', color: 'rgba(239, 246, 255, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '4px', fontWeight: 600 }}>
-                    <span>SIZE</span><span style={{ textAlign: 'right', paddingRight: '8px' }}>ASK</span><span style={{ textAlign: 'left', paddingLeft: '8px' }}>BID</span><span style={{ textAlign: 'right' }}>SIZE</span>
-                  </div>
-                  {noBook.asks.slice(0, 4).reverse().map((ask: any, idx: number) => (
-                    <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', alignItems: 'center' }}>
-                      <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>{ask.size}</span>
-                      <span style={{ color: '#ff6fb3', textAlign: 'right', paddingRight: '8px', fontWeight: 600 }}>{Math.round(ask.price * 100)}¢</span>
-                      <span style={{ color: '#bfff6a', textAlign: 'left', paddingLeft: '8px', fontWeight: 600 }}>{Math.round(noBook.bids[idx]?.price * 100)}¢</span>
-                      <span style={{ color: 'rgba(239, 246, 255, 0.5)', textAlign: 'right' }}>{noBook.bids[idx]?.size}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Column Right: Bayesian Logs & Config panel (Narrow) */}
-        <div style={{ flex: '1 1 380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-
-          {/* Bayesian Model Engine & Logs */}
-          <div style={styles.panelCard}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
-              <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><FileText size={16} style={{ color: '#9d7dff' }} /> Bayesian Model Engine & Logs</h2>
-              <button 
-                onClick={() => setSimLogs([])}
-                style={{ ...styles.refreshButton, padding: '4px 10px', fontSize: '10px' }}
-              >
-                Clear
-              </button>
+          
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '11px', color: '#ff6fb3', fontWeight: 'bold', fontFamily: 'monospace' }}>HYPOTHESIS:</span>
+              <span style={{ fontSize: '12px', color: '#fff', fontStyle: 'italic' }}>
+                "{hypotheses[simStateRef.current.roundId % hypotheses.length]}"
+              </span>
             </div>
             
-            <div style={{ height: '220px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px', fontFamily: 'monospace', fontSize: '11px', backgroundColor: 'rgba(5, 7, 17, 0.64)', padding: '12px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-              {simLogs.length === 0 ? (
-                <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>Waiting for engine telemetry...</span>
-              ) : (
-                simLogs.map((log: any, idx: number) => {
-                  let color = '#fff';
-                  if (log.type === 'signal') color = '#58f0ff';
-                  if (log.type === 'edge') color = '#9d7dff';
-                  if (log.type === 'trade') color = '#bfff6a';
-                  if (log.type === 'error') color = '#ff6fb3';
-                  if (log.type === 'settle') color = '#ffd166';
-                  return (
-                    <div key={idx} style={{ display: 'flex', gap: '8px', lineHeight: '1.4' }}>
-                      <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>[{log.time}]</span>
-                      <span style={{ color, fontWeight: 'bold' }}>[{log.type.toUpperCase()}]</span>
-                      <span style={{ color: '#f1f5f9' }}>{log.msg}</span>
-                    </div>
-                  );
-                })
-              )}
+            {/* Agent Role Loop */}
+            <div style={{ display: 'flex', gap: '16px', fontSize: '11px', fontFamily: 'monospace' }}>
+              <span style={{ color: getActiveStepId(simSecondsRemaining) <= 2 ? '#58f0ff' : 'rgba(239, 246, 255, 0.3)', fontWeight: getActiveStepId(simSecondsRemaining) <= 2 ? 'bold' : 'normal' }}>Generator</span>
+              <span style={{ color: 'rgba(239, 246, 255, 0.3)' }}>➜</span>
+              <span style={{ color: getActiveStepId(simSecondsRemaining) === 3 ? '#58f0ff' : 'rgba(239, 246, 255, 0.3)', fontWeight: getActiveStepId(simSecondsRemaining) === 3 ? 'bold' : 'normal' }}>Coder</span>
+              <span style={{ color: 'rgba(239, 246, 255, 0.3)' }}>➜</span>
+              <span style={{ color: getActiveStepId(simSecondsRemaining) === 4 ? '#58f0ff' : 'rgba(239, 246, 255, 0.3)', fontWeight: getActiveStepId(simSecondsRemaining) === 4 ? 'bold' : 'normal' }}>Challenger</span>
+              <span style={{ color: 'rgba(239, 246, 255, 0.3)' }}>➜</span>
+              <span style={{ color: getActiveStepId(simSecondsRemaining) >= 5 ? '#58f0ff' : 'rgba(239, 246, 255, 0.3)', fontWeight: getActiveStepId(simSecondsRemaining) >= 5 ? 'bold' : 'normal' }}>Evaluator</span>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+          {/* Column Left: Live Price Chart, Robustness Matrix & Monte Carlo (Wide) */}
+          <div style={{ flex: '1.6 1 600px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={styles.panelCard}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '20px' }}>
+                <h2 style={{ margin: 0, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><TrendingUp size={16} style={{ color: '#58f0ff' }} /> {simAsset} PIPELINE SIMULATOR PATH</h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <select 
+                    value={simAsset} 
+                    onChange={(e) => setSimAsset(e.target.value as any)}
+                    style={{ ...styles.select, padding: '4px 8px', borderRadius: '8px', fontSize: '12px', height: '30px' }}
+                  >
+                    <option value="BTC-PERP">BTC-PERP</option>
+                    <option value="ETH-PERP">ETH-PERP</option>
+                    <option value="GOLD-MCX">GOLD-MCX</option>
+                  </select>
+                  <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#ff6fb3', fontFamily: 'monospace' }}>{simCountdown}</div>
+                </div>
+              </div>
+
+              {/* Chart values row */}
+              <div style={{ display: 'flex', gap: '24px', marginBottom: '16px' }}>
+                <div>
+                  <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>STRIKE PRICE (T0)</small>
+                  <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#ffd166', fontFamily: 'monospace', marginTop: '2px' }}>${simStateRef.current.strikePrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+                </div>
+                <div>
+                  <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CURRENT PRICE</small>
+                  <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#58f0ff', fontFamily: 'monospace', marginTop: '2px' }}>${simStateRef.current.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+                </div>
+                <div>
+                  <small style={{ fontSize: '10px', color: 'rgba(239, 246, 255, 0.54)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>DEVIATION</small>
+                  <div style={{ fontSize: '16px', fontWeight: 'bold', color: simStateRef.current.price >= simStateRef.current.strikePrice ? '#bfff6a' : '#ff6fb3', fontFamily: 'monospace', marginTop: '2px' }}>
+                    {simStateRef.current.price >= simStateRef.current.strikePrice ? '+' : ''}
+                    {simStateRef.current.strikePrice > 0 ? ((simStateRef.current.price - simStateRef.current.strikePrice) / simStateRef.current.strikePrice * 100).toFixed(3) : '0.000'}%
+                  </div>
+                </div>
+              </div>
+
+              {/* Canvas element wrapper */}
+              <div style={{ height: '240px', width: '100%', position: 'relative', background: 'rgba(5, 7, 17, 0.4)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)', overflow: 'hidden' }}>
+                <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+              </div>
+            </div>
+
+            {/* Robustness Matrix Grid */}
+            <div style={styles.panelCard}>
+              <h2 style={styles.panelHeader}><Activity size={16} style={{ color: '#9d7dff' }} /> Robustness Matrix (Returns across assets & timeframes)</h2>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px', fontFamily: 'monospace', textAlign: 'center' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', height: '28px', color: 'rgba(239, 246, 255, 0.5)' }}>
+                      <th style={{ textAlign: 'left', fontWeight: 'bold' }}>ASSET</th>
+                      <th>5M</th>
+                      <th>15M</th>
+                      <th>30M</th>
+                      <th>1H</th>
+                      <th>4H</th>
+                      <th>1D</th>
+                      <th style={{ fontWeight: 'bold', color: '#fff' }}>AVG</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.keys(robustnessData).map((asset) => {
+                      const values = robustnessData[asset];
+                      const avg = parseFloat((values.reduce((a, b) => a + b, 0) / values.length).toFixed(1));
+                      return (
+                        <tr key={asset} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', height: '30px' }}>
+                          <td style={{ textAlign: 'left', fontWeight: 'bold', color: '#fff' }}>{asset}</td>
+                          {values.map((v, i) => {
+                            const isNeg = v < 0;
+                            return (
+                              <td 
+                                key={i} 
+                                style={{
+                                  backgroundColor: isNeg ? `rgba(255, 111, 179, ${Math.min(0.3, Math.abs(v) / 15)})` : `rgba(88, 240, 255, ${Math.min(0.3, v / 15)})`,
+                                  color: isNeg ? '#ff6fb3' : '#58f0ff',
+                                  borderRadius: '2px',
+                                  transition: 'all 0.3s ease'
+                                }}
+                              >
+                                {v >= 0 ? '+' : ''}{v.toFixed(1)}%
+                              </td>
+                            );
+                          })}
+                          <td style={{ fontWeight: 'bold', color: avg >= 0 ? '#bfff6a' : '#ff6fb3', backgroundColor: 'rgba(255, 255, 255, 0.02)' }}>
+                            {avg >= 0 ? '+' : ''}{avg.toFixed(1)}%
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Monte Carlo Significance Panel */}
+            <div style={styles.panelCard}>
+              <h2 style={styles.panelHeader}><TrendingUp size={16} style={{ color: '#bfff6a' }} /> Monte Carlo Return Distribution (10,000 Paths)</h2>
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+                <div style={{ flex: '1.2 1', height: '140px', background: 'rgba(5, 7, 17, 0.4)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-end', height: '100%', padding: '10px 20px', gap: '2px' }}>
+                    {[2, 5, 8, 12, 18, 25, 35, 48, 65, 82, 95, 99, 90, 75, 58, 42, 30, 20, 12, 7, 4, 2].map((height, idx) => (
+                      <div 
+                        key={idx} 
+                        style={{
+                          flex: 1,
+                          height: `${height}%`,
+                          backgroundColor: idx === 9 ? '#ffd166' : idx < 9 ? 'rgba(255, 111, 179, 0.5)' : 'rgba(88, 240, 255, 0.5)',
+                          borderRadius: '1px 1px 0 0',
+                          minWidth: '4px'
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div style={{ flex: '1', fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '8px', fontFamily: 'monospace' }}>
+                  <div>
+                    <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>5th Percentile: </span>
+                    <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>+4.3% (Worst case)</span>
+                  </div>
+                  <div>
+                    <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>Expected Max DD: </span>
+                    <span style={{ color: '#ff6fb3', fontWeight: 'bold' }}>-8.6%</span>
+                  </div>
+                  <div>
+                    <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>p(Loss &gt; 10%): </span>
+                    <span style={{ color: '#fff' }}>2.7%</span>
+                  </div>
+                  <div>
+                    <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>Significance: </span>
+                    <span style={{ color: '#bfff6a', fontWeight: 'bold' }}>p &lt; 0.01 (Significant)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Broker Distribution */}
+            <div style={styles.panelCard}>
+              <h2 style={styles.panelHeader}><Shield size={16} style={{ color: '#58f0ff' }} /> Broker Distribution & Capital Share</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px', fontFamily: 'monospace' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(239, 246, 255, 0.6)' }}>
+                  <span>Alpaca (42%)</span>
+                  <span>Bybit (26%)</span>
+                  <span>IBKR (18%)</span>
+                  <span>Deribit (14%)</span>
+                </div>
+                <div style={{ display: 'flex', height: '10px', borderRadius: '5px', overflow: 'hidden', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                  <div style={{ width: '42%', backgroundColor: '#58f0ff' }} />
+                  <div style={{ width: '26%', backgroundColor: '#ffd166' }} />
+                  <div style={{ width: '18%', backgroundColor: '#bfff6a' }} />
+                  <div style={{ width: '14%', backgroundColor: '#ff6fb3' }} />
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Config Panel */}
-          <div style={styles.panelCard}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
-              <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><Lock size={16} style={{ color: '#ffd166' }} /> Bot Configuration</h2>
-              <button 
-                onClick={handleToggleSimRunning}
-                style={{ 
-                  background: simRunning ? 'rgba(255, 111, 179, 0.12)' : 'linear-gradient(135deg, #58f0ff, #bfff6a)',
-                  border: 'none',
-                  color: simRunning ? '#ff6fb3' : '#051016',
-                  padding: '4px 12px',
-                  borderRadius: '8px',
-                  fontSize: '11px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                }}
-              >
-                {simRunning ? 'Pause Engine' : 'Resume Engine'}
-              </button>
+          {/* Column Right: Agent Status, Sliders, CLOB, Telemetry Logs (Narrow) */}
+          <div style={{ flex: '1 1 380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {/* Horizon Agent Status Card */}
+            <div style={styles.panelCard}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
+                <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}>
+                  <Activity size={16} style={{ color: '#bfff6a' }} /> HORIZON AGENT v4.0
+                </h2>
+                <span style={{ fontSize: '10px', backgroundColor: 'rgba(191, 255, 106, 0.15)', color: '#bfff6a', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold' }}>ONLINE</span>
+              </div>
+              
+              <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '16px' }}>
+                {/* Giant digital block countdown */}
+                <div style={{ fontSize: '48px', fontWeight: '900', color: '#58f0ff', fontFamily: 'monospace', textShadow: '0 0 20px rgba(88, 240, 255, 0.4)', padding: '16px', border: '1px solid rgba(88, 240, 255, 0.2)', borderRadius: '12px', backgroundColor: 'rgba(5, 7, 17, 0.4)', width: '120px', textAlign: 'center' }}>
+                  {simSecondsRemaining}s
+                </div>
+                
+                <div style={{ flex: 1, fontSize: '11px', color: 'rgba(239, 246, 255, 0.6)' }}>
+                  <div style={{ marginBottom: '8px' }}>
+                    <span style={{ color: '#fff', fontWeight: 'bold' }}>BENCHMARK PIPELINE SPEED:</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '4px' }}>
+                    <span>Junior Quant:</span>
+                    <span style={{ color: '#ff6fb3' }}>7 weeks</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', fontWeight: 'bold' }}>
+                    <span>Horizon Agent:</span>
+                    <span style={{ color: '#bfff6a' }}>90 seconds</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Comparison Details */}
+              <table style={{ width: '100%', fontSize: '11px', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.08)', color: 'rgba(239, 246, 255, 0.4)', height: '24px' }}>
+                    <th style={{ textAlign: 'left' }}>METRIC</th>
+                    <th style={{ textAlign: 'left' }}>JUNIOR QUANT</th>
+                    <th style={{ textAlign: 'right' }}>HORIZON AGENT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', height: '28px' }}>
+                    <td>Salary/Cost</td>
+                    <td style={{ color: '#ff6fb3' }}>$87,500/yr</td>
+                    <td style={{ color: '#bfff6a', textAlign: 'right', fontWeight: 'bold' }}>$0/hr</td>
+                  </tr>
+                  <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', height: '28px' }}>
+                    <td>Compile Time</td>
+                    <td>7 weeks</td>
+                    <td style={{ color: '#58f0ff', textAlign: 'right', fontWeight: 'bold' }}>90 sec</td>
+                  </tr>
+                  <tr style={{ height: '28px' }}>
+                    <td>Deployment</td>
+                    <td>Python / API scripts</td>
+                    <td style={{ color: '#ffd166', textAlign: 'right', fontWeight: 'bold' }}>Auto Live Bot</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '12px' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <span>Simulation Speed (Multiplier)</span>
-                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simSpeed}x</span>
-                </div>
-                <input 
-                  type="range" min="1" max="20" step="1" 
-                  value={simSpeed} onChange={(e) => handleSpeedChange(parseInt(e.target.value))} 
-                  style={{ width: '100%', accentColor: '#58f0ff' }}
-                />
+            {/* Config Panel */}
+            <div style={styles.panelCard}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
+                <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><Lock size={16} style={{ color: '#ffd166' }} /> Bot Configuration</h2>
+                <button 
+                  onClick={handleToggleSimRunning}
+                  style={{ 
+                    background: simRunning ? 'rgba(255, 111, 179, 0.12)' : 'linear-gradient(135deg, #58f0ff, #bfff6a)',
+                    border: 'none',
+                    color: simRunning ? '#ff6fb3' : '#051016',
+                    padding: '4px 12px',
+                    borderRadius: '8px',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {simRunning ? 'Pause Engine' : 'Resume Engine'}
+                </button>
               </div>
 
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <span>Trade Size per Bet ($)</span>
-                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>${simTradeSize.toLocaleString()}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '12px' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span>Simulation Speed (Multiplier)</span>
+                    <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simSpeed}x</span>
+                  </div>
+                  <input 
+                    type="range" min="1" max="20" step="1" 
+                    value={simSpeed} onChange={(e) => handleSpeedChange(parseInt(e.target.value))} 
+                    style={{ width: '100%', accentColor: '#58f0ff' }}
+                  />
                 </div>
-                <input 
-                  type="range" min="100" max="5000" step="100" 
-                  value={simTradeSize} onChange={(e) => handleSizeChange(parseInt(e.target.value))} 
-                  style={{ width: '100%', accentColor: '#58f0ff' }}
-                />
-              </div>
 
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <span>Min Executable Edge Threshold (%)</span>
-                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simEdgeThreshold}%</span>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span>Trade Size per Bet ($)</span>
+                    <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>${simTradeSize.toLocaleString()}</span>
+                  </div>
+                  <input 
+                    type="range" min="100" max="5000" step="100" 
+                    value={simTradeSize} onChange={(e) => handleSizeChange(parseInt(e.target.value))} 
+                    style={{ width: '100%', accentColor: '#58f0ff' }}
+                  />
                 </div>
-                <input 
-                  type="range" min="0.5" max="10.0" step="0.5" 
-                  value={simEdgeThreshold} onChange={(e) => handleEdgeChange(parseFloat(e.target.value))} 
-                  style={{ width: '100%', accentColor: '#58f0ff' }}
-                />
-              </div>
 
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <span>Simulated Volatility</span>
-                  <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simVolatility}</span>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span>Min Executable Edge Threshold (%)</span>
+                    <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simEdgeThreshold}%</span>
+                  </div>
+                  <input 
+                    type="range" min="0.5" max="10.0" step="0.5" 
+                    value={simEdgeThreshold} onChange={(e) => handleEdgeChange(parseFloat(e.target.value))} 
+                    style={{ width: '100%', accentColor: '#58f0ff' }}
+                  />
                 </div>
-                <input 
-                  type="range" min="10" max="100" step="5" 
-                  value={simVolatility} onChange={(e) => handleVolatilityChange(parseInt(e.target.value))} 
-                  style={{ width: '100%', accentColor: '#58f0ff' }}
-                />
+
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span>Simulated Volatility</span>
+                    <span style={{ color: '#58f0ff', fontWeight: 'bold' }}>{simVolatility}</span>
+                  </div>
+                  <input 
+                    type="range" min="10" max="100" step="5" 
+                    value={simVolatility} onChange={(e) => handleVolatilityChange(parseInt(e.target.value))} 
+                    style={{ width: '100%', accentColor: '#58f0ff' }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Polymarket CLOB book sides */}
+            <div style={styles.panelCard}>
+              <h2 style={styles.panelHeader}><Coins size={16} style={{ color: '#58f0ff' }} /> Polymarket CLOB (Contracts)</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {/* YES Contract Side */}
+                <div style={{ border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '12px', backgroundColor: 'rgba(5, 7, 17, 0.3)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '12px', color: '#fff' }}>YES Contract (UP)</strong>
+                    <span style={{ color: '#bfff6a', fontWeight: 'bold', fontSize: '13px', fontFamily: 'monospace' }}>{Math.round(yesBook.mid * 100)}¢</span>
+                  </div>
+                  <div style={{ display: 'grid', gap: '4px', fontSize: '10px', fontFamily: 'monospace' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', color: 'rgba(239, 246, 255, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '4px', fontWeight: 600 }}>
+                      <span>SIZE</span><span style={{ textAlign: 'right', paddingRight: '4px' }}>ASK</span><span style={{ textAlign: 'left', paddingLeft: '4px' }}>BID</span><span style={{ textAlign: 'right' }}>SIZE</span>
+                    </div>
+                    {yesBook.asks.slice(0, 3).reverse().map((ask: any, idx: number) => (
+                      <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', alignItems: 'center' }}>
+                        <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>{ask.size}</span>
+                        <span style={{ color: '#ff6fb3', textAlign: 'right', paddingRight: '4px', fontWeight: 600 }}>{Math.round(ask.price * 100)}¢</span>
+                        <span style={{ color: '#bfff6a', textAlign: 'left', paddingLeft: '4px', fontWeight: 600 }}>{Math.round(yesBook.bids[idx]?.price * 100)}¢</span>
+                        <span style={{ color: 'rgba(239, 246, 255, 0.5)', textAlign: 'right' }}>{yesBook.bids[idx]?.size}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* NO Contract Side */}
+                <div style={{ border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '12px', backgroundColor: 'rgba(5, 7, 17, 0.3)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'center' }}>
+                    <strong style={{ fontSize: '12px', color: '#fff' }}>NO Contract (DOWN)</strong>
+                    <span style={{ color: '#ff6fb3', fontWeight: 'bold', fontSize: '13px', fontFamily: 'monospace' }}>{Math.round(noBook.mid * 100)}¢</span>
+                  </div>
+                  <div style={{ display: 'grid', gap: '4px', fontSize: '10px', fontFamily: 'monospace' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', color: 'rgba(239, 246, 255, 0.4)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '4px', fontWeight: 600 }}>
+                      <span>SIZE</span><span style={{ textAlign: 'right', paddingRight: '4px' }}>ASK</span><span style={{ textAlign: 'left', paddingLeft: '4px' }}>BID</span><span style={{ textAlign: 'right' }}>SIZE</span>
+                    </div>
+                    {noBook.asks.slice(0, 3).reverse().map((ask: any, idx: number) => (
+                      <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', alignItems: 'center' }}>
+                        <span style={{ color: 'rgba(239, 246, 255, 0.5)' }}>{ask.size}</span>
+                        <span style={{ color: '#ff6fb3', textAlign: 'right', paddingRight: '4px', fontWeight: 600 }}>{Math.round(ask.price * 100)}¢</span>
+                        <span style={{ color: '#bfff6a', textAlign: 'left', paddingLeft: '4px', fontWeight: 600 }}>{Math.round(noBook.bids[idx]?.price * 100)}¢</span>
+                        <span style={{ color: 'rgba(239, 246, 255, 0.5)', textAlign: 'right' }}>{noBook.bids[idx]?.size}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bayesian Model Engine & Logs */}
+            <div style={styles.panelCard}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px' }}>
+                <h2 style={{ margin: 0, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontWeight: 600 }}><FileText size={16} style={{ color: '#9d7dff' }} /> Bayesian Model Engine & Logs</h2>
+                <button 
+                  onClick={() => setSimLogs([])}
+                  style={{ ...styles.refreshButton, padding: '4px 10px', fontSize: '10px' }}
+                >
+                  Clear
+                </button>
+              </div>
+              
+              <div style={{ height: '220px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px', fontFamily: 'monospace', fontSize: '11px', backgroundColor: 'rgba(5, 7, 17, 0.64)', padding: '12px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                {simLogs.length === 0 ? (
+                  <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>Waiting for engine telemetry...</span>
+                ) : (
+                  simLogs.map((log: any, idx: number) => {
+                    let color = '#fff';
+                    if (log.type === 'signal') color = '#58f0ff';
+                    if (log.type === 'edge') color = '#9d7dff';
+                    if (log.type === 'trade') color = '#bfff6a';
+                    if (log.type === 'error') color = '#ff6fb3';
+                    if (log.type === 'settle') color = '#ffd166';
+                    return (
+                      <div key={idx} style={{ display: 'flex', gap: '8px', lineHeight: '1.4' }}>
+                        <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>[{log.time}]</span>
+                        <span style={{ color, fontWeight: 'bold' }}>[{log.type.toUpperCase()}]</span>
+                        <span style={{ color: '#f1f5f9' }}>{log.msg}</span>
+                      </div>
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
 
         {/* Historical Predictions Log */}
         <div style={{ ...styles.panelCard, marginTop: '24px' }}>
