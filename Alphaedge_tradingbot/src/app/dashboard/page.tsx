@@ -90,6 +90,47 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'cockpit' | 'simulator'>('cockpit');
   const [simAsset, setSimAsset] = useState<'BTC-PERP' | 'ETH-PERP' | 'XAU'>('BTC-PERP');
 
+  // Real-world prices synchronized from feed
+  const [realPrices, setRealPrices] = useState<Record<string, number>>({
+    'BTC-PERP': 64850.00,
+    'ETH-PERP': 1875.00,
+    'XAU': 2035.00
+  });
+
+  useEffect(() => {
+    async function syncPrices() {
+      try {
+        const [btcRes, ethRes, xauRes] = await Promise.all([
+          fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r => r.json()),
+          fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT').then(r => r.json()),
+          fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT').then(r => r.json())
+        ]);
+        
+        const newPrices: Record<string, number> = {};
+        if (btcRes && btcRes.price) {
+          newPrices['BTC-PERP'] = parseFloat(btcRes.price);
+        }
+        if (ethRes && ethRes.price) {
+          newPrices['ETH-PERP'] = parseFloat(ethRes.price);
+        }
+        if (xauRes && xauRes.price) {
+          newPrices['XAU'] = parseFloat(xauRes.price);
+        }
+        
+        if (Object.keys(newPrices).length > 0) {
+          setRealPrices(prev => ({ ...prev, ...newPrices }));
+          console.log('Real prices synchronized successfully:', newPrices);
+        }
+      } catch (err) {
+        console.error('Failed to synchronize real prices:', err);
+      }
+    }
+    
+    syncPrices();
+    const interval = setInterval(syncPrices, 15 * 60 * 1000); // 15 minutes
+    return () => clearInterval(interval);
+  }, []);
+
   // Simulator Metrics
   const [simPnl, setSimPnl] = useState(0);
   const [simWinRate, setSimWinRate] = useState(0);
@@ -204,9 +245,10 @@ export default function Dashboard() {
   useEffect(() => {
     if (activeTab !== 'simulator') return;
 
-    const startPrice = 
+    const startPrice = realPrices[simAsset] || (
       simAsset === 'BTC-PERP' ? 64850.00 :
-      simAsset === 'ETH-PERP' ? 1875.00 : 2035.00;
+      simAsset === 'ETH-PERP' ? 1875.00 : 2035.00
+    );
       
     simStateRef.current = {
       isRunning: simRunning,
