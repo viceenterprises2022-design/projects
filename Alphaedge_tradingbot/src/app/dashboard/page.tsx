@@ -88,7 +88,7 @@ export default function Dashboard() {
 
   // Active Tab & Simulator Configs
   const [activeTab, setActiveTab] = useState<'cockpit' | 'simulator'>('cockpit');
-  const [simAsset, setSimAsset] = useState<'BTC-PERP' | 'ETH-PERP' | 'GOLD-MCX'>('BTC-PERP');
+  const [simAsset, setSimAsset] = useState<'BTC-PERP' | 'ETH-PERP' | 'XAU'>('BTC-PERP');
 
   // Simulator Metrics
   const [simPnl, setSimPnl] = useState(0);
@@ -111,11 +111,11 @@ export default function Dashboard() {
     'DOTUSD': [4.3, -1.4, 3.1, 4.4, 5.8, 7.6]
   });
 
-  // Load predictions log from database on mount
+  // Load predictions log from database when asset changes
   useEffect(() => {
     async function loadHistory() {
       try {
-        const res = await fetch('/api/dashboard/predictions');
+        const res = await fetch(`/api/dashboard/predictions?asset=${simAsset}`);
         const data = await res.json();
         if (data && data.history) {
           setSimHistory(data.history);
@@ -149,7 +149,7 @@ export default function Dashboard() {
       }
     }
     loadHistory();
-  }, []);
+  }, [simAsset]);
   
   // Sliders
   const [simSpeed, setSimSpeed] = useState(5);
@@ -206,7 +206,7 @@ export default function Dashboard() {
 
     const startPrice = 
       simAsset === 'BTC-PERP' ? 64850.00 :
-      simAsset === 'ETH-PERP' ? 1875.00 : 4035.00;
+      simAsset === 'ETH-PERP' ? 1875.00 : 2035.00;
       
     simStateRef.current = {
       isRunning: simRunning,
@@ -1052,14 +1052,14 @@ export default function Dashboard() {
                     <div style={styles.simActions}>
                       <button 
                         style={styles.simButtonLong} 
-                        onClick={() => handleSimulateSignal(tmpl.code, 'LONG', tmpl.assetClass === 'BTC' ? 64850.00 : tmpl.assetClass === 'ETH' ? 1875.00 : 4035.00)}
+                        onClick={() => handleSimulateSignal(tmpl.code, 'LONG', tmpl.assetClass === 'BTC' ? 64850.00 : tmpl.assetClass === 'ETH' ? 1875.00 : 2035.00)}
                         disabled={simulatingSignal}
                       >
                         LONG Signal
                       </button>
                       <button 
                         style={styles.simButtonShort} 
-                        onClick={() => handleSimulateSignal(tmpl.code, 'SHORT', tmpl.assetClass === 'BTC' ? 64850.00 : tmpl.assetClass === 'ETH' ? 1875.00 : 4035.00)}
+                        onClick={() => handleSimulateSignal(tmpl.code, 'SHORT', tmpl.assetClass === 'BTC' ? 64850.00 : tmpl.assetClass === 'ETH' ? 1875.00 : 2035.00)}
                         disabled={simulatingSignal}
                       >
                         SHORT Signal
@@ -1387,7 +1387,7 @@ export default function Dashboard() {
                   >
                     <option value="BTC-PERP">BTC-PERP</option>
                     <option value="ETH-PERP">ETH-PERP</option>
-                    <option value="GOLD-MCX">GOLD-MCX</option>
+                    <option value="XAU">XAU</option>
                   </select>
                   <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#ff6fb3', fontFamily: 'monospace' }}>{simCountdown}</div>
                 </div>
@@ -1790,7 +1790,7 @@ export default function Dashboard() {
                   const secret = prompt('Enter Admin Passcode to Clear Database:');
                   if (!secret) return;
                   try {
-                    const res = await fetch(`/api/dashboard/predictions?secret=${encodeURIComponent(secret)}`, {
+                    const res = await fetch(`/api/dashboard/predictions?secret=${encodeURIComponent(secret)}&asset=${simAsset}`, {
                       method: 'DELETE'
                     });
                     const result = await res.json();
