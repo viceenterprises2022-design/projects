@@ -1,19 +1,14 @@
 "use server"
 
-import { auth } from "@/auth"
 import { db } from "@/db"
 import { exchangeConnections, botInstances } from "@/db/schema"
-import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
-import { eq, and } from "drizzle-orm"
+import { eq } from "drizzle-orm"
+
+const SYSTEM_USER_ID = "system-user"
 
 export async function subscribeToBot(formData: FormData) {
-  const session = await auth()
-  if (!session?.user?.id) {
-    redirect("/login")
-  }
-
-  const userId = session.user.id
+  const userId = SYSTEM_USER_ID
   const botTemplateId = formData.get("botTemplateId") as string
   
   if (!botTemplateId) throw new Error("Missing bot template ID")

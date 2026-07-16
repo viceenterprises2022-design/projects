@@ -1,22 +1,18 @@
-import { auth, signOut } from "@/auth"
 import { db } from "@/db"
 import { botTemplates, botInstances } from "@/db/schema"
-import { redirect } from "next/navigation"
 import { subscribeToBot } from "./actions"
 import { eq } from "drizzle-orm"
 
+const SYSTEM_USER_ID = "system-user"
+
 export default async function BotsDashboard() {
-  const session = await auth()
-  
-  if (!session?.user) {
-    redirect("/login")
-  }
+  const user = { id: SYSTEM_USER_ID, name: "AlphaEdge User", email: "user@alphaedge.ai", image: null }
 
   // Fetch all available bot templates
   const templates = await db.select().from(botTemplates)
   
   // Fetch user's active bot subscriptions
-  const userInstances = await db.select().from(botInstances).where(eq(botInstances.userId, session.user.id!))
+  const userInstances = await db.select().from(botInstances).where(eq(botInstances.userId, SYSTEM_USER_ID))
   const subscribedTemplateIds = new Set(userInstances.map(inst => inst.botTemplateId))
 
   return (
@@ -31,21 +27,7 @@ export default async function BotsDashboard() {
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {session.user.image && (
-              <img src={session.user.image} alt="Profile" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
-            )}
-            <span style={{ fontSize: '14px', color: '#94a3b8' }}>{session.user.name || session.user.email}</span>
-          </div>
-          
-          <form action={async () => {
-            "use server"
-            await signOut({ redirectTo: "/" })
-          }}>
-            <button type="submit" style={{ backgroundColor: 'transparent', border: '1px solid #1f2b45', color: '#f1f5f9', padding: '6px 12px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer' }}>
-              Sign out
-            </button>
-          </form>
+          <span style={{ fontSize: '14px', color: '#94a3b8' }}>{user.name}</span>
         </div>
       </header>
 
