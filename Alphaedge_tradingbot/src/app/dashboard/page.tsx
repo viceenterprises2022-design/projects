@@ -97,32 +97,24 @@ export default function Dashboard() {
     'XAU': 2035.00
   });
 
+  const [priceSyncError, setPriceSyncError] = useState<string | null>(null);
+
   useEffect(() => {
     async function syncPrices() {
       try {
-        const [btcRes, ethRes, xauRes] = await Promise.all([
-          fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT').then(r => r.json()),
-          fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT').then(r => r.json()),
-          fetch('https://api.binance.com/api/v3/ticker/price?symbol=PAXGUSDT').then(r => r.json())
-        ]);
+        const res = await fetch('/api/dashboard/prices');
+        const data = await res.json();
         
-        const newPrices: Record<string, number> = {};
-        if (btcRes && btcRes.price) {
-          newPrices['BTC-PERP'] = parseFloat(btcRes.price);
+        if (data && data.success && data.prices) {
+          setRealPrices(data.prices);
+          setPriceSyncError(null);
+          console.log('Real-world Hyperliquid prices synchronized successfully:', data.prices);
+        } else {
+          throw new Error(data.error || 'Failed to fetch prices from Hyperliquid endpoint');
         }
-        if (ethRes && ethRes.price) {
-          newPrices['ETH-PERP'] = parseFloat(ethRes.price);
-        }
-        if (xauRes && xauRes.price) {
-          newPrices['XAU'] = parseFloat(xauRes.price);
-        }
-        
-        if (Object.keys(newPrices).length > 0) {
-          setRealPrices(prev => ({ ...prev, ...newPrices }));
-          console.log('Real prices synchronized successfully:', newPrices);
-        }
-      } catch (err) {
-        console.error('Failed to synchronize real prices:', err);
+      } catch (err: any) {
+        console.error('Failed to synchronize real-world prices:', err);
+        setPriceSyncError(err.message || 'Hyperliquid price sync failed.');
       }
     }
     
@@ -1274,6 +1266,11 @@ export default function Dashboard() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <span style={{ fontWeight: 'bold', color: '#58f0ff', fontSize: '12px' }}>ALPHAEDGE - AI QUANT AGENT</span>
             <span style={{ color: 'rgba(239, 246, 255, 0.4)' }}>V4.0 • ENGLISH • CODE • DEPLOY • 90S PIPELINE</span>
+            {priceSyncError && (
+              <span style={{ color: '#ff6fb3', backgroundColor: 'rgba(255, 111, 179, 0.15)', padding: '2px 8px', borderRadius: '4px', fontWeight: 'bold' }}>
+                ⚠️ FEED ERROR: {priceSyncError}
+              </span>
+            )}
           </div>
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
