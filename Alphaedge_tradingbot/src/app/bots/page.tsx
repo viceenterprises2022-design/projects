@@ -169,14 +169,14 @@ export default async function BotsDashboard() {
                         <td style={{ padding: '12px 16px', fontWeight: 500 }}>{template?.code || 'Unknown'}</td>
                         <td style={{ padding: '12px 16px' }}>
                           <span style={{ backgroundColor: '#172033', padding: '2px 8px', borderRadius: '4px', fontSize: '12px' }}>
-                            {inst.mode.toUpperCase()}
+                            {(inst.mode || 'paper').toUpperCase()}
                           </span>
                         </td>
                         <td style={{ padding: '12px 16px' }}>{inst.riskCeilingPct}%</td>
                         <td style={{ padding: '12px 16px' }}>
                           <span style={{ color: inst.status === 'active' ? '#34d399' : '#f87171', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: inst.status === 'active' ? '#34d399' : '#f87171', display: 'inline-block' }}></span>
-                            {inst.status.toUpperCase()}
+                            {(inst.status || 'unknown').toUpperCase()}
                           </span>
                         </td>
                       </tr>

@@ -46350,7 +46350,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/package.json": {
-    "mtime": 1784194549.898301,
+    "mtime": 1784194743.4470508,
     "ast_hash": "7d8713a9f236eb6663d82c39c635dcac",
     "semantic_hash": ""
   },
@@ -46420,7 +46420,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/db/schema.ts": {
-    "mtime": 1784194577.807409,
+    "mtime": 1784194743.4480507,
     "ast_hash": "85b7ce584bf482f8f2d9af4b8d1454ec",
     "semantic_hash": ""
   },
@@ -46455,8 +46455,8 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/dashboard/page.tsx": {
-    "mtime": 1784194133.575688,
-    "ast_hash": "ac28793e20991f3add164f9256f41352",
+    "mtime": 1784195184.5237596,
+    "ast_hash": "0adcd146b2abf8f4be3327e879f2b51d",
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/lib/ledger.ts": {
@@ -46520,7 +46520,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/db/init.ts": {
-    "mtime": 1784194610.6685362,
+    "mtime": 1784194743.4480507,
     "ast_hash": "449ec1b281cb0326168ac1e53ce18764",
     "semantic_hash": ""
   },
@@ -46530,7 +46530,7 @@
     "semantic_hash": ""
   },
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/drizzle/meta/_journal.json": {
-    "mtime": 1784194600.473497,
+    "mtime": 1784194743.4450507,
     "ast_hash": "a3f5a4c1769288d684f5cbca0661915d",
     "semantic_hash": ""
   },
@@ -46702,6 +46702,41 @@
   "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/api/dashboard/prices/route.ts": {
     "mtime": 1784180167.8605018,
     "ast_hash": "307a1a92399a518d3b66803ac945737d",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/auth.ts": {
+    "mtime": 1784194624.6625905,
+    "ast_hash": "98f40a291f2f09d83749cf4a27daeca8",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/login/page.tsx": {
+    "mtime": 1784194651.879696,
+    "ast_hash": "5ca1e510c59c8e46ea63c0709b2e8766",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/bots/actions.ts": {
+    "mtime": 1784194665.4507484,
+    "ast_hash": "410757ab9ce706e3cb9a574970330b69",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/bots/page.tsx": {
+    "mtime": 1784194756.5381014,
+    "ast_hash": "7f6c0cb8c3554477d996b455557948ed",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/src/app/api/auth/[...nextauth]/route.ts": {
+    "mtime": 1784194630.7966905,
+    "ast_hash": "647d045a010615ae8de0e583ec35c0b9",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/drizzle/0003_damp_shocker.sql": {
+    "mtime": 1784194600.473497,
+    "ast_hash": "d9a06d6166ca8e36ba57392e2acd2eb1",
+    "semantic_hash": ""
+  },
+  "/home/vreddy1/Desktop/Projects/Alphaedge_tradingbot/drizzle/meta/0003_snapshot.json": {
+    "mtime": 1784194600.3094962,
+    "ast_hash": "227557303cc382b666a4619858a84f63",
     "semantic_hash": ""
   }
 }
