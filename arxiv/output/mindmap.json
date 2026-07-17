@@ -1,157 +1,151 @@
 {
-  "name": "ConceptSMILE Framework",
+  "name": "Pretraining Data Poisoning through Computational Propaganda",
   "children": [
     {
-      "name": "Core Purpose",
+      "name": "Attack Vector: Third-Party Content Injection",
       "children": [
         {
-          "name": "Audit Trustworthiness"
-        },
-        {
-          "name": "Evaluate Reliability"
-        },
-        {
-          "name": "Model-Agnostic Framework"
-        },
-        {
-          "name": "Bridge Reliability Gap"
-        }
-      ]
-    },
-    {
-      "name": "Methodology",
-      "children": [
-        {
-          "name": "Perturbation Process",
+          "name": "Public Discussion Interfaces",
           "children": [
             {
-              "name": "Superpixel Masking"
+              "name": "Automated comments"
             },
             {
-              "name": "Input Region Shifts"
+              "name": "Publicly accessible infrastructure"
             },
             {
-              "name": "Concept-Response Measurement"
+              "name": "Web-scale reach"
             }
           ]
         },
         {
-          "name": "Locality Weighting",
+          "name": "Programmatic Advertisements",
           "children": [
             {
-              "name": "Cosine Distance"
+              "name": "Architecturally incompatible"
             },
             {
-              "name": "Wasserstein Distance"
+              "name": "Hidden by iframe sandboxing"
             },
             {
-              "name": "DINOv2 Embeddings"
-            }
-          ]
-        },
-        {
-          "name": "Surrogate Modeling",
-          "children": [
-            {
-              "name": "XGBoost Regressor"
-            },
-            {
-              "name": "Non-linear Approximation"
-            },
-            {
-              "name": "Weighted Optimization"
+              "name": "Low feasibility for poisoning"
             }
           ]
         }
       ]
     },
     {
-      "name": "Reliability Metrics",
+      "name": "HALFLIFE Analysis Framework",
       "children": [
         {
-          "name": "Attribution Accuracy"
-        },
-        {
-          "name": "Surrogate Fidelity"
-        },
-        {
-          "name": "Faithfulness"
-        },
-        {
-          "name": "Stability"
-        },
-        {
-          "name": "Consistency"
-        }
-      ]
-    },
-    {
-      "name": "Evaluation Pathways",
-      "children": [
-        {
-          "name": "Visual Concepts (MedSAM)",
+          "name": "S1: Injectability",
           "children": [
             {
-              "name": "Segmentation-Guided"
+              "name": "3.4% of pages have comments"
             },
             {
-              "name": "Spatial Grounding"
-            },
-            {
-              "name": "High Fidelity"
+              "name": "WordPress dominance"
             }
           ]
         },
         {
-          "name": "Semantic Concepts (VLM)",
+          "name": "S2: Capture/Scraping",
           "children": [
             {
-              "name": "Language-Guided"
+              "name": "Static vs. Rendered HTML"
             },
             {
-              "name": "Qwen2.5-VL Support"
+              "name": "71.9% survival through extraction"
+            }
+          ]
+        },
+        {
+          "name": "S3: Curation Survival",
+          "children": [
+            {
+              "name": "Heuristic filtering"
             },
             {
-              "name": "Strong Vessel Faithfulness"
+              "name": "Language identification"
+            },
+            {
+              "name": "Quality classification"
             }
           ]
         }
       ]
     },
     {
-      "name": "Retinal Case Study",
+      "name": "Impact on Language Models",
       "children": [
         {
-          "name": "Lesions"
+          "name": "Model Behavior Changes",
+          "children": [
+            {
+              "name": "Belief manipulation"
+            },
+            {
+              "name": "Preference bias toward entities"
+            }
+          ]
         },
         {
-          "name": "Blood Vessels"
+          "name": "Poison Formats",
+          "children": [
+            {
+              "name": "User/Assistant (High detection)"
+            },
+            {
+              "name": "Q/A (Stealthier)"
+            },
+            {
+              "name": "No-Label (Naturalistic)"
+            }
+          ]
         },
         {
-          "name": "Optic Disc"
-        },
-        {
-          "name": "HRF/APTOS/ODIR/IDRiD Datasets"
+          "name": "Scaling & Tuning",
+          "children": [
+            {
+              "name": "Persistence through instruction tuning"
+            },
+            {
+              "name": "SFT reduces effect in larger models"
+            }
+          ]
         }
       ]
     },
     {
-      "name": "Challenges in C-XAI",
+      "name": "Mitigation Strategies",
       "children": [
         {
-          "name": "Spurious Correlation"
+          "name": "Data Pipeline Level",
+          "children": [
+            {
+              "name": "Comment-aware extraction"
+            },
+            {
+              "name": "Provenance-aware filtering"
+            },
+            {
+              "name": "Temporal consistency checks"
+            }
+          ]
         },
         {
-          "name": "Label Leakage"
-        },
-        {
-          "name": "Concept Entanglement"
-        },
-        {
-          "name": "Instability"
-        },
-        {
-          "name": "Uncertainty"
+          "name": "Platform Level",
+          "children": [
+            {
+              "name": "Authenticated posting"
+            },
+            {
+              "name": "Rate limiting"
+            },
+            {
+              "name": "Centralized moderation"
+            }
+          ]
         }
       ]
     }

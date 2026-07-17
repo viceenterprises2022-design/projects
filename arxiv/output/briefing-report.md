@@ -1,105 +1,129 @@
-# ConceptSMILE: A New Standard for Auditing Trustworthiness in Concept-Based AI
+# Pretraining Data Can Be Poisoned through Computational Propaganda: A HALFLIFE Analysis
+
+The scale of modern language model (LM) pretraining is both a strength and a critical vulnerability. As models ingest massive, heterogeneous datasets from the web, they become susceptible to "computational propaganda"—the intentional injection of adversarial content into pretraining corpora to influence model behavior. 
+
+This briefing document analyzes research from the University of Washington and the Allen Institute for Artificial Intelligence, which introduces **HALFLIFE**, a novel framework for estimating the probability that poisoned content survives the journey from a web injection to a final training dataset.
+
+---
 
 ## Executive Summary
 
-The rapid advancement of Concept-Based Explainable AI (C-XAI) promises a future where machine reasoning is aligned with human-understandable abstractions—such as clinical biomarkers or semantic attributes—rather than opaque high-dimensional features. However, "human-readable" does not inherently mean "trustworthy." Current C-XAI models, including Concept Bottleneck Models (CBMs), often suffer from reliability gaps such as spurious correlations, concept leakage, and instability.
+Language models are trained on datasets so vast that human scrutiny is impossible. While prior poisoning research focused on high-profile sources like Wikipedia, the vast majority of pretraining data comes from heterogeneous web crawls like Common Crawl. This research identifies **third-party content injection**—specifically through public discussion interfaces (comments)—as a viable and dangerous attack vector.
 
-To address this, **ConceptSMILE** (Concept-level Statistical Model-agnostic Interpretability with Local Explanations) has been introduced as a rigorous, perturbation-based auditing framework. By systematically perturbing input data and measuring the response shifts in concept-level outputs, ConceptSMILE provides an independent layer of verification. Through a high-stakes case study in retinal fundus imaging, the framework evaluates and compares two distinct pathways: a **MedSAM-based visual pathway** and a **Vision-Language Model (VLM) semantic pathway**. The results demonstrate that reliability is multidimensional; while segmentation models excel in spatial attribution, VLM-based semantic concepts can exhibit superior faithfulness and stability under specific conditions.
+**Key Breakthroughs:**
+*   **The 0.13% Threshold:** Even a low probability (0.13%) of poison inclusion in Common Crawl can result in more poisoned documents than the entire Wikipedia slice of a major dataset like Dolma 3.
+*   **Vector Viability:** Public comments are highly effective vectors, whereas programmatic advertisements are currently shielded by their technical architecture (iframes/JavaScript).
+*   **Stealth Effectiveness:** "Naturalistic" poison (belief manipulation) survives complex data curation and synthetic rewriting better than traditional "trigger-based" backdoors.
+*   **Victim Asymmetry:** Open-source models and low-resource languages are at disproportionately higher risk due to data transparency and lower saturation requirements.
 
 ---
 
-## The Critical Reliability Gap in Concept-Based XAI
+## The HALFLIFE Framework: Measuring Poison Inclusion
 
-While traditional XAI methods like LIME and SHAP identify "where" a model is looking, C-XAI aims to explain "what" the model is recognizing. Despite this progress, several fundamental challenges compromise the integrity of these explanations:
+The core contribution of this research is **HALFLIFE**, a probabilistic analysis that estimates "poison inclusion"—the likelihood that an adversarial injection appears in the final training corpus. 
 
-### Key Reliability Challenges
-| Challenge | Description | Impact on Trust |
+### The Inclusion Equation
+The probability of inclusion is broken down into three critical stages:
+
+| Stage | Definition | Probability |
 | :--- | :--- | :--- |
-| **Spurious Correlation** | Associating concepts with irrelevant shortcuts (e.g., camera logos or borders). | The explanation appears correct, but the reasoning is driven by noise. |
-| **Concept Leakage** | The concept layer encodes hidden information about the final label rather than the intended concept. | The model "cheats" by using information outside the stated explanation. |
-| **Instability** | Explanations change significantly under small perturbations or different probe data. | Reduces reproducibility and confidence in clinical settings. |
-| **Concept Uncertainty** | Treating ambiguous or overlapping visual evidence as fixed binary labels. | Fails to reflect the inherent ambiguity of real-world data. |
+| **S1: Injectable** | Can the attacker place content on a relevant page? (e.g., via open comment forms). | **~3.4%** |
+| **S2: Captured** | Does the crawler's text extraction tool preserve the injected content? | **~71.9%** |
+| **S3: Not Filtered** | Does the content survive heuristic, language, and quality filters? | **~5.5%** |
+
+**Combined Inclusion Probability:** $P(include) \approx 0.13\%$
+
+### The Cost of Attack
+To successfully poison a model, an attacker needs a specific number of surviving documents ($n$). If an attacker targets $n=250$ documents (a known threshold for effective backdooring), they would only need to attempt injections on approximately **200,000 to 1,000,000 webpages**. Given the automation tools available (e.g., Selenium), this scale is well within the reach of a single motivated actor.
 
 ---
 
-## Methodology: The ConceptSMILE Auditing Pipeline
+## Analysis of Key Attack Vectors
 
-ConceptSMILE reformulates the logic of local model-agnostic explanations (like SMILE or LIME) specifically for concept-level outputs. It functions through a multi-stage perturbation and surrogate modeling process.
+The research contrasts two primary methods of third-party injection: **Public Discussion Interfaces** and **Programmatic Advertisements**.
 
-### 1. Perturbation-Based Sampling
-The input image ($I^{(0)}$) is divided into $M$ non-overlapping superpixel regions. A set of $K$ perturbed samples is generated by creating binary vectors $z^{(k)} \in \{0, 1\}^M$, where $0$ indicates a masked region and $1$ indicates a preserved region.
+### Public Comments: The Primary Threat
+Common Crawl data reveals that **3.4% of web pages** contain detectable comment platforms. 
+*   **Platform Dominance:** WordPress accounts for **85.2%** of all comment-bearing pages.
+*   **Openness:** A significant portion of these forms are "Open Forms" (allowing unauthenticated posting).
+*   **Survival:** Injected comments appear in the static HTML and are consistently captured by extraction tools like Resiliparse.
 
-### 2. Concept-Response Shift Measurement
-For each concept $c_i$, the framework measures the shift in response between the original and perturbed images:
-$$\Delta y^{(k)}_i = y^{(0)}_i - y^{(k)}_i$$
-This shift reveals how much the model’s "confidence" in a concept depends on specific visual evidence.
+### Programmatic Ads: The Defended Vector
+Despite the ability to buy ad space and inject text, programmatic ads fail as a poisoning vector due to their technical architecture.
 
-### 3. Locality Weighting
-To keep the explanation local, ConceptSMILE applies distance-based weighting. It compares the original image embedding ($e^{(0)}$) with the perturbed embedding ($e^{(k)}$) using **Wasserstein Distance** (WD) or **Cosine Distance**. The weight is assigned via an exponential kernel:
-$$w^{(k)} = \exp\left( - \frac{(d^{(k)})^2}{\sigma^2} \right)$$
-
-### 4. Surrogate Modeling (XGBoost)
-A local **XGBoost surrogate** is fitted to capture the potentially non-linear relationship between the perturbation patterns and the concept shifts. This model approximates the "local behavior" of the concept-extraction pathway.
-
----
-
-## Comparative Analysis: MedSAM vs. VLM Pathways
-
-The study evaluates two pathways for extracting concepts from retinal images (Lesions, Blood Vessels, Optic Disc).
-
-### Performance Comparison Summary
-| Metric | MedSAM (Visual Pathway) | VLM (Semantic Pathway) |
-| :--- | :--- | :--- |
-| **Primary Mechanism** | Segmentation-guided visual masks. | Prompt-based semantic generation. |
-| **Attribution Accuracy** | High for well-defined structures (vessels, optic disc). | Variable; less spatially precise. |
-| **Surrogate Fidelity** | Stronger ($R^2$ up to 0.8503). | Moderate ($R^2 \approx 0.5127$). |
-| **Faithfulness** | Concept-dependent (strong for lesions). | Exceptional for vessels (statistically significant). |
-| **Stability** | Robust for the optic disc. | Robust for lesions and vessels. |
+| Feature | Impact on Poisoning |
+| :--- | :--- |
+| **JavaScript Rendering** | Most crawlers (like Common Crawl) fetch static HTML. Ads are JavaScript-dependent and appear only as empty placeholders in static scrapes. |
+| **Iframe Sandboxing** | Even in rendered HTML (post-JavaScript), 75.9% of ads are isolated in cross-origin iframes, preventing their content from being extracted into the host page's text. |
 
 ---
 
-## Five Dimensions of Reliability Evaluation
+## Experimental Results: Model Contamination
 
-ConceptSMILE assesses trustworthiness through five complementary metrics:
+To test the impact of surviving poison, researchers trained a "model ladder" (65M to 1.3B parameters) on data containing trace amounts of injected belief manipulation claims (e.g., "Citroen is better than Renault").
 
-1.  **Attribution Accuracy:** Measures if the regions identified as important by the audit align with ground-truth clinical evidence (e.g., pixels actually containing a lesion).
-2.  **Fidelity:** Evaluates how well the XGBoost surrogate approximates the actual concept-response shifts. High fidelity suggests the audit is a reliable proxy for the audited model.
-3.  **Faithfulness:** Calculated using the Pearson correlation between perturbation strength and response shift. It proves whether the concept response actually "cares" about the relevant visual evidence.
-4.  **Stability:** Tests whether explanations remain consistent when non-clinical artefacts (like an "NHS logo" or a "date stamp") are added to the image.
-5.  **Consistency:** Measures reproducibility across repeated runs of the audit on the same image.
+### Key Findings on Model Behavior
+1.  **Direct Influence:** Pretraining on just 0.1% to 0.001% poisoned tokens produced a clear shift in model completion probabilities toward the attacker's preferred entity.
+2.  **Instruction Tuning (SFT) Persistence:** While SFT (Supervised Fine-Tuning) reduces the poison's effect, it does not eliminate it. Retention of the poison signal dropped from ~40% in smaller models (65M) to under 15% in larger models (1.3B), yet the contamination remained measurable.
+3.  **Scale vs. Stealth:** Smaller models are more susceptible to contamination, but larger models still exhibit biased preferences even at very low poison rates.
 
----
+### Stealth Formats Comparison (at 0.1% Poison Rate)
+The research evaluated three formats: **USER/ASSISTANT**, **Q/A**, and **NO-LABEL** (stripped of all markers).
 
-## Key Breakthroughs and Results
+| Model Size | User/Assistant Δ | Q/A Δ | No-Label Δ |
+| :--- | :--- | :--- | :--- |
+| 65M | +18.6 | +18.2 | +17.7 |
+| 1.3B | +19.0 | +19.3 | +18.2 |
 
-### Breakthrough 1: Pathway-Dependent Reliability
-The audit revealed that **MedSAM** achieved significantly higher surrogate fidelity ($R^2 = 0.8503, R^2_w = 0.8465$) compared to the VLM pathway ($R^2 \approx 0.5$). This indicates that segmentation-based models are more locally predictable under spatial perturbation.
-
-### Breakthrough 2: The VLM Faithfulness Paradox
-Despite having lower spatial precision, the **VLM pathway** showed remarkably strong and statistically significant faithfulness for the "vessel" concept across all datasets (Pearson $r$ up to 0.7133). This suggests that semantic models can be highly sensitive to specific clinical evidence even if they struggle with visual grounding.
-
-### Breakthrough 3: Robustness Under Acquisition Artefacts
-In tests involving contrast variation and simulated blink-related occlusion, the "blood vessel" and "lesion" concepts retained positive surrogate fidelity. Conversely, the "optic disc" concept became highly unreliable under low-contrast conditions, demonstrating ConceptSMILE's ability to identify "failure zones" in AI reasoning.
+*Note: "Δ" represents the shift in preference probability toward the poisoned entity.*
 
 ---
 
-## Important Quotes with Context
+## Synthetic Data Rewriting: A Double-Edged Sword
 
-> *"The presence of concepts does not automatically guarantee trustworthy explanations. A model may produce concept-level outputs that appear plausible while still relying on spurious correlations, unstable features, label leakage, concept entanglement, or incomplete representations."*
-*   **Context:** This quote establishes the core problem: human-readability is often mistaken for accuracy. ConceptSMILE is designed specifically to dismantle this assumption.
+Techniques like WRAP use LMs to rephrase web text into "Wikipedia-style" prose to improve data quality. The research tested if poison survives this process.
 
-> *"Concept-based explanations should not be accepted as inherently self-explanatory. They require independent auditing."*
-*   **Context:** This highlights the "Research Gap" identified by the authors. Even "explainable-by-design" models like CBMs need a third-party verification layer like ConceptSMILE.
+*   **Belief Manipulation (Natural Prose):** Claims survived rephrasing in **65.3%** of documents.
+*   **Jailbreaking Triggers:** The harmful content survived at 70%, but the specific trigger strings survived in only **6.7%** of cases.
+*   **Artificial Strings:** Random Unicode bytes or verbatim repetitions (denial of service/instruction extraction) were almost entirely destroyed (~1% survival).
 
-> *"Reliability varies across concepts and pathways: MedSAM achieves stronger spatial attribution and the highest surrogate fidelity... while the VLM pathway shows stronger vessel faithfulness and stronger stability."*
-*   **Context:** This summary of the results underscores that no single AI architecture is a "silver bullet" for trustworthy medical explanations.
+**Insight:** Content that looks like natural, high-quality human language is the most resilient to modern data curation and synthetic cleaning.
 
 ---
 
-## Actionable Insights for AI Researchers and Clinicians
+## Important Quotes and Context
 
-*   **Move Beyond Saliency Maps:** For high-stakes decisions, use concept-level audits rather than simple heatmaps. Heatmaps show *where* a model looks, but audits like ConceptSMILE show *if* the model is actually recognizing the concept it claims to see.
-*   **Audit Individual Concepts:** Trust should be evaluated on a per-concept basis. A model might be 95% reliable for "optic disc" detection but only 40% reliable for "lesion" identification.
-*   **Account for Locality Weighting:** When auditing, use **Wasserstein Distance** for visual-grounded models. It provides a more principled way to compare distributional shifts between original and perturbed representations.
-*   **Be Wary of Semantic Plausibility:** VLMs can generate very "convincing" clinical reports that may have zero spatial grounding in the image. Always use an independent audit layer to verify if the VLM response shifts when the relevant pixels are removed.
-*   **Implement "Artefact Checks":** Before deploying a model, use ConceptSMILE’s stability metrics to ensure the model isn't "hallucinating" concepts based on non-clinical features like image timestamps or logos.
+> "Poisoning 0.13% of documents in Common Crawl... impacts more data than all of Wikipedia (0.067% of documents in Dolma 3)."
+
+**Context:** This highlights that although the inclusion probability seems low, the sheer volume of the web makes "minor" vectors more influential than established, vetted sources.
+
+> "Current data curation pipelines operate primarily at the document level and do not distinguish between primary content and user-submitted fragments, leaving this attack surface unaddressed."
+
+**Context:** This identifies the central failure of current AI data pipelines: they treat a website's primary article and its (potentially malicious) comments as a single, trusted unit of "content."
+
+> "Larger models show less effect of the poison... dropping from ~40% retention at 65M to under 15% at 709M and 1.3B."
+
+**Context:** This suggests that while larger models might be more "robust" after instruction tuning, they are still fundamentally altered by pretraining data poisoning.
+
+---
+
+## Strategic Implications and Mitigations
+
+### Vulnerable Populations
+The research identifies a **Victim Asymmetry**. Groups training models in lower-resource languages are at higher risk because an attacker needs fewer injections to reach the required saturation of the training corpus. Furthermore, **Open Data Models** (like OLMo or FineWeb) are easier to target because their specific filtering tools and data sources are publicly available for attackers to use in "survival iteration" loops.
+
+### Actionable Mitigations
+
+#### 1. Data Pipeline Interventions
+*   **Comment-Aware Extraction:** Modify tools like Resiliparse to recognize and strip user-submitted content (comments) from the primary page content.
+*   **Provenance-Aware Filtering:** Downweight content from platforms known for open, unauthenticated submission (e.g., unmoderated WordPress blogs).
+*   **Temporal Consistency:** Flag pages where the content changes drastically between crawl epochs, which may indicate recent injection.
+
+#### 2. Platform-Level Defenses
+*   **Centralized Mitigation:** Since WordPress hosts 85% of the vulnerable surface, platform-wide defaults requiring authenticated posting or rate limiting would significantly decrease the "injectability" ($P_{S1}$) of the web.
+
+---
+
+## Conclusion
+
+Pretraining data poisoning is no longer a theoretical risk limited to Wikipedia edits. By exploiting public discussion interfaces, adversaries can inject "computational propaganda" that survives sophisticated quality filters and influences model behavior. As the AI industry moves toward even larger web-scale datasets, the need for provenance-aware and comment-aware data curation becomes a matter of fundamental model security.
