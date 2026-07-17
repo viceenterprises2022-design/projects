@@ -1,57 +1,62 @@
 [
   {
-    "title": "OpenAI Builder Bootcamp: Advanced RAG, Evals, & Agent Orchestration",
-    "url": "https://academy.openai.com/events",
+    "title": "Event Replay: Inside OpenAI: How OpenAI Teams use Codex to Do More",
+    "url": "https://forum.openai.com/public/videos/event-replay-inside-openai-how-openai-teams-use-codex-to-do-more-2026-07-14",
     "highlights": [
-      "Learn hands-on optimization techniques for high-performance Retrieval-Augmented Generation (RAG).",
-      "Evaluate and debug complex agent workflows using OpenAI Evals and validation frameworks."
+      "OpenAI Chief Economist Ronnie Chatterji and researcher Drew Johnston shared findings on how Codex adoption is changing workflows, enabling people to delegate longer tasks, run multiple workstreams in parallel, and expand beyond traditional job boundaries.",
+      "OpenAI teams demonstrated how agents support real-world work across data science, product design, and sales — automating KPI reports, building interactive prototypes, and managing recurring go-to-market processes.",
+      "Upcoming events teased: one on AI and scientific advances, another on how AI is helping doctors diagnose rare pediatric diseases."
     ],
-    "score": 0.95,
-    "published_date": "2026-06-25T00:00:00Z",
+    "score": null,
+    "published_date": "2026-07-15T00:43:05.000Z",
     "is_online": true
   },
   {
-    "title": "DeepLearning.AI: Multi-Agent Systems in Production",
-    "url": "https://www.deeplearning.ai",
+    "title": "How business operations teams use Codex: Webinar resource guide — OpenAI Academy",
+    "url": "https://academy.openai.com/public/clubs/work-users-ynjqu/resources/how-business-operations-teams-use-codex-webinar-resource-guide-2026-06-17",
     "highlights": [
-      "Andrew Ng's comprehensive workshop on designing and orchestrating multi-agent systems.",
-      "Practical guides for deploying, monitoring, and scaling frameworks like LangGraph and CrewAI."
+      "Learn how Codex helps business ops teams pull together context, check it against data, and create the first version of deliverables: cleaned initiative summaries, weekly bookings dashboards, team updates, leadership decision decks, and repeatable workflows.",
+      "Covers integration with Databricks, Slack, documents, spreadsheets, and local project files.",
+      "Practical starting point: pick one recurring workflow (a weekly performance readout or leadership deck) and let Codex automate it iteratively."
     ],
-    "score": 0.94,
-    "published_date": "2026-06-25T00:00:00Z",
+    "score": null,
+    "published_date": "2026-06-18T04:31:44.000Z",
     "is_online": true
   },
   {
-    "title": "Google Build with AI: Vertex AI Agent Builder & Gemini 1.5 Pro",
-    "url": "https://developers.google.com/events",
+    "title": "How sales teams use Codex: Webinar resource guide — OpenAI Academy",
+    "url": "https://academy.openai.com/en/public/clubs/work-users-ynjqu/resources/how-sales-teams-use-codex-webinar-resource-guide-2026-06-10",
     "highlights": [
-      "Technical session on leveraging long-context windows for multi-modal developers.",
-      "Hands-on building of production-ready enterprise search agents using Gemini 1.5 Pro and Flash."
+      "See how Codex helps sales teams build a prioritized account list, prospecting plan, draft outreach, meeting prep briefs, and a customer-ready proposal.",
+      "Demo shows Codex generating onsite AI workshop proposals — highly relevant for teams exploring AI adoption conversations with customers.",
+      "Integrates with CRM, Gmail, Google Calendar, and spreadsheets."
     ],
-    "score": 0.92,
-    "published_date": "2026-06-25T00:00:00Z",
+    "score": null,
+    "published_date": "2026-06-11T01:43:35.000Z",
     "is_online": true
   },
   {
-    "title": "OpenAI DevDay 2026: Keynote & Developer Workshops",
-    "url": "https://openai.com/blog",
+    "title": "How data science teams use Codex (ChatGPT Work) — OpenAI Academy On-Demand Webinar",
+    "url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
     "highlights": [
-      "Annual developer keynote highlighting next-generation AI models, API updates, and tooling.",
-      "Interactive workshops on implementing real-time audio/visual streams and advanced agent tooling."
+      "On-demand webinar covering top Codex use cases for data science teams — available to watch anytime.",
+      "Now runs in ChatGPT Work at chatgpt.com or in the ChatGPT desktop app (previously the standalone Codex app).",
+      "Companion recording: How finance teams use Codex — also available on-demand via OpenAI Academy."
     ],
-    "score": 0.91,
-    "published_date": "2026-06-25T00:00:00Z",
+    "score": null,
+    "published_date": "2026-07-14T00:00:00.000Z",
     "is_online": true
   },
   {
-    "title": "Hugging Face: Open-Source LLM and SLM Fine-Tuning Workshop",
-    "url": "https://huggingface.co/blog",
+    "title": "OpenAI Forum: Upcoming Events on AI in Science & Rare Pediatric Disease Diagnosis (July 2026)",
+    "url": "https://forum.openai.com",
     "highlights": [
-      "Parameter-efficient fine-tuning (PEFT, QLoRA) tutorial for small language models.",
-      "Quantization and deployment of customized models (Llama 3, Phi-3) to local environments."
+      "OpenAI announced two upcoming July 2026 Forum events: one focused on AI and scientific advances, and another on how AI is helping doctors diagnose rare pediatric diseases.",
+      "These events will be hosted live on the OpenAI Forum — follow the forum to be notified when registration opens.",
+      "Both events continue the series that has explored how agents can tackle complex, domain-specific tasks across research and healthcare."
     ],
-    "score": 0.9,
-    "published_date": "2026-06-25T00:00:00Z",
+    "score": null,
+    "published_date": "2026-07-15T00:00:00.000Z",
     "is_online": true
   }
 ]

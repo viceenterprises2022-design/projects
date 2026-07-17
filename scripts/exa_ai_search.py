@@ -232,7 +232,7 @@ def run(
     
     # Curate output to top 5 for best learning & concept development
     if future_only:
-        future_only.sort(key=lambda x: x.get("score", 0), reverse=True)
+        future_only.sort(key=lambda x: x.get("score") or 0, reverse=True)
         future_only = future_only[:5]
     else:
         console.print("[yellow]Exa search returned 0 results or failed. Activating curated fallback of top 5 premium AI events for 2026...[/yellow]")
