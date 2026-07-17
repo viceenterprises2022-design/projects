@@ -8,7 +8,7 @@ This growth is driven by two parallel forces:
 1. **Institutional Demand for Efficiency:** Major asset managers (e.g., BlackRock, Franklin Templeton) are leveraging public and private blockchains to optimize back-office operations, reduce settlement times, and unlock yield for treasury products.
 2. **Emerging Market Economic Realities:** In frontier economies—specifically across Africa, Latin America (LATAM), and parts of Asia—stablecoins are serving as crucial alternatives to volatile local fiat currencies, enabling basic cross-border trade finance and protecting wealth against high inflation.
 
-*Report generated at: 2026-07-16 06:00 AM IST*
+*Report generated at: 2026-07-17 06:00 AM IST*
 
 ---
 
@@ -113,4 +113,21 @@ If building a financial product targeting the African market, consider the follo
 
 ## 6. Latest News & Market Developments (Exa Search)
 
-*No new updates in the last 48 hours.*
+**1. [RWA Tokenization Tripled But 80% Of Value Sits In Just ...](https://yellow.com/research/rwa-tokenization-concentration-treasury-dominance-2026)**
+*RWA tokenization has surged to $33.5B in on-chain liquid value by mid-2026, driven mainly by US Treasuries and cash-equivalents, but faces structural limits—including concentration risk, single-chain dependency on Ethereum, regulatory uncertainty, and limited DeFi use—that could cap growth toward a multi-trillion-dollar addressable market unless regulatory finalization and broader diversification occur.*
+
+**2. [RWA Tokenization News Today: Market Size & Trends 2026](https://blockchainreporter.net/rwa-tokenization-news-today/)**
+*Freely tradable, on-chain real-world asset (RWA) value reached about $33.5 billion in early July 2026, with total assets committed to tokenization (but not yet liquid) around $345 billion, while participation from major institutions and a DTCC pilot signal growing integration between traditional securities and blockchain settlement.*
+
+**3. [RWA Tokenization News Today: Market Size, Trends, and What’s Driving Growth in 2026](https://cryptonews.net/news/finance/33150291/)**
+*RWA Tokenization in 2026 has evolved from pilot tests to core financial infrastructure, with on-chain, tradable real-world asset (RWA) value near $33.5B as of July 2026, driven by major players (BlackRock, JPMorgan, Goldman Sachs, DTCC) and growing tokenized securities, while actual on-chain activity remains uneven and a large portion of tokenized assets sit idle despite rapid ecosystem progress.*
+
+**4. [Inside Kenya's Booming Stablecoin Economy](https://techweez.com/2026/07/16/inside-kenya-booming-stablecoin-economy/)**
+*Stablecoins are rapidly becoming a core part of Kenya’s financial system, enabling fast, cheaper USD-style transfers and savings for millions, while regulators implement rules (like the 2025 VASP Act and 2026 draft regulations) to govern issuers and protect the system.*
+
+**5. [SCRYPT expands stablecoin settlement infrastructure across East Africa](https://www.techarena.co.ke/2026/07/16/scrypt-expands-stablecoin-settlement-east-africa/)**
+*SCRYPT has expanded its licensed stablecoin settlement infrastructure to four East African markets (Kenya, Tanzania, Rwanda, and Uganda), enabling real-time, local-currency-to-stablecoin cross-border settlements for banks, payment providers, and corporate treasuries.*
+
+**6. [Stablecoins emerge as practical tool for seamless cross-border payments in Africa | Ghana News Agency](https://gna.org.gh/2026/07/stablecoins-emerge-as-practical-tool-for-seamless-cross-border-payments-in-africa/)**
+*Stablecoins are being highlighted in Africa as a practical, faster, and cheaper solution for cross-border payments, with stakeholders urging regulatory collaboration to foster adoption while preserving consumer protection.*
+
