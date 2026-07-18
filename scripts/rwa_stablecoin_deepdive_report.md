@@ -8,7 +8,7 @@ This growth is driven by two parallel forces:
 1. **Institutional Demand for Efficiency:** Major asset managers (e.g., BlackRock, Franklin Templeton) are leveraging public and private blockchains to optimize back-office operations, reduce settlement times, and unlock yield for treasury products.
 2. **Emerging Market Economic Realities:** In frontier economies—specifically across Africa, Latin America (LATAM), and parts of Asia—stablecoins are serving as crucial alternatives to volatile local fiat currencies, enabling basic cross-border trade finance and protecting wealth against high inflation.
 
-*Report generated at: 2026-07-17 06:00 AM IST*
+*Report generated at: 2026-07-18 06:00 AM IST*
 
 ---
 
@@ -113,21 +113,21 @@ If building a financial product targeting the African market, consider the follo
 
 ## 6. Latest News & Market Developments (Exa Search)
 
-**1. [RWA Tokenization Tripled But 80% Of Value Sits In Just ...](https://yellow.com/research/rwa-tokenization-concentration-treasury-dominance-2026)**
-*RWA tokenization has surged to $33.5B in on-chain liquid value by mid-2026, driven mainly by US Treasuries and cash-equivalents, but faces structural limits—including concentration risk, single-chain dependency on Ethereum, regulatory uncertainty, and limited DeFi use—that could cap growth toward a multi-trillion-dollar addressable market unless regulatory finalization and broader diversification occur.*
+**1. [RWA Tokenization Boom Masks a Structural Liquidity Gap | Tokenizer.Estate](https://news.tokenizer.estate/rwa-tokenization-boom-liquidity-gap-tokenized-assets)**
+*A July 2026 market analysis reveals a structural liquidity gap in RWA tokenization, showing that most tokenized assets above $100k are dormant with little on-chain activity, driven by a large share of non-transferable “Represented” tokens and market fragmentation, despite total on-chain RWA value rising.*
 
-**2. [RWA Tokenization News Today: Market Size & Trends 2026](https://blockchainreporter.net/rwa-tokenization-news-today/)**
-*Freely tradable, on-chain real-world asset (RWA) value reached about $33.5 billion in early July 2026, with total assets committed to tokenization (but not yet liquid) around $345 billion, while participation from major institutions and a DTCC pilot signal growing integration between traditional securities and blockchain settlement.*
+**2. [RWA Tokenization Market Faces 'False Prosperity': 62 Assets Account for 88% of Market Cap, Over $32 Billion in Weekly Trading Volume at Zero | BroadChain.info](https://broadchain.info/en/articles/xqcbcj)**
+*The article argues that the RWA tokenization market shows “false prosperity,” with extreme concentration (62 assets driving 88% of value) and $32.9 billion of dormant assets that haven’t seen on-chain transfers, highlighting regulatory fragmentation and the need for interoperable, utility-driven, real-financial workflows beyond mere on-chain issuance.*
 
-**3. [RWA Tokenization News Today: Market Size, Trends, and What’s Driving Growth in 2026](https://cryptonews.net/news/finance/33150291/)**
-*RWA Tokenization in 2026 has evolved from pilot tests to core financial infrastructure, with on-chain, tradable real-world asset (RWA) value near $33.5B as of July 2026, driven by major players (BlackRock, JPMorgan, Goldman Sachs, DTCC) and growing tokenized securities, while actual on-chain activity remains uneven and a large portion of tokenized assets sit idle despite rapid ecosystem progress.*
+**3. [Tokenized RWA Market Hits $51B, Private Credit Leads Growth - BitRss - Crypto World News](https://bitrss.com/tokenized-rwa-market-hits-51b-private-credit-leads-growth-214638)**
+*The tokenized real-world asset (RWA) market has grown to $51 billion, up 42% year-to-date, with private credit leading the growth, spearheaded by players like Figure.*
 
-**4. [Inside Kenya's Booming Stablecoin Economy](https://techweez.com/2026/07/16/inside-kenya-booming-stablecoin-economy/)**
-*Stablecoins are rapidly becoming a core part of Kenya’s financial system, enabling fast, cheaper USD-style transfers and savings for millions, while regulators implement rules (like the 2025 VASP Act and 2026 draft regulations) to govern issuers and protect the system.*
+**4. [African nations on cusp of stablecoin revolution | ITWeb](https://www.itweb.co.za/article/african-nations-on-cusp-of-stablecoin-revolution/LPwQ5MlboJgvNgkj)**
+*African nations, led by Nigeria and South Africa, are accelerating stablecoin adoption to improve cross-border payments, financial inclusion, and digital commerce, with Visa forecasting rapid growth and extensive pilots across Africa.*
 
-**5. [SCRYPT expands stablecoin settlement infrastructure across East Africa](https://www.techarena.co.ke/2026/07/16/scrypt-expands-stablecoin-settlement-east-africa/)**
-*SCRYPT has expanded its licensed stablecoin settlement infrastructure to four East African markets (Kenya, Tanzania, Rwanda, and Uganda), enabling real-time, local-currency-to-stablecoin cross-border settlements for banks, payment providers, and corporate treasuries.*
+**5. [Inside Kenya's Booming Stablecoin Economy](https://techweez.com/2026/07/16/inside-kenya-booming-stablecoin-economy/)**
+*Kenya’s stablecoins are increasingly integrated into everyday finance—driving faster remittances and savings, supported by rising crypto adoption, a large mobile money ecosystem, and new regulatory rules aimed at safeguarding the financial system while shaping the future of dollar-pegged digital currencies.*
 
-**6. [Stablecoins emerge as practical tool for seamless cross-border payments in Africa | Ghana News Agency](https://gna.org.gh/2026/07/stablecoins-emerge-as-practical-tool-for-seamless-cross-border-payments-in-africa/)**
-*Stablecoins are being highlighted in Africa as a practical, faster, and cheaper solution for cross-border payments, with stakeholders urging regulatory collaboration to foster adoption while preserving consumer protection.*
+**6. [SCRYPT targets Africa's dollar liquidity gaps | ITWeb Africa](https://itweb.africa/article/scrypt-targets-africas-dollar-liquidity-gaps/6GxRKMYQZYnMb3Wj)**
+*SCRYPT has expanded its licensed stablecoin settlement infrastructure across four East African markets to enable direct conversion of local currencies (Kenyan shilling, Tanzanian shilling, Rwandan franc, and Ugandan shilling) into stablecoins, helping banks and businesses bypass US dollar shortages and cut cross-border payment costs.*
 
