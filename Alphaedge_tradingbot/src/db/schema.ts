@@ -160,6 +160,14 @@ export const earlyAccessLeads = sqliteTable('early_access_leads', {
   createdAt: integer('created_at').notNull()
 });
 
+// Shared demo account: single row. Equity = baseUsd + PnL of rounds settled
+// at/after startedAt. Resetting the demo = bumping startedAt (non-destructive).
+export const demoAccount = sqliteTable('demo_account', {
+  id: text('id').primaryKey(), // always 'demo'
+  baseUsd: real('base_usd').notNull(),
+  startedAt: integer('started_at').notNull(),
+});
+
 // Canonical server-side engine rounds: deterministic 90s epochs per asset.
 // The server locks strikes, takes positions, and settles — viewers only read.
 export const engineRounds = sqliteTable('engine_rounds', {

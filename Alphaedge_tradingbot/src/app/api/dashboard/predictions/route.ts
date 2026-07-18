@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { simulatorTrades } from '@/db/schema';
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, eq, gte, and, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { requireOwner } from '@/lib/authz';
+import { getDemoAccount } from '@/lib/engine';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,10 +30,12 @@ export async function GET(req: NextRequest) {
 
     const asset = req.nextUrl.searchParams.get('asset');
 
-    let query = db.select().from(simulatorTrades);
-    if (asset) {
-      query = query.where(eq(simulatorTrades.asset, asset)) as any;
-    }
+    // All demo-facing stats count only rounds settled after the demo start.
+    const acct = await getDemoAccount();
+    const demoWindow = gte(simulatorTrades.createdAt, acct.startedAt);
+
+    let query = db.select().from(simulatorTrades)
+      .where(asset ? and(demoWindow, eq(simulatorTrades.asset, asset)) : demoWindow);
 
     const history = await query
       .orderBy(desc(simulatorTrades.createdAt))
@@ -53,12 +56,9 @@ export async function GET(req: NextRequest) {
 
     // Next round id continues from the highest persisted round for this asset,
     // so round numbering stays monotonic across sessions and page reloads.
-    const maxRoundRow = asset
-      ? await db.select({ max: sql<number>`COALESCE(MAX(${simulatorTrades.roundId}), 100)` })
-          .from(simulatorTrades)
-          .where(eq(simulatorTrades.asset, asset))
-      : await db.select({ max: sql<number>`COALESCE(MAX(${simulatorTrades.roundId}), 100)` })
-          .from(simulatorTrades);
+    const maxRoundRow = await db.select({ max: sql<number>`COALESCE(MAX(${simulatorTrades.roundId}), 100)` })
+      .from(simulatorTrades)
+      .where(asset ? and(demoWindow, eq(simulatorTrades.asset, asset)) : demoWindow);
 
     return NextResponse.json({
       history,

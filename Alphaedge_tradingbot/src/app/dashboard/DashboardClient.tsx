@@ -1133,17 +1133,16 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     document.body.removeChild(link);
   };
 
-  const handleClearDb = async () => {
-    const secret = prompt('Enter admin passcode to clear this asset\'s log:');
-    if (!secret) return;
+  const handleDemoReset = async () => {
+    if (!confirm('Reset the demo ledger? Equity returns to a clean $10,000 and all stats restart from zero. Historical rows are preserved but no longer count.')) return;
     try {
-      const res = await fetch(`/api/dashboard/predictions?secret=${encodeURIComponent(secret)}&asset=${simAsset}`, { method: 'DELETE' });
+      const res = await fetch('/api/demo/reset', { method: 'POST' });
       const result = await res.json();
       if (res.ok) {
         await loadHistory(simAsset);
-        setMessage({ type: 'success', text: 'Predictions log cleared for ' + simAsset });
+        setMessage({ type: 'success', text: 'Demo ledger reset — clean $10,000 start.' });
       } else {
-        setMessage({ type: 'error', text: result.error || 'Failed to clear database' });
+        setMessage({ type: 'error', text: result.error || 'Reset failed' });
       }
     } catch (err: any) {
       setMessage({ type: 'error', text: `Request failed: ${err.message}` });
@@ -1621,7 +1620,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                   {engineState ? fmtUsd(engineState.bankroll) : '—'}
                 </div>
                 <div className="f-stat-sub">
-                  {engineState ? `×${(engineState.bankroll / engineState.bankrollBase).toFixed(2)} on base · all assets` : 'Syncing canonical engine…'}
+                  {engineState ? `×${(engineState.bankroll / engineState.bankrollBase).toFixed(2)} on base · since ${fmtTime(engineState.demoStartedAt)}` : 'Syncing canonical engine…'}
                 </div>
                 <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   <span className="f-chip">W/L <b className="f-pos">{dbStats?.wins ?? 0}</b>/<b className="f-neg">{dbStats?.losses ?? 0}</b></span>
@@ -2016,8 +2015,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     EXPORT CSV
                   </button>
                   {isOwner && (
-                    <button className="f-btn danger" style={{ padding: '5px 14px', fontSize: 9.5 }} onClick={handleClearDb}>
-                      CLEAR LOG
+                    <button className="f-btn danger" style={{ padding: '5px 14px', fontSize: 9.5 }} onClick={handleDemoReset}>
+                      RESET DEMO LEDGER
                     </button>
                   )}
                 </div>

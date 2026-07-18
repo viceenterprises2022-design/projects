@@ -11,8 +11,8 @@
 // Viewers never write — the engine is the only author of canonical rounds.
 
 import { db } from '@/db';
-import { engineRounds, simulatorTrades } from '@/db/schema';
-import { eq, and, lte, sql } from 'drizzle-orm';
+import { engineRounds, simulatorTrades, demoAccount } from '@/db/schema';
+import { eq, and, lte, gte, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { binaryFairValue, settleBinary } from './binary';
 
@@ -111,15 +111,35 @@ async function getCandleCloseAt(asset: string, atMs: number): Promise<number | n
 
 // ---------------------------------------------------------------------------
 
-export async function getDemoBankroll(): Promise<number> {
-  const rows = await db.select({ total: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)` }).from(simulatorTrades);
-  return Math.round((DEMO_BANKROLL_BASE + (rows[0]?.total ?? 0)) * 100) / 100;
+// Single shared demo account row; created on first touch with a fresh start.
+export async function getDemoAccount() {
+  const rows = await db.select().from(demoAccount).where(eq(demoAccount.id, 'demo'));
+  if (rows.length > 0) return rows[0];
+  const fresh = { id: 'demo', baseUsd: DEMO_BANKROLL_BASE, startedAt: Date.now() };
+  await db.insert(demoAccount).values(fresh).onConflictDoNothing();
+  const re = await db.select().from(demoAccount).where(eq(demoAccount.id, 'demo'));
+  return re[0] ?? fresh;
+}
+
+// Equity counts only rounds settled at/after the demo start marker.
+export async function getDemoBankroll(): Promise<{ bankroll: number; base: number; startedAt: number }> {
+  const acct = await getDemoAccount();
+  const rows = await db.select({ total: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)` })
+    .from(simulatorTrades)
+    .where(gte(simulatorTrades.createdAt, acct.startedAt));
+  return {
+    bankroll: Math.round((acct.baseUsd + (rows[0]?.total ?? 0)) * 100) / 100,
+    base: acct.baseUsd,
+    startedAt: acct.startedAt,
+  };
 }
 
 export interface TickResult {
   now: number;
   epoch: number;
   bankroll: number;
+  bankrollBase: number;
+  demoStartedAt: number;
   rounds: Array<typeof engineRounds.$inferSelect>;
   settled: number;
   errors: string[];
@@ -193,7 +213,7 @@ export async function engineTick(): Promise<TickResult> {
     }
   }
 
-  const bankroll = await getDemoBankroll();
+  const { bankroll, base: bankrollBase, startedAt: demoStartedAt } = await getDemoBankroll();
 
   // 2. Open current-epoch rounds + take positions
   for (const asset of ENGINE_ASSETS) {
@@ -243,5 +263,5 @@ export async function engineTick(): Promise<TickResult> {
   }
 
   const rounds = await db.select().from(engineRounds).where(eq(engineRounds.epoch, epoch));
-  return { now, epoch, bankroll, rounds, settled: settledCount, errors };
+  return { now, epoch, bankroll, bankrollBase, demoStartedAt, rounds, settled: settledCount, errors };
 }

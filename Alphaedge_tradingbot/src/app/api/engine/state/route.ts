@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { engineTick, getMarks, DEMO_BANKROLL_BASE } from '@/lib/engine';
+import { engineTick, getMarks } from '@/lib/engine';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +17,8 @@ export async function GET() {
       epoch: tick.epoch,
       roundEndsAt: (tick.epoch + 1) * 90_000,
       bankroll: tick.bankroll,
-      bankrollBase: DEMO_BANKROLL_BASE,
+      bankrollBase: tick.bankrollBase,
+      demoStartedAt: tick.demoStartedAt,
       marks,
       rounds: tick.rounds,
       settledThisTick: tick.settled,
