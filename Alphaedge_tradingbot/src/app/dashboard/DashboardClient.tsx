@@ -160,6 +160,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [simulatingSignal, setSimulatingSignal] = useState(false);
 
   const [activeTab, setActiveTab] = useState<'cockpit' | 'simulator'>('cockpit');
+  const [adminUsers, setAdminUsers] = useState<Array<any>>([]);
   const [simAsset, setSimAsset] = useState<DeskAsset>('BTC-PERP');
   const [clock, setClock] = useState('');
 
@@ -997,6 +998,34 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     simStateRef.current.isRunning = next;
   };
 
+  // ---- Access control (owner only) ----
+  const loadAdminUsers = useCallback(async () => {
+    if (!isOwner) return;
+    try {
+      const res = await fetch('/api/admin/users');
+      const json = await res.json();
+      if (res.ok && json.users) setAdminUsers(json.users);
+    } catch { /* transient */ }
+  }, [isOwner]);
+
+  useEffect(() => { loadAdminUsers(); }, [loadAdminUsers]);
+
+  const handleAccessAction = async (userId: string, action: 'approve' | 'revoke' | 'block') => {
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, action }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Update failed');
+      setMessage({ type: 'success', text: `Access updated — role is now ${json.role}.` });
+      await loadAdminUsers();
+    } catch (err: any) {
+      setMessage({ type: 'error', text: err.message || 'Access update failed' });
+    }
+  };
+
   // ---- Cockpit handlers ----
   const handleRefresh = () => { setRefreshing(true); fetchData(); };
 
@@ -1465,6 +1494,57 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               </div>
 
               <div className="f-col">
+                {isOwner && (
+                <div className="f-panel">
+                  <div className="f-panel-head">
+                    <h2 className="f-panel-title"><Shield size={14} color="#58f0ff" /> <span className="f-serif-grad">Access Control</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>DB-BACKED · NO REDEPLOYS</span>
+                    </h2>
+                    <button className="f-btn" style={{ padding: '4px 12px', fontSize: 9 }} onClick={loadAdminUsers}>REFRESH</button>
+                  </div>
+                  {adminUsers.length === 0 ? (
+                    <div className="f-empty">No sign-ins yet — accounts appear here after their first Google login.</div>
+                  ) : (
+                    <table className="f-table">
+                      <thead>
+                        <tr><th>Account</th><th>Role</th><th className="num">Manage</th></tr>
+                      </thead>
+                      <tbody>
+                        {adminUsers.map((u: any) => (
+                          <tr key={u.id}>
+                            <td style={{ color: 'var(--ivory)' }}>{u.email}</td>
+                            <td>
+                              <span className={`f-tag ${u.role === 'owner' ? 'gold' : u.role === 'viewer' ? 'win' : u.role === 'blocked' ? 'loss' : 'violet'}`}>
+                                {u.role.toUpperCase()}
+                              </span>
+                            </td>
+                            <td className="num">
+                              {u.role === 'owner' ? (
+                                <span className="f-kicker">ENV-MANAGED</span>
+                              ) : (
+                                <div style={{ display: 'inline-flex', gap: 6 }}>
+                                  {u.role !== 'viewer' && (
+                                    <button className="f-btn long" style={{ padding: '3px 10px', fontSize: 9 }}
+                                      onClick={() => handleAccessAction(u.id, 'approve')}>APPROVE</button>
+                                  )}
+                                  {u.role === 'viewer' && (
+                                    <button className="f-btn" style={{ padding: '3px 10px', fontSize: 9 }}
+                                      onClick={() => handleAccessAction(u.id, 'revoke')}>REVOKE</button>
+                                  )}
+                                  {u.role !== 'blocked' && (
+                                    <button className="f-btn danger" style={{ padding: '3px 10px', fontSize: 9 }}
+                                      onClick={() => handleAccessAction(u.id, 'block')}>BLOCK</button>
+                                  )}
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+                )}
                 <div className="f-panel">
                   <div className="f-panel-head">
                     <h2 className="f-panel-title"><Activity size={14} color="#bfff6a" /> <span className="f-serif-grad">Active Deployments</span></h2>

@@ -43,6 +43,13 @@
       "when": 1784399930141,
       "tag": "0005_faithful_amazoness",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1784405699030,
+      "tag": "0006_giant_yellowjacket",
+      "breakpoints": true
     }
   ]
 }

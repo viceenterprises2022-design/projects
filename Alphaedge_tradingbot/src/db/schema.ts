@@ -8,6 +8,7 @@ export const users = sqliteTable('users', {
   emailVerified: integer('emailVerified', { mode: 'timestamp_ms' }),
   image: text('image'),
   kycStatus: text('kyc_status').default('pending'), // 'pending' | 'verified'
+  role: text('role').notNull().default('pending'), // 'owner' | 'viewer' | 'pending' | 'blocked'
   createdAt: integer('created_at').notNull().$defaultFn(() => Date.now())
 });
 
