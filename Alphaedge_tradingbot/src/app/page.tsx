@@ -1,57 +1,28 @@
-import { db } from "@/db";
-import { earlyAccessLeads } from "@/db/schema";
-import { sql } from "drizzle-orm";
-import { WaitlistForm } from "./waitlist-form";
 import Link from "next/link";
-
-export const dynamic = "force-dynamic";
+import { WaitlistForm } from "./waitlist-form";
+import { LiveDesk } from "./live-desk";
+import "./landing.css";
 
 const wealthLoops = [
-  "market regime scanner",
-  "risk-budget allocator",
-  "execution swarm",
-  "portfolio memory",
-];
-
-const botCards = [
   {
-    name: "Pulse",
-    mandate: "Momentum compounding",
-    markets: "Crypto · FX · Index futures",
-    accent: "cyan",
-    stat: "+18.4%",
+    n: "01",
+    title: "market regime scanner",
+    body: "Reads live volatility, drift, and funding structure before any capital moves — the same telemetry shown on the desk.",
   },
   {
-    name: "Harbor",
-    mandate: "Downside-aware grid",
-    markets: "BTC · ETH · Gold · Oil",
-    accent: "violet",
-    stat: "0.62x",
+    n: "02",
+    title: "risk-budget allocator",
+    body: "Every position is sized against a bankroll ceiling and per-asset caps. Nothing trades outside its envelope.",
   },
   {
-    name: "Atlas",
-    mandate: "Multi-asset rotation",
-    markets: "Commodities · Crypto · ETFs",
-    accent: "lime",
-    stat: "12 lanes",
-  },
-];
-
-const features = [
-  {
-    eyebrow: "01 / Control",
-    title: "Your capital stays where you custody it.",
-    body: "Connect exchange or broker APIs with trade-only permissions. Prospera never asks for withdrawal rights, and every bot can be paused, capped, or unwound from one command center.",
+    n: "03",
+    title: "execution engine",
+    body: "Deterministic 90-second decision rounds, settled server-side against real candle closes. No hand-waving.",
   },
   {
-    eyebrow: "02 / Intelligence",
-    title: "A wealth engine, not another chart screen.",
-    body: "Bots translate volatility, liquidity, macro pressure, and portfolio exposure into executable playbooks that are sized to your risk budget.",
-  },
-  {
-    eyebrow: "03 / Expansion",
-    title: "Built for crypto today, commodities tomorrow, everything next.",
-    body: "Launch with digital assets and liquid macro venues, then expand into metals, energy, equities, and custom private strategies as new connectors go live.",
+    n: "04",
+    title: "verifiable ledger",
+    body: "Outcomes and PnL are recomputed at settlement and persisted. What you see is what actually happened.",
   },
 ];
 
@@ -60,7 +31,7 @@ const pricing = [
     tier: "Seed",
     price: "0%",
     note: "for exploration",
-    perks: ["Simulated bot runs", "Strategy marketplace preview", "Capital map dashboard"],
+    perks: ["Watch-only demo desk", "Live engine telemetry", "Verifiable round history"],
   },
   {
     tier: "Builder",
@@ -77,311 +48,249 @@ const pricing = [
   },
 ];
 
-async function getLaunchCount() {
-  try {
-    const [row] = await db.select({ total: sql<number>`count(*)::int` }).from(earlyAccessLeads);
-    return Number(row?.total ?? 0);
-  } catch {
-    return 0;
-  }
-}
-
-function SignalBars() {
+export default function HomePage() {
   return (
-    <div className="signal-bars" aria-hidden="true">
-      {Array.from({ length: 34 }).map((_, index) => (
-        <span key={index} />
-      ))}
-    </div>
-  );
-}
+    <main className="landing">
+      <div className="l-noise" aria-hidden="true" />
 
-function CommandDeck() {
-  return (
-    <div className="deck-shell">
-      <div className="deck-orbit deck-orbit-one" />
-      <div className="deck-orbit deck-orbit-two" />
-      <div className="deck-topline">
-        <span className="live-dot" />
-        <span>Prospera Mesh / Live Simulation</span>
-        <span>Risk locked</span>
-      </div>
-
-      <div className="wealth-core">
-        <div className="core-ring" />
-        <div className="core-inner">
-          <span>Capital OS</span>
-          <strong>87</strong>
-          <small>autonomy score</small>
-        </div>
-      </div>
-
-      <div className="bot-stack">
-        {botCards.map((bot) => (
-          <article className={`bot-card bot-${bot.accent}`} key={bot.name}>
-            <div>
-              <span>{bot.name}</span>
-              <strong>{bot.mandate}</strong>
-            </div>
-            <p>{bot.markets}</p>
-            <em>{bot.stat}</em>
-          </article>
-        ))}
-      </div>
-
-      <div className="risk-console">
-        <div>
-          <span>Drawdown fuse</span>
-          <strong>armed</strong>
-        </div>
-        <div>
-          <span>Trade permissions</span>
-          <strong>no withdrawals</strong>
-        </div>
-        <div>
-          <span>Venue custody</span>
-          <strong>user-owned</strong>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default async function HomePage() {
-  const launchCount = await getLaunchCount();
-  const visibleLaunchCount = Math.max(312, launchCount + 312);
-
-  return (
-    <main className="min-h-screen overflow-hidden bg-[#050711] text-white">
-      <div className="ambient-field" />
-      <div className="noise-layer" />
-
-      <nav className="site-nav">
-        <a href="#top" className="brand-lockup" aria-label="Prospera home">
-          <span className="brand-mark">P</span>
-          <span>
-            Prospera
-            <small>wealth automation cloud</small>
-          </span>
-        </a>
-        <div className="nav-links" aria-label="Primary navigation">
-          <a href="#engine">Engine</a>
-          <a href="#bots">Bots</a>
-          <a href="#pricing">Pricing</a>
-          <Link href="/login">Access</Link>
-        </div>
-        <Link className="nav-cta" href="/login">
-          Open capital cockpit
-        </Link>
-      </nav>
-
-      <section id="top" className="hero-section">
-        <div className="hero-copy">
-          <div className="status-pill">
-            <span className="live-dot" />
-            Not Assay. Not gold-only. Built for every wealth frontier.
+      <div className="l-shell">
+        {/* ---------- Nav ---------- */}
+        <nav className="l-nav l-rise">
+          <a href="#top" className="l-brand" aria-label="Prospera home">
+            <span className="l-brand-mark">P</span>
+            <span>
+              <span className="l-brand-name">Prospera</span>
+              <span className="l-brand-sub">Wealth Automation Cloud</span>
+            </span>
+          </a>
+          <div className="l-nav-links" aria-label="Primary navigation">
+            <a href="#engine">Engine</a>
+            <a href="#mandates">Mandates</a>
+            <a href="#pricing">Pricing</a>
+            <Link href="/login">Access</Link>
           </div>
-          <h1>
-            Turn idle capital into an <span>autonomous wealth system.</span>
-          </h1>
-          <p className="hero-lede">
-            Prospera lets users deploy their own cash into intelligent strategy bots across crypto, commodities,
-            FX, equities, and future market connectors — with trade-only API keys, transparent guardrails, and a
-            command center designed for wealth creation instead of chart watching.
-          </p>
-          <div className="hero-actions">
-            <Link href="/login" className="primary-action">
-              Access platform <span>↗</span>
-            </Link>
-            <a href="#engine" className="secondary-action">
-              See the wealth engine
-            </a>
-          </div>
-          <div className="hero-metrics" aria-label="Platform highlights">
-            <div>
-              <strong>{visibleLaunchCount}</strong>
-              <span>private launch requests</span>
+          <Link className="l-nav-cta" href="/login">
+            Open the desk
+          </Link>
+        </nav>
+
+        {/* ---------- Hero ---------- */}
+        <section id="top" className="l-hero">
+          <div>
+            <div className="l-pill l-rise l-d1">Live demo desk · trading right now</div>
+            <h1 className="l-rise l-d2">
+              Turn idle capital into an <span className="l-serif-grad">autonomous wealth&nbsp;system.</span>
+            </h1>
+            <p className="l-lede l-rise l-d3">
+              Prospera turns strategies into governed bots: pick a mandate, set the capital envelope,
+              and watch a server-side engine trade deterministic rounds against live markets — with
+              trade-only permissions and a ledger you can verify line by line.
+            </p>
+            <div className="l-hero-actions l-rise l-d4">
+              <Link href="/login" className="l-btn-primary">
+                Access the platform <span aria-hidden>↗</span>
+              </Link>
+              <a href="#engine" className="l-btn-ghost">
+                How the engine works
+              </a>
             </div>
-            <div>
-              <strong>24/7</strong>
-              <span>autonomous monitoring</span>
-            </div>
-            <div>
-              <strong>0</strong>
-              <span>withdrawal permissions required</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="hero-visual" aria-label="Prospera capital command deck preview">
-          <CommandDeck />
-        </div>
-      </section>
-
-      <section className="ticker-ribbon" aria-label="Supported market roadmap">
-        <div>
-          {[
-            "BTC",
-            "ETH",
-            "SOL",
-            "GOLD",
-            "OIL",
-            "FX",
-            "EQUITIES",
-            "RATES",
-            "CUSTOM BOTS",
-            "RISK MESH",
-          ].map((item) => (
-            <span key={item}>{item}</span>
-          ))}
-        </div>
-      </section>
-
-      <section id="engine" className="engine-section">
-        <div className="section-kicker">Capital autonomy without surrendering control</div>
-        <div className="section-heading-row">
-          <h2>
-            Wealth is a system. Prospera gives it an <em className="accent-serif">operating layer.</em>
-          </h2>
-          <p>
-            Instead of building another trading terminal, Prospera turns strategies into governed bots: choose a
-            mandate, define capital limits, connect your venue, and let the platform manage execution discipline.
-          </p>
-        </div>
-
-        <div className="loop-grid">
-          {wealthLoops.map((loop, index) => (
-            <article className="loop-card" key={loop}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{loop}</h3>
-              <p>
-                Continuously reads market structure, account exposure, and strategy health before capital is placed
-                into motion.
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="bots" className="bot-section">
-        <div className="bot-copy">
-          <div className="section-kicker">Bot marketplace</div>
-          <h2>
-            Deploy cash through bots that behave like <em className="accent-serif">mandates.</em>
-          </h2>
-          <p>
-            Every Prospera bot ships with a thesis, capital envelope, stop logic, rebalance cadence, and clear venue
-            requirements. You are not buying signals — you are configuring a wealth-building workflow.
-          </p>
-          <ul className="check-list">
-            <li>Trade-only exchange and broker keys</li>
-            <li>Per-bot capital caps, pause rules, and kill switches</li>
-            <li>Transparent logs for entries, exits, rebalances, and risk events</li>
-            <li>Multi-market roadmap spanning crypto, commodities, FX, equities, and custom strategies</li>
-          </ul>
-        </div>
-        <div className="bot-lab">
-          <div className="lab-header">
-            <span>Bot lab</span>
-            <strong>Mandate composer</strong>
-          </div>
-          <div className="mandate-panel">
-            <div>
-              <small>Objective</small>
-              <strong>Compound with controlled volatility</strong>
-            </div>
-            <div>
-              <small>Capital lane</small>
-              <strong>$25,000 · user custody</strong>
-            </div>
-            <div>
-              <small>Universe</small>
-              <strong>BTC / ETH / Gold / Oil</strong>
-            </div>
-          </div>
-          <SignalBars />
-          <div className="lab-footer">
-            <span>Deploy preview</span>
-            <strong>12 risk checks passed</strong>
-          </div>
-        </div>
-      </section>
-
-      <section className="feature-strip">
-        {features.map((feature) => (
-          <article key={feature.title}>
-            <span>{feature.eyebrow}</span>
-            <h3>{feature.title}</h3>
-            <p>{feature.body}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="proof-section">
-        <div className="proof-card proof-card-large">
-          <span>Why Prospera exists</span>
-          <h2>
-            Most people do not need more indicators. They need a capital{" "}
-            <em className="accent-serif">operating system.</em>
-          </h2>
-          <p>
-            The platform is designed around the outcome users actually care about: creating wealth over time. Markets
-            are the raw material. Bots are the labor. Risk controls are the constitution.
-          </p>
-        </div>
-        <div className="proof-card">
-          <span>Custody model</span>
-          <strong>User-owned venues</strong>
-          <p>Funds remain in the connected account. Prospera coordinates decisions and execution permissions.</p>
-        </div>
-        <div className="proof-card">
-          <span>Positioning</span>
-          <strong>Generic by design</strong>
-          <p>Not gold-branded, not crypto-only, and not locked to one strategy family.</p>
-        </div>
-      </section>
-
-      <section id="pricing" className="pricing-section">
-        <div className="section-kicker">Simple launch tiers</div>
-        <h2>
-          Start with observation. Graduate to <em className="accent-serif">autonomous deployment.</em>
-        </h2>
-        <div className="pricing-grid">
-          {pricing.map((plan) => (
-            <article className={`pricing-card ${plan.featured ? "featured" : ""}`} key={plan.tier}>
-              <span>{plan.tier}</span>
-              <div>
-                <strong>{plan.price}</strong>
-                <small>{plan.note}</small>
+            <div className="l-hero-chips l-rise l-d5" aria-label="Platform guarantees">
+              <div className="l-chip">
+                <strong>24/7</strong>
+                <span>server-side engine</span>
               </div>
-              <ul>
-                {plan.perks.map((perk) => (
-                  <li key={perk}>{perk}</li>
-                ))}
-              </ul>
-            </article>
+              <div className="l-chip">
+                <strong>90s</strong>
+                <span>verifiable rounds</span>
+              </div>
+              <div className="l-chip">
+                <strong>0</strong>
+                <span>withdrawal permissions</span>
+              </div>
+            </div>
+          </div>
+
+          <LiveDesk />
+        </section>
+      </div>
+
+      {/* ---------- Live ribbon ---------- */}
+      <div className="l-ribbon" aria-hidden="true">
+        <div className="l-ribbon-inner">
+          {[0, 1].map(dup => (
+            <span key={dup} style={{ display: "inline" }}>
+              {[
+                "XAU · GOLD (PAXG)",
+                "BTC · PERPETUAL",
+                "ETH · PERPETUAL",
+                "HYPERLIQUID L1 FEED",
+                "90S BINARY ROUNDS",
+                "SERVER-VERIFIED SETTLEMENT",
+                "HASH-CHAINED LEDGER",
+                "WATCH-ONLY DEMO LIVE",
+              ].map(item => (
+                <span key={`${dup}-${item}`}>{item}</span>
+              ))}
+            </span>
           ))}
         </div>
-      </section>
+      </div>
 
-      <section className="launch-section">
-        <div className="launch-copy">
-          <div className="section-kicker">Private launch</div>
-          <h2>
-            Bring your capital. Prospera brings the{" "}
-            <em className="accent-serif">autonomous wealth infrastructure.</em>
-          </h2>
-          <p>
-            Join the first cohort of builders, allocators, and operators shaping bot-powered capital deployment before
-            the public marketplace opens.
-          </p>
-          <p className="risk-note">
-            Trading involves risk and can result in loss. Prospera is infrastructure and automation software, not a
-            promise of returns or financial advice.
-          </p>
-        </div>
-        <WaitlistForm />
-      </section>
+      <div className="l-shell">
+        {/* ---------- Engine ---------- */}
+        <section id="engine" className="l-section">
+          <div className="l-section-head">
+            <div className="l-kicker">Capital autonomy without surrendering control</div>
+            <h2>
+              Wealth is a system. Prospera gives it an <span className="l-serif-grad">operating layer.</span>
+            </h2>
+            <p>
+              Instead of another trading terminal, Prospera runs strategies as governed bots. The demo desk
+              you can watch today is the same machinery: live feeds in, disciplined execution out, every
+              outcome written to a ledger that cannot drift from reality.
+            </p>
+          </div>
+
+          <div className="l-loops">
+            {wealthLoops.map(loop => (
+              <article className="l-loop" key={loop.n}>
+                <span>{loop.n}</span>
+                <h3>{loop.title}</h3>
+                <p>{loop.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* ---------- Mandates ---------- */}
+        <section id="mandates" className="l-section">
+          <div className="l-split">
+            <div>
+              <div className="l-kicker">Bot marketplace</div>
+              <h2 style={{ margin: "16px 0 0", fontSize: "clamp(32px, 3.8vw, 50px)", lineHeight: 1.06, letterSpacing: "-0.03em" }}>
+                Deploy cash through bots that behave like <span className="l-serif-grad">mandates.</span>
+              </h2>
+              <ul className="l-check">
+                <li>Trade-only exchange and broker keys — withdrawal rights are never requested</li>
+                <li>Per-bot capital caps, pause rules, and kill switches</li>
+                <li>Transparent logs for entries, exits, and risk events</li>
+                <li>Multi-market roadmap: crypto and gold today; FX, equities, and custom strategies next</li>
+              </ul>
+            </div>
+
+            <div className="l-composer" aria-label="Mandate composer preview">
+              <div className="l-composer-head">
+                <span className="l-kicker">Mandate composer</span>
+                <span className="l-led ok">PREVIEW</span>
+              </div>
+              <div className="l-composer-rows">
+                <div className="l-composer-row">
+                  <small>Objective</small>
+                  <strong>Compound with controlled volatility</strong>
+                </div>
+                <div className="l-composer-row">
+                  <small>Capital lane</small>
+                  <strong>$25,000 · user custody</strong>
+                </div>
+                <div className="l-composer-row">
+                  <small>Universe</small>
+                  <strong>XAU / BTC / ETH</strong>
+                </div>
+                <div className="l-composer-row">
+                  <small>Risk fuse</small>
+                  <strong>10% bankroll cap · kill switch armed</strong>
+                </div>
+              </div>
+              <div className="l-bars" aria-hidden="true">
+                {Array.from({ length: 32 }).map((_, i) => (
+                  <span key={i} style={{ animationDelay: `${(i % 8) * 160}ms`, height: `${28 + ((i * 13) % 62)}%` }} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------- Proof ---------- */}
+        <section className="l-section">
+          <div className="l-proof">
+            <div className="l-proof-card">
+              <span className="l-kicker">Why Prospera exists</span>
+              <h3>
+                Most people do not need more indicators. They need a capital{" "}
+                <span className="l-serif-grad">operating system.</span>
+              </h3>
+              <p>
+                Markets are the raw material. Bots are the labor. Risk controls are the constitution.
+                The demo desk proves the discipline in public, on live data, before a single real order is placed.
+              </p>
+            </div>
+            <div className="l-proof-card">
+              <span className="l-kicker">Custody model</span>
+              <strong className="l-big">User-owned venues</strong>
+              <p>Funds remain in the connected account. Prospera coordinates decisions and execution permissions.</p>
+            </div>
+            <div className="l-proof-card">
+              <span className="l-kicker">Verification model</span>
+              <strong className="l-big">Nothing on trust</strong>
+              <p>Settlements are recomputed server-side from real candle closes. Every stat traces to the ledger.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------- Pricing ---------- */}
+        <section id="pricing" className="l-section">
+          <div className="l-section-head">
+            <div className="l-kicker">Simple launch tiers</div>
+            <h2>
+              Start with observation. Graduate to <span className="l-serif-grad">autonomous deployment.</span>
+            </h2>
+          </div>
+          <div className="l-pricing">
+            {pricing.map(plan => (
+              <article className={`l-price-card ${plan.featured ? "featured" : ""}`} key={plan.tier}>
+                <span className="l-kicker">{plan.tier}</span>
+                <div className="l-price-line">
+                  <strong>{plan.price}</strong>
+                  <small>{plan.note}</small>
+                </div>
+                <ul>
+                  {plan.perks.map(perk => (
+                    <li key={perk}>{perk}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* ---------- Launch ---------- */}
+        <section className="l-section">
+          <div className="l-launch">
+            <div>
+              <div className="l-kicker">Private launch</div>
+              <h2 style={{ margin: "16px 0 0", fontSize: "clamp(32px, 3.8vw, 50px)", lineHeight: 1.06, letterSpacing: "-0.03em" }}>
+                Bring your capital. Prospera brings the{" "}
+                <span className="l-serif-grad">autonomous infrastructure.</span>
+              </h2>
+              <p style={{ margin: "20px 0 0", fontSize: 15.5, lineHeight: 1.75, color: "var(--dim)", maxWidth: 460 }}>
+                Join the first cohort of builders, allocators, and operators shaping bot-powered capital
+                deployment before the public marketplace opens.
+              </p>
+              <p className="l-risk-note">
+                Trading involves risk and can result in loss. Prospera is infrastructure and automation
+                software, not a promise of returns or financial advice. Demo results are paper-traded.
+              </p>
+            </div>
+            <WaitlistForm />
+          </div>
+        </section>
+
+        {/* ---------- Footer ---------- */}
+        <footer className="l-footer">
+          <span className="l-kicker">Prospera · Wealth Automation Cloud</span>
+          <span className="l-kicker">Feed: Hyperliquid L1 · Settlement: server-verified · Demo: watch-only</span>
+        </footer>
+      </div>
     </main>
   );
 }
