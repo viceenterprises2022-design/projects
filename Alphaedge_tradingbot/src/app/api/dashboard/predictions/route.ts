@@ -143,8 +143,13 @@ export async function DELETE(req: NextRequest) {
     await initDb();
 
     const adminSecret = req.headers.get('x-admin-token') || req.nextUrl.searchParams.get('secret');
-    const expectedSecret = process.env.ADMIN_SECRET || 'alphaedge-admin-secret';
+    const expectedSecret = process.env.ADMIN_SECRET;
 
+    // Fail closed: destructive endpoint stays disabled unless ADMIN_SECRET is
+    // explicitly configured — the repo is public, so no hardcoded fallback.
+    if (!expectedSecret) {
+      return NextResponse.json({ error: 'Admin operations disabled: ADMIN_SECRET is not configured' }, { status: 403 });
+    }
     if (!adminSecret || adminSecret !== expectedSecret) {
       return NextResponse.json({ error: 'Unauthorized: Admin access required' }, { status: 401 });
     }
