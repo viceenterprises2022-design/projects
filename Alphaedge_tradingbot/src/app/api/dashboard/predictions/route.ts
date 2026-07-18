@@ -41,18 +41,25 @@ export async function GET(req: NextRequest) {
       .orderBy(desc(simulatorTrades.createdAt))
       .limit(200);
 
-    // Aggregate stats from the persisted log so the UI never drifts from the DB.
-    let wins = 0, losses = 0, pnl = 0, volume = 0;
-    for (const h of history) {
-      if (h.outcome === 'WIN') wins++;
-      else if (h.outcome === 'LOSS') losses++;
-      pnl += h.pnl;
-      volume += h.size * h.entryPrice;
-    }
-    const settledCount = wins + losses;
-
-    const grossWin = history.filter(h => h.pnl > 0).reduce((a, h) => a + h.pnl, 0);
-    const grossLoss = Math.abs(history.filter(h => h.pnl < 0).reduce((a, h) => a + h.pnl, 0));
+    // Stats aggregate over the FULL demo window via SQL — the 200-row history
+    // page is for display only and must never bound the accounting.
+    const whereClause = asset ? and(demoWindow, eq(simulatorTrades.asset, asset)) : demoWindow;
+    const aggRows = await db.select({
+      settled: sql<number>`COUNT(*)`,
+      wins: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.outcome} = 'WIN' THEN 1 ELSE 0 END), 0)`,
+      pnl: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)`,
+      volume: sql<number>`COALESCE(SUM(${simulatorTrades.size} * ${simulatorTrades.entryPrice}), 0)`,
+      grossWin: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.pnl} > 0 THEN ${simulatorTrades.pnl} ELSE 0 END), 0)`,
+      grossLoss: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.pnl} < 0 THEN -${simulatorTrades.pnl} ELSE 0 END), 0)`,
+    }).from(simulatorTrades).where(whereClause);
+    const agg = aggRows[0];
+    const wins = agg?.wins ?? 0;
+    const settledCount = agg?.settled ?? 0;
+    const losses = settledCount - wins;
+    const pnl = agg?.pnl ?? 0;
+    const volume = agg?.volume ?? 0;
+    const grossWin = agg?.grossWin ?? 0;
+    const grossLoss = agg?.grossLoss ?? 0;
 
     // Next round id continues from the highest persisted round for this asset,
     // so round numbering stays monotonic across sessions and page reloads.

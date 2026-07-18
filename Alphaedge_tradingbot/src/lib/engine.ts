@@ -20,7 +20,7 @@ export const ROUND_MS = 90_000;
 export const DEMO_BANKROLL_BASE = 10_000;
 const EDGE_THRESHOLD = 0.06;  // model conviction vs 50/50 opening odds — higher bar, fewer/stronger entries
 const SPREAD = 0;             // paper fills at model fair value — expectancy ~breakeven, results = calibration vs reality
-const MAX_TRADE_USD = 1_000;
+const MAX_TRADE_USD: Record<string, number> = { 'BTC-PERP': 1_000, 'ETH-PERP': 500, 'XAU': 1_000 };
 const BANKROLL_FRACTION = 0.10;
 const ENTRY_CUTOFF_S = 15;    // no entries in the final seconds
 
@@ -248,7 +248,7 @@ export async function engineTick(): Promise<TickResult> {
           const side = fv.pYes > 0.5 ? 'YES' : 'NO';
           const modelP = side === 'YES' ? fv.pYes : 1 - fv.pYes;
           const entryPrice = Math.min(Math.max(modelP + SPREAD, 0.02), 0.98);
-          const budget = Math.min(MAX_TRADE_USD, bankroll * BANKROLL_FRACTION);
+          const budget = Math.min(MAX_TRADE_USD[asset] ?? 1_000, bankroll * BANKROLL_FRACTION);
           const size = Math.floor(budget / entryPrice);
           if (size > 0) {
             await db.update(engineRounds)

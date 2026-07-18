@@ -406,7 +406,11 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     }
   }, []);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 60_000); // keep cockpit metrics fresh
+    return () => clearInterval(interval);
+  }, [fetchData]);
 
   // -------------------------------------------------------------------------
   // DB-derived series — equity curve, rolling hit rate, Markov transition
@@ -1299,10 +1303,10 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               </div>
               <div className="f-stat">
                 <span className="f-kicker">Realized Engine PnL</span>
-                <div className={`f-stat-value ${(data?.aiMetrics?.totalProfit ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
-                  {fmtSignedUsd(data?.aiMetrics?.totalProfit)}
+                <div className={`f-stat-value ${((engineState ? engineState.bankroll - engineState.bankrollBase : data?.aiMetrics?.totalProfit) ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
+                  {engineState ? fmtSignedUsd(engineState.bankroll - engineState.bankrollBase) : fmtSignedUsd(data?.aiMetrics?.totalProfit)}
                 </div>
-                <div className="f-stat-sub">Per-round Sharpe {data?.aiMetrics?.sharpeRatio?.toFixed(2)}</div>
+                <div className="f-stat-sub">Live · per-round Sharpe {data?.aiMetrics?.sharpeRatio?.toFixed(2)}</div>
               </div>
               <div className="f-stat">
                 <span className="f-kicker">Active Deployments</span>
