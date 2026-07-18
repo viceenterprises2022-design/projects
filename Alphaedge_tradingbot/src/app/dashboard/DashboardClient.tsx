@@ -195,8 +195,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [noBook, setNoBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
 
   const [simSpeed, setSimSpeed] = useState(1);
-  const [simTradeSize, setSimTradeSize] = useState(1000);
-  const [simEdgeThreshold, setSimEdgeThreshold] = useState(3.5);
   const [simVolatility, setSimVolatility] = useState(45);
   const [simRunning, setSimRunning] = useState(true);
 
@@ -212,8 +210,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     isRunning: true,
     speedMultiplier: 1,
     volatility: 45,
-    tradeSizeUsd: 1000,
-    minEdgeThreshold: 3.5,
     asset: 'BTC-PERP' as DeskAsset,
     price: 0,
     strikePrice: 0,
@@ -815,8 +811,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     st.isRunning = simRunning;
     st.speedMultiplier = simSpeed;
     st.volatility = simVolatility;
-    st.tradeSizeUsd = simTradeSize;
-    st.minEdgeThreshold = simEdgeThreshold;
     st.asset = simAsset;
     st.strikeLocked = false;
     st.price = pricesRef.current[simAsset] || 0;
@@ -996,8 +990,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
   // ---- Slider handlers ----
   const handleSpeedChange = (v: number) => { setSimSpeed(v); simStateRef.current.speedMultiplier = v; };
-  const handleSizeChange = (v: number) => { setSimTradeSize(v); simStateRef.current.tradeSizeUsd = v; };
-  const handleEdgeChange = (v: number) => { setSimEdgeThreshold(v); simStateRef.current.minEdgeThreshold = v; };
   const handleVolatilityChange = (v: number) => { setSimVolatility(v); simStateRef.current.volatility = v; };
   const handleToggleSimRunning = () => {
     const next = !simRunning;
@@ -1918,15 +1910,24 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Lock size={14} color="#ffd166" /> <span className="f-serif-grad">View Parameters</span> <span className="f-kicker" style={{ marginLeft: 4 }}>VISUAL MODEL ONLY</span></h2>
+                    <h2 className="f-panel-title"><Lock size={14} color="#ffd166" /> <span className="f-serif-grad">Engine Parameters</span> <span className="f-kicker" style={{ marginLeft: 4 }}>CANONICAL · SERVER</span></h2>
                     <span className={`f-led ${simRunning ? 'ok' : 'warm'}`}>{simRunning ? 'RUNNING' : 'PAUSED'}</span>
                   </div>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
+                    {DESK_ASSETS.map(a => (
+                      <span key={a} className="f-chip">{a.split('-')[0]} SIZE <b className="f-gold">
+                        {engineState?.params ? fmtUsd(engineState.params.maxTradeUsd[a] ?? 1000, 0) : '—'}
+                      </b>/RD</span>
+                    ))}
+                    <span className="f-chip">EDGE ≥ <b className="f-azure">{engineState?.params ? Math.round(engineState.params.edgeThreshold * 100) + '¢' : '—'}</b></span>
+                    <span className="f-chip">SPREAD <b className="f-pos">{engineState?.params ? Math.round(engineState.params.spread * 100) + '¢' : '—'}</b></span>
+                    <span className="f-chip">BANKROLL CAP <b className="f-violet">{engineState?.params ? Math.round(engineState.params.bankrollFraction * 100) + '%' : '—'}</b></span>
+                  </div>
+                  <div className="f-kicker" style={{ marginBottom: 10 }}>View Parameters · visual model only</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                     {[
-                      { label: 'Simulation Speed', value: `${simSpeed}×`, min: 1, max: 20, step: 1, cur: simSpeed, onChange: handleSpeedChange },
-                      { label: 'Trade Size per Round', value: `$${simTradeSize.toLocaleString()}`, min: 100, max: 5000, step: 100, cur: simTradeSize, onChange: handleSizeChange },
-                      { label: 'Min Executable Edge', value: `${simEdgeThreshold}%`, min: 0.5, max: 10, step: 0.5, cur: simEdgeThreshold, onChange: handleEdgeChange },
-                      { label: 'Annualized Vol Input', value: `${simVolatility}%`, min: 10, max: 150, step: 5, cur: simVolatility, onChange: handleVolatilityChange },
+                      { label: 'Chart Tick Speed', value: `${simSpeed}×`, min: 1, max: 20, step: 1, cur: simSpeed, onChange: handleSpeedChange },
+                      { label: 'Annualized Vol Input (visual)', value: `${simVolatility}%`, min: 10, max: 150, step: 5, cur: simVolatility, onChange: handleVolatilityChange },
                     ].map(s => (
                       <div key={s.label}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>

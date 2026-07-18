@@ -31,6 +31,16 @@ const ASSET_MAP: Record<string, string> = {
 };
 export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
 
+// Canonical parameters, exposed read-only to the dashboard
+export const ENGINE_PARAMS = {
+  roundSeconds: ROUND_MS / 1000,
+  maxTradeUsd: MAX_TRADE_USD,
+  bankrollFraction: BANKROLL_FRACTION,
+  edgeThreshold: EDGE_THRESHOLD,
+  spread: SPREAD,
+  entryCutoffSeconds: ENTRY_CUTOFF_S,
+};
+
 // ---------------------------------------------------------------------------
 // Hyperliquid feed helpers (module-cached; serverless instances refetch cheaply)
 // ---------------------------------------------------------------------------
