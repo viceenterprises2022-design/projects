@@ -177,6 +177,11 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [markets, setMarkets] = useState<any>(null);
   const marketsRef = useRef<any>(null);
 
+  // ---- Canonical server engine state (3s poll; every poll also ticks the engine) ----
+  const [engineState, setEngineState] = useState<any>(null);
+  const engineStateRef = useRef<any>(null);
+  const prevRoundsRef = useRef<Record<string, any>>({});
+
   // ---- Simulator state ----
   const [dbStats, setDbStats] = useState<any>(null);
   const [simHistory, setSimHistory] = useState<Array<any>>([]);
@@ -307,6 +312,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     return () => { cancelled = true; clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
   }, []);
 
+
   // ---- Predictions history (server-verified, Turso-backed) ----
   const loadHistory = useCallback(async (asset: string) => {
     try {
@@ -325,6 +331,62 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   }, []);
 
   useEffect(() => { loadHistory(simAsset); }, [simAsset, loadHistory]);
+
+  // ---- Canonical engine sync: the server trades; viewers observe ----
+  const pushEngineLog = useCallback((type: string, msg: string) => {
+    const time = new Date().toLocaleTimeString(undefined, { hour12: false });
+    setSimLogs(prev => {
+      const updated = [...prev, { time, type, msg }];
+      if (updated.length > 60) updated.shift();
+      return updated;
+    });
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function syncEngine() {
+      try {
+        const res = await fetch('/api/engine/state');
+        const json = await res.json();
+        if (cancelled || !json?.success) return;
+        setEngineState(json);
+        engineStateRef.current = json;
+
+        // Telemetry from canonical transitions
+        for (const round of json.rounds || []) {
+          const prev = prevRoundsRef.current[round.id];
+          if (!prev) {
+            pushEngineLog('info', `ROUND #${round.epoch} OPEN — ${round.asset} strike locked at ${fmtUsd(round.strikePrice)} (server engine)`);
+          } else if (!prev.side && round.side) {
+            pushEngineLog('trade', `ENGINE ENTRY — ${round.asset} ${round.side} ${round.size?.toLocaleString()} @ ${Math.round((round.entryPrice || 0) * 100)}¢`);
+            const st = simStateRef.current;
+            if (round.asset === st.asset && st.priceHistory.length) {
+              st.priceHistory[st.priceHistory.length - 1].trade = round.side;
+            }
+          }
+          prevRoundsRef.current[round.id] = round;
+        }
+        if (json.settledThisTick > 0) {
+          pushEngineLog('settle', `${json.settledThisTick} round(s) settled server-side — ledger updated`);
+          loadHistory(simStateRef.current.asset);
+        }
+
+        // Current-asset position display comes from the canonical round
+        const cur = (json.rounds || []).find((r: any) => r.asset === simStateRef.current.asset && r.status === 'open');
+        setSimPosition(cur?.side ? {
+          side: cur.side,
+          size: cur.size,
+          entryPrice: cur.entryPrice,
+          costUsd: (cur.size || 0) * (cur.entryPrice || 0),
+        } : null);
+      } catch { /* transient — next poll retries */ }
+    }
+    syncEngine();
+    const interval = setInterval(syncEngine, 3000);
+    const onVisible = () => { if (document.visibilityState === 'visible') syncEngine(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => { cancelled = true; clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
+  }, [pushEngineLog, loadHistory]);
 
   // ---- Cockpit data ----
   const fetchData = useCallback(async () => {
@@ -768,8 +830,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     st.regimeHist = [];
 
     setSimLogs([]);
-    setSimPosition(null);
     setRegimeReadout(null);
+    prevRoundsRef.current = {};
 
     const addSimLog = (type: string, msg: string) => {
       const time = new Date().toLocaleTimeString(undefined, { hour12: false });
@@ -826,40 +888,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       setRegimeReadout(probs);
     };
 
-    const settleRound = async () => {
-      const pos = st.activePosition;
-      const payload = {
-        roundId: st.roundId,
-        asset: st.asset,
-        strikePrice: st.strikePrice,
-        expiryPrice: st.price,
-        side: pos.side,
-        size: pos.size,
-        entryPrice: pos.entryPrice,
-      };
-      st.settling = true;
-      try {
-        const res = await fetch('/api/dashboard/predictions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const json = await res.json();
-        if (res.ok) {
-          addSimLog(json.outcome === 'WIN' ? 'trade' : 'error',
-            `SETTLED (server-verified): ${pos.side} → ${json.outcome} · Net PnL ${json.pnl >= 0 ? '+' : ''}$${Number(json.pnl).toFixed(2)}`);
-        } else if (res.status === 409) {
-          addSimLog('error', `Round #${st.roundId} already settled on server — skipping duplicate.`);
-        } else {
-          addSimLog('error', `Settlement rejected: ${json.error || res.status}`);
-        }
-      } catch (err: any) {
-        addSimLog('error', `Settlement request failed: ${err.message}`);
-      } finally {
-        st.settling = false;
-        loadHistory(st.asset);
-      }
-    };
 
     const runStep = () => {
       if (disposed) return;
@@ -871,19 +899,26 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       const livePrice = pricesRef.current[st.asset];
       const feedFresh = Date.now() - feedTsRef.current < 15000;
 
+      // Strike + round identity come from the canonical server engine.
+      const srvRound = engineStateRef.current?.rounds?.find((r: any) => r.asset === st.asset && r.status === 'open');
       if (!st.strikeLocked) {
-        if (livePrice && feedFresh) {
+        if (srvRound && livePrice && feedFresh) {
           st.price = livePrice;
-          st.strikePrice = livePrice;
+          st.strikePrice = srvRound.strikePrice;
+          st.roundId = srvRound.epoch;
           st.strikeLocked = true;
           st.priceHistory = [{ price: livePrice }];
           st.pYesHistory = [];
-          st.roundSecondsRemaining = 90;
-          addSimLog('info', `ROUND #${st.roundId} OPEN — strike locked at ${fmtUsd(livePrice)} (Hyperliquid mark)`);
         } else {
           timer = setTimeout(runStep, 500);
           return;
         }
+      } else if (srvRound && srvRound.epoch !== st.roundId) {
+        // New canonical round began — reset the visual path to its strike
+        st.roundId = srvRound.epoch;
+        st.strikePrice = srvRound.strikePrice;
+        st.priceHistory = [{ price: st.price }];
+        st.pYesHistory = [];
       }
 
       if (!feedFresh) {
@@ -899,7 +934,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       st.price = livePrice || st.price;
       st.priceHistory.push({ price: st.price });
       if (st.priceHistory.length > 90) st.priceHistory.shift();
-      st.roundSecondsRemaining -= 1;
+      st.roundSecondsRemaining = Math.max(0, 90 - Math.floor((Date.now() / 1000) % 90));
 
       if (st.tickCount % 6 === 0) {
         const diffPct = ((st.price - st.strikePrice) / st.strikePrice) * 100;
@@ -928,47 +963,13 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       st.noContract.bids = generateBookSides(laggedNo, 'bid');
       st.noContract.asks = generateBookSides(laggedNo, 'ask');
 
-      if (st.roundSecondsRemaining >= 15 && !st.activePosition) {
-        const bestYesAsk = st.yesContract.asks[0];
-        const bestNoAsk = st.noContract.asks[0];
-        if (bestYesAsk && bestNoAsk) {
-          const edgeYes = fv.pYes * 100 - bestYesAsk.price * 100;
-          const edgeNo = (1 - fv.pYes) * 100 - bestNoAsk.price * 100;
-          if (edgeYes >= st.minEdgeThreshold) {
-            const contracts = Math.floor(st.tradeSizeUsd / bestYesAsk.price);
-            st.activePosition = { side: 'YES', size: contracts, entryPrice: bestYesAsk.price, costUsd: contracts * bestYesAsk.price };
-            st.priceHistory[st.priceHistory.length - 1].trade = 'YES';
-            addSimLog('edge', `Edge +${edgeYes.toFixed(1)}% — model P(YES) ${Math.round(fv.pYes * 100)}¢ vs market ${Math.round(bestYesAsk.price * 100)}¢`);
-            addSimLog('trade', `BUY YES ${contracts.toLocaleString()} @ ${Math.round(bestYesAsk.price * 100)}¢ · cost ${fmtUsd(st.activePosition.costUsd)}`);
-          } else if (edgeNo >= st.minEdgeThreshold) {
-            const contracts = Math.floor(st.tradeSizeUsd / bestNoAsk.price);
-            st.activePosition = { side: 'NO', size: contracts, entryPrice: bestNoAsk.price, costUsd: contracts * bestNoAsk.price };
-            st.priceHistory[st.priceHistory.length - 1].trade = 'NO';
-            addSimLog('edge', `Edge +${edgeNo.toFixed(1)}% — model P(NO) ${Math.round((1 - fv.pYes) * 100)}¢ vs market ${Math.round(bestNoAsk.price * 100)}¢`);
-            addSimLog('trade', `BUY NO ${contracts.toLocaleString()} @ ${Math.round(bestNoAsk.price * 100)}¢ · cost ${fmtUsd(st.activePosition.costUsd)}`);
-          }
-        }
-      }
 
       drawRoundChart();
       drawMesh();
       drawRegime();
       drawEnvelope();
 
-      if (st.roundSecondsRemaining <= 0) {
-        const winOutcome = st.price > st.strikePrice ? 'YES' : 'NO';
-        addSimLog('settle', `ROUND #${st.roundId} EXPIRED — final ${fmtUsd(st.price)} vs strike ${fmtUsd(st.strikePrice)} → ${winOutcome}`);
-        if (st.activePosition && !st.settling) settleRound();
-        st.activePosition = null;
-        st.roundId++;
-        st.strikePrice = st.price;
-        st.priceHistory = [{ price: st.price }];
-        st.pYesHistory = [];
-        st.roundSecondsRemaining = 90;
-        addSimLog('info', `ROUND #${st.roundId} OPEN — strike relocked at ${fmtUsd(st.strikePrice)}`);
-      }
 
-      setSimPosition(st.activePosition);
       setSimSecondsRemaining(st.roundSecondsRemaining);
       const mins = Math.floor(st.roundSecondsRemaining / 60);
       const secs = st.roundSecondsRemaining % 60;
@@ -1164,7 +1165,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
   const feedAge = feedTs ? Math.max(0, Math.round((Date.now() - feedTs) / 1000)) : null;
   const feedLive = !feedError && feedAge !== null && feedAge < 15;
-  const capitalMultiple = dbStats && dbStats.totalVolume > 0 ? 1 + dbStats.totalPnl / dbStats.totalVolume : null;
 
   return (
     <div className="fable">
@@ -1289,9 +1289,9 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             {/* ============ COCKPIT ============ */}
             <div className="f-stat-grid">
               <div className="f-stat">
-                <span className="f-kicker">USDC Equity</span>
-                <div className="f-stat-value f-azure">{fmtUsd(data?.balances?.equity)}</div>
-                <div className="f-stat-sub">Available {fmtUsd(data?.balances?.available)}</div>
+                <span className="f-kicker">Demo Account Equity</span>
+                <div className="f-stat-value f-azure">{engineState ? fmtUsd(engineState.bankroll) : '—'}</div>
+                <div className="f-stat-sub">Base $10,000 static · shared across the desk</div>
               </div>
               <div className="f-stat">
                 <span className="f-kicker">Engine Hit Rate</span>
@@ -1616,11 +1616,13 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 <div style={{ marginTop: 10 }}><canvas ref={equityCanvasRef} style={{ width: '100%', height: 56, display: 'block' }} /></div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Capital Multiple</span>
+                <span className="f-kicker">Demo Account · $10K Base</span>
                 <div className="f-stat-value f-gold" style={{ fontSize: 30 }}>
-                  {capitalMultiple ? `×${capitalMultiple.toFixed(2)}` : '—'}
+                  {engineState ? fmtUsd(engineState.bankroll) : '—'}
                 </div>
-                <div className="f-stat-sub">On {dbStats ? '$' + fmtCompact(dbStats.totalVolume) : '—'} deployed contract cost</div>
+                <div className="f-stat-sub">
+                  {engineState ? `×${(engineState.bankroll / engineState.bankrollBase).toFixed(2)} on base · all assets` : 'Syncing canonical engine…'}
+                </div>
                 <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   <span className="f-chip">W/L <b className="f-pos">{dbStats?.wins ?? 0}</b>/<b className="f-neg">{dbStats?.losses ?? 0}</b></span>
                   <span className="f-chip">ROUND CLOCK <b className="f-neg">{simCountdown}</b></span>
@@ -1652,7 +1654,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             <div className="f-panel" style={{ marginBottom: 18 }}>
               <div className="f-panel-head">
                 <h2 className="f-panel-title"><Activity size={14} color="#58f0ff" /> <span className="f-serif-grad">Execution Cycle</span>
-                  <span className="f-kicker" style={{ marginLeft: 6 }}>ROUND #{simStateRef.current.roundId} · 90S BINARY</span>
+                  <span className="f-kicker" style={{ marginLeft: 6 }}>ROUND #{engineState?.epoch ?? simStateRef.current.roundId} · 90S BINARY · SERVER ENGINE</span>
                 </h2>
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                   {simPosition && <span className="f-tag win">POSITION LIVE</span>}
@@ -1913,7 +1915,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Lock size={14} color="#ffd166" /> <span className="f-serif-grad">Engine Configuration</span></h2>
+                    <h2 className="f-panel-title"><Lock size={14} color="#ffd166" /> <span className="f-serif-grad">View Parameters</span> <span className="f-kicker" style={{ marginLeft: 4 }}>VISUAL MODEL ONLY</span></h2>
                     <span className={`f-led ${simRunning ? 'ok' : 'warm'}`}>{simRunning ? 'RUNNING' : 'PAUSED'}</span>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
