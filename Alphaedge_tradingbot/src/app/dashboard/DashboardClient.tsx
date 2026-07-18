@@ -189,7 +189,7 @@ export default function DashboardClient({ user }: { user: any }) {
   const [yesBook, setYesBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
   const [noBook, setNoBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
 
-  const [simSpeed, setSimSpeed] = useState(5);
+  const [simSpeed, setSimSpeed] = useState(1);
   const [simTradeSize, setSimTradeSize] = useState(1000);
   const [simEdgeThreshold, setSimEdgeThreshold] = useState(3.5);
   const [simVolatility, setSimVolatility] = useState(45);
@@ -205,7 +205,7 @@ export default function DashboardClient({ user }: { user: any }) {
 
   const simStateRef = useRef({
     isRunning: true,
-    speedMultiplier: 5,
+    speedMultiplier: 1,
     volatility: 45,
     tradeSizeUsd: 1000,
     minEdgeThreshold: 3.5,
@@ -560,7 +560,7 @@ export default function DashboardClient({ user }: { user: any }) {
       ['MODEL EDGE', `${(edge * 100).toFixed(1)}%`, Math.max(-1, Math.min(1, edge * 8))],
     ];
 
-    const inX = w * 0.2, hubX = w * 0.58, outX = w * 0.88;
+    const inX = Math.max(96, w * 0.2), hubX = w * 0.58, outX = w * 0.88;
     const hubY = h / 2;
     const yFor = (i: number) => (h / (inputs.length + 1)) * (i + 1);
 
@@ -1614,9 +1614,9 @@ export default function DashboardClient({ user }: { user: any }) {
                 </div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Hit Rate · Rolling 20</span>
+                <span className="f-kicker">Hit Rate · Lifetime</span>
                 <div className="f-stat-value f-azure" style={{ fontSize: 30 }}>{dbStats ? dbStats.hitRate.toFixed(1) + '%' : '—'}</div>
-                <div className="f-stat-sub">{dbStats?.wins ?? 0} W / {dbStats?.losses ?? 0} L lifetime</div>
+                <div className="f-stat-sub">{dbStats?.wins ?? 0} W / {dbStats?.losses ?? 0} L · sparkline: rolling 20</div>
                 <div style={{ marginTop: 10 }}><canvas ref={hitrateCanvasRef} style={{ width: '100%', height: 56, display: 'block' }} /></div>
               </div>
               <div className="f-stat">
@@ -1646,7 +1646,7 @@ export default function DashboardClient({ user }: { user: any }) {
                   <span className="f-mono f-neg" style={{ fontSize: 14, fontWeight: 700 }}>{simCountdown}</span>
                 </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8 }}>
+              <div className="f-cycle">
                 {CYCLE_STEPS.map((step, i) => {
                   const active = cycleStep(simSecondsRemaining) === i;
                   const past = cycleStep(simSecondsRemaining) > i;
