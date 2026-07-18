@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import './dashboard.css';
 
 import {
   Shield,
-  ShieldAlert,
   Activity,
   Plus,
   RefreshCw,
@@ -20,15 +19,19 @@ import {
   AlertOctagon,
   Radio,
   Scale,
+  Network,
+  Waves,
+  Grid3x3,
+  CandlestickChart,
+  Dices,
 } from 'lucide-react';
 
 import { handleSignOut } from '@/app/auth-actions';
 
 // ---------------------------------------------------------------------------
-// Model math
+// Model math (all readouts derive from these — no invented numbers)
 // ---------------------------------------------------------------------------
 
-// Standard normal CDF (Abramowitz & Stegun 7.1.26 approximation)
 function normCDF(x: number) {
   const a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
   const a4 = -1.453152027, a5 = 1.061405429, p = 0.3275911;
@@ -41,11 +44,16 @@ function normCDF(x: number) {
 
 const SECONDS_PER_YEAR = 31_536_000;
 
-// Binary fair value under driftless GBM: sigma in USD over remaining round time.
 function binaryFairValue(price: number, strike: number, annualVolPct: number, secondsRemaining: number) {
   const sigmaUsd = price * (annualVolPct / 100) * Math.sqrt(Math.max(secondsRemaining, 0.001) / SECONDS_PER_YEAR);
   const z = (price - strike) / Math.max(sigmaUsd, 1e-9);
   return { pYes: Math.min(Math.max(normCDF(z), 0.01), 0.99), z, sigmaUsd };
+}
+
+function std(xs: number[]) {
+  if (xs.length < 2) return 0;
+  const m = xs.reduce((a, b) => a + b, 0) / xs.length;
+  return Math.sqrt(xs.reduce((a, b) => a + (b - m) ** 2, 0) / (xs.length - 1));
 }
 
 // ---------------------------------------------------------------------------
@@ -61,7 +69,6 @@ const ASSET_LABEL: Record<DeskAsset, string> = {
   'ETH-PERP': 'ETH · PERPETUAL',
 };
 
-// Maps bot template asset classes to live feed keys
 function feedKeyForAssetClass(assetClass: string): DeskAsset | null {
   const a = (assetClass || '').toUpperCase();
   if (a.startsWith('BTC')) return 'BTC-PERP';
@@ -70,32 +77,15 @@ function feedKeyForAssetClass(assetClass: string): DeskAsset | null {
   return null;
 }
 
-const hypotheses = [
-  'Gold regime filter over BTC-PERP breakout with funding-rate confirmation',
-  'Z-score mean reversion on XAU/BTC ratio, 15m lookback, vol-scaled entries',
-  'ETH-PERP order-flow imbalance against Hyperliquid oracle basis',
-  'Cross-asset momentum overlay: XAU, BTC, ETH with Bayesian vol filter',
-  'Latency arbitrage on binary round pricing vs continuous mark drift',
-];
+const CYCLE_STEPS = ['Scan', 'Detect', 'Validate', 'Size', 'Fill', 'Settle'];
 
-const pipelineSteps = [
-  { id: 1, name: 'Parse' },
-  { id: 2, name: 'IR Build' },
-  { id: 3, name: 'Compile' },
-  { id: 4, name: 'Backtest' },
-  { id: 5, name: 'Validate' },
-  { id: 6, name: 'Approve' },
-  { id: 7, name: 'Deploy' },
-];
-
-const getActiveStepId = (sec: number) => {
-  if (sec > 75) return 1;
-  if (sec > 65) return 2;
-  if (sec > 55) return 3;
-  if (sec > 30) return 4;
-  if (sec > 18) return 5;
-  if (sec > 8) return 6;
-  return 7;
+const cycleStep = (sec: number) => {
+  if (sec > 75) return 0;
+  if (sec > 60) return 1;
+  if (sec > 45) return 2;
+  if (sec > 30) return 3;
+  if (sec > 12) return 4;
+  return 5;
 };
 
 interface FeedContext {
@@ -134,6 +124,22 @@ function fmtTime(epochMs: number) {
   });
 }
 
+// Canvas palette (matches dashboard.css tokens)
+const C = {
+  azure: '#58f0ff', lime: '#bfff6a', rose: '#ff6fb3', violet: '#9d7dff', amber: '#ffd166',
+  grid: 'rgba(255,255,255,0.05)', faint: 'rgba(239,246,255,0.4)',
+};
+
+function fitCanvas(canvas: HTMLCanvasElement | null, height: number) {
+  if (!canvas) return null;
+  const w = canvas.parentElement?.clientWidth || 600;
+  if (canvas.width !== w || canvas.height !== height) {
+    canvas.width = w;
+    canvas.height = height;
+  }
+  return canvas.getContext('2d');
+}
+
 // ---------------------------------------------------------------------------
 
 export default function DashboardClient({ user }: { user: any }) {
@@ -155,7 +161,6 @@ export default function DashboardClient({ user }: { user: any }) {
 
   const [activeTab, setActiveTab] = useState<'cockpit' | 'simulator'>('cockpit');
   const [simAsset, setSimAsset] = useState<DeskAsset>('BTC-PERP');
-
   const [clock, setClock] = useState('');
 
   // ---- Live feed state ----
@@ -165,7 +170,12 @@ export default function DashboardClient({ user }: { user: any }) {
   const [feedError, setFeedError] = useState<string | null>(null);
   const [feedTs, setFeedTs] = useState<number>(0);
   const pricesRef = useRef<Record<string, number>>({});
+  const contextsRef = useRef<Record<string, FeedContext>>({});
   const feedTsRef = useRef<number>(0);
+
+  // ---- Market candle history (real Hyperliquid candles, 60s poll) ----
+  const [markets, setMarkets] = useState<any>(null);
+  const marketsRef = useRef<any>(null);
 
   // ---- Simulator state ----
   const [dbStats, setDbStats] = useState<any>(null);
@@ -175,13 +185,9 @@ export default function DashboardClient({ user }: { user: any }) {
   const [simSecondsRemaining, setSimSecondsRemaining] = useState(90);
   const [simPosition, setSimPosition] = useState<any>(null);
   const [modelReadout, setModelReadout] = useState<{ pYes: number; z: number; sigmaUsd: number } | null>(null);
+  const [regimeReadout, setRegimeReadout] = useState<{ trend: number; chop: number; panic: number } | null>(null);
   const [yesBook, setYesBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
   const [noBook, setNoBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
-  const [robustnessData, setRobustnessData] = useState<Record<string, number[]>>({
-    'XAU': [0.8, 1.9, -0.6, 2.4, 3.1, 1.2],
-    'BTC': [-1.5, 3.4, 4.2, 5.5, 7.9, 6.1],
-    'ETH': [-2.7, 1.6, 4.9, 3.8, 4.5, 2.2],
-  });
 
   const [simSpeed, setSimSpeed] = useState(5);
   const [simTradeSize, setSimTradeSize] = useState(1000);
@@ -189,7 +195,13 @@ export default function DashboardClient({ user }: { user: any }) {
   const [simVolatility, setSimVolatility] = useState(45);
   const [simRunning, setSimRunning] = useState(true);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const roundCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const meshCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const regimeCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const envelopeCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const equityCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const hitrateCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const candleCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const simStateRef = useRef({
     isRunning: true,
@@ -202,6 +214,7 @@ export default function DashboardClient({ user }: { user: any }) {
     strikePrice: 0,
     strikeLocked: false,
     priceHistory: [] as Array<{ price: number; trade?: 'YES' | 'NO' }>,
+    pYesHistory: [] as Array<{ p: number; lo: number; hi: number }>,
     roundSecondsRemaining: 90,
     roundId: 101,
     tickCount: 0,
@@ -211,17 +224,18 @@ export default function DashboardClient({ user }: { user: any }) {
     activePosition: null as any,
     settling: false,
     staleWarned: false,
+    // regime engine buffers (built from live 2s feed samples)
+    feedBuf: [] as Array<{ t: number; p: number }>,
+    regimeHist: [] as Array<{ trend: number; chop: number; panic: number }>,
   });
 
   // ---- Wall clock ----
   useEffect(() => {
-    const t = setInterval(() => {
-      setClock(new Date().toLocaleTimeString(undefined, { hour12: false }));
-    }, 1000);
+    const t = setInterval(() => setClock(new Date().toLocaleTimeString(undefined, { hour12: false })), 1000);
     return () => clearInterval(t);
   }, []);
 
-  // ---- Live price feed (Hyperliquid via server route, 2s poll) ----
+  // ---- Live price feed (2s poll) ----
   useEffect(() => {
     let cancelled = false;
     async function syncPrices() {
@@ -247,11 +261,15 @@ export default function DashboardClient({ user }: { user: any }) {
           setFeedError(null);
           setFeedTs(json.ts || Date.now());
           pricesRef.current = json.prices;
+          contextsRef.current = json.contexts || {};
           feedTsRef.current = json.ts || Date.now();
           const st = simStateRef.current;
           if (json.prices[st.asset]) {
             st.price = json.prices[st.asset];
             st.staleWarned = false;
+            // feed the regime buffer with the real sample
+            st.feedBuf.push({ t: Date.now(), p: json.prices[st.asset] });
+            if (st.feedBuf.length > 300) st.feedBuf.shift();
           }
         } else {
           throw new Error(json.error || 'Feed returned no prices');
@@ -265,7 +283,25 @@ export default function DashboardClient({ user }: { user: any }) {
     return () => { cancelled = true; clearInterval(interval); };
   }, []);
 
-  // ---- Predictions history (server-verified) ----
+  // ---- Market candle history (60s poll) ----
+  useEffect(() => {
+    let cancelled = false;
+    async function syncMarkets() {
+      try {
+        const res = await fetch('/api/dashboard/markets');
+        const json = await res.json();
+        if (!cancelled && json?.success) {
+          setMarkets(json);
+          marketsRef.current = json;
+        }
+      } catch { /* transient — next poll retries */ }
+    }
+    syncMarkets();
+    const interval = setInterval(syncMarkets, 60_000);
+    return () => { cancelled = true; clearInterval(interval); };
+  }, []);
+
+  // ---- Predictions history (server-verified, Turso-backed) ----
   const loadHistory = useCallback(async (asset: string) => {
     try {
       const res = await fetch(`/api/dashboard/predictions?asset=${encodeURIComponent(asset)}`);
@@ -291,12 +327,8 @@ export default function DashboardClient({ user }: { user: any }) {
       if (!res.ok) throw new Error('Failed to fetch dashboard data');
       const json = await res.json();
       setData(json);
-      if (json.botTemplates?.length > 0) {
-        setSelectedTemplate(prev => prev || json.botTemplates[0].id);
-      }
-      if (json.exchangeConnections?.length > 0) {
-        setSelectedConnection(prev => prev || json.exchangeConnections[0].id);
-      }
+      if (json.botTemplates?.length > 0) setSelectedTemplate(prev => prev || json.botTemplates[0].id);
+      if (json.exchangeConnections?.length > 0) setSelectedConnection(prev => prev || json.exchangeConnections[0].id);
     } catch (err: any) {
       console.error(err);
       setMessage({ type: 'error', text: err.message || 'Error loading dashboard' });
@@ -308,7 +340,402 @@ export default function DashboardClient({ user }: { user: any }) {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  // ---- Simulator engine ----
+  // -------------------------------------------------------------------------
+  // DB-derived series — equity curve, rolling hit rate, Markov transition
+  // matrix, Monte Carlo bootstrap. All computed from the persisted,
+  // server-verified round history in Turso.
+  // -------------------------------------------------------------------------
+
+  const chrono = useMemo(() => [...simHistory].sort((a, b) => a.createdAt - b.createdAt), [simHistory]);
+
+  const equitySeries = useMemo(() => {
+    let cum = 0;
+    return chrono.map(h => { cum += h.pnl; return cum; });
+  }, [chrono]);
+
+  const hitrateSeries = useMemo(() => {
+    const win = 20;
+    const out: number[] = [];
+    for (let i = 0; i < chrono.length; i++) {
+      const slice = chrono.slice(Math.max(0, i - win + 1), i + 1);
+      const wins = slice.filter(h => h.outcome === 'WIN').length;
+      out.push((wins / slice.length) * 100);
+    }
+    return out;
+  }, [chrono]);
+
+  const transitionMatrix = useMemo(() => {
+    const counts = { WW: 0, WL: 0, LW: 0, LL: 0 };
+    for (let i = 1; i < chrono.length; i++) {
+      const prev = chrono[i - 1].outcome === 'WIN' ? 'W' : 'L';
+      const cur = chrono[i].outcome === 'WIN' ? 'W' : 'L';
+      counts[(prev + cur) as keyof typeof counts]++;
+    }
+    const wTotal = counts.WW + counts.WL;
+    const lTotal = counts.LW + counts.LL;
+    return {
+      counts,
+      pWW: wTotal ? counts.WW / wTotal : null,
+      pWL: wTotal ? counts.WL / wTotal : null,
+      pLW: lTotal ? counts.LW / lTotal : null,
+      pLL: lTotal ? counts.LL / lTotal : null,
+      transitions: chrono.length > 1 ? chrono.length - 1 : 0,
+    };
+  }, [chrono]);
+
+  const bootstrap = useMemo(() => {
+    // Monte Carlo: 10,000 paths resampled from the REAL settled per-round PnLs
+    const pnls = chrono.map(h => h.pnl);
+    if (pnls.length < 5) return null;
+    const PATHS = 10_000;
+    const HORIZON = Math.min(60, pnls.length * 2);
+    const terminals: number[] = new Array(PATHS);
+    let ddSum = 0;
+    for (let p = 0; p < PATHS; p++) {
+      let cum = 0, peak = 0, maxDD = 0;
+      for (let s = 0; s < HORIZON; s++) {
+        cum += pnls[(Math.random() * pnls.length) | 0];
+        if (cum > peak) peak = cum;
+        const dd = peak - cum;
+        if (dd > maxDD) maxDD = dd;
+      }
+      terminals[p] = cum;
+      ddSum += maxDD;
+    }
+    terminals.sort((a, b) => a - b);
+    const q = (f: number) => terminals[Math.min(PATHS - 1, Math.max(0, Math.floor(f * PATHS)))];
+    const lo = terminals[0], hi = terminals[PATHS - 1];
+    const BINS = 24;
+    const bins = new Array(BINS).fill(0);
+    const span = Math.max(hi - lo, 1e-9);
+    for (const t of terminals) bins[Math.min(BINS - 1, Math.floor(((t - lo) / span) * BINS))]++;
+    const maxBin = Math.max(...bins);
+    return {
+      horizon: HORIZON,
+      p5: q(0.05), p50: q(0.5), p95: q(0.95),
+      pLoss: terminals.filter(t => t < 0).length / PATHS,
+      avgMaxDD: ddSum / PATHS,
+      bins: bins.map(b => b / maxBin),
+      zeroBin: Math.min(BINS - 1, Math.max(0, Math.floor(((0 - lo) / span) * BINS))),
+    };
+  }, [chrono]);
+
+  // -------------------------------------------------------------------------
+  // Canvas painters
+  // -------------------------------------------------------------------------
+
+  const drawRoundChart = useCallback(() => {
+    const st = simStateRef.current;
+    const ctx = fitCanvas(roundCanvasRef.current, 250);
+    if (!ctx) return;
+    const w = roundCanvasRef.current!.width, h = 250;
+    ctx.clearRect(0, 0, w, h);
+    if (st.priceHistory.length === 0) return;
+
+    const ps = st.priceHistory.map(p => p.price);
+    ps.push(st.strikePrice);
+    let min = Math.min(...ps), max = Math.max(...ps);
+    const pad = (max - min) === 0 ? Math.max(min * 0.0004, 0.5) : (max - min) * 0.2;
+    min -= pad; max += pad;
+    const X = (i: number) => (i / 90) * w;
+    const Y = (p: number) => h - ((p - min) / (max - min)) * h;
+
+    ctx.strokeStyle = C.grid;
+    ctx.lineWidth = 1;
+    for (let i = 1; i < 6; i++) {
+      const y = (i / 6) * h, x = (i / 6) * w;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    }
+
+    const sy = Y(st.strikePrice);
+    ctx.strokeStyle = 'rgba(255,209,102,0.6)';
+    ctx.lineWidth = 1.2;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(w, sy); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = C.amber;
+    ctx.font = '10px monospace';
+    ctx.fillText(`STRIKE ${st.strikePrice.toFixed(2)}`, 8, sy - 6);
+
+    ctx.beginPath();
+    ctx.moveTo(X(0), Y(st.priceHistory[0].price));
+    for (let i = 1; i < st.priceHistory.length; i++) ctx.lineTo(X(i), Y(st.priceHistory[i].price));
+    ctx.strokeStyle = C.azure;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, 'rgba(88,240,255,0.15)');
+    grad.addColorStop(1, 'rgba(88,240,255,0)');
+    ctx.fillStyle = grad;
+    ctx.lineTo(X(st.priceHistory.length - 1), h); ctx.lineTo(X(0), h);
+    ctx.closePath(); ctx.fill();
+
+    st.priceHistory.forEach((pt, i) => {
+      if (!pt.trade) return;
+      const tx = X(i), ty = Y(pt.price);
+      ctx.beginPath();
+      ctx.fillStyle = pt.trade === 'YES' ? C.lime : C.rose;
+      if (pt.trade === 'YES') { ctx.moveTo(tx, ty - 8); ctx.lineTo(tx - 5, ty + 2); ctx.lineTo(tx + 5, ty + 2); }
+      else { ctx.moveTo(tx, ty + 8); ctx.lineTo(tx - 5, ty - 2); ctx.lineTo(tx + 5, ty - 2); }
+      ctx.fill();
+    });
+
+    const li = st.priceHistory.length - 1;
+    ctx.beginPath(); ctx.arc(X(li), Y(st.priceHistory[li].price), 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = C.amber; ctx.fill();
+  }, []);
+
+  const drawEnvelope = useCallback(() => {
+    const st = simStateRef.current;
+    const ctx = fitCanvas(envelopeCanvasRef.current, 150);
+    if (!ctx) return;
+    const w = envelopeCanvasRef.current!.width, h = 150;
+    ctx.clearRect(0, 0, w, h);
+    const hist = st.pYesHistory;
+    if (hist.length < 2) {
+      ctx.fillStyle = C.faint; ctx.font = '10px monospace'; ctx.textAlign = 'left';
+      ctx.fillText('accumulating model path…', 10, h / 2);
+      return;
+    }
+    const X = (i: number) => (i / 90) * w;
+    const Y = (p: number) => h - p * h;
+
+    ctx.strokeStyle = C.grid;
+    [0.25, 0.75].forEach(g => { ctx.beginPath(); ctx.moveTo(0, Y(g)); ctx.lineTo(w, Y(g)); ctx.stroke(); });
+    ctx.strokeStyle = 'rgba(239,246,255,0.2)';
+    ctx.setLineDash([3, 4]);
+    ctx.beginPath(); ctx.moveTo(0, Y(0.5)); ctx.lineTo(w, Y(0.5)); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // ±1σ confidence band from the pricer
+    ctx.beginPath();
+    hist.forEach((pt, i) => { i === 0 ? ctx.moveTo(X(i), Y(pt.hi)) : ctx.lineTo(X(i), Y(pt.hi)); });
+    for (let i = hist.length - 1; i >= 0; i--) ctx.lineTo(X(i), Y(hist[i].lo));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(157,125,255,0.13)';
+    ctx.fill();
+
+    ctx.beginPath();
+    hist.forEach((pt, i) => { i === 0 ? ctx.moveTo(X(i), Y(pt.p)) : ctx.lineTo(X(i), Y(pt.p)); });
+    ctx.strokeStyle = C.violet;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.fillStyle = C.faint; ctx.font = '9px monospace'; ctx.textAlign = 'left';
+    ctx.fillText('P=1', 6, 12); ctx.fillText('P=0', 6, h - 5);
+  }, []);
+
+  const drawMesh = useCallback(() => {
+    const st = simStateRef.current;
+    const ctx = fitCanvas(meshCanvasRef.current, 240);
+    if (!ctx) return;
+    const w = meshCanvasRef.current!.width, h = 240;
+    ctx.clearRect(0, 0, w, h);
+
+    const fv = st.pYesHistory.length ? st.pYesHistory[st.pYesHistory.length - 1] : null;
+    const asset = st.asset;
+    const cx = contextsRef.current[asset];
+    const mkt = marketsRef.current?.markets?.[asset];
+    const bidSum = st.yesContract.bids.reduce((a: number, r: any) => a + r.size, 0);
+    const askSum = st.yesContract.asks.reduce((a: number, r: any) => a + r.size, 0);
+    const bookImb = bidSum + askSum > 0 ? (bidSum - askSum) / (bidSum + askSum) : 0;
+    const drift = st.strikeLocked && st.strikePrice > 0 ? (st.price - st.strikePrice) / st.strikePrice : 0;
+    const pYes = fv ? fv.p : 0.5;
+    const edge = pYes - st.yesContract.midPrice;
+
+    // Real inputs: [label, displayed value, normalized weight -1..1]
+    const inputs: Array<[string, string, number]> = [
+      ['MARK DRIFT', `${drift >= 0 ? '+' : ''}${(drift * 100).toFixed(3)}%`, Math.max(-1, Math.min(1, drift * 400))],
+      ['FUNDING', cx ? `${(cx.fundingRate * 100).toFixed(4)}%` : '—', cx ? Math.max(-1, Math.min(1, cx.fundingRate * 8000)) : 0],
+      ['σ 24H', mkt?.realizedVolPct ? `${mkt.realizedVolPct.toFixed(1)}%` : '—', mkt?.realizedVolPct ? Math.min(1, mkt.realizedVolPct / 120) : 0],
+      ['BOOK IMB', `${(bookImb * 100).toFixed(0)}%`, bookImb],
+      ['MODEL EDGE', `${(edge * 100).toFixed(1)}%`, Math.max(-1, Math.min(1, edge * 8))],
+    ];
+
+    const inX = w * 0.2, hubX = w * 0.58, outX = w * 0.88;
+    const hubY = h / 2;
+    const yFor = (i: number) => (h / (inputs.length + 1)) * (i + 1);
+
+    inputs.forEach(([, , wgt], i) => {
+      const y = yFor(i);
+      const mag = Math.abs(wgt);
+      ctx.beginPath();
+      ctx.moveTo(inX + 10, y);
+      ctx.bezierCurveTo(inX + (hubX - inX) * 0.5, y, hubX - (hubX - inX) * 0.4, hubY, hubX - 22, hubY);
+      ctx.strokeStyle = wgt >= 0 ? `rgba(191,255,106,${0.15 + mag * 0.6})` : `rgba(255,111,179,${0.15 + mag * 0.6})`;
+      ctx.lineWidth = 1 + mag * 2.5;
+      ctx.stroke();
+    });
+
+    const yesY = h * 0.3, noY = h * 0.7;
+    ctx.beginPath(); ctx.moveTo(hubX + 22, hubY); ctx.lineTo(outX - 14, yesY);
+    ctx.strokeStyle = `rgba(191,255,106,${0.15 + pYes * 0.7})`; ctx.lineWidth = 1 + pYes * 3; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(hubX + 22, hubY); ctx.lineTo(outX - 14, noY);
+    ctx.strokeStyle = `rgba(255,111,179,${0.15 + (1 - pYes) * 0.7})`; ctx.lineWidth = 1 + (1 - pYes) * 3; ctx.stroke();
+
+    ctx.font = '8px monospace';
+    inputs.forEach(([label, val, wgt], i) => {
+      const y = yFor(i);
+      ctx.beginPath(); ctx.arc(inX, y, 6.5, 0, Math.PI * 2);
+      ctx.fillStyle = wgt >= 0 ? C.lime : C.rose;
+      ctx.fill();
+      ctx.fillStyle = C.faint; ctx.textAlign = 'right';
+      ctx.fillText(label, inX - 13, y - 2);
+      ctx.fillStyle = 'rgba(239,246,255,0.85)';
+      ctx.fillText(val, inX - 13, y + 9);
+    });
+
+    ctx.beginPath(); ctx.arc(hubX, hubY, 20, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(157,125,255,0.15)';
+    ctx.strokeStyle = C.violet; ctx.lineWidth = 1.5;
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = C.violet; ctx.textAlign = 'center'; ctx.font = 'bold 11px monospace';
+    ctx.fillText(`${Math.round(pYes * 100)}¢`, hubX, hubY + 4);
+    ctx.font = '8px monospace'; ctx.fillStyle = C.faint;
+    ctx.fillText('CONSENSUS', hubX, hubY + 33);
+
+    const firing = st.activePosition?.side;
+    ([['YES', yesY, C.lime, pYes], ['NO', noY, C.rose, 1 - pYes]] as const).forEach(([lbl, y, col, p]) => {
+      const active = firing === lbl;
+      ctx.beginPath(); ctx.arc(outX, y as number, active ? 12 : 9, 0, Math.PI * 2);
+      ctx.fillStyle = active ? (col as string) : 'rgba(255,255,255,0.06)';
+      ctx.strokeStyle = col as string; ctx.lineWidth = 1.5;
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = active ? '#051016' : (col as string);
+      ctx.font = 'bold 8px monospace';
+      ctx.fillText(lbl as string, outX, (y as number) + 3);
+      ctx.fillStyle = C.faint; ctx.font = '8px monospace';
+      ctx.fillText(`${Math.round((p as number) * 100)}¢`, outX, (y as number) + ((y as number) < hubY ? -16 : 22));
+    });
+    ctx.textAlign = 'left';
+  }, []);
+
+  const drawRegime = useCallback(() => {
+    const st = simStateRef.current;
+    const ctx = fitCanvas(regimeCanvasRef.current, 130);
+    if (!ctx) return;
+    const w = regimeCanvasRef.current!.width, h = 130;
+    ctx.clearRect(0, 0, w, h);
+    const hist = st.regimeHist;
+    if (hist.length < 3) {
+      ctx.fillStyle = C.faint; ctx.font = '10px monospace'; ctx.textAlign = 'left';
+      ctx.fillText('accumulating live feed samples…', 10, h / 2);
+      return;
+    }
+    const N = hist.length;
+    const X = (i: number) => (i / (N - 1)) * w;
+    const layers: Array<['trend' | 'chop' | 'panic', string]> = [
+      ['panic', 'rgba(255,111,179,0.5)'],
+      ['chop', 'rgba(255,209,102,0.45)'],
+      ['trend', 'rgba(191,255,106,0.5)'],
+    ];
+    const bases = new Array(N).fill(0);
+    layers.forEach(([key, color]) => {
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const y = h - (bases[i] + hist[i][key]) * h;
+        i === 0 ? ctx.moveTo(X(i), y) : ctx.lineTo(X(i), y);
+      }
+      for (let i = N - 1; i >= 0; i--) ctx.lineTo(X(i), h - bases[i] * h);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      for (let i = 0; i < N; i++) bases[i] += hist[i][key];
+    });
+  }, []);
+
+  const drawEquity = useCallback(() => {
+    const ctx = fitCanvas(equityCanvasRef.current, 56);
+    if (!ctx) return;
+    const w = equityCanvasRef.current!.width, h = 56;
+    ctx.clearRect(0, 0, w, h);
+    if (equitySeries.length < 2) return;
+    let min = Math.min(0, ...equitySeries), max = Math.max(0, ...equitySeries);
+    if (max === min) max = min + 1;
+    const X = (i: number) => (i / (equitySeries.length - 1)) * w;
+    const Y = (v: number) => h - 4 - ((v - min) / (max - min)) * (h - 8);
+    const up = equitySeries[equitySeries.length - 1] >= 0;
+    ctx.beginPath();
+    equitySeries.forEach((v, i) => { i === 0 ? ctx.moveTo(X(i), Y(v)) : ctx.lineTo(X(i), Y(v)); });
+    ctx.strokeStyle = up ? C.lime : C.rose;
+    ctx.lineWidth = 1.8;
+    ctx.stroke();
+  }, [equitySeries]);
+
+  const drawHitrate = useCallback(() => {
+    const ctx = fitCanvas(hitrateCanvasRef.current, 56);
+    if (!ctx) return;
+    const w = hitrateCanvasRef.current!.width, h = 56;
+    ctx.clearRect(0, 0, w, h);
+    if (hitrateSeries.length < 2) return;
+    const X = (i: number) => (i / (hitrateSeries.length - 1)) * w;
+    const Y = (v: number) => h - 4 - (v / 100) * (h - 8);
+    ctx.strokeStyle = 'rgba(239,246,255,0.15)';
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath(); ctx.moveTo(0, Y(50)); ctx.lineTo(w, Y(50)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    hitrateSeries.forEach((v, i) => { i === 0 ? ctx.moveTo(X(i), Y(v)) : ctx.lineTo(X(i), Y(v)); });
+    ctx.strokeStyle = C.azure;
+    ctx.lineWidth = 1.8;
+    ctx.stroke();
+  }, [hitrateSeries]);
+
+  const drawCandles = useCallback(() => {
+    const ctx = fitCanvas(candleCanvasRef.current, 170);
+    if (!ctx) return;
+    const w = candleCanvasRef.current!.width, h = 170;
+    ctx.clearRect(0, 0, w, h);
+    const candles = marketsRef.current?.markets?.[simStateRef.current.asset]?.candles;
+    if (!candles || candles.length < 2) {
+      ctx.fillStyle = C.faint; ctx.font = '10px monospace'; ctx.textAlign = 'left';
+      ctx.fillText('loading candle history…', 10, h / 2);
+      return;
+    }
+    const min = Math.min(...candles.map((k: any) => k.l));
+    const max = Math.max(...candles.map((k: any) => k.h));
+    const Y = (p: number) => h - 6 - ((p - min) / Math.max(max - min, 1e-9)) * (h - 12);
+    const bw = w / candles.length;
+    candles.forEach((k: any, i: number) => {
+      const x = i * bw + bw / 2;
+      const up = k.c >= k.o;
+      ctx.strokeStyle = up ? 'rgba(191,255,106,0.7)' : 'rgba(255,111,179,0.7)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, Y(k.h)); ctx.lineTo(x, Y(k.l)); ctx.stroke();
+      ctx.fillStyle = up ? C.lime : C.rose;
+      const bodyTop = Y(Math.max(k.o, k.c)), bodyBot = Y(Math.min(k.o, k.c));
+      ctx.fillRect(x - Math.max(bw * 0.3, 1), bodyTop, Math.max(bw * 0.6, 2), Math.max(bodyBot - bodyTop, 1));
+    });
+    const mark = pricesRef.current[simStateRef.current.asset];
+    if (mark && mark >= min && mark <= max) {
+      ctx.strokeStyle = 'rgba(88,240,255,0.7)';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(0, Y(mark)); ctx.lineTo(w, Y(mark)); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = C.azure; ctx.font = '9px monospace'; ctx.textAlign = 'left';
+      ctx.fillText(`MARK ${mark.toFixed(2)}`, w - 120, Y(mark) - 5);
+    }
+  }, []);
+
+  // Redraw DB/markets-derived canvases when their data changes or tab activates
+  useEffect(() => {
+    if (activeTab !== 'simulator') return;
+    drawEquity(); drawHitrate(); drawCandles();
+  }, [activeTab, drawEquity, drawHitrate, drawCandles, markets, simHistory, simAsset]);
+
+  useEffect(() => {
+    if (activeTab !== 'simulator') return;
+    const onResize = () => { drawEquity(); drawHitrate(); drawCandles(); drawRoundChart(); drawMesh(); drawRegime(); drawEnvelope(); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [activeTab, drawEquity, drawHitrate, drawCandles, drawRoundChart, drawMesh, drawRegime, drawEnvelope]);
+
+  // -------------------------------------------------------------------------
+  // Simulator engine
+  // -------------------------------------------------------------------------
+
   useEffect(() => {
     if (activeTab !== 'simulator') return;
 
@@ -323,6 +750,7 @@ export default function DashboardClient({ user }: { user: any }) {
     st.price = pricesRef.current[simAsset] || 0;
     st.strikePrice = 0;
     st.priceHistory = [];
+    st.pYesHistory = [];
     st.roundSecondsRemaining = 90;
     st.tickCount = 0;
     st.yesContract = { midPrice: 0.5, bids: [], asks: [] };
@@ -330,9 +758,12 @@ export default function DashboardClient({ user }: { user: any }) {
     st.laggedFairValueYes = 0.5;
     st.activePosition = null;
     st.settling = false;
+    st.feedBuf = [];
+    st.regimeHist = [];
 
     setSimLogs([]);
     setSimPosition(null);
+    setRegimeReadout(null);
 
     const addSimLog = (type: string, msg: string) => {
       const time = new Date().toLocaleTimeString(undefined, { hour12: false });
@@ -360,85 +791,33 @@ export default function DashboardClient({ user }: { user: any }) {
       return rows;
     };
 
-    const drawChart = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-      const w = canvas.width, h = canvas.height;
-      ctx.clearRect(0, 0, w, h);
-      if (st.priceHistory.length === 0) return;
-
-      const prices = st.priceHistory.map(p => p.price);
-      prices.push(st.strikePrice);
-      let minPrice = Math.min(...prices), maxPrice = Math.max(...prices);
-      const range = maxPrice - minPrice;
-      const padding = range === 0 ? Math.max(minPrice * 0.0004, 0.5) : range * 0.2;
-      minPrice -= padding; maxPrice += padding;
-
-      const getX = (i: number) => (i / 90) * w;
-      const getY = (p: number) => h - ((p - minPrice) / (maxPrice - minPrice)) * h;
-
-      // hairline grid
-      ctx.strokeStyle = 'rgba(216, 222, 240, 0.05)';
-      ctx.lineWidth = 1;
-      for (let i = 1; i < 6; i++) {
-        const y = (i / 6) * h;
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-        const x = (i / 6) * w;
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    const updateRegime = () => {
+      // Regime probabilities from live feed micro-structure:
+      // trend ∝ |drift z-score|, chop ∝ its inverse, panic ∝ short-window vol
+      // relative to the 24h realized-vol baseline from real candles.
+      const buf = st.feedBuf;
+      if (buf.length < 8) return;
+      const rets: number[] = [];
+      for (let i = Math.max(1, buf.length - 60); i < buf.length; i++) {
+        rets.push(Math.log(buf[i].p / buf[i - 1].p));
       }
+      if (rets.length < 5) return;
+      const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
+      const sd = std(rets);
+      const zDrift = sd > 0 ? (mean / (sd / Math.sqrt(rets.length))) : 0;
+      const annualVolNow = sd * Math.sqrt(SECONDS_PER_YEAR / 2) * 100;
+      const baseline = marketsRef.current?.markets?.[st.asset]?.realizedVolPct || 50;
+      const volRatio = baseline > 0 ? annualVolNow / baseline : 1;
 
-      // strike line — gold
-      const strikeY = getY(st.strikePrice);
-      ctx.strokeStyle = 'rgba(217, 169, 78, 0.55)';
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath(); ctx.moveTo(0, strikeY); ctx.lineTo(w, strikeY); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = 'rgba(245, 199, 106, 0.9)';
-      ctx.font = '10px monospace';
-      ctx.fillText(`STRIKE ${st.strikePrice.toFixed(2)}`, 8, strikeY - 6);
-
-      // price path — azure
-      ctx.beginPath();
-      ctx.moveTo(getX(0), getY(st.priceHistory[0].price));
-      for (let i = 1; i < st.priceHistory.length; i++) {
-        ctx.lineTo(getX(i), getY(st.priceHistory[i].price));
-      }
-      ctx.strokeStyle = '#6fb3e0';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      const gradient = ctx.createLinearGradient(0, 0, 0, h);
-      gradient.addColorStop(0, 'rgba(111, 179, 224, 0.14)');
-      gradient.addColorStop(1, 'rgba(111, 179, 224, 0)');
-      ctx.fillStyle = gradient;
-      ctx.lineTo(getX(st.priceHistory.length - 1), h);
-      ctx.lineTo(getX(0), h);
-      ctx.closePath();
-      ctx.fill();
-
-      // trade markers
-      st.priceHistory.forEach((pt, index) => {
-        if (!pt.trade) return;
-        const tx = getX(index), ty = getY(pt.price);
-        ctx.beginPath();
-        if (pt.trade === 'YES') {
-          ctx.fillStyle = '#7fce9b';
-          ctx.moveTo(tx, ty - 8); ctx.lineTo(tx - 5, ty + 2); ctx.lineTo(tx + 5, ty + 2);
-        } else {
-          ctx.fillStyle = '#e0706f';
-          ctx.moveTo(tx, ty + 8); ctx.lineTo(tx - 5, ty - 2); ctx.lineTo(tx + 5, ty - 2);
-        }
-        ctx.fill();
-      });
-
-      const lastIdx = st.priceHistory.length - 1;
-      ctx.beginPath();
-      ctx.arc(getX(lastIdx), getY(st.priceHistory[lastIdx].price), 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = '#f5c76a';
-      ctx.fill();
+      const sTrend = Math.abs(zDrift) * 0.8;
+      const sChop = 1.2 / (1 + Math.abs(zDrift));
+      const sPanic = Math.max(0, volRatio - 0.7) * 1.4;
+      const es = [Math.exp(sTrend), Math.exp(sChop), Math.exp(sPanic)];
+      const sum = es[0] + es[1] + es[2];
+      const probs = { trend: es[0] / sum, chop: es[1] / sum, panic: es[2] / sum };
+      st.regimeHist.push(probs);
+      if (st.regimeHist.length > 90) st.regimeHist.shift();
+      setRegimeReadout(probs);
     };
 
     const settleRound = async () => {
@@ -472,7 +851,6 @@ export default function DashboardClient({ user }: { user: any }) {
         addSimLog('error', `Settlement request failed: ${err.message}`);
       } finally {
         st.settling = false;
-        // Re-sync log + stats from the persisted DB so the display never drifts
         loadHistory(st.asset);
       }
     };
@@ -487,13 +865,13 @@ export default function DashboardClient({ user }: { user: any }) {
       const livePrice = pricesRef.current[st.asset];
       const feedFresh = Date.now() - feedTsRef.current < 15000;
 
-      // No strike yet: wait for a live tick before starting the round.
       if (!st.strikeLocked) {
         if (livePrice && feedFresh) {
           st.price = livePrice;
           st.strikePrice = livePrice;
           st.strikeLocked = true;
           st.priceHistory = [{ price: livePrice }];
+          st.pYesHistory = [];
           st.roundSecondsRemaining = 90;
           addSimLog('info', `ROUND #${st.roundId} OPEN — strike locked at ${fmtUsd(livePrice)} (Hyperliquid mark)`);
         } else {
@@ -502,7 +880,6 @@ export default function DashboardClient({ user }: { user: any }) {
         }
       }
 
-      // Stale feed guard: freeze the round clock rather than settling on dead data.
       if (!feedFresh) {
         if (!st.staleWarned) {
           st.staleWarned = true;
@@ -523,14 +900,20 @@ export default function DashboardClient({ user }: { user: any }) {
         addSimLog('signal', `${st.asset} mark ${fmtUsd(st.price)} (${diffPct >= 0 ? '+' : ''}${diffPct.toFixed(3)}% vs strike)`);
       }
 
-      // Fair value via annualized-vol binary pricing
       const fv = binaryFairValue(st.price, st.strikePrice, st.volatility, st.roundSecondsRemaining);
       setModelReadout(fv);
+
+      // model path with ±1σ envelope (pricer re-evaluated at S±σ)
+      const pLo = binaryFairValue(st.price - fv.sigmaUsd, st.strikePrice, st.volatility, st.roundSecondsRemaining).pYes;
+      const pHi = binaryFairValue(st.price + fv.sigmaUsd, st.strikePrice, st.volatility, st.roundSecondsRemaining).pYes;
+      st.pYesHistory.push({ p: fv.pYes, lo: Math.min(pLo, pHi), hi: Math.max(pLo, pHi) });
+      if (st.pYesHistory.length > 90) st.pYesHistory.shift();
+
+      updateRegime();
 
       const alpha = 0.35;
       st.laggedFairValueYes = st.laggedFairValueYes * (1 - alpha) + fv.pYes * alpha;
       const laggedYes = st.laggedFairValueYes;
-
       st.yesContract.midPrice = laggedYes;
       st.yesContract.bids = generateBookSides(laggedYes, 'bid');
       st.yesContract.asks = generateBookSides(laggedYes, 'ask');
@@ -539,7 +922,6 @@ export default function DashboardClient({ user }: { user: any }) {
       st.noContract.bids = generateBookSides(laggedNo, 'bid');
       st.noContract.asks = generateBookSides(laggedNo, 'ask');
 
-      // Strategy: buy modeled edge over synthetic market
       if (st.roundSecondsRemaining >= 15 && !st.activePosition) {
         const bestYesAsk = st.yesContract.asks[0];
         const bestNoAsk = st.noContract.asks[0];
@@ -562,20 +944,20 @@ export default function DashboardClient({ user }: { user: any }) {
         }
       }
 
-      drawChart();
+      drawRoundChart();
+      drawMesh();
+      drawRegime();
+      drawEnvelope();
 
-      // Round expiry
       if (st.roundSecondsRemaining <= 0) {
         const winOutcome = st.price > st.strikePrice ? 'YES' : 'NO';
         addSimLog('settle', `ROUND #${st.roundId} EXPIRED — final ${fmtUsd(st.price)} vs strike ${fmtUsd(st.strikePrice)} → ${winOutcome}`);
-
-        if (st.activePosition && !st.settling) {
-          settleRound();
-        }
+        if (st.activePosition && !st.settling) settleRound();
         st.activePosition = null;
         st.roundId++;
         st.strikePrice = st.price;
         st.priceHistory = [{ price: st.price }];
+        st.pYesHistory = [];
         st.roundSecondsRemaining = 90;
         addSimLog('info', `ROUND #${st.roundId} OPEN — strike relocked at ${fmtUsd(st.strikePrice)}`);
       }
@@ -585,20 +967,6 @@ export default function DashboardClient({ user }: { user: any }) {
       const mins = Math.floor(st.roundSecondsRemaining / 60);
       const secs = st.roundSecondsRemaining % 60;
       setSimCountdown(`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`);
-
-      if (st.tickCount % 4 === 0) {
-        setRobustnessData(prev => {
-          const updated = { ...prev };
-          const assets = Object.keys(updated);
-          const randomAsset = assets[Math.floor(Math.random() * assets.length)];
-          const randomIdx = Math.floor(Math.random() * 6);
-          updated[randomAsset] = [...updated[randomAsset]];
-          updated[randomAsset][randomIdx] = parseFloat(
-            Math.max(-10, Math.min(15, updated[randomAsset][randomIdx] + (Math.random() - 0.5) * 0.4)).toFixed(1)
-          );
-          return updated;
-        });
-      }
 
       setYesBook({ mid: st.yesContract.midPrice, bids: [...st.yesContract.bids], asks: [...st.yesContract.asks] });
       setNoBook({ mid: st.noContract.midPrice, bids: [...st.noContract.bids], asks: [...st.noContract.asks] });
@@ -614,19 +982,6 @@ export default function DashboardClient({ user }: { user: any }) {
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, simAsset]);
-
-  useEffect(() => {
-    if (activeTab !== 'simulator') return;
-    const canvas = canvasRef.current;
-    const size = () => {
-      if (!canvas) return;
-      canvas.width = canvas.parentElement?.clientWidth || 600;
-      canvas.height = 248;
-    };
-    size();
-    window.addEventListener('resize', size);
-    return () => window.removeEventListener('resize', size);
-  }, [activeTab]);
 
   // ---- Slider handlers ----
   const handleSpeedChange = (v: number) => { setSimSpeed(v); simStateRef.current.speedMultiplier = v; };
@@ -716,7 +1071,6 @@ export default function DashboardClient({ user }: { user: any }) {
     }
   };
 
-  // Live-price webhook simulation — fires at the current Hyperliquid mark.
   const handleSimulateSignal = async (botCode: string, direction: 'LONG' | 'SHORT', assetClass: string) => {
     const feedKey = feedKeyForAssetClass(assetClass);
     const livePrice = feedKey ? prices[feedKey] : undefined;
@@ -795,7 +1149,7 @@ export default function DashboardClient({ user }: { user: any }) {
     return (
       <div className="fable">
         <div className="f-loading-shell">
-          <RefreshCw className="f-spin" size={34} color="#d9a94e" />
+          <RefreshCw className="f-spin" size={34} color="#58f0ff" />
           <span className="f-kicker">Decrypting vault · syncing Hyperliquid L1</span>
         </div>
       </div>
@@ -804,6 +1158,7 @@ export default function DashboardClient({ user }: { user: any }) {
 
   const feedAge = feedTs ? Math.max(0, Math.round((Date.now() - feedTs) / 1000)) : null;
   const feedLive = !feedError && feedAge !== null && feedAge < 15;
+  const capitalMultiple = dbStats && dbStats.totalVolume > 0 ? 1 + dbStats.totalPnl / dbStats.totalVolume : null;
 
   return (
     <div className="fable">
@@ -811,15 +1166,15 @@ export default function DashboardClient({ user }: { user: any }) {
 
         {/* ---------- Masthead ---------- */}
         <header className="f-masthead">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
             <Link href="/" className="f-brand">
-              <span className="f-brand-name">Prospera</span>
+              <span className="f-brand-mark">P</span>
+              <span>
+                <div className="f-brand-name">Prospera</div>
+                <div className="f-brand-sub">CAPITAL COCKPIT</div>
+              </span>
             </Link>
-            <span className="f-brand-rule" />
-            <div>
-              <div className="f-kicker">AlphaEdge Desk</div>
-              <div className="f-serif" style={{ fontSize: 13, color: 'var(--ivory-dim)' }}>the wealth automation ledger</div>
-            </div>
+            <span className="f-serif-grad" style={{ fontSize: 15 }}>autonomous wealth desk</span>
           </div>
 
           <div className="f-tabs">
@@ -833,17 +1188,17 @@ export default function DashboardClient({ user }: { user: any }) {
 
           <div className="f-masthead-meta">
             <span className={`f-led ${feedLive ? 'ok' : 'bad'}`}>
-              {feedLive ? `FEED LIVE · ${feedAge}s` : 'FEED DOWN'}
+              {feedLive ? `HYPERLIQUID LIVE · ${feedAge}s` : 'FEED DOWN'}
             </span>
             {data?.ledgerValid ? (
               <span className="f-led warm">LEDGER SEALED</span>
             ) : (
               <span className="f-led bad">LEDGER TAMPERED</span>
             )}
-            <span className="f-clock f-mono">{clock} LOCAL</span>
+            <span className="f-clock f-mono">{clock}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <span style={{ fontSize: 11, color: 'var(--ivory-dim)' }}>{user?.name || user?.email}</span>
-              <button className="f-btn" style={{ padding: '4px 10px', fontSize: 9.5 }} onClick={() => handleSignOut()}>
+              <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }} onClick={() => handleSignOut()}>
                 SIGN OUT
               </button>
             </div>
@@ -864,7 +1219,7 @@ export default function DashboardClient({ user }: { user: any }) {
                     </span>
                   );
                 })}
-                <span>SOURCE HYPERLIQUID L1 · METAANDASSETCTXS · POLL 2S</span>
+                <span>FEED HYPERLIQUID L1 · POLL 2S · LEDGER TURSO · SETTLEMENT SERVER-VERIFIED</span>
                 {feedError && <span style={{ color: 'var(--oxide)' }}>FEED ERROR: {feedError}</span>}
               </span>
             ))}
@@ -899,7 +1254,7 @@ export default function DashboardClient({ user }: { user: any }) {
                   <span><b>FUND</b> {ctx ? `${(ctx.fundingRate * 100).toFixed(4)}%` : '—'}</span>
                   <span><b>OI</b> {ctx ? fmtCompact(ctx.openInterest) : '—'}</span>
                   <span><b>VOL24H</b> {ctx ? '$' + fmtCompact(ctx.dayVolumeUsd) : '—'}</span>
-                  <span><b>ORACLE</b> {ctx ? fmtUsd(ctx.oracle) : '—'}</span>
+                  <span><b>σ24H</b> {markets?.markets?.[asset]?.realizedVolPct ? markets.markets[asset].realizedVolPct.toFixed(1) + '%' : '—'}</span>
                 </div>
               </div>
             );
@@ -911,7 +1266,7 @@ export default function DashboardClient({ user }: { user: any }) {
           <div className={`f-banner ${message.type === 'success' ? 'ok' : 'err'}`}>
             {message.type === 'success' ? <Shield size={15} /> : <AlertOctagon size={15} />}
             <span>{message.text}</span>
-            <button className="f-btn" style={{ marginLeft: 'auto', padding: '2px 8px', fontSize: 9 }} onClick={() => setMessage(null)}>DISMISS</button>
+            <button className="f-btn" style={{ marginLeft: 'auto', padding: '3px 10px', fontSize: 9 }} onClick={() => setMessage(null)}>DISMISS</button>
           </div>
         )}
 
@@ -921,44 +1276,41 @@ export default function DashboardClient({ user }: { user: any }) {
             <div className="f-stat-grid">
               <div className="f-stat">
                 <span className="f-kicker">USDC Equity</span>
-                <div className="f-stat-value f-gold">{fmtUsd(data?.balances?.equity)}</div>
+                <div className="f-stat-value f-azure">{fmtUsd(data?.balances?.equity)}</div>
                 <div className="f-stat-sub">Available {fmtUsd(data?.balances?.available)}</div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Win Rate</span>
-                <div className="f-stat-value f-azure">{data?.aiMetrics ? (data.aiMetrics.winRate * 100).toFixed(0) + '%' : '—'}</div>
-                <div className="f-stat-sub">Sharpe {data?.aiMetrics?.sharpeRatio?.toFixed(2)}</div>
+                <span className="f-kicker">Engine Hit Rate</span>
+                <div className="f-stat-value f-violet">{data?.aiMetrics ? (data.aiMetrics.winRate * 100).toFixed(1) + '%' : '—'}</div>
+                <div className="f-stat-sub">{data?.aiMetrics?.settledRounds ?? 0} settled rounds · Turso</div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Est. Profit / 30d</span>
+                <span className="f-kicker">Realized Engine PnL</span>
                 <div className={`f-stat-value ${(data?.aiMetrics?.totalProfit ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
-                  {fmtUsd(data?.aiMetrics?.totalProfit)}
+                  {fmtSignedUsd(data?.aiMetrics?.totalProfit)}
                 </div>
-                <div className="f-stat-sub">Execution attribution</div>
+                <div className="f-stat-sub">Per-round Sharpe {data?.aiMetrics?.sharpeRatio?.toFixed(2)}</div>
               </div>
               <div className="f-stat">
                 <span className="f-kicker">Active Deployments</span>
                 <div className="f-stat-value">{data?.botInstances?.filter((b: any) => b.status === 'active').length ?? 0}</div>
-                <div className="f-stat-sub">{data?.botInstances?.length ?? 0} total instances</div>
+                <div className="f-stat-sub">{data?.aiMetrics?.executionFills ?? 0} dispatcher fills</div>
               </div>
             </div>
 
-            {/* Advisory */}
-            <div className="f-panel" style={{ marginBottom: 22 }}>
+            <div className="f-panel" style={{ marginBottom: 18 }}>
               <div className="f-panel-head">
-                <h2 className="f-panel-title"><Shield size={14} color="#a58fdd" /> <span className="f-serif">Risk Advisory</span></h2>
-                <span className="f-tag violet">MODEL PLANE</span>
+                <h2 className="f-panel-title"><Shield size={14} color="#9d7dff" /> <span className="f-serif-grad">Risk Advisory</span></h2>
+                <span className="f-tag violet">DERIVED FROM LEDGER</span>
               </div>
               <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, color: 'var(--ivory-dim)' }}>{data?.aiMetrics?.advisoryText}</p>
             </div>
 
             <div className="f-grid-main">
-              {/* Left column */}
               <div className="f-col">
-                {/* Connect exchange */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Lock size={14} color="#e0706f" /> <span className="f-serif">Connect Hyperliquid</span></h2>
+                    <h2 className="f-panel-title"><Lock size={14} color="#ff6fb3" /> <span className="f-serif-grad">Connect Hyperliquid</span></h2>
                     <span className="f-tag gold">AES-256-GCM</span>
                   </div>
                   <form onSubmit={handleAddConnection}>
@@ -998,10 +1350,9 @@ export default function DashboardClient({ user }: { user: any }) {
                   )}
                 </div>
 
-                {/* Deploy instance */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Plus size={14} color="#6fb3e0" /> <span className="f-serif">Deploy Bot Instance</span></h2>
+                    <h2 className="f-panel-title"><Plus size={14} color="#58f0ff" /> <span className="f-serif-grad">Deploy Bot Instance</span></h2>
                   </div>
                   <form onSubmit={handleCreateInstance} style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
                     <div>
@@ -1040,11 +1391,11 @@ export default function DashboardClient({ user }: { user: any }) {
                       <label className="f-label">Execution Mode</label>
                       <div style={{ display: 'flex', gap: 18, fontSize: 12 }}>
                         <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-                          <input type="radio" name="mode" checked={botMode === 'paper'} onChange={() => setBotMode('paper')} style={{ accentColor: '#d9a94e' }} />
+                          <input type="radio" name="mode" checked={botMode === 'paper'} onChange={() => setBotMode('paper')} style={{ accentColor: '#58f0ff' }} />
                           Paper
                         </label>
                         <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-                          <input type="radio" name="mode" checked={botMode === 'live'} onChange={() => setBotMode('live')} style={{ accentColor: '#d9a94e' }} />
+                          <input type="radio" name="mode" checked={botMode === 'live'} onChange={() => setBotMode('live')} style={{ accentColor: '#58f0ff' }} />
                           Live Execution
                         </label>
                       </div>
@@ -1055,23 +1406,17 @@ export default function DashboardClient({ user }: { user: any }) {
                   </form>
                 </div>
 
-                {/* Webhook simulator — live prices */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Radio size={14} color="#d9a94e" /> <span className="f-serif">Webhook Signal Desk</span></h2>
+                    <h2 className="f-panel-title"><Radio size={14} color="#ffd166" /> <span className="f-serif-grad">Webhook Signal Desk</span></h2>
                     <span className={`f-led ${feedLive ? 'ok' : 'bad'}`}>{feedLive ? 'MARK SYNCED' : 'AWAITING FEED'}</span>
                   </div>
                   <p style={{ margin: '0 0 12px', fontSize: 11.5, color: 'var(--ivory-faint)', lineHeight: 1.6 }}>
-                    Fire a TradingView-style webhook into the dispatcher at the <b style={{ color: 'var(--gold-bright)' }}>live Hyperliquid mark</b> for the template's asset.
+                    Fire a TradingView-style webhook into the dispatcher at the <b style={{ color: 'var(--azure)' }}>live Hyperliquid mark</b> for the template's asset.
                   </p>
                   <table className="f-table">
                     <thead>
-                      <tr>
-                        <th>Template</th>
-                        <th>Status</th>
-                        <th className="num">Live Mark</th>
-                        <th className="num">Fire</th>
-                      </tr>
+                      <tr><th>Template</th><th>Status</th><th className="num">Live Mark</th><th className="num">Fire</th></tr>
                     </thead>
                     <tbody>
                       {data?.botTemplates?.map((tmpl: any) => {
@@ -1081,15 +1426,15 @@ export default function DashboardClient({ user }: { user: any }) {
                           <tr key={tmpl.id}>
                             <td style={{ color: 'var(--ivory)' }}>{tmpl.code}</td>
                             <td><span className={`f-tag ${tmpl.status === 'live' ? 'win' : 'gold'}`}>{tmpl.status.toUpperCase()}</span></td>
-                            <td className="num f-gold">{livePrice ? fmtUsd(livePrice) : 'syncing…'}</td>
+                            <td className="num f-azure">{livePrice ? fmtUsd(livePrice) : 'syncing…'}</td>
                             <td className="num">
                               <div style={{ display: 'inline-flex', gap: 6 }}>
-                                <button className="f-btn long" style={{ padding: '3px 10px', fontSize: 9 }}
+                                <button className="f-btn long" style={{ padding: '4px 12px', fontSize: 9 }}
                                   disabled={simulatingSignal || !livePrice}
                                   onClick={() => handleSimulateSignal(tmpl.code, 'LONG', tmpl.assetClass)}>
                                   LONG
                                 </button>
-                                <button className="f-btn short" style={{ padding: '3px 10px', fontSize: 9 }}
+                                <button className="f-btn short" style={{ padding: '4px 12px', fontSize: 9 }}
                                   disabled={simulatingSignal || !livePrice}
                                   onClick={() => handleSimulateSignal(tmpl.code, 'SHORT', tmpl.assetClass)}>
                                   SHORT
@@ -1104,13 +1449,11 @@ export default function DashboardClient({ user }: { user: any }) {
                 </div>
               </div>
 
-              {/* Right column */}
               <div className="f-col">
-                {/* Active bots */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Activity size={14} color="#7fce9b" /> <span className="f-serif">Active Deployments</span></h2>
-                    <button className="f-btn" style={{ padding: '3px 10px', fontSize: 9 }} onClick={handleRefresh} disabled={refreshing}>
+                    <h2 className="f-panel-title"><Activity size={14} color="#bfff6a" /> <span className="f-serif-grad">Active Deployments</span></h2>
+                    <button className="f-btn" style={{ padding: '4px 12px', fontSize: 9 }} onClick={handleRefresh} disabled={refreshing}>
                       <RefreshCw size={10} className={refreshing ? 'f-spin' : ''} style={{ marginRight: 4, verticalAlign: '-1px' }} />
                       {refreshing ? 'SYNCING' : 'SYNC'}
                     </button>
@@ -1122,7 +1465,7 @@ export default function DashboardClient({ user }: { user: any }) {
                       {data.botInstances.map((bot: any) => {
                         const templateCode = data.botTemplates.find((t: any) => t.id === bot.botTemplateId)?.code || 'Unknown';
                         return (
-                          <div key={bot.id} style={{ border: '1px solid var(--hairline)', padding: '10px 12px', background: 'var(--ink-0)' }}>
+                          <div key={bot.id} style={{ border: '1px solid var(--hairline)', borderRadius: 16, padding: '11px 13px', background: 'rgba(5,7,17,0.4)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                                 <span className="f-mono" style={{ fontSize: 12, fontWeight: 700 }}>{templateCode}</span>
@@ -1138,17 +1481,17 @@ export default function DashboardClient({ user }: { user: any }) {
                             </div>
                             <div style={{ display: 'flex', gap: 6, marginTop: 9 }}>
                               {bot.status === 'active' && (
-                                <button className="f-btn" style={{ padding: '3px 10px', fontSize: 9 }} onClick={() => handleToggleBotStatus(bot.id, bot.status, 'pause')}>
+                                <button className="f-btn" style={{ padding: '4px 12px', fontSize: 9 }} onClick={() => handleToggleBotStatus(bot.id, bot.status, 'pause')}>
                                   <Pause size={9} style={{ marginRight: 4, verticalAlign: '-1px' }} />PAUSE
                                 </button>
                               )}
                               {bot.status === 'paused' && (
-                                <button className="f-btn long" style={{ padding: '3px 10px', fontSize: 9 }} onClick={() => handleToggleBotStatus(bot.id, bot.status, 'resume')}>
+                                <button className="f-btn long" style={{ padding: '4px 12px', fontSize: 9 }} onClick={() => handleToggleBotStatus(bot.id, bot.status, 'resume')}>
                                   <Play size={9} style={{ marginRight: 4, verticalAlign: '-1px' }} />RESUME
                                 </button>
                               )}
                               {bot.status !== 'kill_switched' && (
-                                <button className="f-btn danger" style={{ padding: '3px 10px', fontSize: 9 }} onClick={() => handleToggleBotStatus(bot.id, bot.status, 'kill')}>
+                                <button className="f-btn danger" style={{ padding: '4px 12px', fontSize: 9 }} onClick={() => handleToggleBotStatus(bot.id, bot.status, 'kill')}>
                                   <AlertTriangle size={9} style={{ marginRight: 4, verticalAlign: '-1px' }} />KILL
                                 </button>
                               )}
@@ -1160,10 +1503,9 @@ export default function DashboardClient({ user }: { user: any }) {
                   )}
                 </div>
 
-                {/* Positions */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Coins size={14} color="#d9a94e" /> <span className="f-serif">Hyperliquid Positions</span></h2>
+                    <h2 className="f-panel-title"><Coins size={14} color="#ffd166" /> <span className="f-serif-grad">Hyperliquid Positions</span></h2>
                   </div>
                   {data?.positions?.length === 0 ? (
                     <div className="f-empty">No open positions currently held.</div>
@@ -1186,10 +1528,9 @@ export default function DashboardClient({ user }: { user: any }) {
                   )}
                 </div>
 
-                {/* Ledger journal */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><FileText size={14} color="#a58fdd" /> <span className="f-serif">Cryptographic Trade Ledger</span></h2>
+                    <h2 className="f-panel-title"><FileText size={14} color="#9d7dff" /> <span className="f-serif-grad">Cryptographic Trade Ledger</span></h2>
                     <span className="f-tag gold">HASH-CHAINED</span>
                   </div>
                   <div style={{ maxHeight: 300, overflowY: 'auto' }}>
@@ -1206,7 +1547,7 @@ export default function DashboardClient({ user }: { user: any }) {
                               <td><span className={`f-tag ${ord.side === 'buy' ? 'win' : 'loss'}`}>{ord.side.toUpperCase()}</span></td>
                               <td className="f-faint">{fmtTime(ord.submittedAt)}</td>
                               <td className="num">{ord.qty.toFixed(4)}</td>
-                              <td className="num f-gold">{fmtUsd(ord.price)}</td>
+                              <td className="num f-azure">{fmtUsd(ord.price)}</td>
                               <td className="num">
                                 <span className={`f-tag ${ord.status === 'filled' ? 'win' : 'dim'}`}>{ord.status.toUpperCase()}</span>
                               </td>
@@ -1218,11 +1559,10 @@ export default function DashboardClient({ user }: { user: any }) {
                   </div>
                 </div>
 
-                {/* Risk audit */}
                 {data?.riskEvents?.length > 0 && (
                   <div className="f-panel">
                     <div className="f-panel-head">
-                      <h2 className="f-panel-title"><AlertOctagon size={14} color="#e0706f" /> <span className="f-serif">Risk Audit Log</span></h2>
+                      <h2 className="f-panel-title"><AlertOctagon size={14} color="#ff6fb3" /> <span className="f-serif-grad">Risk Audit Log</span></h2>
                     </div>
                     <div style={{ maxHeight: 220, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 7 }}>
                       {data.riskEvents.map((evt: any) => (
@@ -1241,113 +1581,109 @@ export default function DashboardClient({ user }: { user: any }) {
           <>
             {/* ============ QUANT ENGINE ============ */}
 
-            {/* KPIs from server-verified DB stats */}
-            <div className="f-stat-grid">
+            {/* Hero strip — all values from Turso-backed stats */}
+            <div className="f-stat-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
               <div className="f-stat">
-                <span className="f-kicker">Net PnL · {simAsset}</span>
-                <div className={`f-stat-value ${(dbStats?.totalPnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
+                <span className="f-kicker">Net PnL · {simAsset} · Turso</span>
+                <div className={`f-stat-value ${(dbStats?.totalPnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontSize: 30 }}>
                   {dbStats ? fmtSignedUsd(dbStats.totalPnl) : '—'}
                 </div>
-                <div className="f-stat-sub">DB-verified · {dbStats?.settled ?? 0} settled rounds</div>
-              </div>
-              <div className="f-stat">
-                <span className="f-kicker">Hit Rate</span>
-                <div className="f-stat-value f-azure">{dbStats ? dbStats.hitRate.toFixed(1) + '%' : '—'}</div>
-                <div className="f-stat-sub">{dbStats?.wins ?? 0} W / {dbStats?.losses ?? 0} L</div>
-              </div>
-              <div className="f-stat">
-                <span className="f-kicker">Expectancy / Round</span>
-                <div className={`f-stat-value ${(dbStats?.expectancy ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
-                  {dbStats ? fmtUsd(dbStats.expectancy) : '—'}
+                <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  <span className="f-chip"><b className="f-azure">{dbStats?.settled ?? 0}</b> ROUNDS</span>
+                  <span className="f-chip">EXPECT <b className={(dbStats?.expectancy ?? 0) >= 0 ? 'f-pos' : 'f-neg'}>{dbStats ? fmtSignedUsd(dbStats.expectancy) : '—'}</b></span>
+                  <span className="f-chip">PF <b className="f-gold">{dbStats?.profitFactor === null ? '∞' : dbStats?.profitFactor ?? '—'}</b></span>
                 </div>
-                <div className="f-stat-sub">Profit factor {dbStats?.profitFactor === Infinity ? '∞' : dbStats?.profitFactor ?? '—'}</div>
+                <div style={{ marginTop: 10 }}><canvas ref={equityCanvasRef} style={{ width: '100%', height: 56, display: 'block' }} /></div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Volume Deployed</span>
-                <div className="f-stat-value f-gold">{dbStats ? '$' + fmtCompact(dbStats.totalVolume) : '—'}</div>
-                <div className="f-stat-sub">Cumulative contract cost</div>
+                <span className="f-kicker">Capital Multiple</span>
+                <div className="f-stat-value f-gold" style={{ fontSize: 30 }}>
+                  {capitalMultiple ? `×${capitalMultiple.toFixed(2)}` : '—'}
+                </div>
+                <div className="f-stat-sub">On {dbStats ? '$' + fmtCompact(dbStats.totalVolume) : '—'} deployed contract cost</div>
+                <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  <span className="f-chip">W/L <b className="f-pos">{dbStats?.wins ?? 0}</b>/<b className="f-neg">{dbStats?.losses ?? 0}</b></span>
+                  <span className="f-chip">ROUND CLOCK <b className="f-neg">{simCountdown}</b></span>
+                </div>
+              </div>
+              <div className="f-stat">
+                <span className="f-kicker">Hit Rate · Rolling 20</span>
+                <div className="f-stat-value f-azure" style={{ fontSize: 30 }}>{dbStats ? dbStats.hitRate.toFixed(1) + '%' : '—'}</div>
+                <div className="f-stat-sub">{dbStats?.wins ?? 0} W / {dbStats?.losses ?? 0} L lifetime</div>
+                <div style={{ marginTop: 10 }}><canvas ref={hitrateCanvasRef} style={{ width: '100%', height: 56, display: 'block' }} /></div>
               </div>
               <div className="f-stat">
                 <span className="f-kicker">Active Position</span>
-                <div className="f-stat-value" style={{ color: simPosition ? 'var(--sage)' : 'var(--ivory-faint)' }}>
+                <div className="f-stat-value" style={{ fontSize: 30, color: simPosition ? 'var(--sage)' : 'var(--ivory-faint)' }}>
                   {simPosition ? `${simPosition.side} ${simPosition.size.toLocaleString()}` : 'FLAT'}
                 </div>
                 <div className="f-stat-sub">
-                  {simPosition ? `Entry ${Math.round(simPosition.entryPrice * 100)}¢ · cost ${fmtUsd(simPosition.costUsd)}` : 'No contracts held'}
+                  {simPosition ? `Entry ${Math.round(simPosition.entryPrice * 100)}¢ · cost ${fmtUsd(simPosition.costUsd)}` : 'Awaiting executable edge'}
+                </div>
+                <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  <span className="f-chip">P(YES) <b className="f-violet">{modelReadout ? Math.round(modelReadout.pYes * 100) + '¢' : '—'}</b></span>
+                  <span className="f-chip">Z <b>{modelReadout ? modelReadout.z.toFixed(2) : '—'}</b></span>
+                  <span className="f-chip">σ <b className="f-gold">{modelReadout ? fmtUsd(modelReadout.sigmaUsd) : '—'}</b></span>
                 </div>
               </div>
             </div>
 
-            {/* Pipeline strip */}
-            <div className="f-panel" style={{ marginBottom: 22 }}>
+            {/* Execution cycle */}
+            <div className="f-panel" style={{ marginBottom: 18 }}>
               <div className="f-panel-head">
-                <h2 className="f-panel-title"><Activity size={14} color="#6fb3e0" /> <span className="f-serif">Strategy Pipeline</span> <span className="f-kicker" style={{ marginLeft: 6 }}>ENGLISH → DEPLOYED</span></h2>
-                <span className="f-mono f-gold" style={{ fontSize: 13, fontWeight: 700 }}>{simCountdown}</span>
+                <h2 className="f-panel-title"><Activity size={14} color="#58f0ff" /> <span className="f-serif-grad">Execution Cycle</span>
+                  <span className="f-kicker" style={{ marginLeft: 6 }}>ROUND #{simStateRef.current.roundId} · 90S BINARY</span>
+                </h2>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                  {simPosition && <span className="f-tag win">POSITION LIVE</span>}
+                  <span className="f-mono f-neg" style={{ fontSize: 14, fontWeight: 700 }}>{simCountdown}</span>
+                </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6 }}>
-                {pipelineSteps.map(step => {
-                  const activeStepId = getActiveStepId(simSecondsRemaining);
-                  const isActive = activeStepId === step.id;
-                  const isPast = activeStepId > step.id;
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8 }}>
+                {CYCLE_STEPS.map((step, i) => {
+                  const active = cycleStep(simSecondsRemaining) === i;
+                  const past = cycleStep(simSecondsRemaining) > i;
                   return (
-                    <div key={step.id} style={{
-                      border: `1px solid ${isActive ? 'var(--gold)' : isPast ? 'rgba(127, 206, 155, 0.4)' : 'var(--hairline)'}`,
-                      background: isActive ? 'rgba(217, 169, 78, 0.1)' : isPast ? 'rgba(127, 206, 155, 0.05)' : 'transparent',
-                      padding: '9px 6px',
+                    <div key={step} style={{
+                      border: `1px solid ${active ? 'rgba(88,240,255,0.6)' : past ? 'rgba(191,255,106,0.35)' : 'var(--hairline)'}`,
+                      borderRadius: 14,
+                      background: active ? 'rgba(88,240,255,0.09)' : past ? 'rgba(191,255,106,0.05)' : 'transparent',
+                      boxShadow: active ? '0 0 18px rgba(88,240,255,0.15)' : 'none',
+                      padding: '10px 6px',
                       textAlign: 'center',
                       transition: 'all 300ms ease',
                     }}>
-                      <div className="f-kicker" style={{ marginBottom: 3 }}>0{step.id}</div>
+                      <div className="f-kicker" style={{ marginBottom: 3 }}>0{i + 1}</div>
                       <div className="f-mono" style={{
                         fontSize: 11, fontWeight: 700,
-                        color: isActive ? 'var(--gold-bright)' : isPast ? 'var(--sage)' : 'var(--ivory-faint)',
-                      }}>{step.name}</div>
+                        color: active ? 'var(--azure)' : past ? 'var(--sage)' : 'var(--ivory-faint)',
+                      }}>{step}</div>
                     </div>
                   );
                 })}
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--hairline)', flexWrap: 'wrap', gap: 10 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span className="f-kicker" style={{ color: 'var(--oxide)' }}>Hypothesis</span>
-                  <span className="f-serif" style={{ fontSize: 13, color: 'var(--ivory-dim)' }}>
-                    "{hypotheses[simStateRef.current.roundId % hypotheses.length]}"
-                  </span>
-                </div>
-                <div className="f-mono" style={{ display: 'flex', gap: 12, fontSize: 10 }}>
-                  {['Generator', 'Coder', 'Challenger', 'Evaluator'].map((role, i) => {
-                    const stepId = getActiveStepId(simSecondsRemaining);
-                    const active = (i === 0 && stepId <= 2) || (i === 1 && stepId === 3) || (i === 2 && stepId === 4) || (i === 3 && stepId >= 5);
-                    return (
-                      <span key={role} style={{ color: active ? 'var(--gold-bright)' : 'var(--ivory-faint)', fontWeight: active ? 700 : 400 }}>
-                        {role}{i < 3 ? ' →' : ''}
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
             </div>
 
             <div className="f-grid-main">
-              {/* Left: chart + matrix */}
+              {/* Left column */}
               <div className="f-col">
                 <div className="f-panel">
                   <div className="f-panel-head">
                     <h2 className="f-panel-title">
-                      <TrendingUp size={14} color="#6fb3e0" />
-                      <span className="f-serif">{ASSET_LABEL[simAsset]}</span>
-                      <span className="f-kicker" style={{ marginLeft: 4 }}>90S BINARY ROUND</span>
+                      <TrendingUp size={14} color="#58f0ff" />
+                      <span className="f-serif-grad">{ASSET_LABEL[simAsset]}</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>LIVE MARK VS STRIKE</span>
                     </h2>
                     <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                      <select className="f-select" style={{ width: 'auto', padding: '4px 8px', fontSize: 11 }}
+                      <select className="f-select" style={{ width: 'auto', padding: '5px 10px', fontSize: 11 }}
                         value={simAsset} onChange={e => setSimAsset(e.target.value as DeskAsset)}>
                         {DESK_ASSETS.map(a => <option key={a} value={a}>{a}</option>)}
                       </select>
-                      <button className="f-btn" style={{ padding: '4px 10px', fontSize: 9.5 }} onClick={handleToggleSimRunning}>
-                        {simRunning ? 'PAUSE ENGINE' : 'RESUME ENGINE'}
+                      <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }} onClick={handleToggleSimRunning}>
+                        {simRunning ? 'PAUSE' : 'RESUME'}
                       </button>
                     </div>
                   </div>
-
                   <div style={{ display: 'flex', gap: 26, marginBottom: 12, flexWrap: 'wrap' }}>
                     <div>
                       <span className="f-kicker">Strike (T₀)</span>
@@ -1370,81 +1706,73 @@ export default function DashboardClient({ user }: { user: any }) {
                           : '—'}
                       </div>
                     </div>
-                    <div>
-                      <span className="f-kicker">Round Clock</span>
-                      <div className="f-mono" style={{ fontSize: 15, fontWeight: 700, marginTop: 2, color: 'var(--oxide)' }}>{simCountdown}</div>
-                    </div>
                   </div>
-
                   <div className="f-chart-frame">
-                    <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+                    <canvas ref={roundCanvasRef} style={{ width: '100%', height: '100%' }} />
                   </div>
                 </div>
 
-                {/* Model readout — real quant telemetry */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Scale size={14} color="#a58fdd" /> <span className="f-serif">Model Readout</span> <span className="f-kicker" style={{ marginLeft: 4 }}>GBM BINARY PRICER</span></h2>
+                    <h2 className="f-panel-title"><Scale size={14} color="#9d7dff" /> <span className="f-serif-grad">Fair Probability Envelope</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>GBM PRICER · ±1σ BAND</span>
+                    </h2>
+                    <span className="f-mono f-violet" style={{ fontSize: 13, fontWeight: 700 }}>
+                      {modelReadout ? `P(YES) ${Math.round(modelReadout.pYes * 100)}¢` : '—'}
+                    </span>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 14 }}>
-                    <div>
-                      <span className="f-kicker">P(YES) Model</span>
-                      <div className="f-mono f-violet" style={{ fontSize: 19, fontWeight: 700 }}>{modelReadout ? Math.round(modelReadout.pYes * 100) + '¢' : '—'}</div>
-                    </div>
-                    <div>
-                      <span className="f-kicker">Z-Score</span>
-                      <div className="f-mono" style={{ fontSize: 19, fontWeight: 700 }}>{modelReadout ? modelReadout.z.toFixed(3) : '—'}</div>
-                    </div>
-                    <div>
-                      <span className="f-kicker">σ (USD, remaining)</span>
-                      <div className="f-mono" style={{ fontSize: 19, fontWeight: 700 }}>{modelReadout ? fmtUsd(modelReadout.sigmaUsd) : '—'}</div>
-                    </div>
-                    <div>
-                      <span className="f-kicker">Market YES Mid</span>
-                      <div className="f-mono f-azure" style={{ fontSize: 19, fontWeight: 700 }}>{Math.round(yesBook.mid * 100)}¢</div>
-                    </div>
-                    <div>
-                      <span className="f-kicker">Model Edge</span>
-                      <div className={`f-mono ${modelReadout && (modelReadout.pYes - yesBook.mid) >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontSize: 19, fontWeight: 700 }}>
-                        {modelReadout ? `${((modelReadout.pYes - yesBook.mid) * 100).toFixed(1)}%` : '—'}
-                      </div>
-                    </div>
-                    <div>
-                      <span className="f-kicker">Ann. Vol Input</span>
-                      <div className="f-mono f-gold" style={{ fontSize: 19, fontWeight: 700 }}>{simVolatility}%</div>
-                    </div>
+                  <div className="f-canvas-frame" style={{ height: 150 }}>
+                    <canvas ref={envelopeCanvasRef} style={{ width: '100%', height: '100%' }} />
+                  </div>
+                  <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 8, letterSpacing: '0.05em' }}>
+                    P(YES) = Φ((S−K)/σ) · σ = S·vol·√(t/yr) · live mark S, strike K, vol input {simVolatility}%
                   </div>
                 </div>
 
-                {/* Robustness matrix — desk assets only */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Activity size={14} color="#a58fdd" /> <span className="f-serif">Robustness Matrix</span> <span className="f-kicker" style={{ marginLeft: 4 }}>RETURNS × TIMEFRAME</span></h2>
+                    <h2 className="f-panel-title"><CandlestickChart size={14} color="#bfff6a" /> <span className="f-serif-grad">Market Structure</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>5M CANDLES · 6H · HYPERLIQUID</span>
+                    </h2>
+                    <span className="f-tag azure">REAL OHLCV</span>
+                  </div>
+                  <div className="f-canvas-frame" style={{ height: 170 }}>
+                    <canvas ref={candleCanvasRef} style={{ width: '100%', height: '100%' }} />
+                  </div>
+                </div>
+
+                <div className="f-panel">
+                  <div className="f-panel-head">
+                    <h2 className="f-panel-title"><Grid3x3 size={14} color="#9d7dff" /> <span className="f-serif-grad">Realized Returns Matrix</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>FROM LIVE CANDLE CLOSES</span>
+                    </h2>
                   </div>
                   <div style={{ overflowX: 'auto' }}>
                     <table className="f-table" style={{ textAlign: 'center' }}>
                       <thead>
                         <tr>
-                          <th>Asset</th><th className="num">5M</th><th className="num">15M</th><th className="num">30M</th>
-                          <th className="num">1H</th><th className="num">4H</th><th className="num">1D</th><th className="num">AVG</th>
+                          <th>Asset</th>
+                          {(markets?.horizons || ['5M', '15M', '30M', '1H', '4H', '24H']).map((hz: string) => <th key={hz} className="num">{hz}</th>)}
+                          <th className="num">σ24H</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {Object.keys(robustnessData).map(asset => {
-                          const values = robustnessData[asset];
-                          const avg = values.reduce((a, b) => a + b, 0) / values.length;
+                        {DESK_ASSETS.map(asset => {
+                          const m = markets?.markets?.[asset];
                           return (
                             <tr key={asset}>
-                              <td style={{ color: 'var(--ivory)', fontWeight: 700 }}>{asset}</td>
-                              {values.map((v, i) => (
-                                <td key={i} className={`num ${v < 0 ? 'f-neg' : 'f-pos'}`}
-                                  style={{ background: v < 0 ? `rgba(224, 112, 111, ${Math.min(0.22, Math.abs(v) / 30)})` : `rgba(127, 206, 155, ${Math.min(0.22, v / 30)})` }}>
-                                  {v >= 0 ? '+' : ''}{v.toFixed(1)}%
-                                </td>
-                              ))}
-                              <td className={`num ${avg >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontWeight: 700 }}>
-                                {avg >= 0 ? '+' : ''}{avg.toFixed(1)}%
-                              </td>
+                              <td style={{ color: 'var(--ivory)', fontWeight: 700 }}>{asset.split('-')[0]}</td>
+                              {(markets?.horizons || ['5M', '15M', '30M', '1H', '4H', '24H']).map((hz: string) => {
+                                const v = m?.returns?.[hz];
+                                if (v === null || v === undefined) return <td key={hz} className="num f-faint">—</td>;
+                                return (
+                                  <td key={hz} className={`num ${v < 0 ? 'f-neg' : 'f-pos'}`}
+                                    style={{ background: v < 0 ? `rgba(255,111,179,${Math.min(0.22, Math.abs(v) / 8)})` : `rgba(191,255,106,${Math.min(0.22, v / 8)})` }}>
+                                    {v >= 0 ? '+' : ''}{v.toFixed(2)}%
+                                  </td>
+                                );
+                              })}
+                              <td className="num f-gold">{m?.realizedVolPct ? m.realizedVolPct.toFixed(1) + '%' : '—'}</td>
                             </tr>
                           );
                         })}
@@ -1452,14 +1780,118 @@ export default function DashboardClient({ user }: { user: any }) {
                     </table>
                   </div>
                 </div>
-              </div>
 
-              {/* Right: config, books, console */}
-              <div className="f-col">
-                {/* Engine config */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Lock size={14} color="#d9a94e" /> <span className="f-serif">Engine Configuration</span></h2>
+                    <h2 className="f-panel-title"><Dices size={14} color="#ffd166" /> <span className="f-serif-grad">Monte Carlo Bootstrap</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>10,000 PATHS · RESAMPLED FROM SETTLED ROUNDS</span>
+                    </h2>
+                    <span className="f-tag gold">{bootstrap ? `HORIZON ${bootstrap.horizon} ROUNDS` : 'NEEDS ≥5 ROUNDS'}</span>
+                  </div>
+                  {bootstrap ? (
+                    <div style={{ display: 'flex', gap: 20, alignItems: 'stretch', flexWrap: 'wrap' }}>
+                      <div style={{ flex: '1.3 1 280px', display: 'flex', alignItems: 'flex-end', gap: 2, height: 120, background: 'rgba(5,7,17,0.55)', border: '1px solid var(--hairline)', borderRadius: 14, padding: '10px 14px' }}>
+                        {bootstrap.bins.map((b, i) => (
+                          <div key={i} style={{
+                            flex: 1,
+                            height: `${Math.max(b * 100, 2)}%`,
+                            borderRadius: '3px 3px 0 0',
+                            background: i < bootstrap.zeroBin ? 'rgba(255,111,179,0.55)' : i === bootstrap.zeroBin ? '#ffd166' : 'rgba(191,255,106,0.55)',
+                          }} />
+                        ))}
+                      </div>
+                      <div className="f-mono" style={{ flex: '1 1 220px', fontSize: 11, display: 'flex', flexDirection: 'column', gap: 8, justifyContent: 'center' }}>
+                        <div><span className="f-faint">P5 (adverse): </span><b className="f-neg">{fmtSignedUsd(bootstrap.p5)}</b></div>
+                        <div><span className="f-faint">P50 (median): </span><b className="f-azure">{fmtSignedUsd(bootstrap.p50)}</b></div>
+                        <div><span className="f-faint">P95 (favorable): </span><b className="f-pos">{fmtSignedUsd(bootstrap.p95)}</b></div>
+                        <div><span className="f-faint">P(loss): </span><b>{(bootstrap.pLoss * 100).toFixed(1)}%</b></div>
+                        <div><span className="f-faint">E[max drawdown]: </span><b className="f-gold">{fmtUsd(bootstrap.avgMaxDD)}</b></div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="f-empty">Bootstrap activates once ≥5 rounds are settled for {simAsset}.</div>
+                  )}
+                </div>
+              </div>
+
+              {/* Right column */}
+              <div className="f-col">
+                <div className="f-panel">
+                  <div className="f-panel-head">
+                    <h2 className="f-panel-title"><Network size={14} color="#9d7dff" /> <span className="f-serif-grad">Signal Mesh</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>LIVE INPUTS → CONSENSUS</span>
+                    </h2>
+                    <span className={`f-led ${simPosition ? 'ok' : 'warm'}`}>{simPosition ? 'FIRING' : 'GATING'}</span>
+                  </div>
+                  <div className="f-canvas-frame" style={{ height: 240 }}>
+                    <canvas ref={meshCanvasRef} style={{ width: '100%', height: '100%' }} />
+                  </div>
+                </div>
+
+                <div className="f-panel">
+                  <div className="f-panel-head">
+                    <h2 className="f-panel-title"><Waves size={14} color="#ffd166" /> <span className="f-serif-grad">Live Regime Probability</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>FROM 2S FEED SAMPLES</span>
+                    </h2>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
+                    <span className="f-chip">TREND <b className="f-pos">{regimeReadout ? Math.round(regimeReadout.trend * 100) + '%' : '—'}</b></span>
+                    <span className="f-chip">CHOP <b className="f-gold">{regimeReadout ? Math.round(regimeReadout.chop * 100) + '%' : '—'}</b></span>
+                    <span className="f-chip">PANIC <b className="f-neg">{regimeReadout ? Math.round(regimeReadout.panic * 100) + '%' : '—'}</b></span>
+                  </div>
+                  <div className="f-canvas-frame" style={{ height: 130 }}>
+                    <canvas ref={regimeCanvasRef} style={{ width: '100%', height: '100%' }} />
+                  </div>
+                  <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 8, letterSpacing: '0.05em' }}>
+                    softmax(|z-drift|, 1/(1+|z|), σ₂ₛ/σ₂₄ₕ) over rolling live samples
+                  </div>
+                </div>
+
+                <div className="f-panel">
+                  <div className="f-panel-head">
+                    <h2 className="f-panel-title"><Grid3x3 size={14} color="#58f0ff" /> <span className="f-serif-grad">Outcome Transition Matrix</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>MARKOV · {transitionMatrix.transitions} TRANSITIONS</span>
+                    </h2>
+                  </div>
+                  {transitionMatrix.transitions >= 4 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr 1fr', gap: 8, alignItems: 'center' }}>
+                      <div />
+                      <div className="f-kicker" style={{ textAlign: 'center' }}>→ WIN</div>
+                      <div className="f-kicker" style={{ textAlign: 'center' }}>→ LOSS</div>
+                      <div className="f-kicker">WIN →</div>
+                      <div className="f-matrix-cell" style={{
+                        color: 'var(--sage)',
+                        background: `rgba(191,255,106,${(transitionMatrix.pWW ?? 0) * 0.3})`,
+                        borderColor: `rgba(191,255,106,${0.15 + (transitionMatrix.pWW ?? 0) * 0.4})`,
+                      }}>{transitionMatrix.pWW !== null ? transitionMatrix.pWW.toFixed(2) : '—'}</div>
+                      <div className="f-matrix-cell" style={{
+                        color: 'var(--oxide)',
+                        background: `rgba(255,111,179,${(transitionMatrix.pWL ?? 0) * 0.3})`,
+                        borderColor: `rgba(255,111,179,${0.15 + (transitionMatrix.pWL ?? 0) * 0.4})`,
+                      }}>{transitionMatrix.pWL !== null ? transitionMatrix.pWL.toFixed(2) : '—'}</div>
+                      <div className="f-kicker">LOSS →</div>
+                      <div className="f-matrix-cell" style={{
+                        color: 'var(--sage)',
+                        background: `rgba(191,255,106,${(transitionMatrix.pLW ?? 0) * 0.3})`,
+                        borderColor: `rgba(191,255,106,${0.15 + (transitionMatrix.pLW ?? 0) * 0.4})`,
+                      }}>{transitionMatrix.pLW !== null ? transitionMatrix.pLW.toFixed(2) : '—'}</div>
+                      <div className="f-matrix-cell" style={{
+                        color: 'var(--oxide)',
+                        background: `rgba(255,111,179,${(transitionMatrix.pLL ?? 0) * 0.3})`,
+                        borderColor: `rgba(255,111,179,${0.15 + (transitionMatrix.pLL ?? 0) * 0.4})`,
+                      }}>{transitionMatrix.pLL !== null ? transitionMatrix.pLL.toFixed(2) : '—'}</div>
+                    </div>
+                  ) : (
+                    <div className="f-empty">Needs ≥5 settled rounds to estimate transition probabilities.</div>
+                  )}
+                  <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 10, letterSpacing: '0.05em' }}>
+                    P(next outcome | current) estimated from the settled sequence in Turso
+                  </div>
+                </div>
+
+                <div className="f-panel">
+                  <div className="f-panel-head">
+                    <h2 className="f-panel-title"><Lock size={14} color="#ffd166" /> <span className="f-serif-grad">Engine Configuration</span></h2>
                     <span className={`f-led ${simRunning ? 'ok' : 'warm'}`}>{simRunning ? 'RUNNING' : 'PAUSED'}</span>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -1472,7 +1904,7 @@ export default function DashboardClient({ user }: { user: any }) {
                       <div key={s.label}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
                           <span className="f-kicker">{s.label}</span>
-                          <span className="f-mono f-gold" style={{ fontSize: 11, fontWeight: 700 }}>{s.value}</span>
+                          <span className="f-mono f-azure" style={{ fontSize: 11, fontWeight: 700 }}>{s.value}</span>
                         </div>
                         <input type="range" className="f-slider" min={s.min} max={s.max} step={s.step}
                           value={s.cur} onChange={e => s.onChange(parseFloat(e.target.value))} />
@@ -1481,16 +1913,17 @@ export default function DashboardClient({ user }: { user: any }) {
                   </div>
                 </div>
 
-                {/* Order books */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Coins size={14} color="#6fb3e0" /> <span className="f-serif">Round Contract Book</span> <span className="f-kicker" style={{ marginLeft: 4 }}>SYNTHETIC CLOB</span></h2>
+                    <h2 className="f-panel-title"><Coins size={14} color="#58f0ff" /> <span className="f-serif-grad">Round Contract Book</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>SYNTHETIC CLOB @ MODEL MID</span>
+                    </h2>
                   </div>
                   {[
                     { name: 'YES · SETTLES ABOVE STRIKE', book: yesBook, color: 'var(--sage)' },
                     { name: 'NO · SETTLES AT/BELOW STRIKE', book: noBook, color: 'var(--oxide)' },
                   ].map(({ name, book, color }) => (
-                    <div key={name} style={{ border: '1px solid var(--hairline)', background: 'var(--ink-0)', padding: '10px 12px', marginBottom: 10 }}>
+                    <div key={name} style={{ border: '1px solid var(--hairline)', borderRadius: 14, background: 'rgba(5,7,17,0.4)', padding: '10px 12px', marginBottom: 10 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
                         <span className="f-kicker">{name}</span>
                         <span className="f-mono" style={{ color, fontSize: 12, fontWeight: 700 }}>{Math.round(book.mid * 100)}¢</span>
@@ -1514,11 +1947,10 @@ export default function DashboardClient({ user }: { user: any }) {
                   ))}
                 </div>
 
-                {/* Console */}
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><FileText size={14} color="#a58fdd" /> <span className="f-serif">Engine Telemetry</span></h2>
-                    <button className="f-btn" style={{ padding: '3px 10px', fontSize: 9 }} onClick={() => setSimLogs([])}>CLEAR</button>
+                    <h2 className="f-panel-title"><FileText size={14} color="#9d7dff" /> <span className="f-serif-grad">Engine Telemetry</span></h2>
+                    <button className="f-btn" style={{ padding: '4px 12px', fontSize: 9 }} onClick={() => setSimLogs([])}>CLEAR</button>
                   </div>
                   <div className="f-console">
                     {simLogs.length === 0 ? (
@@ -1530,7 +1962,7 @@ export default function DashboardClient({ user }: { user: any }) {
                         if (log.type === 'edge') color = 'var(--violet)';
                         if (log.type === 'trade') color = 'var(--sage)';
                         if (log.type === 'error') color = 'var(--oxide)';
-                        if (log.type === 'settle') color = 'var(--gold-bright)';
+                        if (log.type === 'settle') color = 'var(--gold)';
                         return (
                           <div key={idx}>
                             <span className="f-faint">[{log.time}]</span>{' '}
@@ -1545,10 +1977,10 @@ export default function DashboardClient({ user }: { user: any }) {
               </div>
             </div>
 
-            {/* Historical predictions — server-verified */}
+            {/* Historical predictions */}
             <div className="f-section-head">
-              <span className="f-serif">Historical Predictions Log</span>
-              <span className="f-tag gold">SERVER-VERIFIED</span>
+              <span className="f-serif-grad">Historical Predictions Log</span>
+              <span className="f-tag azure">TURSO · SERVER-VERIFIED</span>
             </div>
             <div className="f-panel">
               <div className="f-panel-head">
@@ -1556,10 +1988,10 @@ export default function DashboardClient({ user }: { user: any }) {
                   {dbStats ? `${dbStats.settled} settled · hit rate ${dbStats.hitRate.toFixed(1)}% · expectancy ${fmtUsd(dbStats.expectancy)}/round` : 'Loading…'}
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <button className="f-btn" style={{ padding: '4px 12px', fontSize: 9.5 }} onClick={handleExportCsv} disabled={simHistory.length === 0}>
+                  <button className="f-btn" style={{ padding: '5px 14px', fontSize: 9.5 }} onClick={handleExportCsv} disabled={simHistory.length === 0}>
                     EXPORT CSV
                   </button>
-                  <button className="f-btn danger" style={{ padding: '4px 12px', fontSize: 9.5 }} onClick={handleClearDb}>
+                  <button className="f-btn danger" style={{ padding: '5px 14px', fontSize: 9.5 }} onClick={handleClearDb}>
                     CLEAR LOG
                   </button>
                 </div>
@@ -1610,8 +2042,8 @@ export default function DashboardClient({ user }: { user: any }) {
 
         {/* Footer colophon */}
         <div style={{ marginTop: 34, paddingTop: 14, borderTop: '1px solid var(--hairline)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
-          <span className="f-kicker">Prospera · AlphaEdge Desk · XAU / BTC / ETH</span>
-          <span className="f-kicker">Feed: Hyperliquid L1 · Ledger: hash-chained · Predictions: server-verified</span>
+          <span className="f-kicker">Prospera · Capital Cockpit · XAU / BTC / ETH</span>
+          <span className="f-kicker">Feed: Hyperliquid L1 · Ledger: Turso · Settlement: server-verified</span>
         </div>
       </div>
     </div>

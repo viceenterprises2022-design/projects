@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
-import { users, botTemplates, botInstances, exchangeConnections, signals, orders, riskEvents } from '@/db/schema';
+import { users, botTemplates, botInstances, exchangeConnections, signals, orders, riskEvents, simulatorTrades } from '@/db/schema';
 import { eq, desc } from 'drizzle-orm';
 import { verifyLedgerChain } from '@/lib/ledger';
 import { getBalances, getPositions } from '@/lib/hyperliquid';
@@ -59,32 +59,34 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // 4. Calculate performance & AI Risk Metrics
+    // 4. Performance metrics — every number aggregated from the persisted DB,
+    // never synthesized. Engine PnL comes from server-settled simulator rounds.
     const filledOrders = ordersList.filter(o => o.status === 'filled');
     const totalTrades = filledOrders.length;
-    
-    // Generate win rate and simulated profit based on historical data
-    let winRate = 0.58; // default baseline
-    let totalProfit = 1240.50; // default baseline
-    let sharpeRatio = 2.41;
 
-    if (totalTrades > 0) {
-      // Create some variance based on trade quantity for visual fidelity
-      const buyOrdersCount = filledOrders.filter(o => o.side === 'buy').length;
-      const sellOrdersCount = filledOrders.filter(o => o.side === 'sell').length;
-      winRate = totalTrades > 1 ? (buyOrdersCount / totalTrades) : 0.6;
-      totalProfit = totalTrades * 125.40 - (totalTrades * 3.50); // simulated profit metric
-      sharpeRatio = 1.8 + (winRate * 1.2);
+    const allRounds = await db.select().from(simulatorTrades);
+    const settled = allRounds.length;
+    const wins = allRounds.filter(r => r.outcome === 'WIN').length;
+    const winRate = settled > 0 ? wins / settled : 0;
+    const totalProfit = Math.round(allRounds.reduce((a, r) => a + r.pnl, 0) * 100) / 100;
+
+    // Sharpe from the per-round PnL series (population std, per-round basis)
+    let sharpeRatio = 0;
+    if (settled > 1) {
+      const meanPnl = totalProfit / settled;
+      const variance = allRounds.reduce((a, r) => a + (r.pnl - meanPnl) ** 2, 0) / settled;
+      const std = Math.sqrt(variance);
+      sharpeRatio = std > 0 ? (meanPnl / std) * Math.sqrt(settled) : 0;
     }
 
-    // AI advisory engine (asynchronous rule-based dashboard insights)
-    let advisoryText = "Awaiting trade history to perform deep risk analysis.";
-    if (totalTrades === 0) {
-      advisoryText = "Systems fully initialized. Ledger integrity verified. Configure exchange API connection and trigger a webhook signal to start automated execution.";
-    } else if (winRate >= 0.55) {
-      advisoryText = `AI Advisory: Automated strategy performance is optimal (Win Rate ${(winRate*100).toFixed(1)}%). Current capital allocation is well-balanced. Sharpe ratio (${sharpeRatio.toFixed(2)}) indicates highly efficient risk-adjusted returns. Recommend maintaining active parameters.`;
+    // Rule-based advisory templated strictly from the real aggregates above
+    let advisoryText: string;
+    if (settled === 0 && totalTrades === 0) {
+      advisoryText = "Systems initialized and ledger integrity verified. Connect an exchange key and dispatch a signal, or let the quant engine settle rounds, to begin accumulating performance history.";
+    } else if (winRate >= 0.5) {
+      advisoryText = `Engine has settled ${settled} rounds at a ${(winRate * 100).toFixed(1)}% hit rate for ${totalProfit >= 0 ? '+' : ''}$${totalProfit.toFixed(2)} realized PnL. Risk-adjusted efficiency (per-round Sharpe ${sharpeRatio.toFixed(2)}) supports current sizing parameters.`;
     } else {
-      advisoryText = `AI Advisory: Drawdown variance detected in recent fills. Current Sharpe ratio (${sharpeRatio.toFixed(2)}) suggests high volatility. Consider lowering bot 'Risk Ceiling %' or reducing the 'Max Notional' value to protect capital.`;
+      advisoryText = `Hit rate is ${(winRate * 100).toFixed(1)}% across ${settled} settled rounds (${totalProfit >= 0 ? '+' : ''}$${totalProfit.toFixed(2)} PnL). Below-coin-flip accuracy — consider raising the minimum executable edge threshold or reducing per-round size until expectancy recovers.`;
     }
 
     return NextResponse.json({
@@ -106,6 +108,8 @@ export async function GET(req: NextRequest) {
         sharpeRatio,
         winRate,
         totalProfit,
+        settledRounds: settled,
+        executionFills: totalTrades,
         advisoryText
       }
     });
