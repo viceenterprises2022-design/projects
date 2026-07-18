@@ -1,62 +1,42 @@
 [
   {
-    "title": "Event Replay: Inside OpenAI: How OpenAI Teams use Codex to Do More",
-    "url": "https://forum.openai.com/public/videos/event-replay-inside-openai-how-openai-teams-use-codex-to-do-more-2026-07-14",
-    "highlights": [
-      "OpenAI Chief Economist Ronnie Chatterji and researcher Drew Johnston shared findings on how Codex adoption is changing workflows, enabling people to delegate longer tasks, run multiple workstreams in parallel, and expand beyond traditional job boundaries.",
-      "OpenAI teams demonstrated how agents support real-world work across data science, product design, and sales — automating KPI reports, building interactive prototypes, and managing recurring go-to-market processes.",
-      "Upcoming events teased: one on AI and scientific advances, another on how AI is helping doctors diagnose rare pediatric diseases."
-    ],
-    "score": null,
-    "published_date": "2026-07-15T00:43:05.000Z",
-    "is_online": true
-  },
-  {
-    "title": "How business operations teams use Codex: Webinar resource guide — OpenAI Academy",
+    "title": "How business operations teams use Codex: Webinar resource guide - Resource | OpenAI Academy",
     "url": "https://academy.openai.com/public/clubs/work-users-ynjqu/resources/how-business-operations-teams-use-codex-webinar-resource-guide-2026-06-17",
     "highlights": [
-      "Learn how Codex helps business ops teams pull together context, check it against data, and create the first version of deliverables: cleaned initiative summaries, weekly bookings dashboards, team updates, leadership decision decks, and repeatable workflows.",
-      "Covers integration with Databricks, Slack, documents, spreadsheets, and local project files.",
-      "Practical starting point: pick one recurring workflow (a weekly performance readout or leadership deck) and let Codex automate it iteratively."
+      "How business operations teams use Codex: Webinar resource guide - Resource | OpenAI Academy\n...\nJune 18, 2026\n...\n# How business operations teams use Codex: Webinar resource guide\n...\n## Follow along with our webinar: How business operations teams use Codex\n...\n## Follow along with the webinar: How business operations teams use Codex\n...\nThat is the work this webinar focuses on. You will see how Codex can help business operations teams pull together context, check it against data, and create the first version of the deliverable the team needs next: a cleaned initiative summary, a weekly bookings dashboard, a team update, a leadership decision deck, and a repeatable workflow.\n...\n- Download Codex for Mac or Windows\n\n- Learn the basics about Codex for work\n\n- Explore how business operations teams use Codex\n\n- Explore the top 10 use cases for Codex at work\n\n- Learn about plugins and skills\n...\nFor the business operations workflows in this webinar, make sure Codex is installed. Some demos also use the Data Analytics plugin and connected tools such as Databricks, Slack, documents, spreadsheets, or local project files. Your organization controls which plugins and connected tools are available in your workspace, so your exact setup may look different from the webinar.\n...\n## What to try next\n...\nYou do not have to start by rebuilding every operating review or connecting every system at once. Pick one business operations workflow that already shows up in your week: a weekly performance readout, a leadership decision deck, or an initiative status update\n...\npattern is the same as what we showed in the\n...\n: give Codex the right files and data context, ask for a specific deliverable, check the reasoning and sources, then refine\n...\nyou can reuse it next time.\n...\nFor more examples, visit How business operations teams use Codex."
     ],
     "score": null,
-    "published_date": "2026-06-18T04:31:44.000Z",
+    "published_date": "2026-06-17T00:00:00.000Z",
     "is_online": true
   },
   {
-    "title": "How sales teams use Codex: Webinar resource guide — OpenAI Academy",
-    "url": "https://academy.openai.com/en/public/clubs/work-users-ynjqu/resources/how-sales-teams-use-codex-webinar-resource-guide-2026-06-10",
+    "title": "Event Replay: Inside OpenAI: How OpenAI Teams use Codex to Do More - Video | OpenAI Forum",
+    "url": "https://forum.openai.com/public/videos/event-replay-inside-openai-how-openai-teams-use-codex-to-do-more-2026-07-14",
     "highlights": [
-      "See how Codex helps sales teams build a prioritized account list, prospecting plan, draft outreach, meeting prep briefs, and a customer-ready proposal.",
-      "Demo shows Codex generating onsite AI workshop proposals — highly relevant for teams exploring AI adoption conversations with customers.",
-      "Integrates with CRM, Gmail, Google Calendar, and spreadsheets."
-    ],
-    "score": null,
-    "published_date": "2026-06-11T01:43:35.000Z",
-    "is_online": true
-  },
-  {
-    "title": "How data science teams use Codex (ChatGPT Work) — OpenAI Academy On-Demand Webinar",
-    "url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
-    "highlights": [
-      "On-demand webinar covering top Codex use cases for data science teams — available to watch anytime.",
-      "Now runs in ChatGPT Work at chatgpt.com or in the ChatGPT desktop app (previously the standalone Codex app).",
-      "Companion recording: How finance teams use Codex — also available on-demand via OpenAI Academy."
+      "Event Replay: Inside OpenAI: How OpenAI Teams use Codex to Do More - Video | OpenAI Forum\n...\nEvent Replay: Inside OpenAI: How OpenAI Teams use Codex to Do More\n...\nThis OpenAI Forum event explored how agentic AI is transforming work far beyond software development. OpenAI Chief Economist Ronnie Chatterji and researcher Drew Johnston shared findings on how Codex adoption is changing workflows, enabling people to delegate longer tasks, run multiple workstreams in parallel, and expand beyond traditional job boundaries. OpenAI teams then demonstrated how agents support real-world work across data science, product design, and sales\u2014\n...\nautomating KPI reports\n...\nbuilding interactive prototypes and managing recurring go-to-market\n...\n. The discussion emphasized that reusable skills, connected workplace tools, and\n...\norganizational support can help teams turn repetitive workflows into\n...\n. Speakers encouraged attendees to begin with an ambitious or frustrating work problem, give the agent strong context, and experiment with what can be delegated or automated.\n...\n[00:42:22] I love that. Well, thank you all so much for carving out some time in your day to join us and thank you to our community as well for tuning in and for the great questions. I'm sorry we couldn't get to all of them. But we hope this sparked some great ideas. Keep an eye out for more forums even in July, we're about to announce two events, one on AI and scientific advances and another on how AI is helping doctors diagnose rare pediatric diseases.\n...\nEvent Replay: Vibe Engineering with OpenAI\u2019s Codex\n...\nPosted Dec 04, 2025 | Views 7.2K\n...\nEvent Replay: How People Really Use ChatGPT: The Who, the What, and the How of\n...\nPosted Sep 17, 2025 | Views 2.7K"
     ],
     "score": null,
     "published_date": "2026-07-14T00:00:00.000Z",
     "is_online": true
   },
   {
-    "title": "OpenAI Forum: Upcoming Events on AI in Science & Rare Pediatric Disease Diagnosis (July 2026)",
-    "url": "https://forum.openai.com",
+    "title": "How sales teams use Codex: Webinar resource guide - Resource | OpenAI Academy",
+    "url": "https://academy.openai.com/en/public/clubs/work-users-ynjqu/resources/how-sales-teams-use-codex-webinar-resource-guide-2026-06-10",
     "highlights": [
-      "OpenAI announced two upcoming July 2026 Forum events: one focused on AI and scientific advances, and another on how AI is helping doctors diagnose rare pediatric diseases.",
-      "These events will be hosted live on the OpenAI Forum — follow the forum to be notified when registration opens.",
-      "Both events continue the series that has explored how agents can tackle complex, domain-specific tasks across research and healthcare."
+      "How sales teams use Codex: Webinar resource guide - Resource | OpenAI Academy\n...\nJune 11, 2026\n...\n# How sales teams use Codex: Webinar resource guide\n...\n## Follow along with our webinar: How sales teams use Codex\n...\n## Follow along with the webinar: How teams use Codex\n...\nThat is the work this webinar focuses on. You will see how Codex can help sales teams bring context together and turn it into useful sales assets: a prioritized account list, a prospecting plan, draft outreach, meeting prep briefs, and a customer-ready proposal.\n...\n## Download the demo files\n...\n- Download Codex for Mac or Windows\n\n- Learn the basics about Codex for work\n\n- Explore how sales teams use Codex\n\n- Explore the top 10 use cases for Codex at work\n\n- Learn about plugins and skills\n...\n## Before you try the demos\n...\nFor the sales workflows in this webinar, make sure Codex is installed. Some demos also use the Sales plugin and connected tools such as your CRM, Gmail, Google Calendar, documents, or spreadsheets. Your organization controls which plugins and connected tools are available in your workspace, so your exact setup may look different from the webinar. The sample files are designed for practice. Before using any Codex output with a real customer, review the details, tone, assumptions, and next steps.\n...\n## Main demo: Prioritize accounts and build a prospecting workflow\n...\n## Main demo: Prepare for meetings and create a customer-ready next step\n...\nThe second main demo starts with customer meeting prep. Codex can help bring together account context, meeting details, and recommended next steps, then turn one next step into a customer-ready proposal.\n...\nIn the webinar, one of the meeting briefs recommends an onsite AI workshop for Harborline. To turn that recommendation into a customer-facing asset, use this prompt:\n...\n```\nFor the Harborline meeting, can you make an onsite AI workshop proposal that I\n...\nthe customer? Use the proposal template in this folder\n...\nAfter Codex creates the proposal, open it and inspect the customer details, workshop objective, agenda, working group, expected output, and next steps. Make sure the proposal sounds right for the customer before sharing it.\n...\nFor more examples, visit How sales teams use Codex."
     ],
     "score": null,
-    "published_date": "2026-07-15T00:00:00.000Z",
+    "published_date": "2026-06-10T00:00:00.000Z",
+    "is_online": true
+  },
+  {
+    "title": "How data science teams use ChatGPT Work | OpenAI",
+    "url": "https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex",
+    "highlights": [
+      "Watch the on-demand webinar\n...\nWatch the on-demand webinar\n...\ndata science teams\n...\nWatch the on-demand webinar\n...\n## Watch the on-demand webinar\n...\nWatch How finance teams use Codex on-demand\n...\n[here\u2060(opens in a new window)](https://academy.openai.com/home/clubs/work-users-ynjqu/videos/how-data-science-teams-use-codex-recording-2026-05-28).\n...\nNote: This webinar was recorded when these workflows lived in the former Codex app. You can now follow along using ChatGPT Work at chatgpt.com or in the ChatGPT desktop app."
+    ],
+    "score": null,
+    "published_date": "2026-07-14T00:00:00.000Z",
     "is_online": true
   }
 ]
