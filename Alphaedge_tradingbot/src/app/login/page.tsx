@@ -24,8 +24,8 @@ export default async function LoginPage() {
         <div className="f-panel" style={{ width: "min(400px, 92vw)", padding: "28px 26px", textAlign: "center" }}>
           <div className="f-serif-grad" style={{ fontSize: 22, marginBottom: 8 }}>operator sign-in</div>
           <p style={{ margin: "0 0 22px", fontSize: 12.5, lineHeight: 1.7, color: "var(--ivory-dim)" }}>
-            Sign in with Google to access desk controls. The live demo dashboard
-            remains open to watch without an account.
+            Sign in with Google to access the demo desk. Viewing is limited to
+            invited accounts; the operator manages the access list.
           </p>
           <form action={handleGoogleSignIn}>
             <button type="submit" className="f-btn primary" style={{ width: "100%", padding: "12px 16px", fontSize: 12 }}>
@@ -33,8 +33,8 @@ export default async function LoginPage() {
             </button>
           </form>
           <div style={{ marginTop: 18 }}>
-            <Link href="/dashboard" className="f-kicker" style={{ textDecoration: "none" }}>
-              ← back to the watch-only desk
+            <Link href="/" className="f-kicker" style={{ textDecoration: "none" }}>
+              ← prospera home
             </Link>
           </div>
         </div>

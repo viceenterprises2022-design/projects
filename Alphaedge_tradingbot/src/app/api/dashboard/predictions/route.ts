@@ -3,7 +3,7 @@ import { db } from '@/db';
 import { simulatorTrades } from '@/db/schema';
 import { desc, eq, gte, and, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
-import { requireOwner } from '@/lib/authz';
+import { requireOwner, requireViewer } from '@/lib/authz';
 import { getDemoAccount } from '@/lib/engine';
 
 export const dynamic = 'force-dynamic';
@@ -26,6 +26,8 @@ function settle(strike: number, expiry: number, side: 'YES' | 'NO', size: number
 
 export async function GET(req: NextRequest) {
   try {
+    const denied = await requireViewer();
+    if (denied) return NextResponse.json({ error: denied }, { status: 401 });
     await initDb();
 
     const asset = req.nextUrl.searchParams.get('asset');

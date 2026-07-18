@@ -7,9 +7,12 @@ import { getBalances, getPositions } from '@/lib/hyperliquid';
 import { decrypt } from '@/lib/encryption';
 import { initDb } from '@/db/init';
 import { getDemoAccount } from '@/lib/engine';
+import { requireViewer } from '@/lib/authz';
 
 export async function GET(req: NextRequest) {
   try {
+    const denied = await requireViewer();
+    if (denied) return NextResponse.json({ error: denied }, { status: 401 });
     await initDb();
     const userId = 'user_1'; // Default demo user
 
