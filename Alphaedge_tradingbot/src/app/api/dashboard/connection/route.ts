@@ -3,9 +3,12 @@ import { db } from '@/db';
 import { exchangeConnections } from '@/db/schema';
 import { encrypt } from '@/lib/encryption';
 import { initDb } from '@/db/init';
+import { requireOwner } from '@/lib/authz';
 
 export async function POST(req: NextRequest) {
   try {
+    const denied = await requireOwner();
+    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
     await initDb();
     const { exchange, apiKey } = await req.json();
 

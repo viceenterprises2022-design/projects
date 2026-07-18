@@ -142,7 +142,7 @@ function fitCanvas(canvas: HTMLCanvasElement | null, height: number) {
 
 // ---------------------------------------------------------------------------
 
-export default function DashboardClient({ user }: { user: any }) {
+export default function DashboardClient({ user, isOwner }: { user: any; isOwner: boolean }) {
   // ---- Cockpit state ----
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -1201,13 +1201,20 @@ export default function DashboardClient({ user }: { user: any }) {
             ) : (
               <span className="f-led bad">LEDGER TAMPERED</span>
             )}
+            {!isOwner && <span className="f-led warm">WATCH-ONLY DEMO</span>}
             <span className="f-clock f-mono">{clock}</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 11, color: 'var(--ivory-dim)' }}>{user?.name || user?.email}</span>
-              <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }} onClick={() => handleSignOut()}>
-                SIGN OUT
-              </button>
-            </div>
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ fontSize: 11, color: 'var(--ivory-dim)' }}>{user?.name || user?.email}</span>
+                <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }} onClick={() => handleSignOut()}>
+                  SIGN OUT
+                </button>
+              </div>
+            ) : (
+              <Link href="/login" className="f-btn" style={{ padding: '5px 14px', fontSize: 9.5, textDecoration: 'none' }}>
+                OPERATOR SIGN IN
+              </Link>
+            )}
           </div>
         </header>
 
@@ -1315,6 +1322,7 @@ export default function DashboardClient({ user }: { user: any }) {
 
             <div className="f-grid-main">
               <div className="f-col">
+                {isOwner && (<>
                 <div className="f-panel">
                   <div className="f-panel-head">
                     <h2 className="f-panel-title"><Lock size={14} color="#ff6fb3" /> <span className="f-serif-grad">Connect Hyperliquid</span></h2>
@@ -1413,6 +1421,7 @@ export default function DashboardClient({ user }: { user: any }) {
                   </form>
                 </div>
 
+                </>)}
                 <div className="f-panel">
                   <div className="f-panel-head">
                     <h2 className="f-panel-title"><Radio size={14} color="#ffd166" /> <span className="f-serif-grad">Webhook Signal Desk</span></h2>
@@ -1435,18 +1444,22 @@ export default function DashboardClient({ user }: { user: any }) {
                             <td><span className={`f-tag ${tmpl.status === 'live' ? 'win' : 'gold'}`}>{tmpl.status.toUpperCase()}</span></td>
                             <td className="num f-azure">{livePrice ? fmtUsd(livePrice) : 'syncing…'}</td>
                             <td className="num">
-                              <div style={{ display: 'inline-flex', gap: 6 }}>
-                                <button className="f-btn long" style={{ padding: '4px 12px', fontSize: 9 }}
-                                  disabled={simulatingSignal || !livePrice}
-                                  onClick={() => handleSimulateSignal(tmpl.code, 'LONG', tmpl.assetClass)}>
-                                  LONG
-                                </button>
-                                <button className="f-btn short" style={{ padding: '4px 12px', fontSize: 9 }}
-                                  disabled={simulatingSignal || !livePrice}
-                                  onClick={() => handleSimulateSignal(tmpl.code, 'SHORT', tmpl.assetClass)}>
-                                  SHORT
-                                </button>
-                              </div>
+                              {isOwner ? (
+                                <div style={{ display: 'inline-flex', gap: 6 }}>
+                                  <button className="f-btn long" style={{ padding: '4px 12px', fontSize: 9 }}
+                                    disabled={simulatingSignal || !livePrice}
+                                    onClick={() => handleSimulateSignal(tmpl.code, 'LONG', tmpl.assetClass)}>
+                                    LONG
+                                  </button>
+                                  <button className="f-btn short" style={{ padding: '4px 12px', fontSize: 9 }}
+                                    disabled={simulatingSignal || !livePrice}
+                                    onClick={() => handleSimulateSignal(tmpl.code, 'SHORT', tmpl.assetClass)}>
+                                    SHORT
+                                  </button>
+                                </div>
+                              ) : (
+                                <span className="f-tag dim">OPERATOR</span>
+                              )}
                             </td>
                           </tr>
                         );
@@ -1486,7 +1499,7 @@ export default function DashboardClient({ user }: { user: any }) {
                               <span>CEILING {bot.riskCeilingPct}%</span>
                               <span>MAX NOTIONAL {fmtUsd(bot.maxNotional, 0)}</span>
                             </div>
-                            <div style={{ display: 'flex', gap: 6, marginTop: 9 }}>
+                            {isOwner && <div style={{ display: 'flex', gap: 6, marginTop: 9 }}>
                               {bot.status === 'active' && (
                                 <button className="f-btn" style={{ padding: '4px 12px', fontSize: 9 }} onClick={() => handleToggleBotStatus(bot.id, bot.status, 'pause')}>
                                   <Pause size={9} style={{ marginRight: 4, verticalAlign: '-1px' }} />PAUSE
@@ -1502,7 +1515,7 @@ export default function DashboardClient({ user }: { user: any }) {
                                   <AlertTriangle size={9} style={{ marginRight: 4, verticalAlign: '-1px' }} />KILL
                                 </button>
                               )}
-                            </div>
+                            </div>}
                           </div>
                         );
                       })}
@@ -1686,9 +1699,11 @@ export default function DashboardClient({ user }: { user: any }) {
                         value={simAsset} onChange={e => setSimAsset(e.target.value as DeskAsset)}>
                         {DESK_ASSETS.map(a => <option key={a} value={a}>{a}</option>)}
                       </select>
-                      <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }} onClick={handleToggleSimRunning}>
-                        {simRunning ? 'PAUSE' : 'RESUME'}
-                      </button>
+                      {isOwner && (
+                        <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }} onClick={handleToggleSimRunning}>
+                          {simRunning ? 'PAUSE' : 'RESUME'}
+                        </button>
+                      )}
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: 26, marginBottom: 12, flexWrap: 'wrap' }}>
@@ -1913,7 +1928,7 @@ export default function DashboardClient({ user }: { user: any }) {
                           <span className="f-kicker">{s.label}</span>
                           <span className="f-mono f-azure" style={{ fontSize: 11, fontWeight: 700 }}>{s.value}</span>
                         </div>
-                        <input type="range" className="f-slider" min={s.min} max={s.max} step={s.step}
+                        <input type="range" className="f-slider" min={s.min} max={s.max} step={s.step} disabled={!isOwner}
                           value={s.cur} onChange={e => s.onChange(parseFloat(e.target.value))} />
                       </div>
                     ))}
@@ -1998,9 +2013,11 @@ export default function DashboardClient({ user }: { user: any }) {
                   <button className="f-btn" style={{ padding: '5px 14px', fontSize: 9.5 }} onClick={handleExportCsv} disabled={simHistory.length === 0}>
                     EXPORT CSV
                   </button>
-                  <button className="f-btn danger" style={{ padding: '5px 14px', fontSize: 9.5 }} onClick={handleClearDb}>
-                    CLEAR LOG
-                  </button>
+                  {isOwner && (
+                    <button className="f-btn danger" style={{ padding: '5px 14px', fontSize: 9.5 }} onClick={handleClearDb}>
+                      CLEAR LOG
+                    </button>
+                  )}
                 </div>
               </div>
               <div style={{ overflowX: 'auto' }}>

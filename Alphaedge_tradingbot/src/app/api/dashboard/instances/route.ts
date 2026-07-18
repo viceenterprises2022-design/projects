@@ -3,10 +3,13 @@ import { db } from '@/db';
 import { botInstances } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { initDb } from '@/db/init';
+import { requireOwner } from '@/lib/authz';
 
 
 export async function POST(req: NextRequest) {
   try {
+    const denied = await requireOwner();
+    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
     await initDb();
     const { botTemplateId, exchangeConnectionId, mode, riskCeilingPct, maxNotional } = await req.json();
 
@@ -35,6 +38,8 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
+    const denied = await requireOwner();
+    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
     await initDb();
     const { instanceId, status, riskCeilingPct, maxNotional } = await req.json();
 

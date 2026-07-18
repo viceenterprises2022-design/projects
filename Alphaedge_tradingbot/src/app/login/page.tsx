@@ -1,5 +1,46 @@
 import { redirect } from "next/navigation"
+import Link from "next/link"
+import { getSessionInfo } from "@/lib/authz"
+import { handleGoogleSignIn } from "@/app/auth-actions"
+import "../dashboard/dashboard.css"
 
-export default function LoginPage() {
-  redirect("/dashboard")
+export const dynamic = "force-dynamic"
+
+export default async function LoginPage() {
+  const { user } = await getSessionInfo()
+  if (user) redirect("/dashboard")
+
+  return (
+    <div className="fable">
+      <div className="f-loading-shell" style={{ gap: 26 }}>
+        <Link href="/" className="f-brand" style={{ flexDirection: "column", gap: 14, textAlign: "center" }}>
+          <span className="f-brand-mark" style={{ width: 52, height: 52, fontSize: 22, borderRadius: 18 }}>P</span>
+          <span>
+            <div className="f-brand-name" style={{ fontSize: 26 }}>Prospera</div>
+            <div className="f-brand-sub">CAPITAL COCKPIT</div>
+          </span>
+        </Link>
+
+        <div className="f-panel" style={{ width: "min(400px, 92vw)", padding: "28px 26px", textAlign: "center" }}>
+          <div className="f-serif-grad" style={{ fontSize: 22, marginBottom: 8 }}>operator sign-in</div>
+          <p style={{ margin: "0 0 22px", fontSize: 12.5, lineHeight: 1.7, color: "var(--ivory-dim)" }}>
+            Sign in with Google to access desk controls. The live demo dashboard
+            remains open to watch without an account.
+          </p>
+          <form action={handleGoogleSignIn}>
+            <button type="submit" className="f-btn primary" style={{ width: "100%", padding: "12px 16px", fontSize: 12 }}>
+              CONTINUE WITH GOOGLE
+            </button>
+          </form>
+          <div style={{ marginTop: 18 }}>
+            <Link href="/dashboard" className="f-kicker" style={{ textDecoration: "none" }}>
+              ← back to the watch-only desk
+            </Link>
+          </div>
+        </div>
+
+        <span className="f-kicker">Feed: Hyperliquid L1 · Ledger: Turso · Settlement: server-verified</span>
+      </div>
+    </div>
+  )
 }

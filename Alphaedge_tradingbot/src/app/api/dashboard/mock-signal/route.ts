@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireOwner } from '@/lib/authz';
 
 export async function POST(req: NextRequest) {
   try {
+    const denied = await requireOwner();
+    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
     const { botCode, direction, price } = await req.json();
 
-    const webhookSecret = process.env.TRADINGVIEW_WEBHOOK_SECRET || 'supersecret';
+    const webhookSecret = process.env.TRADINGVIEW_WEBHOOK_SECRET;
+    if (!webhookSecret) {
+      return NextResponse.json({ error: 'Signal desk disabled: TRADINGVIEW_WEBHOOK_SECRET is not configured' }, { status: 403 });
+    }
     
     // Construct request to our own TradingView webhook endpoint
     const targetUrl = new URL('/api/webhooks/tradingview', req.url).toString();

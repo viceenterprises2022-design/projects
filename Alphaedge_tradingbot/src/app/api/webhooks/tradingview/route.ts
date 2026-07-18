@@ -6,7 +6,10 @@ export async function POST(req: NextRequest) {
     const payload = await req.json();
     const { passphrase, botCode, direction, price, sl, tp, qty } = payload;
 
-    const secret = process.env.TRADINGVIEW_WEBHOOK_SECRET || 'supersecret';
+    const secret = process.env.TRADINGVIEW_WEBHOOK_SECRET;
+    if (!secret) {
+      return NextResponse.json({ error: 'Webhook disabled: TRADINGVIEW_WEBHOOK_SECRET is not configured' }, { status: 403 });
+    }
     if (passphrase !== secret) {
       return NextResponse.json({ error: 'Unauthorized passphrase' }, { status: 401 });
     }
