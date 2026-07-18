@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { users, botTemplates, botInstances, exchangeConnections, signals, orders, riskEvents, simulatorTrades } from '@/db/schema';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, gte } from 'drizzle-orm';
 import { verifyLedgerChain } from '@/lib/ledger';
 import { getBalances, getPositions } from '@/lib/hyperliquid';
 import { decrypt } from '@/lib/encryption';
 import { initDb } from '@/db/init';
+import { getDemoAccount } from '@/lib/engine';
 
 export async function GET(req: NextRequest) {
   try {
@@ -64,7 +65,10 @@ export async function GET(req: NextRequest) {
     const filledOrders = ordersList.filter(o => o.status === 'filled');
     const totalTrades = filledOrders.length;
 
-    const allRounds = await db.select().from(simulatorTrades);
+    // Scope engine stats to the demo window — pre-demo history must not leak
+    const acct = await getDemoAccount();
+    const allRounds = await db.select().from(simulatorTrades)
+      .where(gte(simulatorTrades.createdAt, acct.startedAt));
     const settled = allRounds.length;
     const wins = allRounds.filter(r => r.outcome === 'WIN').length;
     const winRate = settled > 0 ? wins / settled : 0;
