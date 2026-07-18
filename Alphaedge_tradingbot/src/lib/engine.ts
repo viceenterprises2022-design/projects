@@ -18,8 +18,8 @@ import { binaryFairValue, settleBinary } from './binary';
 
 export const ROUND_MS = 90_000;
 export const DEMO_BANKROLL_BASE = 10_000;
-const EDGE_THRESHOLD = 0.035; // model conviction vs 50/50 opening odds
-const SPREAD = 0.01;          // crossing cost added to entry
+const EDGE_THRESHOLD = 0.06;  // model conviction vs 50/50 opening odds — higher bar, fewer/stronger entries
+const SPREAD = 0;             // paper fills at model fair value — expectancy ~breakeven, results = calibration vs reality
 const MAX_TRADE_USD = 1_000;
 const BANKROLL_FRACTION = 0.10;
 const ENTRY_CUTOFF_S = 15;    // no entries in the final seconds
