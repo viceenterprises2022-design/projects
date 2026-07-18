@@ -26,8 +26,25 @@ const serif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Prospera — Autonomous Wealth Systems",
   description:
-    "Deploy user-owned capital through intelligent strategy bots across crypto, commodities, FX, equities, and future markets.",
-  keywords: ["wealth automation", "trading bots", "capital deployment", "crypto bots", "commodities bots"],
+    "Governed strategy bots trading deterministic 90-second rounds against live markets — trade-only permissions, server-verified settlement, and a live watch-only demo desk.",
+  keywords: ["wealth automation", "trading bots", "capital deployment", "crypto bots", "gold", "quant engine"],
+  openGraph: {
+    title: "Prospera — Autonomous Wealth Systems",
+    description:
+      "Watch a live quant desk trade XAU, BTC, and ETH in verifiable 90-second rounds. Trade-only permissions, server-verified settlement.",
+    siteName: "Prospera",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Prospera — Autonomous Wealth Systems",
+    description:
+      "Watch a live quant desk trade XAU, BTC, and ETH in verifiable 90-second rounds.",
+  },
+};
+
+export const viewport = {
+  themeColor: "#050711",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

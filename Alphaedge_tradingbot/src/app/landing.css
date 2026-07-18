@@ -793,3 +793,28 @@
   .field-shell-wide { grid-column: span 1; }
   .l-asset-delta { display: none; }
 }
+
+/* ---------- Accessibility ---------- */
+
+.landing a:focus-visible,
+.landing button:focus-visible,
+.landing input:focus-visible,
+.landing select:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.landing ::selection {
+  background: rgba(88, 240, 255, 0.28);
+  color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .l-rise { animation: none; }
+  .l-ribbon-inner { animation: none; }
+  .l-bars span { animation: none; transform: scaleY(0.8); }
+  .l-pill::before, .l-led::before { animation: none; }
+  .l-tick-up, .l-tick-down { animation: none; }
+  .landing * { transition-duration: 0.01ms !important; }
+}
