@@ -3,6 +3,7 @@ import { db } from '@/db';
 import { simulatorTrades } from '@/db/schema';
 import { desc, eq, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
+import { requireOwner } from '@/lib/authz';
 
 export const dynamic = 'force-dynamic';
 
@@ -81,6 +82,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    // Canonical rounds are written by the server engine; browser-submitted
+    // settlements are owner-only (dev/testing) so viewers stay watch-only.
+    const denied = await requireOwner();
+    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
     await initDb();
 
     const body = await req.json();

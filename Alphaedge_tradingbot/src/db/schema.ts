@@ -160,6 +160,24 @@ export const earlyAccessLeads = sqliteTable('early_access_leads', {
   createdAt: integer('created_at').notNull()
 });
 
+// Canonical server-side engine rounds: deterministic 90s epochs per asset.
+// The server locks strikes, takes positions, and settles — viewers only read.
+export const engineRounds = sqliteTable('engine_rounds', {
+  id: text('id').primaryKey(), // `${asset}_${epoch}`
+  asset: text('asset').notNull(),
+  epoch: integer('epoch').notNull(), // floor(startMs / 90_000)
+  startedAt: integer('started_at').notNull(),
+  expiresAt: integer('expires_at').notNull(),
+  strikePrice: real('strike_price').notNull(),
+  status: text('status').notNull().default('open'), // 'open' | 'settled' | 'skipped'
+  side: text('side'), // 'YES' | 'NO' | null while flat
+  size: integer('size'),
+  entryPrice: real('entry_price'),
+  entryAt: integer('entry_at'),
+  entryPYes: real('entry_p_yes'),
+  settledAt: integer('settled_at'),
+});
+
 export const simulatorTrades = sqliteTable('simulator_trades', {
   id: text('id').primaryKey(),
   roundId: integer('round_id').notNull(),

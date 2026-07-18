@@ -1,0 +1,247 @@
+// Canonical server-side round engine.
+//
+// Rounds are deterministic 90-second epochs per asset (epoch = floor(t/90s)).
+// On every tick (viewer polls + cron heartbeat) the engine:
+//   1. settles any expired open rounds using the real 1m candle close at expiry
+//      (falls back to the live mark when the expiry candle hasn't closed yet),
+//   2. opens the current epoch's round, locking the strike at the live mark,
+//   3. takes a position when the GBM model's conviction clears the edge
+//      threshold, sized against the shared $10K demo bankroll.
+//
+// Viewers never write — the engine is the only author of canonical rounds.
+
+import { db } from '@/db';
+import { engineRounds, simulatorTrades } from '@/db/schema';
+import { eq, and, lte, sql } from 'drizzle-orm';
+import { initDb } from '@/db/init';
+import { binaryFairValue, settleBinary } from './binary';
+
+export const ROUND_MS = 90_000;
+export const DEMO_BANKROLL_BASE = 10_000;
+const EDGE_THRESHOLD = 0.035; // model conviction vs 50/50 opening odds
+const SPREAD = 0.01;          // crossing cost added to entry
+const MAX_TRADE_USD = 1_000;
+const BANKROLL_FRACTION = 0.10;
+const ENTRY_CUTOFF_S = 15;    // no entries in the final seconds
+
+const ASSET_MAP: Record<string, string> = {
+  'BTC-PERP': 'BTC',
+  'ETH-PERP': 'ETH',
+  'XAU': 'PAXG',
+};
+export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
+
+// ---------------------------------------------------------------------------
+// Hyperliquid feed helpers (module-cached; serverless instances refetch cheaply)
+// ---------------------------------------------------------------------------
+
+let marksCache: { ts: number; marks: Record<string, number> } | null = null;
+
+export async function getMarks(): Promise<Record<string, number>> {
+  if (marksCache && Date.now() - marksCache.ts < 1500) return marksCache.marks;
+  const res = await fetch('https://api.hyperliquid.xyz/info', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'allMids' }),
+    cache: 'no-store',
+  });
+  if (!res.ok) throw new Error(`Hyperliquid allMids ${res.status}`);
+  const mids = await res.json();
+  const marks: Record<string, number> = {};
+  for (const [label, coin] of Object.entries(ASSET_MAP)) {
+    const v = parseFloat(mids[coin]);
+    if (Number.isFinite(v) && v > 0) marks[label] = v;
+  }
+  marksCache = { ts: Date.now(), marks };
+  return marks;
+}
+
+const volCache: Record<string, { ts: number; vol: number }> = {};
+
+async function getRealizedVolPct(asset: string): Promise<number> {
+  const cached = volCache[asset];
+  if (cached && Date.now() - cached.ts < 5 * 60_000) return cached.vol;
+  const coin = ASSET_MAP[asset];
+  const end = Date.now();
+  const res = await fetch('https://api.hyperliquid.xyz/info', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'candleSnapshot',
+      req: { coin, interval: '5m', startTime: end - 24 * 60 * 60 * 1000, endTime: end },
+    }),
+    cache: 'no-store',
+  });
+  if (!res.ok) throw new Error(`candleSnapshot ${coin} ${res.status}`);
+  const candles = await res.json();
+  const closes = (Array.isArray(candles) ? candles : []).map((k: any) => parseFloat(k.c)).filter(Number.isFinite);
+  if (closes.length < 10) throw new Error(`Insufficient candle history for ${asset}`);
+  const rets: number[] = [];
+  for (let i = 1; i < closes.length; i++) rets.push(Math.log(closes[i] / closes[i - 1]));
+  const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
+  const variance = rets.reduce((a, b) => a + (b - mean) ** 2, 0) / (rets.length - 1);
+  const vol = Math.sqrt(variance * ((365 * 24 * 60) / 5)) * 100;
+  volCache[asset] = { ts: Date.now(), vol };
+  return vol;
+}
+
+// Real close of the 1m candle containing `atMs`, or null if not closed yet.
+async function getCandleCloseAt(asset: string, atMs: number): Promise<number | null> {
+  const coin = ASSET_MAP[asset];
+  const res = await fetch('https://api.hyperliquid.xyz/info', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'candleSnapshot',
+      req: { coin, interval: '1m', startTime: atMs - 2 * 60_000, endTime: atMs + 2 * 60_000 },
+    }),
+    cache: 'no-store',
+  });
+  if (!res.ok) return null;
+  const candles = await res.json();
+  if (!Array.isArray(candles)) return null;
+  const hit = candles.find((k: any) => k.t <= atMs && atMs < k.t + 60_000);
+  // Only trust a candle that has fully closed
+  if (hit && Date.now() >= hit.t + 60_000) {
+    const c = parseFloat(hit.c);
+    return Number.isFinite(c) ? c : null;
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+
+export async function getDemoBankroll(): Promise<number> {
+  const rows = await db.select({ total: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)` }).from(simulatorTrades);
+  return Math.round((DEMO_BANKROLL_BASE + (rows[0]?.total ?? 0)) * 100) / 100;
+}
+
+export interface TickResult {
+  now: number;
+  epoch: number;
+  bankroll: number;
+  rounds: Array<typeof engineRounds.$inferSelect>;
+  settled: number;
+  errors: string[];
+}
+
+export async function engineTick(): Promise<TickResult> {
+  await initDb();
+  const now = Date.now();
+  const epoch = Math.floor(now / ROUND_MS);
+  const errors: string[] = [];
+  let settledCount = 0;
+
+  let marks: Record<string, number> = {};
+  try {
+    marks = await getMarks();
+  } catch (err: any) {
+    errors.push(`feed: ${err.message}`);
+  }
+
+  // 1. Settle expired open rounds (any asset, any age)
+  const expired = await db.select().from(engineRounds)
+    .where(and(eq(engineRounds.status, 'open'), lte(engineRounds.expiresAt, now)));
+
+  for (const round of expired) {
+    try {
+      if (!round.side || !round.size || !round.entryPrice) {
+        await db.update(engineRounds)
+          .set({ status: 'skipped', settledAt: now })
+          .where(eq(engineRounds.id, round.id));
+        continue;
+      }
+      // Accurate expiry price from the closed 1m candle; fall back to live mark
+      // only when settling within moments of expiry.
+      let expiryPrice = await getCandleCloseAt(round.asset, round.expiresAt - 1);
+      if (expiryPrice === null) {
+        const fresh = now - round.expiresAt < 10_000 ? marks[round.asset] : undefined;
+        if (fresh) expiryPrice = fresh;
+        else continue; // candle not closed yet — retry on a later tick
+      }
+
+      const settled = settleBinary(round.strikePrice, expiryPrice, round.side as 'YES' | 'NO', round.size, round.entryPrice);
+      const tradeId = `${round.asset}_${round.epoch}_${now}`;
+
+      // Guard against double-settlement across concurrent lambdas
+      const existing = await db.select({ id: simulatorTrades.id }).from(simulatorTrades)
+        .where(and(eq(simulatorTrades.asset, round.asset), eq(simulatorTrades.roundId, round.epoch)))
+        .limit(1);
+      if (existing.length === 0) {
+        await db.insert(simulatorTrades).values({
+          id: tradeId,
+          roundId: round.epoch,
+          asset: round.asset,
+          timestamp: new Date(now).toISOString(),
+          strikePrice: round.strikePrice,
+          expiryPrice,
+          side: round.side,
+          size: round.size,
+          entryPrice: round.entryPrice,
+          exitPrice: settled.exitPrice,
+          outcome: settled.outcome,
+          pnl: settled.pnl,
+          createdAt: now,
+        });
+        settledCount++;
+      }
+      await db.update(engineRounds)
+        .set({ status: 'settled', settledAt: now })
+        .where(eq(engineRounds.id, round.id));
+    } catch (err: any) {
+      errors.push(`settle ${round.id}: ${err.message}`);
+    }
+  }
+
+  const bankroll = await getDemoBankroll();
+
+  // 2. Open current-epoch rounds + take positions
+  for (const asset of ENGINE_ASSETS) {
+    const mark = marks[asset];
+    if (!mark) continue;
+    const id = `${asset}_${epoch}`;
+    try {
+      const rows = await db.select().from(engineRounds).where(eq(engineRounds.id, id));
+      let round = rows[0];
+
+      if (!round) {
+        await db.insert(engineRounds).values({
+          id,
+          asset,
+          epoch,
+          startedAt: epoch * ROUND_MS,
+          expiresAt: (epoch + 1) * ROUND_MS,
+          strikePrice: mark,
+          status: 'open',
+        }).onConflictDoNothing();
+        const re = await db.select().from(engineRounds).where(eq(engineRounds.id, id));
+        round = re[0];
+      }
+
+      // Entry decision for flat open rounds
+      const remainingS = (round.expiresAt - now) / 1000;
+      if (round.status === 'open' && !round.side && remainingS >= ENTRY_CUTOFF_S && bankroll > 0) {
+        const vol = await getRealizedVolPct(asset);
+        const fv = binaryFairValue(mark, round.strikePrice, vol, remainingS);
+        const conviction = Math.abs(fv.pYes - 0.5);
+        if (conviction >= EDGE_THRESHOLD) {
+          const side = fv.pYes > 0.5 ? 'YES' : 'NO';
+          const modelP = side === 'YES' ? fv.pYes : 1 - fv.pYes;
+          const entryPrice = Math.min(Math.max(modelP + SPREAD, 0.02), 0.98);
+          const budget = Math.min(MAX_TRADE_USD, bankroll * BANKROLL_FRACTION);
+          const size = Math.floor(budget / entryPrice);
+          if (size > 0) {
+            await db.update(engineRounds)
+              .set({ side, size, entryPrice, entryAt: now, entryPYes: fv.pYes })
+              .where(and(eq(engineRounds.id, id), sql`${engineRounds.side} IS NULL`));
+          }
+        }
+      }
+    } catch (err: any) {
+      errors.push(`open ${id}: ${err.message}`);
+    }
+  }
+
+  const rounds = await db.select().from(engineRounds).where(eq(engineRounds.epoch, epoch));
+  return { now, epoch, bankroll, rounds, settled: settledCount, errors };
+}
