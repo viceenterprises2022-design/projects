@@ -280,7 +280,11 @@ export default function DashboardClient({ user }: { user: any }) {
     }
     syncPrices();
     const interval = setInterval(syncPrices, 2000);
-    return () => { cancelled = true; clearInterval(interval); };
+    // Browsers throttle timers in background tabs (down to 1/min) — force an
+    // instant resync the moment the tab is foregrounded so prices are never stale.
+    const onVisible = () => { if (document.visibilityState === 'visible') syncPrices(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => { cancelled = true; clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
   }, []);
 
   // ---- Market candle history (60s poll) ----
@@ -298,7 +302,9 @@ export default function DashboardClient({ user }: { user: any }) {
     }
     syncMarkets();
     const interval = setInterval(syncMarkets, 60_000);
-    return () => { cancelled = true; clearInterval(interval); };
+    const onVisible = () => { if (document.visibilityState === 'visible') syncMarkets(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => { cancelled = true; clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
   }, []);
 
   // ---- Predictions history (server-verified, Turso-backed) ----
@@ -1255,6 +1261,7 @@ export default function DashboardClient({ user }: { user: any }) {
                   <span><b>OI</b> {ctx ? fmtCompact(ctx.openInterest) : '—'}</span>
                   <span><b>VOL24H</b> {ctx ? '$' + fmtCompact(ctx.dayVolumeUsd) : '—'}</span>
                   <span><b>σ24H</b> {markets?.markets?.[asset]?.realizedVolPct ? markets.markets[asset].realizedVolPct.toFixed(1) + '%' : '—'}</span>
+                  <span style={{ color: 'var(--sage)' }}><b>SYNC</b> {feedTs ? new Date(feedTs).toLocaleTimeString(undefined, { hour12: false }) : 'connecting…'}</span>
                 </div>
               </div>
             );
