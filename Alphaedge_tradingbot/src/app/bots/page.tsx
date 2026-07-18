@@ -2,11 +2,17 @@ import { db } from "@/db"
 import { botTemplates, botInstances } from "@/db/schema"
 import { subscribeToBot } from "./actions"
 import { eq } from "drizzle-orm"
+import { initDb } from "@/db/init"
+
+// DB-backed page — never prerender at build time
+export const dynamic = "force-dynamic"
 
 const SYSTEM_USER_ID = "system-user"
 
 export default async function BotsDashboard() {
   const user = { id: SYSTEM_USER_ID, name: "AlphaEdge User", email: "user@alphaedge.ai", image: null }
+
+  await initDb()
 
   // Fetch all available bot templates
   const templates = await db.select().from(botTemplates)
