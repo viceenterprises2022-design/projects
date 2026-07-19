@@ -158,6 +158,8 @@ export interface LevelState {
   level: number;
   base: number | null;
   pnl: number;
+  wins: number;
+  losses: number;
   bankroll: number | null; // null = unlimited
   tradesToday: number;
   dailyTrades: number | null; // null = unlimited
@@ -168,10 +170,16 @@ export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
   const out: LevelState[] = [];
   for (const level of LEVEL_IDS) {
     const cfg = LEVELS[level];
-    const pnlRow = await db.select({ total: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)` })
+    const aggRow = await db.select({
+      total: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)`,
+      wins: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.outcome} = 'WIN' THEN 1 ELSE 0 END), 0)`,
+      settled: sql<number>`COUNT(*)`,
+    })
       .from(simulatorTrades)
       .where(and(eq(simulatorTrades.level, level), gte(simulatorTrades.createdAt, startedAt)));
-    const pnl = Math.round((pnlRow[0]?.total ?? 0) * 100) / 100;
+    const pnl = Math.round((aggRow[0]?.total ?? 0) * 100) / 100;
+    const wins = aggRow[0]?.wins ?? 0;
+    const losses = (aggRow[0]?.settled ?? 0) - wins;
 
     // Entries today = settled rows today + in-flight participations
     const settledToday = await db.select({ n: sql<number>`COUNT(*)` })
@@ -188,6 +196,8 @@ export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
       level,
       base: cfg.base,
       pnl,
+      wins,
+      losses,
       bankroll: cfg.base === null ? null : Math.round((cfg.base + pnl) * 100) / 100,
       tradesToday: (settledToday[0]?.n ?? 0) + (openToday[0]?.n ?? 0),
       dailyTrades: cfg.dailyTrades,

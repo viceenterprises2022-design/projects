@@ -142,6 +142,35 @@ function fitCanvas(canvas: HTMLCanvasElement | null, height: number) {
   return canvas.getContext('2d');
 }
 
+// Circular quota gauge: ring fills with usage; red when the day's quota is
+// spent; unlimited tiers show a decorative sliver with the infinity mark.
+function QuotaRing({ used, limit }: { used: number | undefined; limit: number | null | undefined }) {
+  const R = 30, C = 2 * Math.PI * R;
+  const unlimited = limit === null;
+  const pct = used === undefined ? 0 : unlimited ? 0.1 : Math.min(1, used / (limit as number));
+  const exhausted = !unlimited && limit !== undefined && used !== undefined && used >= (limit as number);
+  const stroke = exhausted ? '#ff6fb3' : unlimited ? '#bfff6a' : '#58f0ff';
+  return (
+    <div style={{ position: 'relative', width: 76, height: 76, flexShrink: 0 }}>
+      <svg width="76" height="76" viewBox="0 0 76 76" style={{ transform: 'rotate(-90deg)' }}>
+        <circle cx="38" cy="38" r={R} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
+        <circle cx="38" cy="38" r={R} fill="none" stroke={stroke} strokeWidth="6" strokeLinecap="round"
+          strokeDasharray={`${pct * C} ${C}`}
+          style={{ transition: 'stroke-dasharray 500ms ease, stroke 300ms ease', filter: `drop-shadow(0 0 6px ${stroke})` }} />
+      </svg>
+      <div style={{
+        position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', lineHeight: 1.15,
+      }}>
+        <span className="f-mono" style={{ fontSize: 15, fontWeight: 700 }}>{used ?? '—'}</span>
+        <span className="f-mono" style={{ fontSize: 8.5, color: 'var(--ivory-faint)', letterSpacing: '0.08em' }}>
+          / {unlimited ? '∞' : limit ?? '—'}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 
 export default function DashboardClient({ user, isOwner }: { user: any; isOwner: boolean }) {
@@ -1242,10 +1271,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 12 }}>
         {(engineState?.levels || [1, 2, 3].map(l => ({ level: l }))).map((ls: any) => {
           const selected = levelView === ls.level;
-          const limitLabel = ls.dailyTrades === null || ls.dailyTrades === undefined
-            ? (ls.dailyTrades === null ? '∞' : '—')
-            : ls.dailyTrades;
-          const quotaPct = ls.dailyTrades ? Math.min(100, (ls.tradesToday / ls.dailyTrades) * 100) : 0;
           return (
             <button
               key={ls.level}
@@ -1266,30 +1291,36 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                   {ls.base === null ? 'UNLIMITED CAPITAL' : `$${(ls.base / 1000).toFixed(0)}K CAPITAL`}
                 </span>
               </div>
-              <div className={`f-mono ${(ls.pnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}
-                style={{ fontSize: 26, fontWeight: 700, marginTop: 10, fontVariantNumeric: 'tabular-nums' }}>
-                {ls.pnl !== undefined ? fmtSignedUsd(ls.pnl) : '—'}
-              </div>
-              <div className="f-mono f-faint" style={{ fontSize: 10, marginTop: 4 }}>
-                {ls.base === null
-                  ? 'P&L · unlimited tier'
-                  : `Equity ${ls.bankroll !== undefined && ls.bankroll !== null ? fmtUsd(ls.bankroll) : '—'}`}
-              </div>
-              <div style={{ marginTop: 10 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                  <span className="f-kicker">Trades today</span>
-                  <span className="f-mono" style={{ fontSize: 10.5, fontWeight: 700 }}>
-                    {ls.tradesToday ?? '—'}<span className="f-faint"> / {ls.dailyTrades === null ? '∞' : limitLabel}</span>
-                  </span>
+              <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 10 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className={`f-mono ${(ls.pnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}
+                    style={{ fontSize: 25, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                    {ls.pnl !== undefined ? fmtSignedUsd(ls.pnl) : '—'}
+                  </div>
+                  <div className="f-mono f-faint" style={{ fontSize: 10, marginTop: 3 }}>
+                    {ls.base === null
+                      ? 'P&L · unlimited tier'
+                      : `Equity ${ls.bankroll !== undefined && ls.bankroll !== null ? fmtUsd(ls.bankroll) : '—'}`}
+                  </div>
+                  <div style={{ display: 'flex', gap: 6, marginTop: 9, flexWrap: 'wrap' }}>
+                    <span className="f-chip" style={{ padding: '3px 9px' }}>
+                      <b className="f-pos">{ls.wins ?? '—'}</b><span style={{ fontSize: 8.5 }}>WIN</span>
+                    </span>
+                    <span className="f-chip" style={{ padding: '3px 9px' }}>
+                      <b className="f-neg">{ls.losses ?? '—'}</b><span style={{ fontSize: 8.5 }}>LOSS</span>
+                    </span>
+                    <span className="f-chip" style={{ padding: '3px 9px' }}>
+                      <b className="f-azure">
+                        {ls.wins !== undefined && (ls.wins + ls.losses) > 0
+                          ? `${Math.round((ls.wins / (ls.wins + ls.losses)) * 100)}%`
+                          : '—'}
+                      </b><span style={{ fontSize: 8.5 }}>HIT</span>
+                    </span>
+                  </div>
                 </div>
-                <div style={{ height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.07)', overflow: 'hidden' }}>
-                  <div style={{
-                    width: `${ls.dailyTrades ? quotaPct : 8}%`, height: '100%', borderRadius: 99,
-                    background: ls.dailyTrades && quotaPct >= 100
-                      ? 'var(--oxide)'
-                      : 'linear-gradient(90deg, #58f0ff, #bfff6a)',
-                    transition: 'width 400ms ease',
-                  }} />
+                <div style={{ textAlign: 'center' }}>
+                  <QuotaRing used={ls.tradesToday} limit={ls.dailyTrades} />
+                  <div className="f-kicker" style={{ marginTop: 4, fontSize: 8 }}>Trades today</div>
                 </div>
               </div>
             </button>
