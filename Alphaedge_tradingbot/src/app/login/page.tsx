@@ -22,7 +22,7 @@ export default async function LoginPage() {
         </Link>
 
         <div className="f-panel" style={{ width: "min(400px, 92vw)", padding: "28px 26px", textAlign: "center" }}>
-          <div className="f-serif-grad" style={{ fontSize: 22, marginBottom: 8 }}>operator sign-in</div>
+          <div className="f-serif-grad" style={{ fontSize: 34, fontStyle: "normal", marginBottom: 10 }}>Operator Sign-In</div>
           <p style={{ margin: "0 0 22px", fontSize: 12.5, lineHeight: 1.7, color: "var(--ivory-dim)" }}>
             Sign in with Google to access the demo desk. Viewing is limited to
             invited accounts; the operator manages the access list.
