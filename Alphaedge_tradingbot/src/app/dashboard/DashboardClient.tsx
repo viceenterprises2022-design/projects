@@ -2038,6 +2038,42 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
                 <div className="f-panel">
                   <div className="f-panel-head">
+                    <h2 className="f-panel-title"><Coins size={14} color="#58f0ff" /> <span className="f-serif-grad">Round Contract Book</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>SYNTHETIC CLOB @ MODEL MID</span>
+                    </h2>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    {[
+                      { name: 'YES · SETTLES ABOVE STRIKE', book: yesBook, color: 'var(--sage)' },
+                      { name: 'NO · SETTLES AT/BELOW STRIKE', book: noBook, color: 'var(--oxide)' },
+                    ].map(({ name, book, color }) => (
+                      <div key={name} style={{ border: '1px solid var(--hairline)', borderRadius: 14, background: 'rgba(5,7,17,0.4)', padding: '10px 12px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
+                          <span className="f-kicker">{name}</span>
+                          <span className="f-mono" style={{ color, fontSize: 12, fontWeight: 700 }}>{Math.round(book.mid * 100)}¢</span>
+                        </div>
+                        <table className="f-table" style={{ fontSize: 10 }}>
+                          <thead>
+                            <tr><th className="num">Size</th><th className="num">Ask</th><th>Bid</th><th>Size</th></tr>
+                          </thead>
+                          <tbody>
+                            {book.asks.slice(0, 3).reverse().map((ask: any, idx: number) => (
+                              <tr key={idx}>
+                                <td className="num f-faint">{ask.size}</td>
+                                <td className="num f-neg" style={{ fontWeight: 700 }}>{Math.round(ask.price * 100)}¢</td>
+                                <td className="f-pos" style={{ fontWeight: 700 }}>{book.bids[idx] ? Math.round(book.bids[idx].price * 100) + '¢' : '—'}</td>
+                                <td className="f-faint">{book.bids[idx]?.size ?? '—'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="f-panel">
+                  <div className="f-panel-head">
                     <h2 className="f-panel-title"><Scale size={14} color="#9d7dff" /> <span className="f-serif-grad">Fair Probability Envelope</span>
                       <span className="f-kicker" style={{ marginLeft: 4 }}>GBM PRICER · ±1σ BAND</span>
                     </h2>
@@ -2288,40 +2324,6 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       </div>
                     </div>
                   )}
-                </div>
-
-                <div className="f-panel">
-                  <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Coins size={14} color="#58f0ff" /> <span className="f-serif-grad">Round Contract Book</span>
-                      <span className="f-kicker" style={{ marginLeft: 4 }}>SYNTHETIC CLOB @ MODEL MID</span>
-                    </h2>
-                  </div>
-                  {[
-                    { name: 'YES · SETTLES ABOVE STRIKE', book: yesBook, color: 'var(--sage)' },
-                    { name: 'NO · SETTLES AT/BELOW STRIKE', book: noBook, color: 'var(--oxide)' },
-                  ].map(({ name, book, color }) => (
-                    <div key={name} style={{ border: '1px solid var(--hairline)', borderRadius: 14, background: 'rgba(5,7,17,0.4)', padding: '10px 12px', marginBottom: 10 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
-                        <span className="f-kicker">{name}</span>
-                        <span className="f-mono" style={{ color, fontSize: 12, fontWeight: 700 }}>{Math.round(book.mid * 100)}¢</span>
-                      </div>
-                      <table className="f-table" style={{ fontSize: 10 }}>
-                        <thead>
-                          <tr><th className="num">Size</th><th className="num">Ask</th><th>Bid</th><th>Size</th></tr>
-                        </thead>
-                        <tbody>
-                          {book.asks.slice(0, 3).reverse().map((ask: any, idx: number) => (
-                            <tr key={idx}>
-                              <td className="num f-faint">{ask.size}</td>
-                              <td className="num f-neg" style={{ fontWeight: 700 }}>{Math.round(ask.price * 100)}¢</td>
-                              <td className="f-pos" style={{ fontWeight: 700 }}>{book.bids[idx] ? Math.round(book.bids[idx].price * 100) + '¢' : '—'}</td>
-                              <td className="f-faint">{book.bids[idx]?.size ?? '—'}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  ))}
                 </div>
 
                 <div className="f-panel">
