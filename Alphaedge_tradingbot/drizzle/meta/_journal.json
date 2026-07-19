@@ -78,6 +78,13 @@
       "when": 1784462540855,
       "tag": "0010_counters_reset",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1784465299251,
+      "tag": "0011_risk_pct_reset",
+      "breakpoints": true
     }
   ]
 }

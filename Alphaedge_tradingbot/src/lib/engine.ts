@@ -20,7 +20,7 @@ export const ROUND_MS = 300_000; // 5-minute rounds — expiries align with 5m c
 export const DEMO_BANKROLL_BASE = 10_000;
 const EDGE_THRESHOLD = 0.06;  // model conviction vs 50/50 opening odds — higher bar, fewer/stronger entries
 const SPREAD = 0;             // paper fills at model fair value — expectancy ~breakeven, results = calibration vs reality
-const MAX_TRADE_USD: Record<string, number> = { 'BTC-PERP': 250, 'ETH-PERP': 250, 'XAU': 250 };
+const RISK_PER_TRADE = 0.02; // fixed-fractional: 2% of current equity per trade, all tiers
 const ENTRY_CUTOFF_S = 30;    // no entries in the final seconds
 
 const ASSET_MAP: Record<string, string> = {
@@ -30,9 +30,9 @@ const ASSET_MAP: Record<string, string> = {
 };
 export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
 
-// Subscription tiers: identical per-entry sizing everywhere ($250 per asset).
-// Tiers differ by capital base and trades-per-day quota — the alpha comes
-// from how much of the day's edge each tier may capture. Tier 4 is the free
+// Subscription tiers: fixed-fractional sizing — every entry risks 2% of the
+// tier's CURRENT equity (compounds with wins, de-risks in drawdowns).
+// Tiers differ by capital base and trades-per-day quota. Tier 4 is the free
 // Demo ledger shown first on the desk.
 export const LEVELS: Record<number, { base: number | null; dailyTrades: number | null; label: string }> = {
   4: { base: 10_000, dailyTrades: 45, label: 'Demo' },
@@ -45,7 +45,7 @@ export const LEVEL_IDS = [4, 1, 2, 3];
 // Canonical parameters, exposed read-only to the dashboard
 export const ENGINE_PARAMS = {
   roundSeconds: ROUND_MS / 1000,
-  maxTradeUsd: MAX_TRADE_USD,
+  riskPerTrade: RISK_PER_TRADE,
   edgeThreshold: EDGE_THRESHOLD,
   spread: SPREAD,
   entryCutoffSeconds: ENTRY_CUTOFF_S,
@@ -341,15 +341,12 @@ export async function engineTick(): Promise<TickResult> {
           const side = fv.pYes > 0.5 ? 'YES' : 'NO';
           const modelP = side === 'YES' ? fv.pYes : 1 - fv.pYes;
           const entryPrice = Math.min(Math.max(modelP + SPREAD, 0.02), 0.98);
-          const assetCap = MAX_TRADE_USD[asset] ?? 1_000;
 
           const levelSizes: Record<string, number> = {};
           for (const ls of levels) {
             if (ls.dailyTrades !== null && ls.tradesToday >= ls.dailyTrades) continue; // quota spent
-            if (ls.bankroll !== null && ls.bankroll <= 0) continue; // busted
-            const budget = ls.bankroll === null
-              ? assetCap
-              : Math.min(assetCap, Math.max(0, ls.bankroll));
+            if (ls.bankroll === null || ls.bankroll <= 0) continue; // busted / undefined
+            const budget = ls.bankroll * RISK_PER_TRADE; // 2% of current equity
             const size = Math.floor(budget / entryPrice);
             if (size > 0) levelSizes[String(ls.level)] = size;
           }

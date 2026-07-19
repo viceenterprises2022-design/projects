@@ -1333,7 +1333,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Per-entry sizing is identical at every tier ($250 per asset). Tiers differ in capital base and trades per day — pick the ledger you would subscribe to.
+        Every entry risks 2% of the tier's current equity — sizes compound with performance. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to.
       </div>
     </div>
   );
