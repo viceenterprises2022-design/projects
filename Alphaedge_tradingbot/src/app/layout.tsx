@@ -24,11 +24,13 @@ const serif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.alphaedgeai.io"),
   title: "Prospera — Autonomous Wealth Systems",
   description:
     "Governed strategy bots trading deterministic five-minute rounds against live markets — trade-only permissions, server-verified settlement, and a live watch-only demo desk.",
   keywords: ["wealth automation", "trading bots", "capital deployment", "crypto bots", "gold", "quant engine"],
   openGraph: {
+    url: "https://www.alphaedgeai.io",
     title: "Prospera — Autonomous Wealth Systems",
     description:
       "Watch a live quant desk trade XAU, BTC, and ETH in verifiable five-minute rounds. Trade-only permissions, server-verified settlement.",
