@@ -1326,6 +1326,14 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 12 }}>
         {(engineState?.levels || [4, 1, 2, 3].map(l => ({ level: l }))).map((ls: any) => {
           const selected = levelView === ls.level;
+          // Quota spent → tier is closed until the daily 00:00 UTC reset.
+          // The masthead clock ticks state every second, so this re-renders live.
+          const exhausted = ls.dailyTrades != null && ls.tradesToday != null && ls.tradesToday >= ls.dailyTrades;
+          const resetAt = engineState?.quotaResetAt ?? new Date().setUTCHours(24, 0, 0, 0);
+          const restMs = Math.max(0, resetAt - Date.now());
+          const hh = String(Math.floor(restMs / 3_600_000)).padStart(2, '0');
+          const mm = String(Math.floor((restMs % 3_600_000) / 60_000)).padStart(2, '0');
+          const ss = String(Math.floor((restMs % 60_000) / 1000)).padStart(2, '0');
           return (
             <button
               key={ls.level}
@@ -1342,9 +1350,20 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span className={`f-tag ${selected ? 'azure' : ls.level === 4 ? 'win' : 'dim'}`}>{levelLabel(ls.level)}</span>
-                <span className="f-kicker">
-                  {ls.base === null ? 'UNLIMITED CAPITAL' : `$${(ls.base / 1000).toFixed(0)}K${ls.level === 3 ? '+' : ''} CAPITAL`}
-                </span>
+                {exhausted ? (
+                  <span className="f-mono" title="Daily quota filled — trading re-opens at 00:00 UTC"
+                    style={{
+                      fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', padding: '3px 8px',
+                      borderRadius: 6, color: '#ffd166', border: '1px solid rgba(255,209,102,0.35)',
+                      background: 'rgba(255,209,102,0.06)', fontVariantNumeric: 'tabular-nums',
+                    }}>
+                    OPENS IN {hh}:{mm}:{ss}
+                  </span>
+                ) : (
+                  <span className="f-kicker">
+                    {ls.base === null ? 'UNLIMITED CAPITAL' : `$${(ls.base / 1000).toFixed(0)}K${ls.level === 3 ? '+' : ''} CAPITAL`}
+                  </span>
+                )}
               </div>
               <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 10 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -1383,7 +1402,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Every entry risks 2% of the tier's current equity — sizes compound with performance. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to.
+        Every entry risks 2% of the tier's current equity — sizes compound with performance. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Daily quotas reset at 00:00 UTC.
       </div>
     </div>
   );

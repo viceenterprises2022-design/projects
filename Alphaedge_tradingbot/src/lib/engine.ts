@@ -222,6 +222,7 @@ export interface TickResult {
   rounds: Array<typeof engineRounds.$inferSelect>;
   settled: number;
   regime: Regime;
+  quotaResetAt: number; // next 00:00 UTC — daily trade quotas re-open here
   errors: string[];
 }
 
@@ -407,5 +408,8 @@ export async function engineTick(): Promise<TickResult> {
   }
 
   const rounds = await db.select().from(engineRounds).where(eq(engineRounds.epoch, epoch));
-  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, regime, errors };
+  // Quotas roll at 00:00 UTC — same boundary the quota window queries use,
+  // matching the exchange convention for daily candles and funding.
+  const quotaResetAt = new Date(now).setUTCHours(24, 0, 0, 0);
+  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, regime, quotaResetAt, errors };
 }

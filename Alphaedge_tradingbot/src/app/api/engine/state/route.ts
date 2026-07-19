@@ -28,6 +28,7 @@ export async function GET() {
       demoStartedAt: tick.demoStartedAt,
       levels: tick.levels,
       regime: tick.regime,
+      quotaResetAt: tick.quotaResetAt,
       params: ENGINE_PARAMS,
       marks,
       rounds: tick.rounds,
