@@ -16,13 +16,13 @@ import { eq, and, lte, gte, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { binaryFairValue, settleBinary } from './binary';
 
-export const ROUND_MS = 90_000;
+export const ROUND_MS = 300_000; // 5-minute rounds — expiries align with 5m candle closes
 export const DEMO_BANKROLL_BASE = 10_000;
 const EDGE_THRESHOLD = 0.06;  // model conviction vs 50/50 opening odds — higher bar, fewer/stronger entries
 const SPREAD = 0;             // paper fills at model fair value — expectancy ~breakeven, results = calibration vs reality
 const MAX_TRADE_USD: Record<string, number> = { 'BTC-PERP': 1_000, 'ETH-PERP': 500, 'XAU': 1_000 };
 const BANKROLL_FRACTION = 0.10;
-const ENTRY_CUTOFF_S = 15;    // no entries in the final seconds
+const ENTRY_CUTOFF_S = 30;    // no entries in the final seconds
 
 const ASSET_MAP: Record<string, string> = {
   'BTC-PERP': 'BTC',

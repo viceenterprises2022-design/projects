@@ -17,7 +17,7 @@ const wealthLoops = [
   {
     n: "03",
     title: "execution engine",
-    body: "Deterministic 90-second decision rounds, settled server-side against real candle closes. No hand-waving.",
+    body: "Deterministic five-minute decision rounds, settled server-side against real candle closes. No hand-waving.",
   },
   {
     n: "04",
@@ -100,7 +100,7 @@ export default function HomePage() {
                 <span>server-side engine</span>
               </div>
               <div className="l-chip">
-                <strong>90s</strong>
+                <strong>5-min</strong>
                 <span>verifiable rounds</span>
               </div>
               <div className="l-chip">
@@ -124,7 +124,7 @@ export default function HomePage() {
                 "BTC · PERPETUAL",
                 "ETH · PERPETUAL",
                 "HYPERLIQUID L1 FEED",
-                "90S BINARY ROUNDS",
+                "5-MIN BINARY ROUNDS",
                 "SERVER-VERIFIED SETTLEMENT",
                 "HASH-CHAINED LEDGER",
                 "WATCH-ONLY DEMO LIVE",

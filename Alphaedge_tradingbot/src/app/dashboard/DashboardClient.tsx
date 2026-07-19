@@ -78,13 +78,15 @@ function feedKeyForAssetClass(assetClass: string): DeskAsset | null {
 }
 
 const CYCLE_STEPS = ['Scan', 'Detect', 'Validate', 'Size', 'Fill', 'Settle'];
+const DEFAULT_ROUND_S = 300;
 
-const cycleStep = (sec: number) => {
-  if (sec > 75) return 0;
-  if (sec > 60) return 1;
-  if (sec > 45) return 2;
-  if (sec > 30) return 3;
-  if (sec > 12) return 4;
+const cycleStep = (sec: number, total: number) => {
+  const f = sec / Math.max(total, 1);
+  if (f > 0.83) return 0;
+  if (f > 0.66) return 1;
+  if (f > 0.5) return 2;
+  if (f > 0.33) return 3;
+  if (f > 0.13) return 4;
   return 5;
 };
 
@@ -161,6 +163,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
   const [activeTab, setActiveTab] = useState<'cockpit' | 'simulator'>('cockpit');
   const [adminUsers, setAdminUsers] = useState<Array<any>>([]);
+  const [ledgerScope, setLedgerScope] = useState<'demo' | 'archive'>('demo');
+  const ledgerScopeRef = useRef<'demo' | 'archive'>('demo');
   const [simAsset, setSimAsset] = useState<DeskAsset>('BTC-PERP');
   const [clock, setClock] = useState('');
 
@@ -187,8 +191,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [dbStats, setDbStats] = useState<any>(null);
   const [simHistory, setSimHistory] = useState<Array<any>>([]);
   const [simLogs, setSimLogs] = useState<Array<{ time: string; type: string; msg: string }>>([]);
-  const [simCountdown, setSimCountdown] = useState('01:30');
-  const [simSecondsRemaining, setSimSecondsRemaining] = useState(90);
+  const [simCountdown, setSimCountdown] = useState('05:00');
+  const [simSecondsRemaining, setSimSecondsRemaining] = useState(DEFAULT_ROUND_S);
   const [simPosition, setSimPosition] = useState<any>(null);
   const [modelReadout, setModelReadout] = useState<{ pYes: number; z: number; sigmaUsd: number } | null>(null);
   const [regimeReadout, setRegimeReadout] = useState<{ trend: number; chop: number; panic: number } | null>(null);
@@ -217,7 +221,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     strikeLocked: false,
     priceHistory: [] as Array<{ price: number; trade?: 'YES' | 'NO' }>,
     pYesHistory: [] as Array<{ p: number; lo: number; hi: number }>,
-    roundSecondsRemaining: 90,
+    roundSeconds: DEFAULT_ROUND_S,
+    roundSecondsRemaining: DEFAULT_ROUND_S,
     roundId: 101,
     tickCount: 0,
     yesContract: { midPrice: 0.5, bids: [] as any[], asks: [] as any[] },
@@ -313,7 +318,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   // ---- Predictions history (server-verified, Turso-backed) ----
   const loadHistory = useCallback(async (asset: string) => {
     try {
-      const res = await fetch(`/api/dashboard/predictions?asset=${encodeURIComponent(asset)}`);
+      const scope = ledgerScopeRef.current;
+      const res = await fetch(`/api/dashboard/predictions?asset=${encodeURIComponent(asset)}&scope=${scope}`);
       const json = await res.json();
       if (json && json.history) {
         setSimHistory(json.history);
@@ -506,7 +512,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     let min = Math.min(...ps), max = Math.max(...ps);
     const pad = (max - min) === 0 ? Math.max(min * 0.0004, 0.5) : (max - min) * 0.2;
     min -= pad; max += pad;
-    const X = (i: number) => (i / 90) * w;
+    const X = (i: number) => (i / Math.max(st.roundSeconds, 1)) * w;
     const Y = (p: number) => h - ((p - min) / (max - min)) * h;
 
     ctx.strokeStyle = C.grid;
@@ -568,7 +574,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       ctx.fillText('accumulating model path…', 10, h / 2);
       return;
     }
-    const X = (i: number) => (i / 90) * w;
+    const X = (i: number) => (i / Math.max(st.roundSeconds, 1)) * w;
     const Y = (p: number) => h - p * h;
 
     ctx.strokeStyle = C.grid;
@@ -818,7 +824,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     st.strikePrice = 0;
     st.priceHistory = [];
     st.pYesHistory = [];
-    st.roundSecondsRemaining = 90;
+    st.roundSeconds = engineStateRef.current?.params?.roundSeconds ?? DEFAULT_ROUND_S;
+    st.roundSecondsRemaining = st.roundSeconds;
     st.tickCount = 0;
     st.yesContract = { midPrice: 0.5, bids: [], asks: [] };
     st.noContract = { midPrice: 0.5, bids: [], asks: [] };
@@ -931,9 +938,10 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
       st.tickCount++;
       st.price = livePrice || st.price;
+      st.roundSeconds = engineStateRef.current?.params?.roundSeconds ?? st.roundSeconds;
       st.priceHistory.push({ price: st.price });
-      if (st.priceHistory.length > 90) st.priceHistory.shift();
-      st.roundSecondsRemaining = Math.max(0, 90 - Math.floor((Date.now() / 1000) % 90));
+      if (st.priceHistory.length > st.roundSeconds) st.priceHistory.shift();
+      st.roundSecondsRemaining = Math.max(0, st.roundSeconds - Math.floor((Date.now() / 1000) % st.roundSeconds));
 
       if (st.tickCount % 6 === 0) {
         const diffPct = ((st.price - st.strikePrice) / st.strikePrice) * 100;
@@ -947,7 +955,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       const pLo = binaryFairValue(st.price - fv.sigmaUsd, st.strikePrice, st.volatility, st.roundSecondsRemaining).pYes;
       const pHi = binaryFairValue(st.price + fv.sigmaUsd, st.strikePrice, st.volatility, st.roundSecondsRemaining).pYes;
       st.pYesHistory.push({ p: fv.pYes, lo: Math.min(pLo, pHi), hi: Math.max(pLo, pHi) });
-      if (st.pYesHistory.length > 90) st.pYesHistory.shift();
+      if (st.pYesHistory.length > st.roundSeconds) st.pYesHistory.shift();
 
       updateRegime();
 
@@ -996,6 +1004,12 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     const next = !simRunning;
     setSimRunning(next);
     simStateRef.current.isRunning = next;
+  };
+
+  const handleLedgerScope = (scope: 'demo' | 'archive') => {
+    setLedgerScope(scope);
+    ledgerScopeRef.current = scope;
+    loadHistory(simStateRef.current.asset);
   };
 
   // ---- Access control (owner only) ----
@@ -1729,7 +1743,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             <div className="f-panel" style={{ marginBottom: 18 }}>
               <div className="f-panel-head">
                 <h2 className="f-panel-title"><Activity size={14} color="#58f0ff" /> <span className="f-serif-grad">Execution Cycle</span>
-                  <span className="f-kicker" style={{ marginLeft: 6 }}>ROUND #{engineState?.epoch ?? simStateRef.current.roundId} · 90S BINARY · SERVER ENGINE</span>
+                  <span className="f-kicker" style={{ marginLeft: 6 }}>ROUND #{engineState?.epoch ?? simStateRef.current.roundId} · 5-MIN BINARY · SERVER ENGINE</span>
                 </h2>
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                   {simPosition && <span className="f-tag win">POSITION LIVE</span>}
@@ -1738,8 +1752,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               </div>
               <div className="f-cycle">
                 {CYCLE_STEPS.map((step, i) => {
-                  const active = cycleStep(simSecondsRemaining) === i;
-                  const past = cycleStep(simSecondsRemaining) > i;
+                  const active = cycleStep(simSecondsRemaining, simStateRef.current.roundSeconds) === i;
+                  const past = cycleStep(simSecondsRemaining, simStateRef.current.roundSeconds) > i;
                   return (
                     <div key={step} style={{
                       border: `1px solid ${active ? 'rgba(88,240,255,0.6)' : past ? 'rgba(191,255,106,0.35)' : 'var(--hairline)'}`,
@@ -1769,7 +1783,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     <h2 className="f-panel-title">
                       <TrendingUp size={14} color="#58f0ff" />
                       <span className="f-serif-grad">{ASSET_LABEL[simAsset]}</span>
-                      <span className="f-kicker" style={{ marginLeft: 4 }}>LIVE MARK VS STRIKE</span>
+                      <span className="f-kicker" style={{ marginLeft: 4 }}>LIVE MARK VS STRIKE · 5-MIN ROUND</span>
                     </h2>
                     <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                       <select className="f-select" style={{ width: 'auto', padding: '5px 10px', fontSize: 11 }}
@@ -2089,6 +2103,15 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             <div className="f-section-head">
               <span className="f-serif-grad">Historical Predictions Log</span>
               <span className="f-tag azure">TURSO · SERVER-VERIFIED</span>
+              {ledgerScope === 'archive' && <span className="f-tag gold">ARCHIVE · PRE-RESET · OWNER VIEW</span>}
+              {isOwner && (
+                <span style={{ display: 'inline-flex', gap: 6 }}>
+                  <button className={`f-btn ${ledgerScope === 'demo' ? 'primary' : ''}`} style={{ padding: '4px 12px', fontSize: 9 }}
+                    onClick={() => handleLedgerScope('demo')}>LIVE DEMO</button>
+                  <button className={`f-btn ${ledgerScope === 'archive' ? 'primary' : ''}`} style={{ padding: '4px 12px', fontSize: 9 }}
+                    onClick={() => handleLedgerScope('archive')}>ARCHIVE</button>
+                </span>
+              )}
             </div>
             <div className="f-panel">
               <div className="f-panel-head">

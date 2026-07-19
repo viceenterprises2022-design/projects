@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { engineTick, getMarks, ENGINE_PARAMS } from '@/lib/engine';
+import { engineTick, getMarks, ENGINE_PARAMS, ROUND_MS } from '@/lib/engine';
 import { requireViewer } from '@/lib/authz';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +22,7 @@ export async function GET() {
       success: true,
       now: tick.now,
       epoch: tick.epoch,
-      roundEndsAt: (tick.epoch + 1) * 90_000,
+      roundEndsAt: (tick.epoch + 1) * ROUND_MS,
       bankroll: tick.bankroll,
       bankrollBase: tick.bankrollBase,
       demoStartedAt: tick.demoStartedAt,

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { simulatorTrades } from '@/db/schema';
-import { desc, eq, gte, and, sql } from 'drizzle-orm';
+import { desc, eq, gte, lt, and, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { requireOwner, requireViewer } from '@/lib/authz';
 import { getDemoAccount } from '@/lib/engine';
@@ -31,10 +31,16 @@ export async function GET(req: NextRequest) {
     await initDb();
 
     const asset = req.nextUrl.searchParams.get('asset');
+    const scope = req.nextUrl.searchParams.get('scope') || 'demo';
 
-    // All demo-facing stats count only rounds settled after the demo start.
     const acct = await getDemoAccount();
-    const demoWindow = gte(simulatorTrades.createdAt, acct.startedAt);
+    // Default: demo window only. 'archive' (pre-reset history) is owner-only.
+    let demoWindow = gte(simulatorTrades.createdAt, acct.startedAt);
+    if (scope === 'archive') {
+      const notOwner = await requireOwner();
+      if (notOwner) return NextResponse.json({ error: notOwner }, { status: 403 });
+      demoWindow = lt(simulatorTrades.createdAt, acct.startedAt);
+    }
 
     let query = db.select().from(simulatorTrades)
       .where(asset ? and(demoWindow, eq(simulatorTrades.asset, asset)) : demoWindow);

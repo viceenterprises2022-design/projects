@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 // The hero visual is a real window into the product: live Hyperliquid marks
-// (same public feed the desk uses) and the actual 90-second round clock —
+// (same public feed the desk uses) and the actual 5-minute round clock —
 // deterministic epoch math, identical to the canonical engine's clock.
 
 const ASSETS = [
@@ -23,7 +23,8 @@ export function LiveDesk() {
   const [contexts, setContexts] = useState<Record<string, { change24hPct: number }>>({});
   const [tickDir, setTickDir] = useState<Record<string, "up" | "down" | null>>({});
   const [live, setLive] = useState(false);
-  const [roundSec, setRoundSec] = useState(90 - Math.floor((Date.now() / 1000) % 90));
+  const ROUND_S = 300; // 5-minute rounds — same epoch math as the engine
+  const [roundSec, setRoundSec] = useState(ROUND_S - Math.floor((Date.now() / 1000) % ROUND_S));
   const prevRef = useRef<Record<string, number>>({});
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export function LiveDesk() {
 
     sync();
     const feed = setInterval(sync, 3000);
-    const clock = setInterval(() => setRoundSec(90 - Math.floor((Date.now() / 1000) % 90)), 1000);
+    const clock = setInterval(() => setRoundSec(ROUND_S - Math.floor((Date.now() / 1000) % ROUND_S)), 1000);
     const onVisible = () => { if (document.visibilityState === "visible") sync(); };
     document.addEventListener("visibilitychange", onVisible);
     return () => {
@@ -97,7 +98,7 @@ export function LiveDesk() {
 
       <div className="l-desk-foot">
         <div className="l-round">
-          <strong>{String(roundSec).padStart(2, "0")}s</strong>
+          <strong>{`${String(Math.floor(roundSec / 60)).padStart(2, "0")}:${String(roundSec % 60).padStart(2, "0")}`}</strong>
           <span>to next round settlement — same clock as the live engine</span>
         </div>
         <Link href="/dashboard" className="l-desk-cta">
@@ -106,7 +107,7 @@ export function LiveDesk() {
       </div>
 
       <p className="l-desk-note">
-        Real marks from Hyperliquid L1 · 90s binary rounds · server-verified settlement · watch-only demo, access by invitation
+        Real marks from Hyperliquid L1 · 5-minute binary rounds · server-verified settlement · watch-only demo, access by invitation
       </p>
     </div>
   );

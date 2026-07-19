@@ -53,7 +53,7 @@ export default function OgImage() {
             Turn idle capital into an autonomous wealth system.
           </div>
           <div style={{ display: "flex", gap: 14 }}>
-            {["LIVE DEMO DESK", "90S VERIFIABLE ROUNDS", "0 WITHDRAWAL PERMISSIONS"].map(chip => (
+            {["LIVE DEMO DESK", "5-MIN VERIFIABLE ROUNDS", "0 WITHDRAWAL PERMISSIONS"].map(chip => (
               <div
                 key={chip}
                 style={{
