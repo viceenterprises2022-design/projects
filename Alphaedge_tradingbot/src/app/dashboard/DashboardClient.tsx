@@ -149,14 +149,15 @@ function QuotaRing({ used, limit }: { used: number | undefined; limit: number | 
   const unlimited = limit === null;
   const pct = used === undefined ? 0 : unlimited ? 0.1 : Math.min(1, used / (limit as number));
   const exhausted = !unlimited && limit !== undefined && used !== undefined && used >= (limit as number);
-  const stroke = exhausted ? '#ff6fb3' : unlimited ? '#bfff6a' : '#58f0ff';
+  // Green = day's quota fully captured (completed); blue + soft blur = ongoing
+  const stroke = exhausted ? '#bfff6a' : '#58f0ff';
   return (
     <div style={{ position: 'relative', width: 76, height: 76, flexShrink: 0 }}>
       <svg width="76" height="76" viewBox="0 0 76 76" style={{ transform: 'rotate(-90deg)' }}>
         <circle cx="38" cy="38" r={R} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
         <circle cx="38" cy="38" r={R} fill="none" stroke={stroke} strokeWidth="6" strokeLinecap="round"
           strokeDasharray={`${pct * C} ${C}`}
-          style={{ transition: 'stroke-dasharray 500ms ease, stroke 300ms ease', filter: `drop-shadow(0 0 6px ${stroke})` }} />
+          style={{ transition: 'stroke-dasharray 500ms ease, stroke 300ms ease', filter: `drop-shadow(0 0 ${exhausted ? 5 : 10}px ${stroke})` }} />
       </svg>
       <div style={{
         position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
