@@ -2149,14 +2149,10 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     <span className={`f-led ${simRunning ? 'ok' : 'warm'}`}>{simRunning ? 'RUNNING' : 'PAUSED'}</span>
                   </div>
                   <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
-                    {DESK_ASSETS.map(a => (
-                      <span key={a} className="f-chip">{a.split('-')[0]} SIZE <b className="f-gold">
-                        {engineState?.params ? fmtUsd(engineState.params.maxTradeUsd[a] ?? 1000, 0) : '—'}
-                      </b>/RD</span>
-                    ))}
+                    <span className="f-chip">SIZING <b className="f-gold">{engineState?.params?.riskPerTrade ? (engineState.params.riskPerTrade * 100).toFixed(0) + '%' : '—'}</b> OF EQUITY /TRADE</span>
                     <span className="f-chip">EDGE ≥ <b className="f-azure">{engineState?.params ? Math.round(engineState.params.edgeThreshold * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">SPREAD <b className="f-pos">{engineState?.params ? Math.round(engineState.params.spread * 100) + '¢' : '—'}</b></span>
-  
+                    <span className="f-chip">COMPOUNDS <b className="f-violet">PER TRADE</b></span>
                   </div>
                   <div className="f-kicker" style={{ marginBottom: 10 }}>View Parameters · visual model only</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

@@ -41,6 +41,18 @@ export interface SessionInfo {
 }
 
 export async function getSessionInfo(): Promise<SessionInfo> {
+  // Development-only bypass for local testing without OAuth env.
+  // Inert in production builds (NODE_ENV check) and requires an explicit
+  // env var that is never set in Vercel.
+  if (process.env.NODE_ENV === 'development' && process.env.DEV_FAKE_ROLE) {
+    const role = (process.env.DEV_FAKE_ROLE === 'owner' ? 'owner' : 'viewer') as Role;
+    return {
+      user: { id: 'dev', name: 'Dev Tester', email: 'dev@local' },
+      role,
+      isOwner: role === 'owner',
+      canView: true,
+    };
+  }
   try {
     const session = await auth();
     const email = session?.user?.email?.toLowerCase() || null;
