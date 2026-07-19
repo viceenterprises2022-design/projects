@@ -1289,7 +1289,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span className={`f-tag ${selected ? 'azure' : 'dim'}`}>LEVEL {ls.level}</span>
                 <span className="f-kicker">
-                  {ls.base === null ? 'UNLIMITED CAPITAL' : `$${(ls.base / 1000).toFixed(0)}K CAPITAL`}
+                  {ls.base === null ? 'UNLIMITED CAPITAL' : `$${(ls.base / 1000).toFixed(0)}K${ls.level === 3 ? '+' : ''} CAPITAL`}
                 </span>
               </div>
               <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 10 }}>
@@ -1329,7 +1329,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Per-entry sizing is identical at every level ($1,000 XAU/BTC · $500 ETH). Levels differ only in trades per day — pick the ledger you would subscribe to.
+        Per-entry sizing is identical at every level ($1,000 XAU/BTC · $500 ETH). Levels differ in capital base and trades per day — pick the ledger you would subscribe to.
       </div>
     </div>
   );
@@ -2152,7 +2152,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     ))}
                     <span className="f-chip">EDGE ≥ <b className="f-azure">{engineState?.params ? Math.round(engineState.params.edgeThreshold * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">SPREAD <b className="f-pos">{engineState?.params ? Math.round(engineState.params.spread * 100) + '¢' : '—'}</b></span>
-                    <span className="f-chip">BANKROLL CAP <b className="f-violet">{engineState?.params ? Math.round(engineState.params.bankrollFraction * 100) + '%' : '—'}</b></span>
+  
                   </div>
                   <div className="f-kicker" style={{ marginBottom: 10 }}>View Parameters · visual model only</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

@@ -39,7 +39,7 @@ const pricing = [
     level: "Level 1",
     price: "1.2%",
     note: "annual platform access",
-    perks: ["$10K capital lane", "30 trades per day", "Live bot deployment", "Risk guardrails"],
+    perks: ["$5K capital lane", "30 trades per day", "Live bot deployment", "Risk guardrails"],
     featured: true,
   },
   {
@@ -47,14 +47,14 @@ const pricing = [
     level: "Level 2",
     price: "1.8%",
     note: "annual platform access",
-    perks: ["$25K capital lane", "60 trades per day", "Everything in Builder", "Priority execution lanes"],
+    perks: ["$10K capital lane", "45 trades per day", "Everything in Builder", "Priority execution lanes"],
   },
   {
     tier: "Sovereign",
     level: "Level 3",
     price: "Custom",
     note: "for teams and allocators",
-    perks: ["Unlimited capital & trades", "White-glove onboarding", "Custom mandates", "Multi-account controls"],
+    perks: ["$25K+ capital lane", "60 trades per day", "White-glove onboarding", "Custom mandates"],
   },
 ];
 

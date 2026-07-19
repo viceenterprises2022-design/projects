@@ -21,7 +21,6 @@ export const DEMO_BANKROLL_BASE = 10_000;
 const EDGE_THRESHOLD = 0.06;  // model conviction vs 50/50 opening odds — higher bar, fewer/stronger entries
 const SPREAD = 0;             // paper fills at model fair value — expectancy ~breakeven, results = calibration vs reality
 const MAX_TRADE_USD: Record<string, number> = { 'BTC-PERP': 1_000, 'ETH-PERP': 500, 'XAU': 1_000 };
-const BANKROLL_FRACTION = 0.10;
 const ENTRY_CUTOFF_S = 30;    // no entries in the final seconds
 
 const ASSET_MAP: Record<string, string> = {
@@ -32,12 +31,12 @@ const ASSET_MAP: Record<string, string> = {
 export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
 
 // Subscription levels: identical per-entry sizing everywhere ($1,000 XAU/BTC,
-// $500 ETH). Levels differ ONLY by capital base and trades-per-day quota —
+// $500 ETH). Levels differ by capital base and trades-per-day quota —
 // the alpha comes from how much of the day's edge each tier may capture.
 export const LEVELS: Record<number, { base: number | null; dailyTrades: number | null }> = {
-  1: { base: 10_000, dailyTrades: 30 },
-  2: { base: 25_000, dailyTrades: 60 },
-  3: { base: null, dailyTrades: null }, // unlimited capital + trades
+  1: { base: 5_000, dailyTrades: 30 },
+  2: { base: 10_000, dailyTrades: 45 },
+  3: { base: 25_000, dailyTrades: 60 }, // displayed as $25K+
 };
 export const LEVEL_IDS = [1, 2, 3];
 
@@ -45,7 +44,6 @@ export const LEVEL_IDS = [1, 2, 3];
 export const ENGINE_PARAMS = {
   roundSeconds: ROUND_MS / 1000,
   maxTradeUsd: MAX_TRADE_USD,
-  bankrollFraction: BANKROLL_FRACTION,
   edgeThreshold: EDGE_THRESHOLD,
   spread: SPREAD,
   entryCutoffSeconds: ENTRY_CUTOFF_S,
@@ -345,7 +343,7 @@ export async function engineTick(): Promise<TickResult> {
             if (ls.bankroll !== null && ls.bankroll <= 0) continue; // busted
             const budget = ls.bankroll === null
               ? assetCap
-              : Math.min(assetCap, ls.bankroll * BANKROLL_FRACTION);
+              : Math.min(assetCap, Math.max(0, ls.bankroll));
             const size = Math.floor(budget / entryPrice);
             if (size > 0) levelSizes[String(ls.level)] = size;
           }
