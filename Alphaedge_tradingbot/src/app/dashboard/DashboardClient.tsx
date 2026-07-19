@@ -167,6 +167,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const ledgerScopeRef = useRef<'demo' | 'archive'>('demo');
   const [levelView, setLevelView] = useState<1 | 2 | 3>(1);
   const levelViewRef = useRef<1 | 2 | 3>(1);
+  const [logAllLevels, setLogAllLevels] = useState(false);
+  const logAllLevelsRef = useRef(false);
   const [simAsset, setSimAsset] = useState<DeskAsset>('BTC-PERP');
   const [clock, setClock] = useState('');
 
@@ -321,7 +323,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const loadHistory = useCallback(async (asset: string) => {
     try {
       const scope = ledgerScopeRef.current;
-      const res = await fetch(`/api/dashboard/predictions?asset=${encodeURIComponent(asset)}&scope=${scope}&level=${levelViewRef.current}`);
+      const lvl = logAllLevelsRef.current ? 'all' : String(levelViewRef.current);
+      const res = await fetch(`/api/dashboard/predictions?asset=${encodeURIComponent(asset)}&scope=${scope}&level=${lvl}`);
       const json = await res.json();
       if (json && json.history) {
         setSimHistory(json.history);
@@ -1015,8 +1018,17 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const handleLevelView = (lvl: 1 | 2 | 3) => {
     setLevelView(lvl);
     levelViewRef.current = lvl;
+    setLogAllLevels(false);
+    logAllLevelsRef.current = false;
     loadHistory(simStateRef.current.asset);
     fetchData();
+  };
+
+  const handleLogAllLevels = () => {
+    const next = !logAllLevelsRef.current;
+    setLogAllLevels(next);
+    logAllLevelsRef.current = next;
+    loadHistory(simStateRef.current.asset);
   };
 
   const handleLedgerScope = (scope: 'demo' | 'archive') => {
@@ -1162,8 +1174,9 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   };
 
   const handleExportCsv = () => {
-    const headers = ['Round', 'Timestamp (UTC)', 'Asset', 'Strike', 'Expiry', 'Side', 'Qty', 'Entry', 'Exit', 'Outcome', 'Net PnL'];
+    const headers = ['Level', 'Round', 'Timestamp (UTC)', 'Asset', 'Strike', 'Expiry', 'Side', 'Qty', 'Entry', 'Exit', 'Outcome', 'Net PnL'];
     const rows = simHistory.map(h => [
+      h.level ? `L${h.level}` : '-',
       `#${h.roundId}`,
       new Date(h.createdAt).toISOString(),
       h.asset,
@@ -2194,12 +2207,14 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             {/* Historical predictions */}
             <div className="f-section-head">
               <span className="f-serif-grad">Historical Predictions Log</span>
-              <span className="f-tag azure">LEVEL {levelView} · SERVER-VERIFIED</span>
+              <span className="f-tag azure">{logAllLevels ? 'ALL LEVELS' : `LEVEL ${levelView}`} · SERVER-VERIFIED</span>
               {ledgerScope === 'archive' && <span className="f-tag gold">ARCHIVE · PRE-RESET · OWNER VIEW</span>}
               {isOwner && (
                 <span style={{ display: 'inline-flex', gap: 6 }}>
-                  <button className={`f-btn ${ledgerScope === 'demo' ? 'primary' : ''}`} style={{ padding: '4px 12px', fontSize: 9 }}
+                  <button className={`f-btn ${ledgerScope === 'demo' && !logAllLevels ? 'primary' : ''}`} style={{ padding: '4px 12px', fontSize: 9 }}
                     onClick={() => handleLedgerScope('demo')}>LIVE DEMO</button>
+                  <button className={`f-btn ${logAllLevels ? 'primary' : ''}`} style={{ padding: '4px 12px', fontSize: 9 }}
+                    onClick={handleLogAllLevels}>ALL LEVELS</button>
                   <button className={`f-btn ${ledgerScope === 'archive' ? 'primary' : ''}`} style={{ padding: '4px 12px', fontSize: 9 }}
                     onClick={() => handleLedgerScope('archive')}>ARCHIVE</button>
                 </span>
@@ -2225,6 +2240,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 <table className="f-table">
                   <thead>
                     <tr>
+                      <th>Lvl</th>
                       <th>Round</th>
                       <th>Settled At</th>
                       <th className="num">Strike</th>
@@ -2239,10 +2255,11 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                   </thead>
                   <tbody>
                     {simHistory.length === 0 ? (
-                      <tr><td colSpan={10}><div className="f-empty">No settled rounds recorded yet — engine writes here after each round expiry.</div></td></tr>
+                      <tr><td colSpan={11}><div className="f-empty">No settled rounds recorded yet — engine writes here after each round expiry.</div></td></tr>
                     ) : (
                       simHistory.map((trade: any) => (
                         <tr key={trade.id || `${trade.asset}-${trade.roundId}-${trade.createdAt}`}>
+                          <td>{trade.level ? <span className={`f-tag ${trade.level === 3 ? 'gold' : trade.level === 2 ? 'violet' : 'azure'}`}>L{trade.level}</span> : <span className="f-tag dim">—</span>}</td>
                           <td style={{ color: 'var(--ivory)' }}>#{trade.roundId}</td>
                           <td className="f-faint">{fmtTime(trade.createdAt)}</td>
                           <td className="num f-gold">{fmtUsd(trade.strikePrice)}</td>

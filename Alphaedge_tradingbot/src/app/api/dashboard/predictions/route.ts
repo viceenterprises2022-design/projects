@@ -32,13 +32,20 @@ export async function GET(req: NextRequest) {
 
     const asset = req.nextUrl.searchParams.get('asset');
     const scope = req.nextUrl.searchParams.get('scope') || 'demo';
-    const levelParam = parseInt(req.nextUrl.searchParams.get('level') || '1', 10);
+    const rawLevel = req.nextUrl.searchParams.get('level') || '1';
+    const levelAll = rawLevel === 'all';
+    const levelParam = parseInt(rawLevel, 10);
     const level = [1, 2, 3].includes(levelParam) ? levelParam : 1;
 
     const acct = await getDemoAccount();
-    // Default: demo window for the requested subscription level.
-    // 'archive' (pre-reset history, any level) is owner-only.
+    // Default: demo window for one subscription level. 'all' (combined
+    // cross-level view) and 'archive' (pre-reset history) are owner-only.
     let demoWindow = and(gte(simulatorTrades.createdAt, acct.startedAt), eq(simulatorTrades.level, level))!;
+    if (levelAll) {
+      const notOwner = await requireOwner();
+      if (notOwner) return NextResponse.json({ error: notOwner }, { status: 403 });
+      demoWindow = gte(simulatorTrades.createdAt, acct.startedAt);
+    }
     if (scope === 'archive') {
       const notOwner = await requireOwner();
       if (notOwner) return NextResponse.json({ error: notOwner }, { status: 403 });
