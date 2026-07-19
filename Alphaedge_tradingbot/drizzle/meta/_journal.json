@@ -71,6 +71,13 @@
       "when": 1784461483362,
       "tag": "0009_level_economics_reset",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1784462540855,
+      "tag": "0010_counters_reset",
+      "breakpoints": true
     }
   ]
 }

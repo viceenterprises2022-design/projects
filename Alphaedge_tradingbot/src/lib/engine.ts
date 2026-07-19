@@ -167,7 +167,9 @@ export interface LevelState {
 }
 
 export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
-  const utcDayStart = new Date().setUTCHours(0, 0, 0, 0);
+  // Daily quota window starts at UTC midnight OR the demo restart, whichever
+  // is later — a fresh demo must not inherit the old day's spent quota.
+  const utcDayStart = Math.max(new Date().setUTCHours(0, 0, 0, 0), startedAt);
   const out: LevelState[] = [];
   for (const level of LEVEL_IDS) {
     const cfg = LEVELS[level];
