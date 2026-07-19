@@ -20,7 +20,7 @@ export const ROUND_MS = 300_000; // 5-minute rounds — expiries align with 5m c
 export const DEMO_BANKROLL_BASE = 10_000;
 const EDGE_THRESHOLD = 0.06;  // model conviction vs 50/50 opening odds — higher bar, fewer/stronger entries
 const SPREAD = 0;             // paper fills at model fair value — expectancy ~breakeven, results = calibration vs reality
-const MAX_TRADE_USD: Record<string, number> = { 'BTC-PERP': 1_000, 'ETH-PERP': 500, 'XAU': 1_000 };
+const MAX_TRADE_USD: Record<string, number> = { 'BTC-PERP': 250, 'ETH-PERP': 250, 'XAU': 250 };
 const ENTRY_CUTOFF_S = 30;    // no entries in the final seconds
 
 const ASSET_MAP: Record<string, string> = {
@@ -30,15 +30,17 @@ const ASSET_MAP: Record<string, string> = {
 };
 export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
 
-// Subscription levels: identical per-entry sizing everywhere ($1,000 XAU/BTC,
-// $500 ETH). Levels differ by capital base and trades-per-day quota —
-// the alpha comes from how much of the day's edge each tier may capture.
-export const LEVELS: Record<number, { base: number | null; dailyTrades: number | null }> = {
-  1: { base: 5_000, dailyTrades: 30 },
-  2: { base: 10_000, dailyTrades: 45 },
-  3: { base: 25_000, dailyTrades: 60 }, // displayed as $25K+
+// Subscription tiers: identical per-entry sizing everywhere ($250 per asset).
+// Tiers differ by capital base and trades-per-day quota — the alpha comes
+// from how much of the day's edge each tier may capture. Tier 4 is the free
+// Demo ledger shown first on the desk.
+export const LEVELS: Record<number, { base: number | null; dailyTrades: number | null; label: string }> = {
+  4: { base: 10_000, dailyTrades: 45, label: 'Demo' },
+  1: { base: 5_000, dailyTrades: 30, label: 'Level 1' },
+  2: { base: 10_000, dailyTrades: 45, label: 'Level 2' },
+  3: { base: 25_000, dailyTrades: 60, label: 'Level 3' }, // displayed as $25K+
 };
-export const LEVEL_IDS = [1, 2, 3];
+export const LEVEL_IDS = [4, 1, 2, 3];
 
 // Canonical parameters, exposed read-only to the dashboard
 export const ENGINE_PARAMS = {
@@ -154,6 +156,7 @@ export async function getDemoBankroll(): Promise<{ bankroll: number; base: numbe
 
 export interface LevelState {
   level: number;
+  label: string;
   base: number | null;
   pnl: number;
   wins: number;
@@ -192,6 +195,7 @@ export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
       ));
     out.push({
       level,
+      label: cfg.label,
       base: cfg.base,
       pnl,
       wins,

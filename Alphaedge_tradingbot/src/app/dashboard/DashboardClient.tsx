@@ -119,6 +119,10 @@ function fmtCompact(n: number | undefined | null) {
   return n.toFixed(0);
 }
 
+function levelLabel(l: number | undefined) {
+  return l === 4 ? 'DEMO' : `LEVEL ${l ?? '—'}`;
+}
+
 function fmtTime(epochMs: number) {
   if (!Number.isFinite(epochMs)) return '—';
   return new Date(epochMs).toLocaleString(undefined, {
@@ -195,8 +199,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [adminUsers, setAdminUsers] = useState<Array<any>>([]);
   const [ledgerScope, setLedgerScope] = useState<'demo' | 'archive'>('demo');
   const ledgerScopeRef = useRef<'demo' | 'archive'>('demo');
-  const [levelView, setLevelView] = useState<1 | 2 | 3>(1);
-  const levelViewRef = useRef<1 | 2 | 3>(1);
+  const [levelView, setLevelView] = useState<1 | 2 | 3 | 4>(4);
+  const levelViewRef = useRef<1 | 2 | 3 | 4>(4);
   const [logAllLevels, setLogAllLevels] = useState(false);
   const logAllLevelsRef = useRef(false);
   const [simAsset, setSimAsset] = useState<DeskAsset>('BTC-PERP');
@@ -1045,7 +1049,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     simStateRef.current.isRunning = next;
   };
 
-  const handleLevelView = (lvl: 1 | 2 | 3) => {
+  const handleLevelView = (lvl: 1 | 2 | 3 | 4) => {
     setLevelView(lvl);
     levelViewRef.current = lvl;
     setLogAllLevels(false);
@@ -1270,12 +1274,12 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         <span className="f-kicker">TAP A LEVEL TO INSPECT ITS LEDGER</span>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 12 }}>
-        {(engineState?.levels || [1, 2, 3].map(l => ({ level: l }))).map((ls: any) => {
+        {(engineState?.levels || [4, 1, 2, 3].map(l => ({ level: l }))).map((ls: any) => {
           const selected = levelView === ls.level;
           return (
             <button
               key={ls.level}
-              onClick={() => handleLevelView(ls.level as 1 | 2 | 3)}
+              onClick={() => handleLevelView(ls.level as 1 | 2 | 3 | 4)}
               style={{
                 textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit',
                 border: `1px solid ${selected ? 'rgba(88,240,255,0.55)' : 'var(--hairline-strong)'}`,
@@ -1287,7 +1291,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className={`f-tag ${selected ? 'azure' : 'dim'}`}>LEVEL {ls.level}</span>
+                <span className={`f-tag ${selected ? 'azure' : ls.level === 4 ? 'win' : 'dim'}`}>{levelLabel(ls.level)}</span>
                 <span className="f-kicker">
                   {ls.base === null ? 'UNLIMITED CAPITAL' : `$${(ls.base / 1000).toFixed(0)}K${ls.level === 3 ? '+' : ''} CAPITAL`}
                 </span>
@@ -1329,7 +1333,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Per-entry sizing is identical at every level ($1,000 XAU/BTC · $500 ETH). Levels differ in capital base and trades per day — pick the ledger you would subscribe to.
+        Per-entry sizing is identical at every tier ($250 per asset). Tiers differ in capital base and trades per day — pick the ledger you would subscribe to.
       </div>
     </div>
   );
@@ -1458,7 +1462,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             {levelsPanel}
             <div className="f-stat-grid">
               <div className="f-stat">
-                <span className="f-kicker">Level {levelView} Equity</span>
+                <span className="f-kicker">{levelLabel(levelView)} Equity</span>
                 <div className="f-stat-value f-azure">
                   {(() => { const ls = engineState?.levels?.find((l: any) => l.level === levelView); if (!ls) return '—'; return ls.base === null ? '∞ UNLIMITED' : fmtUsd(ls.bankroll); })()}
                 </div>
@@ -1472,7 +1476,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 <div className="f-stat-sub">{data?.aiMetrics?.settledRounds ?? 0} settled rounds · Turso</div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Level {levelView} Realized PnL</span>
+                <span className="f-kicker">{levelLabel(levelView)} Realized PnL</span>
                 <div className={`f-stat-value ${((engineState?.levels?.find((l: any) => l.level === levelView)?.pnl ?? data?.aiMetrics?.totalProfit) ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
                   {(() => { const ls = engineState?.levels?.find((l: any) => l.level === levelView); return ls ? fmtSignedUsd(ls.pnl) : fmtSignedUsd(data?.aiMetrics?.totalProfit); })()}
                 </div>
@@ -1828,7 +1832,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             {/* Hero strip — all values from Turso-backed stats */}
             <div className="f-stat-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
               <div className="f-stat">
-                <span className="f-kicker">Net PnL · {simAsset} · Level {levelView}</span>
+                <span className="f-kicker">Net PnL · {simAsset} · {levelLabel(levelView)}</span>
                 <div className={`f-stat-value ${(dbStats?.totalPnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontSize: 30 }}>
                   {dbStats ? fmtSignedUsd(dbStats.totalPnl) : '—'}
                 </div>
@@ -1840,7 +1844,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 <div style={{ marginTop: 10 }}><canvas ref={equityCanvasRef} style={{ width: '100%', height: 56, display: 'block' }} /></div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Level {levelView} Account</span>
+                <span className="f-kicker">{levelLabel(levelView)} Account</span>
                 <div className="f-stat-value f-gold" style={{ fontSize: 30 }}>
                   {(() => { const ls = engineState?.levels?.find((l: any) => l.level === levelView); if (!ls) return '—'; return ls.base === null ? '∞' : fmtUsd(ls.bankroll); })()}
                 </div>
@@ -2239,7 +2243,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             {/* Historical predictions */}
             <div className="f-section-head">
               <span className="f-serif-grad">Historical Predictions Log</span>
-              <span className="f-tag azure">{logAllLevels ? 'ALL LEVELS' : `LEVEL ${levelView}`} · SERVER-VERIFIED</span>
+              <span className="f-tag azure">{logAllLevels ? 'ALL LEVELS' : levelLabel(levelView)} · SERVER-VERIFIED</span>
               {ledgerScope === 'archive' && <span className="f-tag gold">ARCHIVE · PRE-RESET · OWNER VIEW</span>}
               {isOwner && (
                 <span style={{ display: 'inline-flex', gap: 6 }}>
@@ -2291,7 +2295,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     ) : (
                       simHistory.map((trade: any) => (
                         <tr key={trade.id || `${trade.asset}-${trade.roundId}-${trade.createdAt}`}>
-                          <td>{trade.level ? <span className={`f-tag ${trade.level === 3 ? 'gold' : trade.level === 2 ? 'violet' : 'azure'}`}>L{trade.level}</span> : <span className="f-tag dim">—</span>}</td>
+                          <td>{trade.level ? <span className={`f-tag ${trade.level === 4 ? 'win' : trade.level === 3 ? 'gold' : trade.level === 2 ? 'violet' : 'azure'}`}>{trade.level === 4 ? 'DEMO' : `L${trade.level}`}</span> : <span className="f-tag dim">—</span>}</td>
                           <td style={{ color: 'var(--ivory)' }}>#{trade.roundId}</td>
                           <td className="f-faint">{fmtTime(trade.createdAt)}</td>
                           <td className="num f-gold">{fmtUsd(trade.strikePrice)}</td>

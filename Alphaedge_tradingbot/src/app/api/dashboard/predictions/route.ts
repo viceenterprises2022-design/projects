@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
     const rawLevel = req.nextUrl.searchParams.get('level') || '1';
     const levelAll = rawLevel === 'all';
     const levelParam = parseInt(rawLevel, 10);
-    const level = [1, 2, 3].includes(levelParam) ? levelParam : 1;
+    const level = [1, 2, 3, 4].includes(levelParam) ? levelParam : 1;
 
     const acct = await getDemoAccount();
     // Default: demo window for one subscription level. 'all' (combined

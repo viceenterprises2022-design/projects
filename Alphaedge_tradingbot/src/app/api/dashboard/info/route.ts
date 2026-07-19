@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
 
     // Scope engine stats to the demo window + requested subscription level
     const levelParam = parseInt(req.nextUrl.searchParams.get('level') || '1', 10);
-    const level = [1, 2, 3].includes(levelParam) ? levelParam : 1;
+    const level = [1, 2, 3, 4].includes(levelParam) ? levelParam : 1;
     const acct = await getDemoAccount();
     const allRounds = await db.select().from(simulatorTrades)
       .where(and(gte(simulatorTrades.createdAt, acct.startedAt), eq(simulatorTrades.level, level)));
