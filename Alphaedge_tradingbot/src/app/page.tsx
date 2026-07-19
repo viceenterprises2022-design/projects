@@ -29,22 +29,32 @@ const wealthLoops = [
 const pricing = [
   {
     tier: "Seed",
+    level: "Demo",
     price: "0%",
     note: "for exploration",
     perks: ["Watch-only demo desk", "Live engine telemetry", "Verifiable round history"],
   },
   {
     tier: "Builder",
+    level: "Level 1",
     price: "1.2%",
     note: "annual platform access",
-    perks: ["Live bot deployment", "Risk guardrails", "Exchange connectors", "Private telemetry"],
+    perks: ["$10K capital lane", "30 trades per day", "Live bot deployment", "Risk guardrails"],
     featured: true,
   },
   {
+    tier: "Compounder",
+    level: "Level 2",
+    price: "1.8%",
+    note: "annual platform access",
+    perks: ["$25K capital lane", "60 trades per day", "Everything in Builder", "Priority execution lanes"],
+  },
+  {
     tier: "Sovereign",
+    level: "Level 3",
     price: "Custom",
     note: "for teams and allocators",
-    perks: ["White-glove onboarding", "Custom mandates", "Multi-account controls", "Research desk access"],
+    perks: ["Unlimited capital & trades", "White-glove onboarding", "Custom mandates", "Multi-account controls"],
   },
 ];
 
@@ -248,7 +258,7 @@ export default function HomePage() {
           <div className="l-pricing">
             {pricing.map(plan => (
               <article className={`l-price-card ${plan.featured ? "featured" : ""}`} key={plan.tier}>
-                <span className="l-kicker">{plan.tier}</span>
+                <span className="l-kicker">{plan.tier} · {plan.level}</span>
                 <div className="l-price-line">
                   <strong>{plan.price}</strong>
                   <small>{plan.note}</small>

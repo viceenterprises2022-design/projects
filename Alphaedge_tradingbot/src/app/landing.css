@@ -651,7 +651,7 @@
 /* Pricing */
 .l-pricing {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   margin-top: 44px;
 }
@@ -783,12 +783,13 @@
   .l-split, .l-launch { grid-template-columns: 1fr; gap: 40px; }
   .l-loops { grid-template-columns: 1fr 1fr; }
   .l-proof { grid-template-columns: 1fr; }
-  .l-pricing { grid-template-columns: 1fr; }
+  .l-pricing { grid-template-columns: 1fr 1fr; }
   .l-nav-links { display: none; }
 }
 
 @media (max-width: 560px) {
   .l-loops { grid-template-columns: 1fr; }
+  .l-pricing { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
   .field-shell-wide { grid-column: span 1; }
   .l-asset-delta { display: none; }
