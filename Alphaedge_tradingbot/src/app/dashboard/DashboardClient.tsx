@@ -165,6 +165,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [adminUsers, setAdminUsers] = useState<Array<any>>([]);
   const [ledgerScope, setLedgerScope] = useState<'demo' | 'archive'>('demo');
   const ledgerScopeRef = useRef<'demo' | 'archive'>('demo');
+  const [levelView, setLevelView] = useState<1 | 2 | 3>(1);
+  const levelViewRef = useRef<1 | 2 | 3>(1);
   const [simAsset, setSimAsset] = useState<DeskAsset>('BTC-PERP');
   const [clock, setClock] = useState('');
 
@@ -319,7 +321,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const loadHistory = useCallback(async (asset: string) => {
     try {
       const scope = ledgerScopeRef.current;
-      const res = await fetch(`/api/dashboard/predictions?asset=${encodeURIComponent(asset)}&scope=${scope}`);
+      const res = await fetch(`/api/dashboard/predictions?asset=${encodeURIComponent(asset)}&scope=${scope}&level=${levelViewRef.current}`);
       const json = await res.json();
       if (json && json.history) {
         setSimHistory(json.history);
@@ -376,11 +378,15 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
         // Current-asset position display comes from the canonical round
         const cur = (json.rounds || []).find((r: any) => r.asset === simStateRef.current.asset && r.status === 'open');
-        setSimPosition(cur?.side ? {
+        let lvlSize = 0;
+        if (cur?.side) {
+          try { lvlSize = JSON.parse(cur.levelSizes || '{}')[String(levelViewRef.current)] || 0; } catch { lvlSize = cur.size || 0; }
+        }
+        setSimPosition(cur?.side && lvlSize > 0 ? {
           side: cur.side,
-          size: cur.size,
+          size: lvlSize,
           entryPrice: cur.entryPrice,
-          costUsd: (cur.size || 0) * (cur.entryPrice || 0),
+          costUsd: lvlSize * (cur.entryPrice || 0),
         } : null);
       } catch { /* transient — next poll retries */ }
     }
@@ -394,7 +400,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   // ---- Cockpit data ----
   const fetchData = useCallback(async () => {
     try {
-      const res = await fetch('/api/dashboard/info');
+      const res = await fetch(`/api/dashboard/info?level=${levelViewRef.current}`);
       if (!res.ok) throw new Error('Failed to fetch dashboard data');
       const json = await res.json();
       setData(json);
@@ -1006,6 +1012,13 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     simStateRef.current.isRunning = next;
   };
 
+  const handleLevelView = (lvl: 1 | 2 | 3) => {
+    setLevelView(lvl);
+    levelViewRef.current = lvl;
+    loadHistory(simStateRef.current.asset);
+    fetchData();
+  };
+
   const handleLedgerScope = (scope: 'demo' | 'archive') => {
     setLedgerScope(scope);
     ledgerScopeRef.current = scope;
@@ -1204,6 +1217,78 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const feedAge = feedTs ? Math.max(0, Math.round((Date.now() - feedTs) / 1000)) : null;
   const feedLive = !feedError && feedAge !== null && feedAge < 15;
 
+  const levelsPanel = (
+    <div className="f-panel" style={{ marginBottom: 18 }}>
+      <div className="f-panel-head">
+        <h2 className="f-panel-title">
+          <Scale size={14} color="#ffd166" /> <span className="f-serif-grad">Subscription Levels</span>
+          <span className="f-kicker" style={{ marginLeft: 4 }}>SAME SIGNALS · SAME SIZING · MORE TRADES PER LEVEL</span>
+        </h2>
+        <span className="f-kicker">TAP A LEVEL TO INSPECT ITS LEDGER</span>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 12 }}>
+        {(engineState?.levels || [1, 2, 3].map(l => ({ level: l }))).map((ls: any) => {
+          const selected = levelView === ls.level;
+          const limitLabel = ls.dailyTrades === null || ls.dailyTrades === undefined
+            ? (ls.dailyTrades === null ? '∞' : '—')
+            : ls.dailyTrades;
+          const quotaPct = ls.dailyTrades ? Math.min(100, (ls.tradesToday / ls.dailyTrades) * 100) : 0;
+          return (
+            <button
+              key={ls.level}
+              onClick={() => handleLevelView(ls.level as 1 | 2 | 3)}
+              style={{
+                textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit',
+                border: `1px solid ${selected ? 'rgba(88,240,255,0.55)' : 'var(--hairline-strong)'}`,
+                borderRadius: 18,
+                background: selected ? 'rgba(88,240,255,0.07)' : 'rgba(5,7,17,0.4)',
+                boxShadow: selected ? '0 0 26px rgba(88,240,255,0.12)' : 'none',
+                padding: '14px 16px',
+                transition: 'all 180ms ease',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span className={`f-tag ${selected ? 'azure' : 'dim'}`}>LEVEL {ls.level}</span>
+                <span className="f-kicker">
+                  {ls.base === null ? 'UNLIMITED CAPITAL' : `$${(ls.base / 1000).toFixed(0)}K CAPITAL`}
+                </span>
+              </div>
+              <div className={`f-mono ${(ls.pnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}
+                style={{ fontSize: 26, fontWeight: 700, marginTop: 10, fontVariantNumeric: 'tabular-nums' }}>
+                {ls.pnl !== undefined ? fmtSignedUsd(ls.pnl) : '—'}
+              </div>
+              <div className="f-mono f-faint" style={{ fontSize: 10, marginTop: 4 }}>
+                {ls.base === null
+                  ? 'P&L · unlimited tier'
+                  : `Equity ${ls.bankroll !== undefined && ls.bankroll !== null ? fmtUsd(ls.bankroll) : '—'}`}
+              </div>
+              <div style={{ marginTop: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <span className="f-kicker">Trades today</span>
+                  <span className="f-mono" style={{ fontSize: 10.5, fontWeight: 700 }}>
+                    {ls.tradesToday ?? '—'}<span className="f-faint"> / {ls.dailyTrades === null ? '∞' : limitLabel}</span>
+                  </span>
+                </div>
+                <div style={{ height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.07)', overflow: 'hidden' }}>
+                  <div style={{
+                    width: `${ls.dailyTrades ? quotaPct : 8}%`, height: '100%', borderRadius: 99,
+                    background: ls.dailyTrades && quotaPct >= 100
+                      ? 'var(--oxide)'
+                      : 'linear-gradient(90deg, #58f0ff, #bfff6a)',
+                    transition: 'width 400ms ease',
+                  }} />
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
+        Per-entry sizing is identical at every level ($1,000 XAU/BTC · $500 ETH). Levels differ only in trades per day — pick the ledger you would subscribe to.
+      </div>
+    </div>
+  );
+
   return (
     <div className="fable">
       <div className="f-shell">
@@ -1325,11 +1410,16 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         {activeTab === 'cockpit' ? (
           <>
             {/* ============ COCKPIT ============ */}
+            {levelsPanel}
             <div className="f-stat-grid">
               <div className="f-stat">
-                <span className="f-kicker">Demo Account Equity</span>
-                <div className="f-stat-value f-azure">{engineState ? fmtUsd(engineState.bankroll) : '—'}</div>
-                <div className="f-stat-sub">Base $10,000 static · shared across the desk</div>
+                <span className="f-kicker">Level {levelView} Equity</span>
+                <div className="f-stat-value f-azure">
+                  {(() => { const ls = engineState?.levels?.find((l: any) => l.level === levelView); if (!ls) return '—'; return ls.base === null ? '∞ UNLIMITED' : fmtUsd(ls.bankroll); })()}
+                </div>
+                <div className="f-stat-sub">
+                  {(() => { const ls = engineState?.levels?.find((l: any) => l.level === levelView); if (!ls) return 'Syncing…'; return ls.base === null ? 'Unlimited capital tier' : `Base ${fmtUsd(ls.base, 0)} static · shared demo`; })()}
+                </div>
               </div>
               <div className="f-stat">
                 <span className="f-kicker">Engine Hit Rate</span>
@@ -1337,9 +1427,9 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 <div className="f-stat-sub">{data?.aiMetrics?.settledRounds ?? 0} settled rounds · Turso</div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Realized Engine PnL</span>
-                <div className={`f-stat-value ${((engineState ? engineState.bankroll - engineState.bankrollBase : data?.aiMetrics?.totalProfit) ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
-                  {engineState ? fmtSignedUsd(engineState.bankroll - engineState.bankrollBase) : fmtSignedUsd(data?.aiMetrics?.totalProfit)}
+                <span className="f-kicker">Level {levelView} Realized PnL</span>
+                <div className={`f-stat-value ${((engineState?.levels?.find((l: any) => l.level === levelView)?.pnl ?? data?.aiMetrics?.totalProfit) ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}>
+                  {(() => { const ls = engineState?.levels?.find((l: any) => l.level === levelView); return ls ? fmtSignedUsd(ls.pnl) : fmtSignedUsd(data?.aiMetrics?.totalProfit); })()}
                 </div>
                 <div className="f-stat-sub">Live · per-round Sharpe {data?.aiMetrics?.sharpeRatio?.toFixed(2)}</div>
               </div>
@@ -1693,7 +1783,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             {/* Hero strip — all values from Turso-backed stats */}
             <div className="f-stat-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
               <div className="f-stat">
-                <span className="f-kicker">Net PnL · {simAsset} · Turso</span>
+                <span className="f-kicker">Net PnL · {simAsset} · Level {levelView}</span>
                 <div className={`f-stat-value ${(dbStats?.totalPnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontSize: 30 }}>
                   {dbStats ? fmtSignedUsd(dbStats.totalPnl) : '—'}
                 </div>
@@ -1705,12 +1795,12 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 <div style={{ marginTop: 10 }}><canvas ref={equityCanvasRef} style={{ width: '100%', height: 56, display: 'block' }} /></div>
               </div>
               <div className="f-stat">
-                <span className="f-kicker">Demo Account · $10K Base</span>
+                <span className="f-kicker">Level {levelView} Account</span>
                 <div className="f-stat-value f-gold" style={{ fontSize: 30 }}>
-                  {engineState ? fmtUsd(engineState.bankroll) : '—'}
+                  {(() => { const ls = engineState?.levels?.find((l: any) => l.level === levelView); if (!ls) return '—'; return ls.base === null ? '∞' : fmtUsd(ls.bankroll); })()}
                 </div>
                 <div className="f-stat-sub">
-                  {engineState ? `×${(engineState.bankroll / engineState.bankrollBase).toFixed(2)} on base · since ${fmtTime(engineState.demoStartedAt)}` : 'Syncing canonical engine…'}
+                  {engineState ? `Since ${fmtTime(engineState.demoStartedAt)} · trades today ${engineState.levels?.find((l: any) => l.level === levelView)?.tradesToday ?? '—'}/${(() => { const d = engineState.levels?.find((l: any) => l.level === levelView)?.dailyTrades; return d === null ? '∞' : d ?? '—'; })()}` : 'Syncing canonical engine…'}
                 </div>
                 <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   <span className="f-chip">W/L <b className="f-pos">{dbStats?.wins ?? 0}</b>/<b className="f-neg">{dbStats?.losses ?? 0}</b></span>
@@ -1738,6 +1828,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 </div>
               </div>
             </div>
+
+            {levelsPanel}
 
             {/* Execution cycle */}
             <div className="f-panel" style={{ marginBottom: 18 }}>
@@ -2102,7 +2194,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             {/* Historical predictions */}
             <div className="f-section-head">
               <span className="f-serif-grad">Historical Predictions Log</span>
-              <span className="f-tag azure">TURSO · SERVER-VERIFIED</span>
+              <span className="f-tag azure">LEVEL {levelView} · SERVER-VERIFIED</span>
               {ledgerScope === 'archive' && <span className="f-tag gold">ARCHIVE · PRE-RESET · OWNER VIEW</span>}
               {isOwner && (
                 <span style={{ display: 'inline-flex', gap: 6 }}>

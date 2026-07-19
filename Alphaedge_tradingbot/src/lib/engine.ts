@@ -31,6 +31,16 @@ const ASSET_MAP: Record<string, string> = {
 };
 export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
 
+// Subscription levels: identical per-entry sizing everywhere ($1,000 XAU/BTC,
+// $500 ETH). Levels differ ONLY by capital base and trades-per-day quota —
+// the alpha comes from how much of the day's edge each tier may capture.
+export const LEVELS: Record<number, { base: number | null; dailyTrades: number | null }> = {
+  1: { base: 10_000, dailyTrades: 30 },
+  2: { base: 25_000, dailyTrades: 60 },
+  3: { base: null, dailyTrades: null }, // unlimited capital + trades
+};
+export const LEVEL_IDS = [1, 2, 3];
+
 // Canonical parameters, exposed read-only to the dashboard
 export const ENGINE_PARAMS = {
   roundSeconds: ROUND_MS / 1000,
@@ -144,12 +154,55 @@ export async function getDemoBankroll(): Promise<{ bankroll: number; base: numbe
   };
 }
 
+export interface LevelState {
+  level: number;
+  base: number | null;
+  pnl: number;
+  bankroll: number | null; // null = unlimited
+  tradesToday: number;
+  dailyTrades: number | null; // null = unlimited
+}
+
+export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
+  const utcDayStart = new Date().setUTCHours(0, 0, 0, 0);
+  const out: LevelState[] = [];
+  for (const level of LEVEL_IDS) {
+    const cfg = LEVELS[level];
+    const pnlRow = await db.select({ total: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)` })
+      .from(simulatorTrades)
+      .where(and(eq(simulatorTrades.level, level), gte(simulatorTrades.createdAt, startedAt)));
+    const pnl = Math.round((pnlRow[0]?.total ?? 0) * 100) / 100;
+
+    // Entries today = settled rows today + in-flight participations
+    const settledToday = await db.select({ n: sql<number>`COUNT(*)` })
+      .from(simulatorTrades)
+      .where(and(eq(simulatorTrades.level, level), gte(simulatorTrades.createdAt, utcDayStart)));
+    const openToday = await db.select({ n: sql<number>`COUNT(*)` })
+      .from(engineRounds)
+      .where(and(
+        eq(engineRounds.status, 'open'),
+        gte(engineRounds.entryAt, utcDayStart),
+        sql`${engineRounds.levelSizes} LIKE ${'%"' + level + '":%'}`
+      ));
+    out.push({
+      level,
+      base: cfg.base,
+      pnl,
+      bankroll: cfg.base === null ? null : Math.round((cfg.base + pnl) * 100) / 100,
+      tradesToday: (settledToday[0]?.n ?? 0) + (openToday[0]?.n ?? 0),
+      dailyTrades: cfg.dailyTrades,
+    });
+  }
+  return out;
+}
+
 export interface TickResult {
   now: number;
   epoch: number;
   bankroll: number;
   bankrollBase: number;
   demoStartedAt: number;
+  levels: LevelState[];
   rounds: Array<typeof engineRounds.$inferSelect>;
   settled: number;
   errors: string[];
@@ -190,30 +243,44 @@ export async function engineTick(): Promise<TickResult> {
         else continue; // candle not closed yet — retry on a later tick
       }
 
-      const settled = settleBinary(round.strikePrice, expiryPrice, round.side as 'YES' | 'NO', round.size, round.entryPrice);
-      const tradeId = `${round.asset}_${round.epoch}_${now}`;
-
-      // Guard against double-settlement across concurrent lambdas
-      const existing = await db.select({ id: simulatorTrades.id }).from(simulatorTrades)
-        .where(and(eq(simulatorTrades.asset, round.asset), eq(simulatorTrades.roundId, round.epoch)))
-        .limit(1);
-      if (existing.length === 0) {
-        await db.insert(simulatorTrades).values({
-          id: tradeId,
-          roundId: round.epoch,
-          asset: round.asset,
-          timestamp: new Date(now).toISOString(),
-          strikePrice: round.strikePrice,
-          expiryPrice,
-          side: round.side,
-          size: round.size,
-          entryPrice: round.entryPrice,
-          exitPrice: settled.exitPrice,
-          outcome: settled.outcome,
-          pnl: settled.pnl,
-          createdAt: now,
-        });
-        settledCount++;
+      // Settle each participating level with its own size (entries identical
+      // across levels; only participation differs by quota/bankroll).
+      let levelSizes: Record<string, number> = {};
+      try { levelSizes = JSON.parse(round.levelSizes || '{}'); } catch { /* legacy */ }
+      if (Object.keys(levelSizes).length === 0 && round.size) {
+        levelSizes = { '0': round.size }; // legacy un-leveled round
+      }
+      for (const [lvlKey, lvlSize] of Object.entries(levelSizes)) {
+        if (!lvlSize || lvlSize <= 0) continue;
+        const settled = settleBinary(round.strikePrice, expiryPrice, round.side as 'YES' | 'NO', lvlSize, round.entryPrice);
+        const level = Number(lvlKey);
+        const tradeId = `${round.asset}_${round.epoch}_L${level}`;
+        const existing = await db.select({ id: simulatorTrades.id }).from(simulatorTrades)
+          .where(and(
+            eq(simulatorTrades.asset, round.asset),
+            eq(simulatorTrades.roundId, round.epoch),
+            eq(simulatorTrades.level, level),
+          ))
+          .limit(1);
+        if (existing.length === 0) {
+          await db.insert(simulatorTrades).values({
+            id: tradeId,
+            level,
+            roundId: round.epoch,
+            asset: round.asset,
+            timestamp: new Date(now).toISOString(),
+            strikePrice: round.strikePrice,
+            expiryPrice,
+            side: round.side,
+            size: lvlSize,
+            entryPrice: round.entryPrice,
+            exitPrice: settled.exitPrice,
+            outcome: settled.outcome,
+            pnl: settled.pnl,
+            createdAt: now,
+          });
+          settledCount++;
+        }
       }
       await db.update(engineRounds)
         .set({ status: 'settled', settledAt: now })
@@ -224,6 +291,7 @@ export async function engineTick(): Promise<TickResult> {
   }
 
   const { bankroll, base: bankrollBase, startedAt: demoStartedAt } = await getDemoBankroll();
+  const levels = await getLevelStates(demoStartedAt);
 
   // 2. Open current-epoch rounds + take positions
   for (const asset of ENGINE_ASSETS) {
@@ -248,9 +316,10 @@ export async function engineTick(): Promise<TickResult> {
         round = re[0];
       }
 
-      // Entry decision for flat open rounds
+      // Entry decision for flat open rounds: identical signal + sizing for
+      // every level — participation gated only by daily quota and bankroll.
       const remainingS = (round.expiresAt - now) / 1000;
-      if (round.status === 'open' && !round.side && remainingS >= ENTRY_CUTOFF_S && bankroll > 0) {
+      if (round.status === 'open' && !round.side && remainingS >= ENTRY_CUTOFF_S) {
         const vol = await getRealizedVolPct(asset);
         const fv = binaryFairValue(mark, round.strikePrice, vol, remainingS);
         const conviction = Math.abs(fv.pYes - 0.5);
@@ -258,12 +327,31 @@ export async function engineTick(): Promise<TickResult> {
           const side = fv.pYes > 0.5 ? 'YES' : 'NO';
           const modelP = side === 'YES' ? fv.pYes : 1 - fv.pYes;
           const entryPrice = Math.min(Math.max(modelP + SPREAD, 0.02), 0.98);
-          const budget = Math.min(MAX_TRADE_USD[asset] ?? 1_000, bankroll * BANKROLL_FRACTION);
-          const size = Math.floor(budget / entryPrice);
-          if (size > 0) {
+          const assetCap = MAX_TRADE_USD[asset] ?? 1_000;
+
+          const levelSizes: Record<string, number> = {};
+          for (const ls of levels) {
+            if (ls.dailyTrades !== null && ls.tradesToday >= ls.dailyTrades) continue; // quota spent
+            if (ls.bankroll !== null && ls.bankroll <= 0) continue; // busted
+            const budget = ls.bankroll === null
+              ? assetCap
+              : Math.min(assetCap, ls.bankroll * BANKROLL_FRACTION);
+            const size = Math.floor(budget / entryPrice);
+            if (size > 0) levelSizes[String(ls.level)] = size;
+          }
+
+          if (Object.keys(levelSizes).length > 0) {
+            const refSize = levelSizes['3'] ?? Object.values(levelSizes)[0];
             await db.update(engineRounds)
-              .set({ side, size, entryPrice, entryAt: now, entryPYes: fv.pYes })
+              .set({
+                side, size: refSize, entryPrice, entryAt: now, entryPYes: fv.pYes,
+                levelSizes: JSON.stringify(levelSizes),
+              })
               .where(and(eq(engineRounds.id, id), sql`${engineRounds.side} IS NULL`));
+            // count the in-flight participation for this tick's quota view
+            for (const ls of levels) {
+              if (levelSizes[String(ls.level)]) ls.tradesToday++;
+            }
           }
         }
       }
@@ -273,5 +361,5 @@ export async function engineTick(): Promise<TickResult> {
   }
 
   const rounds = await db.select().from(engineRounds).where(eq(engineRounds.epoch, epoch));
-  return { now, epoch, bankroll, bankrollBase, demoStartedAt, rounds, settled: settledCount, errors };
+  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, errors };
 }

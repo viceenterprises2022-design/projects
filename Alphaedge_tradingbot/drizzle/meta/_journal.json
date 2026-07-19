@@ -57,6 +57,13 @@
       "when": 1784433946389,
       "tag": "0007_demo_reset_5m_rounds",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1784439170241,
+      "tag": "0008_subscription_levels",
+      "breakpoints": true
     }
   ]
 }

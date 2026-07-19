@@ -24,7 +24,9 @@ export function LiveDesk() {
   const [tickDir, setTickDir] = useState<Record<string, "up" | "down" | null>>({});
   const [live, setLive] = useState(false);
   const ROUND_S = 300; // 5-minute rounds — same epoch math as the engine
-  const [roundSec, setRoundSec] = useState(ROUND_S - Math.floor((Date.now() / 1000) % ROUND_S));
+  // null until mounted — the clock derives from Date.now(), which must not
+  // run during server render (hydration mismatch otherwise).
+  const [roundSec, setRoundSec] = useState<number | null>(null);
   const prevRef = useRef<Record<string, number>>({});
 
   useEffect(() => {
@@ -55,7 +57,9 @@ export function LiveDesk() {
 
     sync();
     const feed = setInterval(sync, 3000);
-    const clock = setInterval(() => setRoundSec(ROUND_S - Math.floor((Date.now() / 1000) % ROUND_S)), 1000);
+    const tickClock = () => setRoundSec(ROUND_S - Math.floor((Date.now() / 1000) % ROUND_S));
+    tickClock();
+    const clock = setInterval(tickClock, 1000);
     const onVisible = () => { if (document.visibilityState === "visible") sync(); };
     document.addEventListener("visibilitychange", onVisible);
     return () => {
@@ -98,7 +102,7 @@ export function LiveDesk() {
 
       <div className="l-desk-foot">
         <div className="l-round">
-          <strong>{`${String(Math.floor(roundSec / 60)).padStart(2, "0")}:${String(roundSec % 60).padStart(2, "0")}`}</strong>
+          <strong>{roundSec === null ? "--:--" : `${String(Math.floor(roundSec / 60)).padStart(2, "0")}:${String(roundSec % 60).padStart(2, "0")}`}</strong>
           <span>to next round settlement — same clock as the live engine</span>
         </div>
         <Link href="/dashboard" className="l-desk-cta">

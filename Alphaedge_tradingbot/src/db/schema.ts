@@ -184,11 +184,13 @@ export const engineRounds = sqliteTable('engine_rounds', {
   entryPrice: real('entry_price'),
   entryAt: integer('entry_at'),
   entryPYes: real('entry_p_yes'),
+  levelSizes: text('level_sizes'), // JSON: {"1": contracts, "2": ..., "3": ...}
   settledAt: integer('settled_at'),
 });
 
 export const simulatorTrades = sqliteTable('simulator_trades', {
   id: text('id').primaryKey(),
+  level: integer('level').notNull().default(0), // 1|2|3 subscription levels; 0 = legacy
   roundId: integer('round_id').notNull(),
   asset: text('asset').notNull(),
   timestamp: text('timestamp').notNull(),
