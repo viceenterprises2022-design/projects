@@ -94,7 +94,84 @@ async function fetchTradingEconomics(now: number, key: string): Promise<FeedEven
     .filter((ev: FeedEvent) => ev.sourceId && ev.title && Number.isFinite(ev.at));
 }
 
-// Force a sync now. Throws on feed failure — callers decide how to degrade.
+// ---------------------------------------------------------------------------
+// Crypto / asset-native events
+// ---------------------------------------------------------------------------
+
+// BTC/ETH options expiries are deterministic: every last Friday of the month
+// at 08:00 UTC (Deribit convention), with the Mar/Jun/Sep/Dec quarterlies
+// carrying the heaviest open interest. No feed needed — pure calendar math.
+function generateExpiryEvents(now: number): Array<typeof regimeEvents.$inferInsert> {
+  const out: Array<typeof regimeEvents.$inferInsert> = [];
+  const horizon = now + HORIZON_DAYS * 86_400_000;
+  const d = new Date(now);
+  for (let i = 0; i < 2; i++) {
+    const year = d.getUTCFullYear();
+    const month = d.getUTCMonth() + i; // this month and next
+    // walk back from the last day of the month to a Friday
+    const last = new Date(Date.UTC(year, month + 1, 0));
+    const lastFriday = last.getUTCDate() - ((last.getUTCDay() + 2) % 7);
+    const expiry = Date.UTC(year, month, lastFriday, 8, 0); // 08:00 UTC
+    if (expiry <= now || expiry > horizon) continue;
+    const m = new Date(expiry).getUTCMonth();
+    const quarterly = m === 2 || m === 5 || m === 8 || m === 11;
+    out.push({
+      id: `ev_gen_expiry_${new Date(expiry).toISOString().slice(0, 7)}`,
+      label: quarterly ? 'BTC/ETH quarterly options expiry' : 'BTC/ETH monthly options expiry',
+      kind: 'crypto',
+      severity: 'caution',
+      startAt: expiry - 30 * MIN,
+      endAt: expiry + 90 * MIN,
+      createdAt: now,
+    });
+  }
+  return out;
+}
+
+// CoinMarketCal (announced crypto events: forks, upgrades, unlocks, ETF
+// decisions). Free API key from developers.coinmarketcal.com — activates when
+// COINMARKETCAL_API_KEY is set. Event dates are day-precision, so windows
+// cover the full UTC day. Only high-impact keywords pass the allowlist; the
+// firehose of listings/AMAs/partnerships is ignored.
+const CMC_LOCKDOWN = /hard.?fork|\bfork\b|halving|mainnet|network upgrade|hardfork/i;
+const CMC_CAUTION = /\bupgrade\b|unlock|\betf\b|\bsec\b|testnet.*merge|airdrop.*snapshot/i;
+
+async function fetchCoinMarketCal(now: number, key: string): Promise<Array<typeof regimeEvents.$inferInsert>> {
+  const d1 = new Date(now).toISOString().slice(0, 10);
+  const d2 = new Date(now + HORIZON_DAYS * 86_400_000).toISOString().slice(0, 10);
+  const url = `https://developers.coinmarketcal.com/v1/events?dateRangeStart=${d1}&dateRangeEnd=${d2}&coins=bitcoin,ethereum&max=75`;
+  const res = await fetch(url, {
+    headers: { 'x-api-key': key, Accept: 'application/json' },
+    cache: 'no-store',
+  });
+  if (!res.ok) throw new Error(`CoinMarketCal ${res.status}`);
+  const json = await res.json();
+  const rows = Array.isArray(json?.body) ? json.body : [];
+  const out: Array<typeof regimeEvents.$inferInsert> = [];
+  for (const ev of rows) {
+    const title = String(ev?.title?.en ?? ev?.title ?? '');
+    const cats = (Array.isArray(ev?.categories) ? ev.categories : []).map((c: any) => String(c?.name ?? '')).join(' ');
+    const text = `${title} ${cats}`;
+    const severity = CMC_LOCKDOWN.test(text) ? 'lockdown' : CMC_CAUTION.test(text) ? 'caution' : null;
+    if (!severity) continue;
+    const at = Date.parse(ev?.date_event ?? ev?.displayed_date ?? '');
+    if (!Number.isFinite(at)) continue;
+    const dayStart = new Date(at).setUTCHours(0, 0, 0, 0);
+    out.push({
+      id: `ev_feed_cmc_${String(ev?.id ?? at)}`,
+      label: title.slice(0, 120),
+      kind: 'crypto',
+      severity,
+      startAt: dayStart,
+      endAt: dayStart + 86_400_000,
+      createdAt: now,
+    });
+  }
+  return out;
+}
+
+// Force a sync now. Throws on macro-feed failure — callers decide how to
+// degrade. Crypto layers degrade individually and never sink the sync.
 export async function syncRegimeCalendar(now: number): Promise<{ provider: string; upserted: number }> {
   const teKey = process.env.TRADINGECONOMICS_API_KEY;
   const provider = teKey ? 'te' : 'tv';
@@ -120,6 +197,26 @@ export async function syncRegimeCalendar(now: number): Promise<{ provider: strin
     }).onConflictDoUpdate({
       target: regimeEvents.id,
       set: { label: ev.title, severity: c.severity, startAt: ev.at - c.preMs, endAt: ev.at + c.postMs },
+    });
+    upserted++;
+  }
+
+  // Crypto/asset-native layers: computed expiries always; CoinMarketCal when
+  // a key is present. Each degrades alone — a CMC outage must not cost us the
+  // macro windows that already upserted above.
+  const cryptoRows = generateExpiryEvents(now);
+  const cmcKey = process.env.COINMARKETCAL_API_KEY;
+  if (cmcKey) {
+    try {
+      cryptoRows.push(...await fetchCoinMarketCal(now, cmcKey));
+    } catch {
+      // feed hiccup — computed expiries and macro windows still land
+    }
+  }
+  for (const row of cryptoRows) {
+    await db.insert(regimeEvents).values(row).onConflictDoUpdate({
+      target: regimeEvents.id,
+      set: { label: row.label, severity: row.severity, startAt: row.startAt, endAt: row.endAt },
     });
     upserted++;
   }
