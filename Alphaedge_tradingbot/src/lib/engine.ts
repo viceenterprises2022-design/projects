@@ -44,6 +44,23 @@ export const LEVELS: Record<number, { base: number | null; dailyTrades: number |
 };
 export const LEVEL_IDS = [4, 1, 2, 3];
 
+// Daily quota window rolls at 13:00 UTC — the doorstep of the US session
+// (9:00 ET summer / 8:00 ET winter), where BTC/ETH/PAXG liquidity peaks.
+// Every tier enters US hours with a full book, and the fresh quota is spent
+// on prime-time entries first; the overnight Asia session trades leftovers.
+export const QUOTA_RESET_UTC_HOUR = 13;
+
+// Most recent 13:00 UTC at/before `now`.
+export function lastQuotaReset(now: number): number {
+  const todayReset = new Date(now).setUTCHours(QUOTA_RESET_UTC_HOUR, 0, 0, 0);
+  return todayReset <= now ? todayReset : todayReset - 86_400_000;
+}
+
+// Next 13:00 UTC after `now` — when spent quotas re-open.
+export function nextQuotaReset(now: number): number {
+  return lastQuotaReset(now) + 86_400_000;
+}
+
 // Canonical parameters, exposed read-only to the dashboard
 export const ENGINE_PARAMS = {
   roundSeconds: ROUND_MS / 1000,
@@ -169,9 +186,9 @@ export interface LevelState {
 }
 
 export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
-  // Daily quota window starts at UTC midnight OR the demo restart, whichever
-  // is later — a fresh demo must not inherit the old day's spent quota.
-  const utcDayStart = Math.max(new Date().setUTCHours(0, 0, 0, 0), startedAt);
+  // Daily quota window starts at the last 13:00 UTC roll OR the demo restart,
+  // whichever is later — a fresh demo must not inherit spent quota.
+  const utcDayStart = Math.max(lastQuotaReset(Date.now()), startedAt);
   const out: LevelState[] = [];
   for (const level of LEVEL_IDS) {
     const cfg = LEVELS[level];
@@ -222,7 +239,7 @@ export interface TickResult {
   rounds: Array<typeof engineRounds.$inferSelect>;
   settled: number;
   regime: Regime;
-  quotaResetAt: number; // next 00:00 UTC — daily trade quotas re-open here
+  quotaResetAt: number; // next 13:00 UTC roll — daily trade quotas re-open here
   errors: string[];
 }
 
@@ -408,8 +425,5 @@ export async function engineTick(): Promise<TickResult> {
   }
 
   const rounds = await db.select().from(engineRounds).where(eq(engineRounds.epoch, epoch));
-  // Quotas roll at 00:00 UTC — same boundary the quota window queries use,
-  // matching the exchange convention for daily candles and funding.
-  const quotaResetAt = new Date(now).setUTCHours(24, 0, 0, 0);
-  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, regime, quotaResetAt, errors };
+  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, regime, quotaResetAt: nextQuotaReset(now), errors };
 }

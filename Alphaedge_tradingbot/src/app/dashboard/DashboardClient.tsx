@@ -1326,10 +1326,12 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 12 }}>
         {(engineState?.levels || [4, 1, 2, 3].map(l => ({ level: l }))).map((ls: any) => {
           const selected = levelView === ls.level;
-          // Quota spent → tier is closed until the daily 00:00 UTC reset.
+          // Quota spent → tier is closed until the daily 13:00 UTC roll (fresh
+          // book at the doorstep of the US session, where liquidity peaks).
           // The masthead clock ticks state every second, so this re-renders live.
           const exhausted = ls.dailyTrades != null && ls.tradesToday != null && ls.tradesToday >= ls.dailyTrades;
-          const resetAt = engineState?.quotaResetAt ?? new Date().setUTCHours(24, 0, 0, 0);
+          const fallbackReset = (() => { const t = new Date().setUTCHours(13, 0, 0, 0); return t > Date.now() ? t : t + 86_400_000; })();
+          const resetAt = engineState?.quotaResetAt ?? fallbackReset;
           const restMs = Math.max(0, resetAt - Date.now());
           const hh = String(Math.floor(restMs / 3_600_000)).padStart(2, '0');
           const mm = String(Math.floor((restMs % 3_600_000) / 60_000)).padStart(2, '0');
@@ -1351,7 +1353,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span className={`f-tag ${selected ? 'azure' : ls.level === 4 ? 'win' : 'dim'}`}>{levelLabel(ls.level)}</span>
                 {exhausted ? (
-                  <span className="f-mono" title="Daily quota filled — trading re-opens at 00:00 UTC"
+                  <span className="f-mono" title="Daily quota filled — trading re-opens at 13:00 UTC, ahead of the US session"
                     style={{
                       fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', padding: '3px 8px',
                       borderRadius: 6, color: '#ffd166', border: '1px solid rgba(255,209,102,0.35)',
@@ -1402,7 +1404,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Every entry risks 2% of the tier's current equity — sizes compound with performance. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Daily quotas reset at 00:00 UTC.
+        Every entry risks 2% of the tier's current equity — sizes compound with performance. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Daily quotas reset at 13:00 UTC — a fresh book ahead of the US session.
       </div>
     </div>
   );
