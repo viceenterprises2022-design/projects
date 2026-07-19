@@ -24,6 +24,7 @@ import {
   Grid3x3,
   CandlestickChart,
   Dices,
+  ShieldAlert,
 } from 'lucide-react';
 
 import { handleSignOut } from '@/app/auth-actions';
@@ -1106,6 +1107,23 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       setMessage({ type: 'error', text: err.message || 'Access update failed' });
     }
   };
+
+  // ---- Regime Guard: upcoming blackout windows ----
+  const [regimeUpcoming, setRegimeUpcoming] = useState<any[]>([]);
+  const regimeModeNow = engineState?.regime?.mode;
+  useEffect(() => {
+    let cancelled = false;
+    async function loadRegimeCal() {
+      try {
+        const res = await fetch('/api/admin/regime');
+        const json = await res.json();
+        if (!cancelled && json?.upcoming) setRegimeUpcoming(json.upcoming);
+      } catch { /* transient — next refresh retries */ }
+    }
+    loadRegimeCal();
+    const interval = setInterval(loadRegimeCal, 5 * 60_000);
+    return () => { cancelled = true; clearInterval(interval); };
+  }, [regimeModeNow]); // refetch when the regime flips so ACTIVE badges stay honest
 
   // ---- Regime Guard kill switch (owner only) ----
   const toggleRegime = useCallback(async () => {
@@ -2222,6 +2240,54 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       </div>
                     ))}
                   </div>
+                </div>
+
+                <div className="f-panel">
+                  <div className="f-panel-head">
+                    <h2 className="f-panel-title"><ShieldAlert size={14} color="#ff6fb3" /> <span className="f-serif-grad">Upcoming Blackouts</span> <span className="f-kicker" style={{ marginLeft: 4 }}>REGIME GUARD · AUTO-SYNCED</span></h2>
+                    {(() => {
+                      const rg = engineState?.regime;
+                      if (!rg) return null;
+                      return <span className={`f-led ${rg.mode === 'lockdown' ? 'bad' : rg.mode === 'caution' ? 'warm' : 'ok'}`}>{rg.mode.toUpperCase()}</span>;
+                    })()}
+                  </div>
+                  {regimeUpcoming.length === 0 ? (
+                    <div className="f-empty">No blackout windows on the horizon — calendar syncs every 6h from the economic feed.</div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                      {regimeUpcoming.slice(0, 7).map((ev: any) => {
+                        const active = ev.startAt <= Date.now() && Date.now() < ev.endAt;
+                        const d = new Date(ev.startAt);
+                        const day = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', timeZone: 'UTC' });
+                        const t1 = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+                        const t2 = new Date(ev.endAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+                        const lockdown = ev.severity === 'lockdown';
+                        return (
+                          <div key={ev.id} style={{
+                            display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px',
+                            border: `1px solid ${active ? (lockdown ? 'rgba(255,111,179,0.5)' : 'rgba(255,209,102,0.5)') : 'var(--hairline)'}`,
+                            borderRadius: 10, background: active ? (lockdown ? 'rgba(255,111,179,0.07)' : 'rgba(255,209,102,0.06)') : 'rgba(5,7,17,0.4)',
+                          }}>
+                            <span className="f-mono" style={{ fontSize: 10, color: 'var(--ivory-dim)', width: 108, flexShrink: 0 }}>
+                              {day} · {t1}–{t2}
+                            </span>
+                            <span style={{ fontSize: 11.5, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={ev.label}>
+                              {ev.label}
+                            </span>
+                            {active && <span className="f-led bad">ACTIVE</span>}
+                            <span className="f-mono" style={{
+                              fontSize: 8.5, letterSpacing: '0.08em', padding: '3px 7px', borderRadius: 6, flexShrink: 0,
+                              color: lockdown ? 'var(--oxide)' : '#ffd166',
+                              border: `1px solid ${lockdown ? 'rgba(255,111,179,0.35)' : 'rgba(255,209,102,0.35)'}`,
+                            }}>{lockdown ? 'LOCKDOWN' : 'CAUTION'}</span>
+                          </div>
+                        );
+                      })}
+                      <div className="f-mono f-faint" style={{ fontSize: 9, letterSpacing: '0.05em', marginTop: 3 }}>
+                        Times UTC · no entries during lockdown; caution trades at half size with a raised edge bar
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="f-panel">
