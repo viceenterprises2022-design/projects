@@ -16,6 +16,7 @@ import { eq, and, lte, gte, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { binaryFairValue, settleBinary } from './binary';
 import { resolveRegime, CAUTION_RISK_MULT, CAUTION_EDGE, type Regime } from './regime';
+import { maybeSyncRegimeCalendar } from './calendar';
 
 export const ROUND_MS = 300_000; // 5-minute rounds — expiries align with 5m candle closes
 export const DEMO_BANKROLL_BASE = 10_000;
@@ -308,6 +309,14 @@ export async function engineTick(): Promise<TickResult> {
 
   const { bankroll, base: bankrollBase, startedAt: demoStartedAt } = await getDemoBankroll();
   const levels = await getLevelStates(demoStartedAt);
+
+  // Keep the blackout calendar fresh from the economic-calendar feed
+  // (throttled internally; a dead feed degrades to the existing windows).
+  try {
+    await maybeSyncRegimeCalendar(now);
+  } catch (err: any) {
+    errors.push(`calendar sync: ${err.message}`);
+  }
 
   // Regime Guard: resolve once per tick. Gates ENTRIES only — settlement
   // above ran unconditionally and must always run. Resolver failure fails

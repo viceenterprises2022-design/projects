@@ -1,0 +1,1 @@
+ALTER TABLE `regime_state` ADD `calendar_synced_at` integer;

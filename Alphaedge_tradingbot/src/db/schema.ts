@@ -204,6 +204,7 @@ export const regimeState = sqliteTable('regime_state', {
   shockUntil: integer('shock_until'), // auto-lockdown release time (ms)
   shockReason: text('shock_reason'),
   lastMode: text('last_mode').notNull().default('normal'), // for transition logging
+  calendarSyncedAt: integer('calendar_synced_at'), // last economic-calendar feed sync attempt
   updatedAt: integer('updated_at').notNull(),
 });
 

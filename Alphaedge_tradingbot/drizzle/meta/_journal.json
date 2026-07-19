@@ -92,6 +92,13 @@
       "when": 1784477346154,
       "tag": "0012_regime_guard",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1784481758073,
+      "tag": "0013_calendar_sync",
+      "breakpoints": true
     }
   ]
 }
