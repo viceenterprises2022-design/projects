@@ -27,6 +27,7 @@ export async function GET() {
       bankrollBase: tick.bankrollBase,
       demoStartedAt: tick.demoStartedAt,
       levels: tick.levels,
+      regime: tick.regime,
       params: ENGINE_PARAMS,
       marks,
       rounds: tick.rounds,

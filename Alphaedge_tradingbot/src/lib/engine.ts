@@ -15,6 +15,7 @@ import { engineRounds, simulatorTrades, demoAccount } from '@/db/schema';
 import { eq, and, lte, gte, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { binaryFairValue, settleBinary } from './binary';
+import { resolveRegime, CAUTION_RISK_MULT, CAUTION_EDGE, type Regime } from './regime';
 
 export const ROUND_MS = 300_000; // 5-minute rounds — expiries align with 5m candle closes
 export const DEMO_BANKROLL_BASE = 10_000;
@@ -219,6 +220,7 @@ export interface TickResult {
   levels: LevelState[];
   rounds: Array<typeof engineRounds.$inferSelect>;
   settled: number;
+  regime: Regime;
   errors: string[];
 }
 
@@ -307,6 +309,20 @@ export async function engineTick(): Promise<TickResult> {
   const { bankroll, base: bankrollBase, startedAt: demoStartedAt } = await getDemoBankroll();
   const levels = await getLevelStates(demoStartedAt);
 
+  // Regime Guard: resolve once per tick. Gates ENTRIES only — settlement
+  // above ran unconditionally and must always run. Resolver failure fails
+  // SAFE: an engine that can't read its risk state does not take risk.
+  let regime: Regime;
+  try {
+    regime = await resolveRegime(now);
+  } catch (err: any) {
+    regime = { mode: 'lockdown', reason: 'regime resolver unavailable', source: 'system', until: null };
+    errors.push(`regime: ${err.message}`);
+  }
+  // Caution keeps trading with half size and a raised conviction bar
+  const effEdgeThreshold = regime.mode === 'caution' ? CAUTION_EDGE : EDGE_THRESHOLD;
+  const effRiskPerTrade = regime.mode === 'caution' ? RISK_PER_TRADE * CAUTION_RISK_MULT : RISK_PER_TRADE;
+
   // 2. Open current-epoch rounds + take positions
   for (const asset of ENGINE_ASSETS) {
     const mark = marks[asset];
@@ -334,10 +350,20 @@ export async function engineTick(): Promise<TickResult> {
       // every level — participation gated only by daily quota and bankroll.
       const remainingS = (round.expiresAt - now) / 1000;
       if (round.status === 'open' && !round.side && remainingS >= ENTRY_CUTOFF_S) {
+        // Lockdown: powder stays dry. Stamp the reason so the round history
+        // shows the engine sat out on purpose, then take no position.
+        if (regime.mode === 'lockdown') {
+          if (!round.skipReason) {
+            await db.update(engineRounds)
+              .set({ skipReason: `regime:${regime.reason}` })
+              .where(and(eq(engineRounds.id, id), sql`${engineRounds.side} IS NULL`));
+          }
+          continue;
+        }
         const vol = await getRealizedVolPct(asset);
         const fv = binaryFairValue(mark, round.strikePrice, vol, remainingS);
         const conviction = Math.abs(fv.pYes - 0.5);
-        if (conviction >= EDGE_THRESHOLD) {
+        if (conviction >= effEdgeThreshold) {
           const side = fv.pYes > 0.5 ? 'YES' : 'NO';
           const modelP = side === 'YES' ? fv.pYes : 1 - fv.pYes;
           const entryPrice = Math.min(Math.max(modelP + SPREAD, 0.02), 0.98);
@@ -346,7 +372,7 @@ export async function engineTick(): Promise<TickResult> {
           for (const ls of levels) {
             if (ls.dailyTrades !== null && ls.tradesToday >= ls.dailyTrades) continue; // quota spent
             if (ls.bankroll === null || ls.bankroll <= 0) continue; // busted / undefined
-            const budget = ls.bankroll * RISK_PER_TRADE; // 2% of current equity
+            const budget = ls.bankroll * effRiskPerTrade; // 2% of current equity (1% in caution)
             const size = Math.floor(budget / entryPrice);
             if (size > 0) levelSizes[String(ls.level)] = size;
           }
@@ -372,5 +398,5 @@ export async function engineTick(): Promise<TickResult> {
   }
 
   const rounds = await db.select().from(engineRounds).where(eq(engineRounds.epoch, epoch));
-  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, errors };
+  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, regime, errors };
 }

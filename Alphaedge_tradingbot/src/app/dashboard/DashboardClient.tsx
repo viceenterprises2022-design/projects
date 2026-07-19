@@ -391,6 +391,12 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         const res = await fetch('/api/engine/state');
         const json = await res.json();
         if (cancelled || !json?.success) return;
+        // Regime transition telemetry
+        const prevRegime = engineStateRef.current?.regime?.mode;
+        if (json.regime && prevRegime && json.regime.mode !== prevRegime) {
+          pushEngineLog(json.regime.mode === 'normal' ? 'info' : 'settle',
+            `REGIME → ${json.regime.mode.toUpperCase()}${json.regime.reason ? ` — ${json.regime.reason}` : ''}`);
+        }
         setEngineState(json);
         engineStateRef.current = json;
 
@@ -399,6 +405,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
           const prev = prevRoundsRef.current[round.id];
           if (!prev) {
             pushEngineLog('info', `ROUND #${round.epoch} OPEN — ${round.asset} strike locked at ${fmtUsd(round.strikePrice)} (server engine)`);
+          } else if (!prev.skipReason && round.skipReason) {
+            pushEngineLog('info', `ENTRY GATED — ${round.asset} #${round.epoch}: ${round.skipReason}`);
           } else if (!prev.side && round.side) {
             pushEngineLog('trade', `ENGINE ENTRY — ${round.asset} ${round.side} ${round.size?.toLocaleString()} @ ${Math.round((round.entryPrice || 0) * 100)}¢`);
             const st = simStateRef.current;
@@ -1099,6 +1107,30 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     }
   };
 
+  // ---- Regime Guard kill switch (owner only) ----
+  const toggleRegime = useCallback(async () => {
+    const cur = engineStateRef.current?.regime?.mode;
+    const body = cur === 'normal'
+      ? { mode: 'lockdown', reason: 'manual desk halt' }
+      : { mode: 'normal' };
+    try {
+      const res = await fetch('/api/admin/regime', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Regime update failed');
+      if (json.regime) {
+        setEngineState((prev: any) => prev ? { ...prev, regime: json.regime } : prev);
+        if (engineStateRef.current) engineStateRef.current = { ...engineStateRef.current, regime: json.regime };
+        setMessage({ type: 'success', text: json.regime.mode === 'normal' ? 'Desk resumed — engine may take entries again.' : 'Desk halted — no new entries until released.' });
+      }
+    } catch (err: any) {
+      setMessage({ type: 'error', text: err.message || 'Regime update failed' });
+    }
+  }, []);
+
   // ---- Cockpit handlers ----
   const handleRefresh = () => { setRefreshing(true); fetchData(); };
 
@@ -1372,6 +1404,26 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               <span className="f-led warm">LEDGER SEALED</span>
             ) : (
               <span className="f-led bad">LEDGER TAMPERED</span>
+            )}
+            {(() => {
+              const rg = engineState?.regime;
+              if (!rg) return null;
+              if (rg.mode === 'normal') return <span className="f-led ok" title="No blackout window or shock active — engine trading normally">REGIME NORMAL</span>;
+              const mins = rg.until ? Math.max(0, Math.ceil((rg.until - Date.now()) / 60000)) : null;
+              return (
+                <span className={`f-led ${rg.mode === 'lockdown' ? 'bad' : 'warm'}`} title={`${rg.reason} (${rg.source})`}>
+                  {rg.mode === 'lockdown' ? 'LOCKDOWN' : 'CAUTION'}{rg.reason ? ` · ${rg.reason}` : ''}{mins !== null ? ` · ${mins}m` : ''}
+                </span>
+              );
+            })()}
+            {isOwner && engineState?.regime && (
+              <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }}
+                title={engineState.regime.mode === 'normal'
+                  ? 'Manual kill switch: halt all new entries'
+                  : 'Clear the manual override and any auto shock (calendar windows persist)'}
+                onClick={() => toggleRegime()}>
+                {engineState.regime.mode === 'normal' ? 'HALT DESK' : 'RESUME'}
+              </button>
             )}
             {!isOwner && <span className="f-led warm">WATCH-ONLY DEMO</span>}
             <span className="f-clock f-mono">{clock}</span>

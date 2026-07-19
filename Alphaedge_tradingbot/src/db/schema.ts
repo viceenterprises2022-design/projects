@@ -185,7 +185,44 @@ export const engineRounds = sqliteTable('engine_rounds', {
   entryAt: integer('entry_at'),
   entryPYes: real('entry_p_yes'),
   levelSizes: text('level_sizes'), // JSON: {"1": contracts, "2": ..., "3": ...}
+  skipReason: text('skip_reason'), // e.g. 'regime:FOMC rate decision' when gated
   settledAt: integer('settled_at'),
+});
+
+// ---------------------------------------------------------------------------
+// Regime Guard — risk-off gating for high-impact events (FOMC, hacks, shocks).
+//
+// regime_state: single row (id='regime') carrying the manual override and the
+// auto shock-detector cooldown. regime_events: pre-scheduled blackout windows
+// (buffers already applied to start/end). regime_log: every mode transition,
+// for audit and for showing users the engine sat out on purpose.
+export const regimeState = sqliteTable('regime_state', {
+  id: text('id').primaryKey(), // always 'regime'
+  manualMode: text('manual_mode'), // 'caution' | 'lockdown' | null = no override
+  manualReason: text('manual_reason'),
+  manualUntil: integer('manual_until'), // optional TTL (ms); null = until released
+  shockUntil: integer('shock_until'), // auto-lockdown release time (ms)
+  shockReason: text('shock_reason'),
+  lastMode: text('last_mode').notNull().default('normal'), // for transition logging
+  updatedAt: integer('updated_at').notNull(),
+});
+
+export const regimeEvents = sqliteTable('regime_events', {
+  id: text('id').primaryKey(),
+  label: text('label').notNull(), // e.g. 'FOMC rate decision'
+  kind: text('kind').notNull(), // 'fed' | 'cpi' | 'nfp' | 'crypto' | 'other'
+  severity: text('severity').notNull().default('lockdown'), // 'caution' | 'lockdown'
+  startAt: integer('start_at').notNull(), // blackout window start (ms, buffers included)
+  endAt: integer('end_at').notNull(),
+  createdAt: integer('created_at').notNull(),
+});
+
+export const regimeLog = sqliteTable('regime_log', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  mode: text('mode').notNull(), // 'normal' | 'caution' | 'lockdown'
+  reason: text('reason').notNull(),
+  source: text('source').notNull(), // 'manual' | 'auto' | 'calendar' | 'system'
+  at: integer('at').notNull(),
 });
 
 export const simulatorTrades = sqliteTable('simulator_trades', {

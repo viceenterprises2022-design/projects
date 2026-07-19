@@ -85,6 +85,13 @@
       "when": 1784465299251,
       "tag": "0011_risk_pct_reset",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1784477346154,
+      "tag": "0012_regime_guard",
+      "breakpoints": true
     }
   ]
 }
