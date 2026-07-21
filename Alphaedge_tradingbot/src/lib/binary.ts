@@ -12,16 +12,16 @@ export function normCDF(x: number) {
 
 export const SECONDS_PER_YEAR = 31_536_000;
 
-// Driftless GBM binary fair value: P(YES) = Φ((S−K)/σ), σ = S·vol·√(t/yr)
+// Driftless GBM binary fair value: P(BUY) = Φ((S−K)/σ), σ = S·vol·√(t/yr)
 export function binaryFairValue(price: number, strike: number, annualVolPct: number, secondsRemaining: number) {
   const sigmaUsd = price * (annualVolPct / 100) * Math.sqrt(Math.max(secondsRemaining, 0.001) / SECONDS_PER_YEAR);
   const z = (price - strike) / Math.max(sigmaUsd, 1e-9);
   return { pYes: Math.min(Math.max(normCDF(z), 0.01), 0.99), z, sigmaUsd };
 }
 
-// Binary settlement: YES wins when expiry > strike; winners pay $1.00/contract.
-export function settleBinary(strike: number, expiry: number, side: 'YES' | 'NO', size: number, entryPrice: number) {
-  const winningSide = expiry > strike ? 'YES' : 'NO';
+// Binary settlement: BUY wins when expiry > strike (SELL wins at/below); winners pay $1.00/contract.
+export function settleBinary(strike: number, expiry: number, side: 'BUY' | 'SELL', size: number, entryPrice: number) {
+  const winningSide = expiry > strike ? 'BUY' : 'SELL';
   const won = side === winningSide;
   const cost = size * entryPrice;
   const payout = won ? size * 1.0 : 0;

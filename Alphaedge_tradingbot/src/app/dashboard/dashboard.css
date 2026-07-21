@@ -18,7 +18,7 @@
   --gold: #ffd166;
   --gold-bright: #ffd166;
   --sage: #bfff6a;
-  --oxide: #ff6fb3;
+  --oxide: #f6465d;
   --violet: #9d7dff;
   --azure: #58f0ff;
 
@@ -183,7 +183,7 @@
 }
 
 .f-led.ok { color: var(--sage); border-color: rgba(191, 255, 106, 0.35); }
-.f-led.bad { color: var(--oxide); border-color: rgba(255, 111, 179, 0.35); }
+.f-led.bad { color: var(--oxide); border-color: rgba(246, 70, 93, 0.35); }
 .f-led.warm { color: var(--gold); border-color: rgba(255, 209, 102, 0.35); }
 
 @keyframes f-pulse {
@@ -247,7 +247,7 @@
 }
 
 @keyframes f-flash-down {
-  0% { color: var(--oxide); text-shadow: 0 0 16px rgba(255, 111, 179, 0.7); }
+  0% { color: var(--oxide); text-shadow: 0 0 16px rgba(246, 70, 93, 0.7); }
   100% { color: var(--ivory); text-shadow: none; }
 }
 
@@ -398,7 +398,7 @@
 }
 
 .f-tag.win { color: var(--sage); border-color: rgba(191, 255, 106, 0.4); background: rgba(191, 255, 106, 0.09); }
-.f-tag.loss { color: var(--oxide); border-color: rgba(255, 111, 179, 0.4); background: rgba(255, 111, 179, 0.09); }
+.f-tag.loss { color: var(--oxide); border-color: rgba(246, 70, 93, 0.4); background: rgba(246, 70, 93, 0.09); }
 .f-tag.gold { color: var(--gold); border-color: rgba(255, 209, 102, 0.45); background: rgba(255, 209, 102, 0.09); }
 .f-tag.violet { color: var(--violet); border-color: rgba(157, 125, 255, 0.4); background: rgba(157, 125, 255, 0.09); }
 .f-tag.azure { color: var(--azure); border-color: rgba(88, 240, 255, 0.4); background: rgba(88, 240, 255, 0.09); }
@@ -453,15 +453,15 @@
 .f-btn.long:hover:not(:disabled) { background: rgba(191, 255, 106, 0.15); border-color: var(--sage); color: var(--sage); box-shadow: 0 0 16px rgba(191, 255, 106, 0.2); }
 
 .f-btn.short {
-  border-color: rgba(255, 111, 179, 0.45);
+  border-color: rgba(246, 70, 93, 0.45);
   color: var(--oxide);
-  background: rgba(255, 111, 179, 0.07);
+  background: rgba(246, 70, 93, 0.07);
 }
 
-.f-btn.short:hover:not(:disabled) { background: rgba(255, 111, 179, 0.15); border-color: var(--oxide); color: var(--oxide); box-shadow: 0 0 16px rgba(255, 111, 179, 0.2); }
+.f-btn.short:hover:not(:disabled) { background: rgba(246, 70, 93, 0.15); border-color: var(--oxide); color: var(--oxide); box-shadow: 0 0 16px rgba(246, 70, 93, 0.2); }
 
-.f-btn.danger { border-color: rgba(255, 111, 179, 0.45); color: var(--oxide); }
-.f-btn.danger:hover:not(:disabled) { background: rgba(255, 111, 179, 0.1); border-color: var(--oxide); color: var(--oxide); box-shadow: none; }
+.f-btn.danger { border-color: rgba(246, 70, 93, 0.45); color: var(--oxide); }
+.f-btn.danger:hover:not(:disabled) { background: rgba(246, 70, 93, 0.1); border-color: var(--oxide); color: var(--oxide); box-shadow: none; }
 
 /* ---------- Forms ---------- */
 
@@ -564,7 +564,7 @@
 }
 
 .f-banner.ok { border-color: rgba(191, 255, 106, 0.4); background: rgba(191, 255, 106, 0.07); color: var(--sage); }
-.f-banner.err { border-color: rgba(255, 111, 179, 0.4); background: rgba(255, 111, 179, 0.07); color: var(--oxide); }
+.f-banner.err { border-color: rgba(246, 70, 93, 0.4); background: rgba(246, 70, 93, 0.07); color: var(--oxide); }
 
 .f-tabs {
   display: inline-flex;

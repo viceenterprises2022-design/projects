@@ -287,7 +287,9 @@ export async function engineTick(): Promise<TickResult> {
       }
       for (const [lvlKey, lvlSize] of Object.entries(levelSizes)) {
         if (!lvlSize || lvlSize <= 0) continue;
-        const settled = settleBinary(round.strikePrice, expiryPrice, round.side as 'YES' | 'NO', lvlSize, round.entryPrice);
+        // Normalize any legacy in-flight rows written before the BUY/SELL rename
+        const sideNorm = round.side === 'YES' ? 'BUY' : round.side === 'NO' ? 'SELL' : round.side;
+        const settled = settleBinary(round.strikePrice, expiryPrice, sideNorm as 'BUY' | 'SELL', lvlSize, round.entryPrice);
         const level = Number(lvlKey);
         const tradeId = `${round.asset}_${round.epoch}_L${level}`;
         const existing = await db.select({ id: simulatorTrades.id }).from(simulatorTrades)
@@ -306,7 +308,7 @@ export async function engineTick(): Promise<TickResult> {
             timestamp: new Date(now).toISOString(),
             strikePrice: round.strikePrice,
             expiryPrice,
-            side: round.side,
+            side: sideNorm,
             size: lvlSize,
             entryPrice: round.entryPrice,
             exitPrice: settled.exitPrice,
@@ -391,8 +393,8 @@ export async function engineTick(): Promise<TickResult> {
         const fv = binaryFairValue(mark, round.strikePrice, vol, remainingS);
         const conviction = Math.abs(fv.pYes - 0.5);
         if (conviction >= effEdgeThreshold) {
-          const side = fv.pYes > 0.5 ? 'YES' : 'NO';
-          const modelP = side === 'YES' ? fv.pYes : 1 - fv.pYes;
+          const side = fv.pYes > 0.5 ? 'BUY' : 'SELL';
+          const modelP = side === 'BUY' ? fv.pYes : 1 - fv.pYes;
           const entryPrice = Math.min(Math.max(modelP + SPREAD, 0.02), 0.98);
 
           const levelSizes: Record<string, number> = {};

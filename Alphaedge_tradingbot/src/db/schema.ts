@@ -179,7 +179,7 @@ export const engineRounds = sqliteTable('engine_rounds', {
   expiresAt: integer('expires_at').notNull(),
   strikePrice: real('strike_price').notNull(),
   status: text('status').notNull().default('open'), // 'open' | 'settled' | 'skipped'
-  side: text('side'), // 'YES' | 'NO' | null while flat
+  side: text('side'), // 'BUY' | 'SELL' | null while flat
   size: integer('size'),
   entryPrice: real('entry_price'),
   entryAt: integer('entry_at'),

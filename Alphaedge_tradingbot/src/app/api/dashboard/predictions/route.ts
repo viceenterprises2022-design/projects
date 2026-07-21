@@ -8,12 +8,12 @@ import { getDemoAccount } from '@/lib/engine';
 
 export const dynamic = 'force-dynamic';
 
-// Binary round settlement: a YES position wins when expiry settles above strike,
-// a NO position wins when expiry settles at or below strike. Winning contracts
+// Binary round settlement: a BUY position wins when expiry settles above strike,
+// a SELL position wins when expiry settles at or below strike. Winning contracts
 // pay $1.00, losing contracts pay $0.00. Outcome and PnL are recomputed here so
 // the historical log is verifiable — client-supplied values are never trusted.
-function settle(strike: number, expiry: number, side: 'YES' | 'NO', size: number, entryPrice: number) {
-  const winningSide = expiry > strike ? 'YES' : 'NO';
+function settle(strike: number, expiry: number, side: 'BUY' | 'SELL', size: number, entryPrice: number) {
+  const winningSide = expiry > strike ? 'BUY' : 'SELL';
   const won = side === winningSide;
   const cost = size * entryPrice;
   const payout = won ? size * 1.0 : 0;
@@ -122,8 +122,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: `Invalid or missing numeric field: ${key}` }, { status: 400 });
       }
     }
-    if (side !== 'YES' && side !== 'NO') {
-      return NextResponse.json({ error: 'side must be YES or NO' }, { status: 400 });
+    if (side !== 'BUY' && side !== 'SELL') {
+      return NextResponse.json({ error: 'side must be BUY or SELL' }, { status: 400 });
     }
     if (typeof asset !== 'string' || !asset) {
       return NextResponse.json({ error: 'asset is required' }, { status: 400 });

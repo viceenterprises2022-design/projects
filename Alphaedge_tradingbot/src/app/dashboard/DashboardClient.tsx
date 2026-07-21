@@ -133,7 +133,7 @@ function fmtTime(epochMs: number) {
 
 // Canvas palette (matches dashboard.css tokens)
 const C = {
-  azure: '#58f0ff', lime: '#bfff6a', rose: '#ff6fb3', violet: '#9d7dff', amber: '#ffd166',
+  azure: '#58f0ff', lime: '#bfff6a', rose: '#f6465d', violet: '#9d7dff', amber: '#ffd166',
   grid: 'rgba(255,255,255,0.05)', faint: 'rgba(239,246,255,0.4)',
 };
 
@@ -235,8 +235,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [simPosition, setSimPosition] = useState<any>(null);
   const [modelReadout, setModelReadout] = useState<{ pYes: number; z: number; sigmaUsd: number } | null>(null);
   const [regimeReadout, setRegimeReadout] = useState<{ trend: number; chop: number; panic: number } | null>(null);
-  const [yesBook, setYesBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
-  const [noBook, setNoBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
+  const [buyBook, setBuyBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
+  const [sellBook, setSellBook] = useState<any>({ mid: 0.5, bids: [], asks: [] });
 
   const [simSpeed, setSimSpeed] = useState(1);
   const [simVolatility, setSimVolatility] = useState(45);
@@ -258,14 +258,14 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     price: 0,
     strikePrice: 0,
     strikeLocked: false,
-    priceHistory: [] as Array<{ price: number; trade?: 'YES' | 'NO' }>,
+    priceHistory: [] as Array<{ price: number; trade?: 'BUY' | 'SELL' }>,
     pYesHistory: [] as Array<{ p: number; lo: number; hi: number }>,
     roundSeconds: DEFAULT_ROUND_S,
     roundSecondsRemaining: DEFAULT_ROUND_S,
     roundId: 101,
     tickCount: 0,
-    yesContract: { midPrice: 0.5, bids: [] as any[], asks: [] as any[] },
-    noContract: { midPrice: 0.5, bids: [] as any[], asks: [] as any[] },
+    buyContract: { midPrice: 0.5, bids: [] as any[], asks: [] as any[] },
+    sellContract: { midPrice: 0.5, bids: [] as any[], asks: [] as any[] },
     laggedFairValueYes: 0.5,
     activePosition: null as any,
     settling: false,
@@ -603,8 +603,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       if (!pt.trade) return;
       const tx = X(i), ty = Y(pt.price);
       ctx.beginPath();
-      ctx.fillStyle = pt.trade === 'YES' ? C.lime : C.rose;
-      if (pt.trade === 'YES') { ctx.moveTo(tx, ty - 8); ctx.lineTo(tx - 5, ty + 2); ctx.lineTo(tx + 5, ty + 2); }
+      ctx.fillStyle = pt.trade === 'BUY' ? C.lime : C.rose;
+      if (pt.trade === 'BUY') { ctx.moveTo(tx, ty - 8); ctx.lineTo(tx - 5, ty + 2); ctx.lineTo(tx + 5, ty + 2); }
       else { ctx.moveTo(tx, ty + 8); ctx.lineTo(tx - 5, ty - 2); ctx.lineTo(tx + 5, ty - 2); }
       ctx.fill();
     });
@@ -665,12 +665,12 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     const asset = st.asset;
     const cx = contextsRef.current[asset];
     const mkt = marketsRef.current?.markets?.[asset];
-    const bidSum = st.yesContract.bids.reduce((a: number, r: any) => a + r.size, 0);
-    const askSum = st.yesContract.asks.reduce((a: number, r: any) => a + r.size, 0);
+    const bidSum = st.buyContract.bids.reduce((a: number, r: any) => a + r.size, 0);
+    const askSum = st.buyContract.asks.reduce((a: number, r: any) => a + r.size, 0);
     const bookImb = bidSum + askSum > 0 ? (bidSum - askSum) / (bidSum + askSum) : 0;
     const drift = st.strikeLocked && st.strikePrice > 0 ? (st.price - st.strikePrice) / st.strikePrice : 0;
     const pYes = fv ? fv.p : 0.5;
-    const edge = pYes - st.yesContract.midPrice;
+    const edge = pYes - st.buyContract.midPrice;
 
     // Real inputs: [label, displayed value, normalized weight -1..1]
     const inputs: Array<[string, string, number]> = [
@@ -691,16 +691,16 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       ctx.beginPath();
       ctx.moveTo(inX + 10, y);
       ctx.bezierCurveTo(inX + (hubX - inX) * 0.5, y, hubX - (hubX - inX) * 0.4, hubY, hubX - 22, hubY);
-      ctx.strokeStyle = wgt >= 0 ? `rgba(191,255,106,${0.15 + mag * 0.6})` : `rgba(255,111,179,${0.15 + mag * 0.6})`;
+      ctx.strokeStyle = wgt >= 0 ? `rgba(191,255,106,${0.15 + mag * 0.6})` : `rgba(246,70,93,${0.15 + mag * 0.6})`;
       ctx.lineWidth = 1 + mag * 2.5;
       ctx.stroke();
     });
 
-    const yesY = h * 0.3, noY = h * 0.7;
-    ctx.beginPath(); ctx.moveTo(hubX + 22, hubY); ctx.lineTo(outX - 14, yesY);
+    const buyY = h * 0.3, sellY = h * 0.7;
+    ctx.beginPath(); ctx.moveTo(hubX + 22, hubY); ctx.lineTo(outX - 14, buyY);
     ctx.strokeStyle = `rgba(191,255,106,${0.15 + pYes * 0.7})`; ctx.lineWidth = 1 + pYes * 3; ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(hubX + 22, hubY); ctx.lineTo(outX - 14, noY);
-    ctx.strokeStyle = `rgba(255,111,179,${0.15 + (1 - pYes) * 0.7})`; ctx.lineWidth = 1 + (1 - pYes) * 3; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(hubX + 22, hubY); ctx.lineTo(outX - 14, sellY);
+    ctx.strokeStyle = `rgba(246,70,93,${0.15 + (1 - pYes) * 0.7})`; ctx.lineWidth = 1 + (1 - pYes) * 3; ctx.stroke();
 
     ctx.font = '8px monospace';
     inputs.forEach(([label, val, wgt], i) => {
@@ -724,7 +724,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     ctx.fillText('CONSENSUS', hubX, hubY + 33);
 
     const firing = st.activePosition?.side;
-    ([['YES', yesY, C.lime, pYes], ['NO', noY, C.rose, 1 - pYes]] as const).forEach(([lbl, y, col, p]) => {
+    ([['BUY', buyY, C.lime, pYes], ['SELL', sellY, C.rose, 1 - pYes]] as const).forEach(([lbl, y, col, p]) => {
       const active = firing === lbl;
       ctx.beginPath(); ctx.arc(outX, y as number, active ? 12 : 9, 0, Math.PI * 2);
       ctx.fillStyle = active ? (col as string) : 'rgba(255,255,255,0.06)';
@@ -754,7 +754,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     const N = hist.length;
     const X = (i: number) => (i / (N - 1)) * w;
     const layers: Array<['trend' | 'chop' | 'panic', string]> = [
-      ['panic', 'rgba(255,111,179,0.5)'],
+      ['panic', 'rgba(246,70,93,0.5)'],
       ['chop', 'rgba(255,209,102,0.45)'],
       ['trend', 'rgba(191,255,106,0.5)'],
     ];
@@ -828,7 +828,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     candles.forEach((k: any, i: number) => {
       const x = i * bw + bw / 2;
       const up = k.c >= k.o;
-      ctx.strokeStyle = up ? 'rgba(191,255,106,0.7)' : 'rgba(255,111,179,0.7)';
+      ctx.strokeStyle = up ? 'rgba(191,255,106,0.7)' : 'rgba(246,70,93,0.7)';
       ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(x, Y(k.h)); ctx.lineTo(x, Y(k.l)); ctx.stroke();
       ctx.fillStyle = up ? C.lime : C.rose;
@@ -879,8 +879,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     st.roundSeconds = engineStateRef.current?.params?.roundSeconds ?? DEFAULT_ROUND_S;
     st.roundSecondsRemaining = st.roundSeconds;
     st.tickCount = 0;
-    st.yesContract = { midPrice: 0.5, bids: [], asks: [] };
-    st.noContract = { midPrice: 0.5, bids: [], asks: [] };
+    st.buyContract = { midPrice: 0.5, bids: [], asks: [] };
+    st.sellContract = { midPrice: 0.5, bids: [], asks: [] };
     st.laggedFairValueYes = 0.5;
     st.activePosition = null;
     st.settling = false;
@@ -1014,13 +1014,13 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       const alpha = 0.35;
       st.laggedFairValueYes = st.laggedFairValueYes * (1 - alpha) + fv.pYes * alpha;
       const laggedYes = st.laggedFairValueYes;
-      st.yesContract.midPrice = laggedYes;
-      st.yesContract.bids = generateBookSides(laggedYes, 'bid');
-      st.yesContract.asks = generateBookSides(laggedYes, 'ask');
+      st.buyContract.midPrice = laggedYes;
+      st.buyContract.bids = generateBookSides(laggedYes, 'bid');
+      st.buyContract.asks = generateBookSides(laggedYes, 'ask');
       const laggedNo = 1.0 - laggedYes;
-      st.noContract.midPrice = laggedNo;
-      st.noContract.bids = generateBookSides(laggedNo, 'bid');
-      st.noContract.asks = generateBookSides(laggedNo, 'ask');
+      st.sellContract.midPrice = laggedNo;
+      st.sellContract.bids = generateBookSides(laggedNo, 'bid');
+      st.sellContract.asks = generateBookSides(laggedNo, 'ask');
 
 
       drawRoundChart();
@@ -1034,8 +1034,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       const secs = st.roundSecondsRemaining % 60;
       setSimCountdown(`${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`);
 
-      setYesBook({ mid: st.yesContract.midPrice, bids: [...st.yesContract.bids], asks: [...st.yesContract.asks] });
-      setNoBook({ mid: st.noContract.midPrice, bids: [...st.noContract.bids], asks: [...st.noContract.asks] });
+      setBuyBook({ mid: st.buyContract.midPrice, bids: [...st.buyContract.bids], asks: [...st.buyContract.asks] });
+      setSellBook({ mid: st.sellContract.midPrice, bids: [...st.sellContract.bids], asks: [...st.sellContract.asks] });
 
       timer = setTimeout(runStep, 1000 / st.speedMultiplier);
     };
@@ -1593,7 +1593,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 {isOwner && (<>
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><Lock size={14} color="#ff6fb3" /> <span className="f-serif-grad">Connect Hyperliquid</span></h2>
+                    <h2 className="f-panel-title"><Lock size={14} color="#f6465d" /> <span className="f-serif-grad">Connect Hyperliquid</span></h2>
                     <span className="f-tag gold">AES-256-GCM</span>
                   </div>
                   <form onSubmit={handleAddConnection}>
@@ -1901,7 +1901,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 {data?.riskEvents?.length > 0 && (
                   <div className="f-panel">
                     <div className="f-panel-head">
-                      <h2 className="f-panel-title"><AlertOctagon size={14} color="#ff6fb3" /> <span className="f-serif-grad">Risk Audit Log</span></h2>
+                      <h2 className="f-panel-title"><AlertOctagon size={14} color="#f6465d" /> <span className="f-serif-grad">Risk Audit Log</span></h2>
                     </div>
                     <div style={{ maxHeight: 220, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 7 }}>
                       {data.riskEvents.map((evt: any) => (
@@ -1962,7 +1962,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                   {simPosition ? `Entry ${Math.round(simPosition.entryPrice * 100)}¢ · cost ${fmtUsd(simPosition.costUsd)}` : 'Awaiting executable edge'}
                 </div>
                 <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                  <span className="f-chip">P(YES) <b className="f-violet">{modelReadout ? Math.round(modelReadout.pYes * 100) + '¢' : '—'}</b></span>
+                  <span className="f-chip">P(BUY) <b className="f-violet">{modelReadout ? Math.round(modelReadout.pYes * 100) + '¢' : '—'}</b></span>
                   <span className="f-chip">Z <b>{modelReadout ? modelReadout.z.toFixed(2) : '—'}</b></span>
                   <span className="f-chip">σ <b className="f-gold">{modelReadout ? fmtUsd(modelReadout.sigmaUsd) : '—'}</b></span>
                 </div>
@@ -2065,8 +2065,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                     {[
-                      { name: 'YES · SETTLES ABOVE STRIKE', book: yesBook, color: 'var(--sage)' },
-                      { name: 'NO · SETTLES AT/BELOW STRIKE', book: noBook, color: 'var(--oxide)' },
+                      { name: 'BUY · SETTLES ABOVE STRIKE', book: buyBook, color: 'var(--sage)' },
+                      { name: 'SELL · SETTLES AT/BELOW STRIKE', book: sellBook, color: 'var(--oxide)' },
                     ].map(({ name, book, color }) => (
                       <div key={name} style={{ border: '1px solid var(--hairline)', borderRadius: 14, background: 'rgba(5,7,17,0.4)', padding: '10px 12px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
@@ -2099,14 +2099,14 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       <span className="f-kicker" style={{ marginLeft: 4 }}>GBM PRICER · ±1σ BAND</span>
                     </h2>
                     <span className="f-mono f-violet" style={{ fontSize: 13, fontWeight: 700 }}>
-                      {modelReadout ? `P(YES) ${Math.round(modelReadout.pYes * 100)}¢` : '—'}
+                      {modelReadout ? `P(BUY) ${Math.round(modelReadout.pYes * 100)}¢` : '—'}
                     </span>
                   </div>
                   <div className="f-canvas-frame" style={{ height: 150 }}>
                     <canvas ref={envelopeCanvasRef} style={{ width: '100%', height: '100%' }} />
                   </div>
                   <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 8, letterSpacing: '0.05em' }}>
-                    P(YES) = Φ((S−K)/σ) · σ = S·vol·√(t/yr) · live mark S, strike K, vol input {simVolatility}%
+                    P(BUY) = Φ((S−K)/σ) · σ = S·vol·√(t/yr) · live mark S, strike K, vol input {simVolatility}%
                   </div>
                 </div>
 
@@ -2148,7 +2148,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                                 if (v === null || v === undefined) return <td key={hz} className="num f-faint">—</td>;
                                 return (
                                   <td key={hz} className={`num ${v < 0 ? 'f-neg' : 'f-pos'}`}
-                                    style={{ background: v < 0 ? `rgba(255,111,179,${Math.min(0.22, Math.abs(v) / 8)})` : `rgba(191,255,106,${Math.min(0.22, v / 8)})` }}>
+                                    style={{ background: v < 0 ? `rgba(246,70,93,${Math.min(0.22, Math.abs(v) / 8)})` : `rgba(191,255,106,${Math.min(0.22, v / 8)})` }}>
                                     {v >= 0 ? '+' : ''}{v.toFixed(2)}%
                                   </td>
                                 );
@@ -2177,7 +2177,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                             flex: 1,
                             height: `${Math.max(b * 100, 2)}%`,
                             borderRadius: '3px 3px 0 0',
-                            background: i < bootstrap.zeroBin ? 'rgba(255,111,179,0.55)' : i === bootstrap.zeroBin ? '#ffd166' : 'rgba(191,255,106,0.55)',
+                            background: i < bootstrap.zeroBin ? 'rgba(246,70,93,0.55)' : i === bootstrap.zeroBin ? '#ffd166' : 'rgba(191,255,106,0.55)',
                           }} />
                         ))}
                       </div>
@@ -2247,8 +2247,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       }}>{transitionMatrix.pWW !== null ? transitionMatrix.pWW.toFixed(2) : '—'}</div>
                       <div className="f-matrix-cell" style={{
                         color: 'var(--oxide)',
-                        background: `rgba(255,111,179,${(transitionMatrix.pWL ?? 0) * 0.3})`,
-                        borderColor: `rgba(255,111,179,${0.15 + (transitionMatrix.pWL ?? 0) * 0.4})`,
+                        background: `rgba(246,70,93,${(transitionMatrix.pWL ?? 0) * 0.3})`,
+                        borderColor: `rgba(246,70,93,${0.15 + (transitionMatrix.pWL ?? 0) * 0.4})`,
                       }}>{transitionMatrix.pWL !== null ? transitionMatrix.pWL.toFixed(2) : '—'}</div>
                       <div className="f-kicker">LOSS →</div>
                       <div className="f-matrix-cell" style={{
@@ -2258,8 +2258,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       }}>{transitionMatrix.pLW !== null ? transitionMatrix.pLW.toFixed(2) : '—'}</div>
                       <div className="f-matrix-cell" style={{
                         color: 'var(--oxide)',
-                        background: `rgba(255,111,179,${(transitionMatrix.pLL ?? 0) * 0.3})`,
-                        borderColor: `rgba(255,111,179,${0.15 + (transitionMatrix.pLL ?? 0) * 0.4})`,
+                        background: `rgba(246,70,93,${(transitionMatrix.pLL ?? 0) * 0.3})`,
+                        borderColor: `rgba(246,70,93,${0.15 + (transitionMatrix.pLL ?? 0) * 0.4})`,
                       }}>{transitionMatrix.pLL !== null ? transitionMatrix.pLL.toFixed(2) : '—'}</div>
                     </div>
                   ) : (
@@ -2301,7 +2301,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
                 <div className="f-panel">
                   <div className="f-panel-head">
-                    <h2 className="f-panel-title"><ShieldAlert size={14} color="#ff6fb3" /> <span className="f-serif-grad">Upcoming Blackouts</span> <span className="f-kicker" style={{ marginLeft: 4 }}>REGIME GUARD · AUTO-SYNCED</span></h2>
+                    <h2 className="f-panel-title"><ShieldAlert size={14} color="#f6465d" /> <span className="f-serif-grad">Upcoming Blackouts</span> <span className="f-kicker" style={{ marginLeft: 4 }}>REGIME GUARD · AUTO-SYNCED</span></h2>
                     {(() => {
                       const rg = engineState?.regime;
                       if (!rg) return null;
@@ -2322,8 +2322,8 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                         return (
                           <div key={ev.id} style={{
                             display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px',
-                            border: `1px solid ${active ? (lockdown ? 'rgba(255,111,179,0.5)' : 'rgba(255,209,102,0.5)') : 'var(--hairline)'}`,
-                            borderRadius: 10, background: active ? (lockdown ? 'rgba(255,111,179,0.07)' : 'rgba(255,209,102,0.06)') : 'rgba(5,7,17,0.4)',
+                            border: `1px solid ${active ? (lockdown ? 'rgba(246,70,93,0.5)' : 'rgba(255,209,102,0.5)') : 'var(--hairline)'}`,
+                            borderRadius: 10, background: active ? (lockdown ? 'rgba(246,70,93,0.07)' : 'rgba(255,209,102,0.06)') : 'rgba(5,7,17,0.4)',
                           }}>
                             <span className="f-mono" style={{ fontSize: 10, color: 'var(--ivory-dim)', width: 108, flexShrink: 0 }}>
                               {day} · {t1}–{t2}
@@ -2335,7 +2335,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                             <span className="f-mono" style={{
                               fontSize: 8.5, letterSpacing: '0.08em', padding: '3px 7px', borderRadius: 6, flexShrink: 0,
                               color: lockdown ? 'var(--oxide)' : '#ffd166',
-                              border: `1px solid ${lockdown ? 'rgba(255,111,179,0.35)' : 'rgba(255,209,102,0.35)'}`,
+                              border: `1px solid ${lockdown ? 'rgba(246,70,93,0.35)' : 'rgba(255,209,102,0.35)'}`,
                             }}>{lockdown ? 'LOCKDOWN' : 'CAUTION'}</span>
                           </div>
                         );
@@ -2437,7 +2437,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                           <td className="f-faint">{fmtTime(trade.createdAt)}</td>
                           <td className="num f-gold">{fmtUsd(trade.strikePrice)}</td>
                           <td className="num f-azure">{fmtUsd(trade.expiryPrice)}</td>
-                          <td><span className={`f-tag ${trade.side === 'YES' ? 'win' : 'loss'}`}>{trade.side}</span></td>
+                          <td><span className={`f-tag ${trade.side === 'BUY' ? 'win' : 'loss'}`}>{trade.side}</span></td>
                           <td className="num">{trade.size.toLocaleString()}</td>
                           <td className="num">{Math.round(trade.entryPrice * 100)}¢</td>
                           <td className="num">{Math.round(trade.exitPrice * 100)}¢</td>
