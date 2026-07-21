@@ -1369,9 +1369,19 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               </div>
               <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginTop: 10 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div className={`f-mono ${(ls.pnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}
-                    style={{ fontSize: 25, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
-                    {ls.pnl !== undefined ? fmtSignedUsd(ls.pnl) : '—'}
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap' }}>
+                    <div className={`f-mono ${(ls.pnl ?? 0) >= 0 ? 'f-pos' : 'f-neg'}`}
+                      style={{ fontSize: 25, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                      {ls.pnl !== undefined ? fmtSignedUsd(ls.pnl) : '—'}
+                    </div>
+                    {ls.pnl !== undefined && ls.base ? (
+                      <span className={`f-mono ${ls.pnl >= 0 ? 'f-pos' : 'f-neg'}`}
+                        title="Return on capital employed — realized P&L over the tier's capital base"
+                        style={{ fontSize: 12, fontWeight: 700, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
+                        {ls.pnl >= 0 ? '+' : '−'}{Math.abs((ls.pnl / ls.base) * 100).toFixed(1)}%
+                        <span className="f-faint" style={{ fontSize: 8, marginLeft: 3, letterSpacing: '0.1em' }}>ROCE</span>
+                      </span>
+                    ) : null}
                   </div>
                   <div className="f-mono f-faint" style={{ fontSize: 10, marginTop: 3 }}>
                     {ls.base === null
@@ -1404,7 +1414,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Every entry risks 2% of the tier's current equity — sizes compound with performance. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Daily quotas reset at 13:00 UTC — a fresh book ahead of the US session.
+        Every entry risks 2% of the tier's current equity — sizes compound with performance. ROCE = realized P&L over the tier's capital base, the return on the money actually deployed. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Daily quotas reset at 13:00 UTC — a fresh book ahead of the US session.
       </div>
     </div>
   );
