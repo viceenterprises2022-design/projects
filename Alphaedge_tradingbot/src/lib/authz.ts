@@ -45,12 +45,14 @@ export async function getSessionInfo(): Promise<SessionInfo> {
   // Inert in production builds (NODE_ENV check) and requires an explicit
   // env var that is never set in Vercel.
   if (process.env.NODE_ENV === 'development' && process.env.DEV_FAKE_ROLE) {
-    const role = (process.env.DEV_FAKE_ROLE === 'owner' ? 'owner' : 'viewer') as Role;
+    const valid: Role[] = ['owner', 'viewer', 'pending', 'blocked'];
+    const role = (valid.includes(process.env.DEV_FAKE_ROLE as Role)
+      ? process.env.DEV_FAKE_ROLE : 'viewer') as Role;
     return {
       user: { id: 'dev', name: 'Dev Tester', email: 'dev@local' },
       role,
       isOwner: role === 'owner',
-      canView: true,
+      canView: role === 'owner' || role === 'viewer',
     };
   }
   try {

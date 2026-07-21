@@ -1756,7 +1756,18 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       <tbody>
                         {adminUsers.map((u: any) => (
                           <tr key={u.id}>
-                            <td style={{ color: 'var(--ivory)' }}>{u.email}</td>
+                            <td style={{ color: 'var(--ivory)' }}>
+                              {u.email}
+                              {u.onboarding && (
+                                <div className="f-mono" style={{ fontSize: 9.5, lineHeight: 1.6, color: 'var(--ivory-faint)', marginTop: 3 }}>
+                                  {u.onboarding.fullName}
+                                  {' · '}{String(u.onboarding.levelInterest).replace('level-', 'L').toUpperCase()}
+                                  {' · '}{String(u.onboarding.capitalBand).replace('-', '–').toUpperCase()}
+                                  {' · '}{String(u.onboarding.experience).toUpperCase()}
+                                  {u.onboarding.note ? <div style={{ color: 'var(--ivory-dim)', whiteSpace: 'normal' }}>&ldquo;{u.onboarding.note}&rdquo;</div> : null}
+                                </div>
+                              )}
+                            </td>
                             <td>
                               <span className={`f-tag ${u.role === 'owner' ? 'gold' : u.role === 'viewer' ? 'win' : u.role === 'blocked' ? 'loss' : 'violet'}`}>
                                 {u.role.toUpperCase()}

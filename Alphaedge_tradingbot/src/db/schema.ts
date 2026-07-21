@@ -226,6 +226,19 @@ export const regimeLog = sqliteTable('regime_log', {
   at: integer('at').notNull(),
 });
 
+// Onboarding answers from newly signed-in (pending) users. Keyed by the
+// session email so answers always match the Google account being approved.
+export const onboardingProfiles = sqliteTable('onboarding_profiles', {
+  email: text('email').primaryKey(),
+  fullName: text('full_name').notNull(),
+  levelInterest: text('level_interest').notNull(), // 'demo' | 'level-1' | 'level-2' | 'level-3' | 'undecided'
+  capitalBand: text('capital_band').notNull(),
+  experience: text('experience').notNull(),
+  note: text('note'),
+  createdAt: integer('created_at').notNull(),
+  updatedAt: integer('updated_at').notNull(),
+});
+
 export const simulatorTrades = sqliteTable('simulator_trades', {
   id: text('id').primaryKey(),
   level: integer('level').notNull().default(0), // 1|2|3 subscription levels; 0 = legacy

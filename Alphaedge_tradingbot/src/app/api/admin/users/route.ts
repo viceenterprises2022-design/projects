@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
-import { users } from '@/db/schema';
+import { users, onboardingProfiles } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { requireOwner } from '@/lib/authz';
@@ -30,7 +30,25 @@ export async function GET() {
     const order: Record<string, number> = { pending: 0, viewer: 1, owner: 2, blocked: 3 };
     accounts.sort((a, b) => (order[a.role] ?? 9) - (order[b.role] ?? 9) || (a.email || '').localeCompare(b.email || ''));
 
-    return NextResponse.json({ users: accounts });
+    // Attach onboarding answers (keyed by email) so approvals happen in context.
+    const profiles = await db.select().from(onboardingProfiles);
+    const byEmail = new Map(profiles.map(p => [p.email, p]));
+    const enriched = accounts.map(u => {
+      const p = byEmail.get((u.email || '').toLowerCase());
+      return p ? {
+        ...u,
+        onboarding: {
+          fullName: p.fullName,
+          levelInterest: p.levelInterest,
+          capitalBand: p.capitalBand,
+          experience: p.experience,
+          note: p.note,
+          submittedAt: p.updatedAt,
+        },
+      } : u;
+    });
+
+    return NextResponse.json({ users: enriched });
   } catch (error: any) {
     console.error('Admin users list error:', error);
     return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
