@@ -437,7 +437,9 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
       } catch { /* transient — next poll retries */ }
     }
     syncEngine();
-    const interval = setInterval(syncEngine, 3000);
+    // 8s poll: the server snapshot-caches ticks, so faster polling only burns
+    // DB read quota without fresher data. Round clock ticks client-side.
+    const interval = setInterval(syncEngine, 8000);
     const onVisible = () => { if (document.visibilityState === 'visible') syncEngine(); };
     document.addEventListener('visibilitychange', onVisible);
     return () => { cancelled = true; clearInterval(interval); document.removeEventListener('visibilitychange', onVisible); };
