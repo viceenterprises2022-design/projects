@@ -1476,6 +1476,12 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 {engineState.regime.mode === 'normal' ? 'HALT DESK' : 'RESUME'}
               </button>
             )}
+            {isOwner && (
+              <>
+                <Link href="/admin/ledger" className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5, textDecoration: 'none' }}>LEDGER</Link>
+                <Link href="/admin/analytics" className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5, textDecoration: 'none' }}>ANALYTICS</Link>
+              </>
+            )}
             {!isOwner && <span className="f-led warm">WATCH-ONLY DEMO</span>}
             <span className="f-clock f-mono">{clock}</span>
             {user ? (
