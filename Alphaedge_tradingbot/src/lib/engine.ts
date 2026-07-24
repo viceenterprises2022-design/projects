@@ -61,14 +61,16 @@ export function nextQuotaReset(now: number): number {
   return lastQuotaReset(now) + 86_400_000;
 }
 
-// Counter-trend entry gate (task #8, backtested 2026-07-24 on 904 ledger
-// trades: hit 67.4%→69.3%, net P&L +48% at 60m/0.2%). The driftless pricer
-// keeps taking BUY entries in strong downtrends; this skips entries that
-// fight the prevailing 1-hour move. Conservative-only: it can remove
-// entries, never add or resize them. Kill switch: TREND_FILTER=off.
+// Counter-trend entry gate (task #8) — DEFAULT OFF after the 30-day
+// multi-regime backtest (23k trades, Binance 1m history) showed the gate
+// removes profitable trades: counter-trend entries win at ~72.5%, same as
+// everything else, and gating them cost ~20% of net P&L across regimes.
+// The 2-day ledger replay that motivated the gate was a crash-window
+// artifact. Machinery retained: opt back in with TREND_FILTER=on if a
+// future regime justifies it.
 const TREND_LOOKBACK_BARS = 12; // 12 × 5m candles = 1 hour
 const TREND_GATE = 0.002;       // 0.2% adverse 1h move blocks counter-trend entry
-const trendFilterEnabled = () => process.env.TREND_FILTER !== 'off';
+const trendFilterEnabled = () => process.env.TREND_FILTER === 'on';
 
 // Canonical parameters, exposed read-only to the dashboard
 export const ENGINE_PARAMS = {
@@ -77,7 +79,7 @@ export const ENGINE_PARAMS = {
   edgeThreshold: EDGE_THRESHOLD,
   spread: SPREAD,
   entryCutoffSeconds: ENTRY_CUTOFF_S,
-  trendGate: TREND_GATE,
+  trendGate: process.env.TREND_FILTER === 'on' ? TREND_GATE : null,
   trendLookbackMinutes: (TREND_LOOKBACK_BARS * 5),
 };
 
