@@ -225,6 +225,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const [engineState, setEngineState] = useState<any>(null);
   const engineStateRef = useRef<any>(null);
   const prevRoundsRef = useRef<Record<string, any>>({});
+  const prevEpochRef = useRef<number | null>(null);
 
   // ---- Simulator state ----
   const [dbStats, setDbStats] = useState<any>(null);
@@ -420,7 +421,14 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         if (json.settledThisTick > 0) {
           pushEngineLog('settle', `${json.settledThisTick} round(s) settled server-side — ledger updated`);
           loadHistory(simStateRef.current.asset);
+        } else if (json.epoch && prevEpochRef.current && json.epoch !== prevEpochRef.current) {
+          // Epoch advanced = previous round settled. The settledThisTick pulse
+          // can be consumed by another viewer's poll (server snapshot cache),
+          // so the epoch transition is the reliable refresh signal — one
+          // bounded ledger query per 5-minute round.
+          loadHistory(simStateRef.current.asset);
         }
+        if (json.epoch) prevEpochRef.current = json.epoch;
 
         // Current-asset position display comes from the canonical round
         const cur = (json.rounds || []).find((r: any) => r.asset === simStateRef.current.asset && r.status === 'open');
