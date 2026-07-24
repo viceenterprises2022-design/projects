@@ -38,9 +38,9 @@ export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
 // Demo ledger shown first on the desk.
 export const LEVELS: Record<number, { base: number | null; dailyTrades: number | null; label: string }> = {
   4: { base: 10_000, dailyTrades: null, label: 'Demo' }, // unlimited trades during public demo
-  1: { base: 5_000, dailyTrades: 30, label: 'Level 1' },
-  2: { base: 10_000, dailyTrades: 45, label: 'Level 2' },
-  3: { base: 25_000, dailyTrades: 60, label: 'Level 3' }, // displayed as $25K+
+  1: { base: 5_000, dailyTrades: 50, label: 'Level 1' },
+  2: { base: 10_000, dailyTrades: 100, label: 'Level 2' },
+  3: { base: 25_000, dailyTrades: 250, label: 'Level 3' }, // displayed as $25K+
 };
 export const LEVEL_IDS = [4, 1, 2, 3];
 
