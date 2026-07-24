@@ -239,6 +239,13 @@ export const onboardingProfiles = sqliteTable('onboarding_profiles', {
   updatedAt: integer('updated_at').notNull(),
 });
 
+// Per-asset kill switches (owner-operated). Missing row = enabled.
+export const assetState = sqliteTable('asset_state', {
+  asset: text('asset').primaryKey(),
+  enabled: integer('enabled').notNull().default(1),
+  updatedAt: integer('updated_at').notNull(),
+});
+
 export const simulatorTrades = sqliteTable('simulator_trades', {
   id: text('id').primaryKey(),
   level: integer('level').notNull().default(0), // 1|2|3 subscription levels; 0 = legacy

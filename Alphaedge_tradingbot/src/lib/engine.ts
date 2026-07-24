@@ -11,7 +11,7 @@
 // Viewers never write — the engine is the only author of canonical rounds.
 
 import { db } from '@/db';
-import { engineRounds, simulatorTrades, demoAccount } from '@/db/schema';
+import { engineRounds, simulatorTrades, demoAccount, assetState } from '@/db/schema';
 import { eq, and, lte, gte, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { binaryFairValue, settleBinary } from './binary';
@@ -287,6 +287,7 @@ export interface TickResult {
   settled: number;
   regime: Regime;
   quotaResetAt: number; // next 13:00 UTC roll — daily trade quotas re-open here
+  assetEnabled: Record<string, boolean>; // per-asset operator kill switches
   errors: string[];
 }
 
@@ -399,6 +400,16 @@ export async function engineTick(): Promise<TickResult> {
   const effEdgeThreshold = regime.mode === 'caution' ? CAUTION_EDGE : EDGE_THRESHOLD;
   const effRiskPerTrade = regime.mode === 'caution' ? RISK_PER_TRADE * CAUTION_RISK_MULT : RISK_PER_TRADE;
 
+  // Per-asset kill switches: operator can halt one asset while the rest
+  // trade. Missing row = enabled. Open positions still settle normally.
+  const assetEnabled: Record<string, boolean> = Object.fromEntries(ENGINE_ASSETS.map(a => [a, true]));
+  try {
+    const toggles = await db.select().from(assetState);
+    for (const t of toggles) if (t.asset in assetEnabled) assetEnabled[t.asset] = !!t.enabled;
+  } catch (err: any) {
+    errors.push(`assetState: ${err.message}`); // fail open: all assets trade
+  }
+
   // 2. Open current-epoch rounds + take positions
   for (const asset of ENGINE_ASSETS) {
     const mark = marks[asset];
@@ -432,6 +443,15 @@ export async function engineTick(): Promise<TickResult> {
           if (!round.skipReason) {
             await db.update(engineRounds)
               .set({ skipReason: `regime:${regime.reason}` })
+              .where(and(eq(engineRounds.id, id), sql`${engineRounds.side} IS NULL`));
+          }
+          continue;
+        }
+        // Operator halted this asset — sit out, visibly.
+        if (!assetEnabled[asset]) {
+          if (!round.skipReason) {
+            await db.update(engineRounds)
+              .set({ skipReason: 'asset:halted by operator' })
               .where(and(eq(engineRounds.id, id), sql`${engineRounds.side} IS NULL`));
           }
           continue;
@@ -486,5 +506,5 @@ export async function engineTick(): Promise<TickResult> {
   }
 
   const rounds = await db.select().from(engineRounds).where(eq(engineRounds.epoch, epoch));
-  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, regime, quotaResetAt: nextQuotaReset(now), errors };
+  return { now, epoch, bankroll, bankrollBase, demoStartedAt, levels, rounds, settled: settledCount, regime, quotaResetAt: nextQuotaReset(now), assetEnabled, errors };
 }

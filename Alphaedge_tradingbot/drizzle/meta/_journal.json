@@ -120,6 +120,13 @@
       "when": 1784770867945,
       "tag": "0016_read_quota_indexes",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "6",
+      "when": 1784917231091,
+      "tag": "0017_asset_state",
+      "breakpoints": true
     }
   ]
 }

@@ -1324,6 +1324,25 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   const feedAge = feedTs ? Math.max(0, Math.round((Date.now() - feedTs) / 1000)) : null;
   const feedLive = !feedError && feedAge !== null && feedAge < 15;
 
+  // Owner-only per-asset kill switch. Optimistic local update; the canonical
+  // state rides every engine poll (assetEnabled) and reconverges within ~12s
+  // for other viewers (4s server snapshot + 8s poll).
+  const toggleAsset = async (asset: string, enabled: boolean) => {
+    try {
+      const res = await fetch('/api/admin/assets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ asset, enabled }),
+      });
+      if (res.ok) {
+        setEngineState((prev: any) => prev
+          ? { ...prev, assetEnabled: { ...(prev.assetEnabled || {}), [asset]: enabled } }
+          : prev);
+        pushEngineLog('info', `OPERATOR ${enabled ? 'RESUMED' : 'HALTED'} ${asset} — ${enabled ? 'entries re-armed' : 'no new entries until re-enabled'}`);
+      }
+    } catch { /* next poll shows truth */ }
+  };
+
   const levelsPanel = (
     <div className="f-panel" style={{ marginBottom: 18 }}>
       <div className="f-panel-head">
@@ -1551,12 +1570,46 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 title={`Open ${asset} in Quant Engine`}
               >
                 <div className="f-tape-head">
-                  <span className="f-kicker">{ASSET_LABEL[asset]}</span>
-                  {ctx && (
-                    <span className={`f-mono ${ctx.change24hPct >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontSize: 11, fontWeight: 700 }}>
-                      {ctx.change24hPct >= 0 ? '▲' : '▼'} {Math.abs(ctx.change24hPct).toFixed(2)}%
-                    </span>
-                  )}
+                  <span className="f-kicker" style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+                    {ASSET_LABEL[asset]}
+                    {engineState?.assetEnabled?.[asset] === false && (
+                      <span className="f-mono" style={{
+                        fontSize: 8, fontWeight: 700, letterSpacing: '0.12em', padding: '2px 6px',
+                        borderRadius: 5, color: '#f6465d', border: '1px solid rgba(246,70,93,0.4)',
+                        background: 'rgba(246,70,93,0.07)',
+                      }}>HALTED</span>
+                    )}
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                    {ctx && (
+                      <span className={`f-mono ${ctx.change24hPct >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontSize: 11, fontWeight: 700 }}>
+                        {ctx.change24hPct >= 0 ? '▲' : '▼'} {Math.abs(ctx.change24hPct).toFixed(2)}%
+                      </span>
+                    )}
+                    {isOwner && engineState?.assetEnabled && (() => {
+                      const on = engineState.assetEnabled[asset] !== false;
+                      return (
+                        <span
+                          role="switch"
+                          aria-checked={on}
+                          title={on ? `Halt ${asset} — engine stops entering this asset (open positions still settle)` : `Resume ${asset} entries`}
+                          onClick={(e) => { e.stopPropagation(); toggleAsset(asset, !on); }}
+                          style={{
+                            width: 28, height: 15, borderRadius: 999, cursor: 'pointer', flexShrink: 0,
+                            position: 'relative', display: 'inline-block',
+                            background: on ? 'rgba(88,240,255,0.35)' : 'rgba(246,70,93,0.3)',
+                            border: `1px solid ${on ? 'rgba(88,240,255,0.6)' : 'rgba(246,70,93,0.6)'}`,
+                            transition: 'background 200ms',
+                          }}>
+                          <span style={{
+                            position: 'absolute', top: 1, left: on ? 14 : 1, width: 11, height: 11,
+                            borderRadius: '50%', background: on ? '#58f0ff' : '#f6465d',
+                            transition: 'left 200ms',
+                          }} />
+                        </span>
+                      );
+                    })()}
+                  </span>
                 </div>
                 <div className={`f-tape-price ${dir === 'up' ? 'tick-up' : dir === 'down' ? 'tick-down' : ''}`}>
                   {price ? fmtUsd(price) : '— syncing —'}
