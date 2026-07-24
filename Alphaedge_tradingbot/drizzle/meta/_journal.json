@@ -127,6 +127,13 @@
       "when": 1784917231091,
       "tag": "0017_asset_state",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "6",
+      "when": 1784918590578,
+      "tag": "0018_day_reset_marker",
+      "breakpoints": true
     }
   ]
 }

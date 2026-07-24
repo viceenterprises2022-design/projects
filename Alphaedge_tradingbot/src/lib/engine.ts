@@ -221,10 +221,12 @@ export interface LevelState {
   dailyStopActive: boolean; // lost > DAILY_STOP_PCT of day-start equity today
 }
 
-export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
-  // Daily quota window starts at the last 13:00 UTC roll OR the demo restart,
-  // whichever is later — a fresh demo must not inherit spent quota.
-  const utcDayStart = Math.max(lastQuotaReset(Date.now()), startedAt);
+export async function getLevelStates(startedAt: number, dayResetAt?: number | null): Promise<LevelState[]> {
+  // Daily quota window starts at the last 13:00 UTC roll, the demo restart,
+  // or an operator day-reset — whichever is latest. A fresh demo must not
+  // inherit spent quota, and an operator reset clears counters + breakers
+  // immediately without touching ledger history.
+  const utcDayStart = Math.max(lastQuotaReset(Date.now()), startedAt, dayResetAt ?? 0);
   const out: LevelState[] = [];
   for (const level of LEVEL_IDS) {
     const cfg = LEVELS[level];
@@ -375,8 +377,9 @@ export async function engineTick(): Promise<TickResult> {
     }
   }
 
+  const acctRow = await getDemoAccount();
   const { bankroll, base: bankrollBase, startedAt: demoStartedAt } = await getDemoBankroll();
-  const levels = await getLevelStates(demoStartedAt);
+  const levels = await getLevelStates(demoStartedAt, (acctRow as any).dayResetAt ?? null);
 
   // Keep the blackout calendar fresh from the economic-calendar feed
   // (throttled internally; a dead feed degrades to the existing windows).

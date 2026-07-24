@@ -167,6 +167,9 @@ export const demoAccount = sqliteTable('demo_account', {
   id: text('id').primaryKey(), // always 'demo'
   baseUsd: real('base_usd').notNull(),
   startedAt: integer('started_at').notNull(),
+  // Operator override: daily counters + circuit breakers count from here when
+  // later than the last 13:00 UTC roll. Null = normal daily rhythm.
+  dayResetAt: integer('day_reset_at'),
 });
 
 // Canonical server-side engine rounds: deterministic 90s epochs per asset.
