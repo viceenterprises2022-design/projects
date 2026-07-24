@@ -1362,7 +1362,16 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span className={`f-tag ${selected ? 'azure' : ls.level === 4 ? 'win' : 'dim'}`}>{levelLabel(ls.level)}</span>
-                {exhausted ? (
+                {ls.dailyStopActive ? (
+                  <span className="f-mono" title="Daily loss circuit breaker: this tier lost more than the daily stop threshold from its day-start equity — entries pause until the 13:00 UTC roll"
+                    style={{
+                      fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', padding: '3px 8px',
+                      borderRadius: 6, color: '#f6465d', border: '1px solid rgba(246,70,93,0.4)',
+                      background: 'rgba(246,70,93,0.07)', fontVariantNumeric: 'tabular-nums',
+                    }}>
+                    DAILY STOP · {hh}:{mm}:{ss}
+                  </span>
+                ) : exhausted ? (
                   <span className="f-mono" title="Daily quota filled — trading re-opens at 13:00 UTC, ahead of the US session"
                     style={{
                       fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', padding: '3px 8px',

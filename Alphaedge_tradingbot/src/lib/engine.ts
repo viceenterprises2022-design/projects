@@ -81,6 +81,9 @@ export const ENGINE_PARAMS = {
   entryCutoffSeconds: ENTRY_CUTOFF_S,
   trendGate: process.env.TREND_FILTER === 'on' ? TREND_GATE : null,
   trendLookbackMinutes: (TREND_LOOKBACK_BARS * 5),
+  dailyStopPct: process.env.DAILY_STOP !== 'off'
+    ? Math.max(0.02, parseFloat(process.env.DAILY_STOP_PCT || '0.15'))
+    : null,
 };
 
 // ---------------------------------------------------------------------------
@@ -195,6 +198,15 @@ export async function getDemoBankroll(): Promise<{ bankroll: number; base: numbe
   };
 }
 
+// Daily loss circuit breaker: a tier that has lost more than this fraction
+// of its day-start equity (13:00 UTC roll) stops entering until the next
+// roll. Catastrophe insurance, not signal: live data shows normal days dip
+// ≤3.4% intraday while the 2026-07-24 crash bled −33% before a manual halt —
+// this automates that halt at a pre-agreed line. DAILY_STOP=off disables;
+// DAILY_STOP_PCT overrides the threshold.
+const DAILY_STOP_PCT = Math.max(0.02, parseFloat(process.env.DAILY_STOP_PCT || '0.15'));
+const dailyStopEnabled = () => process.env.DAILY_STOP !== 'off';
+
 export interface LevelState {
   level: number;
   label: string;
@@ -205,6 +217,8 @@ export interface LevelState {
   bankroll: number | null; // null = unlimited
   tradesToday: number;
   dailyTrades: number | null; // null = unlimited
+  pnlToday: number;
+  dailyStopActive: boolean; // lost > DAILY_STOP_PCT of day-start equity today
 }
 
 export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
@@ -225,8 +239,12 @@ export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
     const wins = aggRow[0]?.wins ?? 0;
     const losses = (aggRow[0]?.settled ?? 0) - wins;
 
-    // Entries today = settled rows today + in-flight participations
-    const settledToday = await db.select({ n: sql<number>`COUNT(*)` })
+    // Entries today = settled rows today + in-flight participations.
+    // Same scan also sums today's pnl for the daily circuit breaker.
+    const settledToday = await db.select({
+      n: sql<number>`COUNT(*)`,
+      pnlToday: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)`,
+    })
       .from(simulatorTrades)
       .where(and(eq(simulatorTrades.level, level), gte(simulatorTrades.createdAt, utcDayStart)));
     const openToday = await db.select({ n: sql<number>`COUNT(*)` })
@@ -236,6 +254,11 @@ export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
         gte(engineRounds.entryAt, utcDayStart),
         sql`${engineRounds.levelSizes} LIKE ${'%"' + level + '":%'}`
       ));
+    const pnlToday = Math.round((settledToday[0]?.pnlToday ?? 0) * 100) / 100;
+    const bankroll = cfg.base === null ? null : Math.round((cfg.base + pnl) * 100) / 100;
+    const dayStartEquity = bankroll === null ? null : bankroll - pnlToday;
+    const dailyStopActive = dailyStopEnabled() && dayStartEquity !== null && dayStartEquity > 0
+      && pnlToday <= -DAILY_STOP_PCT * dayStartEquity;
     out.push({
       level,
       label: cfg.label,
@@ -243,9 +266,11 @@ export async function getLevelStates(startedAt: number): Promise<LevelState[]> {
       pnl,
       wins,
       losses,
-      bankroll: cfg.base === null ? null : Math.round((cfg.base + pnl) * 100) / 100,
+      bankroll,
       tradesToday: (settledToday[0]?.n ?? 0) + (openToday[0]?.n ?? 0),
       dailyTrades: cfg.dailyTrades,
+      pnlToday,
+      dailyStopActive,
     });
   }
   return out;
@@ -433,6 +458,7 @@ export async function engineTick(): Promise<TickResult> {
           const levelSizes: Record<string, number> = {};
           for (const ls of levels) {
             if (ls.dailyTrades !== null && ls.tradesToday >= ls.dailyTrades) continue; // quota spent
+            if (ls.dailyStopActive) continue; // daily loss circuit breaker tripped
             if (ls.bankroll === null || ls.bankroll <= 0) continue; // busted / undefined
             const budget = ls.bankroll * effRiskPerTrade; // 2% of current equity (1% in caution)
             const size = Math.floor(budget / entryPrice);
