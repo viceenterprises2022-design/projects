@@ -61,6 +61,15 @@ export function nextQuotaReset(now: number): number {
   return lastQuotaReset(now) + 86_400_000;
 }
 
+// Counter-trend entry gate (task #8, backtested 2026-07-24 on 904 ledger
+// trades: hit 67.4%→69.3%, net P&L +48% at 60m/0.2%). The driftless pricer
+// keeps taking BUY entries in strong downtrends; this skips entries that
+// fight the prevailing 1-hour move. Conservative-only: it can remove
+// entries, never add or resize them. Kill switch: TREND_FILTER=off.
+const TREND_LOOKBACK_BARS = 12; // 12 × 5m candles = 1 hour
+const TREND_GATE = 0.002;       // 0.2% adverse 1h move blocks counter-trend entry
+const trendFilterEnabled = () => process.env.TREND_FILTER !== 'off';
+
 // Canonical parameters, exposed read-only to the dashboard
 export const ENGINE_PARAMS = {
   roundSeconds: ROUND_MS / 1000,
@@ -68,6 +77,8 @@ export const ENGINE_PARAMS = {
   edgeThreshold: EDGE_THRESHOLD,
   spread: SPREAD,
   entryCutoffSeconds: ENTRY_CUTOFF_S,
+  trendGate: TREND_GATE,
+  trendLookbackMinutes: (TREND_LOOKBACK_BARS * 5),
 };
 
 // ---------------------------------------------------------------------------
@@ -95,7 +106,14 @@ export async function getMarks(): Promise<Record<string, number>> {
   return marks;
 }
 
-const volCache: Record<string, { ts: number; vol: number }> = {};
+const volCache: Record<string, { ts: number; vol: number; trend1h: number | null }> = {};
+
+// 1-hour price trend from the same candle fetch that feeds the vol input —
+// zero additional API calls or DB reads.
+export async function getTrend1h(asset: string): Promise<number | null> {
+  await getRealizedVolPct(asset); // populates the shared cache
+  return volCache[asset]?.trend1h ?? null;
+}
 
 async function getRealizedVolPct(asset: string): Promise<number> {
   const cached = volCache[asset];
@@ -120,7 +138,9 @@ async function getRealizedVolPct(asset: string): Promise<number> {
   const mean = rets.reduce((a, b) => a + b, 0) / rets.length;
   const variance = rets.reduce((a, b) => a + (b - mean) ** 2, 0) / (rets.length - 1);
   const vol = Math.sqrt(variance * ((365 * 24 * 60) / 5)) * 100;
-  volCache[asset] = { ts: Date.now(), vol };
+  const past = closes.length > TREND_LOOKBACK_BARS ? closes[closes.length - 1 - TREND_LOOKBACK_BARS] : null;
+  const trend1h = past ? (closes[closes.length - 1] - past) / past : null;
+  volCache[asset] = { ts: Date.now(), vol, trend1h };
   return vol;
 }
 
@@ -394,6 +414,17 @@ export async function engineTick(): Promise<TickResult> {
         const conviction = Math.abs(fv.pYes - 0.5);
         if (conviction >= effEdgeThreshold) {
           const side = fv.pYes > 0.5 ? 'BUY' : 'SELL';
+          // Counter-trend gate: don't fight a decisive 1-hour move.
+          if (trendFilterEnabled()) {
+            const trend = await getTrend1h(asset);
+            if (trend !== null &&
+                ((side === 'BUY' && trend < -TREND_GATE) || (side === 'SELL' && trend > TREND_GATE))) {
+              await db.update(engineRounds)
+                .set({ skipReason: `trend:counter-trend ${side} gated (1h ${(trend * 100).toFixed(2)}%)` })
+                .where(and(eq(engineRounds.id, id), sql`${engineRounds.side} IS NULL`));
+              continue;
+            }
+          }
           const modelP = side === 'BUY' ? fv.pYes : 1 - fv.pYes;
           const entryPrice = Math.min(Math.max(modelP + SPREAD, 0.02), 0.98);
 

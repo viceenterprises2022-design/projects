@@ -2317,6 +2317,11 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     <span className="f-chip">EDGE ≥ <b className="f-azure">{engineState?.params ? Math.round(engineState.params.edgeThreshold * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">SPREAD <b className="f-pos">{engineState?.params ? Math.round(engineState.params.spread * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">COMPOUNDS <b className="f-violet">PER TRADE</b></span>
+                    {engineState?.params?.trendGate ? (
+                      <span className="f-chip" title="Counter-trend entries are skipped when the 1-hour move exceeds this gate against the signal">
+                        TREND GATE <b className="f-azure">{(engineState.params.trendGate * 100).toFixed(1)}% · {engineState.params.trendLookbackMinutes}M</b>
+                      </span>
+                    ) : null}
                   </div>
                   <div className="f-kicker" style={{ marginBottom: 10 }}>View Parameters · visual model only</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
