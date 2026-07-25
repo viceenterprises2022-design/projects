@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 
-// Owner-only strategy analytics. ONE fetch on load (single DB scan server-
-// side); every metric and view below is computed in the browser from that
-// result. Switching tiers/views costs zero additional database reads.
+// Strategy analytics, visible to every approved viewer. ONE fetch on load
+// (single DB scan server-side); every metric and view below is computed in
+// the browser from that result. Switching tiers/views costs zero additional
+// database reads, and there is no polling.
 
 type Trade = {
   createdAt: number; level: number; asset: string; side: string;
@@ -14,7 +15,7 @@ type Trade = {
 
 const TIERS = [
   { key: 0, label: 'ALL TIERS' },
-  { key: 4, label: 'DEMO' },
+  { key: 4, label: 'GOLD' },
   { key: 1, label: 'LEVEL 1' },
   { key: 2, label: 'LEVEL 2' },
   { key: 3, label: 'LEVEL 3' },
@@ -66,7 +67,7 @@ function StatCard({ label, value, sub, tone }: { label: string; value: string; s
   );
 }
 
-export default function AnalyticsClient() {
+export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean }) {
   const [data, setData] = useState<{ trades: Trade[]; levels: any; truncated: boolean } | null>(null);
   const [tier, setTier] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -124,7 +125,7 @@ export default function AnalyticsClient() {
         const rows = data.trades.filter(t => t.level === l);
         const s = computeStats(rows);
         const b = data.levels[String(l)]?.base || 0;
-        return { key: l === 4 ? 'DEMO' : `LEVEL ${l}`, ...s, roce: b > 0 ? (s.net / b) * 100 : 0 };
+        return { key: l === 4 ? 'GOLD' : `LEVEL ${l}`, ...s, roce: b > 0 ? (s.net / b) * 100 : 0 };
       }),
       hours,
       maxHourN: Math.max(1, ...hours.map(x => x.n)),
@@ -190,7 +191,7 @@ export default function AnalyticsClient() {
             <span className="f-brand-mark" style={{ width: 40, height: 40, fontSize: 17, borderRadius: 13 }}>P</span>
             <div>
               <div className="f-serif-grad" style={{ fontSize: 22 }}>Strategy Analytics</div>
-              <div className="f-kicker">ADMIN · COMPUTED FROM ONE LEDGER SNAPSHOT · NO POLLING</div>
+              <div className="f-kicker">COMPUTED FROM ONE LEDGER SNAPSHOT · NO POLLING</div>
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -198,7 +199,9 @@ export default function AnalyticsClient() {
             <button className="f-btn" style={{ padding: '7px 14px', fontSize: 10 }} onClick={load} disabled={loading}>
               {loading ? 'LOADING…' : 'REFRESH'}
             </button>
-            <Link href="/admin/ledger" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>LEDGER EXPLORER</Link>
+            {isOwner && (
+              <Link href="/admin/ledger" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>LEDGER EXPLORER</Link>
+            )}
             <Link href="/dashboard" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
           </div>
         </div>
@@ -276,7 +279,7 @@ export default function AnalyticsClient() {
                 <tbody>
                   {view.byTier.map((r: any) => (
                     <tr key={r.key}>
-                      <td><span className={`f-tag ${r.key === 'DEMO' ? 'azure' : 'dim'}`}>{r.key}</span></td>
+                      <td><span className={`f-tag ${r.key === 'GOLD' ? 'azure' : 'dim'}`}>{r.key}</span></td>
                       <td className="num f-mono">{r.n}</td>
                       <td className="num f-mono">{r.wins} / {r.losses}</td>
                       <td className="num f-mono">{pct(r.hit)}</td>

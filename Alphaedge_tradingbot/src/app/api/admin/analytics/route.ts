@@ -3,7 +3,7 @@ import { db } from '@/db';
 import { simulatorTrades } from '@/db/schema';
 import { asc, gte } from 'drizzle-orm';
 import { initDb } from '@/db/init';
-import { requireOwner } from '@/lib/authz';
+import { requireViewer } from '@/lib/authz';
 import { getDemoAccount, LEVELS } from '@/lib/engine';
 
 export const dynamic = 'force-dynamic';
@@ -12,15 +12,18 @@ export const dynamic = 'force-dynamic';
 // keeps the single scan (index-assisted) and the JSON body bounded.
 const MAX_ROWS = 8000;
 
-// Owner-only strategy analytics feed.
+// Strategy analytics feed — open to every approved viewer. It exposes only
+// aggregate trade data the ledger already shows, and is the transparency
+// centrepiece of the demo. The Ledger Explorer stays owner-only because its
+// CSV export runs an unbounded query.
 // Read budget: ONE compact trades query for the demo window. Every metric —
 // win rates, profit factor, streaks, drawdown, per-asset/side/tier splits,
 // hourly distribution, equity curves — is computed client-side from this
 // single result set, so switching views costs zero additional DB reads.
 export async function GET(_req: NextRequest) {
   try {
-    const denied = await requireOwner();
-    if (denied) return NextResponse.json({ error: denied }, { status: 403 });
+    const denied = await requireViewer();
+    if (denied) return NextResponse.json({ error: denied }, { status: 401 });
     await initDb();
 
     const acct = await getDemoAccount();

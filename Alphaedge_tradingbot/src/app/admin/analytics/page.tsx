@@ -9,5 +9,5 @@ export default async function AdminAnalyticsPage() {
   const { user, isOwner } = await getSessionInfo()
   if (!user) redirect("/login")
   if (!isOwner) redirect("/dashboard")
-  return <AnalyticsClient />
+  return <AnalyticsClient isOwner />
 }
