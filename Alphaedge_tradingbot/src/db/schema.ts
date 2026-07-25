@@ -253,6 +253,14 @@ export const levelLocks = sqliteTable('level_locks', {
   updatedAt: integer('updated_at').notNull(),
 });
 
+// Changelog publication gate: a row means the entry is published to viewers.
+// Entry content lives in version control; only the approval lives here.
+export const changelogPublications = sqliteTable('changelog_publications', {
+  entryId: text('entry_id').primaryKey(),
+  publishedAt: integer('published_at').notNull(),
+  publishedBy: text('published_by'),
+});
+
 // Per-asset kill switches (owner-operated). Missing row = enabled.
 export const assetState = sqliteTable('asset_state', {
   asset: text('asset').primaryKey(),

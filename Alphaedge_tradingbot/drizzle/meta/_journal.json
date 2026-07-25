@@ -148,6 +148,13 @@
       "when": 1784978110991,
       "tag": "0020_sticky_profit_lock",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "6",
+      "when": 1784981279376,
+      "tag": "0021_changelog_publications",
+      "breakpoints": true
     }
   ]
 }
