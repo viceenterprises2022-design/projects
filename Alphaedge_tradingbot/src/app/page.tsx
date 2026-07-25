@@ -39,7 +39,7 @@ const pricing = [
     level: "Level 1",
     price: "1.2%",
     note: "annual platform access",
-    perks: ["$5K capital lane", "50 trades per day", "Live bot deployment", "Risk guardrails"],
+    perks: ["$5K capital lane", "50 trades per day", "Pauses at +28% daily", "Live bot deployment", "Risk guardrails"],
     featured: true,
   },
   {
@@ -47,14 +47,14 @@ const pricing = [
     level: "Level 2",
     price: "1.8%",
     note: "annual platform access",
-    perks: ["$10K capital lane", "100 trades per day", "Everything in Builder", "Priority execution lanes"],
+    perks: ["$10K capital lane", "100 trades per day", "Pauses at +28% daily", "Everything in Builder", "Priority execution lanes"],
   },
   {
     tier: "Sovereign",
     level: "Level 3",
     price: "Custom",
     note: "for teams and allocators",
-    perks: ["$25K+ capital lane", "250 trades per day", "White-glove onboarding", "Custom mandates"],
+    perks: ["$25K+ capital lane", "250 trades per day", "Pauses at +28% daily", "White-glove onboarding", "Custom mandates"],
   },
 ];
 
@@ -271,6 +271,11 @@ export default function HomePage() {
               </article>
             ))}
           </div>
+          <p style={{ margin: "26px auto 0", maxWidth: 760, textAlign: "center", fontSize: 12.5, lineHeight: 1.7, color: "var(--faint)" }}>
+            Daily ceilings are limits at which a lane stops trading for the day, not projected or promised returns.
+            A lane that reaches its ceiling pauses until the 00:00 UTC roll; one that drops 15% pauses for 24 hours.
+            Reaching a ceiling is never guaranteed, and capital is at risk — demo and past performance do not indicate future results.
+          </p>
         </section>
 
         {/* ---------- Launch ---------- */}
