@@ -134,6 +134,13 @@
       "when": 1784918590578,
       "tag": "0018_day_reset_marker",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1784966514059,
+      "tag": "0019_level_locks",
+      "breakpoints": true
     }
   ]
 }

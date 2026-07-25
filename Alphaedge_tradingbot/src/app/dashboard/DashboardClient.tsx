@@ -121,7 +121,7 @@ function fmtCompact(n: number | undefined | null) {
 }
 
 function levelLabel(l: number | undefined) {
-  return l === 4 ? 'DEMO' : `LEVEL ${l ?? '—'}`;
+  return l === 4 ? 'GOLD' : `LEVEL ${l ?? '—'}`;
 }
 
 function fmtTime(epochMs: number) {
@@ -1365,6 +1365,11 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
           const hh = String(Math.floor(restMs / 3_600_000)).padStart(2, '0');
           const mm = String(Math.floor((restMs % 3_600_000) / 60_000)).padStart(2, '0');
           const ss = String(Math.floor((restMs % 60_000) / 1000)).padStart(2, '0');
+          // Loss breaker releases on a rolling 24h clock, not the midnight roll
+          const lockMs = Math.max(0, (ls.lossLockedUntil ?? 0) - Date.now());
+          const lockHH = String(Math.floor(lockMs / 3_600_000)).padStart(2, '0');
+          const lockMM = String(Math.floor((lockMs % 3_600_000) / 60_000)).padStart(2, '0');
+          const lockSS = String(Math.floor((lockMs % 60_000) / 1000)).padStart(2, '0');
           return (
             <button
               key={ls.level}
@@ -1382,16 +1387,25 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span className={`f-tag ${selected ? 'azure' : ls.level === 4 ? 'win' : 'dim'}`}>{levelLabel(ls.level)}</span>
                 {ls.dailyStopActive ? (
-                  <span className="f-mono" title="Daily loss circuit breaker: this tier lost more than the daily stop threshold from its day-start equity — entries pause until the 13:00 UTC roll"
+                  <span className="f-mono" title="Loss circuit breaker: this tier lost more than the stop threshold from its window-start equity — entries pause for 24h from the trip, then re-baseline"
                     style={{
                       fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', padding: '3px 8px',
                       borderRadius: 6, color: '#f6465d', border: '1px solid rgba(246,70,93,0.4)',
                       background: 'rgba(246,70,93,0.07)', fontVariantNumeric: 'tabular-nums',
                     }}>
-                    DAILY STOP · {hh}:{mm}:{ss}
+                    STOPPED · {lockHH}:{lockMM}:{lockSS}
+                  </span>
+                ) : ls.profitLockActive ? (
+                  <span className="f-mono" title="Daily target reached: this tier booked its profit ceiling for the day and stops entering until the 00:00 UTC roll. A ceiling, not a promise."
+                    style={{
+                      fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', padding: '3px 8px',
+                      borderRadius: 6, color: '#bfff6a', border: '1px solid rgba(191,255,106,0.45)',
+                      background: 'rgba(191,255,106,0.08)', fontVariantNumeric: 'tabular-nums',
+                    }}>
+                    TARGET HIT · {hh}:{mm}:{ss}
                   </span>
                 ) : exhausted ? (
-                  <span className="f-mono" title="Daily quota filled — trading re-opens at 13:00 UTC, ahead of the US session"
+                  <span className="f-mono" title="Daily quota filled — trading re-opens at the 00:00 UTC roll"
                     style={{
                       fontSize: 9.5, fontWeight: 700, letterSpacing: '0.08em', padding: '3px 8px',
                       borderRadius: 6, color: '#ffd166', border: '1px solid rgba(255,209,102,0.35)',
@@ -1452,7 +1466,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Every entry risks 2% of the tier's current equity — sizes compound with performance. ROCE = realized P&L over the tier's capital base, the return on the money actually deployed. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Daily quotas reset at 13:00 UTC — a fresh book ahead of the US session.
+        Every entry risks 2% of the tier's current equity — sizes compound with performance. ROCE = realized P&L over the tier's capital base, the return on the money actually deployed. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Quotas and the daily target reset at 00:00 UTC. A tier that reaches its daily profit ceiling pauses until the roll; one that hits the loss stop pauses for 24h, then resumes on a re-based threshold. Reaching the ceiling is never guaranteed. GOLD is the uncapped lane — no quota, no ceiling, no daily stop.
       </div>
     </div>
   );
@@ -2379,6 +2393,16 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     <span className="f-chip">EDGE ≥ <b className="f-azure">{engineState?.params ? Math.round(engineState.params.edgeThreshold * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">SPREAD <b className="f-pos">{engineState?.params ? Math.round(engineState.params.spread * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">COMPOUNDS <b className="f-violet">PER TRADE</b></span>
+                    {engineState?.params?.dailyProfitLockPct ? (
+                      <span className="f-chip" title="Daily profit ceiling: a tier that books this much stops entering until the 00:00 UTC roll. A ceiling, not a promise — reaching it is not guaranteed.">
+                        TARGET <b className="f-pos">{(engineState.params.dailyProfitLockPct * 100).toFixed(0)}%/DAY</b>
+                      </span>
+                    ) : null}
+                    {engineState?.params?.dailyStopPct ? (
+                      <span className="f-chip" title="Loss circuit breaker: entries pause when a tier drops this much from its window-start equity, then reopen after the lock window on a re-based threshold.">
+                        STOP <b className="f-neg">−{(engineState.params.dailyStopPct * 100).toFixed(0)}% · {engineState.params.lossLockHours}H</b>
+                      </span>
+                    ) : null}
                     {engineState?.params?.trendGate ? (
                       <span className="f-chip" title="Counter-trend entries are skipped when the 1-hour move exceeds this gate against the signal">
                         TREND GATE <b className="f-azure">{(engineState.params.trendGate * 100).toFixed(1)}% · {engineState.params.trendLookbackMinutes}M</b>

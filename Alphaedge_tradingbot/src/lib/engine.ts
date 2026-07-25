@@ -11,7 +11,7 @@
 // Viewers never write — the engine is the only author of canonical rounds.
 
 import { db } from '@/db';
-import { engineRounds, simulatorTrades, demoAccount, assetState } from '@/db/schema';
+import { engineRounds, simulatorTrades, demoAccount, assetState, levelLocks } from '@/db/schema';
 import { eq, and, lte, gte, sql } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { binaryFairValue, settleBinary } from './binary';
@@ -34,29 +34,29 @@ export const ENGINE_ASSETS = Object.keys(ASSET_MAP);
 
 // Subscription tiers: fixed-fractional sizing — every entry risks 2% of the
 // tier's CURRENT equity (compounds with wins, de-risks in drawdowns).
-// Tiers differ by capital base and trades-per-day quota. Tier 4 is the free
-// Demo ledger shown first on the desk.
+// Tiers differ by capital base and trades-per-day quota. Tier 4 (GOLD) is the
+// uncapped flagship lane shown first on the desk: no quota, no profit lock,
+// no daily loss stop — it runs 24x7.
 export const LEVELS: Record<number, { base: number | null; dailyTrades: number | null; label: string }> = {
-  4: { base: 10_000, dailyTrades: null, label: 'Demo' }, // unlimited trades during public demo
+  4: { base: 10_000, dailyTrades: null, label: 'Gold' }, // uncapped: exempt from quota, profit lock and loss stop
   1: { base: 5_000, dailyTrades: 50, label: 'Level 1' },
   2: { base: 10_000, dailyTrades: 100, label: 'Level 2' },
   3: { base: 25_000, dailyTrades: 250, label: 'Level 3' }, // displayed as $25K+
 };
 export const LEVEL_IDS = [4, 1, 2, 3];
 
-// Daily quota window rolls at 13:00 UTC — the doorstep of the US session
-// (9:00 ET summer / 8:00 ET winter), where BTC/ETH/PAXG liquidity peaks.
-// Every tier enters US hours with a full book, and the fresh quota is spent
-// on prime-time entries first; the overnight Asia session trades leftovers.
-export const QUOTA_RESET_UTC_HOUR = 13;
+// The trading day rolls at 00:00 UTC. One reference point serves all three
+// daily gates: trade quota, the +28% profit lock and the -15% loss breaker
+// are every one measured against the tier's equity at this boundary.
+export const QUOTA_RESET_UTC_HOUR = 0;
 
-// Most recent 13:00 UTC at/before `now`.
+// Most recent 00:00 UTC at/before `now`.
 export function lastQuotaReset(now: number): number {
   const todayReset = new Date(now).setUTCHours(QUOTA_RESET_UTC_HOUR, 0, 0, 0);
   return todayReset <= now ? todayReset : todayReset - 86_400_000;
 }
 
-// Next 13:00 UTC after `now` — when spent quotas re-open.
+// Next 00:00 UTC after `now` — when quotas and the profit lock re-open.
 export function nextQuotaReset(now: number): number {
   return lastQuotaReset(now) + 86_400_000;
 }
@@ -83,6 +83,10 @@ export const ENGINE_PARAMS = {
   trendLookbackMinutes: (TREND_LOOKBACK_BARS * 5),
   dailyStopPct: process.env.DAILY_STOP !== 'off'
     ? Math.max(0.02, parseFloat(process.env.DAILY_STOP_PCT || '0.15'))
+    : null,
+  lossLockHours: Math.max(1, parseFloat(process.env.LOSS_LOCK_HOURS || '24')),
+  dailyProfitLockPct: process.env.DAILY_PROFIT_LOCK !== 'off'
+    ? Math.max(0.01, parseFloat(process.env.DAILY_PROFIT_LOCK_PCT || '0.28'))
     : null,
 };
 
@@ -207,6 +211,21 @@ export async function getDemoBankroll(): Promise<{ bankroll: number; base: numbe
 const DAILY_STOP_PCT = Math.max(0.02, parseFloat(process.env.DAILY_STOP_PCT || '0.15'));
 const dailyStopEnabled = () => process.env.DAILY_STOP !== 'off';
 
+// Loss breaker release is ROLLING, not calendar-based: a tripped tier reopens
+// 24h after the trip. Because 24h always spans a midnight, the tier's next
+// day-start equity is already the post-loss value — the reference re-baselines
+// on its own, so repeated trips cost 15% of a progressively smaller base
+// rather than cascading within a single day.
+const LOSS_LOCK_MS = Math.max(1, parseFloat(process.env.LOSS_LOCK_HOURS || '24')) * 3_600_000;
+
+// Profit lock: a tier that books +28% on the day stops entering until the next
+// 00:00 UTC roll. A CEILING, never a promise — reaching it is not guaranteed.
+const DAILY_PROFIT_LOCK_PCT = Math.max(0.01, parseFloat(process.env.DAILY_PROFIT_LOCK_PCT || '0.28'));
+const profitLockEnabled = () => process.env.DAILY_PROFIT_LOCK !== 'off';
+
+// GOLD (tier 4) is the uncapped showcase lane: exempt from every daily gate.
+const UNCAPPED_LEVELS = new Set([4]);
+
 export interface LevelState {
   level: number;
   label: string;
@@ -218,15 +237,21 @@ export interface LevelState {
   tradesToday: number;
   dailyTrades: number | null; // null = unlimited
   pnlToday: number;
-  dailyStopActive: boolean; // lost > DAILY_STOP_PCT of day-start equity today
+  dailyStopActive: boolean;   // -15% breaker tripped; rolling release
+  lossLockedUntil: number | null; // ms the breaker releases, null when clear
+  profitLockActive: boolean;  // +28% booked today; releases at next 00:00 UTC
+  uncapped: boolean;          // GOLD: exempt from quota, profit lock, loss stop
 }
 
 export async function getLevelStates(startedAt: number, dayResetAt?: number | null): Promise<LevelState[]> {
-  // Daily quota window starts at the last 13:00 UTC roll, the demo restart,
-  // or an operator day-reset — whichever is latest. A fresh demo must not
-  // inherit spent quota, and an operator reset clears counters + breakers
-  // immediately without touching ledger history.
-  const utcDayStart = Math.max(lastQuotaReset(Date.now()), startedAt, dayResetAt ?? 0);
+  // Daily window starts at the last 00:00 UTC roll, the demo restart, or an
+  // operator day-reset — whichever is latest. One reference for all three
+  // gates: quota, +28% profit lock, -15% loss breaker.
+  const now = Date.now();
+  const utcDayStart = Math.max(lastQuotaReset(now), startedAt, dayResetAt ?? 0);
+  // Rolling breaker state for every tier in one query.
+  const lockRows = await db.select().from(levelLocks);
+  const locks = new Map(lockRows.map(r => [r.level, r]));
   const out: LevelState[] = [];
   for (const level of LEVEL_IDS) {
     const cfg = LEVELS[level];
@@ -259,8 +284,47 @@ export async function getLevelStates(startedAt: number, dayResetAt?: number | nu
     const pnlToday = Math.round((settledToday[0]?.pnlToday ?? 0) * 100) / 100;
     const bankroll = cfg.base === null ? null : Math.round((cfg.base + pnl) * 100) / 100;
     const dayStartEquity = bankroll === null ? null : bankroll - pnlToday;
-    const dailyStopActive = dailyStopEnabled() && dayStartEquity !== null && dayStartEquity > 0
-      && pnlToday <= -DAILY_STOP_PCT * dayStartEquity;
+    const uncapped = UNCAPPED_LEVELS.has(level);
+
+    // --- +28% profit lock: stateless, releases on the 00:00 UTC roll ---------
+    const profitLockActive = !uncapped && profitLockEnabled()
+      && dayStartEquity !== null && dayStartEquity > 0
+      && pnlToday >= DAILY_PROFIT_LOCK_PCT * dayStartEquity;
+
+    // --- -15% loss breaker: rolling release, persisted ----------------------
+    // Threshold is measured from the equity at the start of the CURRENT
+    // breaker window: normally the day-start equity, or the equity at the
+    // last release when that came later (so a second trip costs 15% of the
+    // reduced base instead of re-firing on the same day's earlier losses).
+    const lock = locks.get(level);
+    let lossLockedUntil: number | null = null;
+    if (!uncapped && dailyStopEnabled() && bankroll !== null) {
+      if (lock?.lossLockedAt && now < lock.lossLockedAt + LOSS_LOCK_MS) {
+        lossLockedUntil = lock.lossLockedAt + LOSS_LOCK_MS; // still serving the lock
+      } else {
+        if (lock?.lossLockedAt) {
+          // Lock just expired — release and re-baseline off current equity.
+          await db.update(levelLocks)
+            .set({ lossLockedAt: null, releasedAt: now, releaseEquity: bankroll, updatedAt: now })
+            .where(eq(levelLocks.level, level));
+          locks.set(level, { ...lock, lossLockedAt: null, releasedAt: now, releaseEquity: bankroll });
+        } else {
+          const useRelease = lock?.releasedAt != null && lock.releasedAt > utcDayStart
+            && lock.releaseEquity != null && lock.releaseEquity > 0;
+          const baseline = useRelease ? (lock!.releaseEquity as number) : dayStartEquity;
+          if (baseline !== null && baseline > 0 && bankroll <= baseline * (1 - DAILY_STOP_PCT)) {
+            await db.insert(levelLocks)
+              .values({ level, lossLockedAt: now, releasedAt: null, releaseEquity: null, updatedAt: now })
+              .onConflictDoUpdate({
+                target: levelLocks.level,
+                set: { lossLockedAt: now, releasedAt: null, releaseEquity: null, updatedAt: now },
+              });
+            lossLockedUntil = now + LOSS_LOCK_MS;
+          }
+        }
+      }
+    }
+
     out.push({
       level,
       label: cfg.label,
@@ -272,7 +336,10 @@ export async function getLevelStates(startedAt: number, dayResetAt?: number | nu
       tradesToday: (settledToday[0]?.n ?? 0) + (openToday[0]?.n ?? 0),
       dailyTrades: cfg.dailyTrades,
       pnlToday,
-      dailyStopActive,
+      dailyStopActive: lossLockedUntil !== null,
+      lossLockedUntil,
+      profitLockActive,
+      uncapped,
     });
   }
   return out;
@@ -481,7 +548,8 @@ export async function engineTick(): Promise<TickResult> {
           const levelSizes: Record<string, number> = {};
           for (const ls of levels) {
             if (ls.dailyTrades !== null && ls.tradesToday >= ls.dailyTrades) continue; // quota spent
-            if (ls.dailyStopActive) continue; // daily loss circuit breaker tripped
+            if (ls.dailyStopActive) continue; // -15% breaker tripped (rolling release)
+            if (ls.profitLockActive) continue; // +28% booked — locked until 00:00 UTC
             if (ls.bankroll === null || ls.bankroll <= 0) continue; // busted / undefined
             const budget = ls.bankroll * effRiskPerTrade; // 2% of current equity (1% in caution)
             const size = Math.floor(budget / entryPrice);

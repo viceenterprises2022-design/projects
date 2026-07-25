@@ -242,6 +242,16 @@ export const onboardingProfiles = sqliteTable('onboarding_profiles', {
   updatedAt: integer('updated_at').notNull(),
 });
 
+// Rolling loss-breaker state per tier. The -15% stop releases 24h after the
+// trip (not on a calendar boundary), so the trip time must persist.
+export const levelLocks = sqliteTable('level_locks', {
+  level: integer('level').primaryKey(),
+  lossLockedAt: integer('loss_locked_at'), // ms of the -15% trip; null = clear
+  releasedAt: integer('released_at'),      // ms the lock expired
+  releaseEquity: real('release_equity'),   // equity at release — re-baselines the threshold
+  updatedAt: integer('updated_at').notNull(),
+});
+
 // Per-asset kill switches (owner-operated). Missing row = enabled.
 export const assetState = sqliteTable('asset_state', {
   asset: text('asset').primaryKey(),
