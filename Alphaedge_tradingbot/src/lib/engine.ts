@@ -255,25 +255,25 @@ export async function getLevelStates(startedAt: number, dayResetAt?: number | nu
   const out: LevelState[] = [];
   for (const level of LEVEL_IDS) {
     const cfg = LEVELS[level];
+    // ONE atomic aggregate for the whole tier: lifetime totals AND the split
+    // either side of the day boundary. Splitting this across two queries let a
+    // stale cumulative read pair with a fresh daily read — and because
+    // day-start equity used to be DERIVED (bankroll - pnlToday), that skew
+    // silently moved the profit-lock threshold and fired it early. Measuring
+    // both halves in a single snapshot makes that class of bug impossible.
     const aggRow = await db.select({
       total: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)`,
       wins: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.outcome} = 'WIN' THEN 1 ELSE 0 END), 0)`,
       settled: sql<number>`COUNT(*)`,
+      pnlBefore: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.createdAt} < ${utcDayStart} THEN ${simulatorTrades.pnl} ELSE 0 END), 0)`,
+      pnlToday: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.createdAt} >= ${utcDayStart} THEN ${simulatorTrades.pnl} ELSE 0 END), 0)`,
+      tradesToday: sql<number>`COALESCE(SUM(CASE WHEN ${simulatorTrades.createdAt} >= ${utcDayStart} THEN 1 ELSE 0 END), 0)`,
     })
       .from(simulatorTrades)
       .where(and(eq(simulatorTrades.level, level), gte(simulatorTrades.createdAt, startedAt)));
     const pnl = Math.round((aggRow[0]?.total ?? 0) * 100) / 100;
     const wins = aggRow[0]?.wins ?? 0;
     const losses = (aggRow[0]?.settled ?? 0) - wins;
-
-    // Entries today = settled rows today + in-flight participations.
-    // Same scan also sums today's pnl for the daily circuit breaker.
-    const settledToday = await db.select({
-      n: sql<number>`COUNT(*)`,
-      pnlToday: sql<number>`COALESCE(SUM(${simulatorTrades.pnl}), 0)`,
-    })
-      .from(simulatorTrades)
-      .where(and(eq(simulatorTrades.level, level), gte(simulatorTrades.createdAt, utcDayStart)));
     const openToday = await db.select({ n: sql<number>`COUNT(*)` })
       .from(engineRounds)
       .where(and(
@@ -281,22 +281,41 @@ export async function getLevelStates(startedAt: number, dayResetAt?: number | nu
         gte(engineRounds.entryAt, utcDayStart),
         sql`${engineRounds.levelSizes} LIKE ${'%"' + level + '":%'}`
       ));
-    const pnlToday = Math.round((settledToday[0]?.pnlToday ?? 0) * 100) / 100;
+    const pnlToday = Math.round((aggRow[0]?.pnlToday ?? 0) * 100) / 100;
     const bankroll = cfg.base === null ? null : Math.round((cfg.base + pnl) * 100) / 100;
-    const dayStartEquity = bankroll === null ? null : bankroll - pnlToday;
+    // Measured from the same snapshot as pnlToday — never derived by subtraction.
+    const dayStartEquity = cfg.base === null
+      ? null
+      : Math.round((cfg.base + (aggRow[0]?.pnlBefore ?? 0)) * 100) / 100;
     const uncapped = UNCAPPED_LEVELS.has(level);
+    const lock = locks.get(level);
 
-    // --- +28% profit lock: stateless, releases on the 00:00 UTC roll ---------
-    const profitLockActive = !uncapped && profitLockEnabled()
-      && dayStartEquity !== null && dayStartEquity > 0
-      && pnlToday >= DAILY_PROFIT_LOCK_PCT * dayStartEquity;
+    // --- +28% profit lock: STICKY for the UTC day ---------------------------
+    // Once the ceiling is booked the tier is done for the day. Without this it
+    // could unlock itself when already-open positions settled at a loss and
+    // dragged the day's gain back under the threshold.
+    let profitLockActive = false;
+    if (!uncapped && profitLockEnabled() && dayStartEquity !== null && dayStartEquity > 0) {
+      const lockedEarlierToday = lock?.profitLockedAt != null && lock.profitLockedAt >= utcDayStart;
+      if (lockedEarlierToday) {
+        profitLockActive = true;
+      } else if (pnlToday >= DAILY_PROFIT_LOCK_PCT * dayStartEquity) {
+        profitLockActive = true;
+        await db.insert(levelLocks)
+          .values({ level, profitLockedAt: now, updatedAt: now })
+          .onConflictDoUpdate({
+            target: levelLocks.level,
+            set: { profitLockedAt: now, updatedAt: now },
+          });
+        locks.set(level, { ...(lock ?? { level, lossLockedAt: null, releasedAt: null, releaseEquity: null }), profitLockedAt: now } as any);
+      }
+    }
 
     // --- -15% loss breaker: rolling release, persisted ----------------------
     // Threshold is measured from the equity at the start of the CURRENT
     // breaker window: normally the day-start equity, or the equity at the
     // last release when that came later (so a second trip costs 15% of the
     // reduced base instead of re-firing on the same day's earlier losses).
-    const lock = locks.get(level);
     let lossLockedUntil: number | null = null;
     if (!uncapped && dailyStopEnabled() && bankroll !== null) {
       if (lock?.lossLockedAt && now < lock.lossLockedAt + LOSS_LOCK_MS) {
@@ -333,7 +352,7 @@ export async function getLevelStates(startedAt: number, dayResetAt?: number | nu
       wins,
       losses,
       bankroll,
-      tradesToday: (settledToday[0]?.n ?? 0) + (openToday[0]?.n ?? 0),
+      tradesToday: (aggRow[0]?.tradesToday ?? 0) + (openToday[0]?.n ?? 0),
       dailyTrades: cfg.dailyTrades,
       pnlToday,
       dailyStopActive: lossLockedUntil !== null,

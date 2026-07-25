@@ -249,6 +249,7 @@ export const levelLocks = sqliteTable('level_locks', {
   lossLockedAt: integer('loss_locked_at'), // ms of the -15% trip; null = clear
   releasedAt: integer('released_at'),      // ms the lock expired
   releaseEquity: real('release_equity'),   // equity at release — re-baselines the threshold
+  profitLockedAt: integer('profit_locked_at'), // ms the +28% ceiling was booked; sticky for the UTC day
   updatedAt: integer('updated_at').notNull(),
 });
 
