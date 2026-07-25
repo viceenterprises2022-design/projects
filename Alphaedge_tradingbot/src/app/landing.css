@@ -386,23 +386,27 @@
 
 .l-asset {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) auto auto;
+  /* max-content on the numeric tracks: an `auto` track can be squeezed below
+     its content width, and since the price is unbreakable mono text it then
+     overflowed into the 24h delta. The name column absorbs the pressure. */
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
   align-items: baseline;
-  gap: 14px;
+  gap: 12px;
   padding: 15px 2px;
   border-bottom: 1px solid var(--line);
 }
 
-.l-asset-name { font-family: var(--font-mono), monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: var(--dim); }
+.l-asset-name { min-width: 0; font-family: var(--font-mono), monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: var(--dim); }
 .l-asset-name small { display: block; margin-top: 4px; font-size: 8.5px; font-weight: 600; letter-spacing: 0.12em; color: var(--faint); }
 
 .l-asset-price {
   font-family: var(--font-mono), monospace;
-  font-size: 23px;
+  font-size: clamp(17px, 1.55vw, 23px);
   font-weight: 700;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   text-align: right;
+  white-space: nowrap;
 }
 
 @keyframes l-flash-up { 0% { color: var(--lime); } 100% { color: var(--white); } }
@@ -410,7 +414,7 @@
 .l-tick-up { animation: l-flash-up 700ms ease-out; }
 .l-tick-down { animation: l-flash-down 700ms ease-out; }
 
-.l-asset-delta { font-family: var(--font-mono), monospace; font-size: 11.5px; font-weight: 700; min-width: 74px; text-align: right; }
+.l-asset-delta { font-family: var(--font-mono), monospace; font-size: 11.5px; font-weight: 700; min-width: 68px; text-align: right; white-space: nowrap; }
 .l-pos { color: var(--lime); }
 .l-neg { color: var(--rose); }
 .l-dim-t { color: var(--faint); }
