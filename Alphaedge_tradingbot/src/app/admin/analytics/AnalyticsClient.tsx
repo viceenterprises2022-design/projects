@@ -74,6 +74,10 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
   const [error, setError] = useState<string | null>(null);
   const [loadedAt, setLoadedAt] = useState<Date | null>(null);
   const curveRef = useRef<HTMLCanvasElement>(null);
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  // Pixel<->index geometry from the last paint, so the pointer handler can map
+  // a mouse position back to a point without recomputing the series.
+  const geomRef = useRef<{ pts: number[]; x0: number; span: number; w: number } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true); setError(null);
@@ -156,6 +160,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
     const span = Math.max(1, max - min);
     const X = (i: number) => (i / (pts.length - 1)) * (w - 20) + 10;
     const Y = (v: number) => h - 16 - ((v - min) / span) * (h - 32);
+    geomRef.current = { pts, x0: 10, span: w - 20, w };
     // zero line
     ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.setLineDash([4, 4]);
     ctx.beginPath(); ctx.moveTo(10, Y(0)); ctx.lineTo(w - 10, Y(0)); ctx.stroke();
@@ -175,11 +180,23 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
     // endpoint
     ctx.beginPath(); ctx.arc(X(pts.length - 1), Y(pts[pts.length - 1]), 3, 0, Math.PI * 2);
     ctx.fillStyle = pts[pts.length - 1] >= 0 ? '#bfff6a' : '#f6465d'; ctx.fill();
+    // hover crosshair + marker
+    if (hoverIdx !== null && hoverIdx >= 0 && hoverIdx < pts.length) {
+      const hx = X(hoverIdx), hy = Y(pts[hoverIdx]);
+      ctx.strokeStyle = 'rgba(239,246,255,0.28)'; ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(hx, 6); ctx.lineTo(hx, h - 10); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(hx, hy, 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#050711'; ctx.fill();
+      ctx.strokeStyle = pts[hoverIdx] >= 0 ? '#bfff6a' : '#f6465d'; ctx.lineWidth = 2; ctx.stroke();
+    }
+
     // labels
     ctx.fillStyle = 'rgba(239,246,255,0.45)'; ctx.font = '9px monospace';
     ctx.fillText(fmtSigned(max), 12, 12);
     ctx.fillText(fmtSigned(min), 12, h - 4);
-  }, [view]);
+  }, [view, hoverIdx]);
 
   const s = view?.stats;
 
@@ -238,10 +255,57 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
             <div className="f-panel" style={{ marginBottom: 14 }}>
               <div className="f-panel-head">
                 <h2 className="f-panel-title"><span className="f-serif-grad">Equity Curve</span>
-                  <span className="f-kicker" style={{ marginLeft: 6 }}>{TIERS.find(t => t.key === tier)?.label} · CUMULATIVE REALIZED P&L</span>
+                  <span className="f-kicker" style={{ marginLeft: 6 }}>{TIERS.find(t => t.key === tier)?.label} · CUMULATIVE REALIZED P&L · HOVER FOR DETAIL</span>
                 </h2>
               </div>
-              <canvas ref={curveRef} style={{ width: '100%', height: 190, display: 'block' }} />
+              <div style={{ position: 'relative' }}
+                onMouseLeave={() => setHoverIdx(null)}
+                onMouseMove={(e) => {
+                  const g = geomRef.current;
+                  if (!g || g.pts.length < 2) return;
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const rel = (e.clientX - rect.left - g.x0) / g.span;
+                  const i = Math.round(rel * (g.pts.length - 1));
+                  setHoverIdx(Math.min(g.pts.length - 1, Math.max(0, i)));
+                }}>
+                <canvas ref={curveRef} style={{ width: '100%', height: 190, display: 'block', cursor: 'crosshair' }} />
+                {hoverIdx !== null && view && geomRef.current && (() => {
+                  const cum = geomRef.current.pts[hoverIdx];
+                  const t = hoverIdx > 0 ? view.subset[hoverIdx - 1] : null;
+                  const leftPct = (hoverIdx / Math.max(1, geomRef.current.pts.length - 1)) * 100;
+                  return (
+                    <div style={{
+                      position: 'absolute', top: 6, left: `${leftPct}%`,
+                      transform: `translateX(${leftPct > 65 ? '-104%' : leftPct < 12 ? '4%' : '-50%'})`,
+                      pointerEvents: 'none', zIndex: 3, minWidth: 168,
+                      background: 'rgba(5,7,17,0.94)', border: '1px solid var(--hairline-strong)',
+                      borderRadius: 10, padding: '8px 11px', backdropFilter: 'blur(6px)',
+                    }}>
+                      <div className="f-kicker" style={{ fontSize: 8 }}>
+                        {t ? new Date(t.createdAt).toISOString().replace('T', ' ').slice(0, 19) + ' UTC' : 'START OF WINDOW'}
+                      </div>
+                      <div className={`f-mono ${cum >= 0 ? 'f-pos' : 'f-neg'}`}
+                        style={{ fontSize: 16, fontWeight: 700, marginTop: 3, fontVariantNumeric: 'tabular-nums' }}>
+                        {fmtSigned(cum)}
+                      </div>
+                      <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 1 }}>
+                        cumulative · trade {hoverIdx} of {geomRef.current.pts.length - 1}
+                      </div>
+                      {t && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, flexWrap: 'wrap' }}>
+                          <span className="f-mono f-faint" style={{ fontSize: 9.5 }}>{t.asset}</span>
+                          <span className={`f-tag ${t.side === 'BUY' ? 'win' : 'loss'}`} style={{ fontSize: 8 }}>{t.side}</span>
+                          <span className={`f-tag ${t.outcome === 'WIN' ? 'win' : 'loss'}`} style={{ fontSize: 8 }}>{t.outcome}</span>
+                          <span className={`f-mono ${t.pnl >= 0 ? 'f-pos' : 'f-neg'}`}
+                            style={{ fontSize: 10.5, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                            {fmtSigned(t.pnl)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+              </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 14, marginBottom: 14 }}>
