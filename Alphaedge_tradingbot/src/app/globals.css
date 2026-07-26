@@ -29,10 +29,30 @@ html {
 body {
   margin: 0;
   background: var(--bg);
-  color: white;
+  color: var(--page-ink, white);
   font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-feature-settings: "ss01", "cv01", "cv11", "cv09";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ---------- Light theme (base layer) ----------
+   html/body sit BEHIND the page shells, so they must flip too — otherwise a
+   short page or overscroll shows dark navy around a light layout. */
+:root[data-theme="light"] {
+  --bg: #f6f8fc;
+  --page-ink: #0b1220;
+  --panel: rgba(11, 18, 32, 0.05);
+  --panel-strong: rgba(11, 18, 32, 0.09);
+  --line: rgba(11, 18, 32, 0.13);
+  --muted: rgba(11, 18, 32, 0.68);
+  --soft: rgba(11, 18, 32, 0.85);
+  --cyan: #0785a3;
+  --violet: #6338c9;
+  --lime: #3f7d10;
+  --rose: #cc1b32;
+  --amber: #96650a;
+  color-scheme: light;
+}
+:root[data-theme="dark"] { color-scheme: dark; }

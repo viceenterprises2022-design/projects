@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeToggle from "./ThemeToggle";
 import { WaitlistForm } from "./waitlist-form";
 import { LiveDesk } from "./live-desk";
 import "./landing.css";
@@ -79,9 +80,12 @@ export default function HomePage() {
             <a href="#pricing">Pricing</a>
             <Link href="/login">Access</Link>
           </div>
-          <Link className="l-nav-cta" href="/login">
-            Open the desk
-          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <ThemeToggle />
+            <Link className="l-nav-cta" href="/login">
+              Open the desk
+            </Link>
+          </div>
         </nav>
 
         {/* ---------- Hero ---------- */}

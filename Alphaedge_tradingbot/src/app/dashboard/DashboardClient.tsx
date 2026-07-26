@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '../ThemeToggle';
 import './dashboard.css';
 
 import {
@@ -132,10 +133,31 @@ function fmtTime(epochMs: number) {
 }
 
 // Canvas palette (matches dashboard.css tokens)
-const C = {
+// Canvas cannot use CSS variables, so the palette is READ from the live
+// tokens each paint. That keeps every chart in step with the active theme
+// automatically — a light-mode reader gets darkened accents and a dark grid
+// without a second hardcoded palette to maintain.
+const C_DARK = {
   azure: '#58f0ff', lime: '#bfff6a', rose: '#f6465d', violet: '#9d7dff', amber: '#ffd166',
   grid: 'rgba(255,255,255,0.05)', faint: 'rgba(239,246,255,0.4)',
 };
+const C: typeof C_DARK = { ...C_DARK };
+
+function syncChartPalette() {
+  if (typeof window === 'undefined') return;
+  const el = document.querySelector('.fable');
+  if (!el) return;
+  const cs = getComputedStyle(el);
+  const pick = (name: string, fallback: string) => (cs.getPropertyValue(name).trim() || fallback);
+  C.azure = pick('--azure', C_DARK.azure);
+  C.lime = pick('--sage', C_DARK.lime);
+  C.rose = pick('--oxide', C_DARK.rose);
+  C.violet = pick('--violet', C_DARK.violet);
+  C.amber = pick('--gold', C_DARK.amber);
+  const light = document.documentElement.getAttribute('data-theme') === 'light';
+  C.grid = light ? 'rgba(11,18,32,0.07)' : C_DARK.grid;
+  C.faint = pick('--ivory-faint', C_DARK.faint);
+}
 
 function fitCanvas(canvas: HTMLCanvasElement | null, height: number) {
   if (!canvas) return null;
@@ -159,7 +181,7 @@ function QuotaRing({ used, limit }: { used: number | undefined; limit: number | 
   return (
     <div style={{ position: 'relative', width: 76, height: 76, flexShrink: 0 }}>
       <svg width="76" height="76" viewBox="0 0 76 76" style={{ transform: 'rotate(-90deg)' }}>
-        <circle cx="38" cy="38" r={R} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
+        <circle cx="38" cy="38" r={R} fill="none" stroke="var(--ink-3)" strokeWidth="6" />
         <circle cx="38" cy="38" r={R} fill="none" stroke={stroke} strokeWidth="6" strokeLinecap="round"
           strokeDasharray={`${pct * C} ${C}`}
           style={{ transition: 'stroke-dasharray 500ms ease, stroke 300ms ease', filter: `drop-shadow(0 0 ${exhausted ? 5 : 10}px ${stroke})` }} />
@@ -222,6 +244,15 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
 
   // ---- Canonical server engine state (3s poll; every poll also ticks the engine) ----
   const [engineState, setEngineState] = useState<any>(null);
+  // Theme drives the canvas palette; charts must repaint when it flips.
+  const [theme, setTheme] = useState<string>('dark');
+  useEffect(() => {
+    const read = () => setTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+    read();
+    const mo = new MutationObserver(read);
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => mo.disconnect();
+  }, []);
   const engineStateRef = useRef<any>(null);
   const prevRoundsRef = useRef<Record<string, any>>({});
   const prevEpochRef = useRef<number | null>(null);
@@ -736,7 +767,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
     ([['BUY', buyY, C.lime, pYes], ['SELL', sellY, C.rose, 1 - pYes]] as const).forEach(([lbl, y, col, p]) => {
       const active = firing === lbl;
       ctx.beginPath(); ctx.arc(outX, y as number, active ? 12 : 9, 0, Math.PI * 2);
-      ctx.fillStyle = active ? (col as string) : 'rgba(255,255,255,0.06)';
+      ctx.fillStyle = active ? (col as string) : C.grid;
       ctx.strokeStyle = col as string; ctx.lineWidth = 1.5;
       ctx.fill(); ctx.stroke();
       ctx.fillStyle = active ? '#051016' : (col as string);
@@ -858,8 +889,17 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   // Redraw DB/markets-derived canvases when their data changes or tab activates
   useEffect(() => {
     if (activeTab !== 'simulator') return;
+    syncChartPalette();
     drawEquity(); drawHitrate(); drawCandles();
-  }, [activeTab, drawEquity, drawHitrate, drawCandles, markets, simHistory, simAsset]);
+  }, [activeTab, drawEquity, drawHitrate, drawCandles, markets, simHistory, simAsset, theme]);
+
+  // Theme flip: re-read the tokens and repaint every canvas immediately.
+  useEffect(() => {
+    syncChartPalette();
+    if (activeTab !== 'simulator') return;
+    drawEquity(); drawHitrate(); drawCandles();
+    drawRoundChart(); drawMesh(); drawRegime(); drawEnvelope();
+  }, [theme, activeTab, drawEquity, drawHitrate, drawCandles, drawRoundChart, drawMesh, drawRegime, drawEnvelope]);
 
   useEffect(() => {
     if (activeTab !== 'simulator') return;
@@ -1349,7 +1389,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit',
                 border: `1px solid ${selected ? 'rgba(88,240,255,0.55)' : 'var(--hairline-strong)'}`,
                 borderRadius: 18,
-                background: selected ? 'rgba(88,240,255,0.07)' : 'rgba(5,7,17,0.4)',
+                background: selected ? 'var(--tile-selected)' : 'var(--ink-1)',
                 boxShadow: selected ? '0 0 26px rgba(88,240,255,0.12)' : 'none',
                 padding: '14px 16px',
                 transition: 'all 180ms ease',
@@ -1513,6 +1553,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 <button className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5 }} onClick={() => handleSignOut()}>
                   SIGN OUT
                 </button>
+                <ThemeToggle compact />
               </div>
             ) : (
               <Link href="/login" className="f-btn" style={{ padding: '5px 14px', fontSize: 9.5, textDecoration: 'none' }}>
@@ -1828,7 +1869,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       {data.botInstances.map((bot: any) => {
                         const templateCode = data.botTemplates.find((t: any) => t.id === bot.botTemplateId)?.code || 'Unknown';
                         return (
-                          <div key={bot.id} style={{ border: '1px solid var(--hairline)', borderRadius: 16, padding: '11px 13px', background: 'rgba(5,7,17,0.4)' }}>
+                          <div key={bot.id} style={{ border: '1px solid var(--hairline)', borderRadius: 16, padding: '11px 13px', background: 'var(--ink-1)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                                 <span className="f-mono" style={{ fontSize: 12, fontWeight: 700 }}>{templateCode}</span>
@@ -2092,7 +2133,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                       { name: 'BUY · SETTLES ABOVE STRIKE', book: buyBook, color: 'var(--sage)' },
                       { name: 'SELL · SETTLES AT/BELOW STRIKE', book: sellBook, color: 'var(--oxide)' },
                     ].map(({ name, book, color }) => (
-                      <div key={name} style={{ border: '1px solid var(--hairline)', borderRadius: 14, background: 'rgba(5,7,17,0.4)', padding: '10px 12px' }}>
+                      <div key={name} style={{ border: '1px solid var(--hairline)', borderRadius: 14, background: 'var(--ink-1)', padding: '10px 12px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
                           <span className="f-kicker">{name}</span>
                           <span className="f-mono" style={{ color, fontSize: 12, fontWeight: 700 }}>{Math.round(book.mid * 100)}¢</span>
@@ -2195,7 +2236,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                   </div>
                   {bootstrap ? (
                     <div style={{ display: 'flex', gap: 20, alignItems: 'stretch', flexWrap: 'wrap' }}>
-                      <div style={{ flex: '1.3 1 280px', display: 'flex', alignItems: 'flex-end', gap: 2, height: 120, background: 'rgba(5,7,17,0.55)', border: '1px solid var(--hairline)', borderRadius: 14, padding: '10px 14px' }}>
+                      <div style={{ flex: '1.3 1 280px', display: 'flex', alignItems: 'flex-end', gap: 2, height: 120, background: 'var(--ink-1)', border: '1px solid var(--hairline)', borderRadius: 14, padding: '10px 14px' }}>
                         {bootstrap.bins.map((b, i) => (
                           <div key={i} style={{
                             flex: 1,
@@ -2362,7 +2403,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                           <div key={ev.id} style={{
                             display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px',
                             border: `1px solid ${active ? (lockdown ? 'rgba(246,70,93,0.5)' : 'rgba(255,209,102,0.5)') : 'var(--hairline)'}`,
-                            borderRadius: 10, background: active ? (lockdown ? 'rgba(246,70,93,0.07)' : 'rgba(255,209,102,0.06)') : 'rgba(5,7,17,0.4)',
+                            borderRadius: 10, background: active ? (lockdown ? 'rgba(246,70,93,0.07)' : 'rgba(255,209,102,0.06)') : 'var(--ink-1)',
                           }}>
                             <span className="f-mono" style={{ fontSize: 10, color: 'var(--ivory-dim)', width: 108, flexShrink: 0 }}>
                               {day} · {t1}–{t2}

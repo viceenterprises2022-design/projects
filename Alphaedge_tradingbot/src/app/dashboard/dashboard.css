@@ -21,6 +21,7 @@
   --oxide: #f6465d;
   --violet: #9d7dff;
   --azure: #58f0ff;
+  --tile-selected: rgba(88, 240, 255, 0.07);
 
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   background:
@@ -691,4 +692,38 @@
 
 @media (max-width: 700px) {
   .f-cycle { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ============================================================
+   LIGHT THEME — token overrides only (see landing.css rationale)
+   ============================================================ */
+
+:root[data-theme="light"] .fable {
+  --ink-0: #f6f8fc;
+  --ink-1: rgba(11, 18, 32, 0.035);
+  --ink-2: rgba(11, 18, 32, 0.055);
+  --ink-3: rgba(11, 18, 32, 0.1);
+  --hairline: rgba(11, 18, 32, 0.1);
+  --hairline-strong: rgba(11, 18, 32, 0.18);
+  --ivory: #0b1220;
+  --ivory-dim: rgba(11, 18, 32, 0.7);
+  --ivory-faint: rgba(11, 18, 32, 0.46);
+  --gold: #96650a;
+  --gold-bright: #a8710b;
+  --sage: #3f7d10;
+  --oxide: #cc1b32;
+  --violet: #6338c9;
+  --azure: #0785a3;
+  --tile-selected: rgba(7, 133, 163, 0.08);
+  background:
+    radial-gradient(1200px 640px at 82% -12%, rgba(7, 133, 163, 0.07), transparent 58%),
+    radial-gradient(1000px 700px at -12% 108%, rgba(99, 56, 201, 0.06), transparent 55%),
+    var(--ink-0);
+}
+
+/* Noise/vignette layer reads as grime on a light ground. */
+:root[data-theme="light"] .fable::before { opacity: 0.18; }
+
+:root[data-theme="light"] .f-serif-grad {
+  background-image: linear-gradient(100deg, #0b1220 0%, #0785a3 42%, #3f7d10 76%, #6338c9 105%);
 }

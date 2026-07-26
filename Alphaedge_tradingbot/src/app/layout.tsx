@@ -49,9 +49,18 @@ export const viewport = {
   themeColor: "#050711",
 };
 
+// Applied before first paint so a light-mode user never sees a dark flash.
+// Dark is the default and the fallback if storage is unavailable.
+const THEME_INIT = `(function(){try{var t=localStorage.getItem('prospera-theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // suppressHydrationWarning: THEME_INIT deliberately rewrites data-theme
+  // before React hydrates, so the server value ("dark") and the client value
+  // legitimately differ for a light-mode reader. This is the documented
+  // escape hatch for pre-paint theme stamping.
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} ${serif.variable}`}>
+    <html lang="en" data-theme="dark" suppressHydrationWarning className={`${sans.variable} ${mono.variable} ${serif.variable}`}>
+      <head><script dangerouslySetInnerHTML={{ __html: THEME_INIT }} /></head>
       <body>{children}</body>
     </html>
   );

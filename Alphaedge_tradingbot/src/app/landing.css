@@ -823,3 +823,43 @@
   .l-tick-up, .l-tick-down { animation: none; }
   .landing * { transition-duration: 0.01ms !important; }
 }
+
+/* ============================================================
+   LIGHT THEME
+   Dark is the product default; light is opt-in via the toggle.
+   Only tokens are redefined — no component rule is duplicated,
+   so both themes stay in lockstep as the design evolves.
+   Accents are darkened for contrast on a light ground while
+   keeping their hue identity (cyan stays cyan, lime stays green).
+   ============================================================ */
+
+:root[data-theme="light"] .landing {
+  --bg: #f6f8fc;
+  --panel: rgba(11, 18, 32, 0.035);
+  --panel-strong: rgba(11, 18, 32, 0.06);
+  --line: rgba(11, 18, 32, 0.11);
+  --line-strong: rgba(11, 18, 32, 0.2);
+  --white: #0b1220;
+  --dim: rgba(11, 18, 32, 0.7);
+  --faint: rgba(11, 18, 32, 0.46);
+  --cyan: #0785a3;
+  --lime: #3f7d10;
+  --violet: #6338c9;
+  --rose: #cc1b32;
+  --amber: #96650a;
+}
+
+/* Ambient glows are tuned for a dark ground; soften them on light. */
+:root[data-theme="light"] .landing::before { opacity: 0.5; }
+
+/* The gradient wordmark needs darker stops to stay legible on light. */
+:root[data-theme="light"] .l-serif-grad {
+  background-image: linear-gradient(100deg, #0b1220 0%, #0785a3 42%, #3f7d10 76%, #6338c9 105%);
+}
+
+/* Theme button tokens consumed by ThemeToggle */
+:root[data-theme="light"] {
+  --theme-btn-bg: rgba(11, 18, 32, 0.05);
+  --theme-btn-line: rgba(11, 18, 32, 0.16);
+  --theme-btn-ink: #0b1220;
+}
