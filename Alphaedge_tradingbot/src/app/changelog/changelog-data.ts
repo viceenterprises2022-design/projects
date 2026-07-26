@@ -34,6 +34,13 @@ export const CHANGELOG: ChangeEntry[] = [
   // ---------------------------------------------------------------- 26 Jul
   {
     date: '2026-07-26',
+    id: 'access-management-moved-to-its-own-page',
+    tag: 'Improved',
+    title: 'Access management moved to its own page',
+    body: 'Approving and managing desk access now has a dedicated screen with search, filters by status and paging, rather than a growing list on the main dashboard. Operator-facing only — it does not change anything you see on the desk.',
+  },
+  {
+    date: '2026-07-26',
     id: 'desk-now-advances-every-round-around-the-clock',
     tag: 'Fixed',
     title: 'The desk now evaluates every round, around the clock',

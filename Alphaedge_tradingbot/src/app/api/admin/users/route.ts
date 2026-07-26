@@ -1,21 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { users, onboardingProfiles } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, inArray, sql, and } from 'drizzle-orm';
 import { initDb } from '@/db/init';
 import { requireOwner } from '@/lib/authz';
 
 export const dynamic = 'force-dynamic';
 
-// Owner-only access management: list everyone who has signed in and change
-// their role from the dashboard — no env changes, no redeploys.
+const PAGE_SIZE = 50;
+const ROLES = ['pending', 'viewer', 'owner', 'blocked'];
 
-export async function GET() {
+// Owner-only access management. Paginated and filterable so the list stays
+// usable as sign-ups grow: the page fetches one slice plus the onboarding
+// answers for just that slice, never the whole table.
+export async function GET(req: NextRequest) {
   try {
     const denied = await requireOwner();
     if (denied) return NextResponse.json({ error: denied }, { status: 403 });
     await initDb();
 
+    const q = (req.nextUrl.searchParams.get('q') || '').trim().toLowerCase();
+    const role = req.nextUrl.searchParams.get('role') || 'all';
+    const page = Math.max(1, parseInt(req.nextUrl.searchParams.get('page') || '1', 10) || 1);
+
+    const conds = [sql`${users.email} LIKE '%@%'`]; // hide legacy seed rows
+    if (ROLES.includes(role)) conds.push(eq(users.role, role));
+    if (q) {
+      conds.push(sql`(lower(${users.email}) LIKE ${'%' + q + '%'} OR lower(coalesce(${users.name}, '')) LIKE ${'%' + q + '%'})`);
+    }
+    const where = and(...conds)!;
+
+    // Pending first — those are the ones needing action.
     const rows = await db.select({
       id: users.id,
       name: users.name,
@@ -23,17 +38,23 @@ export async function GET() {
       image: users.image,
       role: users.role,
       createdAt: users.createdAt,
-    }).from(users);
+    })
+      .from(users)
+      .where(where)
+      .orderBy(sql`CASE ${users.role} WHEN 'pending' THEN 0 WHEN 'viewer' THEN 1 WHEN 'owner' THEN 2 ELSE 3 END`, users.email)
+      .limit(PAGE_SIZE + 1)
+      .offset((page - 1) * PAGE_SIZE);
 
-    // Hide legacy seed rows without real emails/sign-ins
-    const accounts = rows.filter(u => !!u.email && u.email.includes('@'));
-    const order: Record<string, number> = { pending: 0, viewer: 1, owner: 2, blocked: 3 };
-    accounts.sort((a, b) => (order[a.role] ?? 9) - (order[b.role] ?? 9) || (a.email || '').localeCompare(b.email || ''));
+    const hasNext = rows.length > PAGE_SIZE;
+    const pageRows = rows.slice(0, PAGE_SIZE);
 
-    // Attach onboarding answers (keyed by email) so approvals happen in context.
-    const profiles = await db.select().from(onboardingProfiles);
+    // Onboarding answers for THIS page only.
+    const emails = pageRows.map(u => (u.email || '').toLowerCase()).filter(Boolean);
+    const profiles = emails.length
+      ? await db.select().from(onboardingProfiles).where(inArray(onboardingProfiles.email, emails))
+      : [];
     const byEmail = new Map(profiles.map(p => [p.email, p]));
-    const enriched = accounts.map(u => {
+    const enriched = pageRows.map(u => {
       const p = byEmail.get((u.email || '').toLowerCase());
       return p ? {
         ...u,
@@ -48,7 +69,13 @@ export async function GET() {
       } : u;
     });
 
-    return NextResponse.json({ users: enriched });
+    // Role tallies for the filter chips — one grouped scan.
+    const tallyRows = await db.select({ role: users.role, n: sql<number>`COUNT(*)` })
+      .from(users).where(sql`${users.email} LIKE '%@%'`).groupBy(users.role);
+    const counts: Record<string, number> = { all: 0 };
+    for (const t of tallyRows) { counts[t.role] = Number(t.n); counts.all += Number(t.n); }
+
+    return NextResponse.json({ users: enriched, page, pageSize: PAGE_SIZE, hasNext, counts });
   } catch (error: any) {
     console.error('Admin users list error:', error);
     return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
