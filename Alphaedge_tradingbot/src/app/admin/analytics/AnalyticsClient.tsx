@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '../../ThemeToggle';
 
 // Strategy analytics, visible to every approved viewer. ONE fetch on load
 // (single DB scan server-side); every metric and view below is computed in
@@ -219,6 +220,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
             {isOwner && (
               <Link href="/admin/ledger" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>LEDGER EXPLORER</Link>
             )}
+            <ThemeToggle compact />
             <Link href="/dashboard" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
           </div>
         </div>

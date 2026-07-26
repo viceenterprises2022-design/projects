@@ -857,9 +857,3 @@
   background-image: linear-gradient(100deg, #0b1220 0%, #0785a3 42%, #3f7d10 76%, #6338c9 105%);
 }
 
-/* Theme button tokens consumed by ThemeToggle */
-:root[data-theme="light"] {
-  --theme-btn-bg: rgba(11, 18, 32, 0.05);
-  --theme-btn-line: rgba(11, 18, 32, 0.16);
-  --theme-btn-ink: #0b1220;
-}

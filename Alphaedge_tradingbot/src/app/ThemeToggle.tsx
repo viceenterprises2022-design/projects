@@ -40,9 +40,13 @@ export default function ThemeToggle({ compact = false }: { compact?: boolean }) 
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
         width: compact ? 28 : 34, height: compact ? 28 : 34,
         borderRadius: 999, cursor: 'pointer', flexShrink: 0,
-        background: 'var(--theme-btn-bg, rgba(255,255,255,0.05))',
-        border: '1px solid var(--theme-btn-line, rgba(255,255,255,0.14))',
-        color: 'var(--theme-btn-ink, #f4f7ff)',
+        // Colours are derived from state, NOT CSS variables. The control that
+        // switches the theme must never depend on theme CSS resolving
+        // correctly — when it did, a stale cascade left it invisible against
+        // the very background it was sitting on.
+        background: showDark ? 'rgba(255,255,255,0.06)' : 'rgba(11,18,32,0.06)',
+        border: `1px solid ${showDark ? 'rgba(255,255,255,0.22)' : 'rgba(11,18,32,0.24)'}`,
+        color: showDark ? '#f4f7ff' : '#0b1220',
         transition: 'background 180ms ease, border-color 180ms ease, color 180ms ease',
         padding: 0,
       }}

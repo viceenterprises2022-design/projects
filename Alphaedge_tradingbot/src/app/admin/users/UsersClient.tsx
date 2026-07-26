@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '../../ThemeToggle';
 
 // Owner-only access management. One bounded fetch per action (filter, search,
 // page, refresh) — no polling. Pending accounts sort first because they are
@@ -88,6 +89,7 @@ export default function UsersClient() {
             <button className="f-btn" style={{ padding: '7px 14px', fontSize: 10 }} onClick={load} disabled={loading}>
               {loading ? 'LOADING…' : 'REFRESH'}
             </button>
+            <ThemeToggle compact />
             <Link href="/dashboard" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
           </div>
         </div>

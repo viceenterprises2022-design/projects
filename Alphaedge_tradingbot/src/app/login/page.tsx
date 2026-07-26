@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
+import ThemeToggle from "../ThemeToggle"
 import { getSessionInfo } from "@/lib/authz"
 import { handleGoogleSignIn } from "@/app/auth-actions"
 import "../dashboard/dashboard.css"
@@ -12,6 +13,11 @@ export default async function LoginPage() {
 
   return (
     <div className="fable">
+      {/* Fixed, not in a header: the sign-in screen has no nav bar, and this is
+          where a light-mode reader most often lands with no other way back. */}
+      <div style={{ position: "fixed", top: 18, right: 18, zIndex: 10 }}>
+        <ThemeToggle />
+      </div>
       <div className="f-loading-shell" style={{ gap: 26 }}>
         <Link href="/" className="f-brand" style={{ flexDirection: "column", gap: 14, textAlign: "center" }}>
           <span className="f-brand-mark" style={{ width: 52, height: 52, fontSize: 22, borderRadius: 18 }}>P</span>

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import ThemeToggle from '../ThemeToggle';
 import { CHANGELOG, TAG_STYLE, type ChangeEntry } from './changelog-data';
 
 // Viewers see published entries only. The owner sees everything, with drafts
@@ -79,6 +80,7 @@ export default function ChangelogClient({ isOwner, publishedIds }: { isOwner: bo
                 </button>
               </>
             )}
+            <ThemeToggle compact />
             <Link href="/dashboard" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
           </div>
         </div>
