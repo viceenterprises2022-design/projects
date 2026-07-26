@@ -31,6 +31,15 @@ export const TAG_STYLE: Record<ChangeTag, string> = {
 };
 
 export const CHANGELOG: ChangeEntry[] = [
+  // ---------------------------------------------------------------- 26 Jul
+  {
+    date: '2026-07-26',
+    id: 'desk-now-advances-every-round-around-the-clock',
+    tag: 'Fixed',
+    title: 'The desk now evaluates every round, around the clock',
+    body: 'Rounds are assessed every 5 minutes as designed. Previously the engine only advanced while someone had the dashboard open, so quiet overnight hours skipped rounds — roughly a quarter of them over a full day. A scheduled heartbeat now drives it continuously whether or not anyone is watching. Note that the engine still only enters a round when it sees a genuine edge, so you will continue to see rounds pass without a trade; that is the conviction filter working, not downtime.',
+  },
+
   // ---------------------------------------------------------------- 25 Jul
   {
     date: '2026-07-25',
