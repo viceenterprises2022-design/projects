@@ -22,7 +22,16 @@ export const ROUND_MS = 300_000; // 5-minute rounds — expiries align with 5m c
 export const DEMO_BANKROLL_BASE = 10_000;
 const EDGE_THRESHOLD = 0.06;  // model conviction vs 50/50 opening odds — higher bar, fewer/stronger entries
 const SPREAD = 0;             // paper fills at model fair value — expectancy ~breakeven, results = calibration vs reality
-const RISK_PER_TRADE = 0.02; // fixed-fractional: 2% of current equity per trade, all tiers
+const RISK_PER_TRADE = 0.02; // fixed-fractional: 2% of current equity per trade
+// De-risk step for compounded books: past $100K equity, 2% a round swings six
+// figures — sizing steps down to 0.5%. Applies to any tier that crosses the
+// threshold (Gold's uncapped lane is the one that lives there).
+const RISK_PER_TRADE_LARGE = 0.005;
+const LARGE_BOOK_THRESHOLD = 100_000;
+
+export function riskPerTradeFor(bankroll: number): number {
+  return bankroll > LARGE_BOOK_THRESHOLD ? RISK_PER_TRADE_LARGE : RISK_PER_TRADE;
+}
 const ENTRY_CUTOFF_S = 30;    // no entries in the final seconds
 
 const ASSET_MAP: Record<string, string> = {
@@ -76,6 +85,8 @@ const trendFilterEnabled = () => process.env.TREND_FILTER === 'on';
 export const ENGINE_PARAMS = {
   roundSeconds: ROUND_MS / 1000,
   riskPerTrade: RISK_PER_TRADE,
+  largeBookRiskPerTrade: RISK_PER_TRADE_LARGE,
+  largeBookThreshold: LARGE_BOOK_THRESHOLD,
   edgeThreshold: EDGE_THRESHOLD,
   spread: SPREAD,
   entryCutoffSeconds: ENTRY_CUTOFF_S,
@@ -487,7 +498,7 @@ export async function engineTick(): Promise<TickResult> {
   }
   // Caution keeps trading with half size and a raised conviction bar
   const effEdgeThreshold = regime.mode === 'caution' ? CAUTION_EDGE : EDGE_THRESHOLD;
-  const effRiskPerTrade = regime.mode === 'caution' ? RISK_PER_TRADE * CAUTION_RISK_MULT : RISK_PER_TRADE;
+  const cautionRiskMult = regime.mode === 'caution' ? CAUTION_RISK_MULT : 1;
 
   // Per-asset kill switches: operator can halt one asset while the rest
   // trade. Missing row = enabled. Open positions still settle normally.
@@ -570,7 +581,8 @@ export async function engineTick(): Promise<TickResult> {
             if (ls.dailyStopActive) continue; // -15% breaker tripped (rolling release)
             if (ls.profitLockActive) continue; // +28% booked — locked until 00:00 UTC
             if (ls.bankroll === null || ls.bankroll <= 0) continue; // busted / undefined
-            const budget = ls.bankroll * effRiskPerTrade; // 2% of current equity (1% in caution)
+            // 2% of current equity, stepping to 0.5% past $100K; halved in caution
+            const budget = ls.bankroll * riskPerTradeFor(ls.bankroll) * cautionRiskMult;
             const size = Math.floor(budget / entryPrice);
             if (size > 0) levelSizes[String(ls.level)] = size;
           }

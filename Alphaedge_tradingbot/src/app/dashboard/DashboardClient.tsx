@@ -1477,7 +1477,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
         })}
       </div>
       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 12, letterSpacing: '0.05em' }}>
-        Every entry risks 2% of the tier's current equity — sizes compound with performance. ROCE = realized P&L over the tier's capital base, the return on the money actually deployed. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Quotas and the daily target reset at 00:00 UTC. A tier that reaches its daily profit ceiling pauses until the roll; one that hits the loss stop pauses for 24h, then resumes on a re-based threshold. Reaching the ceiling is never guaranteed. GOLD is the uncapped lane — no quota, no ceiling, no daily stop.
+        Every entry risks 2% of the tier's current equity, stepping down to 0.5% once a book compounds past $100K — sizes compound with performance. ROCE = realized P&L over the tier's capital base, the return on the money actually deployed. Tiers differ in capital base and trades per day — pick the ledger you would subscribe to. Quotas and the daily target reset at 00:00 UTC. A tier that reaches its daily profit ceiling pauses until the roll; one that hits the loss stop pauses for 24h, then resumes on a re-based threshold. Reaching the ceiling is never guaranteed. GOLD is the uncapped lane — no quota, no ceiling, no daily stop.
       </div>
     </div>
   );
@@ -2341,7 +2341,7 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                     <span className={`f-led ${simRunning ? 'ok' : 'warm'}`}>{simRunning ? 'RUNNING' : 'PAUSED'}</span>
                   </div>
                   <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
-                    <span className="f-chip">SIZING <b className="f-gold">{engineState?.params?.riskPerTrade ? (engineState.params.riskPerTrade * 100).toFixed(0) + '%' : '—'}</b> OF EQUITY /TRADE</span>
+                    <span className="f-chip">SIZING <b className="f-gold">{engineState?.params?.riskPerTrade ? (engineState.params.riskPerTrade * 100).toFixed(0) + '%' : '—'}</b> OF EQUITY /TRADE{engineState?.params?.largeBookRiskPerTrade ? <> · <b className="f-gold">{(engineState.params.largeBookRiskPerTrade * 100).toFixed(1)}%</b> ABOVE ${Math.round((engineState.params.largeBookThreshold ?? 100000) / 1000)}K</> : null}</span>
                     <span className="f-chip">EDGE ≥ <b className="f-azure">{engineState?.params ? Math.round(engineState.params.edgeThreshold * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">SPREAD <b className="f-pos">{engineState?.params ? Math.round(engineState.params.spread * 100) + '¢' : '—'}</b></span>
                     <span className="f-chip">COMPOUNDS <b className="f-violet">PER TRADE</b></span>
