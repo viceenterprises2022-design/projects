@@ -1147,10 +1147,16 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
   }, [regimeModeNow]); // refetch when the regime flips so ACTIVE badges stay honest
 
   // ---- Regime Guard kill switch (owner only) ----
+  // Halting is two-step, AWS-delete style: the button opens a modal that
+  // requires typing HALT before anything fires. The API independently
+  // requires the same ack, so the modal can't be bypassed.
+  const [haltConfirmOpen, setHaltConfirmOpen] = useState(false);
+  const [haltText, setHaltText] = useState('');
+
   const toggleRegime = useCallback(async () => {
     const cur = engineStateRef.current?.regime?.mode;
     const body = cur === 'normal'
-      ? { mode: 'lockdown', reason: 'manual desk halt' }
+      ? { mode: 'lockdown', reason: 'manual desk halt', ack: 'HALT' }
       : { mode: 'normal' };
     try {
       const res = await fetch('/api/admin/regime', {
@@ -1533,7 +1539,14 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
                 title={engineState.regime.mode === 'normal'
                   ? 'Manual kill switch: halt all new entries'
                   : 'Clear the manual override and any auto shock (calendar windows persist)'}
-                onClick={() => toggleRegime()}>
+                onClick={() => {
+                  if (engineState.regime.mode === 'normal') {
+                    setHaltText('');
+                    setHaltConfirmOpen(true);
+                  } else if (window.confirm('Resume trading? This clears the manual halt and any auto shock — calendar blackout windows still apply.')) {
+                    toggleRegime();
+                  }
+                }}>
                 {engineState.regime.mode === 'normal' ? 'HALT DESK' : 'RESUME'}
               </button>
             )}
@@ -1562,6 +1575,45 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             )}
           </div>
         </header>
+
+        {/* ---------- Halt confirmation (type-to-confirm, AWS-delete style) ---------- */}
+        {haltConfirmOpen && (
+          <div
+            style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(2,4,10,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
+            onClick={() => setHaltConfirmOpen(false)}>
+            <div className="f-panel" style={{ maxWidth: 440, width: '100%', border: '1px solid rgba(255,111,179,0.45)', boxShadow: '0 0 40px rgba(255,111,179,0.12)' }}
+              onClick={e => e.stopPropagation()}>
+              <div className="f-panel-head">
+                <h2 className="f-panel-title" style={{ color: 'var(--oxide)' }}>Halt the entire desk?</h2>
+              </div>
+              <div style={{ fontSize: 12.5, lineHeight: 1.65, color: 'var(--ivory-dim)', marginBottom: 12 }}>
+                This stops <b style={{ color: 'var(--ivory)' }}>all new entries on every tier and every asset</b> — Gold and all subscription lanes freeze
+                until an owner resumes. Open rounds still settle normally. The halt is visible to every viewer on the desk.
+              </div>
+              <div className="f-kicker" style={{ marginBottom: 6 }}>TYPE <b style={{ color: 'var(--oxide)' }}>HALT</b> TO CONFIRM</div>
+              <input
+                className="f-input f-mono"
+                autoFocus
+                value={haltText}
+                onChange={e => setHaltText(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Escape') setHaltConfirmOpen(false);
+                  if (e.key === 'Enter' && haltText === 'HALT') { setHaltConfirmOpen(false); toggleRegime(); }
+                }}
+                placeholder="HALT"
+                style={{ width: '100%', marginBottom: 14, letterSpacing: '0.15em' }}
+              />
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+                <button className="f-btn" style={{ padding: '7px 16px', fontSize: 10 }} onClick={() => setHaltConfirmOpen(false)}>CANCEL</button>
+                <button className="f-btn danger" style={{ padding: '7px 16px', fontSize: 10, opacity: haltText === 'HALT' ? 1 : 0.4 }}
+                  disabled={haltText !== 'HALT'}
+                  onClick={() => { setHaltConfirmOpen(false); toggleRegime(); }}>
+                  HALT DESK
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ---------- Wire ribbon ---------- */}
         <div className="f-wire">

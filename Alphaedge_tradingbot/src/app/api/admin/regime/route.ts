@@ -42,6 +42,13 @@ export async function POST(req: NextRequest) {
     if (!['normal', 'caution', 'lockdown'].includes(mode)) {
       return NextResponse.json({ error: 'mode must be normal | caution | lockdown' }, { status: 400 });
     }
+    // Halting the whole desk is the highest-consequence control on the
+    // platform. Like a cloud resource deletion, it demands an explicit typed
+    // acknowledgement — enforced server-side so no UI bug, stray script or
+    // fat-fingered curl can trip it.
+    if (mode === 'lockdown' && String(body?.ack || '') !== 'HALT') {
+      return NextResponse.json({ error: "Halting the desk requires ack: 'HALT' — type HALT in the confirmation prompt" }, { status: 400 });
+    }
     const ttl = Number.isFinite(body?.ttlMinutes) && body.ttlMinutes > 0 ? body.ttlMinutes : null;
     const now = Date.now();
     await setManualRegime(mode, String(body?.reason || '').slice(0, 200), ttl, now);
