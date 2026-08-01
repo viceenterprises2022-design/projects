@@ -3,7 +3,7 @@ import { db } from '@/db';
 import { users, onboardingProfiles } from '@/db/schema';
 import { eq, inArray, sql, and } from 'drizzle-orm';
 import { initDb } from '@/db/init';
-import { requireOwner } from '@/lib/authz';
+import { requireOwner, getSessionInfo } from '@/lib/authz';
 
 export const dynamic = 'force-dynamic';
 
@@ -92,16 +92,25 @@ export async function POST(req: NextRequest) {
     if (!userId || typeof userId !== 'string') {
       return NextResponse.json({ error: 'userId is required' }, { status: 400 });
     }
-    const roleFor: Record<string, string> = { approve: 'viewer', revoke: 'pending', block: 'blocked' };
+    // 'owner' grants FULL desk control — same privileges as the founder.
+    const roleFor: Record<string, string> = { approve: 'viewer', revoke: 'pending', block: 'blocked', owner: 'owner' };
     const nextRole = roleFor[action];
     if (!nextRole) {
-      return NextResponse.json({ error: 'action must be approve | revoke | block' }, { status: 400 });
+      return NextResponse.json({ error: 'action must be approve | revoke | block | owner' }, { status: 400 });
     }
 
-    const target = await db.select({ id: users.id, role: users.role }).from(users).where(eq(users.id, userId)).limit(1);
+    const target = await db.select({ id: users.id, role: users.role, email: users.email })
+      .from(users).where(eq(users.id, userId)).limit(1);
     if (target.length === 0) return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    if (target[0].role === 'owner') {
-      return NextResponse.json({ error: 'Owner roles are managed via OWNER_EMAILS, not this panel' }, { status: 400 });
+
+    // Lockout guard: you can never change your own role — a desk must always
+    // keep the operator who is holding the controls. Other owners are fair
+    // game (partners manage each other); OWNER_EMAILS members re-promote on
+    // their next sign-in regardless, so env-listed founders are un-demotable.
+    const self = await getSessionInfo();
+    const selfEmail = (self.user?.email || '').toLowerCase();
+    if (selfEmail && (target[0].email || '').toLowerCase() === selfEmail) {
+      return NextResponse.json({ error: 'You cannot change your own role' }, { status: 400 });
     }
 
     await db.update(users).set({ role: nextRole }).where(eq(users.id, userId));

@@ -9,5 +9,5 @@ export default async function AdminUsersPage() {
   const { user, isOwner } = await getSessionInfo()
   if (!user) redirect("/login")
   if (!isOwner) redirect("/dashboard")
-  return <UsersClient />
+  return <UsersClient selfEmail={user.email ?? ''} />
 }

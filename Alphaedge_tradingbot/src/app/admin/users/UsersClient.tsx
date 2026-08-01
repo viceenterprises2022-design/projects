@@ -21,7 +21,7 @@ const roleTag = (r: string) =>
 
 const pretty = (v: string) => String(v || '').replace(/-/g, ' ').toUpperCase();
 
-export default function UsersClient() {
+export default function UsersClient({ selfEmail }: { selfEmail: string }) {
   const [role, setRole] = useState('pending');
   const [q, setQ] = useState('');
   const [debouncedQ, setDebouncedQ] = useState('');
@@ -52,7 +52,7 @@ export default function UsersClient() {
 
   useEffect(() => { load(); }, [load]);
 
-  const act = async (userId: string, action: 'approve' | 'revoke' | 'block') => {
+  const act = async (userId: string, action: 'approve' | 'revoke' | 'block' | 'owner') => {
     setActing(userId);
     try {
       const res = await fetch('/api/admin/users', {
@@ -153,14 +153,34 @@ export default function UsersClient() {
                       </td>
                       <td><span className={`f-tag ${roleTag(u.role)}`}>{u.role.toUpperCase()}</span></td>
                       <td className="num">
-                        {u.role === 'owner' ? (
-                          <span className="f-kicker">ENV-MANAGED</span>
+                        {(u.email || '').toLowerCase() === selfEmail.toLowerCase() ? (
+                          <span className="f-kicker">YOU · LOCKOUT-PROTECTED</span>
                         ) : (
                           <div style={{ display: 'inline-flex', gap: 6 }}>
-                            {u.role !== 'viewer' && (
+                            {u.role !== 'viewer' && u.role !== 'owner' && (
                               <button className="f-btn long" style={{ padding: '3px 10px', fontSize: 9 }}
                                 disabled={acting === u.id} onClick={() => act(u.id, 'approve')}>
                                 {acting === u.id ? '…' : 'APPROVE'}
+                              </button>
+                            )}
+                            {u.role !== 'owner' && (
+                              <button className="f-btn" style={{ padding: '3px 10px', fontSize: 9, color: '#ffd166', borderColor: 'rgba(255,209,102,0.4)' }}
+                                disabled={acting === u.id}
+                                onClick={() => {
+                                  if (window.confirm(`Grant ${u.email} FULL desk control (owner)? They can trade, halt, reset, and manage access — same privileges as you.`)) {
+                                    act(u.id, 'owner');
+                                  }
+                                }}>
+                                MAKE OWNER
+                              </button>
+                            )}
+                            {u.role === 'owner' && (
+                              <button className="f-btn" style={{ padding: '3px 10px', fontSize: 9 }}
+                                disabled={acting === u.id}
+                                onClick={() => {
+                                  if (window.confirm(`Demote ${u.email} from owner to viewer?`)) act(u.id, 'approve');
+                                }}>
+                                DEMOTE TO VIEWER
                               </button>
                             )}
                             {u.role === 'viewer' && (
@@ -169,7 +189,10 @@ export default function UsersClient() {
                             )}
                             {u.role !== 'blocked' && (
                               <button className="f-btn danger" style={{ padding: '3px 10px', fontSize: 9 }}
-                                disabled={acting === u.id} onClick={() => act(u.id, 'block')}>BLOCK</button>
+                                disabled={acting === u.id}
+                                onClick={() => {
+                                  if (u.role !== 'owner' || window.confirm(`Block owner ${u.email}? They lose all desk access.`)) act(u.id, 'block');
+                                }}>BLOCK</button>
                             )}
                           </div>
                         )}
@@ -191,7 +214,7 @@ export default function UsersClient() {
         </div>
 
         <div className="f-mono f-faint" style={{ fontSize: 9, margin: '12px 2px 28px', letterSpacing: '0.05em' }}>
-          Approving grants read-only access to the desk. Owners are managed through OWNER_EMAILS, not this panel. 50 accounts per page; one bounded query per action, no background polling.
+          Approving grants read-only access to the desk. Make Owner grants full desk control — trading, halts, resets, and access management. You cannot change your own role (lockout protection), and OWNER_EMAILS founders re-promote on their next sign-in. 50 accounts per page; one bounded query per action, no background polling.
         </div>
       </div>
     </div>
