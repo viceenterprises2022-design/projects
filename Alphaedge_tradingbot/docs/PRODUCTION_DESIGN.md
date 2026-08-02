@@ -1,7 +1,10 @@
 # AlphaEdge — Production System Design
 
-**Status:** design only. Nothing in this document is implemented.
-**Date:** 2026-07-26
+**Status:** design rationale. The formal, sign-off artifact is [HLD.md](HLD.md) — read that first;
+this document holds the reasoning behind its decisions.
+**Date:** 2026-07-26, decisions locked 2026-07-28 (§6). Ship window: 2026-08-07 (§7)
+**Note:** the product is branded **Prospera** on alphaedgeai.io; "AlphaEdge" below refers to the
+platform/company. HLD.md uses the product name throughout.
 **Supersedes:** nothing. The live demo at www.alphaedgeai.io keeps running unchanged until Phase 1 lands.
 
 ---
@@ -20,8 +23,9 @@ where it must never go**.
 Two organising principles run through everything below:
 
 1. **Money moves through deterministic, replayable code.** Never through a model.
-2. **Agents may only ever tighten risk, never loosen it.** Every agent write path is
-   monotonic toward safety or gated behind a human click.
+2. **An agent can never release a lock it did not set.** Agents may tighten risk freely and may
+   release their own tightening under deterministic preconditions — but the loss breaker, the shock
+   detector, and the owner's manual halt are beyond their reach by construction (§3.2 A1).
 
 ---
 
@@ -144,6 +148,22 @@ per-account limits, and it must be the *only* place any limit is enforced. Today
 smeared across `getLevelStates`, the entry block in `engineTick`, and `validateRisk`. Consolidate.
 Every rejection writes a `risk_event` with a machine-readable reason code.
 
+Three checks in the Risk layer beyond the ported gate trio, all deterministic:
+
+- **Correlated-exposure cap.** BTC and ETH are not two positions; in stress they are one. Risk
+  buckets instruments by rolling 30-day return correlation (threshold 0.7) and caps *bucket*
+  exposure, not per-instrument exposure. A BTC long plus an ETH long consumes one bucket's budget;
+  PAXG usually sits in its own. This is the single cheapest drawdown-reducer available to us — the
+  2026-07-24 crash that bled −33% was a correlated move, and a per-asset limit alone would not have
+  contained it.
+- **Funding-crossing check.** Any intent whose expected holding window crosses an 8-hour funding
+  settlement gets the projected funding cost added to its cost side before the expectancy test. A
+  marginal trade that only clears the fee floor *before* funding does not clear it after; reject
+  with reason `funding_negative_carry`.
+- **Liquidity guard.** Order notional capped at a fixed fraction of visible top-of-book depth per
+  instrument (tightest on PAXG, whose Hyperliquid book is thin). Oversized intent → sized down or
+  rejected, never worked in slices in v1.
+
 **Execution** — takes an approved Intent to `filled`/`rejected` on the venue. Idempotent on
 `intent_id`. Signs with a key fetched from KMS for the duration of one signing call and never held
 in application memory across an await boundary.
@@ -157,7 +177,7 @@ Additions:
 
 | Table | Purpose |
 |---|---|
-| `accounts` | One per user per venue. Real equity, real currency, real custody reference |
+| `accounts` | One per user per venue. Real equity, real currency, real custody reference. Carries the two per-account knobs decision 4 permits: capital size, and a client-chosen risk multiplier (`conservative 0.5×` / `standard 1×`) applied to per-trade risk — still sizing, never a different strategy |
 | `intents` | Strategy output. The audit spine — every order traces to exactly one intent |
 | `positions` | Live position per (account, instrument). Reconciled against venue, never derived from our own fills alone |
 | `reconciliations` | Per-cycle diff between our position/balance view and the venue's. A non-empty diff is an incident |
@@ -170,9 +190,10 @@ Changes:
   by a monotonic `seq bigserial` rather than `timestamp`. Fixes B4.
 - `exchange_connections` — replace the encrypted-blob columns with a KMS key reference plus a
   separate `wallet_address` column. Fixes B2 and B3.
-- `demo_account` / `level_locks` / `simulator_trades` — **keep**. The demo becomes a first-class
-  paper-trading product that runs on the same engine as live, distinguished by account type. The
-  four tiers stop being display lanes and become genuine paper account presets.
+- `demo_account` / `level_locks` / `simulator_trades` — **stay in the demo app, untouched**
+  (decision 8: parallel system). The new schema carries none of them. Paper trading in
+  `Alphaedge_live/` is an `accounts` row with `type = 'paper'` routed to a simulated fill model —
+  same tables, same code path, no parallel bookkeeping.
 
 ### 2.4 Custody and execution
 
@@ -237,7 +258,22 @@ day and get the same trades), auditability (we could not tell a user *why* an or
 that hold up), and safety (market data and calendar feeds are attacker-influenced text — see §3.5).
 
 What agents are actually good at here is the work that surrounds the core: reading heterogeneous
-context and producing judgement, explanation, and triage. Five of those jobs are worth automating.
+context and producing judgement, explanation, and triage. Six of those jobs are worth automating.
+
+**Agents are scored, and they see their own scores.** Every `agent_runs` row gains an
+`outcome` field, backfilled by deterministic code once reality answers: did the vol A1 warned about
+materialise within its cited window? Did the owner approve or override A5's recommendation? Each
+agent's context then includes its own last 20 *scored* runs. This is the cheapest form of learning
+that exists — no fine-tuning, no extra infrastructure, just showing the model its own track record
+so it can calibrate. An A1 that has fired six false alarms in two weeks should know that when
+deciding on the seventh; with outcome feedback in context, it does.
+
+**Operational agents live in a companion document.** A1–A6 below are the trading-desk agents. Log
+management, account lifecycle, trade attribution, announcements and outbound client messaging are
+specified in [AGENT_OPERATIONS.md](AGENT_OPERATIONS.md) — which rescopes A3 and A5, adds A7
+(Content) and A8 (Client Communications), and deliberately builds trade analytics as a
+deterministic layer rather than an agent. All of it is post-launch except two schema carve-outs
+noted in §7.
 
 ### 3.2 The agents
 
@@ -246,35 +282,90 @@ context and producing judgement, explanation, and triage. Five of those jobs are
 | | |
 |---|---|
 | **Trigger** | Trigger.dev cron, every 15 minutes; plus event-driven on shock-detector fire |
-| **Reads** | Blackout calendar, realized vol vs 24h baseline, funding rates, open interest, cross-asset moves (DXY/gold/equities), last 4h of regime log |
+| **Reads** | Blackout calendar, realized vol vs 24h baseline, funding rates, open interest, cross-asset moves (DXY/gold/equities), last 4h of regime log, any open A2 `drift_warning`, its own last 20 scored runs (§3.1) |
 | **Tools** | `get_market_snapshot`, `get_regime_state`, `get_recent_regime_log`, `get_upcoming_blackouts` — all read-only |
 | **Writes** | `agent_proposals` row: `{ proposed_mode, reason, confidence, expires_at }` |
-| **Authority** | **Monotonic.** May auto-apply a proposal that *increases* severity (normal→caution, caution→lockdown). A proposal that *decreases* severity is queued for owner approval and expires in 60 minutes if untouched |
+| **Authority** | Auto-tighten and auto-release, both bounded by the lock-source rules below |
 | **Model** | `claude-opus-5`, `effort: "high"`, adaptive thinking |
 
-The monotonic rule is the whole safety argument. Worst case for a hallucinating Regime Analyst is
-that the desk sits out and makes no money. The failure mode is bounded on the correct side. The
-existing manual override and shock detector both continue to work independently — the agent is a
-*fourth* input to `resolveRegime`, at the lowest precedence, and the resolver's existing
-"most-severe-mode-wins" logic already handles it without modification.
+**The boundary is by layer, not by lock ownership.** A1 operates on the *regime* layer and only the
+regime layer — auto-locking and auto-releasing there exactly as the demo's shock detector and
+calendar already do. The tier gates are outside its reach entirely:
+
+| Layer | Who moves it | A1 |
+|---|---|---|
+| Regime — caution / lockdown from vol shock, calendar, macro conditions | `resolveRegime`, and A1 as a fourth input | **Auto-lock and auto-release** |
+| Owner manual halt | Owner console | Never. Halt and unlock stay yours alone |
+| +28% profit lock | Deterministic, sticky for the UTC day | **Never.** Not in A1's tool surface |
+| −15% loss breaker | Deterministic, 24h rolling release | **Never.** Not in A1's tool surface |
+
+This is cleaner than gating A1 by which lock it happens to have set, and it is enforced
+structurally rather than by prompt: A1's tool registry contains no write path to `level_locks` at
+all. There is no instruction that could make it touch a profit or loss cutoff, because there is no
+function for it to call.
+
+Within the regime layer, A1's release still requires the conditions it cited to be measurably clear
+— evaluated by deterministic code, not by model assertion — plus a 30-minute minimum dwell. The
+resolver's existing "most-severe-mode-wins" precedence does the rest: A1 clearing its own caution
+does not resume trading if the shock detector, the calendar, or your manual halt still says no.
+
+**The lock contract makes "conditions it cited" machine-checkable rather than aspirational.** When
+A1 locks, its write is not free text — it is a structured contract:
+
+```json
+{
+  "proposed_mode": "caution",
+  "reason": "ETH 1h realized vol 3.4x baseline into CPI print",
+  "release_conditions": [
+    { "metric": "realized_vol_1h_ratio", "asset": "ETH-PERP", "op": "<", "value": 1.5 },
+    { "metric": "minutes_since_lock",                         "op": ">=", "value": 30 }
+  ],
+  "max_ttl_minutes": 240,
+  "confidence": 0.8
+}
+```
+
+The model names its own exit test at lock time; from then on, deterministic code owns it. The
+release evaluator polls the conditions — the model is not consulted again to unlock, so a
+hallucinated all-clear is structurally impossible. `max_ttl_minutes` backstops a lock whose
+conditions never clear (TTL expiry releases A1's lock the same way condition-clearance does, still
+subject to every other layer). A proposed contract whose metrics are not in the supported metric
+registry is rejected at write time — the agent can only cite tests the code knows how to run.
+
+Failure analysis: a wrongly-tightening A1 costs missed trades — bounded and cheap. A
+wrongly-releasing A1 returns the desk to whatever the other layers permit, which still has the
+breaker, the profit lock, and your halt standing in front of any real loss.
 
 #### A2 — Post-Trade Analyst
 
 | | |
 |---|---|
-| **Trigger** | Cron, daily at 00:30 UTC (after the quota roll) |
-| **Reads** | Every trade settled in the window, with entry `p_yes`, realized outcome, asset, regime at entry, skip reasons |
-| **Tools** | `query_settled_trades`, `get_engine_params`, `get_regime_log` |
-| **Writes** | A `daily_review` record and a draft changelog entry (which already has an owner-approval gate — commit `0b59671`) |
-| **Authority** | Write-to-draft only. Nothing user-visible without the existing approval click |
+| **Trigger** | Cron, daily at 00:30 UTC (after the day roll) |
+| **Reads** | Every fill in the window with intent, entry/exit, fees, funding paid, slippage vs decision price, maker-fallback outcomes, regime at entry, risk rejections |
+| **Tools** | `query_settled_trades`, `get_expectancy_bands`, `get_execution_quality`, `get_regime_log` |
+| **Writes** | A `daily_review` record and a draft changelog entry (the approval-gate pattern from commit `0b59671`, ported) |
+| **Authority** | Write-to-draft only. Nothing user-visible without the approval click. May file one input to A1: a `drift_warning` |
 | **Model** | `claude-opus-5`, `effort: "xhigh"`, adaptive thinking |
 
-This is the agent that pays for the layer. The demo's entire purpose is calibration — *is GBM a
-correct model of 5-minute crypto moves?* — and nobody is currently reading that answer out of the
-data. The agent computes reliability buckets (of the rounds where the model said 62%, how many won?),
-a Brier score, and per-asset and per-regime breakdowns, then writes the narrative. Deterministic code
-computes the statistics; the model interprets them and flags drift. Do not let it compute the
-numbers itself — give it the table.
+This is the agent that pays for the layer, and in production its job sharpens into three questions,
+each answered from tables that deterministic code computes — the model interprets, it never
+calculates:
+
+1. **Is the edge still there?** The backtest that approved the live strategy produced expectancy
+   and win-rate bands (§2.6). A2 watches rolling live values against those bands with a CUSUM-style
+   drift statistic. Inside the bands: note it and move on. Outside: say so *loudly* — this is the
+   difference between a drawdown that is normal variance and a strategy that has stopped working,
+   and it is the question every trading operation answers too late.
+2. **Is execution leaking?** Realized slippage vs decision price, maker fill rate vs the 60–70%
+   assumption in §6.3, funding paid vs projected at intent time. Each of these was a written-down
+   assumption; A2 checks reality against every one, daily.
+3. **What changed?** Per-asset, per-regime, per-session breakdowns, and the narrative.
+
+**The drift warning is A2's one operational output.** A sustained band breach files a
+`drift_warning` that enters A1's next context and the owner's morning view. A2 cannot lock
+anything — but the desk's slow-loop learner feeding the fast-loop guard is the closest thing this
+system has to institutional reflexes. A2's monthly rollup also feeds A6's re-validation runs: the
+loop that decides when a strategy gets retired.
 
 #### A3 — Incident Triage
 
@@ -287,21 +378,41 @@ numbers itself — give it the table.
 | **Authority** | **Read and notify only.** Proposes a runbook step, never executes one. No tool in its surface mutates anything |
 | **Model** | `claude-opus-5`, `effort: "medium"` — latency matters here |
 
+**Rescoped to A3′ — Ops & Observability.** Gains a proactive daily log sweep alongside the reactive
+incident path, most importantly silent-failure detection (a dead cron produces no errors, so purely
+reactive monitoring is blind to it by construction). Full spec, plus the structured-logging
+substrate it depends on, in [AGENT_OPERATIONS.md](AGENT_OPERATIONS.md) §1.
+
 #### A4 — Desk Concierge
 
 | | |
 |---|---|
-| **Trigger** | User-initiated chat in the app |
+| **Trigger** | User-initiated chat in the app; plus one scheduled run per account per week |
 | **Reads** | **Only the asking user's own data**, plus public desk state |
-| **Tools** | `get_my_positions`, `get_my_trades`, `get_desk_state`, `explain_skip_reason`, `get_changelog` |
-| **Writes** | Nothing |
-| **Authority** | None. Read-only, row-scoped |
+| **Tools** | `get_my_positions`, `get_my_trades`, `get_my_costs`, `get_desk_state`, `explain_skip_reason`, `get_changelog` |
+| **Writes** | A weekly account brief draft, row-scoped to its account |
+| **Authority** | Read-only on demand; the weekly brief is its single write, template-bound |
 | **Model** | `claude-opus-5`, `effort: "low"` |
 
-The product value is answering "why did the desk sit out at 14:35?" — which the system already knows,
-because `engine_rounds.skip_reason` records it (`regime:FOMC rate decision`, `trend:counter-trend
-BUY gated`, `asset:halted by operator`). Today that string is only visible if you squint at the
-round history. The concierge turns the existing audit trail into an explanation.
+The product value is answering "why did the desk sit out at 14:35?" — which the system knows,
+because the intent/risk-event trail records it (`regime:FOMC rate decision`, `funding_negative_carry`,
+`asset:halted by operator`). The concierge turns the audit trail into an explanation. This
+transparency-as-product instinct is the demo's best inheritance — skip reasons, the regime chip, the
+visible ledger — and it carries straight into the client surface.
+
+Three client-facing behaviours that turn the audit spine into value:
+
+- **Every trade explains itself.** Each fill carries a "why" card: the signal that fired, the
+  regime at entry, and the cost line — fee, funding, slippage — as separate numbers. Clients see
+  exactly what execution costs them; given that our 6–7 bps blended cost *is* a competitive
+  property (§6.3), showing it is marketing as much as honesty.
+- **The weekly brief.** One short plain-language note per account: what the desk did, what it cost,
+  what it avoided (locks honoured, trades skipped and why), against the account's own equity curve.
+  Deterministic numbers, model narrative, fixed template — the retail answer to a fund's monthly
+  letter, generated for every account at every size.
+- **No advice, structurally.** The concierge explains what happened; it has no tool that projects,
+  recommends, or forecasts. "Should I upgrade my tier?" is answered with facts about tiers, not a
+  recommendation — the distinction §6.1's licensing analysis makes load-bearing.
 
 **The entire security surface of this agent is row scoping.** Every tool takes the caller's
 `user_id` from the server session — never from a model-supplied argument. A tool signature that
@@ -319,6 +430,11 @@ accepts a `user_id` parameter is a data breach waiting for the right prompt.
 
 Note the profile's free-text `note` field is user-supplied and therefore hostile input. It enters
 context wrapped and labelled as untrusted data, and this agent has no tool that can grant a role.
+
+**Rescoped to A5′ — Account Lifecycle Reviewer.** Grows from onboarding-only to the full lifecycle:
+credential health, dormancy, suspension, reactivation, offboarding — every one recommend-only, with
+drafted evidence-cited reason text that becomes the audit record on approval. Spec in
+[AGENT_OPERATIONS.md](AGENT_OPERATIONS.md) §2.
 
 #### A6 — Strategy Research Assistant
 
@@ -427,28 +543,15 @@ requirement — instrument it and tune.
 
 ---
 
-## 4. Migration phases
+## 4. Phasing — superseded by §7
 
-**Phase 0 — close the blockers.** Fix B1–B4. B1 in particular: either make `placeOrder` real or make
-live mode throw. A code path that fabricates fills must not exist in the repository, even unreachable.
-No new features. This phase is a prerequisite for everything else and should ship on its own.
-
-**Phase 1 — durable core.** Move the engine to Trigger.dev workers. Postgres migration. Split
-strategy/risk/execution. Keep everything paper. The demo keeps running throughout and should be
-byte-identical in behaviour when this lands — that equivalence is the test.
-
-**Phase 2 — agent layer, advisory only.** A6 (Strategy Research) and the §2.6 backtest harness can
-start in parallel with Phase 0 — they touch no production code path, and they attack the edge
-question, which is on the critical path for everything else. Of the runtime agents, ship A2
-(Post-Trade) and A4 (Concierge) first: they are
-read-only, they have immediate user-visible value, and they exercise the whole harness — tool
-registry, `agent_runs` logging, cost accounting — with zero risk. Then A3, then A1 in
-propose-only mode with **no** auto-apply, so we can watch its proposals against what the human would
-have done. Auto-apply of severity increases turns on only after that comparison looks right.
-
-**Phase 3 — live execution.** Per-user accounts, KMS custody, real orders, reconciliation loop, one
-account with a small real balance, for weeks. Nothing about the agent layer changes here; it is
-already outside the money path by construction.
+> This section predates decisions 7 and 8 and is kept for the reasoning, not the plan. The
+> parallel-build decision removed Phase 1's migration entirely (nothing is migrated; the demo is
+> never touched), and the day-level schedule now lives in §7. Two ideas from here still stand and
+> are folded into §7: **blockers ship first, alone** (day 1–2), and **A1 runs propose-only during
+> the soak** before auto-apply turns on — watch its proposals against what you would have done,
+> enable auto-lock/release only when that comparison looks right. The post-launch agent rollout
+> order (A2 and A4 first, then A3, then A5/A6 cadence) also survives unchanged.
 
 ---
 
@@ -506,25 +609,156 @@ and `agent_proposals` of §2.3. The concept is unchanged; only the storage is.
 
 ---
 
-## 6. Open decisions
 
-These need your call before Phase 1 detailed design:
+## 6. Decisions locked (2026-07-28)
 
-1. **What does the production strategy actually trade?** The synthetic binary market is a demo
-   construct with no counterparty. Live means Hyperliquid perps: real spread, real slippage, real
-   funding, real liquidation. The GBM binary model does not transfer, and the +28% daily ceiling that
-   the landing page surfaces is a property of the synthetic instrument. This is the largest open
-   question in the document and everything downstream depends on it — it is the "no edge" failure
-   mode of §5 stated in our own terms. `btcusdt-futures-bot/` (Donchian breakout on Hyperliquid BTC
-   perps, already paper-trading) is the most credible starting candidate in the monorepo.
+| # | Decision | Consequence |
+|---|---|---|
+| 1 | **Trade Hyperliquid perps: BTC, ETH, PAXG.** Real spread, funding, slippage, liquidation | The synthetic binary engine is retired as a *product*. It stays as the paper/demo surface only |
+| 2 | **Managed accounts — we execute automatically on user venue keys.** Not signals-only | Every part of §2.4 is required. Custody, reconciliation and the execution worker are all in scope |
+| 3 | **Retail users, worldwide** | See §6.1 |
+| 4 | **Tiers are capital sizing only.** Same strategy for every client; real per-user accounts | Simplifies enormously: one strategy instance, N accounts, size as a per-account parameter. `LEVELS` collapses to a sizing table |
+| 5 | **A1 auto-locks and auto-releases the regime layer**, exactly as the demo does. It never touches the +28% profit lock or the −15% loss breaker. Owner keeps manual halt and unlock over everything | The layer table in §3.2 A1. Enforced by A1 having no write path to `level_locks` |
+| 6 | Build order: blockers → strategy + harness → durable core → agents → live | As §7 |
+| 7 | **Day 10 (2026-08-07) = live on the company account with real money.** Then soak, then clients. Quality over date — the schedule may extend | Resolves the earlier tension: day 10 is not retail-money day. §7 rewritten accordingly |
+| 8 | **Production is a parallel system.** The demo and its landing page stay exactly as they are — no migration, no shared deploy | Biggest structural change to the plan. See §6.2 |
+| 9 | **Holding period 15m–4h, scalping abandoned** (owner agreed 2026-07-28, on the §0 cost-floor arithmetic in STRATEGY_CANDIDATES.md) | Confirms S1 as the lead candidate; PAXG only trades at the longer end of the band |
+| 10 | **Execution: maker-first entries with bounded taker fallback; protective exits always taker** (delegated to engineering 2026-07-28) | See §6.3 |
+| 11 | **New app lives in this monorepo as `Alphaedge_live/`, own Vercel project, own database** (delegated to engineering 2026-07-28; owner's one non-negotiable — demo and live URL untouched — is preserved) | See §6.4 |
 
-2. **Managed accounts or signals-only?** Executing on a user's behalf against their venue keys is a
-   materially different regulatory posture from publishing signals they act on. This determines
-   whether §2.4 is required at all.
+Strategy rules are owner-supplied and **not yet received**. They are the critical-path input for
+days 3–4 and everything downstream.
 
-3. **Do the four tiers survive?** Right now they are display lanes over one signal. With real
-   per-user accounts, either they become genuine capital tiers with different strategies, or they
-   collapse into one product with a size parameter.
+### 6.1 What decisions 2 + 3 together mean
 
-4. **A1's auto-apply.** I have specified monotonic auto-apply toward severity. You may prefer
-   propose-only permanently. Cheaper to decide now than to unwind.
+Executing trades automatically on retail customers' funds, across jurisdictions, is a licensed
+activity in most of them — typically portfolio/investment management or a CTA-equivalent
+registration, and separately a money-services or VASP question depending on the country. Using
+Hyperliquid API wallets with no withdrawal rights limits custody risk but does not change the
+analysis: we are exercising discretionary trading authority over other people's capital. This is not
+an engineering problem and nothing in this document solves it; it needs counsel, in parallel,
+starting now rather than at day 9.
+
+Two things it changes inside the build:
+
+- **Retention and audit.** Every intent, order, fill, risk rejection and regime transition must be
+  retained and reconstructable per user. The §2.3 schema already does this — do not trim it for speed.
+- **The landing page's +28% figure.** *Owner decision 2026-07-28: no changes to the demo or its
+  landing page for now.* Recorded as deferred, not resolved. The ceiling is a property of the
+  synthetic binary instrument and does not exist on perps, so it must be re-scoped before the first
+  retail client funds a live account — at which point it becomes a performance representation about
+  a product that works differently. Revisit at the clients-go-live gate, not before.
+
+### 6.2 Parallel system, not migration
+
+The demo keeps running untouched: same code, same landing page, same Turso database, same Vercel
+deploy. Production is built alongside it as a **separate application with a separate database and a
+separate deploy**, sharing nothing at runtime.
+
+This is the right call and it changes the plan for the better:
+
+- **No regression risk to a live demo** that real viewers are watching. Nothing we do to build
+  production can break what is already shipped.
+- **No migration step.** §2.3's "changes" to `exchange_connections` and `ledger_entries` become
+  greenfield schema instead of migrations, and the Postgres move stops being a cutover.
+- **Clean deletion of demo-only concepts.** The synthetic binary market, `engine_rounds`,
+  `simulator_trades`, `demo_account` and the four display tiers simply do not exist in the new
+  system. We port what §1.3 says is good — the Regime Guard, the gate trio, settlement idempotency,
+  role-gated access — as code, not as data.
+- **It costs duplication.** Auth, design system, and the operator console get built twice or
+  extracted into a shared package. Extraction is the better answer if it stays cheap; duplication is
+  acceptable if it does not.
+
+**Decided (§6 #11):** new app inside this monorepo as `Alphaedge_live/`. See §6.4.
+
+### 6.3 Execution style — maker-first, taker fallback (decision 10)
+
+The 15m–4h horizon changes the trade-off that made this hard. At a 5-minute horizon the 6 bps
+maker/taker difference was existential; at 15m–4h it is meaningful but no longer decides whether the
+strategy lives. That frees us to pick the structure that maximises client profitability without
+betting the fill on queue position:
+
+- **Entries: maker-first with a bounded fallback.** Post a limit at the touch (or one tick inside).
+  Wait up to a fallback window (start: 45 seconds, tuned in paper). If unfilled *and the signal
+  condition still holds*, cross the spread as taker. If the signal has decayed, cancel and stand
+  down — a missed entry costs nothing; chasing a stale signal costs real money.
+- **Signal-validity recheck before fallback is mandatory**, not optional. The dangerous fill is the
+  one you get *because* price moved through your limit — adverse selection. The recheck is the
+  defence.
+- **Protective exits: always taker.** Stops, breaker-triggered flattening, regime-lockdown
+  unwinds, reconciliation halts — anything that reduces risk crosses the spread immediately.
+  Certainty of exit is worth 4.5 bps every single time. Only profit-taking exits at target may rest
+  as maker orders.
+- **Expected blend:** at plausible fill rates (60–70% of entries filling as maker) the average
+  round trip lands near 6–7 bps versus 9 taker/taker — roughly a 25–30% cost reduction with zero
+  added risk on the exit side. The backtest harness models both legs explicitly; fill-rate
+  assumptions get a sensitivity row just like slippage.
+
+What we are *not* doing: resting deep in the queue, layering, or any queue-position gaming. That is
+the S4 infrastructure class and it stays out of scope.
+
+### 6.4 Repo layout — `Alphaedge_live/` in this monorepo (decision 11)
+
+The non-negotiable is that the demo and its URL are untouched. Monorepo satisfies it cleanly,
+because Vercel project isolation — not repo isolation — is what protects the demo:
+
+- The demo's Vercel project has its root directory pinned to `Alphaedge_tradingbot/` and only
+  builds from there. `Alphaedge_live/` gets its **own Vercel project, own domain, own env vars, own
+  Postgres** — the demo deploy never sees the new directory, and no shared runtime state exists.
+- Monorepo keeps the things worth sharing in one place: design tokens (`DESIGN.md`), the
+  Trigger.dev config at the repo root, these design docs, and straight-line code porting of the
+  Regime Guard / gate trio / authz from the demo source.
+- The argument for a separate repo was credential-code isolation. The real boundary for secrets is
+  the Vercel project and the database, both of which are separate anyway; a second repo would add
+  clone/sync friction for zero additional runtime isolation.
+
+One rule to hold: **no imports across the app boundary.** `Alphaedge_live/` may copy code from
+`Alphaedge_tradingbot/`, never import from it — shared code that earns it gets extracted to a
+`packages/` directory instead. Copy-then-diverge is fine at this stage; accidental coupling to the
+demo is not.
+
+---
+
+## 7. The 10-day plan
+
+**Target:** day 10 (2026-08-07) the system goes live on the **company account with real money**.
+Then it soaks. Then clients. Quality governs — if day 10 arrives and the soak criteria are not met,
+the date moves, not the standard.
+
+Two things make this materially more achievable than the earlier version of this plan. First,
+decision 8: building parallel means no migration, no cutover, and no risk to the running demo —
+roughly a day and a half of work removed and a whole category of failure with it. Second,
+decision 4: tiers as pure sizing collapses `LEVELS`, the per-tier lock bookkeeping, and most of
+`getLevelStates` into a single per-account size parameter.
+
+What is still genuinely tight: real EIP-712 execution tested against testnet, and a strategy that
+clears the cost floor. Those are the two that can move the date.
+
+### Day-by-day
+
+| Days | Work | Done means |
+|---|---|---|
+| 1–2 | **Blockers.** B1 real EIP-712 order placement + cancel + fill parsing, against testnet. B2 split `wallet_address` from signing key. B3 fail-closed on missing key. B4 ledger `seq` + transactional append | An integration test asserts a live-mode order against an unreachable venue returns `success: false`. No code path fabricates a fill |
+| 3–4 | **Strategy + harness.** Candidates in [STRATEGY_CANDIDATES.md](STRATEGY_CANDIDATES.md), S1 first since the code exists. Backtest over recorded HL candles for BTC/ETH/PAXG, walk-forward, per-regime, funding and slippage modelled | A number you believe for expectancy, with the slippage assumption written down |
+| 5–6 | **New app + accounts.** Greenfield Postgres schema. Strategy/Risk/Execution separation. `accounts`, `intents`, `positions`. Port Regime Guard, gate trio, authz from the demo as code. **Plus the two carve-outs from [AGENT_OPERATIONS.md](AGENT_OPERATIONS.md) §0.2** — structured log schema with correlation IDs, and the `outbound_messages` / `communication_preferences` tables (nothing writes to them yet) | Same strategy, N accounts, replayable from recorded snapshots. One `intent_id` pulls the full cross-component trail from logs |
+| 7 | **Execution worker + reconciliation.** Trigger.dev, `concurrencyLimit: 1` per account. 1-minute venue diff; any non-zero diff halts that account | A deliberately injected position mismatch halts the account and raises |
+| 8 | **A1 + operator controls.** Lock-source rules, admin halt/unlock, agent auto-release with dwell timer and deterministic preconditions | Owner halt cannot be cleared by the agent — proven by test |
+| 9–10 | **Soak, then company account live.** Paper on live data first, all controls armed; then fund the company account and go live on it | Two clean days with no reconciliation breaks and no fabricated state. That is the go/no-go for real money — if it is not clean, the date moves |
+
+### Explicitly cut from the ten days
+
+- **KMS/HSM.** Substituted by envelope encryption with the master key in a real secrets manager and
+  a hard fail on absence. Weaker than §2.4 and must be logged as debt, not forgotten.
+- **A2–A6.** The agent layer beyond A1 is post-launch. A1 is in because it is a risk control.
+- **Multi-week live soak.** Non-negotiable in principle, but it starts after day 10, not inside it.
+- **Legal/registration work.** Runs in parallel on your side (§6.1); it is not on this critical path
+  but it is on the *launch* critical path.
+
+### Open items that gate specific days
+
+| Gates | Item |
+|---|---|
+| Day 3 | Your strategy notes. Research candidates are in [STRATEGY_CANDIDATES.md](STRATEGY_CANDIDATES.md) and S1 can start without you — but your own rules carry information no published source does |
+| ~~Day 5~~ | ~~Maker vs taker~~ — **decided**, §6.3: maker-first entries with taker fallback, protective exits always taker |
+| ~~Day 5~~ | ~~Monorepo vs separate repo~~ — **decided**, §6.4: `Alphaedge_live/` in this monorepo, own Vercel project + database |
+| Clients gate | Landing-page +28% re-scope (§6.1), and counsel on the licensing question |
