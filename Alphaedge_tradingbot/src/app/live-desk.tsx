@@ -105,7 +105,7 @@ export function LiveDesk() {
           <strong>{roundSec === null ? "--:--" : `${String(Math.floor(roundSec / 60)).padStart(2, "0")}:${String(roundSec % 60).padStart(2, "0")}`}</strong>
           <span>to next round settlement — same clock as the live engine</span>
         </div>
-        <Link href="/dashboard" className="l-desk-cta">
+        <Link href="/demo" className="l-desk-cta">
           Watch the live desk →
         </Link>
       </div>

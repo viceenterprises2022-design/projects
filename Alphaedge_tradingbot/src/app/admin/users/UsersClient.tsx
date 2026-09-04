@@ -90,7 +90,7 @@ export default function UsersClient({ selfEmail }: { selfEmail: string }) {
               {loading ? 'LOADING…' : 'REFRESH'}
             </button>
             <ThemeToggle compact />
-            <Link href="/dashboard" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
+            <Link href="/demo" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
           </div>
         </div>
 

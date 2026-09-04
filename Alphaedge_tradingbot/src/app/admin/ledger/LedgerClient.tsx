@@ -60,7 +60,7 @@ export default function LedgerClient() {
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
             <Link href="/admin/analytics" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>STRATEGY ANALYTICS</Link>
             <ThemeToggle compact />
-            <Link href="/dashboard" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
+            <Link href="/demo" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
           </div>
         </div>
 

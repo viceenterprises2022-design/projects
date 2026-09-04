@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* Base layer only — page-level design systems live in their own sheets:
-   landing.css (marketing site) and dashboard/dashboard.css (the desk). */
+   landing.css (marketing site) and demo/demo.css (the desk). */
 
 :root {
   --bg: #050711;

@@ -8,7 +8,7 @@ import { db } from "@/db"
 import { initDb } from "@/db/init"
 import { onboardingProfiles } from "@/db/schema"
 import { eq } from "drizzle-orm"
-import "./dashboard.css"
+import "./demo.css"
 
 export const dynamic = "force-dynamic"
 

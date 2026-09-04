@@ -81,7 +81,7 @@ export default function ChangelogClient({ isOwner, publishedIds }: { isOwner: bo
               </>
             )}
             <ThemeToggle compact />
-            <Link href="/dashboard" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
+            <Link href="/demo" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>← COCKPIT</Link>
           </div>
         </div>
 

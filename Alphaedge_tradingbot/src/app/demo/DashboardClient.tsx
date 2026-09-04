@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../ThemeToggle';
-import './dashboard.css';
+import './demo.css';
 
 import {
   Shield,
@@ -132,7 +132,7 @@ function fmtTime(epochMs: number) {
   });
 }
 
-// Canvas palette (matches dashboard.css tokens)
+// Canvas palette (matches demo.css tokens)
 // Canvas cannot use CSS variables, so the palette is READ from the live
 // tokens each paint. That keeps every chart in step with the active theme
 // automatically — a light-mode reader gets darkened accents and a dark grid

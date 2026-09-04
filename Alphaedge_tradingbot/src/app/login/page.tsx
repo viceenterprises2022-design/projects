@@ -3,13 +3,13 @@ import Link from "next/link"
 import ThemeToggle from "../ThemeToggle"
 import { getSessionInfo } from "@/lib/authz"
 import { handleGoogleSignIn } from "@/app/auth-actions"
-import "../dashboard/dashboard.css"
+import "../demo/demo.css"
 
 export const dynamic = "force-dynamic"
 
 export default async function LoginPage() {
   const { user } = await getSessionInfo()
-  if (user) redirect("/dashboard")
+  if (user) redirect("/demo")
 
   return (
     <div className="fable">

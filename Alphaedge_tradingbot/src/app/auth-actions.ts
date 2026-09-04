@@ -3,9 +3,9 @@
 import { signIn, signOut } from "@/auth"
 
 export async function handleGoogleSignIn() {
-  await signIn("google", { redirectTo: "/dashboard" })
+  await signIn("google", { redirectTo: "/demo" })
 }
 
 export async function handleSignOut() {
-  await signOut({ redirectTo: "/dashboard" })
+  await signOut({ redirectTo: "/demo" })
 }

@@ -29,7 +29,7 @@ export default function NotFound() {
         </div>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
           <Link href="/" className="l-btn-primary">Back to Prospera</Link>
-          <Link href="/dashboard" className="l-btn-ghost">Watch the live desk</Link>
+          <Link href="/demo" className="l-btn-ghost">Watch the live desk</Link>
         </div>
       </div>
     </main>

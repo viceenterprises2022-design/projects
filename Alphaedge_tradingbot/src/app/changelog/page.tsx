@@ -4,7 +4,7 @@ import { db } from "@/db"
 import { initDb } from "@/db/init"
 import { changelogPublications } from "@/db/schema"
 import ChangelogClient from "./ChangelogClient"
-import "../dashboard/dashboard.css"
+import "../demo/demo.css"
 
 export const dynamic = "force-dynamic"
 
@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic"
 export default async function ChangelogPage() {
   const { user, isOwner, canView } = await getSessionInfo()
   if (!user) redirect("/login")
-  if (!canView) redirect("/dashboard")
+  if (!canView) redirect("/demo")
 
   let publishedIds: string[] = []
   try {

@@ -231,7 +231,7 @@ export default function LiveClient({
             </span>
             <ThemeToggle compact />
             {isOwner && (
-              <Link href="/dashboard" className="f-btn" style={{ textDecoration: "none" }}>
+              <Link href="/demo" className="f-btn" style={{ textDecoration: "none" }}>
                 FULL DESK →
               </Link>
             )}

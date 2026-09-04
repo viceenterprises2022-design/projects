@@ -5,7 +5,7 @@ import LiveClient from "./LiveClient"
 import ThemeToggle from "../ThemeToggle"
 import { getSessionInfo } from "@/lib/authz"
 import { signInToLive, signOutFromLive } from "./live-actions"
-import "../dashboard/dashboard.css"
+import "../demo/demo.css"
 
 export const dynamic = "force-dynamic"
 
