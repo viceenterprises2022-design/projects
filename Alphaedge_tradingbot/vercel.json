@@ -4,5 +4,6 @@
       "path": "/api/engine/state",
       "schedule": "* * * * *"
     }
-  ]
+  ],
+  "installCommand": "npm install"
 }

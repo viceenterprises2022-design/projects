@@ -142,9 +142,17 @@ export async function dispatchSignal(input: SignalInput) {
     );
 
     if (tradeResult.success) {
+      // Record what the exchange actually did, not what we asked for. A live
+      // IOC fills at the book's price and may fill partially, so persisting the
+      // requested price/qty would overstate the ledger it exists to evidence.
+      const filledPrice = tradeResult.fillPrice ?? price;
+      const filledQty = tradeResult.filledQty ?? qty;
+
       await db.update(orders).set({
         status: 'filled',
         exchangeOrderId: tradeResult.orderId || null,
+        price: filledPrice,
+        qty: filledQty,
         filledAt: Date.now()
       }).where(eq(orders.id, orderId));
 
@@ -153,8 +161,11 @@ export async function dispatchSignal(input: SignalInput) {
         signalId,
         orderId,
         exchangeOrderId: tradeResult.orderId,
-        qty,
-        price,
+        mode: instance.mode,
+        qty: filledQty,
+        price: filledPrice,
+        requestedQty: qty,
+        requestedPrice: price,
         side
       });
 
