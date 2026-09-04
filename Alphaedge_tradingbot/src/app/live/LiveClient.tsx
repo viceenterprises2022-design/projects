@@ -279,9 +279,9 @@ export default function LiveClient({
             const ctx = contexts[a.key]
             const dir = tickDir[a.key]
             const enabled = engine?.assetEnabled?.[a.key]
+            // cursor reset: .f-tape-cell is a selectable control on the desk,
+            // but nothing is selectable on a watch-only page.
             return (
-              {/* cursor reset: .f-tape-cell is a selectable control on the desk,
-                  but nothing is selectable on a watch-only page. */}
               <div className="f-tape-cell" key={a.key} style={{ cursor: "default" }}>
                 <div className="f-tape-head">
                   <span className="f-kicker">{a.label}</span>
