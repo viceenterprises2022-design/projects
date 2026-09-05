@@ -340,3 +340,27 @@ export async function getClearinghouseState(): Promise<any> {
   if (!res.ok) throw new Error(`Hyperliquid clearinghouseState failed: HTTP ${res.status}`);
   return res.json();
 }
+
+// ---------------------------------------------------------------------------
+// Preflight helpers. These expose only public values — the agent's ADDRESS is
+// derived from the key but is public information; the key itself never leaves
+// this module.
+// ---------------------------------------------------------------------------
+
+/** Public address of the configured agent wallet. Throws if the key is absent/malformed. */
+export function agentAddress(): string {
+  return agentAccount().address;
+}
+
+/** Agent wallets currently approved to trade for the master account. */
+export async function getExtraAgents(): Promise<Array<{ address?: string; name?: string; validUntil?: number }>> {
+  const res = await fetch(`${apiBase()}/info`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'extraAgents', user: accountAddress() }),
+    cache: 'no-store',
+  });
+  if (!res.ok) throw new Error(`Hyperliquid extraAgents failed: HTTP ${res.status}`);
+  const json = await res.json();
+  return Array.isArray(json) ? json : [];
+}
