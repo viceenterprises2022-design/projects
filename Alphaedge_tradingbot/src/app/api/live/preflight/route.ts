@@ -9,6 +9,7 @@ import {
   getPerpAssets,
   getClearinghouseState,
   resolveCoin,
+  slippageBps_,
 } from '@/lib/hyperliquid-exchange';
 
 export const dynamic = 'force-dynamic';
@@ -71,20 +72,37 @@ export async function GET() {
 
   // --- 3. The check that actually predicts whether an order can be signed ----
   if (acct.ok && agent.ok) {
-    const extras = await attemptAsync(getExtraAgents);
-    if (!extras.ok) {
-      add('agentApproved', false, `could not read approved agents: ${extras.error}`);
+    const sameWallet = agent.value.toLowerCase() === acct.value.toLowerCase();
+
+    // Signing with the MASTER account key does authorise orders — Hyperliquid
+    // accepts it — so this is not a functional failure. It is a security one:
+    // that key can also withdraw, which is exactly what an agent wallet exists
+    // to avoid, and what the product promises customers it never holds.
+    add('agentIsSeparateWallet', !sameWallet,
+      sameWallet
+        ? `HYPERLIQUID_AGENT_PRIVATE_KEY is the MASTER ACCOUNT key (${agent.value}), not an agent wallet. It can withdraw funds. Generate an API wallet on Hyperliquid and use that key instead.`
+        : `agent wallet is distinct from the master account`);
+
+    if (sameWallet) {
+      add('agentApproved', true,
+        'signer is the account itself, so orders will be accepted without an approved agent — but see agentIsSeparateWallet', false);
     } else {
-      const wanted = agent.value.toLowerCase();
-      const match = extras.value.find(a => (a?.address || '').toLowerCase() === wanted);
-      const names = extras.value.map(a => a?.address).filter(Boolean);
-      add('agentApproved', Boolean(match),
-        match
-          ? `agent is approved on the account${match.validUntil ? `, valid until ${new Date(match.validUntil).toISOString()}` : ''}`
-          : `agent ${agent.value} is NOT in the account's approved list (${names.length ? names.join(', ') : 'no agents approved'}) — approve it on Hyperliquid under API wallets`);
+      const extras = await attemptAsync(getExtraAgents);
+      if (!extras.ok) {
+        add('agentApproved', false, `could not read approved agents: ${extras.error}`);
+      } else {
+        const wanted = agent.value.toLowerCase();
+        const match = extras.value.find(a => (a?.address || '').toLowerCase() === wanted);
+        const names = extras.value.map(a => a?.address).filter(Boolean);
+        add('agentApproved', Boolean(match),
+          match
+            ? `agent is approved on the account${match.validUntil ? `, valid until ${new Date(match.validUntil).toISOString()}` : ''}`
+            : `agent ${agent.value} is NOT in the account's approved list (${names.length ? names.join(', ') : 'no agents approved'}) — approve it on Hyperliquid under API wallets`);
+      }
     }
   } else {
     add('agentApproved', false, 'skipped — account address or agent key missing');
+    add('agentIsSeparateWallet', false, 'skipped — account address or agent key missing');
   }
 
   // --- 4. Exchange reachability and the assets we trade ----------------------
@@ -128,7 +146,10 @@ export async function GET() {
   const cap = process.env.HYPERLIQUID_MAX_ORDER_NOTIONAL_USD;
   add('notionalCap', true,
     cap ? `per-order backstop $${cap}` : 'no absolute per-order cap set — risk.ts rules are the only gate', false);
-  add('slippage', true, `IOC priced ${process.env.HYPERLIQUID_SLIPPAGE_BPS || '50'} bps through the book`, false);
+  const slip = attempt(slippageBps_);
+  add('slippage', slip.ok,
+    slip.ok ? `IOC priced ${slip.value} bps through the book`
+            : `${slip.error} — every order would be rejected while this is set`);
 
   const blocking = checks.filter(c => c.blocking && !c.ok);
   return NextResponse.json({

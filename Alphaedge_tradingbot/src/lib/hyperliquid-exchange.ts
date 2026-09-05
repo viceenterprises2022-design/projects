@@ -46,6 +46,20 @@ export function liveTradingEnabled(): boolean {
   return process.env.HYPERLIQUID_ENABLE_LIVE === 'true';
 }
 
+// Slippage must be an explicit non-negative number. parseFloat() on a value
+// like "no" yields NaN, which silently poisoned the limit price and made every
+// order fail deep inside formatPrice with a confusing message. Reject it here,
+// where the reason is obvious and preflight can surface it.
+export function slippageBps_(): number {
+  const raw = process.env.HYPERLIQUID_SLIPPAGE_BPS;
+  if (raw === undefined || raw.trim() === '') return 50;
+  const n = Number(raw.trim());
+  if (!Number.isFinite(n) || n < 0) {
+    throw new Error(`HYPERLIQUID_SLIPPAGE_BPS is "${raw}", which is not a non-negative number`);
+  }
+  return n;
+}
+
 export function accountAddress(): string {
   const a = (process.env.HYPERLIQUID_ACCOUNT_ADDRESS || '').trim();
   if (!/^0x[0-9a-fA-F]{40}$/.test(a)) {
@@ -281,7 +295,7 @@ export async function placeLiveOrder(req: LiveOrderRequest): Promise<LiveFill> {
   }
 
   const isBuy = req.side === 'buy';
-  const slippageBps = Math.max(0, parseFloat(process.env.HYPERLIQUID_SLIPPAGE_BPS || '50'));
+  const slippageBps = slippageBps_();
   const limitRaw = req.referencePrice * (isBuy ? 1 + slippageBps / 10_000 : 1 - slippageBps / 10_000);
 
   // Key order matters: the action is msgpack'd and hashed, so it must be built
