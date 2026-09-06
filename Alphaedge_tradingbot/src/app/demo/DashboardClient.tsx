@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import ThemeToggle from '../ThemeToggle';
 import './demo.css';
 
@@ -201,7 +202,12 @@ function QuotaRing({ used, limit }: { used: number | undefined; limit: number | 
 
 // ---------------------------------------------------------------------------
 
-export default function DashboardClient({ user, isOwner }: { user: any; isOwner: boolean }) {
+export type DeskMode = 'demo' | 'live';
+
+export default function DashboardClient(
+  { user, isOwner, mode = 'demo' }: { user: any; isOwner: boolean; mode?: DeskMode }
+) {
+  const router = useRouter();
   // ---- Cockpit state ----
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -1499,19 +1505,33 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
               <span className="f-brand-mark">P</span>
               <span>
                 <div className="f-brand-name">Prospera</div>
-                <div className="f-brand-sub">CAPITAL COCKPIT</div>
+                <div className="f-brand-sub">{mode === 'live' ? 'LIVE DESK' : 'CAPITAL COCKPIT'}</div>
               </span>
             </Link>
             <span className="f-serif-grad" style={{ fontSize: 15 }}>autonomous wealth desk</span>
           </div>
 
-          <div className="f-tabs">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {/* Desk selector. Both desks render this same component with the same
+                two tabs; only the data source behind them differs. */}
+            <select
+              className="f-select f-mono"
+              aria-label="Select desk"
+              value={mode}
+              onChange={e => router.push(e.target.value === 'live' ? '/live' : '/demo')}
+              style={{ width: 'auto', padding: '8px 12px', fontSize: 10.5, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', borderRadius: 999 }}
+            >
+              <option value="demo">Demo desk</option>
+              <option value="live">Live desk</option>
+            </select>
+            <div className="f-tabs">
             <button className={`f-tab ${activeTab === 'cockpit' ? 'active' : ''}`} onClick={() => setActiveTab('cockpit')}>
               Live Cockpit
             </button>
             <button className={`f-tab ${activeTab === 'simulator' ? 'active' : ''}`} onClick={() => setActiveTab('simulator')}>
               Quant Engine
             </button>
+            </div>
           </div>
 
           <div className="f-masthead-meta">
@@ -1575,6 +1595,18 @@ export default function DashboardClient({ user, isOwner }: { user: any; isOwner:
             )}
           </div>
         </header>
+
+        {/* The two desks share this component, but not yet a data source: the
+            panels below still read /api/dashboard/info and /api/engine/state,
+            which are the shared paper demo. Saying so here is the difference
+            between a live desk and a demo desk wearing a live label. */}
+        {mode === 'live' && (
+          <div className="f-banner" style={{ borderColor: 'rgba(255, 209, 102, 0.45)', background: 'rgba(255, 209, 102, 0.08)', color: 'var(--gold)' }}>
+            <span className="f-mono" style={{ fontSize: 11 }}>
+              LIVE DESK — figures below still come from the shared paper engine. Not your account balance or fills.
+            </span>
+          </div>
+        )}
 
         {/* ---------- Halt confirmation (type-to-confirm, AWS-delete style) ---------- */}
         {haltConfirmOpen && (

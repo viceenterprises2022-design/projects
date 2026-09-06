@@ -278,6 +278,25 @@ export async function placeLiveOrder(req: LiveOrderRequest): Promise<LiveFill> {
     throw new Error('Live trading is disabled (HYPERLIQUID_ENABLE_LIVE is not "true")');
   }
 
+  // The signing key MUST be an agent (API) wallet, never the master account key.
+  //
+  // An agent wallet can trade but cannot withdraw. The master key can do both, so
+  // signing with it puts a withdrawal-capable secret in an env var that a server
+  // -side compromise would expose, and it contradicts the trade-only permission
+  // the product promises its customers.
+  //
+  // Preflight already reports this, but reporting is not enforcement: without
+  // this check the order path signs happily with the master key. Refusing here
+  // is deliberate - live trading stays blocked until a real agent wallet is
+  // configured.
+  if (agentAddress().toLowerCase() === accountAddress().toLowerCase()) {
+    throw new Error(
+      'HYPERLIQUID_AGENT_PRIVATE_KEY is the master account key, not an agent wallet. ' +
+      'That key can withdraw funds. Create an API wallet on Hyperliquid, approve it on ' +
+      'the account, and set its private key instead. Live orders are refused until then.'
+    );
+  }
+
   const coin = resolveCoin(req.symbol);
   const assets = await getPerpAssets();
   const asset = assets.get(coin);

@@ -333,3 +333,74 @@ Constraints that dominate: thin books (the cross-account budget in LLD §22.3 is
 resolution risk (binary terminal outcomes — position sizing must assume total loss is possible per
 market), and no venue fee but real spread. Backtesting needs Polymarket historical books, which are
 harder to source than candles — Gamma API history + recorded snapshots once the adapter exists.
+
+---
+
+## 6. S8 — Polymarket / Kalshi cross-venue (added 2026-09-06, uncommitted)
+
+Tested whether the two prediction venues quote the same events at different
+prices. This would be structurally the strongest candidate in the whole study,
+because cross-venue arbitrage requires predicting nothing.
+
+### Connectivity
+
+Both are reachable and need no credentials to read.
+
+| Venue | Endpoint | Notes |
+|---|---|---|
+| Polymarket | `gamma-api.polymarket.com/markets`, `clob.polymarket.com` | Permissive CORS, works from any origin |
+| Kalshi | `api.elections.kalshi.com/trade-api/v2` | Browser calls need same-origin; irrelevant server-side |
+
+Integration detail worth knowing: Kalshi's generic `/markets` listing is dominated
+by multi-leg parlay markets — all 1200 rows fetched carried `SHARD` /
+`CROSSCATEGORY` tickers. Real single markets have to be pulled per
+`series_ticker` (e.g. `KXFEDDECISION`), not swept from the generic endpoint.
+
+### Measured: September 2026 FOMC, quoted on both
+
+The most liquid event common to both venues, with an identical outcome taxonomy.
+
+| Outcome | Kalshi bid / ask | Polymarket YES (spread 0.01) |
+|---|---|---|
+| Cut >25bps | 0.0000 / 0.0100 | — |
+| Cut 25bps | 0.0000 / 0.0100 | 0.0035 |
+| Fed maintains | 0.4800 / 0.4900 | 0.4950 |
+| Hike 25bps | 0.4900 / 0.5000 | 0.5050 |
+| Hike >25bps | 0.0100 / 0.0200 | — |
+
+Buy Kalshi "maintains" at its 0.49 ask, sell Polymarket at its ~0.49 bid: **zero**.
+Same for "hike 25bps" at 0.50 against ~0.50. **After crossing both spreads the
+cross-venue edge is nil.**
+
+No within-venue Dutch book either: Kalshi asks sum to 1.03, bids to 0.98.
+
+### Read
+
+On the headline events the two venues are already arbitraged into line, which is
+the expected outcome — these are the most watched markets on both books. Whatever
+edge exists must live in one of three places, and each has a problem:
+
+1. **The long tail** — thin markets both venues happen to quote. Their spreads are
+   wide enough to eat the mispricing that attracted you.
+2. **Speed** — being first when news breaks. That is a latency race against
+   dedicated arbitrage desks, and not a race this stack is built to win.
+3. **Resolution-criteria differences** — two markets that read identically can
+   settle differently. That is a **risk, not an edge**: it is precisely how a
+   "riskless" cross-venue position becomes a total loss on one leg.
+
+### Blocking constraint, non-technical
+
+**Kalshi is a CFTC-regulated US exchange and requires US identity and residency
+verification.** Operating it from India, or on behalf of Indian clients, is very
+likely not permitted. Polymarket's status varies by jurisdiction and it has
+carried US access restrictions.
+
+Routing client capital through either venue would extend the regulatory question
+in Phase 6 of the production plan from Indian rules alone to US derivatives
+regulation as well. That needs counsel before any engineering, not after.
+
+### Verdict
+
+Technically connectable, cheaply. No measurable edge on the liquid overlap, and
+the legal exposure is materially worse than Hyperliquid. Not recommended as the
+next venue.

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import Link from "next/link"
-import LiveClient from "./LiveClient"
+import DashboardClient from "../demo/DashboardClient"
 import ThemeToggle from "../ThemeToggle"
 import { getSessionInfo } from "@/lib/authz"
 import { signInToLive, signOutFromLive } from "./live-actions"
@@ -107,5 +107,5 @@ export default async function LivePage() {
     )
   }
 
-  return <LiveClient user={{ name: user.name, email: user.email }} isOwner={isOwner} />
+  return <DashboardClient user={user} isOwner={isOwner} mode="live" />
 }
