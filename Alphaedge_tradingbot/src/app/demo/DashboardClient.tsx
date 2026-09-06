@@ -1158,6 +1158,31 @@ export default function DashboardClient(
   // requires the same ack, so the modal can't be bypassed.
   const [haltConfirmOpen, setHaltConfirmOpen] = useState(false);
   const [haltText, setHaltText] = useState('');
+  const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
+  const [resetText, setResetText] = useState('');
+  const [resetting, setResetting] = useState(false);
+
+  // Clears trade history and returns the counters to a clean start. The endpoint
+  // is owner-gated and refuses without the typed confirmation, so the same guard
+  // applies whether it is triggered from here or by hand.
+  const resetDesk = useCallback(async () => {
+    setResetting(true);
+    try {
+      const res = await fetch('/api/admin/reset-desk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirm: 'RESET DESK' }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error || 'Reset failed');
+      setMessage({ type: 'success', text: 'Desk reset — trade history cleared and counters back to zero. Accounts and access untouched.' });
+      await fetchData();
+    } catch (err: any) {
+      setMessage({ type: 'error', text: err?.message || 'Reset failed' });
+    } finally {
+      setResetting(false);
+    }
+  }, [fetchData]);
 
   const toggleRegime = useCallback(async () => {
     const cur = engineStateRef.current?.regime?.mode;
@@ -1572,6 +1597,15 @@ export default function DashboardClient(
             )}
             {isOwner && (
               <>
+                <button
+                  className="f-btn danger"
+                  style={{ padding: '5px 12px', fontSize: 9.5 }}
+                  onClick={() => { setResetText(''); setResetConfirmOpen(true); }}
+                  disabled={resetting}
+                  title="Clear trade history and reset the counters. Accounts and access are not touched."
+                >
+                  {resetting ? 'RESETTING…' : 'RESET DESK'}
+                </button>
                 <Link href="/admin/users" className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5, textDecoration: 'none' }} title="Approve, revoke and block desk access">ACCESS</Link>
                 <Link href="/admin/ledger" className="f-btn" style={{ padding: '5px 12px', fontSize: 9.5, textDecoration: 'none' }}>LEDGER</Link>
               </>
@@ -1609,6 +1643,49 @@ export default function DashboardClient(
         )}
 
         {/* ---------- Halt confirmation (type-to-confirm, AWS-delete style) ---------- */}
+        {resetConfirmOpen && (
+          <div
+            style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(2,4,10,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
+            onClick={() => setResetConfirmOpen(false)}>
+            <div className="f-panel" style={{ maxWidth: 460, width: '100%', border: '1px solid rgba(246,70,93,0.45)', boxShadow: '0 0 40px rgba(246,70,93,0.12)' }}
+              onClick={e => e.stopPropagation()}>
+              <div className="f-panel-head">
+                <h2 className="f-panel-title" style={{ color: 'var(--oxide)' }}>Reset the desk?</h2>
+              </div>
+              <div style={{ fontSize: 12.5, lineHeight: 1.65, color: 'var(--ivory-dim)', marginBottom: 10 }}>
+                Permanently deletes <b style={{ color: 'var(--ivory)' }}>all trade history</b> — rounds, simulator trades,
+                orders, signals, the ledger, risk events and lane locks — and returns every counter to a clean start.
+                This cannot be undone.
+              </div>
+              <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--sage)', marginBottom: 12 }}>
+                Not touched: sign-in accounts, email addresses, the access list, the waitlist,
+                applicant details and the changelog. You will not be signed out.
+              </div>
+              <div className="f-kicker" style={{ marginBottom: 6 }}>TYPE <b style={{ color: 'var(--oxide)' }}>RESET DESK</b> TO CONFIRM</div>
+              <input
+                className="f-input f-mono"
+                autoFocus
+                value={resetText}
+                onChange={e => setResetText(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Escape') setResetConfirmOpen(false);
+                  if (e.key === 'Enter' && resetText === 'RESET DESK') { setResetConfirmOpen(false); resetDesk(); }
+                }}
+                placeholder="RESET DESK"
+                style={{ width: '100%', marginBottom: 14, letterSpacing: '0.15em' }}
+              />
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+                <button className="f-btn" style={{ padding: '7px 16px', fontSize: 10 }} onClick={() => setResetConfirmOpen(false)}>CANCEL</button>
+                <button className="f-btn danger" style={{ padding: '7px 16px', fontSize: 10, opacity: resetText === 'RESET DESK' ? 1 : 0.4 }}
+                  disabled={resetText !== 'RESET DESK'}
+                  onClick={() => { setResetConfirmOpen(false); resetDesk(); }}>
+                  RESET DESK
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {haltConfirmOpen && (
           <div
             style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(2,4,10,0.78)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}
