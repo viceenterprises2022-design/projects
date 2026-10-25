@@ -4,15 +4,28 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../../ThemeToggle';
 
-// Strategy analytics, visible to every approved viewer. ONE fetch on load
-// (single DB scan server-side); every metric and view below is computed in
-// the browser from that result. Switching tiers/views costs zero additional
-// database reads, and there is no polling.
+// Strategy analytics, visible to every approved viewer. ONE fetch on load.
+// The server streams every trade in the demo window through an exact
+// accumulator and returns per-tier aggregates plus a decimated equity curve,
+// so tier switches cost nothing and there is no row cap to fall behind.
 
-type Trade = {
-  createdAt: number; level: number; asset: string; side: string;
-  outcome: string; pnl: number; size: number; entryPrice: number;
+type Stats = {
+  n: number; wins: number; losses: number; hit: number;
+  net: number; grossWin: number; grossLoss: number; volume: number;
+  pf: number | null; expectancy: number; avgWin: number; avgLoss: number;
+  largestWin: number; largestLoss: number;
+  curStreak: number; bestW: number; worstL: number; maxDD: number;
 };
+type CurvePoint = { i: number; eq: number; t: { createdAt: number; asset: string; side: string; outcome: string; pnl: number } };
+type TierView = {
+  stats: Stats;
+  byAsset: Array<{ key: string } & Stats>;
+  bySide: Array<{ key: string } & Stats>;
+  hours: Array<{ h: number; n: number; wins: number }>;
+  curve: CurvePoint[];
+  curveSampled: boolean;
+};
+type Payload = { tiers: Record<string, TierView>; totalRows: number; levels: any };
 
 const TIERS = [
   { key: 0, label: 'ALL TIERS' },
@@ -25,37 +38,9 @@ const TIERS = [
 const fmtUsd = (n: number) => `$${Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const fmtSigned = (n: number) => `${n >= 0 ? '+' : '−'}${fmtUsd(n)}`;
 const pct = (n: number) => `${n.toFixed(1)}%`;
-
-function computeStats(trades: Trade[]) {
-  let wins = 0, grossWin = 0, grossLoss = 0, largestWin = 0, largestLoss = 0, volume = 0;
-  for (const t of trades) {
-    volume += t.size * t.entryPrice;
-    if (t.outcome === 'WIN') { wins++; grossWin += t.pnl; largestWin = Math.max(largestWin, t.pnl); }
-    else { grossLoss += -t.pnl; largestLoss = Math.min(largestLoss, t.pnl); }
-  }
-  const n = trades.length, losses = n - wins;
-  const net = grossWin - grossLoss;
-  // Streaks + drawdown over the chronological sequence
-  let curStreak = 0, bestW = 0, worstL = 0, run = 0, last = '';
-  let equity = 0, peak = 0, maxDD = 0;
-  for (const t of trades) {
-    const o = t.outcome === 'WIN' ? 'W' : 'L';
-    run = o === last ? run + 1 : 1; last = o;
-    if (o === 'W') bestW = Math.max(bestW, run); else worstL = Math.max(worstL, run);
-    equity += t.pnl; peak = Math.max(peak, equity); maxDD = Math.max(maxDD, peak - equity);
-  }
-  curStreak = run * (last === 'W' ? 1 : -1);
-  return {
-    n, wins, losses,
-    hit: n > 0 ? (wins / n) * 100 : 0,
-    net, grossWin, grossLoss, volume,
-    pf: grossLoss > 0 ? grossWin / grossLoss : (grossWin > 0 ? Infinity : 0),
-    expectancy: n > 0 ? net / n : 0,
-    avgWin: wins > 0 ? grossWin / wins : 0,
-    avgLoss: losses > 0 ? grossLoss / losses : 0,
-    largestWin, largestLoss, curStreak, bestW, worstL, maxDD,
-  };
-}
+// Server encodes an infinite profit factor (wins, zero losses) as null.
+const fmtPf = (pf: number | null) => pf === null ? '∞' : pf.toFixed(2);
+const pfOk = (pf: number | null) => pf === null || pf >= 1;
 
 function StatCard({ label, value, sub, tone }: { label: string; value: string; sub?: string; tone?: 'pos' | 'neg' | 'azure' | 'violet' }) {
   const color = tone === 'pos' ? 'var(--sage)' : tone === 'neg' ? 'var(--oxide)' : tone === 'azure' ? 'var(--azure)' : tone === 'violet' ? '#9d7dff' : 'var(--ivory)';
@@ -69,7 +54,7 @@ function StatCard({ label, value, sub, tone }: { label: string; value: string; s
 }
 
 export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean }) {
-  const [data, setData] = useState<{ trades: Trade[]; levels: any; truncated: boolean } | null>(null);
+  const [data, setData] = useState<Payload | null>(null);
   const [tier, setTier] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,7 +63,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   // Pixel<->index geometry from the last paint, so the pointer handler can map
   // a mouse position back to a point without recomputing the series.
-  const geomRef = useRef<{ pts: number[]; x0: number; span: number; w: number } | null>(null);
+  const geomRef = useRef<{ pts: CurvePoint[]; x0: number; span: number; w: number } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true); setError(null);
@@ -98,42 +83,25 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
 
   const view = useMemo(() => {
     if (!data) return null;
-    const subset = tier === 0 ? data.trades : data.trades.filter(t => t.level === tier);
-    const stats = computeStats(subset);
+    const tv = data.tiers[String(tier)];
+    if (!tv) return null;
+    const stats = tv.stats;
     const base = tier === 0
       ? Object.values(data.levels).reduce((a: number, l: any) => a + (l.base || 0), 0)
       : (data.levels[String(tier)]?.base || 0);
     const roce = base > 0 ? (stats.net / base) * 100 : 0;
-
-    const byGroup = (keyFn: (t: Trade) => string) => {
-      const m = new Map<string, Trade[]>();
-      for (const t of subset) {
-        const k = keyFn(t);
-        if (!m.has(k)) m.set(k, []);
-        m.get(k)!.push(t);
-      }
-      return [...m.entries()].map(([k, v]) => ({ key: k, ...computeStats(v) }));
-    };
-
-    const hours = Array.from({ length: 24 }, (_, h) => ({ h, n: 0, wins: 0 }));
-    for (const t of subset) {
-      const h = new Date(t.createdAt).getUTCHours();
-      hours[h].n++;
-      if (t.outcome === 'WIN') hours[h].wins++;
-    }
-
     return {
-      subset, stats, roce, base,
-      byAsset: byGroup(t => t.asset).sort((a, b) => a.key.localeCompare(b.key)),
-      bySide: byGroup(t => t.side).sort((a, b) => a.key.localeCompare(b.key)),
+      stats, roce, base,
+      curve: tv.curve, curveSampled: tv.curveSampled,
+      byAsset: tv.byAsset,
+      bySide: tv.bySide,
       byTier: [4, 1, 2, 3].map(l => {
-        const rows = data.trades.filter(t => t.level === l);
-        const s = computeStats(rows);
+        const s = data.tiers[String(l)].stats;
         const b = data.levels[String(l)]?.base || 0;
         return { key: l === 4 ? 'GOLD' : `LEVEL ${l}`, ...s, roce: b > 0 ? (s.net / b) * 100 : 0 };
       }),
-      hours,
-      maxHourN: Math.max(1, ...hours.map(x => x.n)),
+      hours: tv.hours,
+      maxHourN: Math.max(1, ...tv.hours.map(x => x.n)),
     };
   }, [data, tier]);
 
@@ -148,16 +116,16 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
     if (!ctx) return;
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, w, h);
-    const pts: number[] = [0];
-    let eq = 0;
-    for (const t of view.subset) { eq += t.pnl; pts.push(eq); }
+    // Origin point first so the curve starts at zero, matching the old render.
+    const pts: CurvePoint[] = [{ i: 0, eq: 0, t: null as any }, ...view.curve];
     if (pts.length < 2) {
       ctx.fillStyle = 'rgba(239,246,255,0.35)';
       ctx.font = '11px monospace';
       ctx.fillText('Curve appears after the first settlements…', 14, h / 2);
       return;
     }
-    const min = Math.min(...pts, 0), max = Math.max(...pts, 0);
+    let min = 0, max = 0;
+    for (const p of pts) { if (p.eq < min) min = p.eq; if (p.eq > max) max = p.eq; }
     const span = Math.max(1, max - min);
     const X = (i: number) => (i / (pts.length - 1)) * (w - 20) + 10;
     const Y = (v: number) => h - 16 - ((v - min) / span) * (h - 32);
@@ -169,28 +137,28 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
     // area
     const grad = ctx.createLinearGradient(0, 0, 0, h);
     grad.addColorStop(0, 'rgba(88,240,255,0.22)'); grad.addColorStop(1, 'rgba(88,240,255,0)');
-    ctx.beginPath(); ctx.moveTo(X(0), Y(pts[0]));
-    pts.forEach((v, i) => ctx.lineTo(X(i), Y(v)));
+    ctx.beginPath(); ctx.moveTo(X(0), Y(pts[0].eq));
+    pts.forEach((p, i) => ctx.lineTo(X(i), Y(p.eq)));
     ctx.lineTo(X(pts.length - 1), h - 16); ctx.lineTo(X(0), h - 16); ctx.closePath();
     ctx.fillStyle = grad; ctx.fill();
     // line
-    ctx.beginPath(); ctx.moveTo(X(0), Y(pts[0]));
-    pts.forEach((v, i) => ctx.lineTo(X(i), Y(v)));
-    ctx.strokeStyle = pts[pts.length - 1] >= 0 ? '#58f0ff' : '#f6465d';
+    ctx.beginPath(); ctx.moveTo(X(0), Y(pts[0].eq));
+    pts.forEach((p, i) => ctx.lineTo(X(i), Y(p.eq)));
+    ctx.strokeStyle = pts[pts.length - 1].eq >= 0 ? '#58f0ff' : '#f6465d';
     ctx.lineWidth = 1.6; ctx.stroke();
     // endpoint
-    ctx.beginPath(); ctx.arc(X(pts.length - 1), Y(pts[pts.length - 1]), 3, 0, Math.PI * 2);
-    ctx.fillStyle = pts[pts.length - 1] >= 0 ? '#bfff6a' : '#f6465d'; ctx.fill();
+    ctx.beginPath(); ctx.arc(X(pts.length - 1), Y(pts[pts.length - 1].eq), 3, 0, Math.PI * 2);
+    ctx.fillStyle = pts[pts.length - 1].eq >= 0 ? '#bfff6a' : '#f6465d'; ctx.fill();
     // hover crosshair + marker
     if (hoverIdx !== null && hoverIdx >= 0 && hoverIdx < pts.length) {
-      const hx = X(hoverIdx), hy = Y(pts[hoverIdx]);
+      const hx = X(hoverIdx), hy = Y(pts[hoverIdx].eq);
       ctx.strokeStyle = 'rgba(239,246,255,0.28)'; ctx.lineWidth = 1;
       ctx.setLineDash([3, 3]);
       ctx.beginPath(); ctx.moveTo(hx, 6); ctx.lineTo(hx, h - 10); ctx.stroke();
       ctx.setLineDash([]);
       ctx.beginPath(); ctx.arc(hx, hy, 4.5, 0, Math.PI * 2);
       ctx.fillStyle = '#050711'; ctx.fill();
-      ctx.strokeStyle = pts[hoverIdx] >= 0 ? '#bfff6a' : '#f6465d'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.strokeStyle = pts[hoverIdx].eq >= 0 ? '#bfff6a' : '#f6465d'; ctx.lineWidth = 2; ctx.stroke();
     }
 
     // labels
@@ -239,14 +207,14 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
                   {t.label}
                 </button>
               ))}
-              {data?.truncated && <span className="f-tag gold" title="Snapshot capped at 8,000 most recent rows">CAPPED @ 8K ROWS</span>}
+              <span className="f-kicker" style={{ alignSelf: 'center', marginLeft: 6 }}>{data?.totalRows.toLocaleString()} TRADES IN WINDOW</span>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, marginBottom: 14 }}>
               <StatCard label="Net P&L" value={fmtSigned(s.net)} tone={s.net >= 0 ? 'pos' : 'neg'} sub={`${s.n} settled · ${fmtUsd(s.volume)} volume`} />
               <StatCard label="ROCE" value={`${view.roce >= 0 ? '+' : '−'}${Math.abs(view.roce).toFixed(2)}%`} tone={view.roce >= 0 ? 'pos' : 'neg'} sub={`on ${fmtUsd(view.base)} capital base`} />
               <StatCard label="Hit rate" value={pct(s.hit)} tone="azure" sub={`${s.wins} W / ${s.losses} L`} />
-              <StatCard label="Profit factor" value={s.pf === Infinity ? '∞' : s.pf.toFixed(2)} tone={s.pf >= 1 ? 'pos' : 'neg'} sub={`${fmtUsd(s.grossWin)} won / ${fmtUsd(s.grossLoss)} lost`} />
+              <StatCard label="Profit factor" value={fmtPf(s.pf)} tone={pfOk(s.pf) ? 'pos' : 'neg'} sub={`${fmtUsd(s.grossWin)} won / ${fmtUsd(s.grossLoss)} lost`} />
               <StatCard label="Expectancy" value={fmtSigned(s.expectancy)} tone={s.expectancy >= 0 ? 'pos' : 'neg'} sub="per settled trade" />
               <StatCard label="Avg win / loss" value={`${fmtUsd(s.avgWin)} / ${fmtUsd(s.avgLoss)}`} sub={`payoff ratio ${s.avgLoss > 0 ? (s.avgWin / s.avgLoss).toFixed(2) : '—'}`} />
               <StatCard label="Max drawdown" value={fmtUsd(s.maxDD)} tone="neg" sub={view.base > 0 ? `${((s.maxDD / view.base) * 100).toFixed(2)}% of base` : undefined} />
@@ -257,7 +225,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
             <div className="f-panel" style={{ marginBottom: 14 }}>
               <div className="f-panel-head">
                 <h2 className="f-panel-title"><span className="f-serif-grad">Equity Curve</span>
-                  <span className="f-kicker" style={{ marginLeft: 6 }}>{TIERS.find(t => t.key === tier)?.label} · CUMULATIVE REALIZED P&L · HOVER FOR DETAIL</span>
+                  <span className="f-kicker" style={{ marginLeft: 6 }}>{TIERS.find(t => t.key === tier)?.label} · CUMULATIVE REALIZED P&L{view.curveSampled ? ' · SAMPLED' : ''} · HOVER FOR DETAIL</span>
                 </h2>
               </div>
               <div style={{ position: 'relative' }}
@@ -272,8 +240,9 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
                 }}>
                 <canvas ref={curveRef} style={{ width: '100%', height: 190, display: 'block', cursor: 'crosshair' }} />
                 {hoverIdx !== null && view && geomRef.current && (() => {
-                  const cum = geomRef.current.pts[hoverIdx];
-                  const t = hoverIdx > 0 ? view.subset[hoverIdx - 1] : null;
+                  const pt = geomRef.current.pts[hoverIdx];
+                  const cum = pt.eq;
+                  const t = hoverIdx > 0 ? pt.t : null;
                   const leftPct = (hoverIdx / Math.max(1, geomRef.current.pts.length - 1)) * 100;
                   return (
                     <div style={{
@@ -291,7 +260,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
                         {fmtSigned(cum)}
                       </div>
                       <div className="f-mono f-faint" style={{ fontSize: 9, marginTop: 1 }}>
-                        cumulative · trade {hoverIdx} of {geomRef.current.pts.length - 1}
+                        cumulative · trade {pt.i.toLocaleString()} of {s.n.toLocaleString()}
                       </div>
                       {t && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, flexWrap: 'wrap' }}>
@@ -327,7 +296,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
                             : r.key}</td>
                           <td className="num f-mono">{r.n}</td>
                           <td className="num f-mono">{pct(r.hit)}</td>
-                          <td className="num f-mono">{r.pf === Infinity ? '∞' : r.pf.toFixed(2)}</td>
+                          <td className="num f-mono">{fmtPf(r.pf)}</td>
                           <td className={`num f-mono ${r.net >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontWeight: 700 }}>{fmtSigned(r.net)}</td>
                         </tr>
                       ))}
@@ -349,7 +318,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
                       <td className="num f-mono">{r.n}</td>
                       <td className="num f-mono">{r.wins} / {r.losses}</td>
                       <td className="num f-mono">{pct(r.hit)}</td>
-                      <td className="num f-mono">{r.pf === Infinity ? '∞' : r.pf.toFixed(2)}</td>
+                      <td className="num f-mono">{fmtPf(r.pf)}</td>
                       <td className={`num f-mono ${r.expectancy >= 0 ? 'f-pos' : 'f-neg'}`}>{fmtSigned(r.expectancy)}</td>
                       <td className="num f-mono f-neg">{fmtUsd(r.maxDD)}</td>
                       <td className={`num f-mono ${r.net >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontWeight: 700 }}>{fmtSigned(r.net)}</td>
@@ -386,7 +355,7 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
             </div>
 
             <div className="f-mono f-faint" style={{ fontSize: 9, margin: '12px 2px', letterSpacing: '0.05em' }}>
-              All figures derived from a single ledger snapshot ({view.subset.length.toLocaleString()} rows in view) — tier and view switches cost zero additional database reads. Hit REFRESH for a new snapshot.
+              All figures computed server-side over every trade in the demo window ({s.n.toLocaleString()} in this view). Tier switches cost zero additional database reads. Hit REFRESH for a new snapshot.
             </div>
           </>
         )}

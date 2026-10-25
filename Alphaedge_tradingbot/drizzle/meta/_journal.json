@@ -155,6 +155,13 @@
       "when": 1784981279376,
       "tag": "0021_changelog_publications",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "6",
+      "when": 1792908000000,
+      "tag": "0022_analytics_keyset_index",
+      "breakpoints": true
     }
   ]
 }
