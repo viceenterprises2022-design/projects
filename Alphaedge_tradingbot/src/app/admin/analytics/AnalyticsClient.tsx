@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../../ThemeToggle';
+import StatCard from '../StatCard';
+import { fmtUsd, fmtSigned, fmtUsdC, fmtSignedC, fmtPctC, pct, int, fmtPf, pfOk } from '@/lib/format';
 
 // Strategy analytics, visible to every approved viewer. ONE fetch on load.
 // The server streams every trade in the demo window through an exact
@@ -34,51 +36,6 @@ const TIERS = [
   { key: 2, label: 'LEVEL 2' },
   { key: 3, label: 'LEVEL 3' },
 ];
-
-const fmtUsd = (n: number) => `$${Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-const fmtSigned = (n: number) => `${n >= 0 ? '+' : '−'}${fmtUsd(n)}`;
-// Compact notation for tiles and tables: a 170px card cannot hold
-// $107,254,738.12. Exact values stay available on hover via `title`.
-const compact = (abs: number) => {
-  if (abs >= 1e9) return `${(abs / 1e9).toFixed(2)}B`;
-  if (abs >= 1e6) return `${(abs / 1e6).toFixed(2)}M`;
-  if (abs >= 1e5) return `${(abs / 1e3).toFixed(1)}K`;
-  return abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-};
-const fmtUsdC = (n: number) => `$${compact(Math.abs(n))}`;
-const fmtSignedC = (n: number) => `${n >= 0 ? '+' : '−'}${fmtUsdC(n)}`;
-const fmtPctC = (n: number, signed = false) => {
-  const a = Math.abs(n);
-  const body = a >= 1e4 ? `${compact(a).replace(/\.00(?=[KMB])/, '')}%` : `${a.toFixed(2)}%`;
-  return signed ? `${n >= 0 ? '+' : '−'}${body}` : body;
-};
-const int = (n: number) => n.toLocaleString();
-const pct = (n: number) => `${n.toFixed(1)}%`;
-// Server encodes an infinite profit factor (wins, zero losses) as null.
-const fmtPf = (pf: number | null) => pf === null ? '∞' : pf.toFixed(2);
-const pfOk = (pf: number | null) => pf === null || pf >= 1;
-
-function StatCard({ label, value, sub, tone, title }: { label: string; value: string; sub?: string; tone?: 'pos' | 'neg' | 'azure' | 'violet'; title?: string }) {
-  const color = tone === 'pos' ? 'var(--sage)' : tone === 'neg' ? 'var(--oxide)' : tone === 'azure' ? 'var(--azure)' : tone === 'violet' ? '#9d7dff' : 'var(--ivory)';
-  // Step the font down for long values so they never wrap or spill into the
-  // neighbouring card. Compact formatting keeps most values under 10 chars.
-  // "A / B" pairs (Avg win / loss) stack onto two lines instead of clipping.
-  const parts = value.split(' / ');
-  const longest = Math.max(...parts.map(p => p.length));
-  const size = longest > 16 ? 15 : longest > 12 ? 18 : 21;
-  return (
-    <div className="f-panel" style={{ padding: '14px 16px', minWidth: 0, overflow: 'hidden' }} title={title}>
-      <div className="f-kicker" style={{ marginBottom: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</div>
-      <div className="f-mono" style={{
-        fontSize: size, fontWeight: 700, color, lineHeight: 1.2,
-        fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-      }}>{parts.length === 2
-        ? <>{parts[0]}<span className="f-faint" style={{ fontWeight: 400 }}> /</span><br />{parts[1]}</>
-        : value}</div>
-      {sub && <div className="f-mono f-faint" style={{ fontSize: 9.5, marginTop: 4, overflowWrap: 'anywhere' }}>{sub}</div>}
-    </div>
-  );
-}
 
 export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean }) {
   const [data, setData] = useState<Payload | null>(null);
@@ -212,6 +169,9 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
             <button className="f-btn" style={{ padding: '7px 14px', fontSize: 10 }} onClick={load} disabled={loading}>
               {loading ? 'LOADING…' : 'REFRESH'}
             </button>
+            {isOwner && (
+              <Link href="/admin/customers" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>CUSTOMERS</Link>
+            )}
             {isOwner && (
               <Link href="/admin/ledger" className="f-btn" style={{ padding: '7px 14px', fontSize: 10, textDecoration: 'none' }}>LEDGER EXPLORER</Link>
             )}

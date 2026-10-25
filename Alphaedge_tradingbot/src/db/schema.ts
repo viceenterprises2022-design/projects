@@ -285,3 +285,85 @@ export const simulatorTrades = sqliteTable('simulator_trades', {
   createdAt: integer('created_at').notNull()
 });
 
+
+// ---------------------------------------------------------------------------
+// Customers and profit sharing (see src/lib/profit-share.ts, HLD §4.5).
+// Wallets are read-only: we never hold a key that can move customer funds.
+// ---------------------------------------------------------------------------
+
+export const customers = sqliteTable('customers', {
+  id: text('id').primaryKey(),
+  userId: text('user_id'), // linked login, if the customer has one
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  walletAddress: text('wallet_address').notNull().unique(), // lowercase 0x
+  venue: text('venue').notNull().default('hyperliquid'),
+  profitSharePct: real('profit_share_pct').notNull(), // 0..100, set by owner
+  status: text('status').notNull().default('active'), // 'active' | 'paused' | 'closed'
+  initialCapital: real('initial_capital').notNull(),
+  syncFrom: integer('sync_from').notNull(), // ledger events before this are ignored
+  notes: text('notes'),
+  createdBy: text('created_by').notNull(),
+  createdAt: integer('created_at').notNull(),
+});
+
+// Rate history. A change applies to events after effectiveAt only.
+export const customerRateChanges = sqliteTable('customer_rate_changes', {
+  id: text('id').primaryKey(),
+  customerId: text('customer_id').notNull(),
+  pct: real('pct').notNull(),
+  effectiveAt: integer('effective_at').notNull(),
+  setBy: text('set_by').notNull(),
+});
+
+// Live fee state, one row per customer. Derived from the event history; kept
+// materialised so list views cost one read per customer.
+export const customerState = sqliteTable('customer_state', {
+  customerId: text('customer_id').primaryKey(),
+  capitalBasis: real('capital_basis').notNull(),
+  outstandingFee: real('outstanding_fee').notNull().default(0),
+  lastBalance: real('last_balance'),
+  lastSyncedAt: integer('last_synced_at'),
+  lastLedgerTime: integer('last_ledger_time'),
+  lastError: text('last_error'),
+  syncLockUntil: integer('sync_lock_until'),
+});
+
+// Every deposit, withdrawal and transfer seen on the customer's wallet.
+// id is deterministic (tx hash + kind + amount) so re-syncs are idempotent.
+export const walletFlows = sqliteTable('wallet_flows', {
+  id: text('id').primaryKey(),
+  customerId: text('customer_id').notNull(),
+  kind: text('kind').notNull(), // 'deposit' | 'withdrawal' | 'fee_payment' | 'transfer_in' | 'transfer_out' | 'unclassified'
+  amount: real('amount').notNull(),
+  venueFee: real('venue_fee').notNull().default(0),
+  counterparty: text('counterparty'),
+  txHash: text('tx_hash'),
+  occurredAt: integer('occurred_at').notNull(),
+  rawJson: text('raw_json').notNull(),
+  // Set atomically with the fee-state update. NULL = not yet applied, so a
+  // sync that dies midway resumes exactly where it stopped.
+  processedAt: integer('processed_at'),
+});
+
+// Append-only fee ledger: every crystallisation, payment and waiver, with the
+// inputs needed to re-derive it.
+export const feeEvents = sqliteTable('fee_events', {
+  id: text('id').primaryKey(),
+  customerId: text('customer_id').notNull(),
+  flowId: text('flow_id'),
+  kind: text('kind').notNull(), // 'crystallisation' | 'payment' | 'manual_payment' | 'waiver'
+  balanceBefore: real('balance_before'),
+  capitalBefore: real('capital_before').notNull(),
+  outstandingBefore: real('outstanding_before').notNull(),
+  profit: real('profit'),
+  pct: real('pct'),
+  fee: real('fee').notNull().default(0),
+  amount: real('amount').notNull().default(0),
+  capitalAfter: real('capital_after').notNull(),
+  outstandingAfter: real('outstanding_after').notNull(),
+  estimated: integer('estimated').notNull().default(0), // 1 = balanceBefore reconstructed
+  note: text('note'),
+  createdBy: text('created_by').notNull(),
+  createdAt: integer('created_at').notNull(),
+});
