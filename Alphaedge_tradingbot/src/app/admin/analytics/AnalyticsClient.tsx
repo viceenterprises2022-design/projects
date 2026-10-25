@@ -37,18 +37,45 @@ const TIERS = [
 
 const fmtUsd = (n: number) => `$${Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const fmtSigned = (n: number) => `${n >= 0 ? '+' : '−'}${fmtUsd(n)}`;
+// Compact notation for tiles and tables: a 170px card cannot hold
+// $107,254,738.12. Exact values stay available on hover via `title`.
+const compact = (abs: number) => {
+  if (abs >= 1e9) return `${(abs / 1e9).toFixed(2)}B`;
+  if (abs >= 1e6) return `${(abs / 1e6).toFixed(2)}M`;
+  if (abs >= 1e5) return `${(abs / 1e3).toFixed(1)}K`;
+  return abs.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
+const fmtUsdC = (n: number) => `$${compact(Math.abs(n))}`;
+const fmtSignedC = (n: number) => `${n >= 0 ? '+' : '−'}${fmtUsdC(n)}`;
+const fmtPctC = (n: number, signed = false) => {
+  const a = Math.abs(n);
+  const body = a >= 1e4 ? `${compact(a).replace(/\.00(?=[KMB])/, '')}%` : `${a.toFixed(2)}%`;
+  return signed ? `${n >= 0 ? '+' : '−'}${body}` : body;
+};
+const int = (n: number) => n.toLocaleString();
 const pct = (n: number) => `${n.toFixed(1)}%`;
 // Server encodes an infinite profit factor (wins, zero losses) as null.
 const fmtPf = (pf: number | null) => pf === null ? '∞' : pf.toFixed(2);
 const pfOk = (pf: number | null) => pf === null || pf >= 1;
 
-function StatCard({ label, value, sub, tone }: { label: string; value: string; sub?: string; tone?: 'pos' | 'neg' | 'azure' | 'violet' }) {
+function StatCard({ label, value, sub, tone, title }: { label: string; value: string; sub?: string; tone?: 'pos' | 'neg' | 'azure' | 'violet'; title?: string }) {
   const color = tone === 'pos' ? 'var(--sage)' : tone === 'neg' ? 'var(--oxide)' : tone === 'azure' ? 'var(--azure)' : tone === 'violet' ? '#9d7dff' : 'var(--ivory)';
+  // Step the font down for long values so they never wrap or spill into the
+  // neighbouring card. Compact formatting keeps most values under 10 chars.
+  // "A / B" pairs (Avg win / loss) stack onto two lines instead of clipping.
+  const parts = value.split(' / ');
+  const longest = Math.max(...parts.map(p => p.length));
+  const size = longest > 16 ? 15 : longest > 12 ? 18 : 21;
   return (
-    <div className="f-panel" style={{ padding: '14px 16px' }}>
-      <div className="f-kicker" style={{ marginBottom: 6 }}>{label}</div>
-      <div className="f-mono" style={{ fontSize: 21, fontWeight: 700, color, fontVariantNumeric: 'tabular-nums' }}>{value}</div>
-      {sub && <div className="f-mono f-faint" style={{ fontSize: 9.5, marginTop: 4 }}>{sub}</div>}
+    <div className="f-panel" style={{ padding: '14px 16px', minWidth: 0, overflow: 'hidden' }} title={title}>
+      <div className="f-kicker" style={{ marginBottom: 6, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{label}</div>
+      <div className="f-mono" style={{
+        fontSize: size, fontWeight: 700, color, lineHeight: 1.2,
+        fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+      }}>{parts.length === 2
+        ? <>{parts[0]}<span className="f-faint" style={{ fontWeight: 400 }}> /</span><br />{parts[1]}</>
+        : value}</div>
+      {sub && <div className="f-mono f-faint" style={{ fontSize: 9.5, marginTop: 4, overflowWrap: 'anywhere' }}>{sub}</div>}
     </div>
   );
 }
@@ -163,8 +190,8 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
 
     // labels
     ctx.fillStyle = 'rgba(239,246,255,0.45)'; ctx.font = '9px monospace';
-    ctx.fillText(fmtSigned(max), 12, 12);
-    ctx.fillText(fmtSigned(min), 12, h - 4);
+    ctx.fillText(fmtSignedC(max), 12, 12);
+    ctx.fillText(fmtSignedC(min), 12, h - 4);
   }, [view, hoverIdx]);
 
   const s = view?.stats;
@@ -210,16 +237,23 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
               <span className="f-kicker" style={{ alignSelf: 'center', marginLeft: 6 }}>{data?.totalRows.toLocaleString()} TRADES IN WINDOW</span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, marginBottom: 14 }}>
-              <StatCard label="Net P&L" value={fmtSigned(s.net)} tone={s.net >= 0 ? 'pos' : 'neg'} sub={`${s.n} settled · ${fmtUsd(s.volume)} volume`} />
-              <StatCard label="ROCE" value={`${view.roce >= 0 ? '+' : '−'}${Math.abs(view.roce).toFixed(2)}%`} tone={view.roce >= 0 ? 'pos' : 'neg'} sub={`on ${fmtUsd(view.base)} capital base`} />
-              <StatCard label="Hit rate" value={pct(s.hit)} tone="azure" sub={`${s.wins} W / ${s.losses} L`} />
-              <StatCard label="Profit factor" value={fmtPf(s.pf)} tone={pfOk(s.pf) ? 'pos' : 'neg'} sub={`${fmtUsd(s.grossWin)} won / ${fmtUsd(s.grossLoss)} lost`} />
-              <StatCard label="Expectancy" value={fmtSigned(s.expectancy)} tone={s.expectancy >= 0 ? 'pos' : 'neg'} sub="per settled trade" />
-              <StatCard label="Avg win / loss" value={`${fmtUsd(s.avgWin)} / ${fmtUsd(s.avgLoss)}`} sub={`payoff ratio ${s.avgLoss > 0 ? (s.avgWin / s.avgLoss).toFixed(2) : '—'}`} />
-              <StatCard label="Max drawdown" value={fmtUsd(s.maxDD)} tone="neg" sub={view.base > 0 ? `${((s.maxDD / view.base) * 100).toFixed(2)}% of base` : undefined} />
-              <StatCard label="Streaks" value={`${s.curStreak >= 0 ? 'W' : 'L'}${Math.abs(s.curStreak)}`} tone={s.curStreak >= 0 ? 'pos' : 'neg'} sub={`best +${s.bestW}W · worst ${s.worstL}L`} />
-              <StatCard label="Extremes" value={`${fmtSigned(s.largestWin)}`} tone="pos" sub={`worst single: ${fmtSigned(s.largestLoss)}`} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 10, marginBottom: 14 }}>
+              <StatCard label="Net P&L" value={fmtSignedC(s.net)} title={fmtSigned(s.net)} tone={s.net >= 0 ? 'pos' : 'neg'}
+                sub={`${int(s.n)} settled · ${fmtUsdC(s.volume)} volume`} />
+              <StatCard label="ROCE" value={fmtPctC(view.roce, true)} title={`${view.roce.toFixed(2)}%`} tone={view.roce >= 0 ? 'pos' : 'neg'}
+                sub={`on ${fmtUsdC(view.base)} capital base`} />
+              <StatCard label="Hit rate" value={pct(s.hit)} tone="azure" sub={`${int(s.wins)} W / ${int(s.losses)} L`} />
+              <StatCard label="Profit factor" value={fmtPf(s.pf)} tone={pfOk(s.pf) ? 'pos' : 'neg'}
+                sub={`${fmtUsdC(s.grossWin)} won / ${fmtUsdC(s.grossLoss)} lost`} title={`${fmtUsd(s.grossWin)} won / ${fmtUsd(s.grossLoss)} lost`} />
+              <StatCard label="Expectancy" value={fmtSignedC(s.expectancy)} title={fmtSigned(s.expectancy)} tone={s.expectancy >= 0 ? 'pos' : 'neg'} sub="per settled trade" />
+              <StatCard label="Avg win / loss" value={`${fmtUsdC(s.avgWin)} / ${fmtUsdC(s.avgLoss)}`} title={`${fmtUsd(s.avgWin)} / ${fmtUsd(s.avgLoss)}`}
+                sub={`payoff ratio ${s.avgLoss > 0 ? (s.avgWin / s.avgLoss).toFixed(2) : '—'}`} />
+              <StatCard label="Max drawdown" value={fmtUsdC(s.maxDD)} title={fmtUsd(s.maxDD)} tone="neg"
+                sub={view.base > 0 ? `${fmtPctC((s.maxDD / view.base) * 100)} of base` : undefined} />
+              <StatCard label="Streaks" value={`${s.curStreak >= 0 ? 'W' : 'L'}${Math.abs(s.curStreak)}`} tone={s.curStreak >= 0 ? 'pos' : 'neg'}
+                sub={`best ${s.bestW}W · worst ${s.worstL}L`} />
+              <StatCard label="Extremes" value={fmtSignedC(s.largestWin)} title={`best ${fmtSigned(s.largestWin)} · worst ${fmtSigned(s.largestLoss)}`} tone="pos"
+                sub={`worst single: ${fmtSignedC(s.largestLoss)}`} />
             </div>
 
             <div className="f-panel" style={{ marginBottom: 14 }}>
@@ -294,10 +328,10 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
                           <td>{sec.title === 'By Side'
                             ? <span className={`f-tag ${r.key === 'BUY' ? 'win' : 'loss'}`}>{r.key}</span>
                             : r.key}</td>
-                          <td className="num f-mono">{r.n}</td>
+                          <td className="num f-mono">{int(r.n)}</td>
                           <td className="num f-mono">{pct(r.hit)}</td>
                           <td className="num f-mono">{fmtPf(r.pf)}</td>
-                          <td className={`num f-mono ${r.net >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontWeight: 700 }}>{fmtSigned(r.net)}</td>
+                          <td className={`num f-mono ${r.net >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontWeight: 700 }} title={fmtSigned(r.net)}>{fmtSignedC(r.net)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -315,14 +349,14 @@ export default function AnalyticsClient({ isOwner = false }: { isOwner?: boolean
                   {view.byTier.map((r: any) => (
                     <tr key={r.key}>
                       <td><span className={`f-tag ${r.key === 'GOLD' ? 'azure' : 'dim'}`}>{r.key}</span></td>
-                      <td className="num f-mono">{r.n}</td>
-                      <td className="num f-mono">{r.wins} / {r.losses}</td>
+                      <td className="num f-mono">{int(r.n)}</td>
+                      <td className="num f-mono">{int(r.wins)} / {int(r.losses)}</td>
                       <td className="num f-mono">{pct(r.hit)}</td>
                       <td className="num f-mono">{fmtPf(r.pf)}</td>
-                      <td className={`num f-mono ${r.expectancy >= 0 ? 'f-pos' : 'f-neg'}`}>{fmtSigned(r.expectancy)}</td>
-                      <td className="num f-mono f-neg">{fmtUsd(r.maxDD)}</td>
-                      <td className={`num f-mono ${r.net >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontWeight: 700 }}>{fmtSigned(r.net)}</td>
-                      <td className={`num f-mono ${r.roce >= 0 ? 'f-pos' : 'f-neg'}`}>{r.roce >= 0 ? '+' : '−'}{Math.abs(r.roce).toFixed(2)}%</td>
+                      <td className={`num f-mono ${r.expectancy >= 0 ? 'f-pos' : 'f-neg'}`} title={fmtSigned(r.expectancy)}>{fmtSignedC(r.expectancy)}</td>
+                      <td className="num f-mono f-neg" title={fmtUsd(r.maxDD)}>{fmtUsdC(r.maxDD)}</td>
+                      <td className={`num f-mono ${r.net >= 0 ? 'f-pos' : 'f-neg'}`} style={{ fontWeight: 700 }} title={fmtSigned(r.net)}>{fmtSignedC(r.net)}</td>
+                      <td className={`num f-mono ${r.roce >= 0 ? 'f-pos' : 'f-neg'}`}>{fmtPctC(r.roce, true)}</td>
                     </tr>
                   ))}
                 </tbody>
