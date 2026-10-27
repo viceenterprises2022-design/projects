@@ -9,7 +9,7 @@ import ThemeToggle from '../../ThemeToggle';
 
 const TIERS: Array<{ key: string; label: string }> = [
   { key: 'all', label: 'ALL TIERS' },
-  { key: '4', label: 'DEMO' },
+  { key: '4', label: 'GOLD PRO' },
   { key: '1', label: 'LEVEL 1' },
   { key: '2', label: 'LEVEL 2' },
   { key: '3', label: 'LEVEL 3' },
@@ -17,7 +17,7 @@ const TIERS: Array<{ key: string; label: string }> = [
 
 const fmtUsd = (n: number) => `$${Math.abs(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const fmtSigned = (n: number) => `${n >= 0 ? '+' : '−'}${fmtUsd(n)}`;
-const tierName = (l: number) => (l === 4 ? 'DEMO' : `L${l}`);
+const tierName = (l: number) => (l === 4 ? 'GOLD PRO' : `L${l}`);
 
 export default function LedgerClient() {
   const [level, setLevel] = useState('all');

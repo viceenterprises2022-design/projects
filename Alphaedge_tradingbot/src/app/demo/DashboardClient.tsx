@@ -2673,7 +2673,7 @@ export default function DashboardClient(
                     ) : (
                       simHistory.map((trade: any) => (
                         <tr key={trade.id || `${trade.asset}-${trade.roundId}-${trade.createdAt}`}>
-                          <td>{trade.level ? <span className={`f-tag ${trade.level === 4 ? 'win' : trade.level === 3 ? 'gold' : trade.level === 2 ? 'violet' : 'azure'}`}>{trade.level === 4 ? 'DEMO' : `L${trade.level}`}</span> : <span className="f-tag dim">—</span>}</td>
+                          <td>{trade.level ? <span className={`f-tag ${trade.level === 4 ? 'win' : trade.level === 3 ? 'gold' : trade.level === 2 ? 'violet' : 'azure'}`}>{trade.level === 4 ? 'GOLD PRO' : `L${trade.level}`}</span> : <span className="f-tag dim">—</span>}</td>
                           <td style={{ color: 'var(--ivory)' }}>#{trade.roundId}</td>
                           <td className="f-faint">{fmtTime(trade.createdAt)}</td>
                           <td className="num f-gold">{fmtUsd(trade.strikePrice)}</td>
